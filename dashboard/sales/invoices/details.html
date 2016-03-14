@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Invoices Unlimited</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../../../dist/css/main.css">
+</head>
+<body>
+
+  <header class="dashboard-header">
+    <div class="container">
+      <a href="../../../dashboard/index.html" class="logo"><img src="../../..../../../dist/images/logo.png" alt="InvoicesUnlimited"></a>
+      <div class="organization">
+        <img src="../../..../../../dist/images/user-icon.png" alt="">
+        <a href="#">Company Name</a>
+        <img src="../../..../../../dist/images/dropdown-arrow-primary.png" alt="">
+        <ul class="submenu user-submenu">
+          <li><a href="#">Settings</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="navigation">
+      <li><a href="../../../dashboard/index.html">Dashboard</a></li>
+      <li><a href="../../../dashboard/customers/customers.html">Customers</a></li>
+      <li class="active">
+        <a href="../../../dashboard/sales/sales.html">Sales</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li><a href="../../../dashboard/sales/estimates/estimates.html">Estimates</a></li>
+            <li><a href="../../../dashboard/sales/invoices/invoices.html">Invoices</a></li>
+            <li><a href="../../../dashboard/sales/creditnotes/creditnotes.html">Credit Notes</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="../../../dashboard/expenses/expenses.html">Expenses</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li><a href="../../../dashboard/expenses/record.expense.html">Expenses</a></li>
+            <li><a href="../../../dashboard/expenses/recurring/all.html">Recurring Expenses</a></li>
+            <li><a href="../../../dashboard/expenses/category/category.html">Expense Category</a></li>
+          </ul>
+        </div>
+      </li>
+      <li><a href="../../../dashboard/projects/projects.html">Projects</a></li>
+      <li><a href="../../../dashboard/timesheets/timesheets.html">Timesheets</a></li>
+      <li><a href="../../../dashboard/reports/salesbycustomer.html">Reports</a></li>
+      <li>
+        <a href="../../../dashboard/settings/companyprofile.html">Settings</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li>
+              <a href="../../../dashboard/settings/companyprofile.html">Company Profile</a>
+            </li>
+            <li>
+              <a href="../../../dashboard/settings/generalpreferences.html">General</a>
+              <a href="../../../dashboard/settings/invoices.html">Invocies</a>
+              <a href="../../../dashboard/settings/creditnotes.html">Credits</a>
+              <a href="../../../dashboard/settings/invoicetemplates.html">Invoice Templates</a>
+              <a href="../../../dashboard/settings/estimates.html">Estimates</a>
+              <a href="../../../dashboard/settings/payments.html">Payments</a>
+            </li>
+            <li>
+              <a href="../../../dashboard/settings/taxes.html">Taxes</a>
+              <a href="../../../dashboard/settings/items.html">Items</a>
+              <a href="../../../dashboard/settings/users.html">Users</a>
+              <a href="../../../dashboard/settings/currencies.html">Currency</a>
+            </li>
+            <li>
+              <a href="../../../dashboard/settings/app-preferences.html">App Preferences</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </header>
+
+  <div class="container">
+    <a href="../../../dashboard/sales/invoices/invoices.html" class="button-icon float-left">
+      <img src="../../../dist/images/icon-back.png" alt="Kappa">
+    </a>
+    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">INV-000001</h3>
+    <div class="actions float-right layout-margin-tb">
+      <a href="edit.invoice.html" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
+      <button class="button button-small button-neutral text-uppercase">More <img src="../../../dist/images/dropdown-arrow-w.png" alt="">
+        <ul class="submenu list-clear layout-no-padding text-left text-normalize">
+          <li><a href="">Email</a></li>
+          <li><a href="">Print</a></li>
+          <li class="modal-opener" data-toggle="record-payment"><a href="">Record Payment</a></li>
+          <li><a href="">Create Credit Note</a></li>
+          <li><a href="">Clone</a></li>
+          <li><a href="">Print Delivery Note</a></li>
+          <li><a href="">Print Packing Slip</a></li>
+          <li><a href="">Delete</a></li>
+        </ul>
+      </button>
+    </div>
+    <div class="clearfix"></div>
+    <hr>
+
+    <p class="log text-color-light text-weight-normalize">12/03/2014 02:22 PM <span>Invoice created for $10.00 - John</span></p>
+    <p class="log text-color-light text-weight-normalize">12/03/2014 02:13 AM <span>Invoice INV-0001 emailed - John</span></p>
+    <p class="log text-color-light text-weight-normalize">12/03/2014 09:10 AM <span>Estimate converted to Invoice INV-000002 - John - <a href="#">View</a></span></p>
+    <a href="#" class="layout-margin-tb">+ New Comment</a>
+
+    <div class="text-center layout-margin-tb">
+      <img src="../../../dist/images/invoiced.png" alt="">
+    </div>
+
+    <p class="layout-no-padding text-center">Template: 'Standard Template' - <a href="#">Change</a></p>
+
+    <div class="clearfix"></div>
+
+    <h3 class="layout-margin-t section-title text-uppercase text-color-normalize float-left">Attachments</h3>
+    <button class="layout-margin-t button button-no-bg float-right">+ Add</button>
+
+    <div class="clearfix"></div>
+
+    <table class="container table-border-tb layout-margin-tb-lg">
+      <tr class="text-uppercase text-color-normalize">
+        <td class="layout-padding-tb text-uppercase">Name</td>
+        <td class="layout-padding-tb text-uppercase">Date</td>
+        <td class="layout-padding-tb"></td>
+      </tr>
+      <tr class="text-color-light">
+        <td class="layout-padding-tb-lg valign-top"><a href="#">imagenotes.jpg</a></td>
+        <td class="layout-padding-tb-lg valign-top">12/03/2014</td>
+        <td class="layout-padding-tb-lg valign-top actions"><a class="action-edit" href="#">re-upload</a> <button class="button button-icon button-no-margin"><img src="../../../dist/images/icon-times-round.png" alt=""></button></td>
+      </tr>
+      <tr class="text-color-light">
+        <td class="layout-padding-tb-lg valign-top"><a href="#">documents.pdf</a></td>
+        <td class="layout-padding-tb-lg valign-top">12/05/2014</td>
+        <td class="layout-padding-tb-lg valign-top actions"><a class="action-edit" href="#">re-upload</a> <button class="button button-icon button-no-margin"><img src="../../../dist/images/icon-times-round.png" alt=""></button></td>
+      </tr>
+    </table>
+
+    <div class="clearfix"></div>
+
+    <h3 class="layout-margin-t section-title text-uppercase text-color-normalize">Payments Received</h3>
+
+    <div class="container container-table layout-margin-t">
+      <div class="thead layout-padding">
+        <div class="col-15">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Date</h3>
+        </div>
+        <div class="col-15 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Payment</h3>
+        </div>
+        <div class="col-20 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Refence #</h3>
+        </div>
+        <div class="col-25 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Payment Mode</h3>
+        </div>
+        <div class="col-15 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Amount</h3>
+        </div>
+        <div class="col-10 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize"></h3>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="tbody no-border inputs-white">
+
+        <div class="table-row">
+          <div class="col-15">
+            <p class="layout-margin-tb">12/03/2014</p>
+          </div>
+          <div class="col-15 layout-padding-l">
+            <a class="layout-margin-tb" href="">01</a>
+          </div>
+          <div class="col-20 layout-padding-l">
+            <p></p>
+          </div>
+          <div class="col-25 layout-padding-l">
+            <h3 class="text-weight-normalize layout-margin-tb text-color-light">Google Checkout</h3>
+          </div>
+          <div class="col-15 layout-padding-l">
+            <h3 class="text-weight-normalize layout-margin-tb text-color-light">$10.00</h3>
+          </div>
+          <div class="col-10 layout-padding-l">
+            <button class="float-right button button-icon layout-margin-tb"><img src="../../../dist/images/icon-times-round.png" alt=""></button>
+            <a href="#" class="float-right layout-margin-t action-edit">edit</a>
+          </div>
+          <div class="col-100 text-color-light layout-margin-b pull-top">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          </div>
+        </div>
+
+        <div class="table-row row-border">
+          <div class="col-15">
+            <p class="layout-margin-tb">12/01/2014</p>
+          </div>
+          <div class="col-15 layout-padding-l">
+            <a class="layout-margin-tb" href="">02</a>
+          </div>
+          <div class="col-20 layout-padding-l">
+            <p></p>
+          </div>
+          <div class="col-25 layout-padding-l">
+            <h3 class="text-weight-normalize layout-margin-tb text-color-light">Google Checkout</h3>
+          </div>
+          <div class="col-15 layout-padding-l">
+            <h3 class="text-weight-normalize layout-margin-tb text-color-light">$15.00</h3>
+          </div>
+          <div class="col-10 layout-padding-l">
+            <button class="float-right button button-icon layout-margin-tb"><img src="../../../dist/images/icon-times-round.png" alt=""></button>
+            <a href="#" class="float-right layout-margin-t action-edit">edit</a>
+          </div>
+          <div class="col-100 text-color-light layout-margin-b pull-top">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="clearfix spacer"></div>
+
+    <div class="spacer"></div>
+
+
+  </div>
+
+
+  <div class="popup-modal record-payment">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Record Payment</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="../../../dist/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form action="" class="inputs-white layout-margin-t float-left">
+          <div class="input-container layout-margin-b">
+            <label>Date</label>
+            <select class="col-75">
+              <option value="null" disabled selected>Select or Type to add</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Amount</label>
+            <input type="text" class="col-75" placeholder="Type to add">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Reference #</label>
+            <input type="text" class="col-75" placeholder="Type to add">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Payment Mode</label>
+            <select class="col-75" placeholder="Select or Type to add">
+              <option value="null" disabled selected>Select Payment Mode</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Notes</label>
+            <textarea class="col-75"></textarea>
+          </div>
+        </form>
+        <div class="clearfix"></div>
+        <br/>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase">Save</button>
+    </div>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="../../../dist/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Invoices Unlimited</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../dist/css/main.css">
+</head>
+<body>
+
+  <header class="sticky-nav logo-only">
+    <a href="#"><img src="../dist/images/logo.png" alt="Invoices Unlimited"></a>
+  </header>
+
+  <section class="sign-up text-center">
+
+    <h2 class="text-uppercase">Business Info</h2>
+
+    <form name="signUp">
+      <input type="text" placeholder="Business Name" required>
+      <input type="text" placeholder="Street Name" required>
+      <input type="text" placeholder="City" required>
+      <input type="text" placeholder="State" required class="input-50">
+      <input type="text" placeholder="Zip Code" required class="input-50">
+      <input type="number" placeholder="Phone Number" required pattern=".{9,}">
+      <textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)"></textarea>
+      <label class="input-container input-checkbox-container">
+        <p>Do You Have a Federal Tax ID?</p>
+        <input type="checkbox" class="federal-tax">
+        <span class="checkbox"></span>
+        <input class="layout-margin-tb federal-tax" type="text" placeholder="Federaly Tax ID">
+      </label>
+      <select class="custom-dd">
+        <option value="ownershipTitle" selected disabled>Ownership Type</option>
+        <option value="soleProprietor">Sole Proprietor</option>
+        <option value="llc">LLC</option>
+        <option value="Corporation and Non Profit">Corporation and Non Profit</option>
+      </select>
+
+    </form>
+
+    <a href="principal-info.html" class="button button-primary button-next">Next</a>
+
+  </section>
+
+
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="../dist/js/main.js"></script>
+</body>
+</html>

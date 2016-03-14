@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Invoices Unlimited</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../dist/css/main.css">
+</head>
+<body>
+
+  <header class="dashboard-header">
+    <div class="container">
+      <a href="index.html" class="logo"><img src="../dist/images/logo.png" alt="InvoicesUnlimited"></a>
+      <div class="organization">
+        <img src="../dist/images/user-icon.png" alt="">
+        <a href="#">Company Name</a>
+        <img src="../dist/images/dropdown-arrow-primary.png" alt="">
+        <ul class="submenu user-submenu">
+          <li><a href="#">Settings</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="navigation">
+      <li class="active"><a href="index.html">Dashboard</a></li>
+      <li><a href="customers/customers.html">Customers</a></li>
+      <li>
+        <a href="sales/sales.html">Sales</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li><a href="sales/estimates/estimates.html">Estimates</a></li>
+            <li><a href="sales/invoices/invoices.html">Invoices</a></li>
+            <li><a href="sales/creditnotes/creditnotes.html">Credit Notes</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="expenses/expenses.html">Expenses</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li><a href="#">Expenses</a></li>
+            <li><a href="#">Recurring Expenses</a></li>
+            <li><a href="expenses/category/category.html">Expense Category</a></li>
+          </ul>
+        </div>
+      </li>
+      <li><a href="projects/projects.html">Projects</a></li>
+      <li><a href="timesheets/timesheets.html">Timesheets</a></li>
+      <li><a href="reports/salesbycustomer.html">Reports</a></li>
+      <li>
+        <a href="settings/companyprofile.html">Settings</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li>
+              <a href="settings/companyprofile.html">Company Profile</a>
+            </li>
+            <li>
+              <a href="settings/generalpreferences.html">General</a>
+              <a href="settings/invoices.html">Invocies</a>
+              <a href="settings/creditnotes.html">Credits</a>
+              <a href="settings/invoicetemplates.html">Invoice Templates</a>
+              <a href="settings/estimates.html">Estimates</a>
+              <a href="settings/payments.html">Payments</a>
+            </li>
+            <li>
+              <a href="settings/taxes.html">Taxes</a>
+              <a href="settings/items.html">Items</a>
+              <a href="settings/users.html">Users</a>
+              <a href="settings/currencies.html">Currency</a>
+            </li>
+            <li>
+              <a href="settings/app-preferences.html">App Preferences</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </header>
+
+  <div class="container layout-padding">
+    <h3 class="section-title float-left">Total Receivables</h3>
+    <a href="#" class="text-md float-right">Get Started</a>
+    <div class="clearfix"></div>
+
+    <table class="data-table">
+      <tr class="thead">
+        <td class="tcell-fw text-center">
+          <h3 class="text-uppercase">Total Unpaid Invoices: <span class="text-color-normalize">6, $10.00</span></h3>
+        </td>
+      </tr>
+      <tr class="tbody equal-cells">
+        <td class="tcell-aw">
+          <h4 class="text-uppercase text-color-light">Current</h4>
+          <h4 class="text-positive text-weight-normalize">$00.00</h4>
+        </td>
+        <td class="tcell-aw">
+          <h4 class="text-uppercase text-color-light">1-15 Days</h4>
+          <h4 class="text-danger text-weight-normalize">$00.00</h4>
+        </td>
+        <td class="tcell-aw">
+          <h4 class="text-color-light">16-30 Days</h4>
+          <h4 class="text-danger text-weight-normalize">$00.00</h4>
+        </td>
+        <td class="tcell-aw">
+          <h4 class="text-color-light">31-45 Days</h4>
+          <h4 class="text-danger text-weight-normalize">$00.00</h4>
+        </td>
+        <td class="tcell-aw">
+          <h4 class="text-color-light">Over 45 Days</h4>
+          <h4 class="text-danger text-weight-normalize">$00.00</h4>
+        </td>
+      </tr>
+    </table>
+
+    <hr>
+
+    <h3 class="section-title float-left">Sales &amp; Expenses</h3>
+    <ul class="se-filter float-right text-color-light">
+      <li>This Fiscal Year</li>
+      <li>This Month</li>
+      <li>This week</li>
+    </ul>
+
+    <div class="clearfix"></div>
+
+    <ul class="sales-list">
+      <li>
+        <h4 class="text-weight-normalize text-color-normalize">Total Sales</h4>
+        <span class="dotted-separator"></span>
+        <h3 class="text-positive text-weight-normalize">$62.00</h3>
+      </li>
+      <li>
+        <h4 class="text-weight-normalize text-color-normalize">Total Receipts</h4>
+        <span class="dotted-separator"></span>
+        <h3 class="text-info text-weight-normalize">$96.00</h3>
+      </li>
+      <li>
+        <h4 class="text-weight-normalize text-color-normalize">Total Expenses</h4>
+        <span class="dotted-separator"></span>
+        <h3 class="text-danger text-weight-normalize">$58.00</h3>
+      </li>
+    </ul>
+
+    <img src="../dist/images/graph1.png" alt="">
+
+    <hr>
+
+    <div class="col-50 vertical-separator-right">
+      <div class="thead">
+        <h3 class="float-left section-title text-uppercase text-color-normalize">Top Expenses</h3>
+        <ul class="se-filter float-right text-color-light">
+          <li>This Fiscal Year</li>
+          <li>This Month</li>
+          <li>This week</li>
+        </ul>
+      </div>
+      <div class="tbody text-center">
+        <img src="../dist/images/graph2.png" alt="">
+      </div>
+    </div>
+    <div class="col-50 layout-padding-l">
+      <div class="clearfix">
+        <h3 class="float-left section-title text-uppercase text-color-normalize">Top Expenses</h3>
+      </div>
+      <ul class="tabs tabs-100 container clearfix col-no-padding">
+        <li class="col-50 text-center col-no-padding active" data-toggle="tab1">
+          <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Unbilled Hours</h4></li>
+        <li class="col-50 text-center col-no-padding" data-toggle="tab2">
+          <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Unbilled Expenses</h4></li>
+      </ul>
+      <div class="tab active" data-name="tab1">
+        <ul class="container list-clear Expenses-list">
+          <li>
+            <h4 class="float-left text-color-normalize text-weight-normalize">Total</h4>
+            <h4 class="float-right text-color-normalize text-weight-normalize text-emphasize text-info">02:15</h4>
+            <div class="clearfix"></div>
+          </li>
+          <li>
+            <h4 class="float-left text-color-normalize text-weight-normalize">The Sunrise Hall Interior Design</h4>
+            <h4 class="float-right text-color-normalize text-weight-normalize">00:55</h4>
+            <div class="clearfix"></div>
+            <p class="text-small">John Doe</p>
+          </li>
+          <li>
+            <h4 class="float-left text-color-normalize text-weight-normalize">Betsy Estates Interior Design</h4>
+            <h4 class="float-right text-color-normalize text-weight-normalize">01:00</h4>
+            <div class="clearfix"></div>
+            <p class="text-small">Leela Turanga</p>
+          </li>
+          <li>
+            <h4 class="float-left text-color-normalize text-weight-normalize">Garden Grove Interior Design</h4>
+            <h4 class="float-right text-color-normalize text-weight-normalize">00:20</h4>
+            <div class="clearfix"></div>
+            <p class="text-small">Frank West</p>
+          </li>
+        </ul>
+      </div>
+      <div class="tab layout-padding" data-name="tab2">
+        Tab 2 Content
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../dist/js/flexibility.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="../dist/js/main.js"></script>
+</body>
+</html>
