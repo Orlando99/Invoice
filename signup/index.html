@@ -1,37 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Invoices Unlimited</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="./dist/css/main.css">
-</head>
-<body>
 
-  <header class="sticky-nav logo-only">
+<header class="sticky-nav logo-only">
     <a href="#"><img src="./dist/images/logo.png" alt="Invoices Unlimited"></a>
-  </header>
+</header>
 
-  <section class="sign-up text-center">
+<section class="sign-up text-center" ng-controller="SignUpVerificationController">
 
     <h2 class="text-uppercase">Sign Up</h2>
+    <form id="signUpForm" name="signUpForm">
+        <select class="custom-dd countries" ng-model="selectedCountry"
+                ng-change="selectedCountryChanged();">
+            <option value="Select Country" selected disabled>Select Country</option>
+            <option ng-repeat="item in usaAndCanada" value="{{item}}">{{item}}</option>
+            <option value="none" disabled>---------------------------------------------------------------------------</option>
+            <option ng-repeat="item in otherCountries" value="{{item}}">{{item}}</option>
+        </select>
 
-    <select class="custom-dd countries">
-      <option value="Select Country" selected disabled>Select Country</option>
-      <option value="us">United States</option>
-      <option value="canada" class="option-border">Canada</option>
-      <option value="none" disabled>---------------------------------------------------------------------------</option>
-      <option value="Afghanistan">Afghanistan</option>
-      <option value="Albania">Albania</option>
-      <option value="Algeria">Algeria</option>
-    </select>
-    <a href="signup-2.html" class="button button-primary button-next">Next</a>
+        <div class="extended-signup" style="display:none">
+            <div class="input-container">
+                <input type="text" placeholder="Company Name" name="company"/>
+            </div>
+            <div class="input-container">
+                <input type="text" placeholder="Full Name" name="fullname" />
+            </div>
+            <div class="input-container">
+                <input type="text" id="email" placeholder="" name="email"/>
+            </div>
+            <div class="input-container">
+                <input type="text" placeholder="Username" name="username"/>
+            </div>
+            <div class="input-container">
+                <input type="password" placeholder="Password"  name="password"/>
+            </div>
+            <div class="input-container">
+                <input type="password" placeholder="Confirm Password" name="confirmpassword"/>
+            </div>
+            <div class="input-container">
+                <input type="number" id="phone" placeholder="" min="0" pattern=".{9,}" name="phonenumber"/>
+            </div>
+        </div>
+    </form>
+    
+    <a class="button button-primary button-next" ng-click="sendMessage();">Next</a>
     <p>By clicking "NEXT", you are agreeing to the <a href="../terms.html">Terms &amp; Conditions</a> and <a href="../privacy.html">Privacy Policy</a></p>
 
-  </section>
+</section>
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="./dist/js/main.js"></script>
-</body>
-</html>
+<script src="./dist/js/main.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>-->
+
