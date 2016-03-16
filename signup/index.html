@@ -3,12 +3,17 @@
     <a href="#"><img src="./dist/images/logo.png" alt="Invoices Unlimited"></a>
 </header>
 
-<section class="sign-up text-center" ng-controller="SignUpVerificationController">
-
+<section class="sign-up text-center" ng-controller="SignUpController">
     <h2 class="text-uppercase">Sign Up</h2>
-    <form id="signUpForm" name="signUpForm">
+
+    <div class="validation-error" ng-show="form.error > 0">
+        Please, fix errors in red:
+        <ul class="inner-message"></ul>
+    </div>
+
+    <form id="signUpForm" name="signUpForm" novalidate>
         <select class="custom-dd countries" ng-model="selectedCountry"
-                ng-change="selectedCountryChanged();">
+                ng-change="selectedCountryChanged();" required>
             <option value="Select Country" selected disabled>Select Country</option>
             <option ng-repeat="item in usaAndCanada" value="{{item}}">{{item}}</option>
             <option value="none" disabled>---------------------------------------------------------------------------</option>
@@ -17,25 +22,25 @@
 
         <div class="extended-signup" style="display:none">
             <div class="input-container">
-                <input type="text" placeholder="Company Name" name="company"/>
+                <input type="text" placeholder="Company Name" name="company" required/>
             </div>
             <div class="input-container">
-                <input type="text" placeholder="Full Name" name="fullname" />
+                <input type="text" placeholder="Full Name" name="fullname" required/>
             </div>
             <div class="input-container">
-                <input type="text" id="email" placeholder="" name="email"/>
+                <input type="text" id="email" placeholder="" name="email" required/>
             </div>
             <div class="input-container">
-                <input type="text" placeholder="Username" name="username"/>
+                <input type="text" placeholder="Username" name="username" required/>
             </div>
             <div class="input-container">
-                <input type="password" placeholder="Password"  name="password"/>
+                <input type="password" placeholder="Password"  name="password" required/>
             </div>
             <div class="input-container">
-                <input type="password" placeholder="Confirm Password" name="confirmpassword"/>
+                <input type="password" placeholder="Confirm Password" name="confirmpassword" required/>
             </div>
             <div class="input-container">
-                <input type="number" id="phone" placeholder="" min="0" pattern=".{9,}" name="phonenumber"/>
+                <input type="number" id="phone" placeholder="" min="0" pattern=".{9,}" name="phonenumber" required/>
             </div>
         </div>
     </form>
@@ -46,5 +51,6 @@
 </section>
 
 <script src="./dist/js/main.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
 <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>-->
 

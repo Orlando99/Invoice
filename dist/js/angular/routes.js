@@ -8,14 +8,14 @@ angular.module('invoicesUnlimited')
 	var signUpIndex = {
 		name: 'signup',
 		url : "/signup",
-		controller : "SignUpVerificationController",
+		controller : "SignUpController",
 		templateUrl : "./signUp/index.html"
 	}
 
 	var signUpIndexExtended = {
 		name : 'signup-extended',
 		url : "/signup/2",
-		controller : "SignUpVerificationController",
+		controller : "SignUpController",
 		templateUrl : "./signUp/signup-2.html"
 	}
 

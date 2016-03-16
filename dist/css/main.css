@@ -26,4 +26,20 @@ label.error:after{
     border-right: 5px $danger solid;
     border-top: 5px transparent solid;
     border-bottom: 5px transparent solid;
-	}
+}
+
+.validation-error {
+	width: 100%;
+	color: red;
+	margin: 20px 0;
+}
+
+.validation-error .inner-message {
+	color: red;
+	font-size: 17px;
+	text-align: left;
+}
+
+.field-error {
+	border: 1px solid red;
+}
