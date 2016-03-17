@@ -4,16 +4,72 @@ String.prototype.capitilize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
+$(document).ready(function(){
+	$.validator.addMethod(
+		"NotFullName",
+		function(value,element){
+			var words = value.match(/[^ ]+/g);
+			if (words.length == 1){
+				$.validator.messages["NotFullName"] = "Please Enter Full Name";
+				return false;
+			}
+
+			var fullname = "";
+
+			for(var i=0;i<words.length;i++){
+				words[i] = words[i].capitilize();
+				fullname += words[i];
+				fullname += (i == words.length-1) ?'':' ';
+			}
+			$(element).val(fullname);
+			return true;
+		},''
+	);
+	$.validator.addMethod(
+		"ConfirmPassMatch",
+		function(value,element){
+			if (value == $("input[name='password']").val())
+				return true;
+			$.validator.messages["ConfirmPassMatch"] = "Passwords do not match!";
+		},'');
+});
+
 invoicesUnlimited.controller('SignUpController',['$scope','$state',function($scope,$state){
 
 	$scope.selectedCountry = 'Select Country';
 
-	$scope.ValidationFails = false;
-
-	$scope.form = {
-		error : 0,
-		fields : {}
-	};
+	$("#signUpForm").validate({
+		onkeyup : false,
+		onfocusout : false,
+		rules: {
+			fullname : {
+				NotFullName : true,
+				required : true
+			},
+			company : 'required',
+			username: 'required',
+			password: 'required',
+			email : 'required',
+			confirmpassword: {
+				required : true,
+				ConfirmPassMatch : true
+			},
+			phonenumber : 'required'
+		},
+		messages: {
+			fullname : "Please specify your Full Name !",
+			username: {
+				required : "Please specify your username !"
+			},
+			email : "Please specify your email !",
+			company : "Please specify your company !",
+			password: "Please specify your password !",
+			confirmpassword: {
+				required : "Please specify your confirm password !"
+			},
+			phonenumber : "Please specify your phone !"
+		}
+	});
 
 	$scope.selectedCountryChanged = function(){
 		if (!$scope.selectedCountry) return;
@@ -28,112 +84,17 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state',function($sco
 		}
 	};
 
-	$scope.Validation = {
-		setErr : function(field,msg){
-			$scope.form.error++;
-			$scope.form.fields[field].
-			message = msg;
-		},
-		NullOrEmpty : function(field){
-			var value = $("input[name='"+ field +"']").val();
-			if (!value || value == "") {
-				$scope.Validation
-				.setErr(field,field.capitilize() + " cannot be empty!");
-				return true;
-			}
-			return false;
-		},
-		Setup : function() {
-
-			var names = ["company","fullname","email","username","password","confirmpassword","phonenumber"];
-				
-			for (var i in names){
-				if ($scope.form.fields[names[i]]) continue;
-				$scope.form.fields[names[i]] = 
-				{
-					selector : "input[name='"+ names[i] +"']"
-				};
-			}
-
-			$scope.form.error = 0;
-			for (var field in $scope.form.fields)
-				$scope.form.fields[field].message = "";
-			
-			$('#signUpForm input').removeClass('field-error');
-			$('.inner-message').html('');
-		},
-		FullName : function() {
-			if ($scope.Validation.NullOrEmpty('fullname')) return;
-			var words = $("input[name='fullname']").val().match(/[^ ]+/g);
-			if (words.length == 1){
-				$scope.Validation
-				.setErr('fullname',"Please Enter Full Name");
-				return;
-			}
-			var fullname = "";
-
-			for(var i=0;i<words.length;i++){
-				words[i] = words[i].capitilize();
-				fullname += words[i];
-				fullname += (i == words.length-1) ?'':' ';
-			}
-			$($scope.form.fields.fullname.selector).val(fullname);
-		},
-		Company : function(){
-			if ($scope.Validation.NullOrEmpty('company')) return;
-		},
-		Email : function(){
-			if ($scope.Validation.NullOrEmpty('email')) return;
-		},
-		Username : function(){
-			if ($scope.Validation.NullOrEmpty('username')) return;
-		},
-		Password : function(){
-			if ($scope.Validation.NullOrEmpty('password')) return;
-		},
-		ConfirmPassword : function(){
-			if ($scope.Validation.NullOrEmpty('confirmpassword')) return;
-			if ($("input[name='confirmpassword']").val() == $("input[name='password']").val()) return;
-			$scope.Validation.setErr('confirmpassword','Confirm Password not matches with Password');
-		},
-		Phone : function(){
-			if ($scope.Validation.NullOrEmpty('phonenumber')) return;
-		},
-		Validate : function(){
-			$scope.Validation.Company();
-			$scope.Validation.FullName();
-			$scope.Validation.Email();
-			$scope.Validation.Username();
-			$scope.Validation.Password();
-			$scope.Validation.ConfirmPassword();
-			$scope.Validation.Phone();
-		},
-		Finilize : function(){
-			for (var field in $scope.form.fields) {
-				var object = $scope.form.fields[field];
-				
-				if (object.message == '') continue;
-				
-				$('.validation-error .inner-message')
-				.append("<li>"+ object.message +"</li>");
-				$(object.selector).addClass('field-error');
-			}
-		}
-	};
-
 	$scope.sendMessage = function(){
 		if (!$scope.selectedCountry ||
 			$scope.selectedCountry == 'Select Country') return;
 
-		if ($scope.selectedCountry == 'United States of America' ||
-			$scope.selectedCountry == 'Canada')
+		var result = $("#signUpForm").valid();
+
+		if ($scope.selectedCountry == 'United States of America' || $scope.selectedCountry == 'Canada')
 			console.log('usa or canada');
 		else 
 			console.log('other Country');
-
-		$scope.Validation.Setup();
-		$scope.Validation.Validate()
-		$scope.Validation.Finilize();
+		
 		
 
 		//$state.go('signup-extended');
