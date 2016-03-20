@@ -12,16 +12,16 @@ angular.module('invoicesUnlimited')
 		templateUrl : "./signUp/index.html"
 	}
 
-	var signUpIndexExtended = {
-		name : 'signup-extended',
-		url : "/signup/2",
+	var signUpVerification = {
+		name : 'verification',
+		url : "/signup/verification",
 		controller : "SignUpController",
-		templateUrl : "./signUp/signup-2.html"
+		templateUrl : "./signUp/verification.html"
 	}
 
 	$stateProvider
 		.state(signUpIndex)
-		.state(signUpIndexExtended)
+		.state(signUpVerification)
 		.state('dashboard', {
 			url : "/home",
 			controller : "",

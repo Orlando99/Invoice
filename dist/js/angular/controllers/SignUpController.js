@@ -5,6 +5,23 @@ String.prototype.capitilize = function() {
 }
 
 $(document).ready(function(){
+
+	var usernameExists = function(value,callback){
+		var query = new Parse.Query(Parse.User);
+        query.equalTo("username",email);
+        return query.first().then(function(object){
+        	callback(object);
+        });
+	}
+
+	var emailExists = function(value,callback){
+		var query = new Parse.Query(Parse.User);
+        query.equalTo("email",email);
+        return query.first().then(function(object){
+        	callback(object);
+        });
+	}
+
 	$.validator.addMethod(
 		"NotFullName",
 		function(value,element){
@@ -25,18 +42,42 @@ $(document).ready(function(){
 			return true;
 		},''
 	);
+
 	$.validator.addMethod(
 		"ConfirmPassMatch",
 		function(value,element){
 			if (value == $("input[name='password']").val())
 				return true;
 			$.validator.messages["ConfirmPassMatch"] = "Passwords do not match!";
-		},'');
+			return false;
+		},''
+	);
+
+	$.validator.addMethod(
+		"UserNameExists",
+		function(value,element){
+			if (!Boolean($('#username-exists').val())) return true;
+			$.validator.messages["UserNameExists"] = "The username is already taken!";
+			return false;
+		},''
+	);
+
+	$.validator.addMethod(
+		"EmailExists",
+		function(value,element){
+			if (!Boolean($('#email-exists').val())) return true;
+			$.validator.messages["EmailExists"] = "The email is already taken!";
+			return false;
+		},''
+	);
 });
 
-invoicesUnlimited.controller('SignUpController',['$scope','$state',function($scope,$state){
+invoicesUnlimited.controller('SignUpController',['$scope','$state','signUpFactory',function($scope,$state,signUpFactory){
 
 	$scope.selectedCountry = 'Select Country';
+	$scope.verificationCodeProvider = signUpFactory.getVerification.provider();
+
+	var getUserExists = function(){return $scope.exists.username;}
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -47,9 +88,15 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state',function($sco
 				required : true
 			},
 			company : 'required',
-			username: 'required',
+			username: {
+				required : true,
+				UserNameExists : true
+			},
+			email : {
+				required : true,
+				EmailExists : true
+			},
 			password: 'required',
-			email : 'required',
 			confirmpassword: {
 				required : true,
 				ConfirmPassMatch : true
@@ -61,7 +108,9 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state',function($sco
 			username: {
 				required : "Please specify your username !"
 			},
-			email : "Please specify your email !",
+			email : {
+				required : "Please specify your email !"
+			},
 			company : "Please specify your company !",
 			password: "Please specify your password !",
 			confirmpassword: {
@@ -71,6 +120,47 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state',function($sco
 		}
 	});
 
+	$scope.ValidateForm = function(callback){
+		var queryUsername = new Parse.Query(Parse.User);
+        queryUsername.equalTo("username",$('input[name=username]').val());
+
+   		var queryEmail = new Parse.Query(Parse.User);
+        queryEmail.equalTo("email",$('input[name=email]').val());
+
+        var usernameCallback = function(object) {
+        	if(object) $('#username-exists').val(true);
+        	else $('#username-exists').val(false);
+        }
+
+        var emailCallback = function(object) {
+        	if (object) $('#email-exists').val(true);
+        	else $('#email-exists').val(false);
+        }
+
+        var usernameP = queryUsername.first().then(function(object){
+        	usernameCallback(object);
+        });
+
+        var emailP = queryEmail.first().then(function(object){
+        	emailCallback(object);
+        })
+
+        var promises = [usernameP, emailP];
+
+        Parse.Promise.when(promises).then(function(){
+        	$('#signUpForm').valid();
+			callback(!Boolean($('#username-exists').val()) && 
+					 !Boolean($('#email-exists')));
+    	});
+	};
+
+	$scope.verifyCode = function(){
+		var inputCode = $('#verificationCode').val();
+		var inputHash = md5(inputCode);
+		if (inputHash == signUpFactory.getVerification.code())
+			alert('Verified');
+	};
+
 	$scope.selectedCountryChanged = function(){
 		if (!$scope.selectedCountry) return;
 		if ($('.extended-signup').css({'display':'none'}))
@@ -78,9 +168,11 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state',function($sco
 		if ($.inArray($scope.selectedCountry, $scope.usaAndCanada) != -1) {
 			$('input#email').attr('placeholder',"Email (To Recover Forgotten Password)");
 			$('input#phone').attr('placeholder',"Phone Number (Text Verification Required)");
+			signUpFactory.setVerification.provider('text');
 		} else {
 			$('input#email').attr('placeholder',"Email");
 			$('input#phone').attr('placeholder',"Phone Number");
+			signUpFactory.setVerification.provider('email');
 		}
 	};
 
@@ -88,17 +180,33 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state',function($sco
 		if (!$scope.selectedCountry ||
 			$scope.selectedCountry == 'Select Country') return;
 
-		var result = $("#signUpForm").valid();
+		var result = $scope.ValidateForm(function(validated){
+			if (!validated) return;
 
-		if ($scope.selectedCountry == 'United States of America' || $scope.selectedCountry == 'Canada')
-			console.log('usa or canada');
-		else 
-			console.log('other Country');
-		
-		
-
-		//$state.go('signup-extended');
-		
+			if ($scope.selectedCountry == 'United States of America' || $scope.selectedCountry == 'Canada') {
+				debugger;
+				$.post('./dist/php/sendVerificationCode.php',{
+					dest:'phone',
+					phonenumber : $('#phone').val()
+				},function(res){
+					console.log(res);
+				});
+			} else {
+				$.post('./dist/php/sendVerificationCode.php', {
+					dest  :'email',
+					email : $('input[name=email]').val()
+				},function(res){
+					var codeString = res.match(/(Code:([0-9]|[a-f]){32}\;)/g);
+					if (codeString != null) codeString = codeString[0];
+					var code = codeString.match(/[^\;\:]+/g);
+					if (code) code = code[1];
+					debugger;
+					signUpFactory.setVerification.code(code);
+					signUpFactory.setProp('country',$scope.selectedCountry);
+					$state.go('verification');
+				});
+			}
+		});
 	};
 
 	$scope.usaAndCanada = ["United States of America","Canada"];

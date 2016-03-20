@@ -29,9 +29,11 @@
             </div>
             <div class="input-container">
                 <input type="text" id="email" placeholder="" name="email" />
+                <input type="hidden" id="email-exists" value="false"/>
             </div>
             <div class="input-container">
                 <input type="text" placeholder="Username" name="username" />
+                <input type="hidden" id="username-exists" value="false"/>
             </div>
             <div class="input-container">
                 <input type="password" placeholder="Password"  name="password" />
@@ -42,6 +44,7 @@
             <div class="input-container">
                 <input type="number" id="phone" placeholder="" min="0" pattern=".{9,}" name="phonenumber" />
             </div>
+
         </div>
     </form>
     
