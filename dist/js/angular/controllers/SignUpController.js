@@ -56,7 +56,7 @@ $(document).ready(function(){
 	$.validator.addMethod(
 		"UserNameExists",
 		function(value,element){
-			if (!Boolean($('#username-exists').val())) return true;
+			if (!parseInt($('#username-exists').val())) return true;
 			$.validator.messages["UserNameExists"] = "The username is already taken!";
 			return false;
 		},''
@@ -65,7 +65,7 @@ $(document).ready(function(){
 	$.validator.addMethod(
 		"EmailExists",
 		function(value,element){
-			if (!Boolean($('#email-exists').val())) return true;
+			if (!parseInt($('#email-exists').val())) return true;
 			$.validator.messages["EmailExists"] = "The email is already taken!";
 			return false;
 		},''
@@ -128,13 +128,13 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state','signUpFactor
         queryEmail.equalTo("email",$('input[name=email]').val());
 
         var usernameCallback = function(object) {
-        	if(object) $('#username-exists').val(true);
-        	else $('#username-exists').val(false);
+        	if(object) $('#username-exists').val(1);
+        	else $('#username-exists').val(0);
         }
 
         var emailCallback = function(object) {
-        	if (object) $('#email-exists').val(true);
-        	else $('#email-exists').val(false);
+        	if (object) $('#email-exists').val(1);
+        	else $('#email-exists').val(0);
         }
 
         var usernameP = queryUsername.first().then(function(object){
@@ -149,8 +149,8 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state','signUpFactor
 
         Parse.Promise.when(promises).then(function(){
         	$('#signUpForm').valid();
-			callback(!Boolean($('#username-exists').val()) && 
-					 !Boolean($('#email-exists')));
+			callback(!parseInt($('#username-exists').val()) && 
+					 !parseInt($('#email-exists')));
     	});
 	};
 
