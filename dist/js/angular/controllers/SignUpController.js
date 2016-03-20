@@ -6,28 +6,11 @@ String.prototype.capitilize = function() {
 
 $(document).ready(function(){
 
-	var usernameExists = function(value,callback){
-		var query = new Parse.Query(Parse.User);
-        query.equalTo("username",email);
-        return query.first().then(function(object){
-        	callback(object);
-        });
-	}
-
-	var emailExists = function(value,callback){
-		var query = new Parse.Query(Parse.User);
-        query.equalTo("email",email);
-        return query.first().then(function(object){
-        	callback(object);
-        });
-	}
-
 	$.validator.addMethod(
 		"NotFullName",
 		function(value,element){
 			var words = value.match(/[^ ]+/g);
 			if (words.length == 1){
-				$.validator.messages["NotFullName"] = "Please Enter Full Name";
 				return false;
 			}
 
@@ -46,28 +29,21 @@ $(document).ready(function(){
 	$.validator.addMethod(
 		"ConfirmPassMatch",
 		function(value,element){
-			if (value == $("input[name='password']").val())
-				return true;
-			$.validator.messages["ConfirmPassMatch"] = "Passwords do not match!";
-			return false;
+			return value == $("input[name='password']").val();
 		},''
 	);
 
 	$.validator.addMethod(
 		"UserNameExists",
 		function(value,element){
-			if (!parseInt($('#username-exists').val())) return true;
-			$.validator.messages["UserNameExists"] = "The username is already taken!";
-			return false;
+			return !parseInt($('#username-exists').val());
 		},''
 	);
 
 	$.validator.addMethod(
 		"EmailExists",
 		function(value,element){
-			if (!parseInt($('#email-exists').val())) return true;
-			$.validator.messages["EmailExists"] = "The email is already taken!";
-			return false;
+			return !parseInt($('#email-exists').val());
 		},''
 	);
 });
@@ -104,17 +80,23 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state','signUpFactor
 			phonenumber : 'required'
 		},
 		messages: {
-			fullname : "Please specify your Full Name !",
+			fullname : {
+				required : "Please specify your Full Name !",
+				NotFullName : "Please Enter Full Name"
+			},
 			username: {
-				required : "Please specify your username !"
+				required : "Please specify your username !",
+				UserNameExists : "The username is already taken!"
 			},
 			email : {
-				required : "Please specify your email !"
+				required : "Please specify your email !",
+				EmailExists : "The email is already taken!"
 			},
 			company : "Please specify your company !",
 			password: "Please specify your password !",
 			confirmpassword: {
-				required : "Please specify your confirm password !"
+				required : "Please specify your confirm password !",
+				ConfirmPassMatch : "Passwords do not match!"
 			},
 			phonenumber : "Please specify your phone !"
 		}
@@ -183,27 +165,35 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state','signUpFactor
 		var result = $scope.ValidateForm(function(validated){
 			if (!validated) return;
 
+			var fields = ['company','fullname','email','username','password','phonenumber'];
+	
+			for (var i=0;i<fields.length;i++){
+				signUpFactory.setProp(fields[i],$('input[name='+fields[i]+']').val());
+			}
+
+			var saveCodeHash = function(res){
+				var codeString = res.match(/(Code:([0-9]|[a-f]){32}\;)/g);
+				if (codeString != null) codeString = codeString[0];
+				var code = codeString.match(/[^\;\:]+/g);
+				if (code) code = code[1];
+				signUpFactory.setVerification.code(code);
+				signUpFactory.setProp('country',$scope.selectedCountry);
+				$state.go('verification');
+			}
+
 			if ($scope.selectedCountry == 'United States of America' || $scope.selectedCountry == 'Canada') {
-				debugger;
 				$.post('./dist/php/sendVerificationCode.php',{
 					dest:'phone',
 					phonenumber : $('#phone').val()
 				},function(res){
-					console.log(res);
+					saveCodeHash(res);
 				});
 			} else {
 				$.post('./dist/php/sendVerificationCode.php', {
 					dest  :'email',
 					email : $('input[name=email]').val()
 				},function(res){
-					var codeString = res.match(/(Code:([0-9]|[a-f]){32}\;)/g);
-					if (codeString != null) codeString = codeString[0];
-					var code = codeString.match(/[^\;\:]+/g);
-					if (code) code = code[1];
-					debugger;
-					signUpFactory.setVerification.code(code);
-					signUpFactory.setProp('country',$scope.selectedCountry);
-					$state.go('verification');
+					saveCodeHash(res);
 				});
 			}
 		});
