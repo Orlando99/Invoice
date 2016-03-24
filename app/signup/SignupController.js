@@ -13,7 +13,6 @@ $(document).ready(function(){
 			if (words.length == 1){
 				return false;
 			}
-
 			var fullname = "";
 
 			for(var i=0;i<words.length;i++){
@@ -48,12 +47,18 @@ $(document).ready(function(){
 	);
 });
 
-invoicesUnlimited.controller('SignUpController',['$scope','$state','signUpFactory',function($scope,$state,signUpFactory){
+invoicesUnlimited.controller('SignupController',['$scope','$state','signUpFactory',function($scope,$state,signUpFactory){
 
 	$scope.selectedCountry = 'Select Country';
-	$scope.verificationCodeProvider = signUpFactory.getVerification.provider();
 
-	var getUserExists = function(){return $scope.exists.username;}
+	var fields = ['company','fullName','email','username','password','phonenumber'];
+	
+	for (var i=0;i<fields.length;i++){
+		$('input[name='+fields[i]+']').val(signUpFactory.get({
+			table : 'User',
+			expr  : fields[i]
+		}));
+	}
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -125,22 +130,13 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state','signUpFactor
 
         var emailP = queryEmail.first().then(function(object){
         	emailCallback(object);
-        })
+        });
 
-        var promises = [usernameP, emailP];
-
-        Parse.Promise.when(promises).then(function(){
-        	$('#signUpForm').valid();
+        Parse.Promise.when([usernameP, emailP]).then(function(){
+        	var validated = $('#signUpForm').valid();
 			callback(!parseInt($('#username-exists').val()) && 
-					 !parseInt($('#email-exists')));
+					 !parseInt($('#email-exists').val()) && validated);
     	});
-	};
-
-	$scope.verifyCode = function(){
-		var inputCode = $('#verificationCode').val();
-		var inputHash = md5(inputCode);
-		if (inputHash == signUpFactory.getVerification.code())
-			alert('Verified');
 	};
 
 	$scope.selectedCountryChanged = function(){
@@ -165,10 +161,13 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state','signUpFactor
 		var result = $scope.ValidateForm(function(validated){
 			if (!validated) return;
 
-			var fields = ['company','fullname','email','username','password','phonenumber'];
+			var fields = ['company','fullName','email','username','password','phonenumber'];
 	
 			for (var i=0;i<fields.length;i++){
-				signUpFactory.setProp(fields[i],$('input[name='+fields[i]+']').val());
+				signUpFactory.set({
+					table : 'User',
+					expr  : fields[i]+":"+$('input[name='+fields[i]+']').val()
+				});
 			}
 
 			var saveCodeHash = function(res){
@@ -177,7 +176,7 @@ invoicesUnlimited.controller('SignUpController',['$scope','$state','signUpFactor
 				var code = codeString.match(/[^\;\:]+/g);
 				if (code) code = code[1];
 				signUpFactory.setVerification.code(code);
-				signUpFactory.setProp('country',$scope.selectedCountry);
+				signUpFactory.set('User','country:'+$scope.selectedCountry);
 				$state.go('verification');
 			}
 

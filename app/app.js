@@ -19,6 +19,20 @@ Parse.initialize(IUKeys.appID,IUKeys.jsKey);
 var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router', 'ui.bootstrap'])
 .config(function($locationProvider){
 	//$locationProvider.html5Mode(true).hashPrefix('');
+})
+
+.directive('stringToNumber', function() {
+  return {
+    require: 'ngModel',
+    link: function(scope, element, attrs, ngModel) {
+      ngModel.$parsers.push(function(value) {
+        return '' + value;
+      });
+      ngModel.$formatters.push(function(value) {
+        return parseInt(value, 10);
+      });
+    }
+  };
 });
 
 /*invoicesUnlimited.run(['$rootScope', '$state', function($rootScope, $state) {
