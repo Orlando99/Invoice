@@ -1,38 +1,38 @@
-  <header class="sticky-nav logo-only">
+<header class="sticky-nav logo-only">
     <a href="#"><img src="./dist/images/logo.png" alt="Invoices Unlimited"></a>
-  </header>
+</header>
 
-  <section class="sign-up">
+<section class="sign-up">
 
     <h2 class="text-uppercase text-center">Principal Info</h2>
 
     <label class="input-checkbox-container icc-left">
-      <input type="checkbox" ng-model="toggleHomeChecked" id="toggleHome" ng-change="toggleHomeInfo();">
-      <span class="checkbox"></span>
-      <p>Uncheck if home address is different from the business.</p>
+        <input type="checkbox" ng-model="toggleHomeChecked" id="toggleHome" ng-change="toggleHomeInfo();">
+        <span class="checkbox"></span>
+        <p>Uncheck if home address is different from the business.</p>
     </label>
 
     <form name="signUp" id="signUpForm">
-      <input type="text" placeholder="Street Name" name="streetName" ng-model="principalInfo.streetName" required>
-      <input type="text" placeholder="City" name="city" ng-model="principalInfo.city" required>
-      <input type="text" placeholder="State" name="state" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.state">
-      <input type="text" placeholder="Zip Code" name="zipCode" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.zipCode">
-      <div class="input-container input-info">
-        <input type="text" placeholder="DOB" name="dob">
-        <span class="info-icon"></span>
-        <p class="info-tooltip">
-          Lorem Ipsum Dolor Sit Amet
-        </p>
-      </div>
-      <div class="input-container input-info">
-        <input type="text" placeholder="SSN" name="ssn">
-        <span class="info-icon"></span>
-      </div>
+        <input type="text" placeholder="Street Name" name="streetName" ng-model="principalInfo.streetName" required>
+        <input type="text" placeholder="City" name="city" ng-model="principalInfo.city" required>
+        <input type="text" placeholder="State" name="state" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.state">
+        <input type="text" placeholder="Zip Code" name="zipCode" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.zipCode">
+        <div class="input-container input-info">
+            <input type="text" placeholder="DOB" name="dob">
+            <span class="info-icon"></span>
+            <p class="info-tooltip">
+                Lorem Ipsum Dolor Sit Amet
+            </p>
+        </div>
+        <div class="input-container input-info">
+            <input type="text" placeholder="SSN" name="ssn">
+            <span class="info-icon"></span>
+        </div>
 
     </form>
 
-    <a href="#" class="button button-primary button-next">Next</a>
-    <a href="#" class="button button-neutral-lg">Save &amp; Continue Later</a>
+    <a ng-click="savePrincipalInfo();" class="button button-primary button-next">Next</a>
+    <a ng-click="saveAndContinueLater();" class="button button-neutral-lg">Save &amp; Continue Later</a>
 
     <p class="text-center">This is to activate a merchant account. If you do not want to accept credit cards, please select the Save &amp; Continue Later button to start using your Free app.</p>
 

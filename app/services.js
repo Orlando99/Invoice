@@ -114,10 +114,10 @@ invoicesUnlimited.factory('signUpFactory',function(){
 				}
 			}
 
-			if (table == "User") {
-				parseObject.signUp(null,callbacks);
-				return;
-			}
+			/*if (table == "User") {
+			/	parseObject.signUp(null,callbacks);
+			/	return;
+			}*/
 			parseObject.save(null,callbacks);
 		},
 		Update : function(className,table){

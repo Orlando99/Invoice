@@ -66,7 +66,7 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','signUp
 			}
 		});
 
-		$state.go('principal-info');
+		$state.go('signup.principal-info');
 	};
 
 }]);

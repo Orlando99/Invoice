@@ -10,14 +10,16 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signU
 			city 		: 'required',
 			state 		: 'required',
 			zipCode 	: 'required',
-			dob			: 'required'
+			dob			: 'required',
+			ssn			: 'required'
 		},
 		messages: {
 			streetName	: 'Please specify your street name!',
 			city 		: 'Please specify your city!',
 			state 		: 'Please specify your state!',
 			zipCode 	: 'Please specify your zip code!',
-			dob 		: 'Please specify your Date Of Birth!'
+			dob 		: 'Please specify your Date Of Birth!',
+			ssn			: 'Please specify your SSN!'
 		}
 	});
 
@@ -30,10 +32,11 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signU
 		ssn				: ''
 	};
 
-	$scope.toggleHomeChecked = false;
+	$scope.toggleHomeChecked = true;
 
 	$scope.toggleHomeInfo = function(){
-		if ($scope.toggleHomeChecked) {
+
+		if (!$scope.toggleHomeChecked) {
 			$scope.principalInfo.streetName = "";
 			$scope.principalInfo.city = "";
 			$scope.principalInfo.state = "";
@@ -58,30 +61,28 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signU
 		}
 
 		signUpFactory.setObject({
-			table 	: 'BusinessInfo',
+			table 	: 'PrincipalInfo',
 			params  : {
 				field : "userID",
 				value : signUpFactory.getParse("_User")
 			}
 		});
 
-		signUpFactory.Save('BusinessInfo');
+		signUpFactory.Save('PrincipalInfo');
 
-		signUpFactory.setObject({
-			table	: 'User',
-			params	: {
-				field : 'BusinessInfo',
-				value : signUpFactory.getParse("BusinessInfo")
-			}
-		});
-
-		signUpFactory.Update("_User");
-
-		$state.go('principal-info');
+		$state.go('signup.account-info');
 	};
 
 	$scope.saveAndContinueLater = function(){
-
+		Parse.User.logIn(signUpFactory.get('User','username'),
+						 signUpFactory.get('User','password'), {
+						 	success : function(user){
+						 		$state.go('dashboard');
+						 	},
+						 	error : function(user, error){
+						 		console.log(error.message);
+						 	}
+						});
 	};
 
 }]);

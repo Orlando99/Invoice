@@ -177,7 +177,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','signUpFactor
 				if (code) code = code[1];
 				signUpFactory.setVerification.code(code);
 				signUpFactory.set('User','country:'+$scope.selectedCountry);
-				$state.go('verification');
+				$state.go('signup.verification');
 			}
 
 			if ($scope.selectedCountry == 'United States of America' || $scope.selectedCountry == 'Canada') {

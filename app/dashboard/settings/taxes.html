@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Invoices Unlimited</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../../dist/css/main.css">
+</head>
+<body>
+
+  <header class="dashboard-header">
+    <div class="container">
+      <a href="../../dashboard/index.html" class="logo"><img src="../../dist/images/logo.png" alt="InvoicesUnlimited"></a>
+      <div class="organization">
+        <img src="../../dist/images/user-icon.png" alt="">
+        <a href="#">Company Name</a>
+        <img src="../../dist/images/dropdown-arrow-primary.png" alt="">
+        <ul class="submenu user-submenu">
+          <li><a href="#">Settings</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="navigation">
+      <li><a href="../../dashboard/index.html">Dashboard</a></li>
+      <li><a href="../../dashboard/customers/customers.html">Customers</a></li>
+      <li>
+        <a href="../../dashboard/sales/sales.html">Sales</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li><a href="../../dashboard/sales/estimates/estimates.html">Estimates</a></li>
+            <li><a href="../../dashboard/sales/invoices/invoices.html">Invoices</a></li>
+            <li><a href="../../dashboard/sales/creditnotes/creditnotes.html">Credit Notes</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="../../dashboard/expenses/expenses.html">Expenses</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li><a href="../../dashboard/expenses/record.expense.html">Expenses</a></li>
+            <li><a href="../../dashboard/expenses/recurring/all.html">Recurring Expenses</a></li>
+            <li><a href="../../dashboard/expenses/category/category.html">Expense Category</a></li>
+          </ul>
+        </div>
+      </li>
+      <li><a href="../../dashboard/projects/projects.html">Projects</a></li>
+      <li><a href="../../dashboard/timesheets/timesheets.html">Timesheets</a></li>
+      <li><a href="../../dashboard/reports/salesbycustomer.html">Reports</a></li>
+      <li class="active">
+        <a href="../../dashboard/settings/companyprofile.html">Settings</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li>
+              <a href="../../dashboard/settings/companyprofile.html">Company Profile</a>
+            </li>
+            <li>
+              <a href="../../dashboard/settings/generalpreferences.html">General</a>
+              <a href="../../dashboard/settings/invoices.html">Invocies</a>
+              <a href="../../dashboard/settings/creditnotes.html">Credits</a>
+              <a href="../../dashboard/settings/invoicetemplates.html">Invoice Templates</a>
+              <a href="../../dashboard/settings/estimates.html">Estimates</a>
+              <a href="../../dashboard/settings/payments.html">Payments</a>
+            </li>
+            <li>
+              <a href="../../dashboard/settings/taxes.html">Taxes</a>
+              <a href="../../dashboard/settings/items.html">Items</a>
+              <a href="../../dashboard/settings/users.html">Users</a>
+              <a href="../../dashboard/settings/currencies.html">Currency</a>
+            </li>
+            <li>
+              <a href="../../dashboard/settings/app-preferences.html">App Preferences</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </header>
+
+  <div class="container">
+    <h3 class="layout-margin-t section-title float-left">Taxes</h3>
+    <a href="#" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="new-tax">New</a>
+    <form class="float-right layout-margin-tb">
+      <input type="text" class="search-bar layout-margin-r" placeholder="Search">
+    </form>
+
+    <table class="table-border-tb">
+      <tr class="thead">
+        <td class="text-uppercase text-info layout-padding">Name</td>
+        <td class="text-uppercase text-info layout-padding">Rate % <img src="../../dist/images/dropdown-arrow-primary.png" alt=""></td>
+        <td class="text-uppercase text-info layout-padding text-right"></td>
+      </tr>
+      <tr>
+        <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum</td>
+        <td class="text-color-light text-weight-normalize layout-padding">10</td>
+        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="../../dist/images/icon-times-round.png" alt="" /></td>
+      </tr>
+      <tr>
+        <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum</td>
+        <td class="text-color-light text-weight-normalize layout-padding">20</td>
+        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="../../dist/images/icon-times-round.png" alt="" /></td>
+      </tr>
+      <tr>
+        <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum (Tax Group)</td>
+        <td class="text-color-light text-weight-normalize layout-padding">30</td>
+        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="../../dist/images/icon-times-round.png" alt="" /></td>
+      </tr>
+
+    </table>
+
+  </div>
+
+
+  <div class="popup-modal new-tax">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Tax</h3>
+      <button class="button button-icon float-right modal-close"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form action="" class="layout-margin-tb inputs-white">
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Tax Name</label>
+            <input type="text" class="col-75" placeholder="Type to add">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Rate %</label>
+            <input type="text" class="col-75" placeholder="Type to add">
+          </div>
+          <div class="col-25 spacer"></div>
+          <label class="input-container input-checkbox-container col-75 pull-right">
+            <input type="checkbox">
+            <span class="checkbox float-left"></span>
+            <p class="float-left">Yes this tax is a compund tax</p>
+            <div class="tooltip-sec float-left">
+              <i class="info-icon pull-top"></i>
+              <p class="info-tooltip push-top">
+                Lorem ipsum dolor sit amet.
+              </p>
+            </div>
+          </label>
+
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase">Save</button>
+    </div>
+  </div>
+
+  <div class="popup-modal edit-tax">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit Tax</h3>
+      <button class="button button-icon float-right modal-close"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form action="" class="layout-margin-tb inputs-white">
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Tax Name</label>
+            <input type="text" class="col-75" placeholder="Type to add" value="Lorem Ipsum">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Rate %</label>
+            <input type="text" class="col-75" placeholder="Type to add" value="10%">
+          </div>
+          <div class="col-25 spacer"></div>
+          <label class="input-container input-checkbox-container col-75 pull-right">
+            <input type="checkbox">
+            <span class="checkbox float-left"></span>
+            <p class="float-left">Yes this tax is a compund tax</p>
+            <div class="tooltip-sec float-left">
+              <i class="info-icon"></i>
+              <p class="info-tooltip">
+                Lorem ipsum dolor sit amet.
+              </p>
+            </div>
+          </label>
+
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase float-left">Save</button>
+      <button class="button button-small button-danger text-uppercase float-right">Delete</button>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+  <div class="popup-modal new-tax-category">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">New Tax Group</h3>
+      <button class="button button-icon float-right modal-close"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form action="" class="layout-margin-tb inputs-white">
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Tax Group Name</label>
+            <input type="text" class="col-75" placeholder="Lorem Ipsum">
+          </div>
+          <div class="input-container layout-margin-tb">
+            <label class="input-checkbox-container layout-no-margin col-85">
+              <input type="checkbox">
+              <span class="checkbox float-left"></span>
+              <p class="float-left">Lorem Ipsum Dolor</p>
+            </label>
+            <p class="col-15 layout-no-margin text-right">10%</p>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="input-checkbox-container layout-no-margin col-85">
+              <input type="checkbox">
+              <span class="checkbox float-left"></span>
+              <p class="float-left">Lorem Ipsum Dolor</p>
+            </label>
+            <p class="col-15 layout-no-margin text-right">20%</p>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="input-checkbox-container layout-no-margin col-85">
+              <input type="checkbox">
+              <span class="checkbox float-left"></span>
+              <p class="float-left">Lorem Ipsum Dolor</p>
+            </label>
+            <p class="col-15 layout-no-margin text-right">30%</p>
+          </div>
+
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase">Save</button>
+    </div>
+  </div>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="../../dist/js/moment.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
+  <script src="../../dist/js/main.js"></script>
+</body>
+</html>
