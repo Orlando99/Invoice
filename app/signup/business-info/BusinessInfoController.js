@@ -32,7 +32,7 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','signUp
 		'state'			: '',
 		'zipCode'		: '',
 		'phoneNumber'	: signUpFactory.get('User','phonenumber'),
-		'products' 		: '',
+		'businessDescription' : '',
 		'federalTaxID'	: '',
 		'ownershipType'	: ''
 	}
@@ -65,8 +65,6 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','signUp
 				value : signUpFactory.getParse("BusinessInfo")
 			}
 		});
-
-		signUpFactory.Update("_User");
 
 		$state.go('principal-info');
 	};

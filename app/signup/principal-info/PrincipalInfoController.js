@@ -22,12 +22,29 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signU
 	});
 
 	$scope.principalInfo = {
-		'streetName'	: signUpFactory.get('BusinessInfo','streetName'),
-		'city'			: signUpFactory.get('BusinessInfo','city'),
-		'state'			: signUpFactory.get('BusinessInfo','state'),
-		'zipCode'		: signUpFactory.get('BusinessInfo','zipCode'),
-		'dob'			: '',
-		'ssn'			: ''
+		streetName		: signUpFactory.get('BusinessInfo','streetName'),
+		city			: signUpFactory.get('BusinessInfo','city'),
+		state			: signUpFactory.get('BusinessInfo','state'),
+		zipCode			: signUpFactory.get('BusinessInfo','zipCode'),
+		dob				: '',
+		ssn				: ''
+	};
+
+	$scope.toggleHomeChecked = false;
+
+	$scope.toggleHomeInfo = function(){
+		if ($scope.toggleHomeChecked) {
+			$scope.principalInfo.streetName = "";
+			$scope.principalInfo.city = "";
+			$scope.principalInfo.state = "";
+			$scope.principalInfo.zipCode = "";
+			return;
+		}
+
+		$scope.principalInfo.streetName = signUpFactory.get('BusinessInfo','streetName');
+		$scope.principalInfo.city = signUpFactory.get('BusinessInfo','city');
+		$scope.principalInfo.state = signUpFactory.get('BusinessInfo','state');
+		$scope.principalInfo.zipCode = signUpFactory.get('BusinessInfo','zipCode');
 	};
 
 	$scope.savePrincipalInfo = function(){

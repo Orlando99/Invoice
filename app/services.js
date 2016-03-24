@@ -22,15 +22,15 @@ invoicesUnlimited.factory('signUpFactory',function(){
 
 		},
 		BusinessInfo : {
-			businessName  : '',
-			streetName	  : '',
-			city		  : '',
-			state		  : '',
-			zipCode		  : '',
-			phoneNumber   : '',
-			products	  : '',
-			federalTaxID  : '',
-			ownershipType : ''
+			businessName  		: '',
+			streetName	  		: '',
+			city		  		: '',
+			state		  		: '',
+			zipCode		  		: '',
+			phoneNumber   		: '',
+			businessDescription : '',
+			federalTaxID  		: '',
+			ownershipType 		: ''
 		},
 		PrincipalInfo : {
 
@@ -104,7 +104,7 @@ invoicesUnlimited.factory('signUpFactory',function(){
 			for(var field in newUser[table])
 				parseObject.set(field,newUser[table][field]);
 			
-			parseObject.save(null,{
+			var callbacks = {
 				success:function(object){
 					parseObjects[object.className] = object;
 					console.log('Object saved:'+object.id);
@@ -112,22 +112,28 @@ invoicesUnlimited.factory('signUpFactory',function(){
 				error : function(object,error){
 					console.log("Error: " + error.description);
 				}
-			});
+			}
+
+			if (table == "User") {
+				parseObject.signUp(null,callbacks);
+				return;
+			}
+			parseObject.save(null,callbacks);
 		},
-		Update : function(className){
+		Update : function(className,table){
 			if (!parseObjects[className]) return false;
 
 			var parseObject = parseObjects[className];
 
 			for(var field in newUser[table])
 				parseObject.set(field,newUser[table][field]);
-			
+			debugger;
 			parseObject.save(null,{
 				success:function(object){
 					console.log('Object updated:'+object.id);
 				},
 				error : function(object,error){
-					console.log("Error (Update): " + error.description);
+					console.log("Error (Update): " + error.message);
 				}
 			});
 		},
