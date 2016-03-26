@@ -12,7 +12,7 @@ invoicesUnlimited.factory('userFactory',function(){
 		logout : function(){
 			Parse.User.logOut();
 		},
-		login : function(params){
+		login : function(params,callback){
 			debugger;
 			Parse.User.logIn(params.username, 
 							 params.password, {
@@ -29,6 +29,8 @@ invoicesUnlimited.factory('userFactory',function(){
 								debugger;
 								if (currentUser) return true;
 								return false;
+							}).then(function(){
+								callback();
 							});
 		},
 		getBusinessInfo : function(){
@@ -135,13 +137,18 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(){
 		getObject : function(table,field){
 			return newUser[table][field];
 		},
-		Save: function(table){
+		Save: function(table,params){
 			var Entity = Parse.Object.extend(table);
 
-			var parseObject = new Entity();
+			var parseObject;
 
-			for(var field in newUser[table])
-				parseObject.set(field,newUser[table][field]);
+			if (table == "User" && parseObjects['_User']) parseObject = parseObjects['_User'];
+			else if (parseObjects[table]) parseObject = parseObjects[table];
+			else parseObject = new Entity();
+
+			if (!params)
+				for(var field in newUser[table])
+					parseObject.set(field,newUser[table][field]);
 			
 			var callbacks = {
 				success:function(object){
@@ -156,7 +163,8 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(){
 			/	parseObject.signUp(null,callbacks);
 			/	return;
 			}*/
-			parseObject.save(null,callbacks);
+			if (!params) params = null;
+			parseObject.save(params,callbacks);
 		},
 		Update : function(className,table){
 			if (!parseObjects[className]) return false;

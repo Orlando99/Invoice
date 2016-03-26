@@ -5,7 +5,11 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 
 	if (userFactory.authorized()){
 		if (userFactory.getBusinessInfo()) $state.go('signup.principal-info');
-		else $state.go('signup');
+		else {
+			userFactory.logout();
+			$state.go('signup');
+		} 
+			
 	}
 
 	$("#signUpForm").validate({
@@ -62,15 +66,20 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 
 		signUpFactory.Save('BusinessInfo');
 
-		signUpFactory.setObject({
-			table	: 'User',
-			params	: {
-				field : 'BusinessInfo',
-				value : signUpFactory.getParse("BusinessInfo")
-			}
-		});
+		userFactory.login({
+			username : signUpFactory.get('User','username'),
+			password : signUpFactory.get('User','password')
+		},function(){
 
-		$state.go('signup.principal-info');
+			if (!userFactory.authorized) return;
+
+			signUpFactory.Save('User',{
+				businessInfo : signUpFactory.getParse("BusinessInfo")
+			});
+
+			$state.go('signup.principal-info');
+
+		});
 	};
 
 }]);

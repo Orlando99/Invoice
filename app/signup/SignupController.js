@@ -52,6 +52,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 
 	if (userFactory.authorized()){
 		if (userFactory.getBusinessInfo()) $state.go('signup.principal-info');
+		else userFactory.logout();
 	}
 
 	$scope.selectedCountry = 'Select Country';
