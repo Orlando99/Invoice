@@ -37,7 +37,7 @@ invoicesUnlimited.factory('userFactory',function(){
 	}
 });
 
-invoicesUnlimited.factory('signUpFactory',['userFactory',function(){
+invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 
 	var verificationCode = undefined;
 	var verificationCodeProvider = '';
@@ -73,6 +73,15 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(){
 
 		}
 	};
+
+	if (userFactory.authorized){
+		var businessInfo = userFactory.getBusinessInfo();
+		if (businessInfo) {
+			for(var field in newUser.BusinessInfo){
+				newUser.BusinessInfo[field] = businessInfo.get(field);
+			}
+		}
+	}
 
 	return {
 		getParse : function(className){
