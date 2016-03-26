@@ -1,8 +1,12 @@
 'use strict';
 
-invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','signUpFactory',function($scope,$state,signUpFactory){
+invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFactory','signUpFactory',
+	function($scope,$state,userFactory,signUpFactory){
 
-	if (!signUpFactory.getVerification.code()) $state.go('signup');
+	if (userFactory.authorized()){
+		if (userFactory.getBusinessInfo()) $state.go('signup.principal-info');
+		else $state.go('signup');
+	}
 
 	$("#signUpForm").validate({
 		onkeyup : false,
