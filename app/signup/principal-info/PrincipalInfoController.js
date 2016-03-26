@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signUpFactory',function($scope,$state,signUpFactory){
+invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signUpFactory','userFactory',
+	function($scope,$state,signUpFactory,userFactory){
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -74,15 +75,16 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signU
 	};
 
 	$scope.saveAndContinueLater = function(){
-		Parse.User.logIn(signUpFactory.get('User','username'),
-						 signUpFactory.get('User','password'), {
-						 	success : function(user){
-						 		$state.go('dashboard');
-						 	},
-						 	error : function(user, error){
-						 		console.log(error.message);
-						 	}
-						});
+		if (!userFactory.authorized){
+			var user = signUpFactory.getParse('_User');
+			userFactory.login({
+				username : user.get('username'),
+				password : user.get('password'),
+				states	 : {
+					success : 'dashboard'
+				}
+			});
+		}
 	};
 
 }]);

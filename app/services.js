@@ -1,6 +1,45 @@
 'use strict';
 
-invoicesUnlimited.factory('signUpFactory',function(){
+invoicesUnlimited.factory('userFactory',function(){
+	
+	var currentUser = Parse.User.current();
+	var businessInfo, principalInfo, accountInfo;
+
+	return {
+		authorized : function(){
+			return currentUser;	
+		},
+		logout : function(){
+			Parse.User.logOut();
+		},
+		login : function(params){
+			debugger;
+			Parse.User.logIn(params.username, 
+							 params.password, {
+							 	success : function(user){
+							 		debugger;
+							 		currentUser = user;
+							 		console.log('Logged in successfuly');
+							 	},
+							 	error : function(user, error){
+							 		debugger;
+							 		console.log(error.message);
+							 	}
+							}).then(function(){
+								debugger;
+								if (currentUser) return true;
+								return false;
+							});
+		},
+		getBusinessInfo : function(){
+			if (!currentUser) return false;
+			return currentUser.get('businessInfo');
+		}
+
+	}
+});
+
+invoicesUnlimited.factory('signUpFactory',['userFactory',function(){
 
 	var verificationCode = undefined;
 	var verificationCodeProvider = '';
@@ -113,7 +152,6 @@ invoicesUnlimited.factory('signUpFactory',function(){
 					console.log("Error: " + error.description);
 				}
 			}
-
 			/*if (table == "User") {
 			/	parseObject.signUp(null,callbacks);
 			/	return;
@@ -155,4 +193,4 @@ invoicesUnlimited.factory('signUpFactory',function(){
 		}
 	}
 
-});
+}]);

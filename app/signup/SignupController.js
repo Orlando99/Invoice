@@ -47,7 +47,12 @@ $(document).ready(function(){
 	);
 });
 
-invoicesUnlimited.controller('SignupController',['$scope','$state','signUpFactory',function($scope,$state,signUpFactory){
+invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory','signUpFactory',
+	function($scope,$state,userFactory,signUpFactory){
+
+	if (userFactory.authorized()){
+		if (userFactory.getBusinessInfo()) $state.go('signup.principal-info');
+	}
 
 	$scope.selectedCountry = 'Select Country';
 
@@ -58,7 +63,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','signUpFactor
 			table : 'User',
 			expr  : fields[i]
 		}));
-	}
+	};
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -155,6 +160,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','signUpFactor
 	};
 
 	$scope.sendMessage = function(){
+		
 		if (!$scope.selectedCountry ||
 			$scope.selectedCountry == 'Select Country') return;
 
