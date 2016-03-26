@@ -26,11 +26,7 @@ invoicesUnlimited.factory('userFactory',function(){
 							 		console.log(error.message);
 							 	}
 							}).then(function(){
-								debugger;
-								if (currentUser) return true;
-								return false;
-							}).then(function(){
-								callback();
+								if (callback) callback();
 							});
 		},
 		getBusinessInfo : function(){
@@ -137,7 +133,7 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(){
 		getObject : function(table,field){
 			return newUser[table][field];
 		},
-		Save: function(table,params){
+		Save: function(table,params,callback){
 			var Entity = Parse.Object.extend(table);
 
 			var parseObject;
@@ -164,7 +160,7 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(){
 			/	return;
 			}*/
 			if (!params) params = null;
-			parseObject.save(params,callbacks);
+			parseObject.save(params,callbacks).then(function(){if(callback) callback();});
 		},
 		Update : function(className,table){
 			if (!parseObjects[className]) return false;

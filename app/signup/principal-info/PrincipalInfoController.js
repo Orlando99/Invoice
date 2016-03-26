@@ -1,7 +1,14 @@
 'use strict';
 
-invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signUpFactory','userFactory',
-	function($scope,$state,signUpFactory,userFactory){
+invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userFactory','signUpFactory',
+	function($scope,$state,userFactory,signUpFactory){
+
+	if (userFactory.authorized()){
+		if (!userFactory.getBusinessInfo()) {
+			userFactory.logout();
+			$state.go('signup');
+		}
+	}
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -71,7 +78,13 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signU
 
 		signUpFactory.Save('PrincipalInfo');
 
-		$state.go('signup.account-info');
+		if (!userFactory.authorized) return;
+
+		signUpFactory.Save('User',{
+			principalInfo : signUpFactory.getParse("PrincipalInfo")
+		},function(){
+			$state.go('signup.account-info');
+		});
 	};
 
 	$scope.saveAndContinueLater = function(){
@@ -80,11 +93,11 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','signU
 			userFactory.login({
 				username : user.get('username'),
 				password : user.get('password'),
-				states	 : {
-					success : 'dashboard'
-				}
+			},function(){
+				$state.go('dashboard');
 			});
 		}
+		else $state.go('dashboard');
 	};
 
 }]);

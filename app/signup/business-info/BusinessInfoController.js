@@ -8,8 +8,7 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 		else {
 			userFactory.logout();
 			$state.go('signup');
-		} 
-			
+		}		
 	}
 
 	$("#signUpForm").validate({
