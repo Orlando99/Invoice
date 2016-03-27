@@ -51,8 +51,20 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 	function($scope,$state,userFactory,signUpFactory){
 
 	if (userFactory.authorized()){
-		if (userFactory.getBusinessInfo()) $state.go('signup.principal-info');
-		else userFactory.logout();
+		var businessInfo = userFactory.getBusinessInfo();
+		var principalInfo = userFactory.getPrincipalInfo();
+		var accountInfo = userFactory.getAccountInfo();
+		var signature = userFactory.getSignature();
+
+		if (businessInfo) {
+			if (principalInfo) {
+				if (accountInfo) {
+					if (signature) $state.go('dashboard');
+					else $state.go('signup.signature')
+				}
+				else $state.go('signup.account-info');
+			} else $state.go('signup.principal-info');
+		} else userFactory.logout();
 	}
 
 	$scope.selectedCountry = 'Select Country';

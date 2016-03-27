@@ -13,16 +13,13 @@ invoicesUnlimited.factory('userFactory',function(){
 			Parse.User.logOut();
 		},
 		login : function(params,callback){
-			debugger;
 			Parse.User.logIn(params.username, 
 							 params.password, {
 							 	success : function(user){
-							 		debugger;
 							 		currentUser = user;
 							 		console.log('Logged in successfuly');
 							 	},
 							 	error : function(user, error){
-							 		debugger;
 							 		console.log(error.message);
 							 	}
 							}).then(function(){
@@ -32,6 +29,18 @@ invoicesUnlimited.factory('userFactory',function(){
 		getBusinessInfo : function(){
 			if (!currentUser) return false;
 			return currentUser.get('businessInfo');
+		},
+		getPrincipalInfo : function(){
+			if (!currentUser) return false;
+			return currentUser.get('principalInfo');
+		},
+		getAccountInfo : function(){
+			if (!currentUser) return false;
+			return currentUser.get('accountInfo');	
+		},
+		getSignature : function(){
+			if (!currentUser) return false;
+			return currentUser.get('signatureImage');
 		}
 
 	}
@@ -45,6 +54,19 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 
 	var parseObjects = {};
 
+	if (userFactory.authorized()) {
+		var User = userFactory.authorized();
+		var businessInfo = User.get('businessInfo');
+		var principalInfo = User.get('principalInfo');
+		var accountInfo = User.get('accountInfo');
+
+		parseObjects[User.className] = User;
+		if (businessInfo) parseObjects[businessInfo.className] = businessInfo;
+		if (principalInfo) parseObjects[principalInfo.className] = principalInfo;
+		if (accountInfo) parseObjects[accountInfo.className] = accountInfo;
+
+	}
+
 	var newUser = {
 		User : {
 			country		: '',
@@ -56,7 +78,12 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 			phonenumber	: ''
 		},
 		AccountInfo : {
-
+			bankName		: '',
+			routingNumber	: '',
+			accountNumber	: '',
+			avgSale			: '',
+			inPerson		: '',
+			monthlySales	: ''
 		},
 		BusinessInfo : {
 			businessName  		: '',
@@ -70,7 +97,12 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 			ownershipType 		: ''
 		},
 		PrincipalInfo : {
-
+			city		: '',
+			zipCode		: '',
+			streetName	: '',
+			ssn			: '',
+			state		: '',
+			dob			: ''
 		}
 	};
 
@@ -143,17 +175,24 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 			return newUser[table][field];
 		},
 		Save: function(table,params,callback){
+
+			if (typeof(table) == 'object') {
+				callback = table.callback;
+				table = table.tableName;
+			}
+
 			var Entity = Parse.Object.extend(table);
 
 			var parseObject;
 
-			if (table == "User" && parseObjects['_User']) parseObject = parseObjects['_User'];
+			if (table == "User" && parseObjects["_User"]) parseObject = parseObjects['_User'];
 			else if (parseObjects[table]) parseObject = parseObjects[table];
 			else parseObject = new Entity();
 
 			if (!params)
-				for(var field in newUser[table])
+				for(var field in newUser[table]){
 					parseObject.set(field,newUser[table][field]);
+				}
 			
 			var callbacks = {
 				success:function(object){
@@ -178,7 +217,6 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 
 			for(var field in newUser[table])
 				parseObject.set(field,newUser[table][field]);
-			debugger;
 			parseObject.save(null,{
 				success:function(object){
 					console.log('Object updated:'+object.id);

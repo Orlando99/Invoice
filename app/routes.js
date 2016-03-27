@@ -8,7 +8,7 @@ angular.module('invoicesUnlimited')
 		url : "/signup",
 		controller : "SignupController",
 		templateUrl : "./app/signup/index.html",
-	}
+	};
 
 	var signUpVerification = {
 		name : "signup.verification",
@@ -19,10 +19,10 @@ angular.module('invoicesUnlimited')
 				templateUrl : "./app/signup/verification/signup.verification.html"
 			}
 		}
-	}
+	};
 
 	var signUpBusiness = {
-		name : 'signup.businessInfo',
+		name : 'signup.business-info',
 		url : "/business-info",
 		views : {
 			'@' : {
@@ -30,7 +30,7 @@ angular.module('invoicesUnlimited')
 				templateUrl : "./app/signup/business-info/business-info.html"
 			}
 		}
-	}
+	};
 
 	var signUpPrincipal = {
 		name : 'signup.principal-info',
@@ -41,7 +41,7 @@ angular.module('invoicesUnlimited')
 				templateUrl : "./app/signup/principal-info/principal-info.html"
 			}
 		}
-	}
+	};
 
 	var signUpAccount = {
 		name : 'signup.account-info',
@@ -52,14 +52,25 @@ angular.module('invoicesUnlimited')
 				templateUrl : "./app/signup/account-info/account-info.html"
 			}
 		}
-	}
+	};
+
+	var signUpSignature = {
+		name : 'signup.signature',
+		url : '/signature',
+		views : {
+			'@' : {
+				controller : 'SignatureController',
+				templateUrl : './app/signup/signature/signature.html'
+			}
+		}
+	};
 
 	var dashboardIndex = {
 		name : 'dashboard',
 		url : "/dashboard",
 		controller : "DashboardController",
 		templateUrl : "./app/dashboard/index.html"
-	}
+	};
 
 	$stateProvider
 		.state(signUpIndex)
@@ -67,6 +78,7 @@ angular.module('invoicesUnlimited')
 		.state(signUpBusiness)
 		.state(signUpPrincipal)
 		.state(signUpAccount)
+		.state(signUpSignature)
 		.state(dashboardIndex);
 
 	$urlRouterProvider.otherwise('/signup');

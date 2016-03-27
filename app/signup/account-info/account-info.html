@@ -1,5 +1,5 @@
-b  <header class="sticky-nav logo-only">
-    <a href="#"><img src="../dist/images/logo.png" alt="Invoices Unlimited"></a>
+  <header class="sticky-nav logo-only">
+    <a href="#"><img src="./dist/images/logo.png" alt="Invoices Unlimited"></a>
   </header>
 
   <section class="sign-up">
@@ -9,23 +9,23 @@ b  <header class="sticky-nav logo-only">
     <div class="input-radio-container">
       <p class="layout-margin-tb">How do you sell to your customers? </p>
       <label>
-        <input type="radio" name="selltocustomers" value="inPerson" checked="checked">
+        <input type="radio" name="inPerson" value="inPerson" ng-model="accountInfo.inPerson">
         <span class="radio"></span>
         <p class="float-left layout-no-margin">In Person</p>
       </label>
       <label>
-        <input type="radio" name="selltocustomers" value="notInPerson">
+        <input type="radio" name="inPerson" value="notInPerson" ng-model="accountInfo.inPerson">
         <span class="radio"></span>
         <p>Not In Person</p>
       </label>
     </div>
 
-    <form name="signUp">
+    <form name="signUp" id="signUpForm">
       <div class="input-container layout-margin-b">
-        <input type="text" class="layout-no-margin" placeholder="Average Sale Per Customer">
+        <input type="text" class="layout-no-margin" placeholder="Average Sale Per Customer" name="avgSale" ng-model="accountInfo.avgSale">
       </div>
       <div class="input-container layout-margin-b">
-        <input type="text" class="layout-no-margin" placeholder="Estimated Monthly Credit Card Sales">
+        <input type="text" class="layout-no-margin" placeholder="Estimated Monthly Credit Card Sales" name="monthlySales" ng-model="accountInfo.monthlySales">
       </div>
       <div class="col-100 layout-margin-b">
         <p class="layout-margin-tb layout-no-padding layout-margin-r">Where should we deposid your funds?</p>
@@ -37,22 +37,20 @@ b  <header class="sticky-nav logo-only">
         </div>
       </div>
       <div class="input-container layout-margin-b">
-        <input type="text" class="layout-no-margin" placeholder="Bank Name">
+        <input type="text" class="layout-no-margin" placeholder="Bank Name" name="bankName" ng-model="accountInfo.bankName">
       </div>
       <div class="input-container layout-margin-b">
-        <input type="text" class="layout-no-margin" placeholder="Bank Routing Number">
+        <input type="text" class="layout-no-margin" placeholder="Bank Routing Number" name="routingNumber" ng-model="accountInfo.routingNumber">
       </div>
       <div class="input-container layout-margin-b">
-        <input type="text" class="layout-no-margin" placeholder="Bank Account number">
+        <input type="text" class="layout-no-margin" placeholder="Bank Account number" name="accountNumber" ng-model="accountInfo.accountNumber">
       </div>
 
     </form>
 
-    <a href="signature.html" class="button button-primary button-next">Next</a>
-    <a href="#" class="button button-neutral-lg">Save &amp; Continue Later</a>
+    <a ng-click="saveAccountInfo();" class="button button-primary button-next">Next</a>
+    <a ng-click="saveAndContinueLater();" class="button button-neutral-lg">Save &amp; Continue Later</a>
 
     <p class="text-center">This is to activate a merchant account. If you do not want to accept credit cards, please select the Save &amp; Continue Later button to start using your Free app.</p>
 
   </section>
-
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
