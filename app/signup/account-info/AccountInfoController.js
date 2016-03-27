@@ -49,6 +49,11 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 			});
 		}
 
+		signUpFactory.set({
+			table 	: 'AccountInfo',
+			expr	: 'inPerson:' + ($scope.accountInfo['inPerson'] == 'inPerson'? 'true':'false')
+		});
+
 		signUpFactory.setObject({
 			table 	: 'AccountInfo',
 			params  : {
@@ -57,14 +62,16 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 			}
 		});
 
-		signUpFactory.Save('AccountInfo');
-
-		if (!userFactory.authorized) return;
-
-		signUpFactory.Save('User',{
-			accountInfo : signUpFactory.getParse("AccountInfo")
-		},function(){
-			$state.go('signup.signature');
+		signUpFactory.Save({
+			tableName : 'AccountInfo',
+			callback  : function(){
+				if (!userFactory.authorized) return;
+				signUpFactory.Save('User',{
+					accountInfo : signUpFactory.getParse("AccountInfo")
+				},function(){
+					$state.go('signup.signature');
+				});
+			}
 		});
 	};
 

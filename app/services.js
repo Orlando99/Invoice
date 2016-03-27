@@ -149,6 +149,10 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 				return false;
 			}
 			var value = result[1];
+
+			if (value == 'true') value = true;
+			else if (value == 'false') value = false;
+
 			var ancestors = result[0].split('.');
 			if (ancestors.length == 1 && newUser[table][ancestors[0]]==undefined) {
 				console.log('Property'+ancestors[0]+' doesn\'t exist');
@@ -161,7 +165,10 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 			} else {
 				accessor += "['"+ancestors[0]+"']";
 			}
-			eval(accessor+"='"+value+"'");
+
+			if (typeof(value) != 'boolean')
+				value = "'"+value+"'";
+			eval(accessor+"="+value+"");
 
 		},
 		setObject : function(table,params){
@@ -200,13 +207,10 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 					console.log('Object saved:'+object.id);
 				},
 				error : function(object,error){
-					console.log("Error: " + error.description);
+					console.log("Error: " + error.message);
 				}
 			}
-			/*if (table == "User") {
-			/	parseObject.signUp(null,callbacks);
-			/	return;
-			}*/
+
 			if (!params) params = null;
 			parseObject.save(params,callbacks).then(function(){if(callback) callback();});
 		},
