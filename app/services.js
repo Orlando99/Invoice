@@ -103,6 +103,9 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 			ssn			: '',
 			state		: '',
 			dob			: ''
+		},
+		Signature : {
+			imageName : ''
 		}
 	};
 
@@ -172,10 +175,12 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 
 		},
 		setObject : function(table,params){
+
 			if (typeof(table) == "object"){
 				params = table.params;
 				table = table.table;
 			}
+
 			newUser[table][params.field] = params.value;
 		},
 		getObject : function(table,field){

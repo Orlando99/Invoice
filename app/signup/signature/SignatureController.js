@@ -1,7 +1,7 @@
 'use strict';
 
-invoicesUnlimited.controller('SignatureController',['$scope','$state','userFactory','signUpFactory',
-	function($scope,$state,userFactory,signUpFactory){
+invoicesUnlimited.controller('SignatureController',['$scope','$state','userFactory','signUpFactory','$ocLazyLoad',
+	function($scope,$state,userFactory,signUpFactory,$ocLazyLoad){
 	
 	if (userFactory.authorized()){
 		var businessInfo = userFactory.getBusinessInfo();
@@ -17,5 +17,52 @@ invoicesUnlimited.controller('SignatureController',['$scope','$state','userFacto
 			$state.go('signup');
 		}
 	} else $state.go('signup');
+
+	$scope.submitSignature = function(){
+		var sigData = $('.kbw-signature canvas')[0].toDataURL().replace("data:image/png;base64,","");
+
+		signUpFactory.set({
+			table : 'Signature',
+			expr  : "imageName:Signature_" + signUpFactory.getParse("_User").id
+		})
+
+		signUpFactory.setObject({
+			table : 'Signature',
+			params  : {
+				field : "imageFile",
+				value : new Parse.File("Signature.png", { base64 : sigData})
+			}
+		});
+
+		signUpFactory.setObject({
+			table : 'Signature',
+			params  : {
+				field : "userID",
+				value : signUpFactory.getParse("_User")
+			}
+		});
+
+		signUpFactory.Save({
+			tableName :'Signature',
+			callback  : function(){
+				if (!userFactory.authorized) return;
+				signUpFactory.Save('User',{
+					signatureImage : signUpFactory.getParse("Signature")
+				},function(){
+					$state.go('signup.confirm');
+				});
+
+			}
+		});
+	}
+
+	$scope.$on('$viewContentLoaded',function($scope,$timeout){
+		$ocLazyLoad.load([
+					"./dist/js/excanvas.js",
+  					"./dist/js/jquery.signature.min.js",
+  					"./dist/js/jquery.ui.touch-punch.min.js",
+  					"./dist/js/sig.js",
+					]);
+	});
 
 }]);

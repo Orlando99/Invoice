@@ -1,14 +1,5 @@
 'use strict';
 
-//Parse.$ = jQuery;
-
-// Initialize Parse with your Parse application javascript keys
-// test app.
-//Parse.initialize("R7ar2YrJEpUb7BbeZfVt9hMNrXWXTm5q4JGJgPkX",
-                 //"XoVDCs3Zx0DUZAq1Pk2WGYOLgJfbzXp83g2QoZ10");
-
-// actual app. Danger Zone!
-
 var IUKeys = {
 	appID : "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
 	jsKey : "D7nGqgOC97j9ZM7p4rdurZ3P0pSaqTAmCN0xFK7T"
@@ -16,7 +7,7 @@ var IUKeys = {
 
 Parse.initialize(IUKeys.appID,IUKeys.jsKey);
 
-var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router', 'ui.bootstrap'])
+var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router', 'ui.bootstrap','oc.lazyLoad'])
 .config(function($locationProvider){
 	//$locationProvider.html5Mode(true).hashPrefix('');
 })

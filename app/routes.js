@@ -65,6 +65,17 @@ angular.module('invoicesUnlimited')
 		}
 	};
 
+	var signUpConfirm = {
+		name : 'signup.confirm',
+		url  : '/confirm',
+		views : {
+			'@' : {
+				controller  : 'ConfirmController',
+				templateUrl : './app/signup/confirm/confirm.html'
+			}
+		}
+	};
+
 	var dashboardIndex = {
 		name : 'dashboard',
 		url : "/dashboard",
@@ -79,6 +90,7 @@ angular.module('invoicesUnlimited')
 		.state(signUpPrincipal)
 		.state(signUpAccount)
 		.state(signUpSignature)
+		.state(signUpConfirm)
 		.state(dashboardIndex);
 
 	$urlRouterProvider.otherwise('/signup');

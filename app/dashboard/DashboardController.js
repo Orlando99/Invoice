@@ -4,10 +4,9 @@ String.prototype.capitilize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-invoicesUnlimited.controller('DashboardController',['$scope','$state',function($scope,$state){
+invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory',
+	function($scope,$state,userFactory){
 
-	var currentUser = Parse.User.current();
-
-	if (!currentUser) $state.go('signup');
+	if (!userFactory.authenticated) $state.go('signup');
 	
 }]);
