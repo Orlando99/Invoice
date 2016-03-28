@@ -172,11 +172,13 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 		}
 	};
 
-	var businessInfo = userFactory.getBusinessInfo(true).then(function(object){
-		for(var field in newUser.BusinessInfo){
-			newUser.BusinessInfo[field] = object.get(field);
-		}
-	});
+	if (userFactory.authorized()) {
+		var businessInfo = userFactory.getBusinessInfo(true).then(function(object){
+			for(var field in newUser.BusinessInfo){
+				newUser.BusinessInfo[field] = object.get(field);
+			}
+		});
+	}	
 
 	return {
 		getParse : function(className){
