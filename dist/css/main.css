@@ -3,3 +3,17 @@
 label#country-error {
 	top: 0;
 }
+
+#signUpForm input:not([name=federalTaxID]),
+#signUpForm select,
+#signUpForm textarea {
+	display: inline-block;
+}
+
+.federal-tax {
+	margin-top: 0 !important;
+}
+
+.input-checkbox-container > p:first-child {
+	margin-bottom: 10px;
+}

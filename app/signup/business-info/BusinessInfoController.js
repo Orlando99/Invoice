@@ -1,5 +1,22 @@
 'use strict';
 
+$(document).ready(function(){
+	$.validator.addMethod(
+		"OwhershipTypeNotSelected",
+		function(value,element){
+			return value != "ownershipTitle";
+		}
+	);
+	$.validator.addMethod(
+		"FederalTaxIDisMissing",
+		function(value,element){
+			if ($(element).css('display') == 'none') return true;
+			else if (value == "") return false;
+			return true;
+		}
+	)
+});
+
 invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFactory','signUpFactory',
 	function($scope,$state,userFactory,signUpFactory){
 
@@ -20,7 +37,14 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 			city 		: 'required',
 			state 		: 'required',
 			zipCode 	: 'required',
-			phoneNumber : 'required'
+			phoneNumber : 'required',
+			businessDescription : 'required',
+			ownershipType : {
+				OwhershipTypeNotSelected : true
+			},
+			federalTaxID : {
+				FederalTaxIDisMissing : true
+			}
 		},
 		messages: {
 			company 	: 'Please specify your business name!',
@@ -28,7 +52,14 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 			city 		: 'Please specify your city!',
 			state 		: 'Please specify your state!',
 			zipCode 	: 'Please specify your zip code!',
-			phoneNumber : 'Please specify your phone number!'
+			phoneNumber : 'Please specify your phone number!',
+			businessDescription : 'Please specify your business description!',
+			ownershipType : {
+				OwhershipTypeNotSelected : "Please select your ownership type!"
+			},
+			federalTaxID : {
+				FederalTaxIDisMissing : 'Please specify your phone number!'
+			}
 		}
 	});
 
@@ -41,8 +72,24 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 		'phoneNumber'	: signUpFactory.get('User','phonenumber'),
 		'businessDescription' : '',
 		'federalTaxID'	: '',
-		'ownershipType'	: ''
+		ownershipType	: 'Ownership Type'
 	}
+
+	$scope.options = [{
+   		name: 'ownershipTitle',
+   		value: 'Ownership Type'
+	}, {
+   		name: 'Sole Proprietor',
+   		value: 'Sole Proprietor'
+	},
+	{
+   		name: 'LLC',
+   		value: 'LLC'
+	},
+	{
+   		name: 'Corporation and Non Profit',
+   		value: 'Corporation and Non Profit'
+	}];
 
 	$scope.saveBusinessInfo = function(){
 	
