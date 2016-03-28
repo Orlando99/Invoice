@@ -3,8 +3,11 @@
 invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userFactory','signUpFactory',
 	function($scope,$state,userFactory,signUpFactory){
 
+	$('[name=dob]').mask("00-00-00");
+	$('[name=ssn]').mask("000-00-0000");
+
 	if (userFactory.authorized()){
-		if (!userFactory.getBusinessInfo()) {
+		if (!userFactory.getBusinessInfo(false)) {
 			userFactory.logout();
 			$state.go('signup');
 		}
@@ -57,6 +60,13 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 		$scope.principalInfo.state = signUpFactory.get('BusinessInfo','state');
 		$scope.principalInfo.zipCode = signUpFactory.get('BusinessInfo','zipCode');
 	};
+
+	$scope.$watch(function(){return signUpFactory.get('BusinessInfo')},function(newValue,oldValue){
+		$scope.principalInfo.streetName = newValue.streetName;
+		$scope.principalInfo.city = newValue.city;
+		$scope.principalInfo.state = newValue.state;
+		$scope.principalInfo.zipCode = newValue.zipCode;
+	},true);
 
 	$scope.savePrincipalInfo = function(){
 		if (!$('#signUpForm').valid()) return;

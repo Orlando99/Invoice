@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('userFactory',function(){
+invoicesUnlimited.factory('userFactory',function($q){
 	
 	var currentUser = Parse.User.current();
 	var businessInfo, principalInfo, accountInfo;
@@ -26,21 +26,85 @@ invoicesUnlimited.factory('userFactory',function(){
 								if (callback) callback();
 							});
 		},
-		getBusinessInfo : function(){
-			if (!currentUser) return false;
-			return currentUser.get('businessInfo');
+		getBusinessInfo : function(e){
+			if (!e) {
+				if (!currentUser) return false;
+				return currentUser.get('businessInfo');	
+			}
+			var defer = $q.defer();
+			var businessInfo = Parse.Object.extend("BusinessInfo");
+			var query = new Parse.Query(businessInfo);
+			var object = currentUser.get('businessInfo');
+			if (!object) return;
+			query.equalTo("objectId",object.id);
+			query.first({
+				success:function(object){
+					defer.resolve(object);
+					//callback(object);
+				},
+				error : function(object,error){
+					console.log(error.message);
+				}
+			});
+
+			return defer.promise;
 		},
-		getPrincipalInfo : function(){
-			if (!currentUser) return false;
-			return currentUser.get('principalInfo');
+		getPrincipalInfo : function(callback){
+			if (!callback){
+				if (!currentUser) return false;
+				return currentUser.get('principalInfo');
+			}
+			var principalInfo = Parse.Object.extend("PrincipalInfo");
+			var query = new Parse.Query(principalInfo);
+			var object = currentUser.get('principalInfo');
+			if (!object) return;
+			query.equalTo("objectId",object.id);
+			query.first({
+				success:function(object){
+					callback(object);
+				},
+				error : function(object,error){
+					console.log(error.message);
+				}
+			});
 		},
-		getAccountInfo : function(){
-			if (!currentUser) return false;
-			return currentUser.get('accountInfo');	
+		getAccountInfo : function(callback){
+			if (!callback){
+				if (!currentUser) return false;
+				return currentUser.get('accountInfo');
+			}
+			var accountInfo = Parse.Object.extend("AccountInfo");
+			var query = new Parse.Query(accountInfo);
+			var object = currentUser.get('accountInfo');
+			if (!object) return;
+			query.equalTo("objectId",object.id);
+			query.first({
+				success:function(object){
+					callback(object);
+				},
+				error : function(object,error){
+					console.log(error.message);
+				}
+			});
 		},
-		getSignature : function(){
-			if (!currentUser) return false;
-			return currentUser.get('signatureImage');
+		getSignature : function(callback){
+			if (!callback){
+				if (!currentUser) return false;
+				return currentUser.get('signatureImage');
+			}
+			var signature = Parse.Object.extend("Signature");
+			var query = new Parse.Query(signature);
+			var object = currentUser.get('signatureImage');
+			if (!object) return;
+			query.equalTo("objectId",object.id);
+			query.first({
+				success:function(object){
+					callback(object);
+				},
+				error : function(object,error){
+					console.log(error.message);
+				}
+			});
 		}
 
 	}
@@ -55,16 +119,15 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 	var parseObjects = {};
 
 	if (userFactory.authorized()) {
-		var User = userFactory.authorized();
-		var businessInfo = User.get('businessInfo');
-		var principalInfo = User.get('principalInfo');
-		var accountInfo = User.get('accountInfo');
 
-		parseObjects[User.className] = User;
-		if (businessInfo) parseObjects[businessInfo.className] = businessInfo;
-		if (principalInfo) parseObjects[principalInfo.className] = principalInfo;
-		if (accountInfo) parseObjects[accountInfo.className] = accountInfo;
+		var callbackFunc = function(object){
+			parseObjects[object.className] = object;
+		};
 
+		userFactory.getBusinessInfo(true).then(callbackFunc);
+		userFactory.getPrincipalInfo(callbackFunc);
+		userFactory.getAccountInfo(callbackFunc);
+		callbackFunc(userFactory.authorized());
 	}
 
 	var newUser = {
@@ -109,14 +172,11 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 		}
 	};
 
-	if (userFactory.authorized){
-		var businessInfo = userFactory.getBusinessInfo();
-		if (businessInfo) {
-			for(var field in newUser.BusinessInfo){
-				newUser.BusinessInfo[field] = businessInfo.get(field);
-			}
+	var businessInfo = userFactory.getBusinessInfo(true).then(function(object){
+		for(var field in newUser.BusinessInfo){
+			newUser.BusinessInfo[field] = object.get(field);
 		}
-	}
+	});
 
 	return {
 		getParse : function(className){
@@ -127,6 +187,7 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 				expr = table.expr;
 				table = table.table;
 			}
+			if (!expr) return newUser[table];
 			var ancestors = expr.split('.');
 			if (ancestors.length == 1 && newUser[table][ancestors[0]]==undefined) {
 				console.log('Property doesn\'t exist');
