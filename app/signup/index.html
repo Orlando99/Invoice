@@ -11,9 +11,9 @@
         <ul class="inner-message"></ul>
     </div>
 
-    <form id="signUpForm" name="signUpForm" novalidate>
+    <form id="signUpForm" name="signUpForm" novalidate style="position:relative">
         <select class="custom-dd countries" ng-model="selectedCountry"
-                ng-change="selectedCountryChanged();" required>
+                ng-change="selectedCountryChanged();" name="country">
             <option value="Select Country" selected disabled>Select Country</option>
             <option ng-repeat="item in usaAndCanada" value="{{item}}">{{item}}</option>
             <option value="none" disabled>---------------------------------------------------------------------------</option>
@@ -53,6 +53,6 @@
 </section>
 
 <!--<script src="./dist/js/main.js"></script>-->
-<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+<!--<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>-->
 <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>-->
 

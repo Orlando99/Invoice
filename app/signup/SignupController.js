@@ -26,6 +26,13 @@ $(document).ready(function(){
 	);
 
 	$.validator.addMethod(
+		"CountryNotSelected",
+		function(value,element){
+			return (value != '' && value != 'Select Country');
+		}
+	);
+
+	$.validator.addMethod(
 		"ConfirmPassMatch",
 		function(value,element){
 			return value == $("input[name='password']").val();
@@ -51,6 +58,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 	function($scope,$state,userFactory,signUpFactory){
 
 	if (userFactory.authorized()){
+		
 		var businessInfo = userFactory.getBusinessInfo();
 		var principalInfo = userFactory.getPrincipalInfo();
 		var accountInfo = userFactory.getAccountInfo();
@@ -67,7 +75,24 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 		} else userFactory.logout();
 	}
 
-	$scope.selectedCountry = 'Select Country';
+	var showIndexInfo = function(){
+		if ($('.extended-signup').css({'display':'none'}))
+			$('.extended-signup').show();
+		if ($.inArray($scope.selectedCountry, $scope.usaAndCanada) != -1) {
+			$('input#email').attr('placeholder',"Email (To Recover Forgotten Password)");
+			$('input#phone').attr('placeholder',"Phone Number (Text Verification Required)");
+			signUpFactory.setVerification.provider('text');
+		} else {
+			$('input#email').attr('placeholder',"Email");
+			$('input#phone').attr('placeholder',"Phone Number");
+			signUpFactory.setVerification.provider('email');
+		}
+	}
+
+	var signUpCountry = signUpFactory.get('User','country');
+	if (signUpCountry != '') showIndexInfo();	
+	
+	$scope.selectedCountry = (signUpCountry == '' ? 'Select Country' : signUpCountry);
 
 	var fields = ['company','fullName','email','username','password','phonenumber'];
 	
@@ -82,7 +107,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 		onkeyup : false,
 		onfocusout : false,
 		rules: {
-			fullname : {
+			fullName : {
 				NotFullName : true,
 				required : true
 			},
@@ -100,10 +125,13 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 				required : true,
 				ConfirmPassMatch : true
 			},
-			phonenumber : 'required'
+			phonenumber : 'required',
+			country : {
+				CountryNotSelected : true
+			}
 		},
 		messages: {
-			fullname : {
+			fullName : {
 				required : "Please specify your Full Name !",
 				NotFullName : "Please Enter Full Name"
 			},
@@ -121,7 +149,10 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 				required : "Please specify your confirm password !",
 				ConfirmPassMatch : "Passwords do not match!"
 			},
-			phonenumber : "Please specify your phone !"
+			phonenumber : "Please specify your phone !",
+			country : {
+				CountryNotSelected : "Please select the country!"
+			}
 		}
 	});
 
@@ -158,24 +189,17 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 	};
 
 	$scope.selectedCountryChanged = function(){
-		if (!$scope.selectedCountry) return;
-		if ($('.extended-signup').css({'display':'none'}))
-			$('.extended-signup').show();
-		if ($.inArray($scope.selectedCountry, $scope.usaAndCanada) != -1) {
-			$('input#email').attr('placeholder',"Email (To Recover Forgotten Password)");
-			$('input#phone').attr('placeholder',"Phone Number (Text Verification Required)");
-			signUpFactory.setVerification.provider('text');
-		} else {
-			$('input#email').attr('placeholder',"Email");
-			$('input#phone').attr('placeholder',"Phone Number");
-			signUpFactory.setVerification.provider('email');
-		}
+		var validCountry = $('#signUpForm').validate().element('[name=country]');
+		//if (!$scope.selectedCountry) return;
+		if (!validCountry) return;
+		showIndexInfo();
 	};
 
 	$scope.sendMessage = function(){
-		
-		if (!$scope.selectedCountry ||
-			$scope.selectedCountry == 'Select Country') return;
+
+		var validCountry = $('#signUpForm').validate().element('[name=country]');
+
+		if (!validCountry) return;
 
 		var result = $scope.ValidateForm(function(validated){
 			if (!validated) return;

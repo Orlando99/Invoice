@@ -9,7 +9,8 @@
  	<p>Enter verification code sent via {{verificationCodeProvider}}.</p>
   	<input type="text" id="verificationCode" class="input-short text-center">
 
-  	<a href="" ng-click="verifyCode();" class="button button-primary button-next">Verify &amp; Continue</a>
-  	<p>Didn't receive the text message? <br/> <a href="#">Verify or change phone number</a></p>
+  	<a ng-click="verifyCode();" class="button button-primary button-next">Verify &amp; Continue</a>
+  	<p>Didn't receive the text message? <br/> 
+  	<a ng-click="changePhoneNumber();" style="cursor:pointer;">Verify or change phone number</a></p>
 
 </section>

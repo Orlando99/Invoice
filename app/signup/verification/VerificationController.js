@@ -17,4 +17,8 @@ invoicesUnlimited.controller('VerificationController',['$scope','$state','userFa
 		}
 	};
 
+	$scope.changePhoneNumber = function(){
+		$state.go('signup');
+	};
+
 }]);
