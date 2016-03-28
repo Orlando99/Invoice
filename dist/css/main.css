@@ -4,6 +4,10 @@ label#country-error {
 	top: 0;
 }
 
+label#verificationCode-error {
+	right: 100px;
+}
+
 #signUpForm input:not([name=federalTaxID]),
 #signUpForm select,
 #signUpForm textarea {

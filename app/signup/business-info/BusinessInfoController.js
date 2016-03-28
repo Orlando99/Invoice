@@ -25,8 +25,8 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 		else {
 			userFactory.logout();
 			$state.go('signup');
-		}		
-	}
+		}
+	} else if (signUpFactory.get('User','username') == '') $state.go('signup');
 
 	$("#signUpForm").validate({
 		onkeyup : false,

@@ -5,12 +5,12 @@
 <section class="sign-up text-center">
 
   	<h2 class="text-uppercase">Verification</h2>
-
+  	<form id="signUpForm">
  	<p>Enter verification code sent via {{verificationCodeProvider}}.</p>
-  	<input type="text" id="verificationCode" class="input-short text-center">
-
+  	<input type="text" id="verificationCode" name="code" class="input-short text-center">
+  	</form>
   	<a ng-click="verifyCode();" class="button button-primary button-next">Verify &amp; Continue</a>
   	<p>Didn't receive the text message? <br/> 
   	<a ng-click="changePhoneNumber();" style="cursor:pointer;">Verify or change phone number</a></p>
-
+  	
 </section>
