@@ -62,6 +62,7 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 	};
 
 	$scope.$watch(function(){return signUpFactory.get('BusinessInfo')},function(newValue,oldValue){
+		if (oldValue == newValue) return;
 		$scope.principalInfo.streetName = newValue.streetName;
 		$scope.principalInfo.city = newValue.city;
 		$scope.principalInfo.state = newValue.state;

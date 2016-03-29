@@ -57,6 +57,14 @@ $(document).ready(function(){
 invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory','signUpFactory',
 	function($scope,$state,userFactory,signUpFactory){
 
+	$('#phone').mask("(Z00) 000-0000",{
+		translation : {
+			'Z': {
+				pattern : /[2-9]/g
+			}
+		}
+	});
+
 	if (userFactory.authorized()){
 		
 		var businessInfo = userFactory.getBusinessInfo();
