@@ -75,6 +75,14 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 		ownershipType	: 'Ownership Type'
 	}
 
+	$('#phone').mask("(Z00) 000-0000",{
+		translation : {
+			'Z': {
+				pattern : /[2-9]/g
+			}
+		}
+	}).val(signUpFactory.get('User','phonenumber'));
+
 	$scope.options = [{
    		name: 'ownershipTitle',
    		value: 'Ownership Type'
