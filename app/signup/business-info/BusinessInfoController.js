@@ -124,7 +124,6 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 			username : signUpFactory.get('User','username'),
 			password : signUpFactory.get('User','password')
 		},function(){
-
 			if (!userFactory.authorized) return;
 
 			signUpFactory.Save('User',{
