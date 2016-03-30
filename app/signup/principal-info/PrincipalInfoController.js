@@ -3,7 +3,63 @@
 invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userFactory','signUpFactory',
 	function($scope,$state,userFactory,signUpFactory){
 
-	$('[name=dob]').mask("00-00-00");
+	var dobMaskOptions = {
+		onKeyPress: function(val, e, field, options) {
+      		
+      		if (!val || val == "") return;
+
+      		var dateObj = new Date();
+
+      		var now = {
+      			year 	: dateObj.getFullYear() + "",
+      			month 	: (parseInt(dateObj.getMonth()) + 1) + "",
+      			date 	: parseInt(dateObj.getDate()) + ""
+      		}
+
+      		var oldValue = val.split("-");
+      		var newValue = [];
+
+      		if (oldValue[0]) {
+      			var value = parseInt(oldValue[0]);
+      			if (oldValue[0].length == 2 && value > 0 && value < 32)
+      				newValue.push(oldValue[0]);
+      			else if (parseInt(oldValue[0][0]) < 4)
+      				newValue.push(oldValue[0][0]);
+      		}
+
+      		if (oldValue[1]) {
+      			var value = parseInt(oldValue[1]);
+      			if (oldValue[1].length == 2 && value > 0 && value < 13)
+      				newValue.push(oldValue[1]);
+      			else if (parseInt(oldValue[1][0]) < 2)
+      				newValue.push(oldValue[1][0]);
+      		}
+
+      		if (oldValue[2]) {
+      			var value = parseInt(oldValue[2]);
+      			if (oldValue[2].length == 4 && value == parseInt(now.year)){
+      				if (parseInt(oldValue[1]) > parseInt(now.month))
+      					newValue.push(oldValue[2].slice(0,3));
+      				else if (parseInt(oldValue[0]) > parseInt(now.date))
+      					newValue.push(oldValue[2].slice(0,3));
+      				else newValue.push(oldValue[2]);
+      			}
+      			else if (value < parseInt(now.year)){
+      				newValue.push(oldValue[2]);	
+      			}
+      			else if (parseInt(oldValue[2].slice(0,3)) <= parseInt(now.year.slice(0,3)))
+      				newValue.push(oldValue[2].slice(0,3));
+      			else if (parseInt(oldValue[2].slice(0,2)) <= parseInt(now.year.slice(0,2)))
+      				newValue.push(oldValue[2].slice(0,2));
+      			else if (parseInt(oldValue[2].slice(0,1)) <= parseInt(now.year.slice(0,1)))
+      				newValue.push(oldValue[2].slice(0,1));
+      		}
+
+      		field.val((newValue[0]?newValue[0]:"")+(newValue[1]?("-"+newValue[1]):"")+(newValue[2]?("-"+newValue[2]):""));
+    	}
+	}
+
+	$('[name=dob]').mask("00-00-0000",dobMaskOptions);
 	$('[name=ssn]').mask("000-00-0000");
 
 	if (userFactory.authorized()){
