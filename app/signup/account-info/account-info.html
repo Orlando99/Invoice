@@ -22,7 +22,13 @@
 
     <form name="signUp" id="signUpForm">
       <div class="input-container layout-margin-b">
-        <input type="text" class="layout-no-margin" placeholder="Average Sale Per Customer" name="avgSale" ng-model="accountInfo.avgSale">
+      <select class="custom-dd" name="avgSale"
+              ng-init="accountInfo.avgSale = 'avgSaleTitle'"
+              ng-model="accountInfo.avgSale">
+        <option value="avgSaleTitle" disabled>Average Sale Per Customer</option>
+        <option ng-repeat="option in avgSaleList" value="option.value">{{option.value}}</option>
+      </select>
+        <!--<input type="text" class="layout-no-margin" placeholder="Average Sale Per Customer" name="avgSale" ng-model="accountInfo.avgSale">-->
       </div>
       <div class="input-container layout-margin-b">
         <input type="text" class="layout-no-margin" placeholder="Estimated Monthly Credit Card Sales" name="monthlySales" ng-model="accountInfo.monthlySales">
