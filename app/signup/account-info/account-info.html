@@ -22,23 +22,28 @@
 
     <form name="signUp" id="signUpForm">
       <div class="input-container layout-margin-b">
-      <select class="custom-dd" name="avgSale"
+      <select class="layout-no-margin" name="avgSale"
               ng-init="accountInfo.avgSale = 'avgSaleTitle'"
               ng-model="accountInfo.avgSale">
         <option value="avgSaleTitle" disabled>Average Sale Per Customer</option>
         <option ng-repeat="option in avgSaleList" value="option.value">{{option.value}}</option>
       </select>
-        <!--<input type="text" class="layout-no-margin" placeholder="Average Sale Per Customer" name="avgSale" ng-model="accountInfo.avgSale">-->
       </div>
       <div class="input-container layout-margin-b">
-        <input type="text" class="layout-no-margin" placeholder="Estimated Monthly Credit Card Sales" name="monthlySales" ng-model="accountInfo.monthlySales">
+        <select class="layout-no-margin" name="monthlySales"
+              ng-init="accountInfo.monthlySales = 'monthlySalesTitle'"
+              ng-model="accountInfo.monthlySales">
+          <option value="monthlySalesTitle" disabled>Estimated Monthly Credit Card Sales</option>
+          <option ng-repeat="option in monthlySalesList" value="option.value">{{option.value}}</option>
+        </select>
+        <!--<input type="text" class="layout-no-margin" placeholder="Estimated Monthly Credit Card Sales" name="monthlySales" ng-model="accountInfo.monthlySales">-->
       </div>
       <div class="col-100 layout-margin-b">
         <p class="layout-margin-tb layout-no-padding layout-margin-r">Where should we deposid your funds?</p>
         <div class="tooltip-sec">
           <i class="info-icon blue-icon"></i>
-          <p class="info-tooltip">
-            Lorem ipsum dolor sit amet.
+          <p class="info-tooltip" style="width:476px;">
+            <img src="./dist/images/check-image.png" style="width:452px;height:86.75px"/>
           </p>
         </div>
       </div>

@@ -3,10 +3,24 @@
 invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFactory','signUpFactory',
 	function($scope,$state,userFactory,signUpFactory){
 
+	if (userFactory.authorized) {
+		if (!userFactory.getBusinessInfo()) {
+			userFactory.logout();
+			$state.go('signup');
+		}
+	} else $state.go('signup');
+
 	$.validator.addMethod(
 		"AvgSaleRequired",
 		function(value,element){
 			return value != "avgSaleTitle";
+		}
+	);
+
+	$.validator.addMethod(
+		"MonthlySalesRequired",
+		function(value,element){
+			return value != 'monthlySalesTitle';
 		}
 	)
 
@@ -18,7 +32,10 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 				required : true,
 				AvgSaleRequired : true
 			},
-			monthlySales 	: 'required',
+			monthlySales 	: {
+				required : true,
+				MonthlySalesRequired : true
+			},
 			bankName 		: 'required',
 			routingNumber	: 'required',
 			accountNumber	: 'required'
@@ -34,7 +51,10 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 	});
 
 	$scope.avgSaleList = [];
+	$scope.monthlySalesList = [];
+	
 	var moneyVal = 0;
+	
 	do {
 		if (!moneyVal) moneyVal = 1;
 		else if (moneyVal == 1) moneyVal = 5;
@@ -45,13 +65,13 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 		$scope.avgSaleList.push({value:"$ " + (moneyVal == 50000 ? moneyVal + "+" : moneyVal)});
 	} while(moneyVal != 50000)
 
+	moneyVal = 0;
 
-	if (userFactory.authorized) {
-		if (!userFactory.getBusinessInfo()) {
-			userFactory.logout();
-			$state.go('signup');
-		}
-	} else $state.go('signup');
+	do {
+		if (moneyVal < 25000) moneyVal += 500;
+		else moneyVal += 5000;
+		$scope.monthlySalesList.push({value:"$ " + (moneyVal == 100000 ? moneyVal + "+" : moneyVal)});
+	} while(moneyVal != 100000)
 
 	$scope.accountInfo = {
 		bankName		: '',
