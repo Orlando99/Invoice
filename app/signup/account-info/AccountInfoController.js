@@ -22,7 +22,10 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 		function(value,element){
 			return value != 'monthlySalesTitle';
 		}
-	)
+	);
+
+	$('[name=routingNumber]').mask('000000000');
+	$('[name=accountNumber]').mask('0000000000');
 
 	$("#signUpForm").validate({
 		onkeyup : false,
