@@ -3,7 +3,7 @@
 invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFactory','signUpFactory',
 	function($scope,$state,userFactory,signUpFactory){
 
-	if (userFactory.authorized) {
+	if (userFactory.authorized()) {
 		if (!userFactory.getBusinessInfo()) {
 			userFactory.logout();
 			$state.go('signup');
@@ -122,7 +122,7 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 	};
 
 	$scope.saveAndContinueLater = function(){
-		if (!userFactory.authorized){
+		/*if (!userFactory.authorized){
 			var user = signUpFactory.getParse('_User');
 			userFactory.login({
 				username : user.get('username'),
@@ -131,7 +131,9 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 				$state.go('dashboard');
 			});
 		}
-		else $state.go('dashboard');
+		else*/
+		if (userFactory.authorized())
+			$state.go('dashboard');
 	};
 
 }]);

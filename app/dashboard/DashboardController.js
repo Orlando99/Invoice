@@ -7,6 +7,6 @@ String.prototype.capitilize = function() {
 invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory',
 	function($scope,$state,userFactory){
 
-	if (!userFactory.authenticated) $state.go('signup');
+	if (!userFactory.authorized()) $state.go('signup');
 	
 }]);

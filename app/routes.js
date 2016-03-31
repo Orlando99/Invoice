@@ -85,13 +85,13 @@ angular.module('invoicesUnlimited')
 
 	$stateProvider
 		.state(signUpIndex)
+		.state(dashboardIndex)
 		.state(signUpVerification)
 		.state(signUpBusiness)
 		.state(signUpPrincipal)
 		.state(signUpAccount)
 		.state(signUpSignature)
-		.state(signUpConfirm)
-		.state(dashboardIndex);
+		.state(signUpConfirm);
 
 	$urlRouterProvider.otherwise('/signup');
 

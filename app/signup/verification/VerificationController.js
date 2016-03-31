@@ -1,9 +1,5 @@
 'use strict';
 
-$(document).ready(function(){
-
-});
-
 invoicesUnlimited.controller('VerificationController',['$scope','$state','userFactory','signUpFactory',
 	function($scope,$state,userFactory,signUpFactory){
 	
