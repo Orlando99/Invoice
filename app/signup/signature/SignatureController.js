@@ -2,7 +2,7 @@
 
 invoicesUnlimited.controller('SignatureController',['$scope','$state','userFactory','signUpFactory','$ocLazyLoad',
 	function($scope,$state,userFactory,signUpFactory,$ocLazyLoad){
-	
+
 	if (userFactory.authorized()){
 		var businessInfo = userFactory.getBusinessInfo();
 		var principalInfo = userFactory.getPrincipalInfo();
@@ -18,7 +18,13 @@ invoicesUnlimited.controller('SignatureController',['$scope','$state','userFacto
 		}
 	} else $state.go('signup');
 
+	$('h2.text-uppercase').css({padding:'50px 0',margin:0});
+	$('.signature').css({height:$(window).height()-$('.sticky-nav').height() - parseInt($('.sticky-nav').css('padding-top'))*2 - 1});
+
 	$scope.submitSignature = function(){
+
+		showLoader();
+
 		var sigData = $('.kbw-signature canvas')[0].toDataURL().replace("data:image/png;base64,","");
 
 		signUpFactory.set({
@@ -49,6 +55,7 @@ invoicesUnlimited.controller('SignatureController',['$scope','$state','userFacto
 				signUpFactory.Save('User',{
 					signatureImage : signUpFactory.getParse("Signature")
 				},function(){
+					hideLoader();
 					$state.go('signup.confirm');
 				});
 

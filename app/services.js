@@ -121,13 +121,13 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 	if (userFactory.authorized()) {
 
 		var callbackFunc = function(object){
-			parseObjects[object.className] = object;
+			if (object) parseObjects[object.className] = object;
 		};
 
+		callbackFunc(userFactory.authorized());
 		userFactory.getBusinessInfo(true).then(callbackFunc);
 		userFactory.getPrincipalInfo(callbackFunc);
 		userFactory.getAccountInfo(callbackFunc);
-		callbackFunc(userFactory.authorized());
 	}
 
 	var newUser = {
@@ -174,9 +174,10 @@ invoicesUnlimited.factory('signUpFactory',['userFactory',function(userFactory){
 
 	if (userFactory.authorized()) {
 		var businessInfo = userFactory.getBusinessInfo(true).then(function(object){
-			for(var field in newUser.BusinessInfo){
-				newUser.BusinessInfo[field] = object.get(field);
-			}
+			if (object)
+				for(var field in newUser.BusinessInfo){
+					newUser.BusinessInfo[field] = object.get(field);
+				}
 		});
 	}	
 

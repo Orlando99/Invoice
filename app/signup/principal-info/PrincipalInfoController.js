@@ -128,6 +128,8 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 	$scope.savePrincipalInfo = function(){
 		if (!$('#signUpForm').valid()) return;
 
+		showLoader();
+
 		for (var field in $scope.principalInfo){
 			signUpFactory.set({
 				table : 'PrincipalInfo',
@@ -151,6 +153,7 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 				signUpFactory.Save('User',{
 					principalInfo : signUpFactory.getParse("PrincipalInfo")
 				},function(){
+					hideLoader();
 					$state.go('signup.account-info');
 				});
 

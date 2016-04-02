@@ -212,6 +212,8 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 		var result = $scope.ValidateForm(function(validated){
 			if (!validated) return;
 
+			showLoader();
+
 			var fields = ['company','fullName','email','username','password','phonenumber'];
 	
 			for (var i=0;i<fields.length;i++){
@@ -228,6 +230,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 				if (code) code = code[1];
 				signUpFactory.setVerification.code(code);
 				signUpFactory.set('User','country:'+$scope.selectedCountry);
+				hideLoader();
 				$state.go('signup.verification');
 			}
 

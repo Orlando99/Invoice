@@ -26,6 +26,14 @@ var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router', 'ui.bo
   };
 });
 
+function showLoader(){
+    $('.overlay').show();
+}
+
+function hideLoader(){
+    $('.overlay').hide();
+}
+
 /*invoicesUnlimited.run(['$rootScope', '$state', function($rootScope, $state) {
 
     $rootScope.$on('$stateChangeStart', function(evt, to, params) {

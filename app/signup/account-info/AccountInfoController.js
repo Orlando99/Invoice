@@ -4,7 +4,7 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 	function($scope,$state,userFactory,signUpFactory){
 
 	if (userFactory.authorized()) {
-		if (!userFactory.getBusinessInfo()) {
+		if (!userFactory.getBusinessInfo() || !signUpFactory.getParse("BusinessInfo")) {
 			userFactory.logout();
 			$state.go('signup');
 		}
@@ -88,6 +88,8 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 	$scope.saveAccountInfo = function(){
 		if (!$('#signUpForm').valid()) return;
 
+		showLoader();
+
 		for (var field in $scope.accountInfo){
 			signUpFactory.set({
 				table : 'AccountInfo',
@@ -115,6 +117,7 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 				signUpFactory.Save('User',{
 					accountInfo : signUpFactory.getParse("AccountInfo")
 				},function(){
+					hideLoader();
 					$state.go('signup.signature');
 				});
 			}

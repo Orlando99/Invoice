@@ -3,7 +3,8 @@
 invoicesUnlimited.controller('VerificationController',['$scope','$state','userFactory','signUpFactory',
 	function($scope,$state,userFactory,signUpFactory){
 	
-	if (!userFactory.authorized() && signUpFactory.get('User','email') == '') 
+	if (!userFactory.authorized() && 
+		(signUpFactory.get('User','email') == '' || signUpFactory.get('User','phonenumber') == '')) 
 		$state.go('signup');
 
 	$.validator.addMethod(

@@ -103,6 +103,8 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 	
 		if (!$('#signUpForm').valid()) return;
 
+		showLoader();
+
 		for (var field in $scope.bsnsInfo){
 			signUpFactory.set({
 				table : 'BusinessInfo',
@@ -129,6 +131,8 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 			signUpFactory.Save('User',{
 				businessInfo : signUpFactory.getParse("BusinessInfo")
 			});
+
+			hideLoader();
 
 			$state.go('signup.principal-info');
 

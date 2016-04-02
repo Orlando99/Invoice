@@ -93,6 +93,6 @@ angular.module('invoicesUnlimited')
 		.state(signUpSignature)
 		.state(signUpConfirm);
 
-	$urlRouterProvider.otherwise('/signup');
+	$urlRouterProvider.otherwise('/dashboard');
 
 });
