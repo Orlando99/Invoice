@@ -7,7 +7,7 @@ angular.module('invoicesUnlimited')
 		name : "signup",
 		url : "/signup",
 		controller : "SignupController",
-		templateUrl : "./app/signup/index.html",
+		templateUrl : "./app/signup/index.html"
 	};
 
 	var signUpVerification = {
@@ -76,6 +76,13 @@ angular.module('invoicesUnlimited')
 		}
 	};
 
+	var loginIndex = {
+		name 	: 'login',
+		url 	: '/login',
+		controller : "LoginController",
+		templateUrl : "./app/login/login.html"
+	}
+
 	var dashboardIndex = {
 		name : 'dashboard',
 		url : "/dashboard",
@@ -84,6 +91,7 @@ angular.module('invoicesUnlimited')
 	};
 
 	$stateProvider
+		.state(loginIndex)
 		.state(signUpIndex)
 		.state(dashboardIndex)
 		.state(signUpVerification)
@@ -93,6 +101,6 @@ angular.module('invoicesUnlimited')
 		.state(signUpSignature)
 		.state(signUpConfirm);
 
-	$urlRouterProvider.otherwise('/dashboard');
+	$urlRouterProvider.otherwise('/login');
 
 });

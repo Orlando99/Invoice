@@ -3,11 +3,11 @@
       <a href="index.html" class="logo"><img src="./dist/images/logo.png" alt="InvoicesUnlimited"></a>
       <div class="organization">
         <img src="./dist/images/user-icon.png" alt="">
-        <a href="#">Company Name</a>
+        <a style="cursor:pointer" class="company">{{BusinessInfo.company}}</a>
         <img src="./dist/images/dropdown-arrow-primary.png" alt="">
         <ul class="submenu user-submenu">
           <li><a href="#">Settings</a></li>
-          <li><a href="#">Logout</a></li>
+          <li><a style="cursor:pointer" ng-click="logOut();">Logout</a></li>
         </ul>
       </div>
     </div>
@@ -192,10 +192,11 @@
 
   </div>
 
-   <div class="onmobile">
+  <div class="onmobile">
     <h2>Need to work on a Mobile ? Download our app!</h2>
     <a href="#"><img src="./dist/images/google-play-icon.png" alt="Google Play"></a>
     <a href="#"><img src="./dist/images/AppStore.png" alt="Google Play"></a>
   </div>
   
   <script src="./dist/js/flexibility.js"></script>
+  <script src="./dist/js/main.js"></script>

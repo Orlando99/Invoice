@@ -1,0 +1,29 @@
+  <header class="sticky-nav logo-only">
+    <a href="#"><img src="./dist/images/logo.png" alt="Invoices Unlimited"></a>
+  </header>
+
+  <section class="sign-up">
+
+    <h2 class="text-uppercase text-center">LOGIN</h2>
+
+    <form name="signUp">
+      <p class="errorMessage" style="display:none;color:red;"></p>
+      <div class="input-container layout-margin-b">
+        <input type="text" class="layout-no-margin" placeholder="USERNAME" ng-model="username">
+      </div>
+      <div class="input-container layout-margin-b">
+        <input type="password" class="layout-no-margin" placeholder="PASSWORD" ng-model="password">
+      </div>
+    </form>
+
+    <a ng-click="signInAction();" class="button button-primary button-next">SIGN IN</a>
+      <p><a href="#">FORGOT PASSWORD?</a></p>
+      
+    <a ng-click="signUpAction();" class="button button-neutral-lg">SIGN UP</a>
+
+    <p class="text-center">Dont have an Account? Singup now in three quick steps.</p>
+
+  </section>
+
+  <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="./dist/js/main.js"></script>-->

@@ -4,15 +4,20 @@ invoicesUnlimited.factory('userFactory',function($q){
 	
 	var currentUser = Parse.User.current();
 	var businessInfo, principalInfo, accountInfo;
+	var parse = {};
 
 	return {
 		authorized : function(){
 			return currentUser;	
 		},
-		logout : function(){
-			Parse.User.logOut();
+		logout : function(callback){
+			if (!callback) Parse.User.logOut();
+			Parse.User.logOut().then(() => {
+				currentUser = Parse.User.current();
+				callback();
+			});
 		},
-		login : function(params,callback){
+		login : function(params,callback,errorCallback){
 			Parse.User.logIn(params.username, 
 							 params.password, {
 							 	success : function(user){
@@ -22,13 +27,22 @@ invoicesUnlimited.factory('userFactory',function($q){
 							 	error : function(user, error){
 							 		console.log(error.message);
 							 	}
-							}).then(function(){
+							}).then(function(obj){
+								currentUser = obj;
 								if (callback) callback();
+							},
+							function(error){
+								if (errorCallback) errorCallback(error.message);
 							});
 		},
+		get : function(objName,prop){
+			if (parse[objName])
+				return (prop? parse[objName].get(prop) : parse[objName]);
+			return null;
+		},
 		getBusinessInfo : function(e){
+			if (!currentUser) return false;
 			if (!e) {
-				if (!currentUser) return false;
 				return currentUser.get('businessInfo');	
 			}
 			var defer = $q.defer();
@@ -50,8 +64,8 @@ invoicesUnlimited.factory('userFactory',function($q){
 			return defer.promise;
 		},
 		getPrincipalInfo : function(callback){
+			if (!currentUser) return false;
 			if (!callback){
-				if (!currentUser) return false;
 				return currentUser.get('principalInfo');
 			}
 			var principalInfo = Parse.Object.extend("PrincipalInfo");
@@ -69,8 +83,8 @@ invoicesUnlimited.factory('userFactory',function($q){
 			});
 		},
 		getAccountInfo : function(callback){
+			if (!currentUser) return false;
 			if (!callback){
-				if (!currentUser) return false;
 				return currentUser.get('accountInfo');
 			}
 			var accountInfo = Parse.Object.extend("AccountInfo");
@@ -88,8 +102,8 @@ invoicesUnlimited.factory('userFactory',function($q){
 			});
 		},
 		getSignature : function(callback){
+			if (!currentUser) return false;
 			if (!callback){
-				if (!currentUser) return false;
 				return currentUser.get('signatureImage');
 			}
 			var signature = Parse.Object.extend("Signature");
@@ -104,6 +118,25 @@ invoicesUnlimited.factory('userFactory',function($q){
 				error : function(object,error){
 					console.log(error.message);
 				}
+			});
+		},
+		loadAll : function(){
+			if (!currentUser) return false;
+			if (Object.keys(parse).length != 0) return;
+			showLoader();
+			var self = this;
+			this.getBusinessInfo(true).then(function(object){
+				parse[object.className] = object;
+				self.getPrincipalInfo(function(object){
+					parse[object.className] = object;
+					self.getAccountInfo(function(object){
+						parse[object.className] = object;
+						self.getSignature(function(object){
+							parse[object.className] = object;
+							hideLoader();
+						});
+					});
+				});
 			});
 		}
 
