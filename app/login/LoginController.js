@@ -11,7 +11,14 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFactory',
 	$scope.password = "";
 
 	if (userFactory.authorized()) {
-		$state.go('dashboard');
+		debugger;
+		if (userFactory.getBusinessInfo() && userFactory.getPrincipalInfo())
+			$state.go('dashboard');
+		else if (userFactory.getBusinessInfo())
+			$state.go('signup.principal-info');
+		else {
+			$('.errorMessage').html("This account is not complete!").show();
+		}
 	}
 
 	$scope.signUpAction = function(){

@@ -12,7 +12,7 @@ invoicesUnlimited.factory('userFactory',function($q){
 		},
 		logout : function(callback){
 			if (!callback) Parse.User.logOut();
-			Parse.User.logOut().then(() => {
+			Parse.User.logOut().then(function(){
 				currentUser = Parse.User.current();
 				callback();
 			});
@@ -128,9 +128,10 @@ invoicesUnlimited.factory('userFactory',function($q){
 			var self = this;
 			var incomplete = '';
 			this.getBusinessInfo(true).then(function(object){
-				parse[object.className] = object;
+				if (object) parse[object.className] = object;
+				if (!object) incomplete = "login";
 				self.getPrincipalInfo(function(object){
-					if (!object){
+					if (!object && incomplete == ''){
 						incomplete = 'signup.principal-info';
 						//return incomplete;
 					}
