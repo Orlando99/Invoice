@@ -9,7 +9,9 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 
 	if (!userFactory.authorized()) $state.go('login');
 
-	userFactory.loadAll();
+	userFactory.loadAll(function(state){
+		$state.go(state);
+	});
 
 	$scope.BusinessInfo = {
 		company : userFactory.get("BusinessInfo","businessName")

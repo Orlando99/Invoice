@@ -63,7 +63,7 @@ invoicesUnlimited.factory('userFactory',function($q){
 
 			return defer.promise;
 		},
-		getPrincipalInfo : function(callback){
+		getPrincipalInfo : function(callback,errorCallback){
 			if (!currentUser) return false;
 			if (!callback){
 				return currentUser.get('principalInfo');
@@ -78,6 +78,7 @@ invoicesUnlimited.factory('userFactory',function($q){
 					callback(object);
 				},
 				error : function(object,error){
+					if (errorCallback) errorCallback();
 					console.log(error.message);
 				}
 			});
@@ -120,20 +121,27 @@ invoicesUnlimited.factory('userFactory',function($q){
 				}
 			});
 		},
-		loadAll : function(){
+		loadAll : function(callback){
 			if (!currentUser) return false;
 			if (Object.keys(parse).length != 0) return;
 			showLoader();
 			var self = this;
+			var incomplete = '';
 			this.getBusinessInfo(true).then(function(object){
 				parse[object.className] = object;
 				self.getPrincipalInfo(function(object){
-					parse[object.className] = object;
+					if (!object){
+						incomplete = 'signup.principal-info';
+						//return incomplete;
+					}
+					//debugger;
+					if (object) parse[object.className] = object;
 					self.getAccountInfo(function(object){
-						parse[object.className] = object;
+						if (object) parse[object.className] = object;
 						self.getSignature(function(object){
-							parse[object.className] = object;
+							if (object) parse[object.className] = object;
 							hideLoader();
+							if (callback && incomplete != '') callback(incomplete);
 						});
 					});
 				});
