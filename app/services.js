@@ -21,17 +21,21 @@ invoicesUnlimited.factory('userFactory',function($q){
 			Parse.User.logIn(params.username, 
 							 params.password, {
 							 	success : function(user){
+							 		debugger;
 							 		currentUser = user;
 							 		console.log('Logged in successfuly');
 							 	},
 							 	error : function(user, error){
+							 		debugger;
 							 		console.log(error.message);
 							 	}
 							}).then(function(obj){
+								debugger;
 								currentUser = obj;
 								if (callback) callback();
 							},
 							function(error){
+								debugger;
 								if (errorCallback) errorCallback(error.message);
 							});
 		},
@@ -123,7 +127,7 @@ invoicesUnlimited.factory('userFactory',function($q){
 		},
 		loadAll : function(callback){
 			if (!currentUser) return false;
-			if (Object.keys(parse).length != 0) return;
+			//if (Object.keys(parse).length != 0) return;
 			showLoader();
 			var self = this;
 			var incomplete = '';
@@ -131,11 +135,6 @@ invoicesUnlimited.factory('userFactory',function($q){
 				if (object) parse[object.className] = object;
 				if (!object) incomplete = "login";
 				self.getPrincipalInfo(function(object){
-					if (!object && incomplete == ''){
-						incomplete = 'signup.principal-info';
-						//return incomplete;
-					}
-					//debugger;
 					if (object) parse[object.className] = object;
 					self.getAccountInfo(function(object){
 						if (object) parse[object.className] = object;

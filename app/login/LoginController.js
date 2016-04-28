@@ -11,9 +11,11 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFactory',
 	$scope.password = "";
 
 	if (userFactory.authorized()) {
-		debugger;
-		if (userFactory.getBusinessInfo() && userFactory.getPrincipalInfo())
+		//debugger;
+		if (userFactory.getBusinessInfo() && userFactory.getPrincipalInfo()){
+			debugger;
 			$state.go('dashboard');
+		}
 		else if (userFactory.getBusinessInfo())
 			$state.go('signup.principal-info');
 		else {
@@ -26,6 +28,7 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFactory',
 	}
 
 	$scope.signInAction = function(){
+		debugger;
 		userFactory.login({
 			username : $scope.username,
 			password : $scope.password

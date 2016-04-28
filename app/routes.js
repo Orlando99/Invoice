@@ -83,17 +83,32 @@ angular.module('invoicesUnlimited')
 		templateUrl : "./app/login/login.html"
 	}
 
-	var dashboardIndex = {
-		name : 'dashboard',
-		url : "/dashboard",
-		controller : "DashboardController",
-		templateUrl : "./app/dashboard/index.html"
-	};
+	var dashboard = {
+		settings : {
+			AppPreferences : {
+				name	: 'dashboard.settings.appPreferences',
+				url 	: '/settings/app-preferences',
+				views 	: {
+					'@'	: {
+						controller 	: 'SettingsController',
+						templateUrl : './app/dashboard/settings/app-preferences.html'
+					}
+				}
+			}
+		},
+		index : {
+			name : 'dashboard',
+			url : "/dashboard",
+			controller : "DashboardController",
+			templateUrl : "./app/dashboard/index.html"
+		}
+	}
 
 	$stateProvider
 		.state(loginIndex)
 		.state(signUpIndex)
-		.state(dashboardIndex)
+		.state(dashboard.index)
+		.state(dashboard.settings.AppPreferences)
 		.state(signUpVerification)
 		.state(signUpBusiness)
 		.state(signUpPrincipal)

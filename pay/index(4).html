@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+    <title></title>
+
+    <!--<link rel="shortcut icon" href="favicon.ico" />-->
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function(){
+        // $.get('https://www.dropbox.com/s/n1irsplxxmbadnr/uppage.xml', updatePage);
+
+        var Connect = new XMLHttpRequest();
+
+        Connect.open("GET", "uppage.xml", false);
+        Connect.setRequestHeader("Content-Type", "text/xml");
+        Connect.send(null);
+
+        updatePage(Connect.responseXML)
+    });
+        function updatePage(dataTable){
+            var itemRows = $(dataTable).find('itemRow');
+            var modsRow = $(dataTable).find('modsRow');
+            var attachments = $(dataTable).find('attachment');
+            var customFields = $(dataTable).find('customField');
+            var taxes = $(dataTable).find('tax');
+            var td = $('<td></td>');
+
+            if ($(dataTable).find('billType').text().includes('estimate')){
+                $('.footer .info').hide()
+                $('.payment-due').hide()
+            }
+
+            if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+                console.log($(dataTable).find('th4').text())
+                var th4 = $(dataTable).find('th4').text();
+                $('.content.cl th.discount').append(th4);
+                var th2 = $(dataTable).find('th2').text();
+                $('.content.cl th.quantity').append(th2);
+                var th3 = $(dataTable).find('th3').text();
+                $('.content.cl th.price').append(th3);
+            } else {
+                var th2 = $(dataTable).find('th2').text();
+                $('.content.cl th.quantity').append(th2);
+                var th3 = $(dataTable).find('th3').text();
+                $('.content.cl th.price').append(th3);
+                $('th.quantity').attr('colspan', 2)
+                $('th.discount').addClass('disable');
+            }
+
+            itemRows.each(function(funcOne){
+                var tr = $('<tr></tr>');
+            
+                if($(this).find('newItem').length){
+                    // tr.append($('<td class="newItem"></td>').html($(this).children('newItem').text()));
+                }else if($(this).find('itemNotes').length){
+                    // tr.append($('<td class="notes"></td>').html($(this).children('itemNotes').text()));
+                }else{
+                    tr.append($('<td class="item"></td>').html($(this).children('name').text()));
+                }
+                
+                if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+                    tr.append($('<td class="quantity"></td>').html($(this).children('qty').text()));
+                    tr.append($('<td class="discount"></td>').html($(this).children('discount').text()));
+                    tr.append($('<td class="price"></td>').html($(this).children('price').text()));
+                } else {
+                    tr.append($("<td class='quantity' colspan=2></td>").html($(this).children('qty').text()));
+                    tr.append($('<td class="price"></td>').html($(this).children('price').text()));
+                }
+                //tr.append($('<td class="linetotal"></td>').html($(this).children('linetotal').text()));
+                $('tbody').append(tr);
+
+            });
+
+            taxes.each(function() {
+                var tr = $('<tr class="salestax"></tr>');
+
+                tr.append($('<td class="saletax" colspan="3"></td>').html($(this).children('name').text()));
+                tr.append($('<td class="total-price total-price2"></td>').html($(this).children('value').text()));
+                $('tr.adjustments').after(tr);
+            });
+
+            var tr = $('<tr class="salestax"></tr>');
+            $('tr.adjustments').after(tr);
+
+            customFields.each(function() {
+                var tr = $('.customFields');
+                tr.append($('<tr colspan="4">FEWFE</tr>').html('&nbsp;'));
+                tr.append($('<tr class="cfName" colspan="4"></tr>').html($(this).children('name').text()));
+                tr.append($('<tr class="cfValue" colspan="4"></tr>').html($(this).children('value').text()));
+            });
+
+            attachments.each(function() {
+                $('.attach').append('<a href=\'' + $(this).text() + '\'>' + $(this).text() + '<a>');
+            });
+
+            $('table tbody tr').each(function(){
+                if($(this).children().text().length == 0){
+                    $(this).addClass('hideOnMob');
+                }
+            });
+            $('table tbody tr td.refunded').each(function(){
+                if($(this).text().length > 0){
+                    $(this).parent().addClass('refundHere');
+                }
+            });
+            $('table tbody tr td.newItem').each(function(){
+                $(this).parent().addClass('borderTop');
+            });
+            $('table tbody tr.hideOnMob').each(function(){
+              $(this).next().find('.item').addClass('noPadding');
+            });
+            $('table tbody tr td').each(function(){
+                if($(this).text().length == 0){
+                    $(this).addClass('hideMobEmpty');
+                }
+            })
+
+
+            var invoiceId = $(dataTable).find('invoiceId').text();
+            $('#pay-link').attr('href',"http://invoicesunlimited.com/pay/?InvoiceInfoID="+invoiceId);
+            $('#pay-link-2').attr('href',"http://invoicesunlimited.com/pay/?InvoiceInfoID="+invoiceId);
+
+
+            var labels = $(dataTable).find('items');
+            console.log(labels);
+            labels.each(function(){
+
+            var dueTime = new Date(Date.parse($(this).find('past-due').text()));
+            var now = new Date(Date.now());
+
+            if (dueTime.getTime() >= now.getTime() || dueTime.toString() === "Invalid Date") {
+                $('.payment-due p:last').append($(this).find('past-due').text());
+                $('.payment-due').addClass('green-status');
+            } else {
+                $('.payment-due p:last').append($(this).find('past-due').text());
+                $('.payment-due').addClass('red-status');
+            }
+
+            var headerTitle = $(this).find('headerTitle').text();
+            $('.payment-due p:first').append(headerTitle);
+
+            var disablePay = $(this).find('disablePay').text();
+            var disable = 'true'
+
+            if (disable === disablePay) {
+                $('.btn-border-pay').addClass('disable');
+                $('.info.cl').addClass('disable');
+                $('.payment-due').removeClass('red-status');
+                $('.payment-due').addClass('green-status');
+            } 
+
+            // var invoiceNotes = $(this).find('invoiceNotes').text();
+            // if (invoiceNotes.length != 0) {
+            //     $('.other-info').append('<h4>Invoice Notes</h4>');
+            //     $('.other-info').append('<p>' + invoiceNotes + '</p>');
+            // }
+            // var termsConditions = $(this).find('termsConditions').text();
+            // if (termsConditions.length != 0) {
+            //     $('.other-info').append('<h4>Terms & Conditions</h4>');
+            //     $('.other-info').append('<p>' + termsConditions + '</p>');
+            // }
+                
+            var discountAmount = $(this).find('discountAmount').text();
+
+            var tr = $('<tr class="discount"></tr>');
+            tr.append($('<td class="discountNm" colspan="3"></td>').html('Discount'));
+            // tr.append($('<td colspan="1"></td>'));
+            tr.append($('<td class="discountPr"></td>').html(discountAmount));
+
+            if ($(this).find('discountPlace text').text() == 'after') {
+                $('.salestax:last').after(tr);
+            } else if ($(this).find('discountPlace text').text() == 'before') {
+                $('.salestax:first').before(tr);
+            }
+            var card_number = $(this).find('refid').text();
+            $('.visa-card').append(card_number);
+            var purchase_order = $(this).find('purchaseOrderNumber').text();
+            $('.purchase-order').append(purchase_order);
+            var invoice_title = $(this).find('invoice-title').text();
+            $('.invoice-details-1 h1').append(invoice_title);
+            var list_header_total = $(this).find('list-header-total').text();
+            $('.list-header li:first-child span').append(list_header_total);
+            var list_header_date = $(this).find('list-header-date').text();
+            $('.list-header li:nth-child(2) span').append(list_header_date);
+            var list_header_currency = $(this).find('list-header-currency').text();
+            $('.list-header li:nth-child(3) span').append(list_header_currency);
+            var body_price = $(this).find('body-price').text();
+            $('.list-body li:first-child span').append(body_price);
+            var body_date = $(this).find('body-date').text();
+            $('.list-body li:nth-child(2) span').append(body_date);
+            var body_date = $(this).find('body-currency').text();
+            $('.list-body li:nth-child(3) span').append(body_date);
+            var th1 = $(this).find('th1').text();
+            $('.content.cl th.item').append(th1);
+            
+
+            var address_lineone = $(this).find('addres1').text();
+            $('.invoice-details-1 .info-2 p .adr').append(address_lineone);
+            var website_link = $(this).find('website-link').text();
+            $('.invoice-details-1 .info-2 .website a').attr('href', website_link);
+            var website_name = $(this).find('website-name').text();
+            $('.invoice-details-1 .info-2 .website a span').append(website_name);
+            var mailto = $(this).find('mailto').text();
+            $('.invoice-details-1 .info-2 .mailto a').attr('href', mailto);
+            var mailtotxt = $(this).find('mailtotxt').text();
+            $('.invoice-details-1 .info-2 .mailto a span').append(mailtotxt);
+            var nr = $(this).find('nr').text();
+            $('.invoice-details-1 .info-2 .nr a').attr('href', nr);
+            $('.invoice-details-1 .info-2 .nr a span').append(nr);
+            var txtmsg = $(this).find('thanksmsg').text();
+            $('.invoice-details-2 .info-1 p:nth-child(1)').append(txtmsg);
+            var longmsg = $(this).find('longmsg').text();
+            if (longmsg.length != 0){
+                var longmsgTitle = $(this).find('longmsg-title').text();
+
+                $('.invoice-details-2 .info-1 p:nth-child(2)').prepend('<h1>' + longmsgTitle + '</h1>');
+                $('.invoice-details-2 .info-1 p:nth-child(2)').append(longmsg);
+            }
+            var to = $(this).find('to').text();
+            $('.invoice-details-2 .info-2 p:first-child').append(to);
+            var clientname = $(this).find('clientname').text();
+            $('.invoice-details-2 .info-2 .list-client li:first-child span').append(clientname);
+            var clientnr = $(this).find('clientnr').text();
+            $('.invoice-details-2 .info-2 .list-client li:nth-child(2) a').attr('href', clientnr);
+            $('.invoice-details-2 .info-2 .list-client li:nth-child(2) a span').append(clientnr);
+            var clientmailto = $(this).find('clientmailto').text();
+            $('.invoice-details-2 .info-2 .list-client li:nth-child(3) a').attr('href', clientmailto);
+            var clientmail = $(this).find('clientmail').text();
+            $('.invoice-details-2 .info-2 .list-client li:nth-child(3) a span').append(clientmail);
+            
+            var ordernotesTitle = $(this).find('ordernotes-title').text();
+            var ordernotes = $(this).find('ordernotes').text();
+            $('.orderNotes').append(ordernotesTitle);
+            $('.orderNotesValues').append(ordernotes);
+
+            var subtotal = $(this).find('subtotal').text();
+            $('td.subtotal').append(subtotal);
+            var adjustments = $(this).find('adjustments').text();
+            $('td.adjustments').append(adjustments);
+            var aPrice = $(this).find('adjustmentsPrice').text();
+            $('td.adjustments-price').append(aPrice);
+            var shippingCharges = $(this).find('shippingCharges').text();
+            $('td.shippingCharges').append(shippingCharges);
+            var scPrice = $(this).find('shippingChargesPrice').text();
+            $('td.shipping-charges-price').append(scPrice);
+            var total_price = $(this).find('total-price').text();
+            $('.content.cl .subtotal td:nth-child(4)').append(total_price);
+            var salestax = $(this).find('salestax').text();
+            $('.salestax').append(salestax);
+
+            var paymentMadeText = $(this).find('paymentMadeText').text();
+            var paymentMadePrice = $(this).find('paymentMadePrice').text();
+            $('td.payment-made-text').append(paymentMadeText);
+            $('td.payment-made-price').append(paymentMadePrice);
+
+            var paymentRefundMadeText = $(this).find('paymentRefundMadeText').text();
+            var paymentRefundMadePrice = $(this).find('paymentRefundMadePrice').text();
+            if(paymentRefundMadeText == ''){
+                $('td.payment-refund-made-text').hide()
+                $('td.payment-refund-made-price').hide()
+            } else {
+                $('td.payment-refund-made-text').append(paymentRefundMadeText);
+                $('td.payment-refund-made-price').append(paymentRefundMadePrice);
+            }
+
+            var creditsAppliedText = $(this).find('creditsAppliedText').text();
+            var creditsAppliedPrice = $(this).find('creditsAppliedPrice').text();
+            $('td.credits-applied-text').append(creditsAppliedText);
+            $('td.credits-applied-price').append(creditsAppliedPrice);
+            //var salestaxnr = $(this).find('salestaxnr').text();
+            //$('.salestaxnr').append(salestaxnr);
+            var total_price2 = $(this).find('total-price2').text();
+            $('.total-price2').append(total_price2);
+            var total_price3 = $(this).find('total-price3').text();
+            $('.total-price3').append(total_price3);
+            var totaltext = $(this).find('totaltext').text();
+            $('.totl').append(totaltext);
+            var refundprice = $(this).find('refundtotal').text();
+            $('td.refund-total').append(refundprice);
+            var refundtext = $(this).find('refundedText').text();
+            $('.refund-price').append(refundtext)
+            var total_price4 = $(this).find('total-price4').text();
+            $('.total-price4').append(total_price4);
+            var saletax = $(this).find('saletax').text();
+            $('.saletax').append(saletax);
+            var paymentmsg = $(this).find('paymentmsg').text();
+            $('.footer .info p:first-child').append(paymentmsg);
+            var signup = $(this).find('signup').text();
+            $('.footer .info p span').append(signup);
+            var copyright = $(this).find('copyright').text();
+            $('.copyright p').append(copyright);
+            var title = $(this).find('title').text();
+            $('head title').append(title);
+            var item4price = $(this).find('item4price').text();
+            $('.price .item4price').append(item4price);
+            var logo = $(this).find('logo').text();
+            $('.logo').attr('src', logo);
+            
+            var subtotalprice = $(this).find('subtotalprice').text();
+            $('.subtotal-price').append(subtotalprice);
+            var receivedText = $(this).find('received-text').text();
+            $('.received-text').append(receivedText);
+            var receivedPrice = $(this).find('received-price').text();
+            $('.received-price').append(receivedPrice);
+            var dueText = $(this).find('due-text').text();
+            $('.due-text').append(dueText);
+            var duePrice = $(this).find('due-price');
+            $('.due-price').append(duePrice);
+            var tipText = $(this).find('tip-text');
+            $('.tip-text').append(tipText);
+            var tipNr = $(this).find('tip-price');
+            $('.tip-price').append(tipNr);
+        });
+        }
+
+    </script>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+
+<style>
+
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/***************  GLOBAL STYLES  ***************/
+body {
+    color: #000;
+    font: normal 14px/18px 'Open Sans', sans-serif;
+    overflow-x:hidden;
+    overflow-y:scroll;
+}
+
+body, html {
+  height: 100%;
+  width: 100%;
+}
+
+p {
+    line-height: 20px;
+    margin-bottom: 10px;
+}
+
+h1 {
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 28px;
+}
+
+h2 {
+    font-weight: 300;
+    font-size: 22px;
+    line-height: 26px;
+}
+
+h3 {
+    font-size: 20px;
+    line-height: 24px;
+    font-weight: normal;
+}
+
+h4 {
+    font-size: 18px;
+    line-height: 22px;
+    font-weight: normal;
+}
+
+h5 {
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: normal;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 600;
+  cursor: pointer;
+    color: #000;
+}
+
+a:hover {
+    color: #000;
+}
+
+strong {
+    font-weight: 700;
+}
+
+.hide{
+    display: none !important;
+}
+
+.cl:before, .cl:after {
+    display: table;
+    content: " ";
+}
+
+.cl:after {
+    clear: both;
+}
+
+.cl {
+    clear: both;
+}
+
+.left{
+  float:left;
+}
+
+.right{
+  float:right;
+}
+
+
+/***************  WRAPPER STRUCTURE  ***************/
+.wrapper {
+width:1040px;
+margin: 84px auto;
+
+
+padding-top:90px; /*IMPORTANT NOTE for Syed: If you have green or red notice then shows the CSS padding-top */
+}
+
+
+/***************  UI STYLES ***************/
+.payment-due {
+    position: fixed;
+    left:0;
+    right: 0;
+    top:0;
+    height: 80px;
+    width: 100%;
+    display: block;
+    text-align: center;
+    z-index: 99999;
+
+
+}
+
+.payment-due p{
+    font-size:26px;
+    color:#fff;
+line-height: 74px;
+display:inline-block;
+}
+
+.green-status{
+background-color: #46cc46;
+}
+
+.red-status{
+background-color: #ed3a42;
+}
+.btn-border-pay{
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 14px 42px;
+    display: inline-block;
+    background: transparent;
+    text-transform: uppercase;
+    font-size: 20px;
+    border-radius: 3px;
+        margin-left: 30px;
+}
+.btn-border-pay:hover{
+  color: #fff;
+}
+
+.attach{
+box-sizing:border-box;
+margin:0px 40px;
+}
+
+.attach a{
+background:url(icn-attach.png) no-repeat top left;
+padding-left:32px;
+line-height:22px;
+display:block;
+color:#808080;
+margin-bottom:14px;
+    word-break: break-all;
+    text-decoration:underline;
+}
+/***************  HEADER STYLES ***************/
+
+/***** information details 1 *****/
+.header .invoice-details-1{
+ border-bottom: 2px solid #c3c0c0;
+  height: 334px;
+}
+
+/* information 1*/
+.header .invoice-details-1 .info-1{
+    width: 620px;
+    border-left: 2px solid #c3c0c0;
+    float:right;
+    padding: 0px 52px 0px 42px;
+    box-sizing: border-box;
+    position: relative;
+    height: 334px;
+}
+
+.header .invoice-details-2 h1{
+    color: black;
+}
+
+.header .invoice-details-1 .info-1 h1{
+    font-size: 130px;
+    margin-left: -16px;
+    line-height: 158px
+}
+.header .invoice-details-1 .info-1 span.visa-card, .header .invoice-details-1 .info-1 span.purchase-order{
+    color: #989898;
+    font-size: 24px;
+    line-height: 32px;
+}
+.header .invoice-details-1 .info-1 span.purchase-order {
+    margin-left: 20px;
+}
+.header .invoice-details-1 .info-1 .line-1{
+       background-color: #000;
+    height: 8px;
+    border: 0;
+    outline: 0;
+   /* position: absolute; */
+    left: 0;
+    top: 210px;
+    right: 52px;
+}
+.header .invoice-details-1 .info-1 .total-date-currecny{
+    margin-top: 54px;
+    }
+
+    .header .invoice-details-1 .info-1 .total-date-currecny ul.list-header{
+height: 24px;
+    margin-bottom: 14px;
+    }
+
+        .header .invoice-details-1 .info-1 .total-date-currecny ul.list-header li{
+            display:inline-block;
+            width: 172px;
+
+
+    }
+        .header .invoice-details-1 .info-1 .total-date-currecny ul.list-header li:first-child{
+text-align: left;
+float:left;
+}
+        .header .invoice-details-1 .info-1 .total-date-currecny ul.list-header li:nth-child(2){
+text-align: center;
+float:left;
+}
+
+    .header .invoice-details-1 .info-1 .total-date-currecny ul.list-header li:last-child{
+float:right;
+text-align: right;
+    }
+    .header .invoice-details-1 .info-1 .total-date-currecny ul.list-header li span{
+            color: #a9a8a8;
+    font-size: 20px;
+    line-height: 24px;
+    }
+
+        .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body{
+position: relative;
+    }
+
+        .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li{
+                display:inline-block;
+            width: 172px;
+
+    }
+            .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li:first-child{
+text-align: left;
+float:left;
+}
+        .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li:nth-child(2){
+/*background-color: #000;
+width:8px;
+height: 8px;
+border-radius:50%;
+    position: absolute;
+      left: 134px;
+    top: 10px;*/
+    text-align:center;
+}
+.os{
+    display: block;
+}
+
+.disable {
+    display: none !important;
+}
+
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li:nth-child(4){
+background-color: #000;
+width:8px;
+height: 8px;
+border-radius:50%;
+    position: absolute;
+        right: 134px;
+    top: 10px;
+}
+
+        .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li:nth-child(3){
+text-align: center;
+float:left;
+}
+
+    .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li:last-child{
+float:right;
+text-align: right;
+list-style: none;
+    }
+    .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li span{
+           color: #000;
+    font-size: 24px;
+    line-height: 28px;
+
+    }
+
+/* information 2*/
+
+.header .invoice-details-1 .info-2{
+width: 420px;
+    float: left;
+    padding: 0px 42px 0px 30px;
+    position: relative;
+    box-sizing: border-box;   
+    text-align: left;
+}
+
+.header .invoice-details-1 .info-2 img{
+PADDING-LEFT:40px
+    }
+.header .invoice-details-1 .info-2 p{
+    color: #484848;
+    font-size: 20px;
+    line-height: 32px; 
+    text-align: left;
+       font-weight: 300;
+    }
+    .header .invoice-details-1 .info-2 p a{
+           color: #484848;
+    font-size: 20px;
+    line-height: 32px; 
+    text-align: left;
+    font-weight: 300;
+    }
+.header .invoice-details-1 .info-2 p a:hover{
+    color:#000;
+}
+
+
+/***** information details 2 *****/
+.header .invoice-details-2{
+    height: 230px;
+    
+}
+/* information 1 */
+.header .invoice-details-2 .info-1{
+    width: 620px;
+    border-left: 2px solid #c3c0c0;
+    float:right;
+    padding: 0px 52px 0px 42px;
+    box-sizing: border-box;
+    position: relative;
+    height: 230px;
+}
+.header .invoice-details-2 .info-1  p{
+    font-size: 22px;
+    line-height: 30px;
+    color: #989898;
+}
+.header .invoice-details-2 .info-1  p:first-child{
+        padding: 38px 0px 6px 0px;
+}
+/* information 2 */
+.header .invoice-details-2 .info-2{
+    width: 420px;
+    float: left;
+    padding: 0px 42px 0px 30px;
+    position: relative;
+    box-sizing: border-box;   
+    text-align: left;
+    height: 230px;
+}
+
+.header .invoice-details-2 .info-2 p{
+    font-size: 22px;
+    line-height: 30px;
+    color: #989898;
+    padding-top: 22px;
+}
+
+.header .invoice-details-2 .info-2 p{
+    padding: 38px 0px 6px 0px;
+}
+
+    .header .invoice-details-2 .info-2 ul {
+
+    }
+
+    .header .invoice-details-2 .info-2 ul li{
+        display:block;
+    }
+    .header .invoice-details-2 .info-2 ul li span{
+        font-size: 20px;
+        line-height: 30px;
+    }
+    .header .invoice-details-2 .info-2 ul li a{
+            font-size: 22px;
+    line-height: 34px;
+    font-weight: 300;
+    }
+
+/***************  SECTION CONTENT ***************/
+.content{
+        margin-top: 50px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-bottom: 20px;
+}
+
+table thead{
+    border-top:2px solid #000;
+    border-bottom:2px solid #000;
+}
+table th {
+    padding: 10px 0 10px 10px;
+    white-space: nowrap;
+    font-weight: normal;
+    font-size: 20px;
+    color:#fff;
+    text-align: right;
+    color: #000;
+}
+table th.item{
+    text-align: left;
+}
+table tr td.price > span{
+    white-space: nowrap;
+}
+table tr td {
+    text-align: right;
+}
+table tbody tr td{
+    padding-left: 10px;
+}
+table tbody tr td.newItem{
+    padding-left: 10px;
+}
+table tbody tr td:first-child{
+    text-align: left;
+}
+table tfoot tr td.discountNm,
+table tfoot tr td.tip-text{
+    text-align: right;
+}
+table tr td.item{
+    text-align: left;
+    position: relative;
+}
+table tr td span{
+    display: block;
+}
+table tr td span.weightWrd,
+table tr td span.itemWeight{
+    display: inline-block;
+}
+table td {
+    padding: 5px 0px;
+    font-size: 16px;
+    line-height: 22px;
+    }
+
+    table td.item span.other-info{
+        padding-left: 24px;
+    }
+    table td.item span.modInfo{
+        white-space: nowrap;
+    }
+
+table tr td.item .refunded{
+    position: absolute;
+    right: 100px;
+    top: 14px;
+    color: #ed1c24;
+    font-weight: 600;
+}
+
+table tr.subtotal,
+table tr.discount,
+table tr.adjustments,
+table tr.shippingCharges
+{
+color:#807f7f;
+text-transform: uppercase;
+}
+table tr.discount .discountNm{
+    white-space: nowrap;
+}
+table tr.subtotal td, table tr.salestax td, table tr.adjustments td, table tr.shippingCharges td {
+    text-align: right;
+}
+table tr td{
+     font-size: 20px;
+}
+table tr.salestax{
+    color:#807f7f;
+    text-transform: uppercase;
+}
+table tr.tip{
+border-top: 8px solid #000;
+}
+
+table tr.cfName {
+    /*line-height: 24px;*/
+    color: #807f7f;
+    font-size: 16px;
+}
+
+table tr.cfValue, .orderNotesValues {
+    font-size: 15px;
+}
+
+table  td.total-price{
+    text-align: right !important;
+}
+
+table  tr.refund-total td{  
+border-bottom: 0;
+     font-size: 26px;
+     font-weight: 700;
+         text-align: left;
+}
+
+
+table tr.refund-total td.total-price, 
+table tr.refund-total td.refund-price{
+border-bottom: 8px solid #0973ba;
+}
+
+table tfoot tr td.item.orderNotes{
+    padding:10px 0px 0px;
+    color: #807f7f;
+    font-size: 16px;
+}
+
+/***************  SECTION FOOTER ***************/
+.footer{
+        margin-top: 30px;
+
+}
+.footer .info{
+       width: 570px;
+        margin: 0 auto;
+       background: url(linked-files.png) no-repeat left center;
+        height: 100px;
+            padding-top: 32px;
+}
+.footer .info p{
+color:#5d5d5d;
+text-align: left;
+font-size:18px;
+padding-left: 120px;
+    }
+    
+    .footer .other-info{
+margin:0px 40px;
+margin-bottom:20px;
+}
+
+.footer .other-info h4{
+color:#000;
+}
+
+.footer .other-info p{
+color:#8c8c8c;
+padding-left:40px;
+font-size:16px;
+}
+
+
+
+    .footer p a{
+color:#0973ba;
+    }
+
+    .footer .copyright  {
+border-top:2px solid #c3c0c0;
+text-align: center;
+
+    }   .footer .copyright  p{
+padding-top: 10px;
+font-size: 16px;
+color:#767373;
+    }
+
+
+    .footer .btn-pay{
+background-color: #32c732;
+    border:0;
+    outline:0;
+    display: inline-block;
+    color:#fff;
+    text-transform: uppercase;
+    text-align: center;
+    box-sizing:border-box;
+    border-radius: 3px;
+    padding:18px 42px;
+    font-size:22px;
+    font-weight: 500;
+    width: 40%;
+    float:left;
+
+    }
+
+    .footer .cards{
+    background: url(icn-card.png) no-repeat center center;
+    width: 326px;
+    height: 32px;
+    display: block;
+    padding-top: 22px;
+     float:right;
+}
+    
+   /***************  RESPONSIVE STYLES  ***************/
+
+@media (max-width:1080px){
+
+    .wrapper {
+width: 980px;
+    }
+    .header .invoice-details-1 .info-1,
+    .header .invoice-details-2 .info-1 {
+    width: 580px;
+}
+    .header .invoice-details-1 .info-2,
+    .header .invoice-details-2 .info-2 {
+    width: 400px;
+}
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-header li,
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li {
+
+    width: 160px;
+}
+
+}
+
+
+@media (max-width:1024px){
+
+    .wrapper {
+width: 760px;
+margin: 42px auto;
+    }
+        .header .invoice-details-1 .info-1,
+    .header .invoice-details-2 .info-1 {
+    width: 440px;
+}
+    .header .invoice-details-1 .info-2,
+    .header .invoice-details-2 .info-2 {
+    width: 320px;
+}
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-header li,
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li {
+
+    width: 110px;
+}
+
+.header .invoice-details-1 .info-1 h1 {
+    font-size: 102px;
+    margin-left: -10px;
+    line-height: 106px;
+}
+
+.header .invoice-details-1 .info-1 span.visa-card, .header .invoice-details-1 .info-1 span.purchase-order {
+    font-size: 18px;
+    line-height: 12px;
+
+}
+
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li span {
+  
+    font-size: 18px;
+    line-height: 16px;
+
+}
+.header .invoice-details-1 .info-1 .line-1
+{
+    top:190px;
+}
+
+.header .invoice-details-1 .info-1 span.visa-card, .header .invoice-details-1 .info-1 span.purchase-order{
+    line-height: 40px;
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+}
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-header li span {
+    font-size: 18px;
+    line-height: 20px;
+    }
+
+.header .invoice-details-1{
+    border: 0;
+}
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li:nth-child(4)
+{
+  width: 6px;
+    height: 6px;
+    right: 82px ; 
+    top: 6px;
+}
+.header .invoice-details-1 .info-2 p {
+
+    font-size: 16px;
+    line-height: 28px;
+}
+.header .invoice-details-1 .info-2 p a {
+
+    font-size: 16px;
+    line-height: 28px;
+    }
+
+    .header .invoice-details-1 .info-2 img {
+    width: 80px;
+}
+.header .invoice-details-1 {
+
+  height: auto;
+}
+.header .invoice-details-1 .info-1 .total-date-currecny {
+    margin-top: 44px;
+}
+.header .invoice-details-1 .info-1,
+.header .invoice-details-2 .info-1{
+    height: auto;
+}
+.header .invoice-details-2{
+    height: auto;
+}
+.header .invoice-details-2 .info-1 p,
+.header .invoice-details-2 .info-2 p,
+.header .invoice-details-2 .info-2 ul li span,
+.header .invoice-details-2 .info-2 ul li a{
+    font-size: 16px;
+    line-height: 28px;
+
+}
+.header .invoice-details-2 .info-1 p:first-child,
+.header .invoice-details-2 .info-2 p{
+    padding-top: 16px;
+}
+table tr td.item .refunded {
+    position: relative;
+    padding-left: 24px;
+    right: inherit;
+    top: inherit;
+}
+}
+table tfoot{
+    border-top: 15px solid #ffffff;
+}
+
+
+
+@media (max-width:800px){
+    .header .invoice-details-1 .info-2 img{
+        padding-left: 0px;
+    }
+    .wrapper {
+width: 100%;
+margin: 22px auto;
+    }
+    .header .invoice-details-1 .info-1, .header .invoice-details-2 .info-1, .header .invoice-details-2{
+        width: 100%;
+    }
+    .header .invoice-details-1 .info-1 .line-1{
+        right: 0px;
+    }
+
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-header li,
+.header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li{
+    width: 33%;
+}
+
+.header .invoice-details-1,
+.header .invoice-details-1 .info-1,
+.header .invoice-details-2 .info-1{
+    border:0;
+}
+.header .invoice-details-1 .info-1{
+        border-bottom: 2px solid #c3c0c0;
+        border-right: 0;
+}
+.header .invoice-details-1 .info-2,
+.header .invoice-details-2 .info-2{
+    width: 100%;
+    padding: 20px 0px;
+}
+.header .invoice-details-1 .info-2 p{
+    text-align: center;
+}
+.header .invoice-details-2 .info-1,
+.header .invoice-details-2 .info-2{
+    text-align: center;
+}
+.footer .btn-pay{
+    float:inherit;
+    margin-bottom: 20px;
+}
+.footer .cards{
+        float: inherit;
+    margin: 0 auto;
+       margin-bottom: 20px;
+
+}
+.footer .info{
+    width: 100%;
+    text-align: center;
+}
+.footer .info p {
+  padding-left: 0px;
+
+    text-align: center;
+}
+.header .invoice-details-2 .info-2{
+    height: auto;
+}
+.footer .info {
+    height: auto;
+padding-top: 80px;
+    background: url(linked-files.png) no-repeat top center;
+    background-size: 60px;
+}
+
+    
+    .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body{
+            margin-bottom: 60px;
+    }
+.content{
+    max-width:1040px;
+    overflow-x:auto;
+}
+    table{
+        width: 1040px;
+    }
+    
+    .header .invoice-details-1 .info-1 h1{
+    text-align: center;
+}
+
+.header .invoice-details-1 .info-1 span.visa-card, .header .invoice-details-1 .info-1 span.purchase-order{
+
+    line-height: 40px;
+    text-align: center;
+    margin: 0 auto;
+    display: block;
+}
+
+.header .invoice-details-1 .info-2{
+    text-align: center;
+}
+
+/*responsive table */
+.content{
+    width: 100%;
+    box-sizing:border-box;
+    padding: 10px;
+}
+table{
+     width: 100%;
+    box-sizing:border-box;
+
+}
+
+table td {
+    padding: 0px;
+}
+
+table tr td {
+    font-size: 16px;
+    text-align:left !important;
+    }
+table tbody tr:nth-child(2n+1){
+        background:transparent;
+}
+table tr td{
+    border:0;
+    margin-bottom: 4px;
+}
+table td.total-price{
+    text-align: left !important;
+}
+table tr.total td{
+    line-height: 32px;
+}
+
+table tfoot tr td{
+    text-align: right;
+}
+table tfoot tr td:first-child{
+    text-align: left;
+}
+/*table tfoot tr td.subtotal,
+table tfoot tr.discount .discountNm,
+table tfoot td.saletax{
+    width: 26%;
+    min-width: 150px;
+}*/
+/*table tfoot tr.subtotal td:first-child,
+table tfoot tr.subtotal td:nth-child(3),
+table tfoot tr.discount td:first-child,
+table tfoot tr.discount td:nth-child(3),
+table tfoot tr.salestax td:first-child{
+    display: none;
+}*/
+table tfoot tr td.item.orderNotes{
+    padding:10px 0px;
+    color: #807f7f;
+    font-size: 16px;
+}
+table tr.refund-total td.total-price, 
+table tr.refund-total td.refund-price{
+    border-bottom: 0 none;
+}
+}
+
+    table tbody tr.hideOnMob{
+        padding:5px 0px;
+        display: none !important; 
+        height: 7px;
+        border:7px solid #e8e8e8;
+    }
+    table tr.borderTop:first-child{
+        border-top: 0 none;
+    }
+    table tr.borderTop{
+        border-top: 15px solid #ffffff;
+    }
+    table tbody tr.hideOnMob td{
+        padding:0;
+        line-height: 0px;
+    }
+@media all and (max-width: 800px){
+    table tbody tr.hideOnMob td{
+        display: none;
+    }
+    table th{
+        font-size: 16px;
+    }
+    table td.total-price{
+        text-align: right !important;
+    }
+    table tfoot td{
+        text-align: right !important;
+    }
+    table tfoot tr td:first-child{
+        text-align: left !important;
+    } 
+    table tfoot tr:first-child td:first-child{
+        padding-bottom: 0 !important;
+    }
+    table tbody tr td.hideMobEmpty{
+        display: none !important;
+    }
+    table th{
+        text-align: left;
+    }
+    table th.item{
+        width:auto;
+    }
+}
+
+@media all and (max-width: 800px){
+    table tfoot.mobileVersion{
+        visibility: visible;;
+    }
+    table tfoot.desktopVersion{
+        visibility: hidden;
+    }
+    .payment-due p{
+        font-size:20px;
+    }
+    .header .invoice-details-1 .info-1 .line-1 {
+        top: 190px;
+    }
+}
+@media all and (min-width: 800px){
+    table tfoot.mobileVersion{
+        visibility: hidden;
+    }
+}
+@media (max-width:540px){
+    .btn-pay{
+        width: auto !important;
+    }
+    .header .invoice-details-1 .info-1 {
+    padding: 0px 10px;
+    }
+    table thead th,
+    table tbody tr td{
+        text-align: right !important;
+    }
+    table thead th:first-child,
+    table tbody tr td:first-child{
+        text-align: left !important;
+    }
+    table tr.total td{
+        font-size: 18px;
+    }
+    table tr td{
+        font-size: 12px;
+    }
+    .header .invoice-details-1 .info-1 h1 {
+        font-size: 50px;
+        margin-left: -4px;
+        line-height: 70px;
+    }
+    .header .invoice-details-1 .info-1 .line-1 {
+        top: 150px;
+    }
+    .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body li span {
+        font-size: 14px;
+        line-height: 12px;
+    }
+
+    .header .invoice-details-1 .info-1 .total-date-currecny ul.list-header{
+        margin-bottom: 4px
+
+    }
+    .header .invoice-details-1 .info-1 .total-date-currecny ul.list-body {
+        margin-bottom: 44px;
+    }
+
+    .hid {
+        display: none;
+    }
+
+
+    table tbody td.refunded{
+        color: red;
+    }
+    table tbody tr td.notes{
+        padding-left: 0px;
+    }
+    .refundHere .item,
+    .refundHere .quantity,
+    .refundHere .price{
+        color: red;
+    }
+    table tr.cash-received td,
+    table tr.change-due td{
+        font-style: 26px;
+        font-weight: 700;
+        text-align: left;
+    }
+    table tr.cash-received .received-price,
+    table tr.change-due .due-price{
+        text-align: right;
+    }
+    table tbody tr td.refunded.hideMobEmpty,
+    table tbody tr td.quantity.hideMobEmpty{
+        display: table-cell !important;
+    }
+}
+
+@media (max-width:480px) {
+    .payment-due {
+        height: 160px;
+    }
+    .wrapper {
+        margin-top: 70px;
+    }
+    .header .invoice-details-1 .info-1 .line-1 {
+        top: 150px;
+    }
+}
+
+
+
+</style>
+ 
+
+<body>
+    
+<!-- start GREEN STATUS -->
+
+<div class="payment-due">
+    <p></p>
+    &nbsp;
+    &nbsp;
+    <p></p>
+    <a href="http://invoicesunlimited.com/pay/" id='pay-link' class="btn-border-pay" target="_parent">Pay Now</a>
+</div>
+<!-- end GREEN STATUS -->
+
+
+    <!-- start HEADER -->
+     <div class="wrapper">
+    <div class="header cl">
+       
+            <div class="invoice-details-1">
+                <div class="info-1">
+                    <h1></h1>
+                    <span class="visa-card"></span>
+                    <span> </span>
+                    <span class="purchase-order"></span>
+                    <hr class="line-1" />
+                    <div class="total-date-currecny">
+                        <ul class="list-header" >
+                            <li><span></span></li>
+                          <li><span></span></li> 
+                            <li ><span></span></li>
+                        </ul>
+                        <ul class="list-body" >
+                            <li><span></span></li>
+                              <li><span></span></li>
+                            <li><span></span></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="info-2">
+                    <img src="" class="logo" alt="" title="" />
+                    <p><span class="adr"></span> <br/> 
+                         <span class="mailto"><a href="" target="_blank"><span></span></a></span><br/>
+                        <span class="nr"><a href="" target="_blank"><span></span></a></span><br/>
+                         <span class="website"><a href="" target="_blank"><span></span></a></span><br/>
+                    </p>
+                </div>
+            </div>
+            <div class="invoice-details-2">
+                <div class="info-1">
+                    <p></p>
+                    <p></p>
+                </div>
+                <div class="info-2">
+                    <p></p>
+                    <ul class="list-client">
+                        <li><span></span></li>
+                        <li><a href=""><span></span></a></li>
+                        <li><a href=""><span></span></a>
+                    </ul>
+
+                </div>
+            </div>
+        
+    </div>
+    <!-- end HEADER -->
+
+    <!-- start CONTENT -->
+    <div class="content cl">
+        
+
+        <table>
+            <thead>
+              <tr>
+                <th class="item"></th>
+                <th class="quantity"></th>
+                <th class="discount"></th>
+                <th class="price"></th>
+                <!--<th class="linetotal"></th>-->
+              </tr>
+            </thead>
+            <tbody></tbody>
+            <tfoot class="">
+                <tr class="subtotal">
+                    <td class="subtotal" colspan="3"></td>
+                    <td  class="total-price subtotal-price"></td>
+                </tr>
+                <tr class="shippingCharges">
+                    <td class="shippingCharges" colspan="3"></td>
+                    <td  class="total-price shipping-charges-price"></td>
+                </tr>
+                <tr class="adjustments">
+                    <td class="adjustments" colspan="3"></td>
+                    <td  class="total-price adjustments-price"></td>
+                </tr>
+
+                <tr class="tip">
+                    <td class="tip-text" colspan="3"></td>
+                    <td  class="tip-price"></td>
+                </tr>
+                <tr class="total">
+                    <td class="totl" colspan="3"></td>
+                    <td class="total-price total-price3"></td>
+                </tr>
+
+                <tr class="payment-made">
+                    <td class="payment-made-text" colspan="3"></td>
+                    <td class="payment-made-price"></td>
+                </tr>
+
+                <tr class="payment-refund-made">
+                    <td class="payment-refund-made-text" colspan="3"></td>
+                    <td class="payment-refund-made-price"></td>
+                </tr>
+
+                <tr class="credits-applied">
+                    <td class="credits-applied-text" colspan="3"></td>
+                    <td class="credits-applied-price"></td>
+                </tr>
+
+                <tr class="refund-total">
+                    <td colspan="3" class="refund-price"></td>
+                    <td class="total-price refund-total"></td>
+                </tr>
+                <tr>
+                    <td class="item orderNotes" colspan="4"></td>
+                    <tr class="item orderNotesValues"></tr>
+                </tr>
+                <tr class="customFields">
+                </tr>
+            </tfoot>
+      </table>
+        
+      
+    </div>
+    <!-- end CONTENT -->
+    
+    <!-- start ATTACH -->
+    <div class="attach">
+        
+    </div>
+    <!-- end ATTACH -->
+    
+    <!-- start FOOTER -->
+    <div class="footer">
+        <div class="info cl">
+          <a href="http://invoicesunlimited.com/pay/index.html" id='pay-link-2' class="btn-pay" target="_parent" >Pay Now</a>
+          <span class="cards"></span>
+        </div>
+        <div class="other-info cl">
+        </div>
+
+        <div class="copyright">
+            <p><a href="https://itunes.apple.com/us/app/invoices-unlimited/id1063797297">Download the app</a> to start sending invoices for FREE.</p>
+        </div>
+
+        <div class="wrapper" style="margin:0; padding-top: 45px;">
+            <p style="line-height: 26px; font-size: 18px; color: #8c8c8c; font-weight: 400;
+                      text-align:center;">© Powered by CJ Technologies</p>
+        </div>
+    </div>
+    <!-- end FOOTER -->
+
+    </div>
+
+</body>
+</html>
