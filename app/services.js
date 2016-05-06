@@ -6,6 +6,15 @@ invoicesUnlimited.factory('userFactory',function($q){
 	var businessInfo, principalInfo, accountInfo;
 	var parse = {};
 
+	var getObject = function(params){
+		if (params.type == undefined || params.type == 'pointer') {
+			return currentUser.get(params.className);
+		} else if (params.type == 'promise') {
+			var obj = currentUser.get(params.className);
+			return obj.fetch();
+		}
+	};
+
 	return {
 		authorized : function(){
 			return currentUser;	
@@ -21,7 +30,6 @@ invoicesUnlimited.factory('userFactory',function($q){
 			Parse.User.logIn(params.username, 
 							 params.password, {
 							 	success : function(user){
-							 		debugger;
 							 		currentUser = user;
 							 		console.log('Logged in successfuly');
 							 	},
@@ -42,68 +50,27 @@ invoicesUnlimited.factory('userFactory',function($q){
 		get : function(objName,prop){
 			if (parse[objName])
 				return (prop? parse[objName].get(prop) : parse[objName]);
-			return null;
+			return undefined;
 		},
 		getBusinessInfo : function(e){
-			if (!currentUser) return false;
-			if (!e) {
-				return currentUser.get('businessInfo');	
-			}
-			var defer = $q.defer();
-			var businessInfo = Parse.Object.extend("BusinessInfo");
-			var query = new Parse.Query(businessInfo);
-			var object = currentUser.get('businessInfo');
-			if (!object) return;
-			query.equalTo("objectId",object.id);
-			query.first({
-				success:function(object){
-					defer.resolve(object);
-					//callback(object);
-				},
-				error : function(object,error){
-					console.log(error.message);
-				}
-			});
-
-			return defer.promise;
-		},
-		getPrincipalInfo : function(callback,errorCallback){
-			if (!currentUser) return false;
-			if (!callback){
-				return currentUser.get('principalInfo');
-			}
-			var principalInfo = Parse.Object.extend("PrincipalInfo");
-			var query = new Parse.Query(principalInfo);
-			var object = currentUser.get('principalInfo');
-			if (!object) return;
-			query.equalTo("objectId",object.id);
-			query.first({
-				success:function(object){
-					callback(object);
-				},
-				error : function(object,error){
-					if (errorCallback) errorCallback();
-					console.log(error.message);
-				}
+			if (!currentUser) return undefined;
+			return getObject({
+				type: e,
+				className: 'businessInfo'
 			});
 		},
-		getAccountInfo : function(callback){
-			if (!currentUser) return false;
-			if (!callback){
-				return currentUser.get('accountInfo');
-			}
-			var accountInfo = Parse.Object.extend("AccountInfo");
-			var query = new Parse.Query(accountInfo);
-			var object = currentUser.get('accountInfo');
-			if (!object) return;
-			query.equalTo("objectId",object.id);
-			query.first({
-				success:function(object){
-					callback(object);
-				},
-				error : function(object,error){
-					console.log(error.message);
-				}
+		getPrincipalInfo : function(e){
+			if (!currentUser) return undefined;
+			return getObject({
+				type:e,
+				className:'principalInfo'
+			});
+		},
+		getAccountInfo : function(e){
+			if (!currentUser) return undefined;
+			return getObject({
+				type: e,
+				className:'accountInfo'
 			});
 		},
 		getSignature : function(callback){
@@ -127,24 +94,33 @@ invoicesUnlimited.factory('userFactory',function($q){
 		},
 		loadAll : function(callback){
 			if (!currentUser) return false;
-			//if (Object.keys(parse).length != 0) return;
+
 			showLoader();
 			var self = this;
 			var incomplete = '';
-			this.getBusinessInfo(true).then(function(object){
-				if (object) parse[object.className] = object;
-				if (!object) incomplete = "login";
-				self.getPrincipalInfo(function(object){
-					if (object) parse[object.className] = object;
-					self.getAccountInfo(function(object){
-						if (object) parse[object.className] = object;
-						self.getSignature(function(object){
-							if (object) parse[object.className] = object;
-							hideLoader();
-							if (callback && incomplete != '') callback(incomplete);
-						});
-					});
-				});
+
+			var user = currentUser;
+
+			var business = user.get('businessInfo');
+			var account = user.get('accountInfo');
+			var principal = user.get('principalInfo');
+			var signature = user.get('signatureImage');
+
+			business.fetch().then(function(obj){
+				if (obj) parse[obj.className] = obj;
+				if (!obj) incomplete = "login";
+				return principal.fetch();	
+			}).then(function(obj){
+				if (obj) parse[obj.className] = obj;
+				else incomplete = "signup.principal-info";
+				return account.fetch();
+			}).then(function(obj){
+				if (obj) parse[obj.className] = obj;
+				return signature.fetch();
+			}).then(function(obj){
+				if (obj) parse[obj.className] = obj;
+				hideLoader();
+				callback(incomplete);
 			});
 		}
 
