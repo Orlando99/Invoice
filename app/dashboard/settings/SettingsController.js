@@ -7,16 +7,18 @@ String.prototype.capitilize = function() {
 invoicesUnlimited.controller('SettingsController',['$scope','$state','userFactory',
 	function($scope,$state,userFactory){
 
+	var user = userFactory.authorized();
+
+	loadColorTheme(user);
+
+	$scope.selectedColor;
+
 	if ($state.current.name == "dashboard.settings.app-preferences") {
-		if (typeof(Storage) !== "undefined") {
-		  	localStorage.removeItem('selectedAppColor');
-		  	var color = localStorage.getItem('applicationColor');
-		  	if (color && color != 'blue' && color != 'undefined') {
-		  	  	$('#appStyle').attr('href','./dist/css/main.' + color + '.css');
-		  	}
-		  	if (color) $('.colors li a.'+color).parent().addClass("active");
-		} else {
-		  	alert("No local storage");
+
+		if (user.get('colorTheme')) {
+			var color = user.get('colorTheme');
+			if (color) color = color.replace(/app|Color/g,"").toLowerCase();
+			if (color) $('.colors li a.'+color).parent().addClass("active");	
 		}
 	}
 
@@ -33,6 +35,14 @@ invoicesUnlimited.controller('SettingsController',['$scope','$state','userFactor
 
 	$scope.BusinessInfo = {
 		company : userFactory.get("BusinessInfo","businessName")
+	}
+
+	$scope.saveAppPreferences = function(){
+		var color = $(".colors li.active").find('a').attr('class');
+		var colorToSave = "app" + color[0].toUpperCase() + color.slice(1) + "Color";
+		userFactory.save({colorTheme:colorToSave}).then(function(){
+			window.location.reload();
+		});
 	}
 
 	$scope.logOut = function(){

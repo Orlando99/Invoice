@@ -15,8 +15,10 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFactory',
 		var principal = userFactory.getPrincipalInfo('promise');
 
 		Parse.Promise.when([business,principal]).then(function(bus,princ){
-			debugger;
-			if (bus,princ) $state.go('dashboard');
+			if (bus,princ) {
+				loadColorTheme(userFactory.authorized());
+				$state.go('dashboard');
+			}
 			else if (bus) $state.go('signup.principal-info');
 			else $('.errorMessage').html("This account is not complete!").show();
 		},function(err){

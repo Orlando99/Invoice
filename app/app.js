@@ -34,6 +34,15 @@ function hideLoader(){
     $('.overlay').hide();
 }
 
+function loadColorTheme(user){
+  if (!user) alert('User is empty! Unable to load color theme!');
+  var color = user.get('colorTheme');
+  if (color) color = color.replace(/app|Color/g,"").toLowerCase();
+  if (color && color != 'blue' && color != 'undefined') {
+    $('#appStyle').attr('href','./dist/css/main.' + color + '.css');
+  }
+}
+
 /*invoicesUnlimited.run(['$rootScope', '$state', function($rootScope, $state) {
 
     $rootScope.$on('$stateChangeStart', function(evt, to, params) {

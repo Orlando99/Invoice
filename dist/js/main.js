@@ -92,16 +92,17 @@ $(document).ready(function(){
         console.log($(this)),
         "yes" == $(this).attr("value") ? $(".when-budget").removeClass("hide") : $(".when-budget").addClass("hide")
     });
+    
     $(".colors li").bind("click", function() {
         $(".colors li").removeClass("active"),
         $(this).addClass("active")
     });
 	
-	$('body').on("click",'#saveAppPref',function(){
+	/*$('body').on("click",'#saveAppPref',function(){
 		localStorage.setItem('applicationColor',localStorage.selectedAppColor);
 		localStorage.removeItem('selectedAppColor');
 		Refresh();
-	});
+	});*/
 
 });
 $(document).on("click",".organization",function(){

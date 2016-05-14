@@ -26,6 +26,9 @@ invoicesUnlimited.factory('userFactory',function($q){
 				callback();
 			});
 		},
+		save  : function(params) {
+			return currentUser.save(params);
+		},
 		login : function(params,callback,errorCallback){
 			Parse.User.logIn(params.username, 
 							 params.password, {
@@ -96,7 +99,6 @@ invoicesUnlimited.factory('userFactory',function($q){
 			if (!currentUser) return false;
 
 			showLoader();
-			var self = this;
 			var incomplete = '';
 
 			var user = currentUser;
