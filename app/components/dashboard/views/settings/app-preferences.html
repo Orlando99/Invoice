@@ -1,0 +1,54 @@
+﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+
+  <div class="container hidesm">
+
+    <h3 class="layout-margin-t section-title">App Preferences</h3>
+    <hr>
+
+    <form action="" class="inputs-white col-60">
+
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Opening Screen</label>
+        <select class="col-75">
+          <option value="dashboard">Dashboard</option>
+        </select>
+      </div>
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Colors</label>
+        <ul class="col-75 colors">
+          <li class="col-25">
+            <a class="blue"></a>
+          </li>
+          <li class="col-25">
+            <a class="cyan"></a>
+          </li>
+          <li class="col-25">
+            <a class="green"></a>
+          </li>
+          <li class="col-25">
+            <a class="yellow"></a>
+          </li>
+          <li class="col-25">
+            <a class="orange"></a>
+          </li>
+          <li class="col-25">
+            <a class="red"></a>
+          </li>
+          <li class="col-25">
+            <a class="pink"></a>
+          </li>
+          <li class="col-25">
+            <a class="purple"></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="clearfix spacer"></div>
+
+      <span class="button button-info text-uppercase text-weight-normalize" ng-click="saveAppPreferences()">Save</span>
+
+    </form>
+
+  </div>
+
+  <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

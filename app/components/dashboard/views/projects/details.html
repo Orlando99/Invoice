@@ -1,0 +1,500 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <title>Invoices Unlimited</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="../../dist/css/main.css">
+</head>
+<body>
+
+ <header class="dashboard-header hidesm">
+    <div class="container">
+      <a href="../../dashboard/index.html" class="logo"><img src="../../dist/images/logo.png" alt="InvoicesUnlimited"></a>
+      <div class="organization">
+        <img src="../../dist/images/user-icon.png" alt="">
+        <a href="#">Company Name</a>
+        <img src="../../dist/images/dropdown-arrow-primary.png" alt="">
+        <ul class="submenu user-submenu">
+          <li><a href="#">Settings</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+    <ul class="navigation">
+      <li><a href="../../dashboard/index.html">Dashboard</a></li>
+      <li><a href="../../dashboard/customers/customers.html">Customers</a></li>
+      <li>
+        <a href="../../dashboard/sales/sales.html">Sales</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li><a href="../../dashboard/sales/estimates/estimates.html">Estimates</a></li>
+            <li><a href="../../dashboard/sales/invoices/invoices.html">Invoices</a></li>
+            <li><a href="../../dashboard/sales/creditnotes/creditnotes.html">Credit Notes</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <a href="../../dashboard/expenses/expenses.html">Expenses</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li><a href="../../dashboard/expenses/record.expense.html">Expenses</a></li>
+            <li><a href="../../dashboard/expenses/recurring/all.html">Recurring Expenses</a></li>
+            <li><a href="../../dashboard/expenses/category/category.html">Expense Category</a></li>
+          </ul>
+        </div>
+      </li>
+      <li class="active"><a href="../../dashboard/projects/projects.html">Projects</a></li>
+      <li><a href="../../dashboard/timesheets/timesheets.html">Timesheets</a></li>
+      <li><a href="../../dashboard/reports/salesbycustomer.html">Reports</a></li>
+      <li>
+        <a href="../../dashboard/settings/companyprofile.html">Settings</a>
+        <div class="container-fluid">
+          <ul class="submenu">
+            <li>
+              <a href="../../dashboard/settings/companyprofile.html">Company Profile</a>
+            </li>
+            <li>
+              <a href="../../dashboard/settings/generalpreferences.html">General</a>
+              <a href="../../dashboard/settings/invoices.html">Invocies</a>
+              <a href="../../dashboard/settings/creditnotes.html">Credits</a>
+              <a href="../../dashboard/settings/invoicetemplates.html">Invoice Templates</a>
+              <a href="../../dashboard/settings/estimates.html">Estimates</a>
+              <a href="../../dashboard/settings/payments.html">Payments</a>
+            </li>
+            <li>
+              <a href="../../dashboard/settings/taxes.html">Taxes</a>
+              <a href="../../dashboard/settings/items.html">Items</a>
+              <a href="../../dashboard/settings/users.html">Users</a>
+              <a href="../../dashboard/settings/currencies.html">Currency</a>
+            </li>
+            <li>
+              <a href="../../dashboard/settings/app-preferences.html">App Preferences</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </header>
+
+  <div class="container hidesm">
+    <a href="projects.html" class="button-icon float-left layout-margin-t">
+      <img src="../../dist/images/icon-back.png" alt="Kappa" class="layout-margin-r">
+    </a>
+    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">Project 000001</h3>
+    <div class="actions float-right layout-margin-tb">
+      <a href="edit.project.html" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
+      <a href="" class="button button-small button-info text-uppercase layout-margin-r">Add to Invice</a>
+      <button class="button button-small button-neutral text-uppercase">More <img src="../../dist/images/dropdown-arrow-w.png" alt="">
+        <ul class="submenu list-clear layout-no-padding text-left text-normalize">
+          <li><a href="">Clone</a></li>
+          <li class="modal-opener" data-toggle="new-timesheet"><a onclick="return false;" href="">Add Timesheet</a></li>
+          <li class="modal-opener" data-toggle="new-task"><a onclick="return false;">Add Tasks</a></li>
+          <li class="modal-opener" data-toggle="new-user"><a onclick="return false;">Add User</a></li>
+          <li><a href="">Delete</a></li>
+          <li class="modal-opener" data-toggle="view-more"><a onclick="return false;" href="">View More</a></li>
+        </ul>
+      </button>
+    </div>
+    <div class="clearfix"></div>
+    <hr class="layout-margin-b">
+
+    <div class="col-60">
+      <h3 class="layout-margin-tb text-uppercase text-weight-normalize">Project Details</h3>
+      <div class="container">
+        <p class="layout-no-padding layout-no-margin col-40">Customer Name</p>
+        <p class="layout-no-padding layout-no-margin col-60">John Doe</p>
+
+        <p class="layout-no-padding layout-no-margin col-40">Description</p>
+        <p class="layout-no-padding layout-no-margin col-60">Lorem ipsum sin dolor sit amet</p>
+
+        <p class="layout-no-padding layout-no-margin col-40">Billing Method</p>
+        <p class="layout-no-padding layout-no-margin col-60">Fixed Cost for Project</p>
+      </div>
+
+      <div class="clearfix"></div><br>
+
+      <h3 class="layout-margin-tb text-uppercase text-weight-normalize">Logged Hours</h3>
+      <div class="container">
+        <p class="layout-no-padding layout-no-margin col-40">Hours worked</p>
+        <p class="layout-no-padding layout-no-margin col-60">01:55</p>
+      </div>
+
+      <div class="clearfix"></div><br>
+
+      <h3 class="layout-margin-tb text-uppercase text-weight-normalize">Total</h3>
+      <div class="container">
+        <p class="layout-no-padding layout-no-margin col-40">Billable Hours</p>
+        <p class="layout-no-padding layout-no-margin col-60 text-info">01:55</p>
+
+        <p class="layout-no-padding layout-no-margin col-40">Billed Hours</p>
+        <p class="layout-no-padding layout-no-margin col-60 text-positive">00:00</p>
+
+        <p class="layout-no-padding layout-no-margin col-40">Unbilled Hours</p>
+        <p class="layout-no-padding layout-no-margin col-60 text-danger">01:55</p>
+      </div>
+
+    </div>
+
+    <div class="col-40">
+      <h3 class="layout-margin-tb text-uppercase text-weight-normalize">Project Snapshot</h3>
+      <img src="../../dist/images/graph4.png" alt="">
+    </div>
+
+    <div class="clearfix spacer"></div>
+
+    <ul class="tabs tabs-100 container clearfix col-no-padding">
+      <li class="text-center col-no-padding active" data-toggle="timesheet">
+        <h4 class="text-transform text-uppercase text-weight-normalize">Timesheet</h4></li>
+      <li class="text-center col-no-padding" data-toggle="tasks">
+        <h4 class="text-transform text-uppercase text-weight-normalize">Tasks</h4></li>
+      <li class="text-center col-no-padding" data-toggle="users">
+        <h4 class="text-transform text-uppercase text-weight-normalize">Users</h4></li>
+    </ul>
+    <div class="tab active" data-name="timesheet">
+
+      <div class="container-table">
+        <div class="thead">
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Date</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Task</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">User</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-center">Time</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">Status</p>
+        </div>
+        <div class="table-row row-border">
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">12/03/2014</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">Lorem Ipsum</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">John</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-center">01:55</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-right text-danger">Unbilled</p>
+          <p class="col-100 layout-margin-tb layout-padding-l">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat autem asperiores modi odio in perferendis obcaecati explicabo.
+          </p>
+        </div>
+        <div class="table-row row-border">
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">12/01/2014</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">Lorem Ipsum</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">John</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-center">00:25</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-right text-positive">Billed</p>
+          <p class="col-100 layout-margin-tb layout-padding-l">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat autem asperiores modi odio in perferendis obcaecati explicabo.
+          </p>
+        </div>
+      </div>
+
+    </div>
+    <div class="tab" data-name="tasks">
+      <div class="container-table">
+        <div class="thead">
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Name</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Logged Hrs</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Billed Hrs</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hrs</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">Rate</p>
+        </div>
+        <div class="table-row row-border">
+          <p class="col-20 text-color-light text-weight-normalize">Lorem Ipsum</p>
+          <p class="col-20 text-color-light text-weight-normalize">01:55</p>
+          <p class="col-20 text-color-light text-weight-normalize">00:00</p>
+          <p class="col-20 text-color-light text-weight-normalize text-center">1.55</p>
+          <p class="col-20 text-color-light text-weight-normalize text-right">$15.00</p>
+        </div>
+        <div class="table-row row-border">
+          <p class="col-20 text-color-light text-weight-normalize">Lorem Ipsum</p>
+          <p class="col-20 text-color-light text-weight-normalize">00:25</p>
+          <p class="col-20 text-color-light text-weight-normalize">00:25</p>
+          <p class="col-20 text-color-light text-weight-normalize text-center">0.00</p>
+          <p class="col-20 text-color-light text-weight-normalize text-right">$15.00</p>
+        </div>
+      </div>
+    </div>
+    <div class="tab" data-name="users">
+      <div class="container-table">
+        <div class="thead">
+          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Name</p>
+          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Email</p>
+          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Logged Hours</p>
+          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Billed Hours</p>
+          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize text-right">Unbill. Houurs</p>
+          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize text-right">Role</p>
+        </div>
+        <div class="table-row row-border">
+          <p class="col-16 text-color-light text-weight-normalize">John</p>
+          <p class="col-16 text-color-light text-weight-normalize">john@gmail.com</p>
+          <p class="col-16 text-color-light text-weight-normalize">01:55</p>
+          <p class="col-16 text-color-light text-weight-normalize">00:00</p>
+          <p class="col-16 text-color-light text-weight-normalize text-right">$1.50</p>
+          <p class="col-16 text-color-light text-weight-normalize text-right">Admin</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="clearfix spacer hidesm"></div>
+
+  <div class="popup-modal view-more hidesm">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">View More</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+
+        <table class="table-border-tb">
+          <tr class="thead">
+            <td class="layout-padding text-info text-uppercase">Time Spent</td>
+            <td class="layout-padding text-info text-uppercase">User</td>
+            <td class="layout-padding text-info text-uppercase text-left">Task</td>
+          </tr>
+          <tr class="trow">
+            <td class="layout-padding text-color-light text-weight-normalize">01:55</td>
+            <td class="layout-padding text-color-light text-weight-normalize">John Doe</td>
+            <td class="layout-padding text-color-light text-weight-normalize text-left">Research</td>
+          </tr>
+          <tr class="trow">
+            <td class="layout-padding text-color-light text-weight-normalize">01:55</td>
+            <td class="layout-padding text-color-light text-weight-normalize">John Doe</td>
+            <td class="layout-padding text-color-light text-weight-normalize text-left">Research</td>
+          </tr>
+        </table>
+      </div>
+      <div class="clearfix spacer"></div>
+      <button class="button button-small button-info text-uppercase layout-margin-r">Done</button>
+    </div>
+  </div>
+
+  <div class="popup-modal new-timesheet hidesm">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">New Timesheet</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form action="" class="layout-margin-tb inputs-white">
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Date</label>
+            <select class="col-75">
+              <option value="null" disabled selected>Slect or Type to add</option>
+            </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Time Spent</label>
+            <input class="col-35" type="text" placeholder="Start Time">
+            <input class="col-35 pull-right" type="text" class="End Time">
+            <span class="col-75 pull-right layout-margin-tb"><a href="#">Switch to Time Duration</a></span>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">User</label>
+            <select class="col-75">
+              <option value="null" disabled selected>Slect User</option>
+            </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Project</label>
+            <select class="col-75">
+              <option value="null" disabled selected>Slect project</option>
+            </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Task</label>
+            <select class="col-75">
+              <option value="null" disabled selected>Slect task</option>
+            </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Notes</label>
+            <textarea class="col-75"></textarea>
+          </div>
+
+
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase layout-margin-r">Save</button>
+      <button class="button button-small button-neutral text-uppercase">Start Timer</button>
+    </div>
+  </div>
+
+  <div class="popup-modal edit-timesheet hidesm">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit Timesheet</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form action="" class="layout-margin-tb inputs-white">
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Date</label>
+            <select class="col-75">
+              <option value="option1">12/03/2014</option>
+              <option value="option2">Option #2</option>
+            </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Time Spent</label>
+            <input class="col-35" type="text" value="9:00 AM">
+            <input class="col-35 pull-right" type="text" value="10:55 AM">
+            <span class="col-75 pull-right layout-margin-tb"><a href="#">Switch to Time Duration</a></span>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">User</label>
+            <select class="col-75">
+              <option value="option1">John</option>
+              <option value="option2">Option #2</option>
+            </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Project</label>
+            <select class="col-75">
+              <option value="option1">Lorem Ipsum</option>
+              <option value="option2">Option #2</option>
+            </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Task</label>
+            <select class="col-75">
+              <option value="null" disabled selected>Select task</option>
+            </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Notes</label>
+            <textarea class="col-75">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Assumenda dicta tempora perspiciatis ducimus ipsam.</textarea>
+          </div>
+
+
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase layout-margin-r">Save</button>
+      <button class="button button-small button-neutral text-uppercase">Start Timer</button>
+    </div>
+  </div>
+  <div class="popup-modal new-task hidesm">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">New Task</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form action="" class="layout-margin-tb inputs-white">
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Task Name</label>
+            <input class="col-75" placeholder="Select or Type to add">
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Logged Hours</label>
+            <input class="col-75" type="text" placeholder="HH:MM">
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Billed Hours</label>
+            <input class="col-75" type="text" placeholder="HH:MM">
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Unbilled Hours</label>
+            <input class="col-75" type="text" placeholder="HH:MM">
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Rate</label>
+            <input class="col-75" type="text" placeholder="Type to add">
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Notes</label>
+            <textarea class="col-75"></textarea>
+          </div>
+
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase layout-margin-r">Save</button>
+    </div>
+  </div>
+
+  <div class="popup-modal new-user hidesm">
+      <div class="modal container">
+
+        <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">New User</h3>
+        <button class="button button-icon float-right modal-close button-no-margin"><img src="../../dist/images/icon-times.png" alt=""></button>
+        <div class="clearfix"></div>
+        <hr class="layout-margin-tb">
+
+        <div class="col-80 text-left layout-center">
+          <form action="" class="layout-margin-tb inputs-white">
+
+            <div class="input-container layout-margin-b">
+              <label class="layout-padding-t-sm">Task Name</label>
+              <input class="col-75" placeholder="Select or Type to add">
+            </div>
+
+            <div class="input-container layout-margin-b">
+              <label class="layout-padding-t-sm">Logged Hours</label>
+              <input class="col-75" type="text" placeholder="HH:MM">
+            </div>
+
+            <div class="input-container layout-margin-b">
+              <label class="layout-padding-t-sm">Billed Hours</label>
+              <input class="col-75" type="text" placeholder="HH:MM">
+            </div>
+
+            <div class="input-container layout-margin-b">
+              <label class="layout-padding-t-sm">Unbilled Hours</label>
+              <input class="col-75" type="text" placeholder="HH:MM">
+            </div>
+
+            <div class="input-container layout-margin-b">
+              <label class="layout-padding-t-sm">Rate</label>
+              <input class="col-75" type="text" placeholder="Type to add">
+            </div>
+
+            <div class="input-container layout-margin-b">
+              <label class="layout-padding-t-sm">Notes</label>
+              <textarea class="col-75"></textarea>
+            </div>
+
+          </form>
+        </div>
+        <div class="clearfix"></div>
+        <button class="button button-small button-info text-uppercase layout-margin-r">Save</button>
+      </div>
+    </div>
+
+
+ <div class="onmobile">
+    <h2>Need to work on a Mobile ? Download our app!</h2>
+    <a href="#"><img src="../../dist/images/google-play-icon.png" alt="Google Play"></a>
+    <a href="#"><img src="../../dist/images/AppStore.png" alt="Google Play"></a>
+  </div>
+  
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="../../dist/js/main.js"></script>
+</body>
+</html>

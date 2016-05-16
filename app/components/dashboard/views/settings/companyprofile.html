@@ -1,0 +1,64 @@
+﻿ <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+
+  <div class="container hidesm">
+    <h3 class="layout-margin-t section-title">Company Profile</h3>
+    <hr>
+
+    <form class="inputs-white col-60">
+      <div class="input-container input-container-upload layout-margin-b">
+        <label class="layout-padding-t-smm">Company Logo</label>
+        <label class="upload-container col-75">
+          <span>Upload Your Logo</span>
+          <input type="file">
+        </label>
+      </div>
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Name</label>
+        <input class="col-75" type="text">
+      </div>
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Email</label>
+        <input class="col-75" type="text">
+      </div>
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Username</label>
+        <input class="col-75" type="text">
+      </div>
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Change Pasword</label>
+        <select class="col-75">
+          <option value="null" selected disabled>Select</option>
+        </select>
+      </div>
+    </form>
+
+    <div class="clearfix"></div>
+    <br>
+
+    <h3 class="text-info text-weight-normalize text-uppercase layout-margin-tb">Company Details</h3>
+
+    <div class="col-60">
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Business Name</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">Business Name</p>
+
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Street</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">101 Hodencamp Rd</p>
+
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">City</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">Thousand Oaks</p>
+
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">State</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">CA</p>
+
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Zip Code</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">93863</p>
+
+    </div>
+
+    <div class="clearfix spacer"></div>
+
+    <button class="button button-info text-uppercase">Save</button>
+
+  </div>
+
+  <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>
