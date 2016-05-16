@@ -14,15 +14,15 @@
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Name</label>
-        <input class="col-75" type="text">
+        <input class="col-75" type="text" ng-model="UserInfo.name">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Email</label>
-        <input class="col-75" type="text">
+        <input class="col-75" type="text" ng-model="UserInfo.email">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Username</label>
-        <input class="col-75" type="text">
+        <input class="col-75" type="text" ng-model="UserInfo.username">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Change Pasword</label>
@@ -39,19 +39,19 @@
 
     <div class="col-60">
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Business Name</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">Business Name</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.company">Business Name Placeholder</p>
 
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Street</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">101 Hodencamp Rd</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.street">Street Name Placeholder</p>
 
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">City</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">Thousand Oaks</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.city">City Placeholder</p>
 
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">State</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">CA</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.state">State Placeholder</p>
 
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Zip Code</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75">93863</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.zipCode">Zip Code Placeholder</p>
 
     </div>
 

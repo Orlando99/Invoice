@@ -1,31 +1,40 @@
 'use strict';
 
-String.prototype.capitilize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
-invoicesUnlimited.controller('SettingsController',['$scope','$state','userFactory',
+invoicesUnlimited.controller('CompanyProfileController',['$scope','$state','userFactory',
 	function($scope,$state,userFactory){
 
 	var user = userFactory.authorized();
 
-	loadColorTheme(user);
-
-	$scope.selectedColor;
-
-	if (!userFactory.authorized()) $state.go('login');
+	if (!user) $state.go('login');
+	else loadColorTheme(user);
 
 	userFactory.loadAll(function(state){
 		if (state) $state.go(state);
 		else {
 			$scope.$apply(function(){
 				$scope.BusinessInfo.company = userFactory.get("BusinessInfo","businessName");
+				$scope.BusinessInfo.street = userFactory.get("BusinessInfo","streetName");
+				$scope.BusinessInfo.city = userFactory.get("BusinessInfo","city");
+				$scope.BusinessInfo.state = userFactory.get("BusinessInfo","state");
+				$scope.BusinessInfo.zipCode = userFactory.get("BusinessInfo","zipCode");
 			});
 		} 
 	});
 
+	//debugger;
+
+	$scope.UserInfo = {
+		name 		: user.get("fullName"),
+		email 		: user.get("email"),
+		username 	: user.get("username")
+	}
+
 	$scope.BusinessInfo = {
-		company : userFactory.get("BusinessInfo","businessName")
+		company : userFactory.get("BusinessInfo","businessName"),
+		street	: userFactory.get("BusinessInfo","streetName"),
+		city	: userFactory.get("BusinessInfo","city"),
+		state	: userFactory.get("BusinessInfo","state"),
+		zipCode : userFactory.get("BusinessInfo","zipCode")
 	}
 
 	$scope.saveAppPreferences = function(){
