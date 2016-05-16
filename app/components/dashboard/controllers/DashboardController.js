@@ -9,9 +9,8 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 
 	var user = userFactory.authorized();
 
-	loadColorTheme(user);
-
 	if (!userFactory.authorized()) $state.go('login');
+	else loadColorTheme(user);
 
 	userFactory.loadAll(function(state){
 		if (state) $state.go(state);
@@ -30,6 +29,7 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 
 	$scope.logOut = function(){
 		userFactory.logout(function(){
+			resetColorTheme();
 			$state.go('login');
 		});
 	};

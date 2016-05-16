@@ -47,6 +47,10 @@ function loadColorTheme(user){
   }
 }
 
+function resetColorTheme(){
+  $('#appStyle').attr('href',"");
+}
+
 /*invoicesUnlimited.run(['$rootScope', '$state', function($rootScope, $state) {
 
     $rootScope.$on('$stateChangeStart', function(evt, to, params) {

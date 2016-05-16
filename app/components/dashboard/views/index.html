@@ -1,5 +1,4 @@
-  <header class="dashboard-header hidesm" ng-include src="'./app/dashboard/templates/headerNav.html'">
-  </header>
+  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container layout-padding hidesm">
     <h3 class="section-title float-left">Total Receivables</h3>
@@ -65,7 +64,7 @@
       </li>
     </ul>
 
-    <img src="./dist/images/graph1.png" alt="">
+    <img src="./assets/images/graph1.png" alt="">
 
     <hr>
 
@@ -79,7 +78,7 @@
         </ul>
       </div>
       <div class="tbody text-center">
-        <img src="./dist/images/graph2.png" alt="">
+        <img src="./assets/images/graph2.png" alt="">
       </div>
     </div>
     <div class="col-50 layout-padding-l">
@@ -126,6 +125,4 @@
 
   </div>
 
-  <div class="onmobile">
-    
-  </div>
+  <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

@@ -108,17 +108,25 @@ invoicesUnlimited.factory('userFactory',function($q){
 			var principal = user.get('principalInfo');
 			var signature = user.get('signatureImage');
 
+			var processEntity = function(ent, incomplete){
+				if (ent) return ent.fetch();
+				else {
+					hideLoader();
+					callback(incomplete);	
+				}
+			}
+
 			business.fetch().then(function(obj){
 				if (obj) parse[obj.className] = obj;
 				if (!obj) incomplete = "login";
-				return principal.fetch();	
+				if (principal) return principal.fetch();
 			}).then(function(obj){
 				if (obj) parse[obj.className] = obj;
 				else incomplete = "signup.principal-info";
-				return account.fetch();
+				return processEntity(account, incomplete);
 			}).then(function(obj){
 				if (obj) parse[obj.className] = obj;
-				return signature.fetch();
+				return processEntity(signature,incomplete);
 			}).then(function(obj){
 				if (obj) parse[obj.className] = obj;
 				hideLoader();
