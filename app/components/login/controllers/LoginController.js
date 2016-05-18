@@ -4,19 +4,19 @@ String.prototype.capitilize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-invoicesUnlimited.controller('LoginController',['$scope','$state','userFactory',
-	function($scope,$state,userFactory){
+invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFactory',
+	function($scope,$state,userFullFactory){
 
 	$scope.username = "";
 	$scope.password = "";
 
-	if (userFactory.authorized()) {
-		var business = userFactory.getBusinessInfo('promise');
-		var principal = userFactory.getPrincipalInfo('promise');
+	if (userFullFactory.authorized()) {
+		var business = userFullFactory.getBusinessInfo('promise');
+		var principal = userFullFactory.getPrincipalInfo('promise');
 
 		Parse.Promise.when([business,principal]).then(function(bus,princ){
 			if (bus,princ) {
-				loadColorTheme(userFactory.authorized());
+				loadColorTheme(userFullFactory.authorized());
 				$state.go('dashboard');
 			}
 			else if (bus) $state.go('signup.principal-info');
@@ -25,7 +25,7 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFactory',
 			if (err.length == 2) {
 				if (err[0].code == 101 && err[1].code == 101) {
 					$('.errorMessage').html("This account is not complete!").show();
-					userFactory.logout();
+					userFullFactory.logout();
 				}
 			}
 		});
@@ -37,7 +37,7 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFactory',
 
 	$scope.signInAction = function(){
 		debugger;
-		userFactory.login({
+		userFullFactory.login({
 			username : $scope.username,
 			password : $scope.password
 		},function(){

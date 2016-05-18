@@ -1,7 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('userFactory',function(
-	principalFactory,accountFactory,businessFactory,$q){
+invoicesUnlimited.factory('userFactory',function(){
 	
 	var currentUser = Parse.User.current() || {};
 	
@@ -38,6 +37,7 @@ invoicesUnlimited.factory('userFactory',function(
 	function setUserFields(){
 		if (currentUser.id) setLoginUserFields();
 		else setEmptyUserFields();
+		setCommonUserFields();
 	}
 
 	setUserFields();
