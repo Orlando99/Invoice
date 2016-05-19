@@ -1,11 +1,17 @@
 'use strict';
 
-invoicesUnlimited.controller('AppPreferencesController',['$scope','$state','$controller','userFactory',
-	function($scope,$state,$controller,userFactory){
-
-	$controller('DashboardController',{$scope:$scope,$state:$state});
+invoicesUnlimited.controller('AppPreferencesController',['$scope','$state','$controller','userFactory','businessFactory',
+	function($scope,$state,$controller,userFactory,businessFactory){
 
 	var user = userFactory.authorized();
+
+	$scope.businessInfo;
+
+	if (!businessFactory.id) {
+		businessFactory.then(function(busObj){
+			$scope.businessInfo = busObj;
+		});
+	}
 
 	loadColorTheme(user);
 

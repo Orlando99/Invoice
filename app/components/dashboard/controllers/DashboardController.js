@@ -13,25 +13,10 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 	if (!userFactory.authorized()) $state.go('login');
 	else loadColorTheme(user);
 
-	businessFactory.then(function(busObj){
-		//businessInfo = busObj;
-		$scope.$apply(function(){
-			//$scope.BusinessInfo.company = businessInfo.get("businessName");
+	if (!businessFactory.id) {
+		businessFactory.then(function(busObj){
 			$scope.businessInfo = busObj;
 		});
-	})
-
-	/*userFactory.loadAll(function(state){
-		if (state) $state.go(state);
-		else {
-			$scope.$apply(function(){
-				$scope.BusinessInfo.company = userFactory.get("BusinessInfo","businessName");
-			});
-		} 
-	});*/
-
-	$scope.BusinessInfo = {
-		company : ""
 	}
 
 	$scope.settings = {};
