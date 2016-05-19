@@ -51,6 +51,39 @@ function resetColorTheme(){
   $('#appStyle').attr('href',"");
 }
 
+var defineProperties = function(object,fields){
+  for(var i in fields){
+    object.__defineGetter__(fields[i],(function(fieldName){
+      return function(){
+        return this.get(fieldName);
+      }
+    })(fields[i]));
+    object.__defineSetter__(fields[i],(function(fieldName){
+      return function(newValue){
+        return this.set(fieldName, newValue);
+      }
+    })(fields[i]));
+  }
+}
+
+function setObjectOperations(object,fieldName,parent,fields){
+
+  if (!fieldName && !parent && !fields) {
+    fields = object.fields;
+    parent = object.parent;
+    fieldName = object.fieldName;
+    object = object.object;
+  }
+
+  if (fields) defineProperties(object,fields);
+  object.destroyDeep = function(){
+    return object.destory().then(function(obj){
+      parent.unset(fieldName);
+      return user.save();
+    });
+  };
+}
+
 /*invoicesUnlimited.run(['$rootScope', '$state', function($rootScope, $state) {
 
     $rootScope.$on('$stateChangeStart', function(evt, to, params) {
