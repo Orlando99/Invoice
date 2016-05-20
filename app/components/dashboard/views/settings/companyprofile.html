@@ -39,19 +39,19 @@
 
     <div class="col-60">
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Business Name</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.company">Business Name Placeholder</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="businessInfo.businessName || 'Business Name Placeholder'"></p>
 
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Street</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.street">Street Name Placeholder</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="businessInfo.streetName || 'Street Name Placeholder'"></p>
 
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">City</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.city">City Placeholder</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="businessInfo.city || 'City Placeholder'"></p>
 
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">State</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.state">State Placeholder</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="businessInfo.state || 'State Placeholder'"></p>
 
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Zip Code</p>
-      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="BusinessInfo.zipCode">Zip Code Placeholder</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="businessInfo.zipCode || 'Zip Code Placeholder'"></p>
 
     </div>
 
