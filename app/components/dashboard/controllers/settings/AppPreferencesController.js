@@ -5,14 +5,8 @@ invoicesUnlimited.controller('AppPreferencesController',['$scope','$state','$con
 
 	var user = userFactory.authorized();
 
-	$scope.businessInfo;
-
-	if (!businessFactory.id) {
-		businessFactory.then(function(busObj){
-			$scope.businessInfo = busObj;
-		});
-	}
-
+	$controller('DashboardController',{$scope:$scope,$state:$state});
+	
 	loadColorTheme(user);
 
 	if (user.get('colorTheme')) {
