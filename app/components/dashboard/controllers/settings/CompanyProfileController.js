@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.controller('CompanyProfileController',
-	['$scope','$state','$controller','userFactory','businessFactory',
-	function($scope,$state,$controller,userFactory,businessFactory){
+	['$scope','$state','$controller','userFactory','organizationFactory','$q',
+	function($scope,$state,$controller,userFactory,organizationFactory,$q){
 
 	var user = userFactory.authorized();
 
@@ -15,6 +15,8 @@ invoicesUnlimited.controller('CompanyProfileController',
 		username 	: user.get("username")
 	}
 
+	$scope.org;
+
 	$scope.saveAppPreferences = function(){
 		var color = $(".colors li.active").find('a').attr('class');
 		var colorToSave = "app" + color[0].toUpperCase() + color.slice(1) + "Color";
@@ -24,4 +26,7 @@ invoicesUnlimited.controller('CompanyProfileController',
 	}
 
 	$controller('DashboardController',{$scope:$scope,$state:$state});
+	$q.all([organizationFactory]).then(function(res){
+		$scope.org = res[0];
+	});
 }]);

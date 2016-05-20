@@ -66,16 +66,42 @@ var defineProperties = function(object,fields){
   }
 }
 
-function setObjectOperations(object,fieldName,parent,fields){
+var defineXProperties = function(object,fields){
+  for (var name in fields) {
+    var obj = fields[name];
+    if (obj == "File") {
+      object.__defineGetter__(name,(function(fieldName){
+        return function(){
+          return this.get(fieldName);
+        }
+      })(name));
+      object.__defineSetter__(name,(function(fieldName){
+        return function(newValue){
+          var data;
+          if (newValue.base64) data = {base64:newValue.base64};
+          else if (newValue.file) data = file;
+          else if (newValue.bytes) data = bytes;
+          var file = new Parse.File(fieldName + newValue.ext,data);
+          return this.set(fieldName, file);
+        }
+      })(name));
+    }
+  }
+}
 
-  if (!fieldName && !parent && !fields) {
+function setObjectOperations(object,fieldName,parent,fields,xFields){
+
+  if (!fieldName && !parent && !fields && !xFields) {
     fields = object.fields;
     parent = object.parent;
     fieldName = object.fieldName;
+    xFields = object.xFields;
     object = object.object;
   }
 
   if (fields) defineProperties(object,fields);
+  if (xFields) defineXProperties(object,xFields);
+
   object.destroyDeep = function(){
     return object.destory().then(function(obj){
       parent.unset(fieldName);

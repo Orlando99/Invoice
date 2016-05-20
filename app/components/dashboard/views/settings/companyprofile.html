@@ -7,9 +7,10 @@
     <form class="inputs-white col-60">
       <div class="input-container input-container-upload layout-margin-b">
         <label class="layout-padding-t-smm">Company Logo</label>
-        <label class="upload-container col-75">
-          <span>Upload Your Logo</span>
-          <input type="file">
+        <img class="col-35" ng-show="org" ng-src="{{org.logo.url()}}"/>
+        <label class="upload-container col-75" ng-hide="org">
+            <span>Upload Your Logo</span>
+            <input type="file">
         </label>
       </div>
       <div class="input-container layout-margin-b">
