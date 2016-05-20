@@ -1,82 +1,4 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Invoices Unlimited</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="../../dist/css/main.css">
-</head>
-<body>
-
-  <header class="dashboard-header hidesm">
-    <div class="container">
-      <a href="../../dashboard/index.html" class="logo"><img src="../../dist/images/logo.png" alt="InvoicesUnlimited"></a>
-      <div class="organization">
-        <img src="../../dist/images/user-icon.png" alt="">
-        <a href="#">Company Name</a>
-        <img src="../../dist/images/dropdown-arrow-primary.png" alt="">
-        <ul class="submenu user-submenu">
-          <li><a href="#">Settings</a></li>
-          <li><a href="#">Logout</a></li>
-        </ul>
-      </div>
-    </div>
-    <ul class="navigation">
-      <li><a href="../../dashboard/index.html">Dashboard</a></li>
-      <li class="active"><a href="../../dashboard/customers/customers.html">Customers</a></li>
-      <li>
-        <a href="../../dashboard/sales/sales.html">Sales</a>
-        <div class="container-fluid">
-          <ul class="submenu">
-            <li><a href="../../dashboard/sales/estimates/estimates.html">Estimates</a></li>
-            <li><a href="../../dashboard/sales/invoices/invoices.html">Invoices</a></li>
-            <li><a href="../../dashboard/sales/creditnotes/creditnotes.html">Credit Notes</a></li>
-          </ul>
-        </div>
-      </li>
-      <li>
-        <a href="../../dashboard/expenses/expenses.html">Expenses</a>
-        <div class="container-fluid">
-          <ul class="submenu">
-            <li><a href="../../dashboard/expenses/record.expense.html">Expenses</a></li>
-            <li><a href="../../dashboard/expenses/recurring/all.html">Recurring Expenses</a></li>
-            <li><a href="../../dashboard/expenses/category/category.html">Expense Category</a></li>
-          </ul>
-        </div>
-      </li>
-      <li><a href="../../dashboard/projects/projects.html">Projects</a></li>
-      <li><a href="../../dashboard/timesheets/timesheets.html">Timesheets</a></li>
-      <li><a href="../../dashboard/reports/salesbycustomer.html">Reports</a></li>
-      <li class="active">
-        <a href="../../dashboard/settings/companyprofile.html">Settings</a>
-        <div class="container-fluid">
-          <ul class="submenu">
-            <li>
-              <a href="../../dashboard/settings/companyprofile.html">Company Profile</a>
-            </li>
-            <li>
-              <a href="../../dashboard/settings/generalpreferences.html">General</a>
-              <a href="../../dashboard/settings/invoices.html">Invocies</a>
-              <a href="../../dashboard/settings/creditnotes.html">Credits</a>
-              <a href="../../dashboard/settings/invoicetemplates.html">Invoice Templates</a>
-              <a href="../../dashboard/settings/estimates.html">Estimates</a>
-              <a href="../../dashboard/settings/payments.html">Payments</a>
-            </li>
-            <li>
-              <a href="../../dashboard/settings/taxes.html">Taxes</a>
-              <a href="../../dashboard/settings/items.html">Items</a>
-              <a href="../../dashboard/settings/users.html">Users</a>
-              <a href="../../dashboard/settings/currencies.html">Currency</a>
-            </li>
-            <li>
-              <a href="../../dashboard/settings/app-preferences.html">App Preferences</a>
-            </li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-  </header>
+﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container hidesm">
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Customers</h3>
@@ -186,7 +108,7 @@
     <div class="modal container">
 
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Contact Person</h3>
-      <button class="button button-icon float-right modal-close"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
       <div class="clearfix"></div>
       <hr class="layout-margin-tb">
 
@@ -219,13 +141,4 @@
     </div>
   </div>
 
-  <div class="onmobile">
-    <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="../../dist/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="../../dist/images/AppStore.png" alt="Google Play"></a>
-  </div>
-  
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="../../dist/js/main.js"></script>
-</body>
-</html>
+  <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

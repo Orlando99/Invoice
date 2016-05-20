@@ -82,6 +82,18 @@ angular.module('invoicesUnlimited')
 	}
 
 	var dashboard = {
+		customers : {
+			index : {
+				name 	: 'dashboard.customers',
+				url 	: '/customers',
+				views 	: {
+					'@' : {
+						controller  : 'CustomersController',
+						templateUrl : COMPONENTS + 'dashboard/views/customers/customers.html'
+					}
+				}
+			}
+		},
 		settings : {
 			index : {
 				name	: 'dashboard.settings',
@@ -231,7 +243,13 @@ angular.module('invoicesUnlimited')
 		});
 	}
 
-	addStatesFrom([login,signup,dashboard.settings,[dashboard.index]])
+	addStatesFrom([
+		login,
+		signup,
+		dashboard.customers,
+		dashboard.settings,
+		[dashboard.index]
+	]);
 
 	$urlRouterProvider.otherwise('/login');
 
