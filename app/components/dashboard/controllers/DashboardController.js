@@ -1,25 +1,13 @@
 'use strict';
 
-String.prototype.capitilize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
-invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory','businessFactory',
-	function($scope,$state,userFactory,businessFactory){
+invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory','businessFactory','$q',
+	function($scope,$state,userFactory,businessFactory,$q){
 
 	var user = userFactory.authorized();
-	$scope.businessInfo = {};
-
 	if (!userFactory.authorized()) $state.go('login');
-	else loadColorTheme(user);
-
-	if (!businessFactory.id) {
-		businessFactory.then(function(busObj){
-			$scope.businessInfo = busObj;
-		});
-	}
-
-	$scope.settings = {};
+	
+	loadColorTheme(user);
+	$scope.businessInfo = {};
 
 	$scope.logOut = function(){
 		userFactory.logout().then(function(){
@@ -27,5 +15,8 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 			$state.go('login');
 		});
 	};
-	
+
+	$q.all([businessFactory]).then(function(obj){
+		$scope.businessInfo = obj[0];
+	});	
 }]);
