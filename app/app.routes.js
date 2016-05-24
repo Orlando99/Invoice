@@ -84,12 +84,31 @@ angular.module('invoicesUnlimited')
 	var dashboard = {
 		customers : {
 			index : {
-				name 	: 'dashboard.customers',
-				url 	: '/customers',
-				views 	: {
-					'@' : {
-						controller  : 'CustomersController',
-						templateUrl : COMPONENTS + 'dashboard/views/customers/customers.html'
+				name 	 : 'dashboard.customers',
+				abstract : true,
+				url 	 : '/customers',
+				views 	 : {
+					'@'  : {
+						controller : 'CustomersController',
+						templateUrl : COMPONENTS + 'dashboard/views/customers/index.html'
+					}
+				}
+			},
+			all  : {
+				name 		: 'dashboard.customers.all',
+				url 		: '',
+				views 		: {
+					'customersView' : {
+						templateUrl	: COMPONENTS + 'dashboard/views/customers/customers.html'
+					}
+				}
+			},
+			details : {
+				name	: 'dashboard.customers.details',
+				url 	: '/details',
+				views 		: {
+					'customersView' : {
+						templateUrl : COMPONENTS + 'dashboard/views/customers/details.html'
 					}
 				}
 			}
