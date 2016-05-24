@@ -16,7 +16,8 @@
         <td class="layout-padding text-uppercase text-info">Receivables</td>
         <td class="layout-padding text-uppercase text-info">Credits</td>
       </tr>
-      <tr ui-sref="dashboard.customers.details" ng-repeat="customer in customers | orderBy:'+entity.displayName' as result track by $index">
+      <tr ui-sref="dashboard.customers.details" ng-repeat="customer in customers | orderBy:'+entity.displayName' as result track by $index" 
+          ng-click="selectCustomer(customer)">
         <td class="layout-padding text-color-light">{{customer.entity.displayName}}</td>
         <td class="layout-padding text-color-light">{{customer.entity.companyName}}</td>
         <td class="layout-padding text-color-light">{{customer.entity.email}}</td>
