@@ -18,86 +18,14 @@
         <td class="layout-padding text-uppercase text-info">Receivables</td>
         <td class="layout-padding text-uppercase text-info">Credits</td>
       </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="layout-padding text-color-light">John Doe</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">Johndoe@gmail.com</td>
-        <td class="layout-padding text-color-light"></td>
-        <td class="layout-padding text-color-light">$0.00</td>
-        <td class="layout-padding text-color-light">$0.00</td>
-      </tr>
+      <tr ng-repeat="customer in customers track by $index">
+        <td class="layout-padding text-color-light">{{customer.entity.displayName}}</td>
+        <td class="layout-padding text-color-light">{{customer.entity.companyName}}</td>
+        <td class="layout-padding text-color-light">{{customer.entity.email}}</td>
+        <td class="layout-padding text-color-light">{{customer.entity.phone}}</td>
+        <td class="layout-padding text-color-light">{{customer.entity.outstanding}}</td>
+        <td class="layout-padding text-color-light">{{customer.entity.unusedCredits}}</td>
+      </tr>      
     </table>
 
   </div>

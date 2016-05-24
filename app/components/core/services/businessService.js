@@ -19,8 +19,8 @@ invoicesUnlimited.factory('businessFactory',['userFactory',function(userFactory)
 	
 	if (!businessInfo) {
 		var fieldName = "businessInfo";
-		var princ_p = user.get(fieldName);
-		businessInfo = princ_p.fetch().then(function(object){
+		var bus_p = user.get(fieldName);
+		businessInfo = bus_p.fetch().then(function(object){
 			setObjectOperations({
 				object 		: object,
 				fieldName	: fieldName,

@@ -102,6 +102,7 @@ function setObjectOperations(object,fieldName,parent,fields,xFields){
   if (fields) defineProperties(object,fields);
   if (xFields) defineXProperties(object,xFields);
 
+  if (!parent) return;
   object.destroyDeep = function(){
     return object.destory().then(function(obj){
       parent.unset(fieldName);
