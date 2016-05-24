@@ -1,8 +1,8 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/dashboard/templates/headerNav.html'"></header>
+﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title float-left">Taxes</h3>
-    <a href="#" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="new-tax">New</a>
+    <a href="javascript:" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="new-tax" ng-click="clearAddItemFields()">New</a>
     <form class="float-right layout-margin-tb">
       <input type="text" class="search-bar layout-margin-r" placeholder="Search">
     </form>
@@ -13,22 +13,12 @@
         <td class="text-uppercase text-info layout-padding">Rate % <img src="./dist/images/dropdown-arrow-primary.png" alt=""></td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum</td>
-        <td class="text-color-light text-weight-normalize layout-padding">10</td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./dist/images/icon-times-round.png" alt="" /></td>
+      <tr ng-repeat="tax in taxes" ng-dblclick="editTax(tax)" >
+        <td class="text-color-light text-weight-normalize layout-padding">{{tax.name}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding">{{tax.rate}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding text-right">
+          <img src="./assets/images/icon-times-round.png" alt="" ng-click="deleteTax(tax)"/></td>
       </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum</td>
-        <td class="text-color-light text-weight-normalize layout-padding">20</td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./dist/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum (Tax Group)</td>
-        <td class="text-color-light text-weight-normalize layout-padding">30</td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./dist/images/icon-times-round.png" alt="" /></td>
-      </tr>
-
     </table>
 
   </div>
@@ -38,7 +28,7 @@
     <div class="modal container">
 
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Tax</h3>
-      <button class="button button-icon float-right modal-close"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
       <div class="clearfix"></div>
       <hr class="layout-margin-tb">
 
@@ -46,21 +36,21 @@
         <form action="" class="layout-margin-tb inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Tax Name</label>
-            <input type="text" class="col-75" placeholder="Type to add">
+            <input type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Rate %</label>
-            <input type="text" class="col-75" placeholder="Type to add">
+            <input type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
           </div>
           <div class="col-25 spacer"></div>
           <label class="input-container input-checkbox-container col-75 pull-right">
-            <input type="checkbox">
+            <input type="checkbox" ng-model="isCompound">
             <span class="checkbox float-left"></span>
             <p class="float-left">Yes this tax is a compund tax</p>
             <div class="tooltip-sec float-left">
               <i class="info-icon pull-top"></i>
               <p class="info-tooltip push-top">
-                Lorem ipsum dolor sit amet.
+                Check if it is a compound tax
               </p>
             </div>
           </label>
@@ -68,7 +58,8 @@
         </form>
       </div>
       <div class="clearfix"></div>
-      <button class="button button-small button-info text-uppercase">Save</button>
+      <button class="button button-small button-info text-uppercase"
+        ng-click="saveNewTax()">Save</button>
     </div>
   </div>
 
@@ -76,7 +67,8 @@
     <div class="modal container">
 
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit Tax</h3>
-      <button class="button button-icon float-right modal-close"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
       <div class="clearfix"></div>
       <hr class="layout-margin-tb">
 
@@ -84,21 +76,21 @@
         <form action="" class="layout-margin-tb inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Tax Name</label>
-            <input type="text" class="col-75" placeholder="Type to add" value="Lorem Ipsum">
+            <input type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Rate %</label>
-            <input type="text" class="col-75" placeholder="Type to add" value="10%">
+            <input type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
           </div>
           <div class="col-25 spacer"></div>
           <label class="input-container input-checkbox-container col-75 pull-right">
-            <input type="checkbox">
+            <input type="checkbox" ng-model="isCompound">
             <span class="checkbox float-left"></span>
             <p class="float-left">Yes this tax is a compund tax</p>
             <div class="tooltip-sec float-left">
               <i class="info-icon"></i>
               <p class="info-tooltip">
-                Lorem ipsum dolor sit amet.
+                Check if it is a compound tax
               </p>
             </div>
           </label>
@@ -106,7 +98,8 @@
         </form>
       </div>
       <div class="clearfix"></div>
-      <button class="button button-small button-info text-uppercase float-left">Save</button>
+      <button class="button button-small button-info text-uppercase float-left"
+        ng-click="saveEditedTax()">Save</button>
       <button class="button button-small button-danger text-uppercase float-right">Delete</button>
       <div class="clearfix"></div>
     </div>
@@ -116,7 +109,8 @@
     <div class="modal container">
 
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">New Tax Group</h3>
-      <button class="button button-icon float-right modal-close"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
       <div class="clearfix"></div>
       <hr class="layout-margin-tb">
 
@@ -126,31 +120,14 @@
             <label class="layout-padding-t-sm">Tax Group Name</label>
             <input type="text" class="col-75" placeholder="Lorem Ipsum">
           </div>
-          <div class="input-container layout-margin-tb">
+          <div class="input-container layout-margin-tb" ng-repeat="tax in taxes">
             <label class="input-checkbox-container layout-no-margin col-85">
               <input type="checkbox">
               <span class="checkbox float-left"></span>
-              <p class="float-left">Lorem Ipsum Dolor</p>
+              <p class="float-left">{{tax.name}}</p>
             </label>
-            <p class="col-15 layout-no-margin text-right">10%</p>
+            <p class="col-15 layout-no-margin text-right">{{tax.rate}}</p>
           </div>
-          <div class="input-container layout-margin-b">
-            <label class="input-checkbox-container layout-no-margin col-85">
-              <input type="checkbox">
-              <span class="checkbox float-left"></span>
-              <p class="float-left">Lorem Ipsum Dolor</p>
-            </label>
-            <p class="col-15 layout-no-margin text-right">20%</p>
-          </div>
-          <div class="input-container layout-margin-b">
-            <label class="input-checkbox-container layout-no-margin col-85">
-              <input type="checkbox">
-              <span class="checkbox float-left"></span>
-              <p class="float-left">Lorem Ipsum Dolor</p>
-            </label>
-            <p class="col-15 layout-no-margin text-right">30%</p>
-          </div>
-
         </form>
       </div>
       <div class="clearfix"></div>
@@ -160,13 +137,13 @@
 
   <div class="onmobile">
     <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="../../dist/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="../../dist/images/AppStore.png" alt="Google Play"></a>
+    <a href="#"><img src="./assets/images/google-play-icon.png" alt="Google Play"></a>
+    <a href="#"><img src="./assets/images/AppStore.png" alt="Google Play"></a>
   </div>
   
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="../../dist/js/moment.js"></script>
+  <script src="./assets/js/moment.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
-  <script src="../../dist/js/main.js"></script>
+  <script src="./assets/js/main.js"></script>
 </body>
 </html>

@@ -1,8 +1,8 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/dashboard/templates/headerNav.html'"></header>
+﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title float-left">All Items <i class="arrow-down-black"></i></h3>
-    <a href="#" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="edit-item">New</a>
+    <a href="javascript:" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="new-item">New</a>
     <form class="float-right layout-margin-tb">
       <input type="text" class="search-bar layout-margin-r" placeholder="Search">
     </form>
@@ -14,25 +14,12 @@
         <td class="text-uppercase text-info layout-padding">Rate</td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum</td>
-        <td class="text-color-light text-weight-normalize layout-padding">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt quod fuga cumque itaque, tempora.</td>
-        <td class="text-color-light text-weight-normalize layout-padding">$10.00</td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="../../dist/images/icon-times-round.png" alt="" /></td>
+      <tr ng-repeat="item in items">
+        <td class="text-color-light text-weight-normalize layout-padding">{{item.name}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding">{{item.desc}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding">${{item.rate}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum</td>
-        <td class="text-color-light text-weight-normalize layout-padding">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt quod fuga cumque itaque, tempora.</td>
-        <td class="text-color-light text-weight-normalize layout-padding">$5.00</td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="../../dist/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum (Tax Group)</td>
-        <td class="text-color-light text-weight-normalize layout-padding">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt quod fuga cumque itaque, tempora.</td>
-        <td class="text-color-light text-weight-normalize layout-padding">$2.50</td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="../../dist/images/icon-times-round.png" alt="" /></td>
-      </tr>
-
     </table>
 
   </div>
@@ -41,7 +28,8 @@
   <div class="popup-modal new-item hidesm">
     <div class="modal container">
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Item</h3>
-      <button class="button button-icon float-right modal-close"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
       <div class="clearfix"></div>
       <hr class="layout-margin-tb">
 
@@ -83,7 +71,8 @@
   <div class="popup-modal edit-item hidesm">
     <div class="modal container">
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit Item</h3>
-      <button class="button button-icon float-right modal-close"><img src="../../dist/images/icon-times.png" alt=""></button>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
       <div class="clearfix"></div>
       <hr class="layout-margin-tb">
 
@@ -126,11 +115,11 @@
 
    <div class="onmobile">
     <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="../../dist/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="../../dist/images/AppStore.png" alt="Google Play"></a>
+    <a href="#"><img src="./assets/images/google-play-icon.png" alt="Google Play"></a>
+    <a href="#"><img src="./assets/images/AppStore.png" alt="Google Play"></a>
   </div>
   
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="../../dist/js/moment.js"></script>
+  <script src="./assets/js/moment.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
-  <script src="../../dist/js/main.js"></script>
+  <script src="./assets/js/main.js"></script>

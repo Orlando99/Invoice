@@ -119,3 +119,22 @@ function setObjectOperations(object,fieldName,parent,fields,xFields){
       }
     });
 }]);*/
+
+function initalizeModalClasses()
+{
+  $(".modal-opener").off("click");
+  $(".modal-close").off("click");
+  $(".popup-modal").off("click");
+  $(".modal-opener").on("click", function() {
+    console.log(".modal-opener clicked");
+        var t = $(this)
+          , e = t.attr("data-toggle");
+        $("." + e).addClass("show")
+    });
+    $(".modal-close").on("click", function() {
+        $(this).closest(".popup-modal").removeClass("show")
+    });
+    $(".popup-modal").on("click", function(t) {
+        t.target == this && $(".popup-modal").removeClass("show")
+    });
+}

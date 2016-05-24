@@ -94,6 +94,9 @@ angular.module('invoicesUnlimited')
 				}
 			}
 		},
+		sales : {
+
+		},
 		settings : {
 			index : {
 				name	: 'dashboard.settings',
@@ -140,7 +143,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/items',
 				views 	: {
 					'@' : {
-						controller  : 'SettingsController',
+						controller  : 'ItemController',
 						templateUrl : COMPONENTS + 'dashboard/views/settings/items.html'
 					}
 				}
@@ -150,7 +153,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/taxes',
 				views 	: {
 					'@' : {
-						controller  : 'SettingsController',
+						controller  : 'TaxController',
 						templateUrl : COMPONENTS + 'dashboard/views/settings/taxes.html'
 					}
 				}
@@ -200,7 +203,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/invoices',
 				views 	: {
 					'@'	: {
-						controller 	: 'SettingsController',
+						controller 	: 'InvoiceController',
 						templateUrl	: COMPONENTS + 'dashboard/views/settings/invoices.html'
 					}
 				}
