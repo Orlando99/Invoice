@@ -9,6 +9,7 @@ invoicesUnlimited.factory('coreFactory',function(userFactory,customerFactory){
 	core.getAllCustomers = function(){
 		var query = new Parse.Query("Customer");
 		query.equalTo('userID',user);
+		query.include('contactPersons');
 		return query.find().then(function(customers){
 			var result = [];
 			customers.forEach(function(elem){

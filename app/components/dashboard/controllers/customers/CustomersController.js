@@ -17,6 +17,14 @@ invoicesUnlimited.controller('CustomersController',
 
 	$scope.selectCustomer = function(item){
 		$scope.selectedCustomer = item;
+		var billingAddress = JSON.parse($scope.selectedCustomer.entity.billingAddress);
+		var addressText =
+			billingAddress.Street + "\n" +
+            billingAddress.City + "\n" +
+            billingAddress["State\/Province"] + "\n" +
+            billingAddress["Zip\/Postal Code"] + "\n" +
+            billingAddress.Country;
+        $scope.selectedCustomer.billingAddress = addressText;
 	}
 
 	$rootScope.$on('$stateChangeStart',

@@ -10,18 +10,40 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 			object 		: parseObject,
 			fieldName	: undefined,
 			parent 		: undefined,
-			fields 		: fields
+			fields 		: customerFields
+		});
+		var contactPersons = parseObject.get('contactPersons');
+		contactPersons = contactPersons.map(function(elem){
+			setObjectOperations({
+				object 		: elem,
+				fieldName 	: undefined,
+				parent 		: undefined,
+				fields 		: contactPersFields
+			});
+			return elem;
 		});
 		this.entity = parseObject;
+		this.contactPersons = contactPersons;
 	};
 
-	var fields = [
+	var contactPersFields = [
+		"email",
+		"phone",
+		"mobile",
+		"lastname",
+		"firstname"
+	];
+
+	var customerFields = [
 		"companyName",
 		"displayName",
 		"phone",
 		"email",
 		"unusedCredits",
-		"outstanding"
+		"outstanding",
+		"currency",
+		"paymentTerms",
+		"billingAddress"
 	];
 	
 	return customer;

@@ -44,19 +44,19 @@
         <table class="container table-no-border layout-margin-tb">
           <tr class="container text-color-light">
             <td class="col-50 layout-padding-tb">Company Name</td>
-            <td class="col-50 layout-padding-tb">Planet Express</td>
+            <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.companyName}}</td>
           </tr><div class="clearfix"></div>
           <tr class="container text-color-light">
             <td class="col-50 layout-padding-tb">Name</td>
-            <td class="col-50 layout-padding-tb">Ms. Leela Turanga</td>
+            <td class="col-50 layout-padding-tb">{{selectedCusomer.entity.displayName}}</td>
           </tr><div class="clearfix"></div>
           <tr class="container text-color-light">
             <td class="col-50 layout-padding-tb">Mobile</td>
-            <td class="col-50 layout-padding-tb"></td>
+            <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.phone}}</td>
           </tr><div class="clearfix"></div>
           <tr class="container text-color-light">
             <td class="col-50 layout-padding-tb">Email Address</td>
-            <td class="col-50 layout-padding-tb">Leela01@gmail.com</td>
+            <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.email}}</td>
           </tr><div class="clearfix"></div>
         </table>
 
@@ -67,22 +67,22 @@
         <table class="container table-no-border layout-margin-tb">
           <tr class="container text-color-light">
             <td class="col-50 layout-padding-tb">Currency Code</td>
-            <td class="col-50 layout-padding-tb">USD</td>
+            <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.currency}}</td>
           </tr><div class="clearfix"></div>
           <tr class="container text-color-light">
             <td class="col-50 layout-padding-tb">Payment Terms</td>
-            <td class="col-50 layout-padding-tb">Due on receipt</td>
+            <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.paymentTerms}}</td>
           </tr><div class="clearfix"></div>
           <tr class="container text-color-light">
             <td class="col-50 layout-padding-tb">Billing Address</td>
-            <td class="col-50 layout-padding-tb">101 Hilde Cando Thousand Oaks, CA, 91222</td>
+            <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.billingAddress}}</td>
           </tr><div class="clearfix"></div>
         </table>
 
         <br/>
 
         <h3 class="layout-margin-tb text-info text-uppercase text-weight-normalize">Receivables</h3>
-        <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">$0.00</h2>
+        <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{'$'+selectedCustomer.entity.outstanding}}</h2>
         <p class="layout-no-margin col-no-padding ext-color-light">Outstanding</p>
       </div>
       <div class="col-40 layout-margin-tb">
@@ -98,20 +98,23 @@
           <td class="layout-padding-tb">Email</td>
           <td class="layout-padding-tb"></td>
         </tr>
-        <tr class="text-color-light">
-          <td class="layout-padding-tb-lg valign-top">Phillip Fry</td>
-          <td class="layout-padding-tb-lg valign-top">M: 805-191-2832</td>
-          <td class="layout-padding-tb-lg valign-top">Fry@planetexpress.com</td>
+        <tr class="text-color-light" ng-repeat="person in selectedCustomer.contactPersons">
+          <td class="layout-padding-tb-lg valign-top">{{person.firstname+' '+person.lastname}}</td>
+          <td class="layout-padding-tb-lg valign-top">
+          <span ng-show="person.mobile">{{'M: '+person.mobile}}<br/></span>
+          <span ng-show="person.phone">{{'W: '+person.phone}}</td>
+          <td class="layout-padding-tb-lg valign-top">{{person.email}}</td>
           <td class="layout-padding-tb-lg valign-top actions"><a href="../../dashboard/customers/editcustomer.html" class="action-edit">Edit</a> <button class="button button-icon"><img src="./assets/images/icon-times-round.png" alt=""></button></td>
         </tr>
-        <tr class="text-color-light">
+        <!--<tr class="text-color-light">
           <td class="layout-padding-tb-lg valign-top">Zapp B.</td>
           <td class="layout-padding-tb-lg valign-top">W: 805-129-1934 <br/> M: 805-201-5919</td>
           <td class="layout-padding-tb-lg valign-top"></td>
           <td class="layout-padding-tb-lg valign-top actions"><a href="../../dashboard/customers/editcustomer.html" class="action-edit">Edit</a> <button class="button button-icon"><img src="./assets/images/icon-times-round.png" alt=""></button></td>
-        </tr>
+        </tr>-->
       </table>
     </div>
+
     <div class="tab layout-padding" data-name="tab2">
       <table class="container table-border-b">
         <tr class="text-uppercase text-info">
