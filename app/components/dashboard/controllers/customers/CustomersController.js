@@ -17,6 +17,7 @@ invoicesUnlimited.controller('CustomersController',
 
 	$scope.selectCustomer = function(item){
 		$scope.selectedCustomer = item;
+		if (!$scope.selectedCustomer.entity.billingAddress) return;
 		var billingAddress = JSON.parse($scope.selectedCustomer.entity.billingAddress);
 		var addressText =
 			billingAddress.Street + "\n" +

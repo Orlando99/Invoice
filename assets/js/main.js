@@ -24,7 +24,7 @@ $(document).ready(function(){
           , n = $(e + ":nth-child(" + (a + 1) + ") > .dotted-separator");
         n.css("width", i - (s + l + 5) + "px")
     }
-    $(".tabs li").on("click", function() {
+    $(document).on("click",".tabs li", function() {
         var t = $(this);
         $(".tabs li").removeClass("active"),
         t.addClass("active"),
@@ -33,18 +33,18 @@ $(document).ready(function(){
             $(this).addClass("active").show())
         })
     });
-    $(".button").on("click", function() {
+    $(document).on("click",".button", function() {
         $(this).find(".submenu").toggleClass("showsub")
     });
-    $(".modal-opener").on("click", function() {
+    $(document).on("click",".modal-opener", function() {
         var t = $(this)
           , e = t.attr("data-toggle");
         $("." + e).addClass("show")
     });
-    $(".modal-close").on("click", function() {
+    $(document).on("click",".modal-close", function() {
         $(this).closest(".popup-modal").removeClass("show")
     });
-    $(".popup-modal").on("click", function(t) {
+    $(document).on("click",".popup-modal", function(t) {
         t.target == this && $(".popup-modal").removeClass("show")
     });
     var o = new Date
@@ -84,7 +84,7 @@ $(document).ready(function(){
     $("body").on("click", function(t) {
         t.target == this && $(".submenu").removeClass("showsub")
     });
-    $(".button-next").on("click", function() {
+    $(document).on("click",".button-next", function() {
         $(".input-container .messages").addClass("showmsg"),
         $(".input-container .messages .message").addClass("show")
     });
