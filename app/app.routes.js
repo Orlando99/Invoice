@@ -105,10 +105,19 @@ angular.module('invoicesUnlimited')
 			},
 			details : {
 				name	: 'dashboard.customers.details',
-				url 	: '/details',
+				url 	: '/:customerId',
 				views 		: {
 					'customersView' : {
 						templateUrl : COMPONENTS + 'dashboard/views/customers/details.html'
+					}
+				}
+			},
+			edit 	: {
+				name 	: 'dashboard.customers.edit',
+				url 	: '/edit',
+				views 	: {
+					'customersView' : {
+						templateUrl : COMPONENTS + 'dashboard/views/customers/editcustomer.html'
 					}
 				}
 			}
