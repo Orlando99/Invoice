@@ -95,9 +95,9 @@ angular.module('invoicesUnlimited')
 				}
 			},
 			all  : {
-				name 		: 'dashboard.customers.all',
-				url 		: '',
-				views 		: {
+				name 	: 'dashboard.customers.all',
+				url 	: '',
+				views 	: {
 					'customersView' : {
 						templateUrl	: COMPONENTS + 'dashboard/views/customers/customers.html'
 					}
