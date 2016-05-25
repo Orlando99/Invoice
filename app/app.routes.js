@@ -114,6 +114,56 @@ angular.module('invoicesUnlimited')
 			}
 		},
 		sales : {
+			index : {
+				name 	: 'dashboard.sales',
+				url 	: '/sales',
+				views 	: {
+					'@' : {
+						controller  : 'InvoiceController',
+						templateUrl : COMPONENTS + 'dashboard/views/sales/sales.html'
+					}
+				}
+			},
+			Estimates 	: {
+				name	: 'dashboard.sales.estimates',
+				url 	: '/estimates',
+				views 	: {
+					'@'	: {
+						controller 	: 'InvoiceController',
+						templateUrl	: COMPONENTS + 'dashboard/views/sales/estimates/estimates.html'
+					}
+				}
+			},
+			Invoices 	: {
+				name	: 'dashboard.sales.invoices',
+				url 	: '/invoices',
+				views 	: {
+					'@'	: {
+						controller 	: 'InvoiceController',
+						templateUrl	: COMPONENTS + 'dashboard/views/sales/invoices/invoices.html'
+					}
+				}
+			},
+			NewInvoice	: {
+				name	: 'dashboard.sales.new-invoice',
+				url 	: '/new-invoice',
+				views 	: {
+					'@' : {
+						controller : 'InvoiceController',
+						templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/new.invoice.html'
+					}
+				}
+			},
+			CreditNotes : {
+				name	: 'dashboard.sales.credit-notes',
+				url 	: '/credit-notes',
+				views 	: {
+					'@' : {
+						controller 	: 'InvoiceController',
+						templateUrl	: COMPONENTS + 'dashboard/views/sales/creditnotes/creditnotes.html'
+					}
+				}
+			}
 
 		},
 		settings : {
@@ -269,6 +319,7 @@ angular.module('invoicesUnlimited')
 		login,
 		signup,
 		dashboard.customers,
+		dashboard.sales,
 		dashboard.settings,
 		[dashboard.index]
 	]);

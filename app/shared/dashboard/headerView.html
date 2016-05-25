@@ -12,17 +12,23 @@
     </div>
     <ul class="navigation">
       <li class="active"><a ui-sref="dashboard">Dashboard</a></li>
+<<<<<<< Updated upstream
       <li><a ui-sref="dashboard.customers.all">Customers</a></li>
+=======
+      <li><a ui-sref="dashboard.customers">Customers</a></li>
+      
+>>>>>>> Stashed changes
       <li>
-        <a href="sales/sales.html">Sales</a>
+        <a ui-sref="dashboard.sales">Sales</a>
         <div class="container-fluid">
           <ul class="submenu">
-            <li><a href="sales/estimates/estimates.html">Estimates</a></li>
-            <li><a href="sales/invoices/invoices.html">Invoices</a></li>
-            <li><a href="sales/creditnotes/creditnotes.html">Credit Notes</a></li>
+            <li><a ui-sref="dashboard.sales.estimates">Estimates</a></li>
+            <li><a ui-sref="dashboard.sales.invoices">Invoices</a></li>
+            <li><a ui-sref="dashboard.sales.credit-notes">Credit Notes</a></li>
           </ul>
         </div>
       </li>
+      
       <li>
         <a href="expenses/expenses.html">Expenses</a>
         <div class="container-fluid">
@@ -33,9 +39,11 @@
           </ul>
         </div>
       </li>
+      
       <li><a href="projects/projects.html">Projects</a></li>
       <li><a href="timesheets/timesheets.html">Timesheets</a></li>
       <li><a href="reports/salesbycustomer.html">Reports</a></li>
+      
       <li>
         <a ui-sref="dashboard.setttings">Settings</a>
         <div class="container-fluid">
