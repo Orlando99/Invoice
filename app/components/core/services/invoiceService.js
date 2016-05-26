@@ -40,6 +40,54 @@ invoicesUnlimited.factory('invoiceFactory', function($q){
 				});
 
 			});
+		},
+		getInvoices : function(user) {
+			var organization = getOrganization(user);
+			if (! organization)	return;
+
+			// get other fields,
+			var invoiceTable = Parse.Object.extend("Invoices");
+			var query = new Parse.Query(invoiceTable);
+
+			query.equalTo("organization", organization);
+			query.limit(2);
+			query.select("invoiceNumber", "customer", "invoiceDate", "dueDate",
+				"total", "balanceDue", "status");
+
+			return query.find().then(function(invoiceObjs) {
+				var invoices = [];
+				var customerIds = [];
+				for (var i = 0; i < invoiceObjs.length; ++i) {
+					var invoice = {};
+					invoice.invoiceNum = invoiceObjs[i].get("invoiceNumber");
+					invoice.invoiceDate = invoiceObjs[i].get("invoiceDate");
+					invoice.dueDate = invoiceObjs[i].get("dueDate");
+					invoice.amount = invoiceObjs[i].get("total");
+					invoice.balanceDue = invoiceObjs[i].get("balanceDue");
+					invoice.status = invoiceObjs[i].get("status");
+					invoices.push(invoice);
+
+					// save customer ids to fetch display names later
+					customerIds.push(invoiceObjs[i].get("customer").id);
+				}
+				// get customer display name
+				var customerTable = Parse.Object.extend("Customer");
+				var customerQuery = new Parse.Query(customerTable);
+				customerQuery.containedIn("objectId", customerIds);
+				customerQuery.select("displayName");
+				customerQuery.find().then(function(customerObjs) {
+					for (var i = 0; i < customerIds.length; ++i) {
+						for (var j = 0; j < customerObjs.length; ++j) {
+							if (customerIds[i] == customerObjs[j].id) {
+								invoices[i].customerName = customerObjs[j].get("displayName");
+								break;
+							}
+						}
+					}
+				});
+
+				return invoices;
+			});
 		}
 
 	};
