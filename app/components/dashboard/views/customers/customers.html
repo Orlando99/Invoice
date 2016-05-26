@@ -9,15 +9,10 @@
 
     <table class="customers-data no-border">
       <tr class="thead">
-        <td class="layout-padding text-uppercase text-info">Name</td>
-        <td class="layout-padding text-uppercase text-info">Co. Name</td>
-        <td class="layout-padding text-uppercase text-info">Email</td>
-        <td class="layout-padding text-uppercase text-info">Work Phone</td>
-        <td class="layout-padding text-uppercase text-info">Receivables</td>
-        <td class="layout-padding text-uppercase text-info">Credits</td>
+        <td class="layout-padding text-uppercase text-info"
+            ng-repeat="title in ['Name','Co. Name','Email','Work Phone','Receivables','Credits']">{{title}}</td>
       </tr>
-      <tr ng-repeat="customer in customers track by $index" ui-sref="dashboard.customers.details({customerId:$index})"><!--ng-click="selectCustomer(customer)">-->
-        <!--<td ui-sref="dashboard.customers.details({customerId:$index})" style="width:40px">CLick me</td>-->
+      <tr ng-repeat="customer in customers track by $index" ui-sref="dashboard.customers.details({customerId:$index})" style="cursor:pointer">
         <td class="layout-padding text-color-light">{{customer.entity.displayName}}</td>
         <td class="layout-padding text-color-light">{{customer.entity.companyName}}</td>
         <td class="layout-padding text-color-light">{{customer.entity.email}}</td>

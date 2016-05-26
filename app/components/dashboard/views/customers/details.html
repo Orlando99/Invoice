@@ -112,12 +112,8 @@
     <div class="tab layout-padding" data-name="tab2">
       <table class="container table-border-b">
         <tr class="text-uppercase text-info">
-          <td class="layout-padding-tb-lg">Date</td>
-          <td class="layout-padding-tb-lg">Invoice #</td>
-          <td class="layout-padding-tb-lg">Ref. #</td>
-          <td class="layout-padding-tb-lg">AMT.</td>
-          <td class="layout-padding-tb-lg">Balance</td>
-          <td class="layout-padding-tb-lg">Status</td>
+          <td class="layout-padding-tb-lg" 
+              ng-repeat="title in ['Date','Invoice #','Ref. #','AMT.','Balance','Status']">{{title}}</td>
         </tr>
         <tr class="text-color-light" ng-repeat="invoice in selectedCustomer.invoices">
           <td class="layout-padding-tb-xl text-uppercase">{{invoice.invoiceDate}}</td>
