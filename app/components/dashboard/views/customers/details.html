@@ -119,7 +119,15 @@
           <td class="layout-padding-tb-lg">Balance</td>
           <td class="layout-padding-tb-lg">Status</td>
         </tr>
-        <tr class="text-color-light">
+        <tr class="text-color-light" ng-repeat="invoice in selectedCustomer.invoices">
+          <td class="layout-padding-tb-xl text-uppercase">{{invoice.entity.invoiceDate}}</td>
+          <td class="layout-padding-tb-xl text-uppercase">{{invoice.entity.invoiceNumber}}</td>
+          <td class="layout-padding-tb-xl text-uppercase"></td>
+          <td class="layout-padding-tb-xl text-uppercase">{{invoice.entity.total}}</td>
+          <td class="layout-padding-tb-xl text-uppercase">{{invoice.entity.balanceDue}}</td>
+          <td class="layout-padding-tb-xl text-positive text-weight-normalize">{{invoice.entity.status}}</td>
+        </tr>
+        <!--<tr class="text-color-light">
           <td class="layout-padding-tb-xl text-uppercase">12/03/2014</td>
           <td class="layout-padding-tb-xl text-uppercase">INV-000001</td>
           <td class="layout-padding-tb-xl text-uppercase"></td>
@@ -174,7 +182,7 @@
           <td class="layout-padding-tb-xl text-uppercase">$16.20</td>
           <td class="layout-padding-tb-xl text-uppercase">$0.00</td>
           <td class="layout-padding-tb-xl text-danger text-weight-normalize">Paid</td>
-        </tr>
+        </tr>-->
       </table>
     </div>
     <div class="tab layout-padding" data-name="tab3">

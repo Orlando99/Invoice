@@ -1,7 +1,9 @@
 'use strict';
 
 invoicesUnlimited.controller('CustomersController',
-	function($scope,$rootScope,$state,userFactory,customerFactory,coreFactory,$controller,$q){
+	function($scope,$rootScope,$state,userFactory,
+			 customerFactory, invoicesFactory,
+			 coreFactory,$controller,$q){
 
 	var customerId = parseInt($state.params.customerId);
 	
@@ -13,16 +15,29 @@ invoicesUnlimited.controller('CustomersController',
 	$scope.selectedCustomer;
 	$scope.customers = [];
 
-	$scope.selectCustomer = function(item){
+	var formBillingAddress = function(obj){
+		return obj.Street + "\n" +
+        obj.City + "\n" +
+        obj["State\/Province"] + "\n" +
+        obj["Zip\/Postal Code"] + "\n" +
+        obj.Country;
+	}
+
+	var doSelectCustomerIfValidId = function(id){
+		if (id >= 0 && id < $scope.customers.length) {
+			selectCustomer($scope.customers[id]);
+		}
+	}
+
+	var selectCustomer = function(item){
 		$scope.selectedCustomer = item;
+		
 		if (!$scope.selectedCustomer.entity.billingAddress) return;
+		
 		var billingAddress = JSON.parse($scope.selectedCustomer.entity.billingAddress);
-		var addressText =
-			billingAddress.Street + "\n" +
-            billingAddress.City + "\n" +
-            billingAddress["State\/Province"] + "\n" +
-            billingAddress["Zip\/Postal Code"] + "\n" +
-            billingAddress.Country;
+		
+		var addressText = formBillingAddress(billingAddress);
+			
         $scope.selectedCustomer.billingAddress = addressText;
 	}
 
@@ -40,29 +55,39 @@ invoicesUnlimited.controller('CustomersController',
 			$state.go('dashboard.customers.all');
 		}
 
-		if (customerId >= 0 && customerId < $scope.customers.length) {
-			$scope.selectedCustomer = $scope.customers[customerId];
-		}
+		doSelectCustomerIfValidId(customerId);
 
 	});
 
-	$q.all([coreFactory.getAllCustomers()]).then(function(res){
-		res[0].forEach(function(elem){
-			$scope.customers.push(elem);
+	$q.when(coreFactory.getAllCustomers()).then(function(res){
+		
+		$scope.customers = res.sort(function(a,b){
+			return alphabeticalSort(a.entity.displayName,b.entity.displayName);
 		});
 
-		$scope.customers.sort(function(a,b){
-			var dispA = a.entity.displayName;
-			var dispB = b.entity.displayName;
-			return (dispA < dispB) ? -1 : (dispA > dispB) ? 1 : 0;
-		});
+		return $q.when(coreFactory.getAllInvoices({
+			method 	: 'containedIn',
+			name 	: 'customer',
+			val1 	: res.map(function(el){
+				return el.entity;
+			})
+		}));
 
+	}).then(function(invoices){
+		
+		var customersNum = $scope.customers.length;
+
+		$scope.customers.forEach(function(cust){
+			var filtered = invoices.filter(function(inv){
+				return inv.entity.get('customer').id == cust.entity.id;
+			});
+			cust.invoices = filtered;
+		});
+		debugger;
 		if ($state.current.name == 'dashboard.customers.details' &&
 			(customerId < 0 || customerId > $scope.customers.length)) {
 			$state.go('dashboard.customers.all');
-		} else if (customerId >= 0 && customerId < $scope.customers.length) {
-			$scope.selectedCustomer = $scope.customers[customerId];
-		}
+		} else doSelectCustomerIfValidId(customerId);
 	});
 
 });

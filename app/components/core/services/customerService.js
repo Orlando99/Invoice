@@ -22,6 +22,7 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 			});
 			return elem;
 		});
+		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
 		this.contactPersons = contactPersons;
 	};

@@ -38,6 +38,12 @@ function hideLoader(){
     $('.overlay').hide();
 }
 
+function alphabeticalSort(a,b){
+  var dispA = a;
+  var dispB = b;
+  return (dispA < dispB) ? -1 : (dispA > dispB) ? 1 : 0;
+}
+
 function loadColorTheme(user){
   if (!user) alert('User is empty! Unable to load color theme!');
   var color = user.get('colorTheme');
