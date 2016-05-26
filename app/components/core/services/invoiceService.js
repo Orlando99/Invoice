@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceFactory', function($q){
+invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 	return {
 		test : function() {
 			console.log("working");
@@ -61,6 +61,37 @@ invoicesUnlimited.factory('invoiceFactory', function($q){
 				var invoices = [];
 				var customerIds = [];
 				for (var i = 0; i < invoiceObjs.length; ++i) {
+					
+					var obj = new invoicesFactory (invoiceObjs[i]);
+					var invoice = {};
+					invoice.invoiceNum = obj.entity.invoiceNumber;
+					invoice.invoiceDate = obj.entity.invoiceDate;
+					invoice.dueDate = obj.entity.dueDate;
+					invoice.amount = obj.entity.total;
+					invoice.balance = obj.entity.balanceDue
+					invoice.status = obj.entity.status;
+
+					// select css class for status
+					switch(invoice.status) {
+						case "Unpaid":
+							invoice.statusClass = "text-color-normalize";
+							break;
+						case "Paid":
+							invoice.statusClass = "text-positive";
+							break;
+						case "Overdue":
+							invoice.statusClass = "text-danger";
+							break;
+						default:
+							invoice.statusClass = "text-color-normalize";
+					}
+
+					invoices.push(invoice);
+
+					// save customer ids to fetch display names later
+					customerIds.push(obj.entity.customer.id);
+
+					/*
 					var invoice = {};
 					invoice.invoiceNum = invoiceObjs[i].get("invoiceNumber");
 					invoice.invoiceDate = invoiceObjs[i].get("invoiceDate");
@@ -88,6 +119,8 @@ invoicesUnlimited.factory('invoiceFactory', function($q){
 
 					// save customer ids to fetch display names later
 					customerIds.push(invoiceObjs[i].get("customer").id);
+				*/
+
 				}
 				// get customer display name
 				var customerTable = Parse.Object.extend("Customer");

@@ -104,12 +104,12 @@
       <tr class="trow" ng-repeat="creditNote in creditNotes">
         <td class="text-color-light">{{creditNote.creditNoteDate}}</td>
         <td class="text-color-light">{{creditNote.creditNoteNum}}</td>
-        <td class="text-color-light text-center"></td>
+        <td class="text-color-light text-center">{{creditNote.referenceNo}}</td>
         <td class="text-color-light">{{creditNote.customerName}}</td>
         <td class="text-color-light">invoiceNum</td>
         <td class="text-positive"><span class="{{creditNote.statusClass}}">{{creditNote.status}}</span></td>
         <td class="text-color-light">${{creditNote.amount}}</td>
-        <td class="text-color-light">$balance</td>
+        <td class="text-color-light">${{creditNote.balance}}</td>
       </tr>
     </table>
 
