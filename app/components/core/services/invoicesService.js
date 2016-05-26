@@ -21,7 +21,9 @@ invoicesUnlimited.factory('invoicesFactory',function(userFactory){
 		"status",
 		"invoiceNumber",
 		"invoiceDate",
-		"balanceDue"
+		"dueDate",
+		"balanceDue",
+		"customer"
 	];
 	
 	return Invoice;

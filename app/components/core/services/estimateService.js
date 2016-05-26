@@ -19,7 +19,7 @@ invoicesUnlimited.factory('estimateFactory', function($q){
 			query.equalTo("organization", organization);
 			query.limit(2);
 			query.select("estimateNumber", "customer", "estimateDate",
-				"totalAmount", "status");
+				"totalAmount", "status", "referenceNumber");
 
 			return query.find().then(function(estimateObjs) {
 				var estimates = [];
@@ -28,6 +28,7 @@ invoicesUnlimited.factory('estimateFactory', function($q){
 					var estimate = {};
 					estimate.estimateNum = estimateObjs[i].get("estimateNumber");
 					estimate.estimateDate = estimateObjs[i].get("estimateDate");
+					estimate.referenceNo = estimateObjs[i].get("referenceNumber");
 					estimate.amount = estimateObjs[i].get("totalAmount");
 					estimate.status = estimateObjs[i].get("status");
 

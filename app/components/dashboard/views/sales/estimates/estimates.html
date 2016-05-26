@@ -101,7 +101,7 @@
       <tr class="trow" ng-repeat="estimate in estimates">
         <td class="layout-padding text-color-light">{{estimate.estimateDate}}</td>
         <td class="layout-padding text-color-light">{{estimate.estimateNum}}</td>
-        <td class="layout-padding text-color-light"></td>
+        <td class="layout-padding text-color-light">{{estimate.referenceNo}}</td>
         <td class="layout-padding text-color-light">{{estimate.customerName}}</td>
         <td class="layout-padding text-positive"><span class="{{estimate.statusClass}}">{{estimate.status}}</span></td>
         <td class="layout-padding text-color-light">${{estimate.amount}}</td>

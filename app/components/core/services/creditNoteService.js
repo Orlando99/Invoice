@@ -19,7 +19,7 @@ invoicesUnlimited.factory('creditNoteFactory', function($q){
 			query.equalTo("organization", organization);
 			query.limit(2);
 			query.select("creditNumber", "customer", "creditNoteDate",
-				"total", "status");
+				"total", "status", "remainingCredits", "reference");
 
 			return query.find().then(function(creditNoteObjs) {
 				var creditNotes = [];
@@ -28,7 +28,9 @@ invoicesUnlimited.factory('creditNoteFactory', function($q){
 					var creditNote = {};
 					creditNote.creditNoteNum = creditNoteObjs[i].get("creditNumber");
 					creditNote.creditNoteDate = creditNoteObjs[i].get("creditNoteDate");
+					creditNote.balance = creditNoteObjs[i].get("remainingCredits");
 					creditNote.amount = creditNoteObjs[i].get("total");
+					creditNote.referenceNo = creditNoteObjs[i].get("reference");
 					creditNote.status = creditNoteObjs[i].get("status");
 
 					// select css class for status
