@@ -11,13 +11,16 @@
           <option value="ms" selected>Ms.</option>
           <option value="mr">Mr.</option>
         </select>
-        <input class="col-20  layout-margin-r" type="text" placeholder="First Name" value="Leela">
-        <input class="col-20" type="text" placeholder="Last Name" value="Turanga">
+        <input class="col-20  layout-margin-r" type="text" placeholder="First Name" 
+               ng-model="selectedCustomer.entity.firstName">
+        <input class="col-20" type="text" placeholder="Last Name" 
+               ng-model="selectedCustomer.entity.lastName">
       </div>
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Company Name</label>
-        <input class="col-75 pull-right " type="text" placeholder="Company Name" value="PlanetExpress">
+        <input class="col-75 pull-right " type="text" placeholder="Company Name"
+               ng-model="selectedCustomer.entity.companyName">
       </div>
 
       <div class="input-container input-info input-select-info layout-margin-b">
@@ -34,13 +37,13 @@
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Phone Number</label>
-        <input type="number" placeholder="Work Phone" class="col-35">
-        <input type="number" placeholder="Mobile" class="col-35 pull-right">
+        <input type="text" placeholder="Work Phone" ng-model="selectedCustomer.entity.phone" class="col-35">
+        <input type="text" placeholder="Mobile" ng-model="selectedCustomer.entity.mobile" class="col-35 pull-right">
       </div>
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Email Address</label>
-        <input type="email" class="col-75">
+        <input type="email" ng-model="selectedCustomer.entity.email" class="col-75">
       </div>
 
       <div class="input-container layout-margin-b">
@@ -70,10 +73,10 @@
       <form class="col-60 inputs-white">
         <div class="input-container layout-margin-b">
           <label class="layout-padding-t">Currency</label>
-          <select class="col-75 layout-margin-tb">
-            <option value="USD">USD - US Dollar</option>
-            <option value="EUR">EUR - Euro</option>
-            <option value="DKK">DKK - Danish Krone</option>
+          <select class="col-75 layout-margin-tb" ng-model="selectedCustomer.entity.currency">
+            <option value="USD - US Dollar">USD - US Dollar</option>
+            <option value="EUR - Euro">EUR - Euro</option>
+            <option value="DKK - Danish Krone">DKK - Danish Krone</option>
           </select>
         </div>
         <div class="input-container layout-margin-b">
@@ -95,7 +98,6 @@
       </form>
       <div class="clearfix layout-margin-tb-lg"> </div>
 
-
     </div>
     <div class="container tab" data-name="tab2">
       <h3 class="layout-margin-tb text-weight-normalize text-color-normalize">Billing Address</h3>
@@ -103,60 +105,61 @@
       <form class="col-60 inputs-white">
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">Street</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.billingAddressJSON.Street">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">City</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.billingAddressJSON.City">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">State</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.billingAddressJSON['State\/Province']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">Zip Code</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.billingAddressJSON['Zip\/Postal Code']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">Country</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.billingAddressJSON.Country">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">Fax</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.billingAddressJSON.Fax">
         </div>
         <div class="clearfix"></div><br>
         <label class="input-container input-checkbox-container layout-margin-tb">
           <label>Shipping Address</label>
           <div class="col-75 layout-padding-t-sm">
             <p class="float-right layout-no-padding">Same as Billing Address</p>
-            <input type="checkbox">
+            <input type="checkbox" ng-model="shipping.setShippingTheSame"
+                   ng-checked="setShippingAddress()">
             <span class="checkbox float-right layout-margin-r"></span>
           </div>
         </label>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Street</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress.Street">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">City</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress.City">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">State</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress['State\/Province']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Zip Code</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress['Zip\/Postal Code']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Country</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress.Country">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Fax</label>
-          <input type="text" class="col-75">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress.Fax">
         </div>
       </form>
 
@@ -178,7 +181,7 @@
 
       <form class="col-40 inputs-white">
         <div class="input-container">
-          <textarea></textarea>
+          <textarea ng-model="selectedCustomer.entity.notes"></textarea>
         </div>
       </form>
     </div>

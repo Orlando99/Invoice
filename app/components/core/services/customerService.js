@@ -38,13 +38,17 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 	var customerFields = [
 		"companyName",
 		"displayName",
+		"lastName",
+		"firstName",
 		"phone",
 		"email",
 		"unusedCredits",
 		"outstanding",
 		"currency",
 		"paymentTerms",
-		"billingAddress"
+		"billingAddress",
+		"shippingAddress",
+		"notes"
 	];
 	
 	return customer;

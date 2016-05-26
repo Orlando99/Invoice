@@ -114,7 +114,7 @@ angular.module('invoicesUnlimited')
 			},
 			edit 	: {
 				name 	: 'dashboard.customers.edit',
-				url 	: '/edit',
+				url 	: '/:customerId/edit',
 				views 	: {
 					'customersView' : {
 						templateUrl : COMPONENTS + 'dashboard/views/customers/editcustomer.html'

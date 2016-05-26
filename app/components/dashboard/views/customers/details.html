@@ -4,7 +4,7 @@
     </a>
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{selectedCustomer.entity.displayName}}</h3>
     <div class="actions float-right layout-margin-tb">
-      <a ui-sref="dashboard.customers.edit" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
+      <a ui-sref="dashboard.customers.edit({customerId:selectedCustomerId})" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <button class="button button-small button-info text-uppercase layout-margin-r">New <img src="./assets/images/dropdown-arrow-w.png" alt="">
         <ul class="submenu list-clear layout-no-padding text-left text-normalize">
           <li><a href="">Estimate</a><li>
