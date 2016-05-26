@@ -12,6 +12,7 @@ invoicesUnlimited.controller('CustomersController',
 
 	$scope.selectedCustomer;
 	$scope.customers = [];
+	$scope.comments = [];
 
 	var formBillingAddress = function(obj){
 		return obj.Street + "\n" +
@@ -81,6 +82,10 @@ invoicesUnlimited.controller('CustomersController',
 			cust.invoices = filtered;
 		});
 		
+		invoices.forEach(function(inv){
+			$scope.comments = $scope.comments.concat(inv.comments);
+		});
+
 		if ($state.current.name.endsWith('details')) 
 			doSelectCustomerIfValidId(customerId);
 	});

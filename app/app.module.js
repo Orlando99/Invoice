@@ -117,15 +117,37 @@ function setObjectOperations(object,fieldName,parent,fields,xFields){
   };
 }
 
-/*invoicesUnlimited.run(['$rootScope', '$state', function($rootScope, $state) {
+Date.prototype.formatDate = function(format,fullday) {
+  var hh = this.getHours();
+  var mm = this.getMinutes();
+  var YY = this.getUTCFullYear();
+  var MM = this.getUTCMonth()+1;
+  var DD = this.getUTCDate();
+  var ampm = hh >= 12 ? 'PM' : 'AM';
+  
+  if (!fullday) {
+    hh = hh % 12;
+    hh = hh ? hh : 12;
+  }
 
-    $rootScope.$on('$stateChangeStart', function(evt, to, params) {
-      if (to.redirectTo) {
-        evt.preventDefault();
-        $state.go(to.redirectTo, params)
-      }
-    });
-}]);*/
+  function formatSingleNum(num){
+    return num < 10 ? '0'+num : num;
+  }
+
+  mm = formatSingleNum(mm);
+  MM = formatSingleNum(MM);
+  DD = formatSingleNum(DD);
+
+  var result = format
+    .replace(/MM/g,MM)
+    .replace(/YY/g,YY)
+    .replace(/DD/g,DD)
+    .replace(/mm/g,mm)
+    .replace(/hh/g,hh);
+
+  if (fullday) result += " " + ampm;
+  return result;
+}
 
 function initalizeModalClasses()
 {

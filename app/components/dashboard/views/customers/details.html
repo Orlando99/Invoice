@@ -136,40 +136,11 @@
           <td class="layout-padding-tb-lg">Details</td>
           <td class="layout-padding-tb-lg">Users <img src="./assets/images/dropdown-arrow-primary.png" alt=""></td>
         </tr>
-        <tr class="text-color-light">
-          <td class="layout-padding-tb-xl">12/03/2014 02:22 PM</td>
-          <td class="layout-padding-tb-xl">Contact updated</td>
-          <td class="layout-padding-tb-xl">John</td>
+        <tr class="text-color-light" ng-repeat="comment in comments">
+          <td class="layout-padding-tb-xl">{{comment.date}}</td>
+          <td class="layout-padding-tb-xl">{{comment.entity.comment}}</td>
+          <td class="layout-padding-tb-xl">{{comment.entity.name}}</td>
         </tr>
-        <tr class="text-color-light">
-          <td class="layout-padding-tb-xl">12/03/2014 02:22 PM</td>
-          <td class="layout-padding-tb-xl">Contact updated</td>
-          <td class="layout-padding-tb-xl">John</td>
-        </tr>
-        <tr class="text-color-light">
-          <td class="layout-padding-tb-xl">12/03/2014 02:22 PM</td>
-          <td class="layout-padding-tb-xl">Contact updated</td>
-          <td class="layout-padding-tb-xl">John</td>
-        </tr>
-        <tr class="text-color-light">
-          <td class="layout-padding-tb-xl">12/03/2014 02:22 PM</td>
-          <td class="layout-padding-tb-xl">Contact updated</td>
-          <td class="layout-padding-tb-xl">John</td>
-        </tr>
-        <tr class="text-color-light">
-          <td class="layout-padding-tb-xl">12/03/2014 02:22 PM</td>
-          <td class="layout-padding-tb-xl">Contact updated</td>
-          <td class="layout-padding-tb-xl">John</td>
-        </tr>
-        <tr class="text-color-light">
-          <td class="layout-padding-tb-xl">12/03/2014 02:22 PM</td>
-          <td class="layout-padding-tb-xl">Contact updated</td>
-          <td class="layout-padding-tb-xl">John</td>
-        </tr>
-        <tr class="text-color-light">
-          <td class="layout-padding-tb-xl">12/03/2014 02:22 PM</td>
-          <td class="layout-padding-tb-xl">Contact updated</td>
-          <td class="layout-padding-tb-xl">John</td>
         </tr>
       </table>
     </div>
