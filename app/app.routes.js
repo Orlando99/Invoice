@@ -138,7 +138,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/estimates',
 				views 	: {
 					'@'	: {
-						controller 	: 'InvoiceController',
+						controller 	: 'EstimateController',
 						templateUrl	: COMPONENTS + 'dashboard/views/sales/estimates/estimates.html'
 					}
 				}
@@ -168,7 +168,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/credit-notes',
 				views 	: {
 					'@' : {
-						controller 	: 'InvoiceController',
+						controller 	: 'CreditNotesController',
 						templateUrl	: COMPONENTS + 'dashboard/views/sales/creditnotes/creditnotes.html'
 					}
 				}

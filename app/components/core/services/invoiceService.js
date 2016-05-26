@@ -7,7 +7,10 @@ invoicesUnlimited.factory('invoiceFactory', function($q){
 		},
 		getPreferences : function(user) {
 			var organization = getOrganization(user);
-			if (! organization)	return;
+			if (! organization) {
+				var message = 'user: ' + user.id + ' has no Organization assigned.'
+				return Parse.Promise.error(message);
+			}
 
 			var prefs = {};
 			var prefTable = Parse.Object.extend("Preferencies");
@@ -63,8 +66,24 @@ invoicesUnlimited.factory('invoiceFactory', function($q){
 					invoice.invoiceDate = invoiceObjs[i].get("invoiceDate");
 					invoice.dueDate = invoiceObjs[i].get("dueDate");
 					invoice.amount = invoiceObjs[i].get("total");
-					invoice.balanceDue = invoiceObjs[i].get("balanceDue");
+					invoice.balance = invoiceObjs[i].get("balanceDue");
 					invoice.status = invoiceObjs[i].get("status");
+
+					// select css class for status
+					switch(invoice.status) {
+						case "Unpaid":
+							invoice.statusClass = "text-color-normalize";
+							break;
+						case "Paid":
+							invoice.statusClass = "text-positive";
+							break;
+						case "Overdue":
+							invoice.statusClass = "text-danger";
+							break;
+						default:
+							invoice.statusClass = "text-color-normalize";
+					}
+
 					invoices.push(invoice);
 
 					// save customer ids to fetch display names later
@@ -95,8 +114,6 @@ invoicesUnlimited.factory('invoiceFactory', function($q){
 	function getOrganization (user) {
 		var organizationArray = user.get("organizations");
 		if (!organizationArray) {
-			var message = 'user: ' + user.id + ' has no Organization assigned.'
-			console.log(message);
 			return undefined;
 		}
 		else return organizationArray[0];

@@ -7,6 +7,7 @@ invoicesUnlimited.factory('taxFactory', function($q){
 			var organization = getOrganization(user);
 			if (! organization){
 				hideLoader();
+				callback([]);
 				return;
 			}
 

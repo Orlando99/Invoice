@@ -101,57 +101,16 @@
         <td class="text-uppercase text-info">Amount</td>
         <td class="text-uppercase text-info">Balance</td>
       </tr>
-      <tr class="trow">
-        <td class="text-color-light">12/03/2014</td>
-        <td class="text-color-light">EST-000001</td>
+      <tr class="trow" ng-repeat="invoice in invoices">
+        <td class="text-color-light">{{invoice.invoiceDate}}</td>
+        <td class="text-color-light">{{invoice.invoiceNum}}</td>
         <td class="text-color-light"></td>
-        <td class="text-color-light">John Doe</td>
-        <td class="text-positive"><span class="text-positive">Paid</span></td>
-        <td class="text-color-light">12/05/2014</td>
-        <td class="text-color-light">$10.00</td>
-        <td class="text-color-light">$10.00</td>
+        <td class="text-color-light">{{invoice.customerName}}</td>
+        <td class="text-positive"><span class="{{invoice.statusClass}}">{{invoice.status}}</span></td>
+        <td class="text-color-light">{{invoice.dueDate}}</td>
+        <td class="text-color-light">${{invoice.amount}}</td>
+        <td class="text-color-light">${{invoice.balance}}</td>
       </tr>
-      <tr class="trow">
-        <td class="text-color-light">12/05/2014</td>
-        <td class="text-color-light">EST-000002</td>
-        <td class="text-color-light"></td>
-        <td class="text-color-light">Frank West</td>
-        <td class="text-positive"><span class="text-positive">Paid</span></td>
-        <td class="text-color-light">12/10/2014</td>
-        <td class="text-color-light">$5.00</td>
-        <td class="text-color-light">$5.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="text-color-light">12/10/2014</td>
-        <td class="text-color-light">EST-000003</td>
-        <td class="text-color-light"></td>
-        <td class="text-color-light">John Doe</td>
-        <td class="text-positive"><span class="text-color-normalize">Unpaid</span></td>
-        <td class="text-color-light">12/05/2014</td>
-        <td class="text-color-light">$2.50</td>
-        <td class="text-color-light">$2.50</td>
-      </tr>
-      <tr class="trow">
-        <td class="text-color-light">12/11/2014</td>
-        <td class="text-color-light">EST-000004</td>
-        <td class="text-color-light"></td>
-        <td class="text-color-light">Leela Turanga</td>
-        <td class="text-positive"><span class="text-positive">Paid</span></td>
-        <td class="text-color-light">12/13/2014</td>
-        <td class="text-color-light">$7.00</td>
-        <td class="text-color-light">$7.00</td>
-      </tr>
-      <tr class="trow">
-        <td class="text-color-light">12/12/2014</td>
-        <td class="text-color-light">EST-000004</td>
-        <td class="text-color-light"></td>
-        <td class="text-color-light">Leela Turanga</td>
-        <td class="text-positive"><span class="text-danger">Overdue</span></td>
-        <td class="text-color-light">12/20/2014</td>
-        <td class="text-color-light">$9.50</td>
-        <td class="text-color-light">$9.50</td>
-      </tr>
-
     </table>
 
 
