@@ -4,17 +4,10 @@ invoicesUnlimited.factory('userFactory',function(){
 	
 	var currentUser = Parse.User.current() || {};
 	
-	function setLoginUserFields(){
-		currentUser.logout = function(){
-			return Parse.User.logOut().then(function(){
-				currentUser = {};
-				setEmptyUserFields();
-			});
-		};
-	}
-
-	function setEmptyUserFields(){
+	function setUserFields(){
+		
 		currentUser.login = function(params){
+			if (currentUser.id) return;
 			return Parse.User.logIn(params.username, params.password, {
 				success : function(user){
 					currentUser = user;
@@ -24,20 +17,14 @@ invoicesUnlimited.factory('userFactory',function(){
 					console.log(error.message);
 				}
 			});
-		}
-	}
+		};
 
-	function setCommonUserFields(){
-		currentUser.authorized = function(){
-			if (currentUser.id) return currentUser;
-			else return undefined;
-		}
-	}
-
-	function setUserFields(){
-		if (currentUser.id) setLoginUserFields();
-		else setEmptyUserFields();
-		setCommonUserFields();
+		currentUser.logout = function(){
+			return Parse.User.logOut().then(function(){
+				currentUser = {};
+				setUserFields();
+			});
+		};
 	}
 
 	setUserFields();

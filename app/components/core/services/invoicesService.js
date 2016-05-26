@@ -2,7 +2,7 @@
 
 invoicesUnlimited.factory('invoicesFactory',function(userFactory){
 
-	var user = userFactory.authorized();
+	var user = userFactory;
 	if (!user) return undefined;
 
 	var Invoice = function(parseObject){
@@ -13,6 +13,11 @@ invoicesUnlimited.factory('invoicesFactory',function(userFactory){
 			parent 		: undefined,
 			fields 		: fields
 		});
+		this.invoiceDate = parseObject.invoiceDate.toISOString()
+			.slice(0,10)
+			.split("-")
+			.reverse()
+			.join("/");
 		this.entity = parseObject;
 	};
 

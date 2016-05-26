@@ -2,11 +2,11 @@
 
 invoicesUnlimited.controller('CustomersController',
 	function($scope,$rootScope,$state,userFactory,
-			 customerFactory, invoicesFactory,
-			 coreFactory,$controller,$q){
+			 customerFactory, coreFactory, 
+			 invoicesFactory ,$controller,$q){
 
 	var customerId = parseInt($state.params.customerId);
-	var user = userFactory.authorized();
+	var user = userFactory;
 	var def = $q.defer();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 

@@ -45,7 +45,6 @@ function alphabeticalSort(a,b){
 }
 
 function loadColorTheme(user){
-  debugger;
   if (!user) alert('User is empty! Unable to load color theme!');
   var color = user.get('colorTheme');
   if (color) color = color.replace(/app|Color/g,"").toLowerCase();

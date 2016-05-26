@@ -3,8 +3,8 @@
 invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory','businessFactory','$q',
 	function($scope,$state,userFactory,businessFactory,$q){
 
-	var user = userFactory.authorized();
-	if (!userFactory.authorized()) $state.go('login');
+	var user = userFactory;
+	if (!user) $state.go('login');
 	
 	loadColorTheme(user);
 	$scope.businessInfo = {};

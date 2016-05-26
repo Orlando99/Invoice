@@ -2,9 +2,9 @@
 
 invoicesUnlimited.factory('businessFactory',['userFactory',function(userFactory){
 	
-	var user = userFactory.authorized();
+	var user = userFactory;
 
-	if (!user) return undefined;
+	if (!user.id) return undefined;
 
 	var businessInfo;
 
