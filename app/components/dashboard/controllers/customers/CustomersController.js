@@ -79,11 +79,11 @@ invoicesUnlimited.controller('CustomersController',
 			var filtered = invoices.filter(function(inv){
 				return inv.entity.get('customer').id == cust.entity.id;
 			});
+			cust.comments = [];
+			filtered.forEach(function(inv){
+				cust.comments = cust.comments.concat(inv.comments);
+			});
 			cust.invoices = filtered;
-		});
-		
-		invoices.forEach(function(inv){
-			$scope.comments = $scope.comments.concat(inv.comments);
 		});
 
 		if ($state.current.name.endsWith('details')) 
