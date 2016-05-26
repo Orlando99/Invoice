@@ -83,7 +83,8 @@
   <div class="container hidesm">
 
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-t">All Invoices <i class="arrow-down-black"></i></h3>
-    <a ui-sref="dashboard.sales.new-invoice" class="float-right button button-add text-transform">New</a>
+    <a ui-sref="dashboard.sales.new-invoice" class="float-right button button-add text-transform"
+      ng-click="prepareAddInvoice()">New</a>
     <form class="float-right layout-margin-t">
       <input type="text" class="search-bar" placeholder="Search">
     </form>

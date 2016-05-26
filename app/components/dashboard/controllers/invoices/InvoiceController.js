@@ -8,16 +8,12 @@ invoicesUnlimited.controller('InvoiceController',['$scope', '$state', '$controll
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 	loadColorTheme(user);
 
-//	getInvoicePrefs();
+	var promise = invoiceFactory.getInvoices(user);
+	promise.then(function(invoices) {
+		console.log(invoices);
 
-	function getInvoicePrefs() {
-		var promise = invoiceFactory.getPreferences(user);
-		promise.then(function(prefs) {
-			$scope.prefs = prefs;
-			console.log(prefs);
-		}, function(error) {
-			console.log(error.message);
-		});
-	}
+	}, function(error) {
+		console.log(error.message);
+	});
 
 }]);

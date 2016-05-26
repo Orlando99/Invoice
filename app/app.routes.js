@@ -158,7 +158,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/new-invoice',
 				views 	: {
 					'@' : {
-						controller : 'InvoiceController',
+						controller : 'CreateInvoiceController',
 						templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/new.invoice.html'
 					}
 				}
@@ -281,7 +281,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/invoices',
 				views 	: {
 					'@'	: {
-						controller 	: 'InvoiceController',
+						controller 	: 'InvoiceSettingsController',
 						templateUrl	: COMPONENTS + 'dashboard/views/settings/invoices.html'
 					}
 				}
