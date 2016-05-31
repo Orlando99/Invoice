@@ -79,9 +79,14 @@
         </div>
         <div class="input-container layout-margin-b">
           <label class="layout-padding-t">Payment Terms</label>
-          <select class="col-75 layout-margin-t-sm">
-            <option value="option1">Net 15</option>
-            <option value="option2">Option 2</option>
+          <select class="col-75 layout-margin-t-sm" ng-model="selectedCustomer.entity.paymentTerms">
+            <option value="" disabled>Select your terms</option>
+            <option value="Due on Receipt">Due on Receipt</option>
+            <option value="Net 7">Net 7</option>
+            <option value="Net 10">Net 10</option>
+            <option value="Net 30">Net 30</option>
+            <option value="Net 60">Net 60</option>
+            <option value="Net 90">Net 90</option>
           </select>
         </div>
         <label class="input-container input-checkbox-container layout-margin-b">
