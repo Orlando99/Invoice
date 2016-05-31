@@ -51,7 +51,8 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 		"paymentTerms",
 		"billingAddress",
 		"shippingAddress",
-		"notes"
+		"notes",
+		"salutation"
 	];
 	
 	return customer;
