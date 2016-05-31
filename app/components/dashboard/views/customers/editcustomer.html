@@ -25,10 +25,8 @@
 
       <div class="input-container input-info input-select-info layout-margin-b">
         <label class="layout-padding-t-sm">Display Name</label>
-        <select class="col-75">
-          <option value="option1">Leela Turanga</option>
-          <option value="option2">Leela</option>
-        </select>
+        <input class="col-75 pull-right " type="text" placeholder="Display Name"
+               ng-model="selectedCustomer.entity.displayName">
         <span class="info-icon info-icon-gray"></span>
         <p class="info-tooltip tooltip-dark">
           This is the name that will display for this contact for invoices, estimates, &amp; projects.
@@ -62,8 +60,8 @@
         <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Payment Details</h4></li>
       <li class="text-center col-no-padding" data-toggle="tab2">
         <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Address</h4></li>
-      <li class="text-center col-no-padding" data-toggle="tab3">
-        <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Custom Fields</h4></li>
+      <!--<li class="text-center col-no-padding" data-toggle="tab3">
+        <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Custom Fields</h4></li>-->
         <li class="text-center col-no-padding" data-toggle="tab4">
           <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Notes</h4></li>
     </ul>
@@ -133,38 +131,38 @@
           <div class="col-75 layout-padding-t-sm">
             <p class="float-right layout-no-padding">Same as Billing Address</p>
             <input type="checkbox" ng-model="shipping.setShippingTheSame"
-                   ng-checked="setShippingAddress()">
+                   ng-click="setShippingAddress()">
             <span class="checkbox float-right layout-margin-r"></span>
           </div>
         </label>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Street</label>
-          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress.Street">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddressJSON.Street">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">City</label>
-          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress.City">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddressJSON.City">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">State</label>
-          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress['State\/Province']">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddressJSON['State\/Province']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Zip Code</label>
-          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress['Zip\/Postal Code']">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddressJSON['Zip\/Postal Code']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Country</label>
-          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress.Country">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddressJSON.Country">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Fax</label>
-          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddress.Fax">
+          <input type="text" class="col-75" ng-model="selectedCustomer.shippingAddressJSON.Fax">
         </div>
       </form>
 
     </div>
-    <div class="container tab" data-name="tab3">
+    <!--<div class="container tab" data-name="tab3">
       <div class="input-container col-60 inputs-white">
         <label class="layout-padding-t-smm">Lorem Ipsum</label>
         <input type="text" class="col-75">
@@ -173,7 +171,7 @@
         <span class="text-danger">Note: </span> You can add additional fields for your contacts and have these appear on your PDF by going to More Settings > Preferences > Contacts. <br>
         You can also refine the address format of your contacts from there.
       </p>
-    </div>
+    </div>-->
     <div class="container tab" data-name="tab4">
       <div class="col-20">
         <p class="text-color-normalize text-weight-normalize layout-no-padding layout-no-margin">Notes <br/><span class="text-color-light">(For Internal Use Only)</span></p>
@@ -187,7 +185,7 @@
     </div>
 
     <div class="clearfix layout-margin-tb-lg spacer"></div>
-    <button class="button button-info text-uppercase layout-margin-r">Save</button>
+    <button ng-click="saveSelectedCustomer();" class="button button-info text-uppercase layout-margin-r">Save</button>
     <button class="button button-neutral text-uppercase">Cancel</button>
 
   </div>

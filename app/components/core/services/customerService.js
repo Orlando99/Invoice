@@ -25,6 +25,9 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
 		this.contactPersons = contactPersons;
+		this.save = function(){
+			return this.entity.save();
+		}
 	};
 
 	var contactPersFields = [

@@ -4,7 +4,11 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 	function($scope,$state,userFactory,businessFactory,$q){
 
 	var user = userFactory;
+	var business = businessFactory;
 	if (!user) $state.go('login');
+	if (user && !business) user.logout().then(function(){
+		$state.go('login');
+	});
 	
 	loadColorTheme(user);
 	$scope.businessInfo = {};

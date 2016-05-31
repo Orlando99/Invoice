@@ -47,14 +47,16 @@ invoicesUnlimited.controller('CustomersController',
 		if (!obj.billingAddress) return;
 		
 		var billingAddress = JSON.parse(obj.billingAddress);
-		var shippingAddress = obj.shippingAddress ? JSON.parse(obj.shippingAddress) : {};
+		var shippingAddress = {};
+		if (obj.shippingAddress)
+			shippingAddress = JSON.parse(obj.shippingAddress);
 
-	    $scope.selectedCustomer.billingAddress = formBillingAddress(billingAddress);;
+	    $scope.selectedCustomer.billingAddress = formBillingAddress(billingAddress);
 	    $scope.selectedCustomer.billingAddressJSON = billingAddress;
-	    $scope.selectedCustomer.shippingAddress = shippingAddress;
+	    $scope.selectedCustomer.shippingAddressJSON = shippingAddress;
 	}
 
-	var goTo = {
+	var isGoTo = {
 		details : function(to){
 			return to.endsWith('details');	
 		},
@@ -68,29 +70,43 @@ invoicesUnlimited.controller('CustomersController',
 
 	$scope.setShippingAddress = function(){
 		if ($scope.selectedCustomer && !$scope.shipping.setShippingTheSame) {
-			$scope.selectedCustomer.shippingAddress = $scope.shipping.tempShippingAddress;
+			$scope.selectedCustomer.shippingAddressJSON = 
+				$scope.shipping.tempShippingAddress;
 			return;
 		}
-		$scope.shipping.tempShippingAddress = $scope.shippingAddress;
-		if ($scope.selectedCustomer)
-			$scope.selectedCustomer.shippingAddress = 
-			$.extend(true,{},$scope.selectedCustomer.billingAddressJSON);
+		if ($scope.selectedCustomer) {
+			$scope.shipping.tempShippingAddress = 
+				$scope.selectedCustomer.shippingAddressJSON;
+
+			$scope.selectedCustomer.shippingAddressJSON = 
+				$.extend(true,{},$scope.selectedCustomer.billingAddressJSON);
+		}
 	}
 
-	var goToDetailsWithInvalidCustomerId = function(to,id){
+	$scope.saveSelectedCustomer = function(){
+		$scope.selectedCustomer.entity.billingAddress = 
+			JSON.stringify($scope.selectedCustomer.billingAddressJSON);
+		$scope.selectedCustomer.entity.shippingAddress = 
+			JSON.stringify($scope.selectedCustomer.shippingAddressJSON);
+		$scope.selectedCustomer.save().then(function(){
+			$state.go('dashboard.customers.all');
+		});
+	}
+
+	var isGoToDetailsWithInvalidCustomerId = function(to,id){
 		return to.endsWith('details') && (!isCustomerIdValid(id));
 	}
 
 	$rootScope.$on('$stateChangeStart',
 	function(event,toState,toParams,fromState,fromParams,options){
-		if (goTo.customers(toState.name)) {
+		if (isGoTo.customers(toState.name)) {
 			$scope.selectedCustomer = null;
 			$scope.selectedCustomerId = null;
 		}
-		else if (goTo.details(toState.name)) {
+		else if (isGoTo.details(toState.name)) {
 			doSelectCustomerIfValidId(parseInt(toParams.customerId));
 		}
-		else if (goTo.edit(toState.name)) {
+		else if (isGoTo.edit(toState.name)) {
 			doSelectCustomerIfValidId(parseInt(toParams.customerId));
 		}
 	});
@@ -122,8 +138,8 @@ invoicesUnlimited.controller('CustomersController',
 			cust.invoices = filtered;
 		});
 
-		if (goTo.details($state.current.name)||
-			goTo.edit($state.current.name)) 
+		if (isGoTo.details($state.current.name)||
+			isGoTo.edit($state.current.name)) 
 			doSelectCustomerIfValidId(customerId);
 	});
 
