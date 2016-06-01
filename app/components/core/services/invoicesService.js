@@ -15,11 +15,12 @@ invoicesUnlimited.factory('invoicesFactory',function(userFactory,commentFactory)
 		});
 
 		var comments = parseObject.get('comments');
-		comments = comments.map(function(elem){
-			return new commentFactory(elem);
-		});
-
-		this.comments = comments;
+		if (comments) {
+			comments = comments.map(function(elem){
+				return new commentFactory(elem);
+			});
+			this.comments = comments;
+		}
 
 		this.invoiceDate = parseObject.invoiceDate.toISOString()
 			.slice(0,10)

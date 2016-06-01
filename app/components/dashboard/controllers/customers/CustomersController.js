@@ -65,6 +65,9 @@ invoicesUnlimited.controller('CustomersController',
 		},
 		edit : function(to){
 			return to.endsWith('edit');
+		},
+		newCustomer : function(to){
+			return to.endsWith('new');	
 		}
 	}
 
@@ -99,11 +102,18 @@ invoicesUnlimited.controller('CustomersController',
 
 	$rootScope.$on('$stateChangeStart',
 	function(event,toState,toParams,fromState,fromParams,options){
-		if (isGoTo.customers(toState.name)) {
+
+		if (isGoTo.customers(toState.name) ||
+			isGoTo.newCustomer(toState.name)) {
 			$scope.selectedCustomer = null;
 			$scope.selectedCustomerId = null;
 		}
 		else if (isGoTo.details(toState.name)) {
+			if (isNaN(parseInt(toParams.customerId)) && 
+				fromState.name.endsWith('new')) {
+				event.preventDefault();
+				return;
+			}
 			doSelectCustomerIfValidId(parseInt(toParams.customerId));
 		}
 		else if (isGoTo.edit(toState.name)) {
