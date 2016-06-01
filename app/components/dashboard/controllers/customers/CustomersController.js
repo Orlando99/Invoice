@@ -41,6 +41,13 @@ invoicesUnlimited.controller('CustomersController',
 		else $state.go('dashboard.customers.all');
 	}
 
+	var doCreateEditObject = function(){
+		$scope.selectedCustomerEdit = 
+			$.extend(true,{},$scope.selectedCustomer.entity);
+		debugger;
+
+	}
+
 	var selectCustomer = function(item){
 		$scope.selectedCustomer = item;
 		var obj = $scope.selectedCustomer.entity;
@@ -91,9 +98,28 @@ invoicesUnlimited.controller('CustomersController',
 			JSON.stringify($scope.selectedCustomer.billingAddressJSON);
 		$scope.selectedCustomer.entity.shippingAddress = 
 			JSON.stringify($scope.selectedCustomer.shippingAddressJSON);
+		
+		//$scope.selectedCustomer.entity = $scope.selectedCustomerEdit;
+
+		for (var property in $scope.selectedCustomerEdit) {
+		    if ($scope.selectedCustomerEdit.hasOwnProperty(property)) {
+				if (!property.endsWith('objCount') && 
+					!property.endsWith('id'))
+		  		$scope.selectedCustomer.entity[property] 
+		  		= $scope.selectedCustomerEdit[property];
+		    }
+		}
+
+		$scope.selectedCustomerEdit = null;
+
 		$scope.selectedCustomer.save().then(function(){
-			$state.go('dashboard.customers.all');
+			$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
 		});
+	}
+
+	$scope.cancelSaveSelectedCustomer = function(){
+		$scope.selectedCustomerEdit = null;
+		$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
 	}
 
 	var isGoToDetailsWithInvalidCustomerId = function(to,id){
@@ -118,6 +144,7 @@ invoicesUnlimited.controller('CustomersController',
 		}
 		else if (isGoTo.edit(toState.name)) {
 			doSelectCustomerIfValidId(parseInt(toParams.customerId));
+			doCreateEditObject();
 		}
 	});
 
@@ -148,9 +175,12 @@ invoicesUnlimited.controller('CustomersController',
 			cust.invoices = filtered;
 		});
 
-		if (isGoTo.details($state.current.name)||
-			isGoTo.edit($state.current.name)) 
+		if (isGoTo.details($state.current.name))
 			doSelectCustomerIfValidId(customerId);
+		else if (isGoTo.edit($state.current.name)) {
+			doSelectCustomerIfValidId(customerId);
+			doCreateEditObject();
+		}
 	});
 
 });
