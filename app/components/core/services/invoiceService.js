@@ -132,7 +132,7 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 
 						$.ajax({
 							type: "GET",
-							url: htmlUrl,
+							url: htmlFile.url(),
 							dataType: "html"
 						}).then(function (htmlDoc) {
 							
