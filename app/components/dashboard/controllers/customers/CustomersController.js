@@ -44,8 +44,12 @@ invoicesUnlimited.controller('CustomersController',
 	var doCreateEditObject = function(){
 		$scope.selectedCustomerEdit = 
 			$.extend(true,{},$scope.selectedCustomer.entity);
-		debugger;
 
+		$scope.billingAddressEdit = 
+			$.extend(true,{},$scope.selectedCustomer.billingAddressJSON);
+
+		$scope.shippingAddressEdit = 
+			$.extend(true,{},$scope.selectedCustomer.shippingAddressJSON);
 	}
 
 	var selectCustomer = function(item){
@@ -80,39 +84,45 @@ invoicesUnlimited.controller('CustomersController',
 
 	$scope.setShippingAddress = function(){
 		if ($scope.selectedCustomer && !$scope.shipping.setShippingTheSame) {
-			$scope.selectedCustomer.shippingAddressJSON = 
+			$scope.shippingAddressEdit = 
 				$scope.shipping.tempShippingAddress;
 			return;
 		}
 		if ($scope.selectedCustomer) {
 			$scope.shipping.tempShippingAddress = 
-				$scope.selectedCustomer.shippingAddressJSON;
+				$scope.shippingAddressEdit;
 
-			$scope.selectedCustomer.shippingAddressJSON = 
-				$.extend(true,{},$scope.selectedCustomer.billingAddressJSON);
+			$scope.shippingAddressEdit = 
+				$.extend(true,{},$scope.billingAddressEdit);
 		}
 	}
 
 	$scope.saveSelectedCustomer = function(){
-		$scope.selectedCustomer.entity.billingAddress = 
-			JSON.stringify($scope.selectedCustomer.billingAddressJSON);
-		$scope.selectedCustomer.entity.shippingAddress = 
-			JSON.stringify($scope.selectedCustomer.shippingAddressJSON);
-		
-		//$scope.selectedCustomer.entity = $scope.selectedCustomerEdit;
+
+		var selected = $scope.selectedCustomer;
+
+		selected.billingAddressJSON = $scope.billingAddressEdit;
+		selected.shippingAddressJSON = $scope.shippingAddressEdit;
+
+		$scope.selectedCustomerEdit.billingAddress = 
+			JSON.stringify(selected.billingAddressJSON);
+
+		$scope.selectedCustomerEdit.shippingAddress = 
+			JSON.stringify(selected.shippingAddressJSON);
 
 		for (var property in $scope.selectedCustomerEdit) {
-		    if ($scope.selectedCustomerEdit.hasOwnProperty(property)) {
-				if (!property.endsWith('objCount') && 
-					!property.endsWith('id'))
-		  		$scope.selectedCustomer.entity[property] 
-		  		= $scope.selectedCustomerEdit[property];
-		    }
+			if (selected.customerFields.some(function(el){
+				return property == el;
+			}))
+	  		selected.entity[property] = 
+	  			$scope.selectedCustomerEdit[property];
 		}
 
-		$scope.selectedCustomerEdit = null;
-
-		$scope.selectedCustomer.save().then(function(){
+		selected.save().then(function(){
+			selected.billingAddress = formBillingAddress(selected.entity.billingAddress);
+			$scope.selectedCustomerEdit = null;
+			$scope.billingAddressEdit = null;
+			$scope.shippingAddressEdit = null;
 			$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
 		});
 	}

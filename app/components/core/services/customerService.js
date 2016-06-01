@@ -12,6 +12,7 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 			parent 		: undefined,
 			fields 		: customerFields
 		});
+
 		var contactPersons = parseObject.get('contactPersons');
 		if (contactPersons)
 			contactPersons = contactPersons.map(function(elem){
@@ -26,6 +27,8 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
 		this.contactPersons = contactPersons;
+		this.customerFields = customerFields;
+
 		this.save = function(){
 			return this.entity.save();
 		}
