@@ -11,13 +11,22 @@ invoicesUnlimited.controller('InvoiceController',['$scope', '$state', '$controll
 	showLoader();
 	var promise = invoiceFactory.getInvoices(user);
 	promise.then(function(invoices) {
-		console.log(invoices);
+	//	console.log(invoices);
 		$scope.invoices = invoices;
 		hideLoader();
 
 	}, function(error) {
 		hideLoader();
 		console.log(error.message);
+	})
+	.then(function() {
+		var invoiceId = "VW6Zf9urYA";
+		invoiceFactory.createInvoiceReceipt(user, invoiceId)
+		.then(function() {
+
+		}, function(error) {
+			console.log(error.message);
+		});
 	});
 
 }]);

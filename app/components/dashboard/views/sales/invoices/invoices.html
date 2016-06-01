@@ -102,14 +102,14 @@
         <td class="text-uppercase text-info">Balance</td>
       </tr>
       <tr class="trow" ng-repeat="invoice in invoices">
-        <td class="text-color-light">{{invoice.invoiceDate}}</td>
-        <td class="text-color-light">{{invoice.invoiceNum}}</td>
+        <td class="text-color-light">{{invoice.values.invoiceDate}}</td>
+        <td class="text-color-light">{{invoice.values.invoiceNumber}}</td>
         <td class="text-color-light"></td>
         <td class="text-color-light">{{invoice.customerName}}</td>
-        <td class="text-positive"><span class="{{invoice.statusClass}}">{{invoice.status}}</span></td>
-        <td class="text-color-light">{{invoice.dueDate}}</td>
-        <td class="text-color-light">${{invoice.amount}}</td>
-        <td class="text-color-light">${{invoice.balance}}</td>
+        <td class="text-positive"><span class="{{invoice.statusClass}}">{{invoice.values.status}}</span></td>
+        <td class="text-color-light">{{invoice.values.dueDate}}</td>
+        <td class="text-color-light">${{invoice.values.total}}</td>
+        <td class="text-color-light">${{invoice.values.balanceDue}}</td>
       </tr>
     </table>
 
