@@ -20,11 +20,16 @@ invoicesUnlimited.controller('CustomersController',
 	}
 
 	var formBillingAddress = function(obj){
-		return obj.Street + "\n" +
-        obj.City + "\n" +
-        obj["State\/Province"] + "\n" +
-        obj["Zip\/Postal Code"] + "\n" +
-        obj.Country;
+		var result = "";
+		
+		var addIfExist = function(w) { return w ? w : "";}
+
+		result += addIfExist(obj.Street) + "\n"
+		+ addIfExist(obj.City) + "\n"
+		+ addIfExist(obj["State\/Province"]) + "\n"
+        + addIfExist(obj["Zip\/Postal Code"]) + "\n"
+        + addIfExist(obj.Country);
+        return result;
 	}
 
 	var isCustomerIdValid = function(id){
@@ -125,6 +130,18 @@ invoicesUnlimited.controller('CustomersController',
 			$scope.shippingAddressEdit = null;
 			$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
 		});
+	};
+
+	$scope.deleteSelectedCustomer = function(){
+		showLoader();
+		$q.when($scope.selectedCustomer.destroy()).then(function(){
+			$scope.selectedCustomer = null;
+			$scope.customers
+			.splice($scope.selectedCustomerId,1);
+			$scope.selectedCustomerId = null;
+			hideLoader();
+			$state.go('dashboard.customers.all');
+		})
 	}
 
 	$scope.cancelSaveSelectedCustomer = function(){
@@ -135,6 +152,44 @@ invoicesUnlimited.controller('CustomersController',
 	var isGoToDetailsWithInvalidCustomerId = function(to,id){
 		return to.endsWith('details') && (!isCustomerIdValid(id));
 	}
+
+	function LoadCustomers() {
+		$q.when(coreFactory.getAllCustomers()).then(function(res){
+		
+			$scope.customers = res.sort(function(a,b){
+				return alphabeticalSort(a.entity.displayName,b.entity.displayName);
+			});
+			return $q.when(coreFactory.getAllInvoices({
+				method 	: 'containedIn',
+				name 	: 'customer',
+				val1 	: res.map(function(el){
+					return el.entity;
+				})
+			}));
+
+		}).then(function(invoices){
+			
+			var customersNum = $scope.customers.length;
+
+			$scope.customers.forEach(function(cust){
+				var filtered = invoices.filter(function(inv){
+					return inv.entity.get('customer').id == cust.entity.id;
+				});
+				cust.comments = [];
+				filtered.forEach(function(inv){
+					cust.comments = cust.comments.concat(inv.comments);
+				});
+				cust.invoices = filtered;
+			});
+
+			if (isGoTo.details($state.current.name))
+				doSelectCustomerIfValidId(customerId);
+			else if (isGoTo.edit($state.current.name)) {
+				doSelectCustomerIfValidId(customerId);
+				doCreateEditObject();
+			}
+		});
+	};
 
 	$rootScope.$on('$stateChangeStart',
 	function(event,toState,toParams,fromState,fromParams,options){
@@ -155,42 +210,12 @@ invoicesUnlimited.controller('CustomersController',
 		else if (isGoTo.edit(toState.name)) {
 			doSelectCustomerIfValidId(parseInt(toParams.customerId));
 			doCreateEditObject();
+		} else if (fromState.name.endsWith('new')) {
+			LoadCustomers();
 		}
 	});
 
-	$q.when(coreFactory.getAllCustomers()).then(function(res){
-		$scope.customers = res.sort(function(a,b){
-			return alphabeticalSort(a.entity.displayName,b.entity.displayName);
-		});
-		return $q.when(coreFactory.getAllInvoices({
-			method 	: 'containedIn',
-			name 	: 'customer',
-			val1 	: res.map(function(el){
-				return el.entity;
-			})
-		}));
+	LoadCustomers();
 
-	}).then(function(invoices){
-		
-		var customersNum = $scope.customers.length;
-
-		$scope.customers.forEach(function(cust){
-			var filtered = invoices.filter(function(inv){
-				return inv.entity.get('customer').id == cust.entity.id;
-			});
-			cust.comments = [];
-			filtered.forEach(function(inv){
-				cust.comments = cust.comments.concat(inv.comments);
-			});
-			cust.invoices = filtered;
-		});
-
-		if (isGoTo.details($state.current.name))
-			doSelectCustomerIfValidId(customerId);
-		else if (isGoTo.edit($state.current.name)) {
-			doSelectCustomerIfValidId(customerId);
-			doCreateEditObject();
-		}
-	});
 
 });

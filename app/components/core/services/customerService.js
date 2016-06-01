@@ -23,7 +23,8 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 					fields 		: contactPersFields
 				});
 				return elem;
-			});
+			}); 
+
 		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
 		this.contactPersons = contactPersons;
@@ -31,6 +32,13 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 
 		this.save = function(){
 			return this.entity.save();
+		}
+
+		this.destroy = function(){
+			for (var prop in this)
+				if (prop != 'entity' && 
+					this.hasOwnProperty(prop)) delete this[prop];
+			return this.entity.destroy();
 		}
 	};
 

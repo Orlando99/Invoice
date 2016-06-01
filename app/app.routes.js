@@ -117,6 +117,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/new',
 				views 		: {
 					'customersView' : {
+						controller : 'NewCustomerController',
 						templateUrl : COMPONENTS + 'dashboard/views/customers/newcustomer.html'
 					}
 				}
