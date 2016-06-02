@@ -1,10 +1,10 @@
 'use strict';
 
 invoicesUnlimited.controller('CompanyProfileController',
-	['$scope','$state','$controller','userFactory','organizationFactory','$q',
-	function($scope,$state,$controller,userFactory,organizationFactory,$q){
+	['$scope','$state','$controller','userFullFactory','organizationFactory','$q',
+	function($scope,$state,$controller,userFullFactory,organizationFactory,$q){
 
-	var user = userFactory.authorized();
+	var user = userFullFactory.authorized();
 
 	if (!user) $state.go('login');
 	else loadColorTheme(user);
@@ -20,7 +20,7 @@ invoicesUnlimited.controller('CompanyProfileController',
 	$scope.saveAppPreferences = function(){
 		var color = $(".colors li.active").find('a').attr('class');
 		var colorToSave = "app" + color[0].toUpperCase() + color.slice(1) + "Color";
-		userFactory.save({colorTheme:colorToSave}).then(function(){
+		userFullFactory.save({colorTheme:colorToSave}).then(function(){
 			window.location.reload();
 		});
 	}

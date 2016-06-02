@@ -1,11 +1,11 @@
 <?php
 
-if (!isset($_POST['xmlstr'])) {
-    die("The xml string was not provided");
+if (!isset($_POST['str'])) {
+    die("string to encode is missing.");
 }
 
-$resultXml = $_POST['xmlstr'];
+$resultStr = $_POST['str'];
 
-echo base64_encode($resultXml);
+echo base64_encode($resultStr);
 
 ?>

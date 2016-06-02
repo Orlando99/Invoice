@@ -110,66 +110,76 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 				return invoices;
 			});
 		},
-		createInvoiceReceipt : function(user, invoiceId) {
-			var ptr = user.get("defaultTemplate");
+		createInvoiceReceipt : function(invoiceId) {
+			var invoiceTable = Parse.Object.extend("Invoices");
+			var query = new Parse.Query(invoiceTable);
+			query.include("invoiceItems", "customer", "lateFee",
+				"invoiceItems.item", "invoiceItems.item.tax", "organization",
+				"userID", "userID.defaultTemplate", "userID.businessInfo");
 
-			return ptr.fetch().then(function(template) {
-				var xmlFile = template.get("templateData");
-				var htmlFile = template.get("templateHTML");
-				var invoiceTable = Parse.Object.extend("Invoices");
-				var query = new Parse.Query(invoiceTable);
-				query.include("invoiceItems", "customer", "lateFee",
-					"invoiceItems.item", "invoiceItems.item.tax");
-				
-				return query.get(invoiceId).then(function(invoiceObj) {
+				return query.get(invoiceId)
+				.then(function(invoiceObj) {
+					var user = invoiceObj.get("userID");
+					var template = user.get("defaultTemplate");
+					var xmlFile = template.get("templateData");
+					var htmlFile = template.get("templateHTML");
+					var cardUrl = template.get("linkedFile").url();
+
 					return fillInXmlData(xmlFile.url(), user, invoiceObj)
-						.then(function(newXml) {
-
-						// do something here.
-						// create new parse file
-					//	var labelsFile = new Parse.File("test.xml",{base64: newXml}, "text/xml");
-					//	invoiceObj.set("invoiceLabels", labelsFile);
-					//	invoiceObj.save().then(function(invObj) {
-						console.log("files saved");
-
-						$.ajax({
-							type: "GET",
-							url: htmlUrl,
-							dataType: "html"
-						}).then(function (htmlDoc) {
-							
-
-							});
-
-						});
-
-				
-				});
-/*
-				return fillInXmlData(xmlFile.url())
 					.then(function(newXml) {
-						var invoiceTable = Parse.Object.extend("Invoices");
-						var query = new Parse.Query(invoiceTable);
+						var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
+						labelsFile.save()
+						.then(function(xml) {
+							return fillInHtmlData(xml.url(), htmlFile.url(), cardUrl)
+							.then(function(newHtml) {
+								var invoiceFile = new Parse.File("test2.html",{base64: newHtml});
+								invoiceFile.save()
+								.then(function(html) {
+									invoiceObj.set("invoiceLabels", xml);
+									invoiceObj.set("invoiceReceipt", html);
+									invoiceObj.save()
+									.then(function(invObj) {
+										console.log("files saved");
+									});
 
-						return query.get(invoiceId).then(function(invoiceObj) {
-							// create new parse file
-							var labelsFile = new Parse.File("test.xml",{base64: newXml}, "text/xml");
-							invoiceObj.set("invoiceLabels", labelsFile);
-							invoiceObj.save().then(function(invObj) {
-								console.log("files saved");
-
+								});
 							});
 						});
-
 					});
-*/
-			}, function(error) {
+				}, function(error) {
 				console.log(error.message);
 			});
 
 		}
 
 	};
+
+	function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
+		return $.ajax({
+			type: "GET",
+			url: htmlUrl,
+			dataType: "html"
+		}).then(function (htmlDoc) {
+			var s1 = 'Connect.open("GET", "uppage.xml"';
+			var s2 = 'Connect.open("GET", ' + '"' + xmlUrl + '"';
+			htmlDoc = htmlDoc.replace(s1,s2);
+
+			s1 = "background: url(icn-card.png) no-repeat";
+			s2 = "background: url(" + cardUrl + ") no-repeat";
+			htmlDoc = htmlDoc.replace(s1,s2);
+
+			return $.ajax({
+				type: "POST",
+				url: "./assets/php/convert_base64.php",
+				data: {
+					str : htmlDoc
+				}
+			}).then(function(newHtml) {
+				return newHtml;
+			});
+
+		});
+	}
 
 	function fillInXmlData(xmlUrl, user, invoice) {
 		return $.ajax({
@@ -182,10 +192,14 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 			var labels = jsonObj.items.label;
 
 			// static values
+			labels['invoiceId'] = "123456";
 			labels['invoice-title'] = "Invoice";
 			labels['billType'] 	 = "invoice";
 			labels['list-header-total'] = "Total";
 			labels['headerTitle'] = "Payment Due";
+			labels['longmsg-title'] = "Notes";
+			labels['ordernotes-title'] = "Terms & Conditions";
+			labels['copyright'] = "";
 			labels['disablePay'] = "";
 			labels['due-text'] = "";
 			labels['due-price'] = "";
@@ -200,28 +214,28 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 			labels['longmsg'] = invoice.get("notes");
 
 			/* format date aswell */
-			labels['body-date'] = invoice.get("invoiceDate");
-			labels['past-due'] = invoice.get("dueDate");
+			labels['body-date'] = formatDate(invoice.get("invoiceDate"));
+			labels['past-due'] = formatDate(invoice.get("dueDate"));
 
 			/* don't show it, if empty */
 			labels['purchaseOrderNumber'] =
-				"P.O. Number: " + invoice.get("poNumber");
+				"P.O.Number:" + invoice.get("poNumber");
 
 			/* this will be used as EST# and CREDIT# as well */
 			labels['refid'] = invoice.get("invoiceNumber");
 
 			/* format upto 2 decimal points */
-			labels['refundtotal'] = "$" + invoice.get("balanceDue");
-			labels['subtotalprice'] = "$" + invoice.get("subTotal");
-			labels['paymentMadePrice'] = "$" + invoice.get("paymentMade");
+			labels['refundtotal'] = "$" + formatNumber(invoice.get("balanceDue"));
+			labels['subtotalprice'] = "$" + formatNumber(invoice.get("subTotal"));
+			labels['paymentMadePrice'] = "$" + formatNumber(invoice.get("paymentMade"));
 			labels['creditsAppliedPrice'] =
-				"$" + invoice.get("creditApplied");
+				"$" + formatNumber(invoice.get("creditApplied"));
 			labels['total-price3'] = labels['body-price'] =
-				"$" + invoice.get("total");
+				"$" + formatNumber(invoice.get("total"));
 			jsonObj.items['shippingChargesPrice'] =
-				"$" + invoice.get("shippingCharges");
+				"$" + formatNumber(invoice.get("shippingCharges"));
 			jsonObj.items['adjustmentsPrice'] =
-				"$" + invoice.get("adjustments");
+				"$" + formatNumber(invoice.get("adjustments"));
 
 			var discounts = invoice.get("discounts");
 			if (discounts) {
@@ -275,20 +289,20 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 				for (var i = 0; i < itemList.length; ++i) {
 					var name = itemList[i].get("item").get("title");
 					var qty = itemList[i].get("quantity");
-					var amount = itemList[i].get("amount");
+					var amount = "$" + formatNumber(itemList[i].get("amount"));
 					var discount = itemList[i].get("discount");
 
 					var itmObj = {
 						'name': name,
 						'qty': qty,
-						'amount': amount
+						'price': amount
 					};
-					if (discount)	itmObj.discount = discount;
+					itmObj.discount = (discount ? discount : 0);
 					items.itemRow.push(itmObj);
 
 					var tax = itemList[i].get("tax");
 					if (tax) {
-						var taxName = tax.get("title") + " " + tax.get("value") + "%";
+						var taxName = tax.get("title") + " (" + tax.get("value") + "%)";
 						var taxValue = "$0.00"; //	tax.get("compound");
 						var taxObj = {
 							'name' : taxName,
@@ -310,17 +324,19 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 			labels['mailtotxt'] = user.get("email");
 
 			// values available from Organization
-			user.get("selectedOrganization").fetch().then(function(orgObj){
+			var orgObj = invoice.get("organization");
+			if (orgObj) {
 				labels['mailto'] = "mailto:" + orgObj.get("email");
 				labels['logo'] = orgObj.get("logo").url();
 				labels['title'] = "Invoice from " + orgObj.get("name");
-			});
-/*
+			}
+
 			// values available from BusinessInfo
-			user.get("businessInfo").fetch().then(function(bInfo) {
-				labels['addres1'] = bInfo.get("address");
-			});
-*/
+			var bInfo = user.get("businessInfo");
+			if (bInfo) {
+				labels['addres1'] = "";
+			}
+
 			// values available from Customer
 			/* Customer is laready loaded */
 			var custmr = invoice.get("customer");
@@ -330,7 +346,7 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 				labels['clientmailto'] = "mailto:" + mail;
 				labels['clientname'] = custmr.get("displayName");
 				labels['clientnr'] = custmr.get("phone");
-				labels['body-currency'] = custmr.get("currency");
+				labels['body-currency'] = custmr.get("currency").split(" ")[0];
 			}
 
 			// values available from lateFee
@@ -342,14 +358,14 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 				var price = lateFee.get("price");
 				var type = lateFee.get("type");
 				if (type == "$")
-					labels['tip-price'] = type + price;
+					labels['tip-price'] = type + formatNumber(price);
 				else
 					labels['tip-price'] = price + type;
 			}
 			else
 				labels['tip-text'] = labels['tip-price'] = "";
 
-//--------------
+//------------------
 			// test lines
 		//	console.log(jsonObj);
 
@@ -358,7 +374,7 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 				type: "POST",
 				url: "./assets/php/convert_base64.php",
 				data: {
-					xmlstr : xmlDoc
+					str : xmlDoc
 				}
 			}).then(function(newXml) {
 				return newXml;
@@ -366,6 +382,18 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 
 		});
 
+	}
+
+	function formatDate(date) {
+		if(date){
+			var d = moment(date);
+			return d.format("MMM D, YYYY");
+		}
+	}
+	function formatNumber(num) {
+		if (num)
+			return num.toFixed(2);
+		return "0.00";
 	}
 
 	function getOrganization (user) {

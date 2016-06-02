@@ -20,13 +20,13 @@ invoicesUnlimited.controller('InvoiceController',['$scope', '$state', '$controll
 		console.log(error.message);
 	})
 	.then(function() {
-		var invoiceId = "VW6Zf9urYA";
-		invoiceFactory.createInvoiceReceipt(user, invoiceId)
+	/*	var invoiceId = "VW6Zf9urYA";
+		invoiceFactory.createInvoiceReceipt(invoiceId)
 		.then(function() {
 
 		}, function(error) {
 			console.log(error.message);
-		});
+		}); */
 	});
 
 }]);

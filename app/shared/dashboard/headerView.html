@@ -14,7 +14,7 @@
       <li class="active"><a ui-sref="dashboard">Dashboard</a></li>
       <li><a ui-sref="dashboard.customers.all">Customers</a></li>
       <li>
-        <a ui-sref="dashboard.sales">Sales</a>
+        <a href="javascript:">Sales</a>
         <div class="container-fluid">
           <ul class="submenu">
             <li><a ui-sref="dashboard.sales.estimates">Estimates</a></li>
@@ -25,22 +25,24 @@
       </li>
       
       <li>
-        <a href="expenses/expenses.html">Expenses</a>
+        <a href="javascript:">Expenses</a>
         <div class="container-fluid">
           <ul class="submenu">
-            <li><a href="#">Expenses</a></li>
-            <li><a href="#">Recurring Expenses</a></li>
-            <li><a href="expenses/category/category.html">Expense Category</a></li>
+            <li><a href="javascript:">Expenses</a></li>
+          <!-- <li><a href="#">Recurring Expenses</a></li> -->
+            <li><a href="javascript:">Expense Category</a></li>
           </ul>
         </div>
       </li>
-      
+      <!--
       <li><a href="projects/projects.html">Projects</a></li>
       <li><a href="timesheets/timesheets.html">Timesheets</a></li>
-      <li><a href="reports/salesbycustomer.html">Reports</a></li>
+      -->
+
+      <li><a ui-sref="dashboard.reports">Reports</a></li>
       
       <li>
-        <a ui-sref="dashboard.setttings">Settings</a>
+        <a href="javascript:">Settings</a>
         <div class="container-fluid">
           <ul class="submenu">
             <li>

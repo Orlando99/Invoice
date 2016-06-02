@@ -175,6 +175,18 @@ angular.module('invoicesUnlimited')
 			}
 
 		},
+		reports : {
+			index : {
+				name 	 : 'dashboard.reports',
+				url 	 : '/reports',
+				views 	: {
+					'@' : {
+						controller : 'SettingsController',
+						templateUrl	: COMPONENTS + 'dashboard/views/reports/invoicedetails.html'
+					}
+				}
+			}
+		},
 		settings : {
 			index : {
 				name	: 'dashboard.settings',
@@ -329,6 +341,7 @@ angular.module('invoicesUnlimited')
 		signup,
 		dashboard.customers,
 		dashboard.sales,
+		dashboard.reports,
 		dashboard.settings,
 		[dashboard.index]
 	]);

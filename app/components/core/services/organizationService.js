@@ -1,8 +1,8 @@
 'use strict';
 
-invoicesUnlimited.factory('organizationFactory',['userFactory',function(userFactory){
+invoicesUnlimited.factory('organizationFactory',['userFullFactory',function(userFullFactory){
 	
-	var user = userFactory.authorized();
+	var user = userFullFactory.authorized();
 
 	if (!user) return undefined;
 
