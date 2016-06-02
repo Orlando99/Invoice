@@ -12,21 +12,33 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 			parent 		: undefined,
 			fields 		: customerFields
 		});
+
 		var contactPersons = parseObject.get('contactPersons');
-		contactPersons = contactPersons.map(function(elem){
-			setObjectOperations({
-				object 		: elem,
-				fieldName 	: undefined,
-				parent 		: undefined,
-				fields 		: contactPersFields
-			});
-			return elem;
-		});
+		if (contactPersons)
+			contactPersons = contactPersons.map(function(elem){
+				setObjectOperations({
+					object 		: elem,
+					fieldName 	: undefined,
+					parent 		: undefined,
+					fields 		: contactPersFields
+				});
+				return elem;
+			}); 
+
 		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
 		this.contactPersons = contactPersons;
+		this.customerFields = customerFields;
+
 		this.save = function(){
 			return this.entity.save();
+		}
+
+		this.destroy = function(){
+			for (var prop in this)
+				if (prop != 'entity' && 
+					this.hasOwnProperty(prop)) delete this[prop];
+			return this.entity.destroy();
 		}
 	};
 

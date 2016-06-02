@@ -112,6 +112,16 @@ angular.module('invoicesUnlimited')
 					}
 				}
 			},
+			newCust	: {
+				name	: 'dashboard.customers.new',
+				url 	: '/new',
+				views 		: {
+					'customersView' : {
+						controller : 'NewCustomerController',
+						templateUrl : COMPONENTS + 'dashboard/views/customers/newcustomer.html'
+					}
+				}
+			},
 			edit 	: {
 				name 	: 'dashboard.customers.edit',
 				url 	: '/:customerId/edit',

@@ -62,8 +62,6 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 				var customerIds = [];
 				for (var i = 0; i < invoiceObjs.length; ++i) {
 
-
-
 					var obj = new invoicesFactory (invoiceObjs[i]);
 					var invoice = {
 						values : obj.entity,
