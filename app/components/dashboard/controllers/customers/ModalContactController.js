@@ -10,7 +10,10 @@ invoicesUnlimited.controller('ModalContactController',function(
 		showLoader();
 
 		$scope.contact.save().then(function(){
-			customer.entity.add('contactPersons',$scope.contact.entity);
+			function idExist(el) {	return el.id == $scope.contact.id; }
+			if (!customer.contactPersons.some(idExist)) 
+				customer.entity.add('contactPersons',$scope.contact.entity);
+			debugger;
 			return customer.save();
 		}).then(function(customerObject){
 			hideLoader();

@@ -191,6 +191,40 @@ invoicesUnlimited.controller('CustomersController',
 		});
 	};
 
+	$scope.editContact = function(contactPerson){
+		$scope.selectedContact = angular.copy(contactPerson);
+		var modalInstance = $uibModal.open({
+			animation 		: true,
+			templateUrl 	: 'modal-contact',
+			controller 		: 'ModalContactController',
+			windowClass 	: 'modalWindow fade in',
+			backdropClass 	: 'popup-modal show fade in',
+			backdrop 		: true,
+			resolve 		: {
+				contact : function() {
+					return $scope.selectedContact;
+				},
+				customer : function() {
+					return $scope.selectedCustomer;
+				}
+			}
+		});
+
+		modalInstance.result.then(function(contact){
+
+			var idToChange;
+			$scope.selectedCustomer.contactPersons.some(function(elem,index){
+				if (contact.id != elem.id) return false;
+				idToChange = index;
+			});
+			$scope.selectedCustomer.contactPersons[idToChange] = contact;
+			delete $scope.selectedContact;
+
+		},function() {
+			console.log('dismiss modal');
+		});
+	}
+
 	$scope.createContact = function(){
 		var modalInstance = $uibModal.open({
 			animation 		: true,
@@ -217,12 +251,6 @@ invoicesUnlimited.controller('CustomersController',
 		modalInstance.result.then(function(contact){
 
 			$scope.selectedCustomer.contactPersons.push(contact);
-
-			/*$selectedCustomer.contactPersons.some(function(el,index){
-				if (el.id != contact.id) return false;
-				$selectedCustomer.contactPersons[index] = contact;
-				return true;
-			});*/
 
 		},function() {
 			console.log('dismiss modal');
