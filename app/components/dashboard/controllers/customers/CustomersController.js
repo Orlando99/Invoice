@@ -191,8 +191,12 @@ invoicesUnlimited.controller('CustomersController',
 		});
 	};
 
-	$scope.editContact = function(contactPerson){
-		$scope.selectedContact = angular.copy(contactPerson);
+	$scope.editContact = function(contactPerson,index){
+
+		var selectedContact = contactPerson;
+
+		$scope.selectedCustomer.contactPersons[index] = angular.copy(selectedContact);
+
 		var modalInstance = $uibModal.open({
 			animation 		: true,
 			templateUrl 	: 'modal-contact',
@@ -201,8 +205,11 @@ invoicesUnlimited.controller('CustomersController',
 			backdropClass 	: 'popup-modal show fade in',
 			backdrop 		: true,
 			resolve 		: {
+				title 	: function() {
+					return 'Edit Contact Person';
+				},
 				contact : function() {
-					return $scope.selectedContact;
+					return selectedContact;
 				},
 				customer : function() {
 					return $scope.selectedCustomer;
@@ -211,15 +218,7 @@ invoicesUnlimited.controller('CustomersController',
 		});
 
 		modalInstance.result.then(function(contact){
-
-			var idToChange;
-			$scope.selectedCustomer.contactPersons.some(function(elem,index){
-				if (contact.id != elem.id) return false;
-				idToChange = index;
-			});
-			$scope.selectedCustomer.contactPersons[idToChange] = contact;
-			delete $scope.selectedContact;
-
+			$scope.selectedCustomer.contactPersons[index] = contact;
 		},function() {
 			console.log('dismiss modal');
 		});
@@ -234,6 +233,9 @@ invoicesUnlimited.controller('CustomersController',
 			windowClass 	: 'modalWindow fade in',
 			backdrop 		: true,
 			resolve 		: {
+				title 	: function() {
+					return 'Add Contact Person';
+				},
 				contact : function() {
 					console.log('Resolve Contact');
 					var ContactPerson = Parse.Object.extend('ContactPerson');
@@ -242,14 +244,12 @@ invoicesUnlimited.controller('CustomersController',
 					return contactObject;
 				},
 				customer : function() {
-					console.log('Resolve customer');
 					return $scope.selectedCustomer;
 				}
 			}
 		});
 
 		modalInstance.result.then(function(contact){
-
 			$scope.selectedCustomer.contactPersons.push(contact);
 
 		},function() {

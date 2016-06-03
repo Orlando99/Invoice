@@ -105,7 +105,7 @@
           <span ng-show="person.entity.phone">{{'W: '+person.entity.phone}}</td>
           <td class="layout-padding-tb-lg valign-top">{{person.entity.email}}</td>
           <td class="layout-padding-tb-lg valign-top actions">
-            <a ng-click="editContact(this.person);" class="action-edit">Edit</a>
+            <a ng-click="editContact(this.person, $index);" class="action-edit">Edit</a>
             <button class="button button-icon"><img src="./assets/images/icon-times-round.png" alt=""></button>
           </td>
         </tr>

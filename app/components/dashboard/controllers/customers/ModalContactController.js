@@ -1,20 +1,24 @@
 'use strict';
 
 invoicesUnlimited.controller('ModalContactController',function(
-	$scope,$uibModalInstance,contact,customer){
+	$scope,$uibModalInstance,contact,customer,title){
 
 	$scope.contact = contact;
+	$scope.title = title;
 
 	$scope.Save = function(){
 
 		showLoader();
-
-		$scope.contact.save().then(function(){
-			function idExist(el) {	return el.id == $scope.contact.id; }
-			if (!customer.contactPersons.some(idExist)) 
+		debugger;
+		$scope.contact.save().then(function(obj){
+			function idExist(el) {	return el.entity.id == $scope.contact.entity.id; }
+			if (!customer.contactPersons.some(idExist)) {
 				customer.entity.add('contactPersons',$scope.contact.entity);
+				return customer.save();
+			}
+			return;
+		},function(er){
 			debugger;
-			return customer.save();
 		}).then(function(customerObject){
 			hideLoader();
 			$uibModalInstance.close($scope.contact);

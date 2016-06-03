@@ -23,11 +23,14 @@ invoicesUnlimited.factory('customerFactory',function(userFactory,contactPersonFa
 		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
 		this.contactPersons = contactPersons;
-		this.customerFields = customerFields;
 
 		this.save = function(params){
-			if (arguments.length) return this.entity.save(params)
-			return this.entity.save();
+			if (arguments.length) return this.entity.save(params);
+			var self = this;
+			return this.entity.save().then(function(ent){
+				if (!self.id) self.id = ent.id;
+				return ent;
+			});
 		}
 
 		this.destroy = function(){

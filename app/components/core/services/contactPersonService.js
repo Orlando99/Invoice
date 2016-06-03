@@ -14,6 +14,8 @@ invoicesUnlimited.factory('contactPersonFactory',function(userFactory){
 
 		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
+		this.fieldNames = fields;
+
 		this.save = function(){
 			return this.entity.save();
 		}
