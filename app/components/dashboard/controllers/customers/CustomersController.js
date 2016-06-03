@@ -191,6 +191,19 @@ invoicesUnlimited.controller('CustomersController',
 		});
 	};
 
+	$scope.deleteContact = function(index){
+		showLoader();
+		$scope.selectedCustomer.contactPersons[index]
+		.destroy($scope.selectedCustomer)
+		.then(function(res){
+			$scope.selectedCustomer.contactPersons.splice(index,1);
+			$scope.$apply();
+			hideLoader();
+		},function(err){
+			console.log(err.message);
+		});
+	}
+
 	$scope.editContact = function(contactPerson,index){
 
 		var selectedContact = contactPerson;

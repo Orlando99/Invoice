@@ -89,8 +89,8 @@ angular.module('invoicesUnlimited')
 				url 	 : '/customers',
 				views 	 : {
 					'@'  : {
-						controller : 'CustomersController',
-						templateUrl : COMPONENTS + 'dashboard/views/customers/index.html'
+						controller 	 : 'CustomersController',
+						templateUrl  : COMPONENTS + 'dashboard/views/customers/index.html'
 					}
 				}
 			},

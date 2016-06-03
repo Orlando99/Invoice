@@ -20,11 +20,15 @@ invoicesUnlimited.factory('contactPersonFactory',function(userFactory){
 			return this.entity.save();
 		}
 
-		this.destroy = function(){
-			for (var prop in this)
-				if (prop != 'entity' && 
-					this.hasOwnProperty(prop)) delete this[prop];
-			return this.entity.destroy();
+		this.destroy = function(customer){
+			if (!customer) return this.entity.destroy();
+			customer.entity.remove('contactPersons',this.entity);
+			var self = this;
+			return customer.save().then(function(val){
+				return self.entity.destroy();
+			},function(err){
+				debugger;
+			});
 		}
 	};
 

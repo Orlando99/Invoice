@@ -9,7 +9,6 @@ invoicesUnlimited.controller('ModalContactController',function(
 	$scope.Save = function(){
 
 		showLoader();
-		debugger;
 		$scope.contact.save().then(function(obj){
 			function idExist(el) {	return el.entity.id == $scope.contact.entity.id; }
 			if (!customer.contactPersons.some(idExist)) {
