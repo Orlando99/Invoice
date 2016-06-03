@@ -206,12 +206,24 @@ invoicesUnlimited.controller('CustomersController',
 					var contactObject = new contactPersonFactory(new ContactPerson());
 					contactObject.entity.set('userID',user);
 					return contactObject;
+				},
+				customer : function() {
+					console.log('Resolve customer');
+					return $scope.selectedCustomer;
 				}
 			}
 		});
 
-		modalInstance.result.then(function(){
-			console.log('success modal');
+		modalInstance.result.then(function(contact){
+
+			$scope.selectedCustomer.contactPersons.push(contact);
+
+			/*$selectedCustomer.contactPersons.some(function(el,index){
+				if (el.id != contact.id) return false;
+				$selectedCustomer.contactPersons[index] = contact;
+				return true;
+			});*/
+
 		},function() {
 			console.log('dismiss modal');
 		});
@@ -219,7 +231,6 @@ invoicesUnlimited.controller('CustomersController',
 
 	$rootScope.$on('$stateChangeStart',
 	function(event,toState,toParams,fromState,fromParams,options){
-
 		if (isGoTo.customers(toState.name) ||
 			isGoTo.newCustomer(toState.name)) {
 			$scope.selectedCustomer = null;

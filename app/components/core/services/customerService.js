@@ -25,7 +25,8 @@ invoicesUnlimited.factory('customerFactory',function(userFactory,contactPersonFa
 		this.contactPersons = contactPersons;
 		this.customerFields = customerFields;
 
-		this.save = function(){
+		this.save = function(params){
+			if (arguments.length) return this.entity.save(params)
 			return this.entity.save();
 		}
 
