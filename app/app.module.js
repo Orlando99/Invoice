@@ -12,7 +12,7 @@ var CSS_DIR = './assets/css/';
 var IMG_DIR = './assets/images/';
 var JS_DIR = './assets/js/';
 
-var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router', 'ui.bootstrap','oc.lazyLoad'])
+var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router','oc.lazyLoad','ui.bootstrap'])
 .config(function($locationProvider){
 	//$locationProvider.html5Mode(true).hashPrefix('');
 })

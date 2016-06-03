@@ -20,8 +20,8 @@
 <button class="button button-small button-neutral text-uppercase">More <img src="./assets/images/dropdown-arrow-w.png" alt="">
   <ul class="submenu list-clear layout-no-padding text-left text-normalize">
     <li><a href="">Email Contact</a></li>
-    <!--<li><a href="">Clone</a></li>-->
-    <li class="modal-opener" data-toggle="add-contact-person"><a href="">Add New Contact</a></li>
+    <!--<li><a href="">Clone</a></li> data-toggle="add-contact-person"-->
+    <li class="modal-opener" ><a ng-click="createContact();">Add New Contact</a></li>
     <li><a ng-click="deleteSelectedCustomer();">Delete</a></li>
   </ul>
 </button>
@@ -99,11 +99,11 @@
           <td class="layout-padding-tb"></td>
         </tr>
         <tr class="text-color-light" ng-repeat="person in selectedCustomer.contactPersons">
-          <td class="layout-padding-tb-lg valign-top">{{person.firstname+' '+person.lastname}}</td>
+          <td class="layout-padding-tb-lg valign-top">{{person.entity.firstname+' '+person.entity.lastname}}</td>
           <td class="layout-padding-tb-lg valign-top">
-          <span ng-show="person.mobile">{{'M: '+person.mobile}}<br/></span>
-          <span ng-show="person.phone">{{'W: '+person.phone}}</td>
-          <td class="layout-padding-tb-lg valign-top">{{person.email}}</td>
+          <span ng-show="person.entity.mobile">{{'M: '+person.entity.mobile}}<br/></span>
+          <span ng-show="person.entity.phone">{{'W: '+person.entity.phone}}</td>
+          <td class="layout-padding-tb-lg valign-top">{{person.entity.email}}</td>
           <td class="layout-padding-tb-lg valign-top actions"><a href="../../dashboard/customers/editcustomer.html" class="action-edit">Edit</a> <button class="button button-icon"><img src="./assets/images/icon-times-round.png" alt=""></button></td>
         </tr>
       </table>
@@ -143,39 +143,4 @@
 
   </div>
 
-  <div class="popup-modal add-contact-person hidesm">
-    <div class="modal container">
-
-      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Contact Person</h3>
-      <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
-      <div class="clearfix"></div>
-      <hr class="layout-margin-tb">
-
-      <div class="col-80 text-left layout-center">
-        <form action="" class="layout-margin-tb inputs-white">
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Primary Contact</label>
-            <select class="col-30 layout-margin-r">
-              <option value="Salutat...">Salutat...</option>
-              <option value="Option2">Option #2</option>
-            </select>
-            <input class="col-20" type="text" placeholder="First Name">
-            <input class="col-20 pull-right" type="text" placeholder="Last Name">
-          </div>
-
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Phone Number</label>
-            <input class="col-35" type="number" placeholder="Work">
-            <input class="col-35 pull-right" type="number" placeholder="Mobile">
-          </div>
-
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Email Address</label>
-            <input class="col-75" type="email" placeholder="">
-          </div>
-        </form>
-      </div>
-      <div class="clearfix"></div>
-      <button class="button button-small button-info text-uppercase">Save</button>
-    </div>
-  </div>
+  <!--<div class="popup-modal"></div>-->

@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.controller('CustomersController',
-	function($scope,$rootScope,$state,userFactory,
-			 customerFactory, coreFactory, 
+	function($scope,$rootScope,$state,$uibModal,userFactory,
+			 contactPersonFactory, customerFactory, coreFactory, 
 			 invoicesFactory ,$controller,$q){
 
 	var customerId = parseInt($state.params.customerId);
@@ -190,6 +190,32 @@ invoicesUnlimited.controller('CustomersController',
 			}
 		});
 	};
+
+	$scope.createContact = function(){
+		var modalInstance = $uibModal.open({
+			animation 		: true,
+			templateUrl 	: 'modal-contact',
+			controller 		: 'ModalContactController',
+			backdropClass 	: 'popup-modal show fade in',
+			windowClass 	: 'modalWindow fade in',
+			backdrop 		: true,
+			resolve 		: {
+				contact : function() {
+					console.log('Resolve Contact');
+					var ContactPerson = Parse.Object.extend('ContactPerson');
+					var contactObject = new contactPersonFactory(new ContactPerson());
+					contactObject.entity.set('userID',user);
+					return contactObject;
+				}
+			}
+		});
+
+		modalInstance.result.then(function(){
+			console.log('success modal');
+		},function() {
+			console.log('dismiss modal');
+		});
+	}
 
 	$rootScope.$on('$stateChangeStart',
 	function(event,toState,toParams,fromState,fromParams,options){

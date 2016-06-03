@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('customerFactory',function(userFactory){
+invoicesUnlimited.factory('customerFactory',function(userFactory,contactPersonFactory){
 
 	var user = userFactory;
 	if (!user) return undefined;
@@ -16,14 +16,9 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 		var contactPersons = parseObject.get('contactPersons');
 		if (contactPersons)
 			contactPersons = contactPersons.map(function(elem){
-				setObjectOperations({
-					object 		: elem,
-					fieldName 	: undefined,
-					parent 		: undefined,
-					fields 		: contactPersFields
-				});
-				return elem;
-			}); 
+				var contact = new contactPersonFactory(elem);
+				return contact;
+			});
 
 		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
@@ -41,14 +36,6 @@ invoicesUnlimited.factory('customerFactory',function(userFactory){
 			return this.entity.destroy();
 		}
 	};
-
-	var contactPersFields = [
-		"email",
-		"phone",
-		"mobile",
-		"lastname",
-		"firstname"
-	];
 
 	var customerFields = [
 		"companyName",

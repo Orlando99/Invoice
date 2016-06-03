@@ -13,7 +13,7 @@ invoicesUnlimited.factory('invoicesFactory',function(userFactory,commentFactory)
 			parent 		: undefined,
 			fields 		: invoiceFields
 		});
-/*
+
 		var comments = parseObject.get('comments');
 		if (comments) {
 			comments = comments.map(function(elem){
@@ -21,7 +21,7 @@ invoicesUnlimited.factory('invoicesFactory',function(userFactory,commentFactory)
 			});
 			this.comments = comments;
 		}
-*/
+
 		this.invoiceDate = parseObject.invoiceDate.toISOString()
 			.slice(0,10)
 			.split("-")
