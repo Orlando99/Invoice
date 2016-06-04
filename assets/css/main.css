@@ -55,6 +55,50 @@ label#verificationCode-error {
 	overflow: hidden;
 }
 
+.message-window {
+	width: 35%;
+	margin: 10% auto;
+}
+
+.message-type {
+	height: 80px;
+	border: 0;
+}
+
+.message-type.error {
+	background-color: #e2747d;
+	background-image: url('./../images/cancel.png');
+	background-repeat: no-repeat;
+	background-position: center center;
+}
+
+.message-content {
+	text-align: center;
+	margin: 0;
+	width: 100%;
+	padding: 15px;
+	background-color: #fff;
+}
+
+.message-text {
+	font-size: 20px;
+	color: #383e4e;
+	margin: 0 0 15px 0;
+}
+
+.message-window .close-btn {
+	padding: 15px 30px;
+	border-radius: 50px;
+	border: 0;
+    color: #fff;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.close-btn.error {
+	background-color: #e2747d;
+}
+
 .modal-open .modal {
     overflow-x: hidden;
     overflow-y: auto;

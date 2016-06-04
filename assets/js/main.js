@@ -36,6 +36,11 @@ $(document).ready(function(){
     $(document).on("click",".button", function() {
         $(this).find(".submenu").toggleClass("showsub")
     });
+
+    $(document).on('click','.overlay.message',function(){
+        $(this).slideUp();
+    })
+
     $(document).on("click",".modal-opener", function() {
         var t = $(this)
           , e = t.attr("data-toggle");

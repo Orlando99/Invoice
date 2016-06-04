@@ -19,8 +19,18 @@
 	</head>
 	<body>
 
-	<div class="overlay" style="display:none">
+	<div class="overlay loader-screen" style="display:none">
 		<img class="loader" src="./assets/images/loader-new.gif" />
+	</div>
+
+	<div class="overlay message" style="display:none">
+		<div class="message-window">
+			<div class="message-type"></div>
+			<div class="message-content">
+				<p class="message-text"></p>
+				<div class="close-btn">Close</div>
+			</div>
+		</div>
 	</div>
 
 	<div ui-view></div>

@@ -30,12 +30,18 @@ var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router','oc.laz
   };
 });
 
+function ShowMessage(text,type) {
+  $('.message-type,.close-btn').addClass(type);
+  $('.message-text').text(text);
+  $('.overlay.message').css({'display':'block'});
+}
+
 function showLoader(){
-    $('.overlay').show();
+    $('.overlay.loader-screen').show();
 }
 
 function hideLoader(){
-    $('.overlay').hide();
+    $('.overlay.loader-screen').hide();
 }
 
 function alphabeticalSort(a,b){
