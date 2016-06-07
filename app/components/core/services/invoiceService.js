@@ -5,6 +5,45 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 		test : function() {
 			console.log("working");
 		},
+		createNewInvoice : function(invoice, invoiceItems, role, file) {
+			var items = [];
+			var acl = new Parse.ACL();
+			acl.setRoleWriteAccess(role.get("name"), true);
+			acl.setRoleReadAccess(role.get("name"), true);
+			var invItem = Parse.Object.extend("InvoiceItems");
+			
+			invoiceItems.forEach(function(item) {
+				var obj = new invItem();
+				obj.setACL(acl);
+				obj.set("userID", invoice.userID);
+				obj.set("organization", invoice.organization);
+				obj.set("item", item.selectedItem.entity);
+				obj.set("quantity", Number(item.quantity));
+				obj.set("amount", Number(item.amount));
+				obj.set("discount", Number(item.discount));
+				if (item.selectedTax) {
+					obj.set("tax", Parse.Object.extend("Tax")
+						.createWithoutData(item.selectedTax.id));
+				}
+				items.push(obj);
+			});
+			
+			return Parse.Object.saveAll(items)
+			.then(function(list) {
+			//	console.log("items saved successfully");
+				var invoiceTable = Parse.Object.extend("Invoices");
+				var obj = new invoiceTable();
+				obj.setACL(acl);
+				invoice.invoiceItems = list;
+				
+				return obj.save(invoice)
+				.then(function(invObj) {
+					console.log("invoice created successfully");
+					return invObj;
+				});
+			});
+
+		},
 		getPreferences : function(user) {
 			var organization = getOrganization(user);
 			if (! organization) {
@@ -19,7 +58,7 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 
 			return query.first().then(function(prefObj) {
 			//	var prefObj = prefObjs[0];
-				prefs.discount = prefObj.get("invoiceDiscount");
+				prefs.discountType = prefObj.get("invoiceDiscount");
 				prefs.numAutoGen = prefObj.get("invoiceAg");
 				prefs.shipCharges = prefObj.get("invoiceShippingCharges");
 				prefs.adjustments = prefObj.get("invoiceAdjustments");
@@ -126,18 +165,19 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 					return fillInXmlData(xmlFile.url(), user, invoiceObj)
 					.then(function(newXml) {
 						var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
-						labelsFile.save()
+						return labelsFile.save()
 						.then(function(xml) {
 							return fillInHtmlData(xml.url(), htmlFile.url(), cardUrl)
 							.then(function(newHtml) {
 								var invoiceFile = new Parse.File("test2.html",{base64: newHtml});
-								invoiceFile.save()
+								return invoiceFile.save()
 								.then(function(html) {
 									invoiceObj.set("invoiceLabels", xml);
 									invoiceObj.set("invoiceReceipt", html);
-									invoiceObj.save()
+									return invoiceObj.save()
 									.then(function(invObj) {
 										console.log("files saved");
+										return invObj;
 									});
 
 								});
@@ -216,8 +256,8 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 			labels['past-due'] = formatDate(invoice.get("dueDate"));
 
 			/* don't show it, if empty */
-			labels['purchaseOrderNumber'] =
-				"P.O.Number:" + invoice.get("poNumber");
+			labels['purchaseOrderNumber'] = invoice.get("poNumber") ?
+				"P.O.Number:" + invoice.get("poNumber") : "";
 
 			/* this will be used as EST# and CREDIT# as well */
 			labels['refid'] = invoice.get("invoiceNumber");
@@ -301,7 +341,7 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 					var tax = itemList[i].get("tax");
 					if (tax) {
 						var taxName = tax.get("title") + " (" + tax.get("value") + "%)";
-						var taxValue = "$0.00"; //	tax.get("compound");
+						var taxValue = "$" + calculateTax(itemList[i], tax);
 						var taxObj = {
 							'name' : taxName,
 							'value': taxValue
@@ -382,18 +422,37 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 
 	}
 
+	function calculateTax(item, tax) {
+		var taxType = tax.get("type");
+		var taxRate = tax.get("value");
+		var compound = tax.get("compound");
+
+		var amount = item.get("amount");
+		var res = 0;
+		if (taxType == 1)
+			res = amount * taxRate * 0.01;
+		else if (taxType == 2) {
+			res = amount * taxRate * 0.01;
+			if (compound)
+				res = res * compound * 0.01;
+		}
+
+		return formatNumber(res);
+	}
+
 	function formatDate(date) {
 		if(date){
 			var d = moment(date);
 			return d.format("MMM D, YYYY");
 		}
 	}
+/*
 	function formatNumber(num) {
 		if (num)
 			return num.toFixed(2);
 		return "0.00";
 	}
-
+*/
 	function getOrganization (user) {
 		var organizationArray = user.get("organizations");
 		if (!organizationArray) {

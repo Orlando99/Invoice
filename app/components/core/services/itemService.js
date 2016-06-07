@@ -1,6 +1,61 @@
 'use strict';
 
-invoicesUnlimited.factory('itemFactory',function($q){
+invoicesUnlimited.factory('itemFactory', function(userFactory){
+
+	var user = userFactory;
+	if (!user) return undefined;
+
+	function item(parseObject) {
+		setObjectOperations({
+			object 		: parseObject,
+			fieldName	: undefined,
+			parent 		: undefined,
+			fields 		: itemFields
+		});
+
+		var tax = parseObject.get("tax");
+		if (tax) {
+			setObjectOperations({
+			object 		: parseObject,
+			fieldName	: undefined,
+			parent 		: undefined,
+			fields 		: taxFields
+			});
+		}
+
+		this.id = parseObject.get('objectId');
+		this.entity = parseObject;
+		this.itemFields = itemFields;
+		this.taxFields = taxFields;
+
+		this.save = function(){
+			return this.entity.save();
+		}
+
+		this.destroy = function(){
+			console.log("inside destroy");
+			return Parse.promise.as("inside destroy");
+		}
+
+	};
+
+	var itemFields = [
+		"title",
+		"rate",
+		"itemDescription"
+	];
+
+	var taxFields = [
+		"objectId",
+		"title",
+		"type",
+		"value",
+		"compound"
+	];
+
+	return item;
+
+/*
 	return {
 		getItems : function(user,callback){
 			showLoader();
@@ -38,4 +93,5 @@ invoicesUnlimited.factory('itemFactory',function($q){
 				});
 		}
 	};
+*/
 });

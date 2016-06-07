@@ -15,9 +15,9 @@
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
       <tr ng-repeat="item in items">
-        <td class="text-color-light text-weight-normalize layout-padding">{{item.name}}</td>
-        <td class="text-color-light text-weight-normalize layout-padding">{{item.desc}}</td>
-        <td class="text-color-light text-weight-normalize layout-padding">${{item.rate}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.title}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.itemDescription}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding">${{item.entity.rate}}</td>
         <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
     </table>

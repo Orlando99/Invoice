@@ -1,18 +1,34 @@
 'use strict';
 
-invoicesUnlimited.controller('ItemController',['$scope', '$state', '$controller',
-	'userFullFactory', 'itemFactory',
-	function($scope,$state,$controller,userFullFactory,itemFactory){
+invoicesUnlimited.controller('ItemController',['$scope', '$state', '$controller', '$q',
+	'userFullFactory', 'coreFactory',
+	function($scope,$state,$controller,$q,userFullFactory, coreFactory){
 
 	var user = userFullFactory.authorized();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
-
-	itemFactory.getItems(user,function(itemContent){
-		$scope.items = itemContent;
-	});
-
 	loadColorTheme(user);
 	initalizeModalClasses();
+
+	loadItems();
+
+	function loadItems() {
+		showLoader();
+		var organization = user.get("organizations")[0];
+		$q.when(coreFactory.getAllItems({
+			organization : organization
+		}))
+		.then(function(items) {
+			$scope.items = items;
+			hideLoader();
+
+		}, function(error) {
+			console.log(error.message);
+			hideLoader();
+
+		});
+	}
+
+//----
 /*
 	if (user.get('colorTheme')) {
 		var color = user.get('colorTheme');
