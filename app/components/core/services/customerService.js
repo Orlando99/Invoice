@@ -23,6 +23,7 @@ invoicesUnlimited.factory('customerFactory',function(userFactory,contactPersonFa
 		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
 		this.contactPersons = contactPersons;
+		this.customerFields = customerFields;
 
 		this.save = function(params){
 			if (arguments.length) return this.entity.save(params);
@@ -48,6 +49,7 @@ invoicesUnlimited.factory('customerFactory',function(userFactory,contactPersonFa
 		"firstName",
 		"phone",
 		"email",
+		"mobile",
 		"unusedCredits",
 		"outstanding",
 		"currency",

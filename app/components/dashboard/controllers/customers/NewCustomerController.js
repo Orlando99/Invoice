@@ -2,7 +2,7 @@
 
 invoicesUnlimited.controller('NewCustomerController',
 	function($scope,$rootScope,$state,userFactory,
-			 customerFactory,$controller,$q){
+			 contactPersonFactory,customerFactory,$controller,$q){
 
 	var user = userFactory;
 	var def = $q.defer();
@@ -57,16 +57,32 @@ invoicesUnlimited.controller('NewCustomerController',
 		$scope.newCustomer.entity.shippingAddress = JSON.stringify(
 			$scope.newCustomer.shippingAddress);
 
-		$scope.newCustomer.save().then(function(){
+		var ContactPerson = Parse.Object.extend('ContactPerson');
+		var contact = new contactPersonFactory(new ContactPerson());
+		var cust = $scope.newCustomer;
+		contact.entity.set('userID',user);
+		contact.entity.set('defaultPerson',1);
+		var fields = ['email','phone','mobile','lastName','firstName','salutaion'];
+		for (var i in fields) {
+			contact.entity[fields[i].toLowerCase()] 
+			= $scope.newCustomer.entity[fields[i]];
+		}
+		
+		contact.save().then(function() {
+			$scope.newCustomer.entity.add('contactPersons',contact.entity);
+			$scope.newCustomer.entity.set('organization',user.get('selectedOrganization'));
+			$scope.newCustomer.save().then(function(){
 			
-			$scope.newCustomer = new customerFactory(new Customer());
-			$scope.newCustomer.entity.set('userID',user);
-			
-			$scope.newCustomer.billingAddress = Object.create(address);
-			$scope.newCustomer.shippingAddress = Object.create(address);
+				$scope.newCustomer = new customerFactory(new Customer());
+				$scope.newCustomer.entity.set('userID',user);
+				
+				$scope.newCustomer.billingAddress = Object.create(address);
+				$scope.newCustomer.shippingAddress = Object.create(address);
 
-			$state.go('dashboard.customers.all');
+				$state.go('dashboard.customers.all');
+			});
 		});
+
 	}
 
 	$scope.cancelSaveCustomer = function(){
