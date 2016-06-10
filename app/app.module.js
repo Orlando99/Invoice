@@ -155,6 +155,7 @@ Date.prototype.formatDate = function(format,fullday) {
   return result;
 }
 
+//-------//
 function initalizeModalClasses()
 {
   $(".modal-opener").off("click");
@@ -189,6 +190,14 @@ invoicesUnlimited.directive('fileModel', ['$parse', function ($parse) {
       }
   };
 }]);
+
+function formatDate(date, format) {
+  if(date){
+    var d = moment(date);
+    return d.format(format);
+  }
+  return date;
+}
 
 function formatNumber(num) {
     if (num)

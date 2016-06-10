@@ -2,16 +2,19 @@
 
 invoicesUnlimited.controller('CreateInvoiceController',
 	['$scope', '$state', '$controller', '$q', 'userFullFactory',
-	'invoiceFactory', 'coreFactory', 'taxFactory',
+	'invoiceService', 'coreFactory', 'taxFactory',
 	function($scope, $state, $controller, $q, userFullFactory,
-		invoiceFactory,coreFactory,taxFactory) {
+		invoiceService,coreFactory,taxFactory) {
 
 	var user = userFullFactory.authorized();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
-	loadColorTheme(user);
+//	loadColorTheme(user);
+
+//////////////////
+//	return;
+//////////////////
 
 	prepareToCreateInvoice();
-//	prepareForm();
 
 	function prepareToCreateInvoice() {
 		showLoader();
@@ -35,7 +38,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		});
 		promises.push(p);
 
-		p = $q.when(invoiceFactory.getPreferences(user))
+		p = $q.when(invoiceService.getPreferences(user))
 		.then(function(prefs) {
 			$scope.prefs = prefs;
 		});
@@ -125,7 +128,6 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			amount : 0
 		}];
 
-		// test image input thing
 	}
 
 	function saveInvoice() {
@@ -150,8 +152,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 		};
 
-		return $q.when(invoiceFactory.createNewInvoice
-			(invoice, $scope.invoiceItems, $scope.userRole, $scope.filepicker))
+		return invoiceService.createNewInvoice
+			(invoice, $scope.invoiceItems, $scope.userRole, $scope.filepicker)
 		.then(function(invObj) {
 			return invObj;
 
@@ -163,10 +165,10 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	function saveAndSendInvoice() {
 		saveInvoice().then(function(invObj) {
 			// save in InvoiceInfo get its id, needed afterwards
-			invoiceFactory.createInvoiceReceipt(invObj.id)
+			
+			invoiceService.createInvoiceReceipt(invObj.id)
 			.then(function(obj) {
 				console.log("saved and sent");
-				console.log(obj);
 
 			}, function(error) {
 				console.log(error.message);
@@ -182,12 +184,12 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	$scope.saveAndSend = function () {
 		saveAndSendInvoice();
 	}
-
+/*
 	$scope.uploadFile = function() {
 		var file = $scope.filepicker;
 		if (file) {
 			console.log(file.name);
-			/*
+
 			var parseFile = new Parse.File(file.name, file);
 			parseFile.save()
 			.then(function(savedFile) {
@@ -197,12 +199,12 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			}, function(error) {
 				console.log(error.message);
 			});
-			*/
+
 		} else {
 			console.log("no file attached");
 		}
 	}
-
+*/
 	$scope.calculateDueDate = function() {
 	//	$('#end_date').datepicker();
 	//	$('#end_date').datepicker('setDate', 345);
@@ -295,6 +297,18 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 	$scope.printSelected = function() {
 		console.log($scope.selectedCustomer.entity);
+		/*
+		Parse.Cloud.run("sendMailgun", {
+			toEmail: "adnan@binaryport.com",
+			fromEmail: "no-reply@invoicesunlimited.com",
+			subject : "test email",
+			message : "raw text, body of the email."
+		}).then(function(msg) {
+			console.log(msg);
+		}, function(msg) {
+			console.log(msg);
+		});
+		*/
 	}
 
 }]);

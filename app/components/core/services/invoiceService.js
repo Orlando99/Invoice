@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
+invoicesUnlimited.factory('invoiceService', function($q, invoicesFactory, invoiceFactory){
 	return {
 		test : function() {
 			console.log("working");
@@ -10,37 +10,52 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 			var acl = new Parse.ACL();
 			acl.setRoleWriteAccess(role.get("name"), true);
 			acl.setRoleReadAccess(role.get("name"), true);
-			var invItem = Parse.Object.extend("InvoiceItems");
-			
-			invoiceItems.forEach(function(item) {
-				var obj = new invItem();
-				obj.setACL(acl);
-				obj.set("userID", invoice.userID);
-				obj.set("organization", invoice.organization);
-				obj.set("item", item.selectedItem.entity);
-				obj.set("quantity", Number(item.quantity));
-				obj.set("amount", Number(item.amount));
-				obj.set("discount", Number(item.discount));
-				if (item.selectedTax) {
-					obj.set("tax", Parse.Object.extend("Tax")
-						.createWithoutData(item.selectedTax.id));
-				}
-				items.push(obj);
-			});
-			
-			return Parse.Object.saveAll(items)
-			.then(function(list) {
-			//	console.log("items saved successfully");
-				var invoiceTable = Parse.Object.extend("Invoices");
-				var obj = new invoiceTable();
-				obj.setACL(acl);
-				invoice.invoiceItems = list;
-				
-				return obj.save(invoice)
-				.then(function(invObj) {
-					console.log("invoice created successfully");
-					return invObj;
+
+			var promise = undefined;
+			if(file) {
+				var parseFile = new Parse.File(file.name, file);
+				promise = parseFile.save()
+				.then(function(savedFile) {
+					console.log(savedFile.url());
+					return [savedFile];
 				});
+			} else
+				promise = Parse.Promise.as(undefined);
+
+			return promise.then(function(fileObj) {
+				var invItem = Parse.Object.extend("InvoiceItems");
+				invoiceItems.forEach(function(item) {
+					var obj = new invItem();
+					obj.setACL(acl);
+					obj.set("userID", invoice.userID);
+					obj.set("organization", invoice.organization);
+					obj.set("item", item.selectedItem.entity);
+					obj.set("quantity", Number(item.quantity));
+					obj.set("amount", Number(item.amount));
+					obj.set("discount", Number(item.discount));
+					if (item.selectedTax) {
+						obj.set("tax", Parse.Object.extend("Tax")
+							.createWithoutData(item.selectedTax.id));
+					}
+					items.push(obj);
+				});
+				
+				return Parse.Object.saveAll(items)
+				.then(function(list) {
+				//	console.log("items saved successfully");
+					var invoiceTable = Parse.Object.extend("Invoices");
+					var obj = new invoiceTable();
+					obj.setACL(acl);
+					obj.set("invoiceFiles", fileObj);
+					invoice.invoiceItems = list;
+					
+					return obj.save(invoice)
+					.then(function(invObj) {
+						console.log("invoice created successfully");
+						return invObj;
+					} /* add method to delete file and items */);
+				}/* add method to delete file*/);
+
 			});
 
 		},
@@ -83,69 +98,29 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 
 			});
 		},
-		getInvoices : function(user) {
+		listInvoices : function(user) {
 			var organization = getOrganization(user);
 			if (! organization)	return;
 
-			// get other fields,
 			var invoiceTable = Parse.Object.extend("Invoices");
 			var query = new Parse.Query(invoiceTable);
 
 			query.equalTo("organization", organization);
-			query.limit(2);
-			query.select("invoiceNumber", "customer", "invoiceDate", "dueDate",
-				"total", "balanceDue", "status");
+			query.limit(5);	// remove before production
+			query.include("customer");
+			query.select("invoiceNumber", "invoiceDate", "dueDate",
+				"total", "balanceDue", "status", "customer");
 
 			return query.find().then(function(invoiceObjs) {
 				var invoices = [];
-				var customerIds = [];
-				for (var i = 0; i < invoiceObjs.length; ++i) {
-
-					var obj = new invoicesFactory (invoiceObjs[i]);
-					var invoice = {
-						values : obj.entity,
-					};
-
-
-					// save customer ids to fetch display names later
-					customerIds.push(obj.entity.customer.id);
-
-					// select css class for status
-					switch(invoice.values.status) {
-						case "Unpaid":
-							invoice.statusClass = "text-color-normalize";
-							break;
-						case "Paid":
-							invoice.statusClass = "text-positive";
-							break;
-						case "Overdue":
-							invoice.statusClass = "text-danger";
-							break;
-						default:
-							invoice.statusClass = "text-color-normalize";
-					}
-
-					invoices.push(invoice);
-
-				}
-				// get customer display name
-				var customerTable = Parse.Object.extend("Customer");
-				var customerQuery = new Parse.Query(customerTable);
-				customerQuery.containedIn("objectId", customerIds);
-				customerQuery.select("displayName");
-				customerQuery.find().then(function(customerObjs) {
-					for (var i = 0; i < customerIds.length; ++i) {
-						for (var j = 0; j < customerObjs.length; ++j) {
-							if (customerIds[i] == customerObjs[j].id) {
-								invoices[i].customerName = customerObjs[j].get("displayName");
-								break;
-							}
-						}
-					}
+				invoiceObjs.forEach(function(invoice) {
+					invoices.push(new invoiceFactory(invoice, {
+						operation : "listInvoices"
+					}));
 				});
-
 				return invoices;
 			});
+
 		},
 		createInvoiceReceipt : function(invoiceId) {
 			var invoiceTable = Parse.Object.extend("Invoices");
@@ -154,40 +129,38 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 				"invoiceItems.item", "invoiceItems.item.tax", "organization",
 				"userID", "userID.defaultTemplate", "userID.businessInfo");
 
-				return query.get(invoiceId)
-				.then(function(invoiceObj) {
-					var user = invoiceObj.get("userID");
-					var template = user.get("defaultTemplate");
-					var xmlFile = template.get("templateData");
-					var htmlFile = template.get("templateHTML");
-					var cardUrl = template.get("linkedFile").url();
-
-					return fillInXmlData(xmlFile.url(), user, invoiceObj)
-					.then(function(newXml) {
-						var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
-						return labelsFile.save()
-						.then(function(xml) {
-							return fillInHtmlData(xml.url(), htmlFile.url(), cardUrl)
-							.then(function(newHtml) {
-								var invoiceFile = new Parse.File("test2.html",{base64: newHtml});
-								return invoiceFile.save()
-								.then(function(html) {
-									invoiceObj.set("invoiceLabels", xml);
-									invoiceObj.set("invoiceReceipt", html);
-									return invoiceObj.save()
-									.then(function(invObj) {
-										console.log("files saved");
-										return invObj;
-									});
-
-								});
-							});
-						});
-					});
-				}, function(error) {
-				console.log(error.message);
+			var data = {};
+			return query.get(invoiceId)
+			.then(function(invoiceObj) {
+				data.invoiceObj = invoiceObj;	// save for later use
+				var user = invoiceObj.get("userID");
+				var template = user.get("defaultTemplate");
+				// in case of edit, get them from invocieObj
+				var xmlFile = template.get("templateData");
+				data.htmlFile = template.get("templateHTML");	// save for later use
+				data.cardUrl = template.get("linkedFile").url();// save for later use
+				return fillInXmlData(xmlFile.url(), user, invoiceObj);
+			})
+			.then(function(newXml) {
+				var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
+				return labelsFile.save();
+			})
+			.then(function(xml) {
+				data.xml = xml;	// save for later use
+				return fillInHtmlData(xml.url(), data.htmlFile.url(), data.cardUrl);
+			})
+			.then(function(newHtml) {
+				var invoiceFile = new Parse.File("test2.html",{base64: newHtml});
+				return invoiceFile.save();
+			})
+			.then(function(html) {
+				data.invoiceObj.set("invoiceLabels", data.xml);
+				data.invoiceObj.set("invoiceReceipt", html);
+				return data.invoiceObj.save();
+			})
+			.then(function(invObj) {
+				return invObj;
 			});
-
 		}
 
 	};
@@ -252,8 +225,8 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 			labels['longmsg'] = invoice.get("notes");
 
 			/* format date aswell */
-			labels['body-date'] = formatDate(invoice.get("invoiceDate"));
-			labels['past-due'] = formatDate(invoice.get("dueDate"));
+			labels['body-date'] = formatDate(invoice.get("invoiceDate"), "MMM D, YYYY");
+			labels['past-due'] = formatDate(invoice.get("dueDate"), "MMM D, YYYY");
 
 			/* don't show it, if empty */
 			labels['purchaseOrderNumber'] = invoice.get("poNumber") ?
@@ -440,19 +413,6 @@ invoicesUnlimited.factory('invoiceFactory', function($q, invoicesFactory){
 		return formatNumber(res);
 	}
 
-	function formatDate(date) {
-		if(date){
-			var d = moment(date);
-			return d.format("MMM D, YYYY");
-		}
-	}
-/*
-	function formatNumber(num) {
-		if (num)
-			return num.toFixed(2);
-		return "0.00";
-	}
-*/
 	function getOrganization (user) {
 		var organizationArray = user.get("organizations");
 		if (!organizationArray) {

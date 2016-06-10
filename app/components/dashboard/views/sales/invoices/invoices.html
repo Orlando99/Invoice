@@ -1,8 +1,8 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>  
   <div class="container hidesm">
 
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-t">All Invoices <i class="arrow-down-black"></i></h3>
-    <a ui-sref="dashboard.sales.new-invoice" class="float-right button button-add text-transform"
+    <a ui-sref="dashboard.sales.invoices.new" class="float-right button button-add text-transform"
       ng-click="prepareAddInvoice()">New</a>
     <form class="float-right layout-margin-t">
       <input type="text" class="search-bar" placeholder="Search">
@@ -20,29 +20,17 @@
         <td class="text-uppercase text-info">Amount</td>
         <td class="text-uppercase text-info">Balance</td>
       </tr>
-      <tr class="trow" ng-repeat="invoice in invoices">
-        <td class="text-color-light">{{invoice.values.invoiceDate}}</td>
-        <td class="text-color-light">{{invoice.values.invoiceNumber}}</td>
+      <tr class="trow" ng-repeat="invoice in invoiceList" ui-sref="dashboard.sales.invoices.edit({invoiceId:$index})">
+        <td class="text-color-light">{{invoice.invoiceDate}}</td>
+        <td class="text-color-light">{{invoice.entity.invoiceNumber}}</td>
         <td class="text-color-light"></td>
-        <td class="text-color-light">{{invoice.customerName}}</td>
-        <td class="text-positive"><span class="{{invoice.statusClass}}">{{invoice.values.status}}</span></td>
-        <td class="text-color-light">{{invoice.values.dueDate}}</td>
-        <td class="text-color-light">${{invoice.values.total}}</td>
-        <td class="text-color-light">${{invoice.values.balanceDue}}</td>
+        <td class="text-color-light">{{invoice.customer.displayName}}</td>
+        <td class="text-positive"><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
+        <td class="text-color-light">{{invoice.dueDate}}</td>
+        <td class="text-color-light">${{invoice.total}}</td>
+        <td class="text-color-light">${{invoice.balanceDue}}</td>
       </tr>
     </table>
 
-
-
   </div>
-
-   <div class="onmobile">
-    <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="./assets/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="./assets/images/AppStore.png" alt="Google Play"></a>
-  </div>
-  
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="./assets/js/main.js"></script>
-</body>
-</html>
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

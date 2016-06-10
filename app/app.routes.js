@@ -134,6 +134,54 @@ angular.module('invoicesUnlimited')
 		},
 		sales : {
 			index : {
+				name : 'dashboard.sales'
+			},
+			invoices : {
+				index : {
+					name 	 : 'dashboard.sales.invoices'//,
+				//	abstract : true,
+				//	url 	 : '/sales/invoices',
+				//	views 	 : {
+				//		'@'  : {
+				//			controller : 'InvoiceController',
+				//			templateUrl  : COMPONENTS + 'dashboard/views/sales/invoices/index.html'
+				//		}
+				//	}
+				},
+				all  : {
+					name 	: 'dashboard.sales.invoices.all',
+					url 	: '/sales/invoices',
+					views 	: {
+						'@' : {
+							controller 	 : 'InvoiceController',
+							templateUrl	: COMPONENTS + 'dashboard/views/sales/invoices/invoices.html'
+						}
+					}
+				},
+				newInvoice : {
+					name : 'dashboard.sales.invoices.new',
+					url : '/new',
+					views : {
+						'@' : {
+							controller 	 : 'CreateInvoiceController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/newinvoice.html'
+						}
+					}
+				},
+				edit : {
+					name	: 'dashboard.sales.invoices.edit',
+					url 	: '/:invoiceId/edit',
+					views 	: {
+						'@' : {
+							controller 	 : 'InvoiceController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/editinvoice.html'
+						}
+					}
+				}
+			}
+
+/*
+			index : {
 				name 	: 'dashboard.sales',
 				url 	: '/sales',
 				views 	: {
@@ -183,7 +231,7 @@ angular.module('invoicesUnlimited')
 					}
 				}
 			}
-
+*/
 		},
 		reports : {
 			index : {
@@ -350,7 +398,8 @@ angular.module('invoicesUnlimited')
 		login,
 		signup,
 		dashboard.customers,
-		dashboard.sales,
+		[dashboard.sales.index],
+		dashboard.sales.invoices,
 		dashboard.reports,
 		dashboard.settings,
 		[dashboard.index]
