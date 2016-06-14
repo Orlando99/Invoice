@@ -90,7 +90,6 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		$scope.shippingCharges = 0;
 		$scope.adjustments = 0;
 
-		$scope.prefs.discountType = 1;
 		switch($scope.prefs.discountType) {
 			case 0:
 				$scope.itemLevelTax = false;
@@ -218,6 +217,9 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	$scope.paymentTermsChanged = function() {
 		$scope.hasDueDate =
 			$scope.paymentTerms.selectedTerm.value == 1 ? true : false;
+
+		if($scope.hasDueDate)
+			$scope.calculateDueDate();
 	}
 
 	$scope.openDatePicker = function(n) {
