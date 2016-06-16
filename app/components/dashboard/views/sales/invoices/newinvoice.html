@@ -112,7 +112,7 @@
             </select>
           </div>
           <div class="col-16 layout-padding layout-padding-l text-center">
-            <p class="layout-no-margin">${{invItem.amount}}</p>
+            <p class="layout-no-margin">{{invItem.amount | currency:$:2}}</p>
           </div>
           <div class="col-5 layout-padding layout-padding-l text-right">
             <button class="button button-icon button-no-margin" ng-click="removeInvoiceItem($index)"><img src="./assets/images/icon-times-round.png" alt=""></button>
@@ -124,34 +124,34 @@
         <hr>
         <div class="col-60 pull-right">
           <div class="col-25">Sub Total</div>
-          <div class="col-65 text-right">${{subTotal}}</div>
+          <div class="col-65 text-right">{{subTotalStr}}</div>
           <br>
           <form class="inputs-white">
             <div class="input-container layout-margin-tb" ng-show="invoiceLevelTax">
               <label class="layout-padding-t-smm">Discount (%)</label>
-              <input type="text" class="col-30" ng-model="discount" ng-change="reCalculateTotal()">
-              <label class="col-35 text-right layout-padding-t-smm">${{discountValue}}</label>
+              <input type="number" class="col-30" ng-model="discount" ng-change="reCalculateTotal()">
+              <label class="col-35 text-right layout-padding-t-smm">{{discountStr}}</label>
             </div>
             <div class="input-container layout-margin-tb" ng-show="showShippingCharges">
               <label class="layout-padding-t-smm">Shipping Charges</label>
-              <input type="text" class="col-30" ng-model="shippingCharges" ng-change="reCalculateTotal()">
-              <label class="col-35 text-right layout-padding-t-smm">$0.00</label>
+              <input type="number" class="col-30" ng-model="shippingCharges" ng-change="reCalculateTotal()">
+              <label class="col-35 text-right layout-padding-t-smm">{{shippingChargesStr}}</label>
             </div>
             <div class="input-container input-info layout-margin-tb" ng-show="showAdjustments">
               <label class="layout-padding-t-smm">Adjustment</label>
-              <input type="text" class="col-30" ng-model="adjustments" ng-change="reCalculateTotal()">
+              <input type="number" class="col-30" ng-model="adjustments" ng-change="reCalculateTotal()">
               <span class="info-icon info-icon-gray estimates-custom-info-icon"></span>
               <p class="info-tooltip tooltip-dark info-left estimates-custom-tooltip">
                 Add any additional adjustments needed for the total amount ex: +5 or -5
               </p>
-              <label class="col-35 text-right layout-padding-t-smm">$0.00</label>
+              <label class="col-35 text-right layout-padding-t-smm">{{adjustmentsStr}}</label>
             </div>
           </form>
         </div>
         <div class="table-row row-border layout-padding layout-margin-tb">
           <div class="col-60 pull-right">
             <div class="col-25"><h3 class="layout-no-margin text-uppercase text-weight-normalize">Total</h3></div>
-            <div class="col-65 text-right"><h3 class="layout-no-margin text-uppercase text-weight-normalize">{{total}}</h3></div>
+            <div class="col-65 text-right"><h3 class="layout-no-margin text-uppercase text-weight-normalize">{{totalStr}}</h3></div>
           </div>
         </div>
 
@@ -180,7 +180,7 @@
 -->
           <button class="button layout-margin-r text-uppercase button-neutral" ng-click="save()">Save As Draft</button>
           <button class="button layout-margin-r text-uppercase button-info" ng-click="saveAndSend()">Save &amp; Send</button>
-          <button class="button layout-margin-r text-uppercase button-neutral">Cancel</button>
+          <button class="button layout-margin-r text-uppercase button-neutral" ng-click="cancel()">Cancel</button>
         </form>
 
       </div>

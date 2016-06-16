@@ -2,17 +2,12 @@
 
 invoicesUnlimited.controller('CreateInvoiceController',
 	['$scope', '$state', '$controller', '$q', 'userFullFactory',
-	'invoiceService', 'coreFactory', 'taxFactory',
+	'invoiceService', 'coreFactory', 'taxFactory', 'currencyFilter',
 	function($scope, $state, $controller, $q, userFullFactory,
-		invoiceService,coreFactory,taxFactory) {
+		invoiceService,coreFactory,taxFactory,currencyFilter) {
 
 	var user = userFullFactory.authorized();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
-//	loadColorTheme(user);
-
-//////////////////
-//	return;
-//////////////////
 
 	prepareToCreateInvoice();
 
@@ -85,10 +80,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		$scope.hasDueDate = true;
 		$scope.todayDate = new Date();
 		$scope.calculateDueDate();
-		$scope.subTotal = "0.00";
-		$scope.discountValue = "0.00";
-		$scope.shippingCharges = 0;
-		$scope.adjustments = 0;
+		$scope.subTotalStr = currencyFilter(0, '$', 2);
 
 		switch($scope.prefs.discountType) {
 			case 0:
@@ -105,14 +97,19 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			case 3:
 				$scope.itemLevelTax = false;
 				$scope.invoiceLevelTax = true;
+				$scope.discountStr = currencyFilter(0, '$', 2);
 				break;
 		}
 
-		if ($scope.prefs.shipCharges)
+		if ($scope.prefs.shipCharges) {
 			$scope.showShippingCharges = true;
+			$scope.shippingChargesStr = currencyFilter(0, '$', 2);
+		}
 
-		if ($scope.prefs.adjustments)
+		if ($scope.prefs.adjustments) {
 			$scope.showAdjustments = true;
+			$scope.adjustmentsStr = currencyFilter(0, '$', 2);
+		}
 
 		if ($scope.prefs.salesPerson)
 			$scope.showSalesPerson = true;
@@ -135,53 +132,74 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			organization : user.get("organizations")[0],
 			customer : $scope.selectedCustomer.entity,
 			invoiceDate : $scope.todayDate,
-			dueDate : ($scope.paymentTerms.selectedTerm.value == 1 ? $scope.dueDate : undefined),
 			invoiceNumber : $scope.invoiceNo,
 			status : "Unpaid",
-			adjustments : Number($scope.adjustments),
 			discountType : $scope.prefs.discountType,
-			discounts : Number($scope.discount),
-			shippingCharges : Number($scope.shippingCharges),
+			discounts : $scope.discount,
+			shippingCharges : $scope.shippingCharges,
+			adjustments : $scope.adjustments,
 			subTotal : Number($scope.subTotal),
 			total : Number($scope.total),
+			balanceDue : Number($scope.total),
 			poNumber : $scope.poNumber,
 			salesPerson : $scope.salesPerson,
 			notes : $scope.notes || $scope.prefs.notes,
 			terms : $scope.terms || $scope.prefs.terms
 
 		};
+		if ($scope.paymentTerms.selectedTerm.value == 1)
+			invoice.dueDate = $scope.dueDate;
+		var email = $scope.selectedCustomer.entity.email;
+		if(email) invoice.customerEmails = [email];
 
 		return invoiceService.createNewInvoice
-			(invoice, $scope.invoiceItems, $scope.userRole, $scope.filepicker)
-		.then(function(invObj) {
-			return invObj;
-
-		}, function(error) {
-			console.log(error.message);
-		});
+			(invoice, $scope.invoiceItems, $scope.userRole, $scope.filepicker);
 	}
 
 	function saveAndSendInvoice() {
-		saveInvoice().then(function(invObj) {
-			// save in InvoiceInfo get its id, needed afterwards
-			
-			invoiceService.createInvoiceReceipt(invObj.id)
-			.then(function(obj) {
-				console.log("saved and sent");
-
-			}, function(error) {
-				console.log(error.message);
-			});
-
+		return saveInvoice()
+		.then(function(invoice) {
+			return invoiceService.copyInInvoiceInfo(invoice)
+			.then(function(invoiceInfo) {
+				return invoiceService.createInvoiceReceipt(invoice.id, invoiceInfo.id);
+			});/*
+			.then(function(invoiceObj) {
+				return invoiceService.sendInvoiceReceipt(invoiceObj);
+			});*/
 		});
 	}
 
 	$scope.save = function() {
-		saveInvoice();
+		showLoader();
+		saveInvoice()
+		.then(function(invoice) {
+			hideLoader();
+			console.log(invoice);
+			$state.go('dashboard.sales.invoices.all');
+
+		}, function (error) {
+			hideLoader();
+			console.log(error.message);
+		});
 	}
 
 	$scope.saveAndSend = function () {
-		saveAndSendInvoice();
+		showLoader();
+		saveAndSendInvoice()
+		.then(function(invoice) {
+			hideLoader();
+			console.log(invoice);
+
+			$state.go('dashboard.sales.invoices.all');
+
+		}, function (error) {
+			hideLoader();
+			console.log(error);
+		});
+	}
+
+	$scope.cancel = function() {
+		$state.go('dashboard.sales.invoices.all');
 	}
 /*
 	$scope.uploadFile = function() {
@@ -236,36 +254,57 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			rate : 0,
 			quantity : 1,
 			discount : 0,
+			taxValue : 0,
 			amount : 0
 		});
 	}
 
-	
+	$scope.reCalculateTotal = function() {
+		var subTotal = Number($scope.subTotal) || 0;
+		var discount = Number($scope.discount) || 0;
+		var shipCharges = Number($scope.shippingCharges) || 0;
+		var adjustments = Number($scope.adjustments) || 0;
+		var totalTax = Number($scope.totalTax) || 0;
+		var sum = subTotal + totalTax;
+		var discountRatio = (100 - discount) * 0.01;
+
+		if($scope.prefs.discountType == 2) // before tax
+			sum = (subTotal * discountRatio) + totalTax;
+		else if ($scope.prefs.discountType == 3) // after tax
+			sum = (subTotal + totalTax) * discountRatio;
+
+		discount = Math.abs(sum - subTotal - totalTax);
+		$scope.total = sum + shipCharges + adjustments;
+		$scope.discountStr = currencyFilter(discount, '$', 2);
+		$scope.shippingChargesStr = currencyFilter(shipCharges, '$', 2);
+		$scope.adjustmentsStr = currencyFilter(adjustments, '$', 2);
+		$scope.totalStr = currencyFilter($scope.total, '$', 2);
+	}
+
 	function reCalculateSubTotal() {
 		var items = $scope.invoiceItems;
 		var subTotal = 0;
-		items.forEach(function(item) {
-			subTotal += Number(item.amount);
-		});
-		$scope.subTotal = formatNumber(subTotal);
-		$scope.reCalculateTotal();
-	}
+		var totalTax = 0;
 
-	$scope.reCalculateTotal = function() {
-		$scope.discountValue =
-			formatNumber((Number($scope.subTotal) * Number($scope.discount) * 0.01));
-		$scope.total =
-			formatNumber(Number($scope.subTotal) - Number($scope.discountValue) +
-			Number($scope.shippingCharges) + Number($scope.adjustments));
+		// no need to check discountType,
+		// itemInfo.discount is zero, so, expression will evaluate to 1.
+		items.forEach(function(item) {
+			subTotal += item.amount * ((100 - item.discount) * 0.01);
+			item.taxValue = calculateTax(item.amount, item.selectedTax);
+			totalTax += item.taxValue;
+		});
+
+		$scope.totalTax = totalTax;
+		$scope.subTotal = subTotal;
+		$scope.subTotalStr = currencyFilter(subTotal, '$', 2);
+		$scope.reCalculateTotal();
 	}
 
 	$scope.reCalculateItemAmount = function(index) {
 		var itemInfo = $scope.invoiceItems[index];
 		if (! itemInfo.selectedItem) return;
 
-		var withOutDiscount = itemInfo.rate * itemInfo.quantity;
-		itemInfo.amount =
-		formatNumber(withOutDiscount * ((100 - itemInfo.discount) * 0.01));
+		itemInfo.amount = itemInfo.rate * itemInfo.quantity;
 		reCalculateSubTotal();
 	}
 
@@ -283,7 +322,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		itemInfo.rate = Number(itemInfo.selectedItem.entity.get("rate"));
 		var tax = itemInfo.selectedItem.entity.get("tax");
 		if (!tax) {
-			console.log("no tax applied");
+		//	console.log("no tax applied");
 			itemInfo.selectedTax = "";
 		} else {
 			var taxes = $scope.taxes;

@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory){
+invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, currencyFilter){
 return {
 	test : function() {
 		console.log("working");
@@ -17,6 +17,71 @@ return {
 			});
 			return invoice;
 		});
+	},
+	copyInInvoiceInfo : function (invoice) {
+		var invInfo = invoice.get('invoiceInfo');
+		if (! invInfo) {
+			console.log('new created');
+			var InvoiceInfo = Parse.Object.extend('InvoiceInfo');
+			invInfo = new InvoiceInfo();
+		} else console.log('used old');
+
+		invInfo.set('sendNotifications', 1);
+		invInfo.set('invoiceDate', invoice.get('invoiceDate'));
+		invInfo.set('dueDate', invoice.get('dueDate'));
+		invInfo.set('referenceNumber', invoice.get('invoiceNumber'));
+		invInfo.set('totalAmount', String(invoice.get('total')));
+
+		var user, p;
+		var promises = [];
+		
+		p = $q.when(invoice.get('userID').fetch())
+		.then(function(userID) {
+			user = userID;
+			invInfo.set('userId', user.id);
+			invInfo.set('email', user.get('email'));
+			invInfo.set('phone', user.get('phonenumber'));
+			return user.get('selectedOrganization').fetch();
+		})
+		.then(function(org) {
+			invInfo.set('organizationLogo', org.get('logo'));
+			return user.get('businessInfo').fetch();
+		})
+		.then(function(bInfo) {
+			invInfo.set('businessName', bInfo.get('businessName'));
+			
+			var preferences = Parse.Object.extend('Preferencies');
+			var query = new Parse.Query(preferences);
+			query.select('invoiceNotes');
+			query.equalTo('userID', user);
+			return query.first();
+		})
+		.then(function(prefs) {
+			invInfo.set('emailReceipt', prefs.get('invoiceNotes'));
+		});
+		promises.push(p);
+
+		p = $q.when(invoice.get('customer').fetch())
+		.then(function(customer) {
+			invInfo.set('clientName', customer.get('displayName'));
+			invInfo.set('clientEmail', customer.get('email'));
+			invInfo.set('clientPhone', customer.get('phone'));
+		});
+		promises.push(p);
+
+		return $q.all(promises)
+		.then(function() {
+			return invInfo.save();
+		})
+		.then(function(invInfoObj) {
+			invoice.set('invoiceInfo', invInfoObj);
+			invoice.set('status', 'Sent');
+			return invoice.save()
+			.then(function(inv) {
+				return invInfoObj;
+			});
+		});
+
 	},
 	updateInvoice : function(invoiceObj, invoiceItems, deletedItems, user, role, file) {
 		var invItems = [];
@@ -57,7 +122,12 @@ return {
 				oldItems[i].entity.set('item', itemData.selectedItem.entity);
 				oldItems[i].entity.set('quantity', Number(itemData.quantity));
 				oldItems[i].entity.set('amount', Number(itemData.amount));
-				oldItems[i].entity.set('discount', Number(itemData.discount));
+
+				var discount = Number(itemData.discount);
+				if (discount == 0)
+					oldItems[i].entity.unset('discount');
+				else
+					oldItems[i].entity.set('discount', discount);
 
 				if(! itemData.selectedTax) oldItems[i].entity.set('tax', undefined);
 				else {
@@ -112,7 +182,11 @@ return {
 				obj.set("item", item.selectedItem.entity);
 				obj.set("quantity", Number(item.quantity));
 				obj.set("amount", Number(item.amount));
-				obj.set("discount", Number(item.discount));
+				
+				var discount = Number(item.discount);
+				if (discount != 0)
+					obj.set('discount', discount);
+
 				if (item.selectedTax) {
 					obj.set("tax", Parse.Object.extend("Tax")
 						.createWithoutData(item.selectedTax.id));
@@ -123,16 +197,28 @@ return {
 			return Parse.Object.saveAll(items)
 			.then(function(list) {
 			//	console.log("items saved successfully");
-				var invoiceTable = Parse.Object.extend("Invoices");
-				var obj = new invoiceTable();
+				var Invoice = Parse.Object.extend("Invoices");
+				var obj = new Invoice();
 				obj.setACL(acl);
 				obj.set("invoiceFiles", fileObj);
 				invoice.invoiceItems = list;
 				
 				return obj.save(invoice)
 				.then(function(invObj) {
-					console.log("invoice created successfully");
-					return invObj;
+					return invObj.get('organization').fetch()
+					.then(function(org) {
+						var invNum = org.get('invoiceNumber');
+						var arr = invNum.split('-');
+						var n = Number(arr[1]) + 1;
+						var newNum = arr[0] + '-' + formatInvoiceNumber(n, arr[1].length);
+						org.set('invoiceNumber', newNum);
+						return org.save();
+					})
+					.then(function(orgAgain) {
+						console.log("invoice created successfully");
+						return invObj;
+					});
+
 				} /* add method to delete file and items */);
 			}/* add method to delete file*/);
 
@@ -202,7 +288,7 @@ return {
 		});
 
 	},
-	createInvoiceReceipt : function(invoiceId) {
+	createInvoiceReceipt : function(invoiceId, invoiceInfoId) {
 		var invoiceTable = Parse.Object.extend("Invoices");
 		var query = new Parse.Query(invoiceTable);
 		query.include("invoiceItems", "customer", "lateFee",
@@ -219,7 +305,7 @@ return {
 			var xmlFile = template.get("templateData");
 			data.htmlFile = template.get("templateHTML");	// save for later use
 			data.cardUrl = template.get("linkedFile").url();// save for later use
-			return fillInXmlData(xmlFile.url(), user, invoiceObj);
+			return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId);
 		})
 		.then(function(newXml) {
 			var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
@@ -248,14 +334,20 @@ return {
 function createInvoiceItem (itemData, otherData) {
 	var obj = new otherData.objectType();
 	obj.setACL(otherData.acl);
-	obj.set("userID", otherData.userID);
-	obj.set("organization", otherData.organization);
-	obj.set("item", itemData.selectedItem.entity);
-	obj.set("quantity", Number(itemData.quantity));
-	obj.set("amount", Number(itemData.amount));
-	obj.set("discount", Number(itemData.discount));
+	obj.set('userID', otherData.userID);
+	obj.set('organization', otherData.organization);
+	obj.set('item', itemData.selectedItem.entity);
+	obj.set('quantity', Number(itemData.quantity));
+	obj.set('amount', Number(itemData.amount));
+
+	var discount = Number(itemData.discount);
+	if (discount == 0)
+		obj.unset('discount');
+	else
+		obj.set('discount', discount);
+
 	if (itemData.selectedTax) {
-		obj.set("tax", Parse.Object.extend("Tax")
+		obj.set('tax', Parse.Object.extend('Tax')
 			.createWithoutData(itemData.selectedTax.id));
 	}
 	return obj;
@@ -288,7 +380,7 @@ function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 	});
 }
 
-function fillInXmlData(xmlUrl, user, invoice) {
+function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 	return $.ajax({
 		type: "GET",
 		url: xmlUrl,
@@ -299,7 +391,7 @@ function fillInXmlData(xmlUrl, user, invoice) {
 		var labels = jsonObj.items.label;
 
 		// static values
-		labels['invoiceId'] = "123456";
+		labels['invoiceId'] = invoiceInfoId;
 		labels['invoice-title'] = "Invoice";
 		labels['billType'] 	 = "invoice";
 		labels['list-header-total'] = "Total";
@@ -320,44 +412,14 @@ function fillInXmlData(xmlUrl, user, invoice) {
 		labels['ordernotes'] = invoice.get("terms");
 		labels['longmsg'] = invoice.get("notes");
 
-		/* format date aswell */
 		labels['body-date'] = formatDate(invoice.get("invoiceDate"), "MMM D, YYYY");
 		labels['past-due'] = formatDate(invoice.get("dueDate"), "MMM D, YYYY");
 
-		/* don't show it, if empty */
 		labels['purchaseOrderNumber'] = invoice.get("poNumber") ?
 			"P.O.Number:" + invoice.get("poNumber") : "";
 
 		/* this will be used as EST# and CREDIT# as well */
 		labels['refid'] = invoice.get("invoiceNumber");
-
-		/* format upto 2 decimal points */
-		labels['refundtotal'] = "$" + formatNumber(invoice.get("balanceDue"));
-		labels['subtotalprice'] = "$" + formatNumber(invoice.get("subTotal"));
-		labels['paymentMadePrice'] = "$" + formatNumber(invoice.get("paymentMade"));
-		labels['creditsAppliedPrice'] =
-			"$" + formatNumber(invoice.get("creditApplied"));
-		labels['total-price3'] = labels['body-price'] =
-			"$" + formatNumber(invoice.get("total"));
-		jsonObj.items['shippingChargesPrice'] =
-			"$" + formatNumber(invoice.get("shippingCharges"));
-		jsonObj.items['adjustmentsPrice'] =
-			"$" + formatNumber(invoice.get("adjustments"));
-
-		var discounts = invoice.get("discounts");
-		if (discounts) {
-			labels['discountAmount'] = invoice.get("discounts") + "%";
-			labels['discountNameBottom'] =
-				"Discount " + labels['discountAmount'] + "%:";
-			labels['discountPriceBottom'] = "$0.12";
-		}
-		else
-			labels['discountAmount'] = labels['discountNameBottom'] =
-				labels['discountPriceBottom'] = "";
-
-		var type = invoice.get("discountType");
-		labels['discountPlace'] =
-			(type == 2 ? "before" : (type == 3 ? "after" : ""));
 
 		var customFields = jsonObj.items.customFields;
 		var fields = invoice.get("customFields");
@@ -383,49 +445,6 @@ function fillInXmlData(xmlUrl, user, invoice) {
 		else
 			attachments.attachment = undefined;
 
-		/* tax is only on item level */
-		/* invoiceItems, InvoiceItems.item and
-		   InvoiceItems.item.tax is already loaded */
-		var items = jsonObj.items;
-		var taxes = jsonObj.items.label.taxes;
-
-		var itemList = invoice.get("invoiceItems");
-		if (itemList) {
-			items.itemRow = [];
-			taxes.tax = [];
-			for (var i = 0; i < itemList.length; ++i) {
-				var name = itemList[i].get("item").get("title");
-				var qty = itemList[i].get("quantity");
-				var amount = "$" + formatNumber(itemList[i].get("amount"));
-				var discount = itemList[i].get("discount");
-
-				var itmObj = {
-					'name': name,
-					'qty': qty,
-					'price': amount
-				};
-				itmObj.discount = (discount ? discount : 0);
-				items.itemRow.push(itmObj);
-
-				var tax = itemList[i].get("tax");
-				if (tax) {
-					var taxName = tax.get("title") + " (" + tax.get("value") + "%)";
-					var taxValue = "$" + calculateTax(itemList[i], tax);
-					var taxObj = {
-						'name' : taxName,
-						'value': taxValue
-					};
-					taxes.tax.push(taxObj);
-				}
-			}
-			if (! taxes.tax.length)
-				taxes.tax = undefined;
-
-		} else {
-			items.itemRow = undefined;
-			taxes.tax = undefined;
-		}
-
 		// values available from User
 		labels['nr'] = user.get("phonenumber");
 		labels['mailtotxt'] = user.get("email");
@@ -441,7 +460,14 @@ function fillInXmlData(xmlUrl, user, invoice) {
 		// values available from BusinessInfo
 		var bInfo = user.get("businessInfo");
 		if (bInfo) {
-			labels['addres1'] = "";
+			var address = [
+				bInfo.get("streetName"),
+				bInfo.get("zipCode"),
+				bInfo.get("city"),
+				bInfo.get("state"),
+				user.get("country")
+			];
+			labels['addres1'] = address.join(', ');
 		}
 
 		// values available from Customer
@@ -456,23 +482,127 @@ function fillInXmlData(xmlUrl, user, invoice) {
 			labels['body-currency'] = custmr.get("currency").split(" ")[0];
 		}
 
+		var discountType = invoice.get("discountType");
+		labels['discountPlace'] = { text:
+			(discountType == 2 ? "before" : (discountType == 3 ? "after" : ""))
+		};
+
+		/* tax is only on item level */
+		/* invoiceItems, InvoiceItems.item and
+		   InvoiceItems.item.tax is already loaded */
+		var items = jsonObj.items;
+		var taxes = jsonObj.items.label.taxes;
+		var totalTax = 0;
+		var subTotal = 0;
+
+		var itemList = invoice.get("invoiceItems");
+		if (itemList) {
+			items.itemRow = [];
+			taxes.tax = [];
+			for (var i = 0; i < itemList.length; ++i) {
+				var name = itemList[i].get("item").get("title");
+				var qty = itemList[i].get("quantity");
+				var amount = itemList[i].get("amount");
+				var discount = itemList[i].get("discount") || 0;
+
+				subTotal += amount * ((100 - discount) * 0.01);
+
+				var itmObj = {
+					'name': name,
+					'qty': qty,
+					'price': currencyFilter(amount, '$', 2)
+				};
+				if (discountType == 1)
+					itmObj.discount = (discount ? discount : 0);
+
+				items.itemRow.push(itmObj);
+
+				var tax = itemList[i].get("tax");
+				if (tax) {
+					var taxName = tax.get("title") + " (" + tax.get("value") + "%)";
+					var t = calculateTax(itemList[i], tax);
+					totalTax += t;
+					var taxValue =  currencyFilter(t, '$', 2);
+					var taxObj = {
+						'name' : taxName,
+						'value': taxValue
+					};
+					taxes.tax.push(taxObj);
+				}
+			}
+			if (! taxes.tax.length)
+				taxes.tax = undefined;
+
+		} else {
+			items.itemRow = undefined;
+			taxes.tax = undefined;
+		}
+
 		// values available from lateFee
 		/* lateFee is already loaded */
 		// only fill if Overdue
 		var lateFee = invoice.get("lateFee");
-		if (lateFee) {
+		var status = invoice.get("Status");
+		var lateFeeValue = 0;
+
+		if (lateFee && status == "Overdue") {
 			labels['tip-text'] = "Late Fee";
 			var price = lateFee.get("price");
 			var type = lateFee.get("type");
-			if (type == "$")
-				labels['tip-price'] = type + formatNumber(price);
-			else
+
+			if (type == "$") {
+				lateFeeValue = price;
+				labels['tip-price'] = currencyFilter(price, '$', 2);
+
+			} else if (type == "%") {
+				lateFeeValue = subTotal * price * 0.01;
 				labels['tip-price'] = price + type;
+			}
 		}
 		else
 			labels['tip-text'] = labels['tip-price'] = "";
 
-//------------------
+		var discounts = invoice.get("discounts") || 0;
+		var shipCharges = invoice.get('shippingCharges') || 0;
+		var adjustments = invoice.get('adjustments') || 0;
+		var sum = subTotal + totalTax;
+		var discountRatio = (100 - discount) * 0.01;
+
+		jsonObj.items['shippingChargesPrice'] = currencyFilter(shipCharges, '$', 2);
+		jsonObj.items['adjustmentsPrice'] = currencyFilter(adjustments, '$', 2);
+
+		if(discountType == 2) // before tax
+			sum = (subTotal * discountRatio) + totalTax;
+		else if (discountType == 3) // after tax
+			sum = (subTotal + totalTax) * discountRatio;
+
+		if (discounts) {
+			labels['discountAmount'] = {text:discounts + "%"};
+			labels['discountNameBottom'] = {text:"Discount " + discounts + "%:"};
+			
+			discount = Math.abs(sum - subTotal - totalTax);
+			labels['discountPriceBottom'] = {text:currencyFilter(discounts, '$', 2)};
+		}
+		else
+			labels['discountAmount'] = labels['discountNameBottom'] =
+				labels['discountPriceBottom'] = "";
+
+		labels['subtotalprice'] = currencyFilter(subTotal, '$', 2);
+		
+		var total = sum + shipCharges + adjustments + lateFeeValue;
+		labels['total-price3'] = labels['body-price'] = currencyFilter(total, '$', 2);
+
+		var paymentMade = invoice.get("paymentMade") || 0;
+		var creditApplied = invoice.get("creditApplied") || 0;
+
+		labels['paymentMadePrice'] = currencyFilter(paymentMade, '$', 2);
+		labels['creditsAppliedPrice'] = currencyFilter(creditApplied, '$', 2);
+
+		var balanceDue = total - paymentMade - creditApplied;
+		labels['refundtotal'] = currencyFilter(balanceDue, '$', 2);
+
+//----------------------------------------------------------------
+
 		// test lines
 	//	console.log(jsonObj);
 
@@ -506,7 +636,7 @@ function calculateTax(item, tax) {
 			res = res * compound * 0.01;
 	}
 
-	return formatNumber(res);
+	return res;
 }
 
 function getOrganization (user) {

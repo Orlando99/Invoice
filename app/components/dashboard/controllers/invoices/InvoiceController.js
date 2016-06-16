@@ -2,14 +2,13 @@
 
 invoicesUnlimited.controller('InvoiceController',
 	['$q', '$scope', '$state', '$controller', 'userFullFactory',
-		'invoiceService', 'coreFactory', 'taxFactory',
+		'invoiceService', 'coreFactory', 'taxFactory', 'currencyFilter',
 
 function($q, $scope, $state, $controller, userFullFactory,
-	invoiceService, coreFactory, taxFactory) {
+	invoiceService, coreFactory, taxFactory, currencyFilter) {
 
 var user = userFullFactory.authorized();
 $controller('DashboardController',{$scope:$scope,$state:$state});
-//	loadColorTheme(user);
 
 var isGoTo = {
 	details : function(to){
@@ -33,15 +32,15 @@ function CheckUseCase(stateName) {
 		stateName = $state.current.name;
 
 	if (isGoTo.invoices(stateName)) {
-		console.log('its in list')
+	//	console.log('its in list')
 		ListInvoices();
 
 	} else if (isGoTo.newInvoice(stateName)) {
-		console.log('its in new');
+	//	console.log('its in new');
 		//doSelectCustomerIfValidId(customerId);
 
 	} else if (isGoTo.edit(stateName)) {
-		console.log('its in edit');
+	//	console.log('its in edit');
 		EditInvoice();
 	}
 }
@@ -111,10 +110,9 @@ function prepareEditForm() {
 			break;
 	}
 
-	$scope.subTotal = invoice.entity.subTotal;
-	$scope.total = invoice.entity.total;
-	$scope.discount = invoice.entity.discounts || '0.00';
-//	$scope.discountValue; // calculate
+	$scope.discount = invoice.entity.discounts;
+	$scope.shippingCharges = invoice.entity.shippingCharges;
+	$scope.adjustments = invoice.entity.adjustments;
 	$scope.notes = invoice.entity.notes;
 	$scope.terms = invoice.entity.terms;
 	
@@ -171,6 +169,7 @@ function prepareEditForm() {
 		$scope.invoiceItems.push(obj);
 	}
 
+	reCalculateSubTotal();
 }
 
 $scope.addInvoiceItem = function() {
@@ -187,6 +186,7 @@ $scope.addInvoiceItem = function() {
 	item.rate = 0;
 	item.quantity = 1;
 	item.discount = 0;
+	item.taxValue = 0;
 	item.amount = 0;
 
 	$scope.invoiceItems.push(item);
@@ -209,36 +209,6 @@ $scope.removeInvoiceItem = function(index) {
 	} else {
 		console.log("there should be atleast 1 item in an invoice");
 	}
-}
-
-function saveEditedInvoice() {
-	var invoice = $scope.invoice.entity;
-	invoice.set('customer', $scope.selectedCustomer.entity);
-	invoice.set('invoiceDate', $scope.todayDate);
-	if($scope.paymentTerms.selectedTerm.value == 1)
-		invoice.set('dueDate', $scope.dueDate);
-	else	invoice.unset('dueDate');
-	invoice.set('invoiceNumber', $scope.invoiceNo);
-	invoice.set('adjustments', Number($scope.adjustments));
-	invoice.set('discountType', $scope.prefs.discountType);
-	invoice.set('discounts', Number($scope.discount));
-	invoice.set('shippingCharges', Number($scope.shippingCharges));
-	invoice.set('subTotal', Number($scope.subTotal));
-	invoice.set('total', Number($scope.total));
-	invoice.set('poNumber', $scope.poNumber);
-	invoice.set('salesPerson', $scope.salesPerson);
-	invoice.set('notes', $scope.notes);
-	invoice.set('terms', $scope.terms);
-
-	return invoiceService.updateInvoice
-		($scope.invoice, $scope.invoiceItems, $scope.deletedItems,
-			user, $scope.userRole, $scope.filepicker)
-	.then(function(invObj) {
-		return invObj;
-
-	}, function(error) {
-		console.log(error.message);
-	});
 }
 
 function useAllIds() {
@@ -267,15 +237,80 @@ function useAllIds() {
 	});
 }
 
-//----- common --------
+function saveEditedInvoice() {
+	var invoice = $scope.invoice.entity;
+	invoice.set('customer', $scope.selectedCustomer.entity);
+	invoice.set('invoiceDate', $scope.todayDate);
+	invoice.set('invoiceNumber', $scope.invoiceNo);
+	invoice.set('discountType', $scope.prefs.discountType);
+	invoice.set('discounts', $scope.discount);
+	invoice.set('shippingCharges', $scope.shippingCharges);
+	invoice.set('adjustments', $scope.adjustments);
+	invoice.set('subTotal', Number($scope.subTotal));
+	invoice.set('total', Number($scope.total));
+	invoice.set('dueBalance', Number($scope.total));
+	invoice.set('poNumber', $scope.poNumber);
+	invoice.set('salesPerson', $scope.salesPerson);
+	invoice.set('notes', $scope.notes);
+	invoice.set('terms', $scope.terms);
+
+	if($scope.paymentTerms.selectedTerm.value == 1)
+		invoice.set('dueDate', $scope.dueDate);
+	else	invoice.unset('dueDate');
+
+	var email = $scope.selectedCustomer.entity.email;
+	if(email)
+		invoice.set('customerEmails', [email]);
+	else invoice.unset('customerEmails');
+
+	return invoiceService.updateInvoice
+		($scope.invoice, $scope.invoiceItems, $scope.deletedItems,
+			user, $scope.userRole, $scope.filepicker);
+}
+
+function saveAndSendEditedInvoice () {
+	return saveEditedInvoice()
+	.then(function(invoice) {
+		return invoiceService.copyInInvoiceInfo(invoice)
+		.then(function(invoiceInfo) {
+			return invoiceService.createInvoiceReceipt(invoice.id, invoiceInfo.id);
+		});
+	});
+}
+
 $scope.save = function() {
+	showLoader();
 	useAllIds();
-	saveEditedInvoice();
+	saveEditedInvoice()
+	.then(function(invoice) {
+		hideLoader();
+		console.log(invoice);
+		$state.go('dashboard.sales.invoices.all');
+
+	}, function(error) {
+		hideLoader();
+		console.log(error.message);
+	});
 }
 
 $scope.saveAndSend = function () {
-//	saveAndSendInvoice();
+	showLoader();
 	useAllIds();
+	saveAndSendEditedInvoice()
+	.then(function(invoice) {
+		hideLoader();
+		console.log(invoice);
+		$state.go('dashboard.sales.invoices.all');
+
+	}, function (error) {
+		hideLoader();
+		console.log(error);
+	});
+}
+
+//----- common --------
+$scope.cancel = function() {
+	$state.go('dashboard.sales.invoices.all');
 }
 
 $scope.calculateDueDate = function() {	
@@ -299,31 +334,52 @@ $scope.openDatePicker = function(n) {
 	}
 }
 
+$scope.reCalculateTotal = function() {
+	var subTotal = Number($scope.subTotal) || 0;
+	var discount = Number($scope.discount) || 0;
+	var shipCharges = Number($scope.shippingCharges) || 0;
+	var adjustments = Number($scope.adjustments) || 0;
+	var totalTax = Number($scope.totalTax) || 0;
+	var sum = subTotal + totalTax;
+	var discountRatio = (100 - discount) * 0.01;
+
+	if($scope.prefs.discountType == 2) // before tax
+		sum = (subTotal * discountRatio) + totalTax;
+	else if ($scope.prefs.discountType == 3) // after tax
+		sum = (subTotal + totalTax) * discountRatio;
+
+	discount = Math.abs(sum - subTotal - totalTax);
+	$scope.total = sum + shipCharges + adjustments;
+	$scope.discountStr = currencyFilter(discount, '$', 2);
+	$scope.shippingChargesStr = currencyFilter(shipCharges, '$', 2);
+	$scope.adjustmentsStr = currencyFilter(adjustments, '$', 2);
+	$scope.totalStr = currencyFilter($scope.total, '$', 2);
+}
+
 function reCalculateSubTotal() {
 	var items = $scope.invoiceItems;
 	var subTotal = 0;
-	items.forEach(function(item) {
-		subTotal += Number(item.amount);
-	});
-	$scope.subTotal = formatNumber(subTotal);
-	$scope.reCalculateTotal();
-}
+	var totalTax = 0;
 
-$scope.reCalculateTotal = function() {
-	$scope.discountValue =
-		formatNumber((Number($scope.subTotal) * Number($scope.discount) * 0.01));
-	$scope.total =
-		formatNumber(Number($scope.subTotal) - Number($scope.discountValue) +
-		Number($scope.shippingCharges) + Number($scope.adjustments));
+	// no need to check discountType,
+	// itemInfo.discount is zero, so, expression will evaluate to 1.
+	items.forEach(function(item) {
+		subTotal += item.amount * ((100 - item.discount) * 0.01);
+		item.taxValue = calculateTax(item.amount, item.selectedTax);
+		totalTax += item.taxValue;
+	});
+
+	$scope.totalTax = totalTax;
+	$scope.subTotal = subTotal;
+	$scope.subTotalStr = currencyFilter(subTotal, '$', 2);
+	$scope.reCalculateTotal();
 }
 
 $scope.reCalculateItemAmount = function(index) {
 	var itemInfo = $scope.invoiceItems[index];
 	if (! itemInfo.selectedItem) return;
 
-	var withOutDiscount = itemInfo.rate * itemInfo.quantity;
-	itemInfo.amount =
-	formatNumber(withOutDiscount * ((100 - itemInfo.discount) * 0.01));
+	itemInfo.amount = itemInfo.rate * itemInfo.quantity;
 	reCalculateSubTotal();
 }
 

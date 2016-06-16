@@ -30,7 +30,8 @@ invoicesUnlimited.factory('taxFactory', function($q){
 								(obj.get("type") == 2 ? ' (Tax Group)' : ''),
 							rate: obj.get("value"),
 							type: obj.get("type"),
-							isCompound: Boolean(obj.get("compound"))
+							isCompound: Boolean(obj.get("compound")),
+							compound: obj.get("compound")
 						 });
 					}
 					hideLoader();

@@ -204,3 +204,22 @@ function formatNumber(num) {
       return num.toFixed(2);
     return "0.00";
 }
+
+function formatInvoiceNumber(number, width) {
+  return new Array(width + 1 - (number + '').length).join('0') + number;
+}
+
+function calculateTax(amount, tax) {
+  if (! tax) return 0;
+
+  var res = 0;
+  if (tax.type == 1)
+    res = amount * tax.rate * 0.01;
+  else if (tax.type == 2) {
+    res = amount * tax.rate * 0.01;
+    if (tax.compound)
+      res = res * tax.compound * 0.01;
+  }
+
+  return res;
+}
