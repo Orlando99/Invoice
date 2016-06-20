@@ -1,7 +1,7 @@
 'use strict';
 
 invoicesUnlimited.factory('coreFactory',
-	function(userFactory,customerFactory,invoicesFactory,itemFactory){
+	function(userFactory,customerFactory,invoicesFactory,itemFactory,expenseCategoryFactory){
 
 	var user = userFactory;
 	var core = {};
@@ -58,6 +58,19 @@ invoicesUnlimited.factory('coreFactory',
 		query.equalTo('users', user);
 		return query.first().then(function(role) {
 			return role;
+		});
+	}
+
+	core.getExpenseCategories = function(params) {
+		var query = new Parse.Query('Category');
+		query.equalTo('organization', params.organization);
+		query.select('color', 'name', 'notes');
+		return query.find().then(function(res) {
+			var categories = [];
+			res.forEach(function(category) {
+				categories.push(new expenseCategoryFactory(category));
+			});
+			return categories;
 		});
 	}
 

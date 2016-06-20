@@ -170,7 +170,7 @@ angular.module('invoicesUnlimited')
 				},*/
 				newInvoice : {
 					name : 'dashboard.sales.invoices.new',
-					url : '/new',
+					url : '/sales/invoices/new',
 					views : {
 						'@' : {
 							controller 	 : 'CreateInvoiceController',
@@ -180,7 +180,7 @@ angular.module('invoicesUnlimited')
 				},
 				edit : {
 					name	: 'dashboard.sales.invoices.edit',
-					url 	: '/:invoiceId/edit',
+					url 	: '/sales/invoices/:invoiceId/edit',
 					views 	: {
 						'@' : {
 							controller 	 : 'InvoiceController',
@@ -242,6 +242,53 @@ angular.module('invoicesUnlimited')
 				}
 			}
 */
+		},
+		expenses : {
+			index : {
+				name : 'dashboard.expenses'
+			},
+			category : {
+				name : 'dashboard.expenses.category',
+				url : '/expenses/category',
+				views : {
+					'@' : {
+						controller : 'ExpenseController',
+						templateUrl : COMPONENTS + 'dashboard/views/expenses/category/category.html'
+					}
+				}
+
+			},
+			all : {
+				name : 'dashboard.expenses.all',
+				url : '/expenses',
+				views : {
+					'@' : {
+						controller : 'ExpenseController',
+						templateUrl : COMPONENTS + 'dashboard/views/expenses/expenses.html'
+					}
+				}
+			},
+			newExpense : {
+				name : 'dashboard.expenses.new',
+				url : '/expenses/new',
+				views : {
+					'@' : {
+						controller : 'ExpenseController',
+						templateUrl : COMPONENTS + 'dashboard/views/expenses/record.expense.html'
+					}
+				}
+			},
+			edit : {
+				name : 'dashboard.expenses.edit',
+				url : '/expenses/:expenseId/edit',
+				views : {
+					'@' : {
+						controller : 'ExpenseController',
+						templateUrl : COMPONENTS + 'dashboard/views/expenses/edit.expense.html'
+					}
+				}
+			}
+
 		},
 		reports : {
 			index : {
@@ -410,6 +457,7 @@ angular.module('invoicesUnlimited')
 		dashboard.customers,
 		[dashboard.sales.index],
 		dashboard.sales.invoices,
+		dashboard.expenses,
 		dashboard.reports,
 		dashboard.settings,
 		[dashboard.index]
