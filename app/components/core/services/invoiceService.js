@@ -86,71 +86,100 @@ return {
 	updateInvoice : function(invoiceObj, invoiceItems, deletedItems, user, role, file) {
 		var invItems = [];
 		var itemsToDelete = [];
+		var itemsToCreate = [];
+		var invItemsToCreate = [];
+		var invItemsToUpdate = {};
+		var InvoiceItem = Parse.Object.extend("InvoiceItems");
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
-		var objectType = Parse.Object.extend("InvoiceItems");
+
+		// filter items from invoiceItems
+		invoiceItems.forEach(function(item) {
+			if (item.selectedItem.create) {
+				itemsToCreate.push(item);
+			} else {
+				if (item.id) {
+					invItemsToUpdate[item.id] = item;
+				} else {
+					invItemsToCreate.push(item);
+				}
+			}
+		});
 
 		var otherData = {
 			acl : acl,
-			userID : user,
+			user : user,
 			organization : user.get('organizations')[0],
-			objectType : objectType
+			objectType : InvoiceItem
 		};
 
-		var itemsWithId = {};
-		for(var i=0; i < invoiceItems.length; ++i) {
-			if(invoiceItems[i].id) {
-				itemsWithId[invoiceItems[i].id] = invoiceItems[i];
-			} else {
-				invItems.push(createInvoiceItem(
-					invoiceItems[i], otherData));
-			}
-		}
-
-		var oldItems = invoiceObj.invoiceItems;
-		for(var i=0; i < oldItems.length; ++i) {
-			var itemData = itemsWithId[oldItems[i].entity.id];
-			if (! itemData) {
-				deletedItems.forEach(function(item) {
-					if(oldItems[i].entity.id == item.id) {
-						itemsToDelete.push(oldItems[i].entity);
-						return;
-					}
-				});
-			} else {
-				oldItems[i].entity.set('item', itemData.selectedItem.entity);
-				oldItems[i].entity.set('quantity', Number(itemData.quantity));
-				oldItems[i].entity.set('amount', Number(itemData.amount));
-
-				var discount = Number(itemData.discount);
-				if (discount == 0)
-					oldItems[i].entity.unset('discount');
-				else
-					oldItems[i].entity.set('discount', discount);
-
-				if(! itemData.selectedTax) oldItems[i].entity.set('tax', undefined);
-				else {
-					oldItems[i].entity.set('tax', Parse.Object.extend("Tax")
-						.createWithoutData(itemData.selectedTax.id));
+		// create new items
+		return createNewItems(itemsToCreate, otherData)
+		.then(function (items) {
+		//	console.log('created items');
+		//	console.log(items);
+			// filter newly created items
+			items.forEach(function(item) {
+				if (item.id) {
+					invItemsToUpdate[item.id] = item;
+				} else {
+					invItemsToCreate.push(item);
 				}
-				invItems.push(oldItems[i].entity);	
-			}
-			
-		}
+			});
 
-		return Parse.Object.destroyAll(itemsToDelete)
-		.then(function(success) {
-			console.log(success);
+			//create new invoice Items
+			invItemsToCreate = invItemsToCreate.map(function(item) {
+				return createInvoiceItem(item, otherData);
+			});
+		//	console.log('created invoice items');
+		//	console.log(invItemsToCreate);
+
+			// update old invoice Items and filter out items to delete.
+			var oldItems = invoiceObj.invoiceItems;
+			for(var i=0; i < oldItems.length; ++i) {
+				var itemData = invItemsToUpdate[oldItems[i].entity.id];
+				if (! itemData) {
+					itemsToDelete.push(oldItems[i].entity);
+				} else {
+					oldItems[i].entity.set('item', itemData.selectedItem.entity);
+					oldItems[i].entity.set('quantity', Number(itemData.quantity));
+					oldItems[i].entity.set('amount', Number(itemData.amount));
+
+					var discount = Number(itemData.discount);
+					if (discount == 0)
+						oldItems[i].entity.unset('discount');
+					else
+						oldItems[i].entity.set('discount', discount);
+
+					if(! itemData.selectedTax) oldItems[i].entity.unset('tax');
+					else {
+						oldItems[i].entity.set('tax', Parse.Object.extend("Tax")
+							.createWithoutData(itemData.selectedTax.id));
+					}
+					invItems.push(oldItems[i].entity);	
+				}
+				
+			}
+
+		//	console.log('updated invoice items')
+		//	console.log(invItems);
+			invItems = invItems.concat(invItemsToCreate);
+			return Parse.Object.destroyAll(itemsToDelete)
+		})
+		.then(function(delItems) {
+		//	console.log('deleted invoice items');
+		//	console.log(delItems);
 			return Parse.Object.saveAll(invItems);
 		})
 		.then(function(list) {
-			console.log(list);
+		//	console.log('invoice items');
+		//	console.log(list);
 			invoiceObj.entity.set('invoiceItems', list);
 			return invoiceObj.entity.save();
 		})
 		.then(function(invObj) {
-			console.log('invoice updated.');
+		//	console.log('invoice updated.');
 			return invObj;
 		});
 
@@ -172,41 +201,25 @@ return {
 		} else
 			promise = Parse.Promise.as(undefined);
 
-		var params = {
-			user : invoice.userID,
-			organization : invoice.organization,
-			roleName : role.get('name'),
-			items : []
-		};
-
 		var itemsToCreate = [];
 		var itemThatExist = [];
 		invoiceItems.forEach(function(item) {
 			if (item.selectedItem.create) {
-				var obj = {
-					title : item.selectedItem.entity.title,
-					rate : item.selectedItem.entity.rate,
-					expenseId : item.selectedItem.entity.expenseId
-				};
-				if (item.selectedItem.tax)
-					obj.tax = item.selectedItem.tax;
-
-				params.items.push(obj);
 				itemsToCreate.push(item);
-
 			} else {
 				itemThatExist.push(item);
 			}
 		});
+		var params = {
+			user : invoice.userID,
+			organization : invoice.organization,
+			acl : acl
+		};
 
-		return itemService.createItems(params)
+		return createNewItems(itemsToCreate, params)
 		.then(function(newItems) {
-			for (var i = 0; i < itemsToCreate.length; ++i) {
-				itemsToCreate[i].selectedItem = newItems[i];
-			}
-			invoiceItems = itemThatExist.concat(itemsToCreate);
+			invoiceItems = itemThatExist.concat(newItems);
 			return promise;		// just to make code structure clean.
-
 		})
 		.then(function(fileObj) {
 			var invItem = Parse.Object.extend("InvoiceItems");
@@ -362,14 +375,62 @@ return {
 		.then(function(invObj) {
 			return invObj;
 		});
+	},
+	sendInvoiceReceipt : function(invoice) {
+		var inv = new invoiceFactory(invoice, {
+			operation : 'sendReceipt'
+		});
+		var toEmail =  "adnan@binaryport.com"; //inv.entity.customerEmails[0];
+		var customerName = inv.customer.displayName;
+		var amount = currencyFilter(inv.entity.balanceDue, $, 2);
+		var businessName = inv.organization.name;
+		var link = inv.entity.invoiceReceipt.url();
+		
+		var emailSubject = 'Invoice From ' + businessName;
+		var emailBody = customerName + ',<br/>'
+			+ businessName + ' has sent you an invoice of ' + amount
+			+ '. <a href="' + link + '">Click here to view.</a>';
+
+		return Parse.Cloud.run("sendMailgun", {
+			toEmail: toEmail,
+			fromEmail: "no-reply@invoicesunlimited.com",
+			subject : emailSubject,
+			message : emailBody
+		}).then(function(msg) {
+			console.log(msg);
+			return invoice;
+		});
 	}
 
 };
 
+function createNewItems (items, params) {
+	params.items = [];
+	items.forEach(function (item) {
+		var obj = {
+			title : item.selectedItem.entity.title,
+			rate : item.selectedItem.entity.rate,
+			expenseId : item.selectedItem.entity.expenseId
+		};
+		if (item.selectedItem.tax)
+			obj.tax = item.selectedItem.tax;
+
+		params.items.push(obj);
+	});
+
+	return itemService.createItems(params)
+	.then(function(newItems) {
+		for (var i = 0; i < items.length; ++i) {
+			items[i].selectedItem = newItems[i];
+		}
+		return items;
+	});
+}
+
 function createInvoiceItem (itemData, otherData) {
 	var obj = new otherData.objectType();
 	obj.setACL(otherData.acl);
-	obj.set('userID', otherData.userID);
+	obj.set('userID', otherData.user);
 	obj.set('organization', otherData.organization);
 	obj.set('item', itemData.selectedItem.entity);
 	obj.set('quantity', Number(itemData.quantity));
@@ -601,7 +662,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 		var shipCharges = invoice.get('shippingCharges') || 0;
 		var adjustments = invoice.get('adjustments') || 0;
 		var sum = subTotal + totalTax;
-		var discountRatio = (100 - discount) * 0.01;
+		var discountRatio = (100 - discounts) * 0.01;
 
 		jsonObj.items['shippingChargesPrice'] = currencyFilter(shipCharges, '$', 2);
 		jsonObj.items['adjustmentsPrice'] = currencyFilter(adjustments, '$', 2);
@@ -612,11 +673,11 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 			sum = (subTotal + totalTax) * discountRatio;
 
 		if (discounts) {
-			labels['discountAmount'] = {text:discounts + "%"};
 			labels['discountNameBottom'] = {text:"Discount " + discounts + "%:"};
-			
-			discount = Math.abs(sum - subTotal - totalTax);
-			labels['discountPriceBottom'] = {text:currencyFilter(discounts, '$', 2)};
+			labels['discountPriceBottom'] = {text:discounts + "%"};
+
+			discounts = Math.abs(sum - subTotal - totalTax);
+			labels['discountAmount'] = {text:currencyFilter(discounts, '$', 2)};
 		}
 		else
 			labels['discountAmount'] = labels['discountNameBottom'] =

@@ -44,6 +44,30 @@ function Invoice(parseObject, params) {
 				return item;
 			});
 		this.invoiceItems = invoiceItems;
+	} else if (params.operation == 'sendReceipt') {
+		invoiceFields = [
+			'balanceDue' ,'invoiceReceipt', 'customerEmails'
+		];
+		var customer = parseObject.get("customer");
+		if (customer) {
+			setObjectOperations({
+				object 		: customer,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: ["displayName"]
+			});
+			this.customer = customer;
+		}
+		var orgObj = parseObject.get("organization");
+		if(orgObj) {
+			setObjectOperations({
+				object 		: orgObj,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: ["name"]
+			});
+			this.organization = orgObj;
+		}
 	}
 
 	setObjectOperations({

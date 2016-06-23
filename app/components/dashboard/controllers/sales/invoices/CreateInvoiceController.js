@@ -172,10 +172,10 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			return invoiceService.copyInInvoiceInfo(invoice)
 			.then(function(invoiceInfo) {
 				return invoiceService.createInvoiceReceipt(invoice.id, invoiceInfo.id);
-			});/*
+			})
 			.then(function(invoiceObj) {
 				return invoiceService.sendInvoiceReceipt(invoiceObj);
-			});*/
+			});
 		});
 	}
 
@@ -198,7 +198,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		saveAndSendInvoice()
 		.then(function(invoice) {
 			hideLoader();
-			console.log(invoice);
+		//	console.log(invoice);
 
 			$state.go('dashboard.sales.invoices.all');
 
@@ -402,19 +402,28 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	}
 
 	$scope.printSelected = function() {
-		console.log($scope.selectedCustomer.entity);
 		/*
+		var customerName = 'Olga Olga';
+		var amount = currencyFilter(2.3, $, 2);
+		var businessName = 'SFS-ds';
+		var link = 'http://files.parsetfss.com/e054a587-eac7-4ca9-8f92-86c471415177/tfss-a1cb4ab3-63af-4395-8773-cb03239f3b2b-test2.html';
+		
+		var emailSubject = 'Invoice From ' + businessName;
+		var emailBody = customerName + ',<br/>'
+			+ businessName + ' has sent you an invoice of ' + amount
+			+ '. <a href="' + link + '">Click here to view.</a>';
+
 		Parse.Cloud.run("sendMailgun", {
 			toEmail: "adnan@binaryport.com",
 			fromEmail: "no-reply@invoicesunlimited.com",
-			subject : "test email",
-			message : "raw text, body of the email."
+			subject : emailSubject,
+			message : emailBody
 		}).then(function(msg) {
 			console.log(msg);
 		}, function(msg) {
 			console.log(msg);
 		});
-		*/
+	*/
 	}
 
 }]);

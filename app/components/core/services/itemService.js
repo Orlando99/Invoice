@@ -9,16 +9,13 @@ return {
 		if (params.items.length < 1) return Parse.Promise.as([]);
 
 		var parseItems = [];
-		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(params.roleName, true);
-		acl.setRoleReadAccess(params.roleName, true);
-
 		var Item = Parse.Object.extend('Item');
+
 		params.items.forEach(function(item) {
 			var obj = new Item();
 			obj.set('userID', params.user);
 			obj.set('organization', params.organization);
-			obj.setACL(acl);
+			obj.setACL(params.acl);
 			obj.set('title', item.title);
 			obj.set('rate', String(item.rate));
 

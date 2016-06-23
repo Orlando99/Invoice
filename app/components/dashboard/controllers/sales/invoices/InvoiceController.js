@@ -2,12 +2,14 @@
 
 invoicesUnlimited.controller('InvoiceController',
 	['$q', '$scope', '$state', '$controller', 'userFullFactory',
-		'invoiceService', 'coreFactory', 'taxFactory', 'currencyFilter',
+		'invoiceService', 'coreFactory', 'taxFactory', 'expenseService',
+		'currencyFilter',
 
 function($q, $scope, $state, $controller, userFullFactory,
-	invoiceService, coreFactory, taxFactory, currencyFilter) {
+	invoiceService, coreFactory, taxFactory, expenseService, currencyFilter) {
 
 var user = userFullFactory.authorized();
+var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
 var isGoTo = {
@@ -50,14 +52,26 @@ function EditInvoice() {
 	if (! invoiceId) return;
 
 	showLoader();
-	$q.when(LoadRequiredData()).then(function(msg) {
-		$q.when(invoiceService.getInvoice(invoiceId))
-		.then(function (invoice) {
-			$scope.invoice = invoice;
-			console.log(invoice);
-			prepareEditForm();
-			hideLoader();
-		});
+	$q.when(LoadRequiredData())
+	.then(function(msg) {
+		return $q.when(invoiceService.getInvoice(invoiceId));
+	})
+	.then(function (invoice) {
+		console.log(invoice);
+
+		$scope.invoice = invoice;
+		$scope.invoiceItems = [];
+		$scope.deletedItems = [];
+		$scope.itemsWithOutId = 0;
+		$scope.itemsWithIdinDel = 0;
+		
+		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
+			return invoice.entity.get('customer').id === cust.entity.id;
+		})[0];
+		return $q.when(customerChangedHelper());
+	})
+	.then(function() {
+		prepareEditForm();
 
 	}, function(error) {
 		hideLoader();
@@ -71,9 +85,6 @@ function prepareEditForm() {
 	$scope.poNumber = invoice.entity.poNumber || "";
 	$scope.disableInvNo =
 		($scope.prefs.numAutoGen == 1) ? true : false;
-	$scope.selectedCustomer = $scope.customers.filter(function(cust) {
-		return invoice.entity.get('customer').id === cust.entity.id;
-	})[0];
 
 	$scope.todayDate = invoice.entity.invoiceDate;
 	$scope.dueDate = invoice.entity.dueDate;
@@ -135,10 +146,6 @@ function prepareEditForm() {
 		$scope.previouslySent = true;
 	}
 
-	$scope.invoiceItems = [];
-	$scope.deletedItems = [];
-	$scope.itemsWithOutId = 0;
-	$scope.itemsWithIdinDel = 0;
 	for (var i = 0; i < invoice.invoiceItems.length; ++i) {
 		var invItem = invoice.invoiceItems[i].entity;
 		var actualItem = invItem.get('item');
@@ -150,7 +157,8 @@ function prepareEditForm() {
 				obj.rate = (invItem.amount / invItem.quantity); //Number(item.entity.rate);
 				obj.quantity = invItem.quantity;
 				obj.discount = invItem.discount || 0;
-				obj.amount = invItem.amount; // calculate again acrding 2 prefs
+				obj.taxValue = 0;
+				obj.amount = invItem.amount;
 
 				var invItemTax = invItem.get('tax');
 				if (invItemTax) {
@@ -170,6 +178,7 @@ function prepareEditForm() {
 	}
 
 	reCalculateSubTotal();
+	hideLoader();
 }
 
 $scope.addInvoiceItem = function() {
@@ -248,7 +257,7 @@ function saveEditedInvoice() {
 	invoice.set('adjustments', $scope.adjustments);
 	invoice.set('subTotal', Number($scope.subTotal));
 	invoice.set('total', Number($scope.total));
-	invoice.set('dueBalance', Number($scope.total));
+	invoice.set('balanceDue', Number($scope.total));
 	invoice.set('poNumber', $scope.poNumber);
 	invoice.set('salesPerson', $scope.salesPerson);
 	invoice.set('notes', $scope.notes);
@@ -274,6 +283,9 @@ function saveAndSendEditedInvoice () {
 		return invoiceService.copyInInvoiceInfo(invoice)
 		.then(function(invoiceInfo) {
 			return invoiceService.createInvoiceReceipt(invoice.id, invoiceInfo.id);
+		})
+		.then(function(invoiceObj) {
+			return invoiceService.sendInvoiceReceipt(invoiceObj);
 		});
 	});
 }
@@ -385,8 +397,8 @@ $scope.reCalculateItemAmount = function(index) {
 
 $scope.itemChanged = function(index) {
 	var itemInfo = $scope.invoiceItems[index];
-	itemInfo.rate = Number(itemInfo.selectedItem.entity.get("rate"));
-	var tax = itemInfo.selectedItem.entity.get("tax");
+	itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
+	var tax = itemInfo.selectedItem.tax;
 	if (!tax) {
 	//	console.log("no tax applied");
 		itemInfo.selectedTax = "";
@@ -401,12 +413,82 @@ $scope.itemChanged = function(index) {
 	}
 	$scope.reCalculateItemAmount(index);
 }
+
+function customerChangedHelper() {
+	return $q.when(expenseService.getCustomerExpenses({
+		organization : organization,
+		customer : $scope.selectedCustomer.entity
+	}))
+	.then(function(custExpenses) {
+	//	console.log(custExpenses);
+		// filter current customer's expenses from all expenses
+		var custExpenseItems = [];
+		for (var i = 0; i < custExpenses.length; ++i) {
+			for (var j = 0; j < $scope.expenseItems.length; ++j) {
+				if (custExpenses[i].entity.id == $scope.expenseItems[j].entity.expanseId) {
+					custExpenseItems.push($scope.expenseItems[j]);
+				}
+			}
+		}
+	//	console.log(custExpenseItems);
+		// check is any expense has updated
+		var newExpenseItems = [];
+		for(var i = 0; i < custExpenses.length; ++i) {
+			var exp = custExpenses[i].entity;
+			var itemExist = custExpenseItems.some(function(item) {
+				return (exp.category == item.entity.title &&
+					exp.amount == Number(item.entity.rate));
+			});
+			if (! itemExist) {
+				newExpenseItems.push({
+					create : true,
+					tax   : exp.tax,
+					entity : {
+						title : exp.category,
+						rate  : String(exp.amount),
+						expenseId : exp.id
+					}
+				});
+			}
+		}
+	//	console.log(newExpenseItems);
+		// remove unrelated invoice items
+		var newItems = $scope.actualItems.concat(custExpenseItems,newExpenseItems);
+		$scope.invoiceItems = $scope.invoiceItems.filter(function(invItem) {
+			if(!invItem.selectedItem || invItem.selectedItem.create)
+				return false;
+			return newItems.some(function(item) {
+				return item.entity.id == invItem.selectedItem.entity.id;
+			});
+		});
+	//	console.log($scope.invoiceItems);
+		return $scope.items = newItems;
+	});
+}
+
+$scope.customerChanged = function() {
+	showLoader();
+	$q.when(customerChangedHelper())
+	.then(function() {
+		if($scope.invoiceItems.length < 1) {
+			$scope.addInvoiceItem();
+			$scope.totalTax = 0;
+			$scope.subTotal = 0;
+			$scope.subTotalStr = currencyFilter(0, '$', 2);
+			$scope.reCalculateTotal();
+
+		} else {
+			reCalculateSubTotal();
+		}
+
+		hideLoader();
+	});
+}
 //----------------
 
 function LoadRequiredData() {
 	var promises = [];
 	var p = null;
-	var organization = user.get('organizations')[0];
 
 	p = $q.when(coreFactory.getAllCustomers())
 	.then(function(res) {
@@ -420,7 +502,13 @@ function LoadRequiredData() {
 	p = $q.when(coreFactory.getAllItems({
 		organization : organization
 	})).then(function(items) {
-		$scope.items = items;
+		$scope.actualItems = items.filter(function(item) {
+			return !item.entity.expanseId;
+		});
+		$scope.expenseItems = items.filter(function(item) {
+			return item.entity.expanseId;
+		});
+		$scope.items = $scope.actualItems;
 	});
 	promises.push(p);
 
@@ -471,6 +559,7 @@ function ListInvoices() {
 			obj.total = formatNumber(obj.entity.total);
 		});
 
+		res = res.reverse();
 		$scope.invoiceList = res;
 		hideLoader();
 
