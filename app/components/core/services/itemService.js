@@ -1,97 +1,46 @@
 'use strict';
 
-invoicesUnlimited.factory('itemFactory', function(userFactory){
+invoicesUnlimited.factory('itemService', ['$q', 'itemFactory', function($q, itemFactory){
+return {
+	test : function() {
+		console.log('working');
+	},
+	createItems : function(params) {
+		if (params.items.length < 1) return Parse.Promise.as([]);
 
-	var user = userFactory;
-	if (!user) return undefined;
+		var parseItems = [];
+		var acl = new Parse.ACL();
+		acl.setRoleWriteAccess(params.roleName, true);
+		acl.setRoleReadAccess(params.roleName, true);
 
-	function item(parseObject) {
-		setObjectOperations({
-			object 		: parseObject,
-			fieldName	: undefined,
-			parent 		: undefined,
-			fields 		: itemFields
+		var Item = Parse.Object.extend('Item');
+		params.items.forEach(function(item) {
+			var obj = new Item();
+			obj.set('userID', params.user);
+			obj.set('organization', params.organization);
+			obj.setACL(acl);
+			obj.set('title', item.title);
+			obj.set('rate', String(item.rate));
+
+			if (item.tax)
+				obj.set('tax', Parse.Object.extend("Tax")
+					.createWithoutData(item.tax.id));
+			
+			if (item.desc)
+				obj.set('itemDescription', item.desc);
+
+			if (item.expenseId)
+				obj.set('expanseId', item.expenseId);
+
+			parseItems.push(obj);
 		});
 
-		var tax = parseObject.get("tax");
-		if (tax) {
-			setObjectOperations({
-			object 		: parseObject,
-			fieldName	: undefined,
-			parent 		: undefined,
-			fields 		: taxFields
+		return Parse.Object.saveAll(parseItems).then(function(items) {
+			items = items.map(function(item) {
+				return new itemFactory(item);
 			});
-		}
-
-		this.id = parseObject.get('objectId');
-		this.entity = parseObject;
-		this.itemFields = itemFields;
-		this.taxFields = taxFields;
-
-		this.save = function(){
-			return this.entity.save();
-		}
-
-		this.destroy = function(){
-			console.log("inside destroy");
-			return Parse.promise.as("inside destroy");
-		}
-
-	};
-
-	var itemFields = [
-		"title",
-		"rate",
-		"itemDescription"
-	];
-
-	var taxFields = [
-		"objectId",
-		"title",
-		"type",
-		"value",
-		"compound"
-	];
-
-	return item;
-
-/*
-	return {
-		getItems : function(user,callback){
-			showLoader();
-			var orgArr = user.get("organizations");
-			if (!orgArr)
-				console.log('user: ' + user.id +
-					' is not associated with any Organization');
-		//	var orgId = orgArr[0].id;
-			var itemData = new Parse.Query("Item");
-			var itemDfr = $q.defer();
-			itemData.equalTo("organization", orgArr[0]);
-			itemData.notEqualTo("isDeleted", 1);
-			itemData.find().then(function(results){
-				itemDfr.resolve(results);
-		   	}, function(error){
-				itemDfr.reject(results);
-		   	});
-			itemDfr.promise
-				.then(function(results){
-					var items = [];
-					for (var i = 0; i < results.length; ++i){
-					 var obj = results[i];
-					 items.push({
-					  name: obj.get("title"),
-					  desc: obj.get("itemDescription"),
-					  rate: obj.get("rate")
-					 });
-					}
-					hideLoader();
-					callback(items);
-				})
-				.catch(function(error){
-					hideLoader();
-					callback([]);
-				});
-		}
-	};
-*/
-});
+			return items;
+		});
+	}
+};
+}]);

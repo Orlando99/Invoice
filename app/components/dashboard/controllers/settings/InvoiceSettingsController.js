@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.controller('InvoiceSettingsController',['$scope', '$state', '$controller',
-	'userFullFactory', 'invoiceFactory',
-	function($scope,$state,$controller,userFullFactory,invoiceFactory){
+	'userFullFactory', 'invoiceService',
+	function($scope,$state,$controller,userFullFactory,invoiceService){
 
 	var user = userFullFactory.authorized();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
@@ -11,7 +11,7 @@ invoicesUnlimited.controller('InvoiceSettingsController',['$scope', '$state', '$
 	loadInvoicePrefs();
 
 	function loadInvoicePrefs() {
-		var promise = invoiceFactory.getPreferences(user);
+		var promise = invoiceService.getPreferences(user);
 		promise.then(function(prefs) {
 			$scope.prefs = prefs;
 			console.log(prefs);

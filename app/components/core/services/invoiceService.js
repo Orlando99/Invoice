@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, currencyFilter){
+invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, itemService, currencyFilter){
 return {
 	test : function() {
 		console.log("working");
@@ -172,7 +172,43 @@ return {
 		} else
 			promise = Parse.Promise.as(undefined);
 
-		return promise.then(function(fileObj) {
+		var params = {
+			user : invoice.userID,
+			organization : invoice.organization,
+			roleName : role.get('name'),
+			items : []
+		};
+
+		var itemsToCreate = [];
+		var itemThatExist = [];
+		invoiceItems.forEach(function(item) {
+			if (item.selectedItem.create) {
+				var obj = {
+					title : item.selectedItem.entity.title,
+					rate : item.selectedItem.entity.rate,
+					expenseId : item.selectedItem.entity.expenseId
+				};
+				if (item.selectedItem.tax)
+					obj.tax = item.selectedItem.tax;
+
+				params.items.push(obj);
+				itemsToCreate.push(item);
+
+			} else {
+				itemThatExist.push(item);
+			}
+		});
+
+		return itemService.createItems(params)
+		.then(function(newItems) {
+			for (var i = 0; i < itemsToCreate.length; ++i) {
+				itemsToCreate[i].selectedItem = newItems[i];
+			}
+			invoiceItems = itemThatExist.concat(itemsToCreate);
+			return promise;		// just to make code structure clean.
+
+		})
+		.then(function(fileObj) {
 			var invItem = Parse.Object.extend("InvoiceItems");
 			invoiceItems.forEach(function(item) {
 				var obj = new invItem();
@@ -272,7 +308,6 @@ return {
 		var query = new Parse.Query(invoiceTable);
 
 		query.equalTo("organization", organization);
-	//	query.limit(5);	// remove before production
 		query.include("customer");
 		query.select("invoiceNumber", "invoiceDate", "dueDate",
 			"total", "balanceDue", "status", "customer");

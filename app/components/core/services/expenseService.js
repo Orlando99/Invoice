@@ -16,6 +16,20 @@ return {
 			return expense;
 		});
 	},
+	getCustomerExpenses : function(params) {
+		var query = new Parse.Query('Expanses');
+		query.equalTo('organization', params.organization);
+		query.equalTo('customer', params.customer);
+		return query.find().then(function(expenseObjs) {
+			var expenses = [];
+			expenseObjs.forEach(function(expense) {
+				expenses.push(new expenseFactory(expense, {
+					operation : 'getCustomerExpenses'
+				}));
+			});
+			return expenses;
+		});
+	},
 	listExpenses : function(user) {
 		var organization = getOrganization(user);
 		if (! organization)	return;

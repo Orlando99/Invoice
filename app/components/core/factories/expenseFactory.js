@@ -14,9 +14,9 @@ var Expense = function(parseObject, params) {
 			'expanseDate', 'category', 'referenceNumber',
 			'status', 'amount'
 		];
-		var customer = parseObject.get("customer");
+		var customer = parseObject.get('customer');
 		if (customer) {
-			var customerFields = ["displayName"];
+			var customerFields = ['displayName'];
 			setObjectOperations({
 				object 		: customer,
 				fieldName	: undefined,
@@ -25,12 +25,16 @@ var Expense = function(parseObject, params) {
 			});
 			this.customer = customer;
 		}
-	} else if (params.operation === "getExpense") {
+	} else if (params.operation == 'getExpense') {
 		expenseFields = [
 			'customer', 'tax', 'amount',
 			'referenceNumber', 'category', 'expanseDate',
 			'notes', 'expenseFiles', 'billable',
 			'status', 'currency'
+		];
+	} else if (params.operation == 'getCustomerExpenses') {
+		expenseFields = [
+			'customer', 'tax', 'amount', 'category'
 		];
 	}
 
