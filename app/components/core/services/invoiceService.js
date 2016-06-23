@@ -380,7 +380,7 @@ return {
 		var inv = new invoiceFactory(invoice, {
 			operation : 'sendReceipt'
 		});
-		var toEmail =  "adnan@binaryport.com"; //inv.entity.customerEmails[0];
+		var toEmail = inv.entity.customerEmails[0];
 		var customerName = inv.customer.displayName;
 		var amount = currencyFilter(inv.entity.balanceDue, $, 2);
 		var businessName = inv.organization.name;
