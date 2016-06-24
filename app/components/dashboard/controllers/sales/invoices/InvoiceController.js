@@ -446,7 +446,7 @@ function customerChangedHelper() {
 					entity : {
 						title : exp.category,
 						rate  : String(exp.amount),
-						expenseId : exp.id
+						expanseId : exp.id
 					}
 				});
 			}

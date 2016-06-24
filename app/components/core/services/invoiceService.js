@@ -410,7 +410,7 @@ function createNewItems (items, params) {
 		var obj = {
 			title : item.selectedItem.entity.title,
 			rate : item.selectedItem.entity.rate,
-			expenseId : item.selectedItem.entity.expenseId
+			expenseId : item.selectedItem.entity.expanseId
 		};
 		if (item.selectedItem.tax)
 			obj.tax = item.selectedItem.tax;

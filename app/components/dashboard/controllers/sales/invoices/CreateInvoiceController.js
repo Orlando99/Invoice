@@ -59,12 +59,11 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 		$q.all(promises).then(function() {
 			prepareForm();
-			hideLoader();
-
 			//--
 
 
 		}, function(error) {
+			hideLoader();
 			console.log(error.message);
 		});
 
@@ -134,6 +133,26 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			amount : 0
 		}];
 
+		var customerId = $state.params.customerId;
+		var expenseId = $state.params.expenseId;
+
+		if(customerId) {
+			$scope.selectedCustomer = $scope.customers.filter(function(cust) {
+				return cust.entity.id == customerId;
+			})[0];
+			$q.when(customerChangedHelper())
+			.then(function() {
+				console.log($scope.items);
+				$scope.addInvoiceItem();
+				$scope.invoiceItems[0].selectedItem = $scope.items.filter(function(item) {
+					return item.entity.expanseId == expenseId;
+				})[0];
+				$scope.invoiceItems[0].selectedItem.create = true; // create new item everytime
+				$scope.itemChanged(0);
+			});
+		}
+
+		hideLoader();
 	}
 
 	function saveInvoice() {
@@ -337,9 +356,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		$scope.reCalculateItemAmount(index);
 	}
 
-	$scope.customerChanged = function() {
-		showLoader();
-		$q.when(expenseService.getCustomerExpenses({
+	function customerChangedHelper() {
+		return $q.when(expenseService.getCustomerExpenses({
 			organization : organization,
 			customer : $scope.selectedCustomer.entity
 		}))
@@ -370,7 +388,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 						entity : {
 							title : exp.category,
 							rate  : String(exp.amount),
-							expenseId : exp.id
+							expanseId : exp.id
 						}
 					});
 				}
@@ -386,7 +404,14 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				});
 			});
 		//	console.log($scope.invoiceItems);
-			$scope.items = newItems;
+			return $scope.items = newItems;
+		});
+	}
+
+	$scope.customerChanged = function() {
+		showLoader();
+		$q.when(customerChangedHelper())
+		.then(function() {
 			if($scope.invoiceItems.length < 1) {
 				$scope.addInvoiceItem();
 				$scope.totalTax = 0;
@@ -397,6 +422,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			} else {
 				reCalculateSubTotal();
 			}
+
 			hideLoader();
 		});
 	}

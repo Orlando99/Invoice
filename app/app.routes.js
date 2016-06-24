@@ -171,6 +171,10 @@ angular.module('invoicesUnlimited')
 				newInvoice : {
 					name : 'dashboard.sales.invoices.new',
 					url : '/sales/invoices/new',
+					params : {
+						expenseId : null,
+						customerId : null
+					},
 					views : {
 						'@' : {
 							controller 	 : 'CreateInvoiceController',
@@ -265,6 +269,16 @@ angular.module('invoicesUnlimited')
 					'@' : {
 						controller : 'ExpenseController',
 						templateUrl : COMPONENTS + 'dashboard/views/expenses/expenses.html'
+					}
+				}
+			},
+			details : {
+				name : 'dashboard.expenses.details',
+				url : '/expenses/:expenseId',
+				views : {
+					'@' : {
+						controller : 'ExpenseController',
+						templateUrl : COMPONENTS + 'dashboard/views/expenses/details.html'
 					}
 				}
 			},

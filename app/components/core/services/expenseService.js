@@ -4,6 +4,18 @@ invoicesUnlimited.factory('expenseService', ['$q', 'expenseFactory',
 function($q, expenseFactory) {
 
 return {
+	getExpenseDetails : function(expenseId) {
+		var Expense = Parse.Object.extend('Expanses');
+		var query = new Parse.Query(Expense);
+
+		return query.get(expenseId)
+		.then(function(expObj) {
+			var expense = new expenseFactory(expObj, {
+				operation : 'details'
+			});
+			return expense;
+		});
+	},
 	getExpense : function(expenseId) {
 		var Expense = Parse.Object.extend('Expanses');
 		var query = new Parse.Query(Expense);

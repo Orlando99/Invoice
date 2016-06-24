@@ -36,6 +36,23 @@ var Expense = function(parseObject, params) {
 		expenseFields = [
 			'customer', 'tax', 'amount', 'category'
 		];
+	} else if (params.operation == 'details') {
+		expenseFields = [
+			'category', 'expanseDate', 'amount',
+			'referenceNumber', 'notes', 'expenseFiles',
+			'status', 'currency'
+		];
+		var customer = parseObject.get('customer');
+		if (customer) {
+			var customerFields = ['displayName'];
+			setObjectOperations({
+				object 		: customer,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: customerFields
+			});
+			this.customer = customer;
+		}
 	}
 
 	setObjectOperations({

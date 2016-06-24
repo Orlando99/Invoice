@@ -32,6 +32,9 @@ function CheckUseCase(stateName) {
 	if (isGoTo.expenses(stateName)) {
 		listExpenses();
 
+	} else if (isGoTo.details(stateName)) {
+		showExpenseDetails();
+
 	} else if (isGoTo.newExpense(stateName)) {
 		prepareToCreateExpense();
 
@@ -39,6 +42,27 @@ function CheckUseCase(stateName) {
 		console.log('its in edit');
 		prepareToEditExpense();
 	}
+}
+
+function showExpenseDetails () {
+	var expenseId = $state.params.expenseId;
+	if (! expenseId) return;
+	
+	showLoader();
+	$q.when(expenseService.getExpenseDetails(expenseId))
+	.then(function(expenseObj) {
+		expenseObj.amount = currencyFilter(expenseObj.entity.amount, '$', 2);
+		expenseObj.date = formatDate(expenseObj.entity.expanseDate, 'dddd, MMMM DD, YYYY');
+		// Thursday, Decemer 03, 2014
+
+		$scope.expense = expenseObj;
+		console.log(expenseObj);
+		hideLoader();
+
+	}, function(error) {
+		console.log(error.message);
+		hideLoader();
+	});
 }
 
 function prepareToEditExpense() {

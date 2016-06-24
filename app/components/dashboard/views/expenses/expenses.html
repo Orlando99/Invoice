@@ -18,8 +18,9 @@
         <td class="text-uppercase text-info">Status</td>
         <td class="text-uppercase text-info">Amount</td>
       </tr>
+      <!-- ui-sref="dashboard.expenses.edit({expenseId:expense.entity.id})" -->
       <tr class="trow" ng-repeat="expense in expenseList"
-        ui-sref="dashboard.expenses.edit({expenseId:expense.entity.id})">
+        ui-sref="dashboard.expenses.details({expenseId:expense.entity.id})">
         <td class="text-color-light">{{expense.expenseDate}}</td>
         <td class="text-color-light">{{expense.entity.category}}</td>
         <td class="text-color-light">{{expense.entity.referenceNumber}}</td>

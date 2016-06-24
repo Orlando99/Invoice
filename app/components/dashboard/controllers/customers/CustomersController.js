@@ -275,8 +275,9 @@ invoicesUnlimited.controller('CustomersController',
 		});
 	}
 
-	$rootScope.$on('$stateChangeStart',
+	var stateChangeEvent = $rootScope.$on('$stateChangeStart',
 	function(event,toState,toParams,fromState,fromParams,options){
+		console.log('here');
 		if (isGoTo.customers(toState.name) ||
 			isGoTo.newCustomer(toState.name)) {
 			$scope.selectedCustomer = null;
@@ -295,6 +296,10 @@ invoicesUnlimited.controller('CustomersController',
 			doCreateEditObject();
 		} else if (fromState.name.endsWith('new')) {
 			LoadCustomers();
+		} else {
+			console.log('destroy else');
+			stateChangeEvent();
+			stateChangeEvent = null;
 		}
 	});
 
