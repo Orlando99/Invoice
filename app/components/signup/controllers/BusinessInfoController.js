@@ -17,13 +17,13 @@ $(document).ready(function(){
 	)
 });
 
-invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFactory','signUpFactory',
-	function($scope,$state,userFactory,signUpFactory){
+invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFullFactory','signUpFactory',
+	function($scope,$state,userFullFactory,signUpFactory){
 
-	if (userFactory.authorized()){
-		if (userFactory.getBusinessInfo()) $state.go('signup.principal-info');
+	if (userFullFactory.authorized()){
+		if (userFullFactory.getBusinessInfo()) $state.go('signup.principal-info');
 		else {
-			userFactory.logout();
+			userFullFactory.logout();
 			$state.go('signup');
 		}
 	} else if (signUpFactory.get('User','username') == '') $state.go('signup');
@@ -122,11 +122,11 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFa
 
 		signUpFactory.Save('BusinessInfo');
 
-		userFactory.login({
+		userFullFactory.login({
 			username : signUpFactory.get('User','username'),
 			password : signUpFactory.get('User','password')
 		},function(){
-			if (!userFactory.authorized) return;
+			if (!userFullFactory.authorized) return;
 
 			signUpFactory.Save('User',{
 				businessInfo : signUpFactory.getParse("BusinessInfo")

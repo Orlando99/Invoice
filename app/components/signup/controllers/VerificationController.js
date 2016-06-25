@@ -1,9 +1,9 @@
 'use strict';
 
-invoicesUnlimited.controller('VerificationController',['$scope','$state','userFactory','signUpFactory',
-	function($scope,$state,userFactory,signUpFactory){
+invoicesUnlimited.controller('VerificationController',['$scope','$state','userFullFactory','signUpFactory',
+	function($scope,$state,userFullFactory,signUpFactory){
 	
-	if (!userFactory.authorized() && 
+	if (!userFullFactory.authorized() && 
 		(signUpFactory.get('User','email') == '' || signUpFactory.get('User','phonenumber') == '')) 
 		$state.go('signup');
 

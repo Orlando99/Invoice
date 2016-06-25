@@ -54,8 +54,8 @@ $(document).ready(function(){
 	);
 });
 
-invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory','signUpFactory',
-	function($scope,$state,userFactory,signUpFactory){
+invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFactory','signUpFactory',
+	function($scope,$state,userFullFactory,signUpFactory){
 
 	$('#phone').mask("(Z00) 000-0000",{
 		translation : {
@@ -65,12 +65,12 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 		}
 	});
 
-	if (userFactory.authorized()){
+	if (userFullFactory.authorized()){
 		
-		var businessInfo = userFactory.getBusinessInfo();
-		var principalInfo = userFactory.getPrincipalInfo();
-		var accountInfo = userFactory.getAccountInfo();
-		var signature = userFactory.getSignature();
+		var businessInfo = userFullFactory.getBusinessInfo();
+		var principalInfo = userFullFactory.getPrincipalInfo();
+		var accountInfo = userFullFactory.getAccountInfo();
+		var signature = userFullFactory.getSignature();
 
 		if (businessInfo) {
 			if (principalInfo) {
@@ -80,7 +80,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFactory'
 				}
 				else $state.go('signup.account-info');
 			} else $state.go('signup.principal-info');
-		} else userFactory.logout();
+		} else userFullFactory.logout();
 	}
 
 	var showIndexInfo = function(){

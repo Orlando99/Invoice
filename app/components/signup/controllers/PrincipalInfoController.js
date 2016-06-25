@@ -1,7 +1,7 @@
 'use strict';
 
-invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userFactory','signUpFactory',
-	function($scope,$state,userFactory,signUpFactory){
+invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userFullFactory','signUpFactory',
+	function($scope,$state,userFullFactory,signUpFactory){
 
 	var dobMaskOptions = {
 		onKeyPress: function(val, e, field, options) {
@@ -62,9 +62,9 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 	$('[name=dob]').mask("00-00-0000",dobMaskOptions);
 	$('[name=ssn]').mask("000-00-0000");
 
-	if (userFactory.authorized()){
-		if (!userFactory.getBusinessInfo(false)) {
-			userFactory.logout();
+	if (userFullFactory.authorized()){
+		if (!userFullFactory.getBusinessInfo(false)) {
+			userFullFactory.logout();
 			$state.go('signup');
 		}
 	} else $state.go('signup');
@@ -149,7 +149,7 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 			tableName :'PrincipalInfo',
 			callback  : function(){
 
-				if (!userFactory.authorized) return;
+				if (!userFullFactory.authorized) return;
 				signUpFactory.Save('User',{
 					principalInfo : signUpFactory.getParse("PrincipalInfo")
 				},function(){
@@ -162,12 +162,12 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 	};
 
 	$scope.saveAndContinueLater = function(){
-		if (!userFactory.authorized){
+		if (!userFullFactory.authorized){
 			var user = signUpFactory.getParse('_User');
 			if (!user) {
 				$state.go('signup');
 			}
-			userFactory.login({
+			userFullFactory.login({
 				username : user.get('username'),
 				password : user.get('password'),
 			},function(){

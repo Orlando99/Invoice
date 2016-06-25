@@ -1,9 +1,9 @@
 'use strict';
 
-invoicesUnlimited.controller('ConfirmController',['$scope','$state','userFactory','signUpFactory',
-	function($scope,$state,userFactory,signUpFactory){
+invoicesUnlimited.controller('ConfirmController',['$scope','$state','userFullFactory','signUpFactory',
+	function($scope,$state,userFullFactory,signUpFactory){
 	
-	if (!userFactory.authorized())
+	if (!userFullFactory.authorized())
 		$state.go('signup');
 
 	$scope.getStarted = function(){

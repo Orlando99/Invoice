@@ -1,11 +1,11 @@
 'use strict';
 
-invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFactory','signUpFactory',
-	function($scope,$state,userFactory,signUpFactory){
+invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFullFactory','signUpFactory',
+	function($scope,$state,userFullFactory,signUpFactory){
 
-	if (userFactory.authorized()) {
-		if (!userFactory.getBusinessInfo() || !signUpFactory.getParse("BusinessInfo")) {
-			userFactory.logout();
+	if (userFullFactory.authorized()) {
+		if (!userFullFactory.getBusinessInfo() || !signUpFactory.getParse("BusinessInfo")) {
+			userFullFactory.logout();
 			$state.go('signup');
 		}
 	} else $state.go('signup');
@@ -113,7 +113,7 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 		signUpFactory.Save({
 			tableName : 'AccountInfo',
 			callback  : function(){
-				if (!userFactory.authorized) return;
+				if (!userFullFactory.authorized) return;
 				signUpFactory.Save('User',{
 					accountInfo : signUpFactory.getParse("AccountInfo")
 				},function(){
@@ -125,9 +125,9 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 	};
 
 	$scope.saveAndContinueLater = function(){
-		/*if (!userFactory.authorized){
+		/*if (!userFullFactory.authorized){
 			var user = signUpFactory.getParse('_User');
-			userFactory.login({
+			userFullFactory.login({
 				username : user.get('username'),
 				password : user.get('password'),
 			},function(){
@@ -135,7 +135,7 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFac
 			});
 		}
 		else*/
-		if (userFactory.authorized())
+		if (userFullFactory.authorized())
 			$state.go('dashboard');
 	};
 
