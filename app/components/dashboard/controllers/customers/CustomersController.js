@@ -7,6 +7,12 @@ invoicesUnlimited.controller('CustomersController',
 
 	var customerId = parseInt($state.params.customerId);
 	var user = userFactory;
+	
+	if (!user.entity.length) {
+		$state.go('login');
+		return;
+	}
+	
 	var def = $q.defer();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
@@ -159,6 +165,7 @@ invoicesUnlimited.controller('CustomersController',
 	}
 
 	function LoadCustomers() {
+		//showLoader();
 		$q.when(coreFactory.getAllCustomers()).then(function(res){
 		
 			$scope.customers = res.sort(function(a,b){
@@ -185,6 +192,7 @@ invoicesUnlimited.controller('CustomersController',
 					cust.comments = cust.comments.concat(inv.comments);
 				});
 				cust.invoices = filtered;
+		//		hideLoader();
 			});
 
 			if (isGoTo.details($state.current.name))
@@ -296,14 +304,12 @@ invoicesUnlimited.controller('CustomersController',
 			doCreateEditObject();
 		} else if (fromState.name.endsWith('new')) {
 			LoadCustomers();
-		} else {
+		} else if (!toState.name.contains('customers')) {
 			console.log('destroy else');
-			stateChangeEvent();
+			//stateChangeEvent();
 			stateChangeEvent = null;
 		}
 	});
 
 	LoadCustomers();
-
-
 });
