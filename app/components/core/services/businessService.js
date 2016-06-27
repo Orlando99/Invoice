@@ -1,12 +1,11 @@
 'use strict';
 
-invoicesUnlimited.factory('businessFactory',['userFactory',function(userFactory){
+invoicesUnlimited.factory('businessFactory',['userFactory','$rootScope',
+	function(userFactory,$rootScope){
 	
 	var user = userFactory;
 
-	var businessInfo = null;
-
-	if (!user.id) businessInfo = null;
+	var businessInfo = {entity:[]};
 
 	var fields = [
 		"businessName",
@@ -17,22 +16,34 @@ invoicesUnlimited.factory('businessFactory',['userFactory',function(userFactory)
 		"phoneNumber"
 	];
 	
-	if (!businessInfo) {
+	var loadBusinessInfo = function(){
 		var fieldName = "businessInfo";
-		var bus_p = user.get(fieldName);
-		if (bus_p) {
-			businessInfo = bus_p.fetch().then(function(object){
-				setObjectOperations({
-					object 		: object,
-					fieldName	: fieldName,
-					parent 		: user,
-					fields 		: fields});
-				businessInfo = object;
-				return object;
-			});
-		}
-	} else if (businessInfo.id) return businessInfo;
-	
+		var bus_p = user.get ? 
+					user.get(fieldName) : 
+					user.entity[0].get(fieldName);
+
+		if (!bus_p) businessInfo.empty = true;
+
+		return bus_p
+		.fetch()
+		.then(function(object){
+			setObjectOperations({
+				object 		: object,
+				fieldName	: fieldName,
+				parent 		: user,
+				fields 		: fields});
+			businessInfo.entity.pop();
+			businessInfo.entity.push(object);
+			return businessInfo;
+		},function(error){
+			debugger;
+		});
+	}
+
+	businessInfo.load = function(){
+		return loadBusinessInfo();
+	}
+
 	return businessInfo;
 
 }]);
