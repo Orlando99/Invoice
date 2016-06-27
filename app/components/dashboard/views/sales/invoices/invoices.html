@@ -2,8 +2,7 @@
   <div class="container hidesm">
 
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-t">All Invoices <i class="arrow-down-black"></i></h3>
-    <a ui-sref="dashboard.sales.invoices.new" class="float-right button button-add text-transform"
-      ng-click="prepareAddInvoice()">New</a>
+    <a ui-sref="dashboard.sales.invoices.new" class="float-right button button-add text-transform">New</a>
     <form class="float-right layout-margin-t">
       <input type="text" class="search-bar" placeholder="Search">
     </form>
@@ -26,10 +25,10 @@
         <td class="text-color-light">{{invoice.entity.invoiceNumber}}</td>
         <td class="text-color-light"></td>
         <td class="text-color-light">{{invoice.customer.displayName}}</td>
-        <td class="text-positive"><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
+        <td><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
         <td class="text-color-light">{{invoice.dueDate}}</td>
-        <td class="text-color-light">${{invoice.total}}</td>
-        <td class="text-color-light">${{invoice.balanceDue}}</td>
+        <td class="text-color-light">{{invoice.total}}</td>
+        <td class="text-color-light">{{invoice.balanceDue}}</td>
       </tr>
     </table>
 

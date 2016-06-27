@@ -192,6 +192,84 @@ angular.module('invoicesUnlimited')
 						}
 					}
 				}
+			},
+			estimates : {
+				index: {
+					name : 'dashboard.sales.estimates'
+				},
+				all : {
+					name : 'dashboard.sales.estimates.all',
+					url : '/sales/estimates',
+					views : {
+						'@' : {
+							controller : 'EstimateController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/estimates/estimates.html'
+						}
+					}
+				},
+				newEstimate : {
+					name : 'dashboard.sales.estimates.new',
+					url : '/sales/estimates/new',
+					params : {
+						expenseId : null,
+						customerId : null
+					},
+					views : {
+						'@' : {
+							controller 	 : 'CreateEstimateController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/estimates/new.estimate.html'
+						}
+					}
+				},
+				edit : {
+					name	: 'dashboard.sales.estimates.edit',
+					url 	: '/sales/estimates/:estimateId/edit',
+					views 	: {
+						'@' : {
+							controller 	 : 'EstimateController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/estimates/edit.estimate.html'
+						}
+					}
+				}
+			},
+			creditnotes : {
+				index : {
+					name : 'dashboard.sales.creditnotes'
+				},
+				all : {
+					name : 'dashboard.sales.creditnotes.all',
+					url : '/sales/creditnotes',
+					views : {
+						'@' : {
+							controller : 'CreditNoteController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/creditnotes/creditnotes.html'
+						}
+					}
+				},
+				newCreditNote : {
+					name : 'dashboard.sales.creditnotes.new',
+					url : '/sales/creditnotes/new',
+					params : {
+						expenseId : null,
+						customerId : null
+					},
+					views : {
+						'@' : {
+							controller 	 : 'CreditNoteController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/creditnotes/new.creditnote.html'
+						}
+					}
+				},
+				edit : {
+					name	: 'dashboard.sales.creditnotes.edit',
+					url 	: '/sales/creditnotes/:creditNoteId/edit',
+					views 	: {
+						'@' : {
+							controller 	 : 'CreditNoteController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/creditnotes/edit.creditnote.html'
+						}
+					}
+				}
 			}
 
 /*
@@ -272,16 +350,6 @@ angular.module('invoicesUnlimited')
 					}
 				}
 			},
-			details : {
-				name : 'dashboard.expenses.details',
-				url : '/expenses/:expenseId',
-				views : {
-					'@' : {
-						controller : 'ExpenseController',
-						templateUrl : COMPONENTS + 'dashboard/views/expenses/details.html'
-					}
-				}
-			},
 			newExpense : {
 				name : 'dashboard.expenses.new',
 				url : '/expenses/new',
@@ -289,6 +357,16 @@ angular.module('invoicesUnlimited')
 					'@' : {
 						controller : 'ExpenseController',
 						templateUrl : COMPONENTS + 'dashboard/views/expenses/record.expense.html'
+					}
+				}
+			},
+			details : {
+				name : 'dashboard.expenses.details',
+				url : '/expenses/:expenseId',
+				views : {
+					'@' : {
+						controller : 'ExpenseController',
+						templateUrl : COMPONENTS + 'dashboard/views/expenses/details.html'
 					}
 				}
 			},
@@ -471,6 +549,8 @@ angular.module('invoicesUnlimited')
 		dashboard.customers,
 		[dashboard.sales.index],
 		dashboard.sales.invoices,
+		dashboard.sales.estimates,
+		dashboard.sales.creditnotes,
 		dashboard.expenses,
 		dashboard.reports,
 		dashboard.settings,

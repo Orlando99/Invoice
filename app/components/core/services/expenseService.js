@@ -32,6 +32,7 @@ return {
 		var query = new Parse.Query('Expanses');
 		query.equalTo('organization', params.organization);
 		query.equalTo('customer', params.customer);
+		// TODO: only get billable expenses
 		return query.find().then(function(expenseObjs) {
 			var expenses = [];
 			expenseObjs.forEach(function(expense) {

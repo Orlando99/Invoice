@@ -555,8 +555,8 @@ function ListInvoices() {
 				obj.entity.invoiceDate, "MM/DD/YYYY");
 			obj.dueDate = formatDate(
 				obj.entity.dueDate, "MM/DD/YYYY");
-			obj.balanceDue = formatNumber(obj.entity.balanceDue);
-			obj.total = formatNumber(obj.entity.total);
+			obj.balanceDue = currencyFilter(obj.entity.balanceDue, '$', 2);
+			obj.total = currencyFilter(obj.entity.total, '$', 2);
 		});
 
 		res = res.reverse();

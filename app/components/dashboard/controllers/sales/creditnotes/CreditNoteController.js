@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.controller('CreditNotesController',['$scope', '$state', '$controller',
+invoicesUnlimited.controller('CreditNoteController',['$scope', '$state', '$controller',
 	'userFullFactory', 'creditNoteFactory',
 	function($scope,$state,$controller,userFullFactory,creditNoteFactory){
 
