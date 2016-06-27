@@ -52,7 +52,7 @@ function alphabeticalSort(a,b){
 
 function loadColorTheme(user){
   if (!user) alert('User is empty! Unable to load color theme!');
-  var color = user.get('colorTheme');
+  var color = user.get ? user.get('colorTheme') : user.entity[0].get('colorTheme');
   if (color) color = color.replace(/app|Color/g,"").toLowerCase();
   if (color && color != 'blue' && color != 'undefined') {
     $('#appStyle').attr('href',CSS_DIR + 'main.' + color + '.css');
@@ -190,6 +190,12 @@ invoicesUnlimited.directive('fileModel', ['$parse', function ($parse) {
       }
   };
 }]);
+
+$(document).on('keypress','.sign-up input',function(e) {
+  if (e.keyCode == 13) {
+    $('.sign-up .button-next')[0].click();
+  }
+});
 
 function formatDate(date, format) {
   if(date){
