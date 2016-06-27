@@ -30,6 +30,10 @@ var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router','oc.laz
   };
 });
 
+$(window).on('beforeunload',function(e){
+    Parse.User.logOut();
+});
+
 function ShowMessage(text,type) {
   $('.message-type,.close-btn').addClass(type);
   $('.message-text').text(text);
@@ -41,7 +45,9 @@ function showLoader(){
 }
 
 function hideLoader(){
-    $('.overlay.loader-screen').hide();
+    setTimeout(function(){
+        $('.overlay.loader-screen').fadeOut('slow');
+    },500);
 }
 
 function alphabeticalSort(a,b){
