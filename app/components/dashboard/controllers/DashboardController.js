@@ -3,24 +3,37 @@
 invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory','businessFactory','$q',
 	function($scope,$state,userFactory,businessFactory,$q){
 
+	showLoader();
+
 	var user = userFactory;
 	var business = businessFactory;
-	if (!user) $state.go('login');
-	if (user && !business) user.logout().then(function(){
+	
+	if (!user.entity.length) {
+		hideLoader();
 		$state.go('login');
-	});
+		return;
+	}
 	
 	loadColorTheme(user);
-	$scope.businessInfo = {};
+	
+	$scope.businessInfo = businessFactory.entity.length ?
+						  businessFactory.entity[0] :
+						  {};
 
 	$scope.logOut = function(){
-		userFactory.logout().then(function(){
+		user.logout().then(function(){
 			resetColorTheme();
 			$state.go('login');
 		});
 	};
 
-	$q.all([businessFactory]).then(function(obj){
-		$scope.businessInfo = obj[0];
+	$q
+	.all([businessFactory.load()])
+	.then(function(obj){
+		if (obj[0].entity.length) {
+			$scope.businessInfo = obj[0].entity[0];
+			hideLoader();
+		}
+		else $scope.logOut();
 	});	
 }]);
