@@ -16,10 +16,12 @@ invoicesUnlimited.controller('AppPreferencesController',['$scope','$state','$con
 	}
 
 	$scope.saveAppPreferences = function(){
+		showLoader();
 		var color = $(".colors li.active").find('a').attr('class');
 		var colorToSave = "app" + color[0].toUpperCase() + color.slice(1) + "Color";
 		userFullFactory.save({colorTheme:colorToSave}).then(function(){
 			window.location.reload();
+			hideLoader();
 		});
 	}
 	
