@@ -40,7 +40,7 @@ invoicesUnlimited.factory('accountFactory',['userFactory',function(userFactory){
 
 	accountInfo.createNew = function(params){
 		if (accountInfo.entity.length) return;
-		var ctr = Parse.Object.Extend("AccountInfo");
+		var ctr = Parse.Object.extend("AccountInfo");
 		var object = new ctr();
 		return object.save(params,{
 			success : function(obj){

@@ -44,7 +44,7 @@ invoicesUnlimited.factory('principalFactory',
 
 	principalInfo.createNew = function(params){
 		if (principalInfo.entity.length) return;
-		var ctr = Parse.Object.Extend("PrincipalInfo");
+		var ctr = Parse.Object.extend("PrincipalInfo");
 		var object = new ctr();
 		return object.save(params,{
 			success : function(obj){

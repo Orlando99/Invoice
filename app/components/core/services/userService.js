@@ -16,21 +16,13 @@ invoicesUnlimited.factory('userFactory',function(){
 	
 	function setUserFields(){
 		
-		currentUser.login = function(params,successCallback,errorCallback){
-			/*if (currentUser.id || 
-				(currentUser.entity[0] && 
-				 currentUser.entity[0].id) ||
-				 (User.entity.length &&
-				 	User.entity[0].id)) return;*/
-			//currentUser.entity = [];
+		User.login = function(params,successCallback,errorCallback){
 			if (User.entity.length &&
 				User.entity[0].id) return;
 			Parse.User.logIn(params.username, params.password,{
 				success: function(user){
-					//currentUser.justLoggedIn = true;
 					User.justLoggedIn = true;
 					User.entity.push(user);
-					//currentUser.entity.push(user);
 					console.log("Logged in successfuly!");
 					successCallback();
 				},
@@ -41,7 +33,7 @@ invoicesUnlimited.factory('userFactory',function(){
 			});
 		};
 
-		currentUser.logout = function(){
+		User.logout = function(){
 			return Parse.User.logOut().then(function(){
 				if (currentUser.entity) currentUser.entity.pop();
 				if (currentUser.justLoggedIn) currentUser.justLoggedIn = false;
@@ -49,7 +41,7 @@ invoicesUnlimited.factory('userFactory',function(){
 			});
 		};
 
-		currentUser.signup = function(params){
+		User.signup = function(params){
 			var user = new Parse.User;
 			return user.signUp(params,{
 				success: function(user){
@@ -61,10 +53,6 @@ invoicesUnlimited.factory('userFactory',function(){
 				}
 			});
 		}
-
-		User.login = currentUser.login;
-		User.logout = currentUser.logout;
-		User.signup = currentUser.signup;
 	}
 
 	setUserFields();

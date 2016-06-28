@@ -18,21 +18,13 @@ $(document).ready(function(){
 });
 
 invoicesUnlimited.controller('BusinessInfoController',
-	['$scope','$state','userFullFactory','signUpFactory',
-	 'userFactory',
-	function($scope,$state,userFullFactory,signUpFactory,userFactory){
+	['$scope','$state','signUpFactory','userFactory',
+	function($scope,$state,signUpFactory,userFactory){
 
-	//if (userFullFactory.authorized()){
 	if (!userFactory.entity.length) {
 		$state.go('signup');
 		return;
 	}
-	/*	if (userFullFactory.getBusinessInfo()) $state.go('signup.principal-info');
-		else {
-			userFullFactory.logout();
-			$state.go('signup');
-		}
-	} else if (signUpFactory.get('User','username') == '') $state.go('signup');*/
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -116,10 +108,6 @@ invoicesUnlimited.controller('BusinessInfoController',
 				field : field,
 				value : $scope.bsnsInfo[field]
 			});
-			/*signUpFactory.set({
-				table : 'BusinessInfo',
-				expr  : field + ":" + $scope.bsnsInfo[field]
-			});*/
 		}
 
 		var user = signUpFactory.getFactory('User');
@@ -127,16 +115,6 @@ invoicesUnlimited.controller('BusinessInfoController',
 		signUpFactory.setField('BusinessInfo',
 							   'userID',
 							   user.entity[0]);
-
-		/*signUpFactory.setObject({
-			table 	: 'BusinessInfo',
-			params  : {
-				field : "userID",
-				value : signUpFactory.getParse("_User")
-			}
-		});*/
-
-		//signUpFactory.Save('BusinessInfo');
 
 		var business = signUpFactory.create('BusinessInfo');
 
@@ -157,22 +135,6 @@ invoicesUnlimited.controller('BusinessInfoController',
 		},function(error){
 			console.log(error.message);
 		});
-
-		/*userFullFactory.login({
-			username : signUpFactory.get('User','username'),
-			password : signUpFactory.get('User','password')
-		},function(){
-			if (!userFullFactory.authorized) return;
-
-			signUpFactory.Save('User',{
-				businessInfo : signUpFactory.getParse("BusinessInfo")
-			});
-
-			hideLoader();
-
-			$state.go('signup.principal-info');
-
-		});*/
 	};
 
 }]);

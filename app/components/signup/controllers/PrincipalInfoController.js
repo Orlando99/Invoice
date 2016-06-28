@@ -1,7 +1,8 @@
 'use strict';
 
-invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userFullFactory','signUpFactory',
-	function($scope,$state,userFullFactory,signUpFactory){
+invoicesUnlimited.controller('PrincipalInfoController',
+	['$scope','$state','signUpFactory',
+	function($scope,$state,signUpFactory){
 
 	var dobMaskOptions = {
 		onKeyPress: function(val, e, field, options) {
@@ -62,12 +63,10 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 	$('[name=dob]').mask("00-00-0000",dobMaskOptions);
 	$('[name=ssn]').mask("000-00-0000");
 
-	if (userFullFactory.authorized()){
-		if (!userFullFactory.getBusinessInfo(false)) {
-			userFullFactory.logout();
-			$state.go('signup');
-		}
-	} else $state.go('signup');
+	if (!signUpFactory.getFactory('User').entity.length) {
+		$state.go('signup');
+		return;
+	}
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -90,39 +89,42 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 		}
 	});
 
+	var getBusField = function(field){
+		return signUpFactory.getField('BusinessInfo',field);
+	};
+
 	$scope.principalInfo = {
-		streetName		: signUpFactory.get('BusinessInfo','streetName'),
-		city			: signUpFactory.get('BusinessInfo','city'),
-		state			: signUpFactory.get('BusinessInfo','state'),
-		zipCode			: signUpFactory.get('BusinessInfo','zipCode'),
+		streetName		: getBusField('streetName'),
+		city			: getBusField('city'),
+		state			: getBusField('state'),
+		zipCode			: getBusField('zipCode'),
 		dob				: '',
 		ssn				: ''
 	};
 
 	$scope.toggleHomeChecked = true;
 
+	var fields = ['streetName','city','state','zipCode'];
+
 	$scope.toggleHomeInfo = function(){
 
 		if (!$scope.toggleHomeChecked) {
-			$scope.principalInfo.streetName = "";
-			$scope.principalInfo.city = "";
-			$scope.principalInfo.state = "";
-			$scope.principalInfo.zipCode = "";
+			fields.forEach(function(field){
+				$scope.principalInfo[field] = "";
+			});
 			return;
 		}
 
-		$scope.principalInfo.streetName = signUpFactory.get('BusinessInfo','streetName');
-		$scope.principalInfo.city = signUpFactory.get('BusinessInfo','city');
-		$scope.principalInfo.state = signUpFactory.get('BusinessInfo','state');
-		$scope.principalInfo.zipCode = signUpFactory.get('BusinessInfo','zipCode');
+		fields.forEach(function(field){
+			$scope.principalInfo[field] = getBusField(field);
+		});
 	};
 
 	$scope.$watch(function(){return signUpFactory.get('BusinessInfo')},function(newValue,oldValue){
 		if (oldValue == newValue) return;
-		$scope.principalInfo.streetName = newValue.streetName;
-		$scope.principalInfo.city = newValue.city;
-		$scope.principalInfo.state = newValue.state;
-		$scope.principalInfo.zipCode = newValue.zipCode;
+		fields.forEach(function(field){
+			$scope.principalInfo[field] = newValue[field];
+		});
 	},true);
 
 	$scope.savePrincipalInfo = function(){
@@ -131,50 +133,40 @@ invoicesUnlimited.controller('PrincipalInfoController',['$scope','$state','userF
 		showLoader();
 
 		for (var field in $scope.principalInfo){
-			signUpFactory.set({
-				table : 'PrincipalInfo',
-				expr  : field + ":" + $scope.principalInfo[field]
+			signUpFactory.setField('PrincipalInfo',{
+				field : field, 
+				value : $scope.principalInfo[field]
 			});
 		}
 
-		signUpFactory.setObject({
-			table 	: 'PrincipalInfo',
-			params  : {
-				field : "userID",
-				value : signUpFactory.getParse("_User")
-			}
-		});
+		var user = signUpFactory.getFactory('User');
 
-		signUpFactory.Save({
-			tableName :'PrincipalInfo',
-			callback  : function(){
+		signUpFactory.setField('PrincipalInfo','userID',
+								user.entity[0]);
 
-				if (!userFullFactory.authorized) return;
-				signUpFactory.Save('User',{
-					principalInfo : signUpFactory.getParse("PrincipalInfo")
-				},function(){
-					hideLoader();
-					$state.go('signup.account-info');
-				});
+		var principal = signUpFactory.create('PrincipalInfo');
 
-			}
+		if (!principal) {
+			$state.go('signup');
+			return;
+		}
+
+		principal.then(function(obj){
+			var save = signUpFactory.save('User',{'principalInfo':obj});
+			if (save) return save;
+			window.reload();
+		},function(error){
+			console.log(error.message);
+		}).then(function(){
+			hideLoader();
+			$state.go('signup.account-info');
+		},function(error){
+			console.log(error.message);
 		});
 	};
 
 	$scope.saveAndContinueLater = function(){
-		if (!userFullFactory.authorized){
-			var user = signUpFactory.getParse('_User');
-			if (!user) {
-				$state.go('signup');
-			}
-			userFullFactory.login({
-				username : user.get('username'),
-				password : user.get('password'),
-			},function(){
-				$state.go('dashboard');
-			});
-		}
-		else $state.go('dashboard');
+		$state.go('dashboard');
 	};
 
 }]);
