@@ -65,7 +65,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFact
 		}
 	});
 
-	if (userFullFactory.authorized()){
+	/*if (userFullFactory.authorized()){
 		
 		var businessInfo = userFullFactory.getBusinessInfo();
 		var principalInfo = userFullFactory.getPrincipalInfo();
@@ -81,7 +81,7 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFact
 				else $state.go('signup.account-info');
 			} else $state.go('signup.principal-info');
 		} else userFullFactory.logout();
-	}
+	}*/
 
 	var showIndexInfo = function(){
 		if ($('.extended-signup').css({'display':'none'}))
@@ -235,14 +235,14 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFact
 			}
 
 			if ($scope.selectedCountry == 'United States of America' || $scope.selectedCountry == 'Canada') {
-				$.post('./dist/php/sendVerificationCode.php',{
+				$.post('./assets/php/sendVerificationCode.php',{
 					dest:'phone',
 					phonenumber : $('#phone').val()
 				},function(res){
 					saveCodeHash(res);
 				});
 			} else {
-				$.post('./dist/php/sendVerificationCode.php', {
+				$.post('./assets/php/sendVerificationCode.php', {
 					dest  :'email',
 					email : $('input[name=email]').val()
 				},function(res){

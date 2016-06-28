@@ -65,10 +65,10 @@ invoicesUnlimited.controller('SignatureController',['$scope','$state','userFullF
 
 	$scope.$on('$viewContentLoaded',function($scope,$timeout){
 		$ocLazyLoad.load([
-					"./dist/js/excanvas.js",
-  					"./dist/js/jquery.signature.min.js",
-  					"./dist/js/jquery.ui.touch-punch.min.js",
-  					"./dist/js/sig.js",
+					"./assets/js/excanvas.js",
+  					"./asstes/js/jquery.signature.min.js",
+  					"./assets/js/jquery.ui.touch-punch.min.js",
+  					"./assets/js/sig.js",
 					]);
 	});
 

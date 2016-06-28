@@ -26,7 +26,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller : "BusinessInfoController",
-					templateUrl : COMPONENTS + "signup/businessInfoView.html"
+					templateUrl : COMPONENTS + "signup/views/businessInfoView.html"
 				}
 			}
 		},
@@ -36,7 +36,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller : "PrincipalInfoController",
-					templateUrl : COMPONENTS + "signup/principalInfoView.html"
+					templateUrl : COMPONENTS + "signup/views/principalInfoView.html"
 				}
 			}
 		},
@@ -46,7 +46,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller : 'AccountInfoController',
-					templateUrl : COMPONENTS + "signup/accountInfoView.html"
+					templateUrl : COMPONENTS + "signup/views/accountInfoView.html"
 				}
 			}
 		},
@@ -56,7 +56,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller : 'SignatureController',
-					templateUrl : COMPONENTS + 'signup/signatureView.html'
+					templateUrl : GetTemplate('signup','signatureView.html')
 				}
 			}
 		},
@@ -66,7 +66,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller  : 'ConfirmController',
-					templateUrl : COMPONENTS + 'signup/confirmView.html'
+					templateUrl : COMPONENTS + 'signup/views/confirmView.html'
 				}
 			}
 		}
