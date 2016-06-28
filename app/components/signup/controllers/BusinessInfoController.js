@@ -17,16 +17,22 @@ $(document).ready(function(){
 	)
 });
 
-invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFullFactory','signUpFactory',
-	function($scope,$state,userFullFactory,signUpFactory){
+invoicesUnlimited.controller('BusinessInfoController',
+	['$scope','$state','userFullFactory','signUpFactory',
+	 'userFactory',
+	function($scope,$state,userFullFactory,signUpFactory,userFactory){
 
-	if (userFullFactory.authorized()){
-		if (userFullFactory.getBusinessInfo()) $state.go('signup.principal-info');
+	//if (userFullFactory.authorized()){
+	if (!userFactory.entity.length) {
+		$state.go('signup');
+		return;
+	}
+	/*	if (userFullFactory.getBusinessInfo()) $state.go('signup.principal-info');
 		else {
 			userFullFactory.logout();
 			$state.go('signup');
 		}
-	} else if (signUpFactory.get('User','username') == '') $state.go('signup');
+	} else if (signUpFactory.get('User','username') == '') $state.go('signup');*/
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -81,7 +87,7 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFu
 				pattern : /[2-9]/g
 			}
 		}
-	}).val(signUpFactory.get('User','phonenumber'));
+	}).val(signUpFactory.getField('User','phonenumber'));
 
 	$scope.options = [{
    		name: 'ownershipTitle',
@@ -106,23 +112,53 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFu
 		showLoader();
 
 		for (var field in $scope.bsnsInfo){
-			signUpFactory.set({
+			signUpFactory.setField('BusinessInfo',{
+				field : field,
+				value : $scope.bsnsInfo[field]
+			});
+			/*signUpFactory.set({
 				table : 'BusinessInfo',
 				expr  : field + ":" + $scope.bsnsInfo[field]
-			});
+			});*/
 		}
 
-		signUpFactory.setObject({
+		var user = signUpFactory.getFactory('User');
+
+		signUpFactory.setField('BusinessInfo',
+							   'userID',
+							   user.entity[0]);
+
+		/*signUpFactory.setObject({
 			table 	: 'BusinessInfo',
 			params  : {
 				field : "userID",
 				value : signUpFactory.getParse("_User")
 			}
+		});*/
+
+		//signUpFactory.Save('BusinessInfo');
+
+		var business = signUpFactory.create('BusinessInfo');
+
+		if (!business) {
+			$state.go('signup');
+			return;
+		}
+
+		business.then(function(obj){
+			var save = signUpFactory.save('User',{'businessInfo':obj});
+			if (save) return save;
+			window.reload();
+		},function(error){
+			console.log(error.message);
+		}).then(function(){
+			hideLoader();
+			$state.go('signup.principal-info');
+		},function(error){
+			console.log(error.message);
 		});
 
-		signUpFactory.Save('BusinessInfo');
-
-		userFullFactory.login({
+		/*userFullFactory.login({
 			username : signUpFactory.get('User','username'),
 			password : signUpFactory.get('User','password')
 		},function(){
@@ -136,7 +172,7 @@ invoicesUnlimited.controller('BusinessInfoController',['$scope','$state','userFu
 
 			$state.go('signup.principal-info');
 
-		});
+		});*/
 	};
 
 }]);

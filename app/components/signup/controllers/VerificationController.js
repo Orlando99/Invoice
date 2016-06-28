@@ -1,11 +1,15 @@
 'use strict';
 
-invoicesUnlimited.controller('VerificationController',['$scope','$state','userFullFactory','signUpFactory',
-	function($scope,$state,userFullFactory,signUpFactory){
+invoicesUnlimited.controller('VerificationController',
+	['$scope','$state','userFullFactory',
+	 'signUpFactory','userFactory',
+	function($scope,$state,userFullFactory,signUpFactory,userFactory){
 	
-	if (!userFullFactory.authorized() && 
+	/*if (!userFullFactory.authorized() && 
 		(signUpFactory.get('User','email') == '' || signUpFactory.get('User','phonenumber') == '')) 
-		$state.go('signup');
+		$state.go('signup');*/
+
+	if (!signUpFactory.getVerification.code()) $state.go('signup');
 
 	$.validator.addMethod(
 		"CodeMatch",
@@ -34,17 +38,15 @@ invoicesUnlimited.controller('VerificationController',['$scope','$state','userFu
 	$scope.verificationCodeProvider = signUpFactory.getVerification.provider();
 
 	$scope.verifyCode = function(){
-		var inputCode = $('#verificationCode').val();
-		var inputHash = md5(inputCode);
-		//if (inputHash == signUpFactory.getVerification.code()){
-		if ($('#signUpForm').valid()){
-			signUpFactory.Save('User');
+		if (!$('#signUpForm').valid()) return;
+		signUpFactory.signup().then(function(){
 			$state.go('signup.business-info');
-		}
+		},function(error){
+			console.log(error.message);
+		})
 	};
 
 	$scope.changePhoneNumber = function(){
 		$state.go('signup');
 	};
-
 }]);

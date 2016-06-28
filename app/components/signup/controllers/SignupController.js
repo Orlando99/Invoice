@@ -1,25 +1,18 @@
 'use strict';
 
-String.prototype.capitilize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
 $(document).ready(function(){
 
 	$.validator.addMethod(
 		"NotFullName",
 		function(value,element){
 			var words = value.match(/[^ ]+/g);
-			if (words.length == 1){
-				return false;
-			}
-			var fullname = "";
+			
+			if (words.length == 1) return false;
 
-			for(var i=0;i<words.length;i++){
-				words[i] = words[i].capitilize();
-				fullname += words[i];
-				fullname += (i == words.length-1) ?'':' ';
-			}
+			var fullname = words.reduce(function(res,current,index){
+				return res + (index ? " ":"") + current.capitalize();
+			},"");
+
 			$(element).val(fullname);
 			return true;
 		},''
@@ -54,8 +47,9 @@ $(document).ready(function(){
 	);
 });
 
-invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFactory','signUpFactory',
-	function($scope,$state,userFullFactory,signUpFactory){
+invoicesUnlimited.controller('SignupController',
+	['$scope','$state','userFullFactory','signUpFactory','userFactory',
+	function($scope,$state,userFullFactory,signUpFactory,userFactory){
 
 	$('#phone').mask("(Z00) 000-0000",{
 		translation : {
@@ -64,24 +58,6 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFact
 			}
 		}
 	});
-
-	/*if (userFullFactory.authorized()){
-		
-		var businessInfo = userFullFactory.getBusinessInfo();
-		var principalInfo = userFullFactory.getPrincipalInfo();
-		var accountInfo = userFullFactory.getAccountInfo();
-		var signature = userFullFactory.getSignature();
-
-		if (businessInfo) {
-			if (principalInfo) {
-				if (accountInfo) {
-					if (signature) $state.go('dashboard');
-					else $state.go('signup.signature')
-				}
-				else $state.go('signup.account-info');
-			} else $state.go('signup.principal-info');
-		} else userFullFactory.logout();
-	}*/
 
 	var showIndexInfo = function(){
 		if ($('.extended-signup').css({'display':'none'}))
@@ -97,19 +73,21 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFact
 		}
 	}
 
-	var signUpCountry = signUpFactory.get('User','country');
-	if (signUpCountry != '') showIndexInfo();	
+	var signUpCountry = signUpFactory.getField('User','country');
+	if (signUpCountry) showIndexInfo();	
 	
 	$scope.selectedCountry = (signUpCountry == '' ? 'Select Country' : signUpCountry);
 
-	var fields = ['company','fullName','email','username','password','phonenumber'];
+	var fields = ['company',
+				  'fullName',
+				  'email',
+				  'username',
+				  'password',
+				  'phonenumber'];
 	
-	for (var i=0;i<fields.length;i++){
-		$('input[name='+fields[i]+']').val(signUpFactory.get({
-			table : 'User',
-			expr  : fields[i]
-		}));
-	};
+	fields.forEach(function(field){
+		$('input[name='+field+']').val(signUpFactory.getField('User',field));
+	});
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -171,25 +149,21 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFact
    		var queryEmail = new Parse.Query(Parse.User);
         queryEmail.equalTo("email",$('input[name=email]').val());
 
-        var usernameCallback = function(object) {
-        	if(object) $('#username-exists').val(1);
-        	else $('#username-exists').val(0);
-        }
-
-        var emailCallback = function(object) {
-        	if (object) $('#email-exists').val(1);
-        	else $('#email-exists').val(0);
+        var objectExistCallback = function(object,name) {
+        	if(object) $('#'+name+'-exists').val(1);
+        	else $('#'+name+'-exists').val(0);
         }
 
         var usernameP = queryUsername.first().then(function(object){
-        	usernameCallback(object);
+        	objectExistCallback(object,'username');
         });
 
         var emailP = queryEmail.first().then(function(object){
-        	emailCallback(object);
+        	objectExistCallback(object,'email');
         });
 
-        Parse.Promise.when([usernameP, emailP]).then(function(){
+        Parse.Promise
+        .when([usernameP, emailP]).then(function(){
         	var validated = $('#signUpForm').valid();
 			callback(!parseInt($('#username-exists').val()) && 
 					 !parseInt($('#email-exists').val()) && validated);
@@ -197,15 +171,19 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFact
 	};
 
 	$scope.selectedCountryChanged = function(){
-		var validCountry = $('#signUpForm').validate().element('[name=country]');
-		//if (!$scope.selectedCountry) return;
+		var validCountry = $('#signUpForm')
+							.validate()
+							.element('[name=country]');
+		
 		if (!validCountry) return;
 		showIndexInfo();
 	};
 
 	$scope.sendMessage = function(){
 
-		var validCountry = $('#signUpForm').validate().element('[name=country]');
+		var validCountry = $('#signUpForm')
+							.validate()
+							.element('[name=country]');
 
 		if (!validCountry) return;
 
@@ -213,15 +191,11 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFact
 			if (!validated) return;
 
 			showLoader();
-
-			var fields = ['company','fullName','email','username','password','phonenumber'];
 	
-			for (var i=0;i<fields.length;i++){
-				signUpFactory.set({
-					table : 'User',
-					expr  : fields[i]+":"+$('input[name='+fields[i]+']').val()
-				});
-			}
+			fields.forEach(function(field){
+				signUpFactory
+				.setField('User',field,$('input[name='+field+']').val());
+			});
 
 			var saveCodeHash = function(res){
 				var codeString = res.match(/(Code:([0-9]|[a-f]){32}\;)/g);
@@ -229,26 +203,24 @@ invoicesUnlimited.controller('SignupController',['$scope','$state','userFullFact
 				var code = codeString.match(/[^\;\:]+/g);
 				if (code) code = code[1];
 				signUpFactory.setVerification.code(code);
-				signUpFactory.set('User','country:'+$scope.selectedCountry);
+				signUpFactory.setField('User','country',$scope.selectedCountry);
 				hideLoader();
 				$state.go('signup.verification');
 			}
 
-			if ($scope.selectedCountry == 'United States of America' || $scope.selectedCountry == 'Canada') {
-				$.post('./assets/php/sendVerificationCode.php',{
-					dest:'phone',
-					phonenumber : $('#phone').val()
-				},function(res){
-					saveCodeHash(res);
-				});
+			var postParams = {};
+
+			if ($scope.usaAndCanada.includes($scope.selectedCountry)) {
+				postParams.dest = 'phone';
+				postParams.phonenumber = $('#phone').val();
 			} else {
-				$.post('./assets/php/sendVerificationCode.php', {
-					dest  :'email',
-					email : $('input[name=email]').val()
-				},function(res){
-					saveCodeHash(res);
-				});
+				postParams.dest = 'email';
+				postParams.email = $('input[name=email]').val();
 			}
+
+			$.post('./assets/php/sendVerificationCode.php',
+				postParams,
+				saveCodeHash);
 		});
 	};
 
