@@ -3,12 +3,81 @@
 angular.module('invoicesUnlimited')
 .config(function($stateProvider, $urlRouterProvider){
 
-	var signup = {
+	var GenerateRoutes = function(args){
+
+		var routes = {};
+		routes.index = {
+			name 		: args.indexName,
+			url  		: '/'+args.indexName,
+			controller 	: args.indexName.capitalize() + 'Controller',
+			templateUrl : GetTemplate(args.indexName,args.indexTemplateUrl)
+		};
+		
+		if (!args.childrenViews) args.childrenViews = {};
+
+		for (var childName in args.childrenViews) {
+			
+			var child = args.childrenViews[childName];
+			
+			routes[childName] = {
+				name 		: 	args.indexName + "." + child.name,
+				url  		: 	'/' + child.name,
+				views 		: {}
+			}
+
+			var view = child.view ? child.view : '@';
+
+			routes[childName].views[view] = {
+				controller 	: 	child.controller ? 
+							 	child.controller : 
+							 	child.name.capitalize() + "Controller",
+				templateUrl	: 	GetTemplate(args.indexName,child.templateUrl)
+			}
+		}
+
+		return routes;
+	};
+
+	var signup = GenerateRoutes({
+		indexName : 'signup',
+		indexTemplateUrl : 'index.html',
+		childrenViews : {
+			verification : {
+				name : 'verification',
+				templateUrl : 'verificationView.html'
+			},
+			businessInfo : {
+				name : 'business-info',
+				templateUrl : 'businessInfoView.html',
+				controller : 'BusinessInfoController'
+			},
+			principalInfo : {
+				name : 'principal-info',
+				templateUrl : 'principalInfoView.html',
+				controller : 'PrincipalInfoController'
+			},
+			accountInfo : {
+				name : 'account-info',
+				templateUrl : 'accountInfoView.html',
+				controller : 'AccountInfoController'
+			},
+			signature : {
+				name : 'signature',
+				templateUrl : 'signatureView.html'
+			},
+			confirm : {
+				name : 'confirm',
+				templateUrl : 'confirmView.html'
+			}
+		}
+	});
+
+	var signup1 = {
 		index : {
 			name : "signup",
 			url : "/signup",
 			controller : "SignupController",
-			templateUrl : COMPONENTS + "signup/views/index.html"
+			templateUrl : GetTemplate('signup','index.html')
 		},
 		verification : {
 			name : "signup.verification",
@@ -16,7 +85,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller : "VerificationController",
-					templateUrl : COMPONENTS + "signup/views/verificationView.html"
+					templateUrl : GetTemplate('signup','verificationView.html')
 				}
 			}
 		},
@@ -26,7 +95,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller : "BusinessInfoController",
-					templateUrl : COMPONENTS + "signup/views/businessInfoView.html"
+					templateUrl : GetTemplate('signup','businessInfoView.html')
 				}
 			}
 		},
@@ -36,7 +105,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller : "PrincipalInfoController",
-					templateUrl : COMPONENTS + "signup/views/principalInfoView.html"
+					templateUrl : GetTemplate('signup','principalInfoView.html')
 				}
 			}
 		},
@@ -46,7 +115,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller : 'AccountInfoController',
-					templateUrl : COMPONENTS + "signup/views/accountInfoView.html"
+					templateUrl : GetTemplate('signup','accountInfoView.html')
 				}
 			}
 		},
@@ -66,7 +135,7 @@ angular.module('invoicesUnlimited')
 			views : {
 				'@' : {
 					controller  : 'ConfirmController',
-					templateUrl : COMPONENTS + 'signup/views/confirmView.html'
+					templateUrl : GetTemplate('signup','confirmView.html')
 				}
 			}
 		}
@@ -545,7 +614,7 @@ angular.module('invoicesUnlimited')
 
 	addStatesFrom([
 		login,
-		signup,
+		signup1,
 		dashboard.customers,
 		[dashboard.sales.index],
 		dashboard.sales.invoices,
