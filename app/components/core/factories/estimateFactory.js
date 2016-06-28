@@ -1,6 +1,8 @@
 'use strict';
 
-invoicesUnlimited.factory('estimateFactory', ['userFactory', function(userFactory) {
+invoicesUnlimited.factory('estimateFactory', ['userFactory', 'estimateItemFactory',
+
+function(userFactory, estimateItemFactory) {
 
 var user = userFactory;
 if (!user) return undefined;
@@ -26,6 +28,24 @@ function Estimate (parseObject, params) {
 			});
 			this.customer = customer;
 		}
+
+	} else if (params.operation === "getEstimate") {
+		estimateFields = [
+			'customer', 'estimateDate', 'referenceNumber',
+			'estimateNumber', 'status', 'adjustments',
+			'discountType', 'discounts', 'shippingCharges',
+			'subTotal', 'totalAmount', 'notes', 'termsConditions',
+			'salesPerson'
+		];
+		var estimateItems = parseObject.get('estimateItems');
+		if (estimateItems) {
+			estimateItems = estimateItems.map(function(elem){
+				var item = new estimateItemFactory(elem);
+				return item;
+			});
+			this.estimateItems = estimateItems;
+		}
+
 	} else if(params.operation == 'sendReceipt') {
 		estimateFields = [
 			'totalAmount' ,'estimateReceipt', 'customerEmails'

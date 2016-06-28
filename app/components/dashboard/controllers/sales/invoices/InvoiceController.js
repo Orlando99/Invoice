@@ -43,11 +43,11 @@ function CheckUseCase(stateName) {
 
 	} else if (isGoTo.edit(stateName)) {
 	//	console.log('its in edit');
-		EditInvoice();
+		prepareToEditInvoice();
 	}
 }
 
-function EditInvoice() {
+function prepareToEditInvoice() {
 	var invoiceId = $state.params.invoiceId;
 	if (! invoiceId) return;
 
@@ -122,8 +122,6 @@ function prepareEditForm() {
 	}
 
 	$scope.discount = invoice.entity.discounts;
-	$scope.shippingCharges = invoice.entity.shippingCharges;
-	$scope.adjustments = invoice.entity.adjustments;
 	$scope.notes = invoice.entity.notes;
 	$scope.terms = invoice.entity.terms;
 	

@@ -17,7 +17,8 @@
         <td class="layout-padding text-uppercase text-info">Status</td>
         <td class="layout-padding text-uppercase text-info">Amount</td>
       </tr>
-      <tr class="trow" ng-repeat="estimate in estimateList">
+      <tr class="trow" ng-repeat="estimate in estimateList"
+        ui-sref="dashboard.sales.estimates.edit({estimateId:estimate.entity.id})">
         <td class="layout-padding text-color-light">{{estimate.estimateDate}}</td>
         <td class="layout-padding text-color-light">{{estimate.entity.estimateNumber}}</td>
         <td class="layout-padding text-color-light">{{estimate.entity.referenceNumber}}</td>

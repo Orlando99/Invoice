@@ -157,17 +157,7 @@ angular.module('invoicesUnlimited')
 							templateUrl	: COMPONENTS + 'dashboard/views/sales/invoices/invoices.html'
 						}
 					}
-				},/*
-				details : {
-					name : 'dashboard.sales.invoices.details',
-					url : '/:invoiceId',
-					views : {
-						'@' : {
-							controller : 'InvoiceController',
-							templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/details.html'
-						}
-					}
-				},*/
+				},
 				newInvoice : {
 					name : 'dashboard.sales.invoices.new',
 					url : '/sales/invoices/new',
@@ -179,6 +169,16 @@ angular.module('invoicesUnlimited')
 						'@' : {
 							controller 	 : 'CreateInvoiceController',
 							templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/newinvoice.html'
+						}
+					}
+				},
+				details : {
+					name : 'dashboard.sales.invoices.details',
+					url : '/sales/invoices/:invoiceId',
+					views : {
+						'@' : {
+							controller : 'InvoiceController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/details.html'
 						}
 					}
 				},

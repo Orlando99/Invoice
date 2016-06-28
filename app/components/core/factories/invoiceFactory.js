@@ -38,12 +38,14 @@ function Invoice(parseObject, params) {
 			'salesPerson'
 		];
 		var invoiceItems = parseObject.get('invoiceItems');
-		if (invoiceItems)
+		if (invoiceItems) {
 			invoiceItems = invoiceItems.map(function(elem){
 				var item = new invoiceItemFactory(elem);
 				return item;
 			});
-		this.invoiceItems = invoiceItems;
+			this.invoiceItems = invoiceItems;
+		}
+
 	} else if (params.operation == 'sendReceipt') {
 		invoiceFields = [
 			'balanceDue' ,'invoiceReceipt', 'customerEmails'

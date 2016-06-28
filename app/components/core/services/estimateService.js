@@ -7,6 +7,19 @@ return {
 	test : function() {
 		console.log("working");
 	},
+	getEstimate : function(estimateId) {
+		var Estimate = Parse.Object.extend('Estimates');
+		var query = new Parse.Query(Estimate);
+		query.include('estimateItems');
+
+		return query.get(estimateId)
+		.then(function(estObj) {
+			var estimate = new estimateFactory(estObj, {
+				operation : 'getEstimate'
+			});
+			return estimate;
+		});
+	},
 	listEstimates : function(user) {
 		var organization = getOrganization(user);
 		if (! organization)	return;
@@ -156,6 +169,107 @@ return {
 				} /* add method to delete file and items */);
 			}/* add method to delete file*/);
 
+		});
+
+	},
+	updateEstimate : function(estimateObj, estimateItems, deletedItems, user, role) {
+		var estItems = [];
+		var itemsToDelete = [];
+		var itemsToCreate = [];
+		var estItemsToCreate = [];
+		var estItemsToUpdate = {};
+		var EstimateItem = Parse.Object.extend("EstimateItem");
+		var acl = new Parse.ACL();
+		acl.setRoleWriteAccess(role.get("name"), true);
+		acl.setRoleReadAccess(role.get("name"), true);
+
+		// filter items from estimateItems
+		estimateItems.forEach(function(item) {
+			if (item.selectedItem.create) {
+				itemsToCreate.push(item);
+			} else {
+				if (item.id) {
+					estItemsToUpdate[item.id] = item;
+				} else {
+					estItemsToCreate.push(item);
+				}
+			}
+		});
+
+		var otherData = {
+			acl : acl,
+			user : user,
+			organization : user.get('organizations')[0],
+			objectType : EstimateItem
+		};
+
+		// create new items
+		return createNewItems(itemsToCreate, otherData)
+		.then(function (items) {
+		//	console.log('created items');
+		//	console.log(items);
+			// filter newly created items
+			items.forEach(function(item) {
+				if (item.id) {
+					estItemsToUpdate[item.id] = item;
+				} else {
+					estItemsToCreate.push(item);
+				}
+			});
+
+			//create new estimate Items
+			estItemsToCreate = estItemsToCreate.map(function(item) {
+				return createEstimateItem(item, otherData);
+			});
+		//	console.log('created estimate items');
+		//	console.log(estItemsToCreate);
+
+			// update old estimate Items and filter out items to delete.
+			var oldItems = estimateObj.estimateItems;
+			for(var i=0; i < oldItems.length; ++i) {
+				var itemData = estItemsToUpdate[oldItems[i].entity.id];
+				if (! itemData) {
+					itemsToDelete.push(oldItems[i].entity);
+				} else {
+					oldItems[i].entity.set('item', itemData.selectedItem.entity);
+					oldItems[i].entity.set('quantity', Number(itemData.quantity));
+					oldItems[i].entity.set('amount', Number(itemData.amount));
+
+					var discount = Number(itemData.discount);
+					if (discount == 0)
+						oldItems[i].entity.unset('discount');
+					else
+						oldItems[i].entity.set('discount', discount);
+
+					if(! itemData.selectedTax) oldItems[i].entity.unset('tax');
+					else {
+						oldItems[i].entity.set('tax', Parse.Object.extend("Tax")
+							.createWithoutData(itemData.selectedTax.id));
+					}
+					estItems.push(oldItems[i].entity);	
+				}
+				
+			}
+
+		//	console.log('updated estimate items')
+		//	console.log(estItems);
+			estItems = estItems.concat(estItemsToCreate);
+			return Parse.Object.destroyAll(itemsToDelete)
+		})
+		.then(function(delItems) {
+		//	console.log('deleted estimate items');
+		//	console.log(delItems);
+			return Parse.Object.saveAll(estItems);
+		})
+		.then(function(list) {
+		//	console.log('estimate items');
+		//	console.log(list);
+			estimateObj.entity.set('estimateItems', list);
+			return estimateObj.entity.save();
+		})
+		.then(function(estObj) {
+		//	console.log('estimate updated.');
+			return estObj;
 		});
 
 	},
