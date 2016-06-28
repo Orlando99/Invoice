@@ -23,7 +23,7 @@ invoicesUnlimited.factory('userFullFactory',function($q){
 			if (!callback) Parse.User.logOut();
 			Parse.User.logOut().then(function(){
 				currentUser = Parse.User.current();
-				callback();
+				if (callback) callback();
 			});
 		},
 		save  : function(params) {
@@ -41,7 +41,6 @@ invoicesUnlimited.factory('userFullFactory',function($q){
 							 		console.log(error.message);
 							 	}
 							}).then(function(obj){
-								debugger;
 								currentUser = obj;
 								if (callback) callback();
 							},
@@ -88,7 +87,7 @@ invoicesUnlimited.factory('userFullFactory',function($q){
 			query.equalTo("objectId",object.id);
 			query.first({
 				success:function(object){
-					callback(object);
+					if (callback) callback(object);
 				},
 				error : function(object,error){
 					console.log(error.message);
@@ -112,7 +111,7 @@ invoicesUnlimited.factory('userFullFactory',function($q){
 				if (ent) return ent.fetch();
 				else {
 					hideLoader();
-					callback(incomplete);	
+					if (callback) callback(incomplete);	
 				}
 			}
 
@@ -130,7 +129,7 @@ invoicesUnlimited.factory('userFullFactory',function($q){
 			}).then(function(obj){
 				if (obj) parse[obj.className] = obj;
 				hideLoader();
-				callback(incomplete);
+				if (callback) callback(incomplete);
 			});
 		}
 
