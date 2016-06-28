@@ -49,8 +49,22 @@ invoicesUnlimited.factory('userFactory',function(){
 			});
 		};
 
+		currentUser.signup = function(params){
+			var user = new Parse.User;
+			return user.signUp(params,{
+				success: function(user){
+					User.entity.pop();
+					User.entity.push(user);
+				},
+				error : function(user,error){
+					console.log(error.message);
+				}
+			});
+		}
+
 		User.login = currentUser.login;
 		User.logout = currentUser.logout;
+		User.signup = currentUser.signup;
 	}
 
 	setUserFields();

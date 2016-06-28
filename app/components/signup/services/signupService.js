@@ -1,6 +1,19 @@
 'use strict';
 
-invoicesUnlimited.factory('signUpFactory',['userFullFactory',function(userFullFactory){
+invoicesUnlimited.factory('signUpFactory',
+	['userFullFactory',
+	 'userFactory',
+	 'businessFactory',
+	 'accountFactory',
+	 'principalFactory',
+	 'signatureFactory','$q',
+	function(userFullFactory,
+			 userFactory,
+			 businessFactory,
+			 accountFactory,
+			 principalFactory,
+			 signatureFactory,
+			 $q){
 
 	var verificationCode = undefined;
 	var verificationCodeProvider = '';
@@ -8,17 +21,27 @@ invoicesUnlimited.factory('signUpFactory',['userFullFactory',function(userFullFa
 
 	var parseObjects = {};
 
-	if (userFullFactory.authorized()) {
+	var factories = {
+		'_User'			: userFactory,
+		'User' 			: userFactory,
+		'BusinessInfo' 	: businessFactory,
+		'AccountInfo' 	: accountFactory,
+		'PrincipalInfo'	: principalFactory,
+		'Signature'		: signatureFactory
+	};
 
-		var callbackFunc = function(object){
-			if (object) parseObjects[object.className] = object;
-		};
+	/*var factories = [
+		businessFactory,
+		accountFactory,
+		principalFactory,
+		signatureFactory
+	];*/
 
-		callbackFunc(userFullFactory.authorized());
-		userFullFactory.getBusinessInfo(true).then(callbackFunc);
-		userFullFactory.getPrincipalInfo(callbackFunc);
-		userFullFactory.getAccountInfo(callbackFunc);
-	}
+	var loadValues = [];
+
+	/*var promises = loadValues.map(function(elem){
+		return elem.load();
+	});*/
 
 	var newUser = {
 		User : {
@@ -62,15 +85,27 @@ invoicesUnlimited.factory('signUpFactory',['userFullFactory',function(userFullFa
 		}
 	};
 
-	if (userFullFactory.authorized()) {
+	/*$q.all(promises).then(function(res){
+		res.forEach(function(elem){
+			if (!elem) return;
+			parseObjects[elem.entity[0].className] = elem.entity[0];
+			if (elem.entity[0].className == 'BusinessInfo') {
+				for(var field in newUser.BusinessInfo){
+					newUser.BusinessInfo[field] = elem.entity[0].get(field);
+				}
+			}
+		});
+	});*/
+
+	/*if (userFullFactory.authorized()) {
 		var businessInfo = userFullFactory.getBusinessInfo(true).then(function(object){
 			if (object)
 				for(var field in newUser.BusinessInfo){
 					newUser.BusinessInfo[field] = object.get(field);
 				}
 		});
-	}	
-
+	}*/
+	
 	return {
 		getParse : function(className){
 			return parseObjects[className];
@@ -94,8 +129,36 @@ invoicesUnlimited.factory('signUpFactory',['userFullFactory',function(userFullFa
 				accessor += "['"+ancestors[0]+"']";
 			return eval(accessor);
 		},
+		getFactory : function(className){
+			return factories[className];
+		},
+		getField : function(table,field) {
+			if (newUser[table])
+				return newUser[table][field];
+		},
+		setField : function(table,arg1,arg2) {
+			var field, value;
+			switch(arguments.length){
+				case 1:
+					console.log('Error! Not enough arguments!');
+					break;
+				case 2:
+					field = arg1.field;
+					value = arg1.value;
+					break;
+				case 3:
+					field = arg1;
+					value = arg2;
+					break;
+				default:
+					break;
+			}
+
+			if (newUser[table])
+				newUser[table][field] = value;
+		},
 		set : function(table,expr){
-			if (typeof(table) == "object") {
+			if (arguments.length == 1) {
 				expr = table.expr;
 				table = table.table;
 			}
@@ -139,6 +202,20 @@ invoicesUnlimited.factory('signUpFactory',['userFullFactory',function(userFullFa
 		},
 		getObject : function(table,field){
 			return newUser[table][field];
+		},
+		create : function(table){
+			if (factories[table].entity.length) return;
+			return factories[table].createNew(newUser[table]);
+		},
+		signup : function(){
+			return userFactory.signup(newUser.User);
+		},
+		save : function(table,params) {
+			if (factories[table].entity.length)
+				return factories[table]
+					   .entity[0]
+					   .save((params ? params : newUser[table]));
+			return;
 		},
 		Save: function(table,params,callback){
 

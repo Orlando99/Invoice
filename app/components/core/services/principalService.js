@@ -1,24 +1,59 @@
 'use strict';
 
-invoicesUnlimited.factory('principalFactory',['userFactory',function(userFactory){
+invoicesUnlimited.factory('principalFactory',
+	['userFactory',
+	function(userFactory){
 	
-	var user = userFactory.authorized();
+	var user = userFactory;
 
-	if (!user) return undefined;
+	var principalInfo = {entity:[]};
 
-	var principalInfo;
+	var loadPrincipalInfo = function() {
+		var fieldName = "principalInfo", princ_p;
+		
+		if (user.get) princ_p = user.get(fieldName);
+		else if (user.entity[0] && user.entity[0].get)
+			princ_p = user.entity[0].get(fieldName);
 
-	if (!principalInfo) {
-		var fieldName = "principalInfo";
-		var princ_p = user.get(fieldName);
-		principalInfo = princ_p.fetch().then(function(object){
+		if (!princ_p) {
+			principalInfo.empty = true;
+			return princ_p;
+		}
+		
+		return princ_p
+		.fetch()
+		.then(function(object){
 			setObjectOperations({
 				object 		: object,
 				fieldName	: fieldName,
 				parent 		: user,
 				fields 		: null
 			});
-			return object;
+			principalInfo.entity.pop();
+			principalInfo.entity.push(object);
+			return principalInfo;
+		},function(error){
+			console.log(error.message);
+		});
+	}
+
+	principalInfo.load = function(){
+		if (principalInfo.entity.length) return principalInfo.entity[0];
+		return loadPrincipalInfo();
+	}
+
+	principalInfo.createNew = function(params){
+		if (principalInfo.entity.length) return;
+		var ctr = Parse.Object.Extend("PrincipalInfo");
+		var object = new ctr();
+		return object.save(params,{
+			success : function(obj){
+				principalInfo.entity.push(obj);
+				console.log(obj.className + ' created');
+			},
+			error : function(obj,error){
+				console.log(error.message);
+			}
 		});
 	}
 
