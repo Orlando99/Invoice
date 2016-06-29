@@ -44,7 +44,7 @@ invoicesUnlimited.factory('signatureFactory',
 
 	signature.createNew = function(params){
 		if (signature.entity.length) return;
-		var ctr = Parse.Object.Extend("Signature");
+		var ctr = Parse.Object.extend("Signature");
 		var object = new ctr();
 		return object.save(params,{
 			success : function(obj){

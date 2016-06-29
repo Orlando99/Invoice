@@ -30,12 +30,12 @@ invoicesUnlimited.controller('BusinessInfoController',
 		onkeyup : false,
 		onfocusout : false,
 		rules: {
-			company 	: 'required',
-			streetName	: 'required',
-			city 		: 'required',
-			state 		: 'required',
-			zipCode 	: 'required',
-			phoneNumber : 'required',
+			company 			: 'required',
+			streetName			: 'required',
+			city 				: 'required',
+			state 				: 'required',
+			zipCode 			: 'required',
+			phoneNumber 		: 'required',
 			businessDescription : 'required',
 			ownershipType : {
 				OwhershipTypeNotSelected : true
@@ -62,12 +62,12 @@ invoicesUnlimited.controller('BusinessInfoController',
 	});
 
 	$scope.bsnsInfo = {
-		'businessName'  : signUpFactory.get('User','company'),
+		'businessName'  : signUpFactory.getField('User','company'),
 		'streetName'	: '',
 		'city'			: '',
 		'state'			: '',
 		'zipCode'		: '',
-		'phoneNumber'	: signUpFactory.get('User','phonenumber'),
+		'phoneNumber'	: signUpFactory.getField('User','phonenumber'),
 		'businessDescription' : '',
 		'federalTaxID'	: '',
 		ownershipType	: 'Ownership Type'

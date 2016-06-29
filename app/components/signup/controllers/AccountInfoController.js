@@ -1,14 +1,20 @@
 'use strict';
 
-invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFullFactory','signUpFactory',
-	function($scope,$state,userFullFactory,signUpFactory){
+invoicesUnlimited.controller('AccountInfoController',
+	['$scope','$state','userFullFactory','signUpFactory',
+	 'userFactory',
+	function($scope,$state,userFullFactory,signUpFactory,userFactory){
 
-	if (userFullFactory.authorized()) {
+	/*if (userFullFactory.authorized()) {
 		if (!userFullFactory.getBusinessInfo() || !signUpFactory.getParse("BusinessInfo")) {
 			userFullFactory.logout();
 			$state.go('signup');
 		}
-	} else $state.go('signup');
+	} else $state.go('signup');*/
+	/*if (!signUpFactory.getFactory('User').entity.length) {
+		$state.go('signup');
+		return;
+	}*/
 
 	$.validator.addMethod(
 		"AvgSaleRequired",
@@ -53,7 +59,7 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFul
 		}
 	});
 
-	$scope.avgSaleList = [];
+	$scope.avgSaleList 		= [];
 	$scope.monthlySalesList = [];
 	
 	var moneyVal = 0;
@@ -91,36 +97,41 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFul
 		showLoader();
 
 		for (var field in $scope.accountInfo){
-			signUpFactory.set({
-				table : 'AccountInfo',
-				expr  : field + ":" + $scope.accountInfo[field]
+			signUpFactory.setField('AccountInfo',{
+				field : field,
+				value : $scope.accountInfo[field]
 			});
 		}
 
-		signUpFactory.set({
-			table 	: 'AccountInfo',
-			expr	: 'inPerson:' + ($scope.accountInfo['inPerson'] == 'inPerson'? 'true':'false')
+		signUpFactory.setField('AccountInfo',{
+			field : 'inPerson',
+			value : ($scope.accountInfo['inPerson'] == 'inPerson')
 		});
 
-		signUpFactory.setObject({
-			table 	: 'AccountInfo',
-			params  : {
-				field : "userID",
-				value : signUpFactory.getParse("_User")
-			}
-		});
+		var user = signUpFactory.getFactory('User');
 
-		signUpFactory.Save({
-			tableName : 'AccountInfo',
-			callback  : function(){
-				if (!userFullFactory.authorized) return;
-				signUpFactory.Save('User',{
-					accountInfo : signUpFactory.getParse("AccountInfo")
-				},function(){
-					hideLoader();
-					$state.go('signup.signature');
-				});
-			}
+		signUpFactory.setField('AccountInfo',
+							   'userID',
+							   user.entity[0]);
+
+		var account = signUpFactory.create('AccountInfo');
+
+		if (!account) {
+			$state.go('signup');
+			return;
+		}
+
+		account.then(function(obj){
+			var save = signUpFactory.save('User',{'accountInfo':obj});
+			if (save) return save;
+			window.reload();
+		},function(error){
+			console.log(error.message);
+		}).then(function(){
+			hideLoader();
+			$state.go('signup.signature');
+		},function(error){
+			console.log(error.message);
 		});
 	};
 
@@ -135,7 +146,8 @@ invoicesUnlimited.controller('AccountInfoController',['$scope','$state','userFul
 			});
 		}
 		else*/
-		if (userFullFactory.authorized())
+		//if (userFullFactory.authorized())
+		if (signUpFactory.getFactory('User').entity.length)
 			$state.go('dashboard');
 	};
 
