@@ -11,6 +11,7 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 	if (!user.entity.length) {
 		hideLoader();
 		$state.go('login');
+		return;
 	}
 	
 	loadColorTheme(user);
