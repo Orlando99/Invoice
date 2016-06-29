@@ -1,12 +1,15 @@
 'use strict';
 
-invoicesUnlimited.controller('ConfirmController',['$scope','$state','userFullFactory','signUpFactory',
+invoicesUnlimited.controller('ConfirmController',
+	['$scope','$state','userFullFactory','signUpFactory',
 	function($scope,$state,userFullFactory,signUpFactory){
 	
-	if (!userFullFactory.authorized())
-		$state.go('signup');
+	var user = signUpFactory.getFactory('User');
+
+	if (!user.entity.length) $state.go('signup');
 
 	$scope.getStarted = function(){
+		debugger;
 		$state.go('dashboard');
 	}
 }]);

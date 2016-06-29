@@ -7,6 +7,8 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 
 	var user = userFactory;
 	var business = businessFactory;
+
+	debugger;
 	
 	if (!user.entity.length) {
 		hideLoader();

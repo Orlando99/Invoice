@@ -5,16 +5,10 @@ invoicesUnlimited.controller('AccountInfoController',
 	 'userFactory',
 	function($scope,$state,userFullFactory,signUpFactory,userFactory){
 
-	/*if (userFullFactory.authorized()) {
-		if (!userFullFactory.getBusinessInfo() || !signUpFactory.getParse("BusinessInfo")) {
-			userFullFactory.logout();
-			$state.go('signup');
-		}
-	} else $state.go('signup');*/
-	/*if (!signUpFactory.getFactory('User').entity.length) {
+	if (!signUpFactory.getFactory('User').entity.length) {
 		$state.go('signup');
 		return;
-	}*/
+	}
 
 	$.validator.addMethod(
 		"AvgSaleRequired",
@@ -136,17 +130,6 @@ invoicesUnlimited.controller('AccountInfoController',
 	};
 
 	$scope.saveAndContinueLater = function(){
-		/*if (!userFullFactory.authorized){
-			var user = signUpFactory.getParse('_User');
-			userFullFactory.login({
-				username : user.get('username'),
-				password : user.get('password'),
-			},function(){
-				$state.go('dashboard');
-			});
-		}
-		else*/
-		//if (userFullFactory.authorized())
 		if (signUpFactory.getFactory('User').entity.length)
 			$state.go('dashboard');
 	};

@@ -12,32 +12,10 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 
 	var user = userFactory;
 
-	/*if (user) {
-
-		var business = user.get('businessInfo');//userFullFactory.getBusinessInfo('promise');
-		var principal = user.get('principalInfo');//userFullFactory.getPrincipalInfo('promise');
-
-		Parse.Promise.when([
-			business  ? business.fetch()  : business,
-			principal ? principal.fetch() : principal])
-		.then(function(bus,princ){
-			if (bus,princ) {
-				loadColorTheme(user);
-				$state.go('dashboard');
-			}
-			else if (bus) $state.go('signup.principal-info');
-			else $('.errorMessage').html("This account is not complete!").show();
-		},function(err){
-			if (err.length == 2) {
-				if (err[0].code == 101 && 
-					err[1].code == 101) {
-					$('.errorMessage').html("This account is not complete!").show();
-					//userFullFactory.logout();
-					user.logout();
-				}
-			}
-		});
-	}*/
+	if (user.entity.length) {
+		$state.go('dashboard');
+		return;
+	}
 
 	$scope.signUpAction = function(){
 		$state.go('signup');

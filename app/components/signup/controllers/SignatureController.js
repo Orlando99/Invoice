@@ -1,23 +1,8 @@
 'use strict';
 
 invoicesUnlimited.controller('SignatureController',
-	['$scope','$state','userFullFactory','signUpFactory','$ocLazyLoad',
-	function($scope,$state,userFullFactory,signUpFactory,$ocLazyLoad){
-
-	/*if (userFullFactory.authorized()){
-		var businessInfo = userFullFactory.getBusinessInfo();
-		var principalInfo = userFullFactory.getPrincipalInfo();
-		var accountInfo = userFullFactory.getAccountInfo();
-
-		if (businessInfo) {
-			if (principalInfo) {
-				if (!accountInfo) $state.go('signup.account-info');
-			} else $state.go('signup.principal-info');
-		} else {
-			userFullFactory.logout();
-			$state.go('signup');
-		}
-	} else $state.go('signup');*/
+	['$scope','$state','signUpFactory','$ocLazyLoad',
+	function($scope,$state,signUpFactory,$ocLazyLoad){
 
 	var user = signUpFactory.getFactory('User');
 
@@ -59,8 +44,7 @@ invoicesUnlimited.controller('SignatureController',
 
 		signature.then(function(obj){
 			var save = signUpFactory.save('User',{
-				field : 'signatureImage',
-				value : signUpFactory.getFactory('Signature').entity[0]
+				'signatureImage' : signUpFactory.getFactory('Signature').entity[0]
 			});
 			if (save) return save;
 			window.reload();
