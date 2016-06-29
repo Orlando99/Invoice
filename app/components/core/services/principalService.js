@@ -7,6 +7,7 @@ invoicesUnlimited.factory('principalFactory',
 	var user = userFactory;
 
 	var principalInfo = {entity:[]};
+	var fields;
 
 	var loadPrincipalInfo = function() {
 		var fieldName = "principalInfo", princ_p;
@@ -26,7 +27,7 @@ invoicesUnlimited.factory('principalFactory',
 			setObjectOperations({
 				object 		: object,
 				fieldName	: fieldName,
-				parent 		: user,
+				parent 		: user.entity.length ? user.entity[0] : null,
 				fields 		: null
 			});
 			principalInfo.entity.pop();
@@ -48,6 +49,11 @@ invoicesUnlimited.factory('principalFactory',
 		var object = new ctr();
 		return object.save(params,{
 			success : function(obj){
+				setObjectOperations({
+					object 		: obj,
+					fieldName	: "principalInfo",
+					parent 		: user.entity.length ? user.entity[0] : null,
+					fields 		: fields});
 				principalInfo.entity.push(obj);
 				console.log(obj.className + ' created');
 			},

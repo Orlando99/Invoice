@@ -27,7 +27,7 @@ invoicesUnlimited.factory('signatureFactory',
 			setObjectOperations({
 				object 		: object,
 				fieldName	: fieldName,
-				parent 		: user,
+				parent 		: user.entity.length ? user.entity[0] : null,
 				fields 		: fields});
 			signature.entity.pop();
 			signature.entity.push(object);
@@ -48,6 +48,11 @@ invoicesUnlimited.factory('signatureFactory',
 		var object = new ctr();
 		return object.save(params,{
 			success : function(obj){
+				setObjectOperations({
+					object 		: obj,
+					fieldName	: "signatureImage",
+					parent 		: user.entity.length ? user.entity[0] : null,
+					fields 		: fields});
 				signature.entity.push(obj);
 				console.log(obj.className + ' created');
 			},

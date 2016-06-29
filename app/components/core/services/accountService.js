@@ -5,6 +5,7 @@ invoicesUnlimited.factory('accountFactory',['userFactory',function(userFactory){
 	var user = userFactory;
 
 	var accountInfo = {entity:[]};
+	var fields;
 
 	var loadAccountInfo = function(){
 		var fieldName = "accountInfo", acc_p;
@@ -24,7 +25,7 @@ invoicesUnlimited.factory('accountFactory',['userFactory',function(userFactory){
 			setObjectOperations({
 				object 		: object,
 				fieldName	: fieldName,
-				parent 		: user,
+				parent 		: user.entity.length ? user.entity[0] : null,
 				fields 		: null
 			});
 			accountInfo.entity.pop();
@@ -44,6 +45,11 @@ invoicesUnlimited.factory('accountFactory',['userFactory',function(userFactory){
 		var object = new ctr();
 		return object.save(params,{
 			success : function(obj){
+				setObjectOperations({
+					object 		: obj,
+					fieldName	: "accountInfo",
+					parent 		: user.entity.length ? user.entity[0] : null,
+					fields 		: fields});
 				accountInfo.entity.push(obj);
 				console.log(obj.className + ' created');
 			},

@@ -34,7 +34,7 @@ invoicesUnlimited.factory('businessFactory',
 			setObjectOperations({
 				object 		: object,
 				fieldName	: fieldName,
-				parent 		: user,
+				parent 		: user.entity.length ? user.entity[0] : null,
 				fields 		: fields});
 			businessInfo.entity.pop();
 			businessInfo.entity.push(object);
@@ -55,6 +55,11 @@ invoicesUnlimited.factory('businessFactory',
 		var object = new ctr();
 		return object.save(params,{
 			success : function(obj){
+				setObjectOperations({
+					object 		: obj,
+					fieldName	: "businessInfo",
+					parent 		: user.entity.length ? user.entity[0] : null,
+					fields 		: fields});
 				businessInfo.entity.push(obj);
 				console.log(obj.className + ' created');
 			},
