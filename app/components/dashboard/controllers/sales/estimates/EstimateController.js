@@ -1,12 +1,17 @@
 'use strict';
 
 invoicesUnlimited.controller('EstimateController',['$q', '$scope', '$state', '$controller',
-	'userFullFactory', 'estimateService', 'coreFactory', 'taxFactory', 'expenseService', 'currencyFilter',
+	'userFactory', 'estimateService', 'coreFactory', 'taxService', 'expenseService', 'currencyFilter',
 
-function($q, $scope, $state, $controller, userFullFactory, estimateService,
-	coreFactory, taxFactory, expenseService, currencyFilter) {
+function($q, $scope, $state, $controller, userFactory, estimateService,
+	coreFactory, taxService, expenseService, currencyFilter) {
 
-var user = userFullFactory.authorized();
+if(! userFactory.entity.length) {
+	console.log('User not logged in');
+	return undefined;
+}
+
+var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
@@ -64,7 +69,7 @@ function prepareToEditEstimate() {
 		$scope.itemsWithIdinDel = 0;
 		
 		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
-			return estimate.entity.get('customer').id === cust.entity.id;
+			return estimate.entity.get('customer').id == cust.entity.id;
 		})[0];
 		return $q.when(customerChangedHelper());
 	})
@@ -480,7 +485,7 @@ function LoadRequiredData() {
 	});
 	promises.push(p);
 
-	p = taxFactory.getTaxes(user, function(taxes) {
+	p = taxService.getTaxes(user, function(taxes) {
 		$scope.taxes = taxes;
 	});
 	promises.push(p);

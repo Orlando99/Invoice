@@ -1,23 +1,22 @@
 'use strict';
 
-invoicesUnlimited.factory('estimateFactory', ['userFactory', 'estimateItemFactory',
+invoicesUnlimited.factory('creditNoteFactory', ['userFactory', 'creditNoteItemFactory',
 
-function(userFactory, estimateItemFactory) {
+function(userFactory, creditNoteItemFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
 	return undefined;
 }
 
-function Estimate (parseObject, params) {
+function CreditNote (parseObject, params) {
 	if (!parseObject) return undefined;
-	var estimateFields;
+	var creditNoteFields;
 
-	if(params.operation == "listEstimates") {
-		estimateFields = [
-			"estimateNumber", "estimateDate",
-			"totalAmount", "referenceNumber",
-			"status"
+	if(params.operation == "listCreditNotes") {
+		creditNoteFields = [
+			"creditNumber", "creditNoteDate", "reference",
+			"total", "remainingCredits", "status"
 		];
 		var customer = parseObject.get("customer");
 		if (customer) {
@@ -31,26 +30,23 @@ function Estimate (parseObject, params) {
 			this.customer = customer;
 		}
 
-	} else if (params.operation == "getEstimate") {
-		estimateFields = [
-			'customer', 'estimateDate', 'referenceNumber',
-			'estimateNumber', 'status', 'adjustments',
-			'discountType', 'discounts', 'shippingCharges',
-			'subTotal', 'totalAmount', 'notes', 'termsConditions',
-			'salesPerson'
+	} else if (params.operation === "getCreditNote") {
+		creditNoteFields = [
+			'customer', 'creditNoteDate', 'creditNumber', 'status',
+			'subTotal', 'total', 'notes', 'terms', 'reference'
 		];
-		var estimateItems = parseObject.get('estimateItems');
-		if (estimateItems) {
-			estimateItems = estimateItems.map(function(elem){
-				var item = new estimateItemFactory(elem);
+		var creditItems = parseObject.get('creditNoteItems');
+		if (creditItems) {
+			creditItems = creditItems.map(function(elem){
+				var item = new creditNoteItemFactory(elem);
 				return item;
 			});
-			this.estimateItems = estimateItems;
+			this.creditItems = creditItems;
 		}
 
 	} else if(params.operation == 'sendReceipt') {
-		estimateFields = [
-			'totalAmount' ,'estimateReceipt', 'customerEmails'
+		creditNoteFields = [
+			'remainingCredits' ,'creditReceipt', 'customerEmails'
 		];
 		var customer = parseObject.get("customer");
 		if (customer) {
@@ -78,10 +74,12 @@ function Estimate (parseObject, params) {
 		object 		: parseObject,
 		fieldName	: undefined,
 		parent 		: undefined,
-		fields 		: estimateFields
+		fields 		: creditNoteFields
 	});
 	this.entity = parseObject;
+
 };
 
-return Estimate;
+return CreditNote;
+
 }]);

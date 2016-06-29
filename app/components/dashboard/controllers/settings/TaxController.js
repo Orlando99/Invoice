@@ -1,14 +1,18 @@
 'use strict';
 
 invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
-	'userFullFactory', 'taxFactory',
-	function($scope,$state,$controller,userFullFactory,taxFactory){
+	'userFactory', 'taxService',
+	function($scope,$state,$controller,userFactory,taxService){
 
-	var user = userFullFactory.authorized();
+	if(! userFactory.entity.length) {
+		console.log('User not logged in');
+		return undefined;
+	}
+
+	var user = userFactory.entity[0];
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
 	getTaxes();
-	loadColorTheme(user);
 	initalizeModalClasses();
 	initializeScopeVariables();
 
@@ -20,7 +24,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 	}
 
 	function getTaxes() {
-		taxFactory.getTaxes(user,function(taxContent){
+		taxService.getTaxes(user,function(taxContent){
 			$scope.taxes = taxContent;
 		});
 	}
@@ -44,7 +48,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 			user: user
 		};
 
-		taxFactory.saveNewTax(params, function(response){
+		taxService.saveNewTax(params, function(response){
 			console.log(response);
 			$(".new-tax").removeClass("show");
 			getTaxes();
@@ -68,7 +72,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 			taxRate: $scope.taxRate,
 			isCompound: $scope.isCompound
 		};
-		var promise = taxFactory.saveEditedTax(params);
+		var promise = taxService.saveEditedTax(params);
 		$(".edit-tax").removeClass("show");
 
 		promise.then(function(res) {

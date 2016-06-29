@@ -1,13 +1,18 @@
 'use strict';
 
 invoicesUnlimited.controller('CreateInvoiceController',
-	['$scope', '$state', '$controller', '$q', 'userFullFactory',
-	'invoiceService', 'coreFactory', 'taxFactory', 'expenseService',
+	['$scope', '$state', '$controller', '$q', 'userFactory',
+	'invoiceService', 'coreFactory', 'taxService', 'expenseService',
 	'currencyFilter',
-	function($scope, $state, $controller, $q, userFullFactory,
-		invoiceService,coreFactory,taxFactory,expenseService,currencyFilter) {
+	function($scope, $state, $controller, $q, userFactory,
+		invoiceService,coreFactory,taxService,expenseService,currencyFilter) {
 
-	var user = userFullFactory.authorized();
+	if(! userFactory.entity.length) {
+		console.log('User not logged in');
+		return undefined;
+	}
+
+	var user = userFactory.entity[0];
 	var organization = user.get("organizations")[0];
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
@@ -52,7 +57,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		});
 		promises.push(p);
 
-		p = taxFactory.getTaxes(user, function(taxes) {
+		p = taxService.getTaxes(user, function(taxes) {
 			$scope.taxes = taxes;
 		});
 		promises.push(p);
@@ -77,6 +82,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			$scope.invoiceNo = "";
 			$scope.disableInvNo = false;
 		}
+		$scope.notes = $scope.prefs.notes;
+		$scope.terms = $scope.prefs.terms;
 
 		$scope.paymentTerms = {
 			terms : [
@@ -172,8 +179,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			balanceDue : Number($scope.total),
 			poNumber : $scope.poNumber,
 			salesPerson : $scope.salesPerson,
-			notes : $scope.notes || $scope.prefs.notes,
-			terms : $scope.terms || $scope.prefs.terms
+			notes : $scope.notes,
+			terms : $scope.terms
 
 		};
 		if ($scope.paymentTerms.selectedTerm.value == 1)

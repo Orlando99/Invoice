@@ -1,13 +1,18 @@
 'use strict';
 
 invoicesUnlimited.controller('CreateEstimateController',
-	['$scope', '$state', '$controller', '$q', 'userFullFactory',
-	'estimateService', 'coreFactory', 'taxFactory', 'expenseService',
+	['$scope', '$state', '$controller', '$q', 'userFactory',
+	'estimateService', 'coreFactory', 'taxService', 'expenseService',
 	'currencyFilter',
-function($scope, $state, $controller, $q, userFullFactory,
-	estimateService,coreFactory,taxFactory,expenseService,currencyFilter) {
+function($scope, $state, $controller, $q, userFactory,
+	estimateService,coreFactory,taxService,expenseService,currencyFilter) {
 
-var user = userFullFactory.authorized();
+if(! userFactory.entity.length) {
+	console.log('User not logged in');
+	return undefined;
+}
+
+var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 prepareToCreateEstimate();
@@ -52,7 +57,7 @@ function prepareToCreateEstimate() {
 	promises.push(p);
 
 	// TODO: tax factory
-	p = taxFactory.getTaxes(user, function(taxes) {
+	p = taxService.getTaxes(user, function(taxes) {
 		$scope.taxes = taxes;
 	});
 	promises.push(p);
@@ -77,6 +82,8 @@ function prepareForm() {
 		$scope.estimateNo = "";
 		$scope.disableEstNo = false;
 	}
+	$scope.notes = $scope.prefs.notes;
+	$scope.terms = $scope.prefs.terms;
 
 	$scope.todayDate = new Date();
 	$scope.subTotalStr = currencyFilter(0, '$', 2);
@@ -343,8 +350,8 @@ function saveEstimate() {
 		totalAmount : Number($scope.total),
 		referenceNumber : $scope.refNumber,
 		salesPerson : $scope.salesPerson,
-		notes : $scope.notes || $scope.prefs.notes,
-		termsConditions : $scope.terms || $scope.prefs.terms
+		notes : $scope.notes,
+		termsConditions : $scope.terms
 
 	};
 	var email = $scope.selectedCustomer.entity.email;

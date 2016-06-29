@@ -1,7 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('expenseService', ['$q', 'expenseFactory',
-function($q, expenseFactory) {
+invoicesUnlimited.factory('expenseService', ['expenseFactory',
+function(expenseFactory) {
 
 return {
 	getExpenseDetails : function(expenseId) {

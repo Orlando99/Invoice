@@ -324,7 +324,7 @@ angular.module('invoicesUnlimited')
 					},
 					views : {
 						'@' : {
-							controller 	 : 'CreditNoteController',
+							controller 	 : 'CreateCreditNoteController',
 							templateUrl : COMPONENTS + 'dashboard/views/sales/creditnotes/new.creditnote.html'
 						}
 					}
@@ -340,59 +340,6 @@ angular.module('invoicesUnlimited')
 					}
 				}
 			}
-
-/*
-			index : {
-				name 	: 'dashboard.sales',
-				url 	: '/sales',
-				views 	: {
-					'@' : {
-						controller  : 'InvoiceController',
-						templateUrl : COMPONENTS + 'dashboard/views/sales/sales.html'
-					}
-				}
-			},
-			Estimates 	: {
-				name	: 'dashboard.sales.estimates',
-				url 	: '/estimates',
-				views 	: {
-					'@'	: {
-						controller 	: 'EstimateController',
-						templateUrl	: COMPONENTS + 'dashboard/views/sales/estimates/estimates.html'
-					}
-				}
-			},
-			Invoices 	: {
-				name	: 'dashboard.sales.invoices',
-				url 	: '/invoices',
-				views 	: {
-					'@'	: {
-						controller 	: 'InvoiceController',
-						templateUrl	: COMPONENTS + 'dashboard/views/sales/invoices/invoices.html'
-					}
-				}
-			},
-			NewInvoice	: {
-				name	: 'dashboard.sales.new-invoice',
-				url 	: '/new-invoice',
-				views 	: {
-					'@' : {
-						controller : 'CreateInvoiceController',
-						templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/new.invoice.html'
-					}
-				}
-			},
-			CreditNotes : {
-				name	: 'dashboard.sales.credit-notes',
-				url 	: '/credit-notes',
-				views 	: {
-					'@' : {
-						controller 	: 'CreditNotesController',
-						templateUrl	: COMPONENTS + 'dashboard/views/sales/creditnotes/creditnotes.html'
-					}
-				}
-			}
-*/
 		},
 		expenses : {
 			index : {

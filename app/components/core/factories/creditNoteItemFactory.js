@@ -1,26 +1,27 @@
 'use strict';
 
-invoicesUnlimited.factory('expenseCategoryFactory', ['userFactory', function(userFactory) {
+invoicesUnlimited.factory('creditNoteItemFactory', function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
 	return undefined;
 }
 
-var ExpenseCategory = function(parseObject) {
+function CreditNoteItem (parseObject) {
 	if (!parseObject) return undefined;
-	var categoryFields = [
-		'color', 'name', 'notes'
+	
+	var creditNoteItemFields = [
+		'item', 'tax', 'quantity', 'amount', 'ACL'
 	];
 
 	setObjectOperations({
 		object 		: parseObject,
 		fieldName	: undefined,
 		parent 		: undefined,
-		fields 		: categoryFields
+		fields 		: creditNoteItemFields
 	});
 	this.entity = parseObject;
 };
 
-return ExpenseCategory;
-}]);
+return CreditNoteItem;
+});

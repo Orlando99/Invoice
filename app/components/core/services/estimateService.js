@@ -1,7 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('estimateService', ['$q', 'estimateFactory', 'itemService', 'currencyFilter',
-function($q, estimateFactory, itemService, currencyFilter){
+invoicesUnlimited.factory('estimateService', ['estimateFactory', 'itemService', 'currencyFilter',
+function(estimateFactory, itemService, currencyFilter){
 
 return {
 	test : function() {

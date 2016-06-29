@@ -1,14 +1,19 @@
 'use strict';
 
 invoicesUnlimited.controller('InvoiceController',
-	['$q', '$scope', '$state', '$controller', 'userFullFactory',
-		'invoiceService', 'coreFactory', 'taxFactory', 'expenseService',
+	['$q', '$scope', '$state', '$controller', 'userFactory',
+		'invoiceService', 'coreFactory', 'taxService', 'expenseService',
 		'currencyFilter',
 
-function($q, $scope, $state, $controller, userFullFactory,
-	invoiceService, coreFactory, taxFactory, expenseService, currencyFilter) {
+function($q, $scope, $state, $controller, userFactory,
+	invoiceService, coreFactory, taxService, expenseService, currencyFilter) {
 
-var user = userFullFactory.authorized();
+if(! userFactory.entity.length) {
+	console.log('User not logged in');
+	return undefined;
+}
+
+var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
@@ -522,7 +527,7 @@ function LoadRequiredData() {
 	});
 	promises.push(p);
 
-	p = taxFactory.getTaxes(user, function(taxes) {
+	p = taxService.getTaxes(user, function(taxes) {
 		$scope.taxes = taxes;
 	});
 	promises.push(p);

@@ -364,8 +364,8 @@ return {
 			return fillInHtmlData(xml.url(), data.htmlFile.url(), data.cardUrl);
 		})
 		.then(function(newHtml) {
-			var invoiceFile = new Parse.File("test2.html",{base64: newHtml});
-			return invoiceFile.save();
+			var receiptFile = new Parse.File("test2.html",{base64: newHtml});
+			return receiptFile.save();
 		})
 		.then(function(html) {
 			data.invoiceObj.set("invoiceLabels", data.xml);

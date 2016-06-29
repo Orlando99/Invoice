@@ -1,12 +1,16 @@
 'use strict';
 
 invoicesUnlimited.controller('ItemController',['$scope', '$state', '$controller', '$q',
-	'userFullFactory', 'coreFactory',
-	function($scope,$state,$controller,$q,userFullFactory, coreFactory){
+	'userFactory', 'coreFactory',
+	function($scope,$state,$controller,$q,userFactory, coreFactory){
 
-	var user = userFullFactory.authorized();
+	if(! userFactory.entity.length) {
+		console.log('User not logged in');
+		return undefined;
+	}
+
+	var user = userFactory.entity[0];
 	$controller('DashboardController',{$scope:$scope,$state:$state});
-	loadColorTheme(user);
 	initalizeModalClasses();
 
 	loadItems();

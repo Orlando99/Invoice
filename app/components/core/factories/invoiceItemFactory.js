@@ -2,8 +2,10 @@
 
 invoicesUnlimited.factory('invoiceItemFactory', function(userFactory) {
 
-var user = userFactory;
-if (!user) return undefined;
+if(! userFactory.entity.length) {
+	console.log('User not logged in');
+	return undefined;
+}
 
 function InvoiceItem (parseObject) {
 	if (!parseObject) return undefined;
