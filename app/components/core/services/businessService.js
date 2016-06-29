@@ -45,7 +45,7 @@ invoicesUnlimited.factory('businessFactory',
 	}
 
 	businessInfo.load = function(){
-		if (businessInfo.entity.length) return businessInfo.entity[0];
+		if (businessInfo.entity.length) return businessInfo;
 		return loadBusinessInfo();
 	}
 

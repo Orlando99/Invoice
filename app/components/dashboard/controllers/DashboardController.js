@@ -7,13 +7,10 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 
 	var user = userFactory;
 	var business = businessFactory;
-
-	debugger;
 	
 	if (!user.entity.length) {
 		hideLoader();
 		$state.go('login');
-		return;
 	}
 	
 	loadColorTheme(user);
@@ -32,10 +29,10 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 	$q
 	.all([businessFactory.load()])
 	.then(function(obj){
-		if (obj[0].entity.length) {
+		if (obj.length && obj[0]) {
 			$scope.businessInfo = obj[0].entity[0];
 			hideLoader();
-		}
-		else $scope.logOut();
-	});	
+		} else $scope.logOut();			
+	});
+
 }]);
