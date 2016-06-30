@@ -133,10 +133,30 @@ label#verificationCode-error {
 	height: 100%;
 	background-image: url('./../images/overlay.png');
 	background-repeat: repeat;
+	 opacity: 0.5;
 }
 
 .loader {
 	padding-top: 300px;
 	display: block;
 	margin: auto;
+}
+
+.button-primary:hover{
+	background-color: #0a61db;
+	color: #fff;
+}
+
+.button-primary:active{
+	background-color: #084caa;
+}
+
+.button-neutral-lg:hover {
+	background-color: #3183f5;
+	color: #fff;
+}
+
+.button-neutral-lg:active {
+	background-color: #084caa;
+	color: #fff;
 }
