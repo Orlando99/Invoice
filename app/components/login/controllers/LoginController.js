@@ -31,7 +31,7 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 			$('.errorMessage').html('').hide();
 			$state.go('dashboard');
 		},function(error){
-			//hideLoader();
+			hideLoader();
 			$('.errorMessage').html(error.message.capitilize()).show();
 			$('.input-container').css({'border':'1px solid red'});
 			//$('.input-container input').val('');
