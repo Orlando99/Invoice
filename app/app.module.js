@@ -38,9 +38,11 @@ var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router','oc.laz
   };
 });
 
+/*
 $(window).on('beforeunload',function(e){
     Parse.User.logOut();
 });
+*/
 
 function ShowMessage(text,type) {
   $('.message-type,.close-btn').addClass(type);

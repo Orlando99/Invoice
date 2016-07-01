@@ -8,29 +8,30 @@
     <table class="data-table">
       <tr class="thead">
         <td class="tcell-fw text-center">
-          <h3 class="text-uppercase">Total Unpaid Invoices: <span class="text-color-normalize">6, $10.00</span></h3>
+          <h3 class="text-uppercase">Total Unpaid Invoices: <span class="text-color-normalize">
+            {{unpaidInvoiceCount}}, {{unpaidInvoiceAmount}}</span></h3>
         </td>
       </tr>
       <tr class="tbody equal-cells">
         <td class="tcell-aw">
           <h4 class="text-uppercase text-color-light">Current</h4>
-          <h4 class="text-positive text-weight-normalize">$00.00</h4>
+          <h4 class="text-positive text-weight-normalize">$0.00</h4>
         </td>
         <td class="tcell-aw">
           <h4 class="text-uppercase text-color-light">1-15 Days</h4>
-          <h4 class="text-danger text-weight-normalize">$00.00</h4>
+          <h4 class="text-danger text-weight-normalize">$0.00</h4>
         </td>
         <td class="tcell-aw">
           <h4 class="text-color-light">16-30 Days</h4>
-          <h4 class="text-danger text-weight-normalize">$00.00</h4>
+          <h4 class="text-danger text-weight-normalize">$0.00</h4>
         </td>
         <td class="tcell-aw">
           <h4 class="text-color-light">31-45 Days</h4>
-          <h4 class="text-danger text-weight-normalize">$00.00</h4>
+          <h4 class="text-danger text-weight-normalize">$0.00</h4>
         </td>
         <td class="tcell-aw">
           <h4 class="text-color-light">Over 45 Days</h4>
-          <h4 class="text-danger text-weight-normalize">$00.00</h4>
+          <h4 class="text-danger text-weight-normalize">$0.00</h4>
         </td>
       </tr>
     </table>
@@ -50,17 +51,17 @@
       <li>
         <h4 class="text-weight-normalize text-color-normalize">Total Sales</h4>
         <span class="dotted-separator"></span>
-        <h3 class="text-positive text-weight-normalize">$62.00</h3>
+        <h3 class="text-positive text-weight-normalize">{{totalSalesAmount}}</h3>
       </li>
       <li>
         <h4 class="text-weight-normalize text-color-normalize">Total Receipts</h4>
         <span class="dotted-separator"></span>
-        <h3 class="text-info text-weight-normalize">$96.00</h3>
+        <h3 class="text-info text-weight-normalize">{{totalReceiptAmount}}</h3>
       </li>
       <li>
         <h4 class="text-weight-normalize text-color-normalize">Total Expenses</h4>
         <span class="dotted-separator"></span>
-        <h3 class="text-danger text-weight-normalize">$58.00</h3>
+        <h3 class="text-danger text-weight-normalize">{{totalExpenseAmount}}</h3>
       </li>
     </ul>
 
@@ -97,15 +98,18 @@
         <ul class="container list-clear Expenses-list">
           <li>
             <h4 class="float-left text-color-normalize text-weight-normalize">Total</h4>
-            <h4 class="float-right text-color-normalize text-weight-normalize text-emphasize text-info">02:15</h4>
+            <h4 class="float-right text-color-normalize text-weight-normalize text-emphasize text-info">
+              {{totalExpenseAmount}}</h4>
             <div class="clearfix"></div>
           </li>
-          <li>
-            <h4 class="float-left text-color-normalize text-weight-normalize">The Sunrise Hall Interior Design</h4>
-            <h4 class="float-right text-color-normalize text-weight-normalize">00:55</h4>
+
+          <li ng-repeat="exp in expenseList">
+            <h4 class="float-left text-color-normalize text-weight-normalize">{{exp.name}}</h4>
+            <h4 class="float-right text-color-normalize text-weight-normalize">{{exp.value}}</h4>
             <div class="clearfix"></div>
-            <p class="text-small">John Doe</p>
+            <p class="text-small">{{exp.customer}}</p>
           </li>
+          <!--
           <li>
             <h4 class="float-left text-color-normalize text-weight-normalize">Betsy Estates Interior Design</h4>
             <h4 class="float-right text-color-normalize text-weight-normalize">01:00</h4>
@@ -118,6 +122,7 @@
             <div class="clearfix"></div>
             <p class="text-small">Frank West</p>
           </li>
+        -->
         </ul>
       </div>
       <div class="tab layout-padding" data-name="tab2">
