@@ -5,9 +5,7 @@ invoicesUnlimited.controller('AppPreferencesController',
 	function($scope,$state,$controller,userFactory,businessFactory){
 
 	var user = userFactory;
-
 	$controller('DashboardController',{$scope:$scope,$state:$state});
-
 	loadColorTheme(user);
 
 	if (user.entity[0].get('colorTheme')) {
