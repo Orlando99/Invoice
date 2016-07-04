@@ -52,6 +52,14 @@ invoicesUnlimited.factory('userFactory',function(){
 					console.log(error.message);
 				}
 			});
+		};
+
+		User.save = function(params){
+			if (!User.entity.length) {
+				console.log('Unable to save user. The user is undefined');
+				return;
+			}
+			return User.entity[0].save(params);
 		}
 	}
 

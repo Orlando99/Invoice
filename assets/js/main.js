@@ -117,7 +117,9 @@ $(document).on("click",".colors li",
         $(".colors li").removeClass("active"),
         $(elem.target).parent().addClass("active");
         var color = $(elem.target).attr('class').replace(" active","");
-        if (color && color != 'undefined') {
-            $('#appStyle').attr('href',CSS_DIR + 'main.' + color + '.css')
+        if (color && color != 'blue') {
+            $('#appStyle').attr('href',CSS_DIR + 'main.' + color + '.css');
+        } else if (color == 'blue' || color == 'undefined') {
+            $('#appStyle').attr('href',"");
         }
 	});

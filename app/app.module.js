@@ -72,6 +72,8 @@ function loadColorTheme(user){
   if (color) color = color.replace(/app|Color/g,"").toLowerCase();
   if (color && color != 'blue' && color != 'undefined') {
     $('#appStyle').attr('href',CSS_DIR + 'main.' + color + '.css');
+  } else if (color == 'blue' || color == 'undefined') {
+    $('#appStyle').attr('href',"");
   }
 }
 
