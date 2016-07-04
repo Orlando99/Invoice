@@ -313,6 +313,38 @@ return {
 
 		});
 	},
+	setPreferences : function (user, params) {
+		var organization = getOrganization(user);
+		if (! organization) {
+			var message = 'user: ' + user.id + ' has no Organization assigned.'
+			return Parse.Promise.error(message);
+		}
+
+		var promises = [];
+		organization.set('invoiceFields', params.customFields);
+		if(params.invoiceAg) {
+			organization.set('invoiceNumber', params.invoiceNumber);
+		}
+		promises.push(organization.save());
+
+		var Preference = Parse.Object.extend('Preferencies');
+		var query = new Parse.Query(Preference);
+		query.equalTo("organization", organization);
+	
+		return query.first().then(function(prefObj) {
+			prefObj.set("invoiceAg", params.invoiceAg);
+			prefObj.set("invoiceSalesPerson", params.salesPerson);
+			prefObj.set("invoiceDiscount", params.discountType);
+			prefObj.set("invoiceAdjustments", params.adjustments);
+			prefObj.set("invoiceShippingCharges", params.shipCharges);
+			prefObj.set("invoiceNotes", params.notes);
+			prefObj.set("invoiceTerms", params.terms);
+
+			promises.push(prefObj.save());
+			return Parse.Promise.when(promises);
+		});
+
+	},
 	listInvoices : function(user) {
 		var organization = getOrganization(user);
 		if (! organization)	return;
