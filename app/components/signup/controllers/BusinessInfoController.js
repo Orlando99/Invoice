@@ -102,29 +102,68 @@ invoicesUnlimited.controller('BusinessInfoController',
 		if (!$('#signUpForm').valid()) return;
 
 		showLoader();
-
 		for (var field in $scope.bsnsInfo){
 			signUpFactory.setField('BusinessInfo',{
 				field : field,
 				value : $scope.bsnsInfo[field]
 			});
 		}
-
 		var user = signUpFactory.getFactory('User');
-
 		signUpFactory.setField('BusinessInfo',
 							   'userID',
 							   user.entity[0]);
 
-		var business = signUpFactory.create('BusinessInfo');
+		var Organization = Parse.Object.extend('Organization');
+		var org = new Organization();
+		org.set('userID', user.entity[0]);
+		org.set('name', signUpFactory.getField('User', 'company'));
+		org.set('email', signUpFactory.getField('User', 'email'));
+		org.set('invoiceNumber', 'INV-0001');
+		org.set('estimateNumber', 'EST-0001');
+		org.set('creditNumber', 'CN-0001');
+		org.set('fiscalYearStart', 'January');
+		org.set('dateFormat', 'MM/dd/yyyy');
+		org.set('fieldSeparator', '/');
+		org.set('language', 'en-us');
+		// set timezone somehow
+		org.set('timeZone', '( PDT ) America/Los_Angeles ( Pacific Standard Time )');
 
-		if (!business) {
-			$state.go('signup');
-			return;
-		}
+		var data = {};
+		org.save().then(function(obj) {
+			data.organization = obj;
+			signUpFactory.setField('BusinessInfo', 'organization', obj);
 
-		business.then(function(obj){
-			var save = signUpFactory.save('User',{'businessInfo':obj});
+			var Currency = Parse.Object.extend('Currency');
+			var currency = new Currency();
+
+			return currency.save({
+				'userID' : user.entity[0],
+				'organization' : obj,
+				'currencySymbol' : '$',
+				'decimalPlace' : 2,
+				'format' : '###,###,###',
+				'title' : 'USD - US Dollar'
+			});
+		})
+		.then(function(obj) {
+			data.currency = obj;
+			
+			var business = signUpFactory.create('BusinessInfo');
+
+			if (!business) {
+				$state.go('signup');
+				return;
+			}
+
+			return business;	
+		})
+		.then(function(obj){
+			var save = signUpFactory.save('User',{
+				'businessInfo' : obj,
+				'organizations' : [data.organization],
+				'selectedOrganization' : data.organization,
+				'currency' : data.currency
+			});
 			if (save) return save;
 			window.reload();
 		},function(error){

@@ -51,7 +51,13 @@ invoicesUnlimited.factory('signUpFactory',
 			email		: '',
 			username	: '',
 			password	: '',
-			phonenumber	: ''
+			phonenumber	: '',
+			colorTheme : 'appBlueColor',
+			role : 'Admin',
+			firstScreen : 'Overview',
+			getInvoiceNotification : 1,
+			isTrackUsage : 1,
+			subscription : false
 		},
 		AccountInfo : {
 			bankName		: '',

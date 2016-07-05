@@ -138,6 +138,10 @@ invoicesUnlimited.controller('PrincipalInfoController',
 				value : $scope.principalInfo[field]
 			});
 		}
+		signUpFactory.setField('PrincipalInfo',{
+			field : 'organization', 
+			value : getBusField('organization')
+		});
 
 		var user = signUpFactory.getFactory('User');
 

@@ -102,6 +102,11 @@ invoicesUnlimited.controller('AccountInfoController',
 			value : ($scope.accountInfo['inPerson'] == 'inPerson')
 		});
 
+		signUpFactory.setField('AccountInfo',{
+			field : 'organization',
+			value : signUpFactory.getField('BusinessInfo', 'organization')
+		});
+
 		var user = signUpFactory.getFactory('User');
 
 		signUpFactory.setField('AccountInfo',

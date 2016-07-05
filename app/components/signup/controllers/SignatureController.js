@@ -11,6 +11,7 @@ invoicesUnlimited.controller('SignatureController',
 		return;
 	}
 
+	$scope.fullName = signUpFactory.getField('User', 'fullName');
 	$('h2.text-uppercase').css({padding:'50px 0',margin:0});
 	$('.signature').css({height:$(window).height()-$('.sticky-nav').height() - parseInt($('.sticky-nav').css('padding-top'))*2 - 1});
 

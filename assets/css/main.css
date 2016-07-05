@@ -160,3 +160,7 @@ label#verificationCode-error {
 	background-color: #084caa;
 	color: #fff;
 }
+
+.tooltip-sec:hover .info-tooltip{
+	z-index: 1 !important;
+}
