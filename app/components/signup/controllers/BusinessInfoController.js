@@ -18,10 +18,16 @@ $(document).ready(function(){
 });
 
 invoicesUnlimited.controller('BusinessInfoController',
-	['$scope','$state','signUpFactory','userFactory',
-	function($scope,$state,signUpFactory,userFactory){
+	['$scope','$state','signUpFactory','userFactory','roleFactory',
+	function($scope,$state,signUpFactory,userFactory,roleFactory){
 
-	if (!userFactory.entity.length) {
+	if (!userFactory.entity.length){
+		$state.go('signup');
+		return;
+	}
+
+	if (!signUpFactory.getVerification.code()) {
+		userFactory.logout();
 		$state.go('signup');
 		return;
 	}
@@ -113,6 +119,7 @@ invoicesUnlimited.controller('BusinessInfoController',
 							   'userID',
 							   user.entity[0]);
 
+/*
 		var Organization = Parse.Object.extend('Organization');
 		var org = new Organization();
 		org.set('userID', user.entity[0]);
@@ -169,11 +176,35 @@ invoicesUnlimited.controller('BusinessInfoController',
 		},function(error){
 			console.log(error.message);
 		}).then(function(){
+*/
+		var errorCallback = function(error){
+			console.log(error.message);
+			return error;
+		}
+
+		var business = signUpFactory.create('BusinessInfo');
+
+		var role = signUpFactory
+				   	.create("Role",{
+				   		name : signUpFactory.getField('User','company'),
+				   		user : user.entity[0]
+				   	});
+
+		Parse.Promise.when([business,role])
+		.then(function(busObj, roleObj){
+			var busACL = new Parse.ACL();
+			busACL.setRoleWriteAccess(roleObj,true);
+			busACL.setRoleReadAccess(roleObj,true);
+			busObj.setACL(busACL);
+			return busObj;
+		},errorCallback)
+		.then(function(obj){
+			return signUpFactory.save('User',{'businessInfo':obj});
+		},errorCallback)
+		.then(function(){
 			hideLoader();
 			$state.go('signup.principal-info');
-		},function(error){
-			console.log(error.message);
-		});
+		},errorCallback);
 	};
 
 }]);

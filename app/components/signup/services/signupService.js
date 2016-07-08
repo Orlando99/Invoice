@@ -6,13 +6,15 @@ invoicesUnlimited.factory('signUpFactory',
 	 'businessFactory',
 	 'accountFactory',
 	 'principalFactory',
-	 'signatureFactory','$q',
+	 'signatureFactory',
+	 'roleFactory','$q',
 	function(userFullFactory,
 			 userFactory,
 			 businessFactory,
 			 accountFactory,
 			 principalFactory,
 			 signatureFactory,
+			 roleFactory,
 			 $q){
 
 	var verificationCode = undefined;
@@ -24,24 +26,14 @@ invoicesUnlimited.factory('signUpFactory',
 	var factories = {
 		'_User'			: userFactory,
 		'User' 			: userFactory,
+		'Role' 			: roleFactory,
 		'BusinessInfo' 	: businessFactory,
 		'AccountInfo' 	: accountFactory,
 		'PrincipalInfo'	: principalFactory,
 		'Signature'		: signatureFactory
 	};
 
-	/*var factories = [
-		businessFactory,
-		accountFactory,
-		principalFactory,
-		signatureFactory
-	];*/
-
 	var loadValues = [];
-
-	/*var promises = loadValues.map(function(elem){
-		return elem.load();
-	});*/
 
 	var newUser = {
 		User : {
@@ -91,27 +83,6 @@ invoicesUnlimited.factory('signUpFactory',
 		}
 	};
 
-	/*$q.all(promises).then(function(res){
-		res.forEach(function(elem){
-			if (!elem) return;
-			parseObjects[elem.entity[0].className] = elem.entity[0];
-			if (elem.entity[0].className == 'BusinessInfo') {
-				for(var field in newUser.BusinessInfo){
-					newUser.BusinessInfo[field] = elem.entity[0].get(field);
-				}
-			}
-		});
-	});*/
-
-	/*if (userFullFactory.authorized()) {
-		var businessInfo = userFullFactory.getBusinessInfo(true).then(function(object){
-			if (object)
-				for(var field in newUser.BusinessInfo){
-					newUser.BusinessInfo[field] = object.get(field);
-				}
-		});
-	}*/
-	
 	return {
 		getParse : function(className){
 			return parseObjects[className];
@@ -209,9 +180,10 @@ invoicesUnlimited.factory('signUpFactory',
 		getObject : function(table,field){
 			return newUser[table][field];
 		},
-		create : function(table){
+		create : function(table,params){
 			if (factories[table].entity.length) return;
-			return factories[table].createNew(newUser[table]);
+			return factories[table]
+				   .createNew((params ? params : newUser[table]));
 		},
 		signup : function(){
 			return userFactory.signup(newUser.User);

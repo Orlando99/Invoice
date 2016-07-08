@@ -49,8 +49,16 @@ $(document).ready(function(){
 });
 
 invoicesUnlimited.controller('SignupController',
-	['$scope','$state','userFullFactory','signUpFactory','userFactory',
-	function($scope,$state,userFullFactory,signUpFactory,userFactory){
+	['$scope','$state','signUpFactory','userFactory',
+	function($scope,$state,signUpFactory,userFactory){
+
+	if (userFactory.entity.length &&
+		!signUpFactory.getVerification.code()) {
+		showLoader();
+		userFactory.logout().then(function(){
+			hideLoader();
+		});
+	}
 
 	$('#phone').mask("(Z00) 000-0000",{
 		translation : {

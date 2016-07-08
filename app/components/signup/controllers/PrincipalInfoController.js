@@ -68,6 +68,12 @@ invoicesUnlimited.controller('PrincipalInfoController',
 		return;
 	}
 
+	if (!signUpFactory.getVerification.code()) {
+		userFactory.logout();
+		$state.go('signup');
+		return;
+	}
+
 	$("#signUpForm").validate({
 		onkeyup : false,
 		onfocusout : false,

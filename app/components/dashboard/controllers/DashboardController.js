@@ -22,7 +22,7 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 						  {};
 
 	$scope.logOut = function(){
-		user.logout().then(function(){
+		return user.logout().then(function(){
 			resetColorTheme();
 			$state.go('login');
 		});
@@ -34,7 +34,12 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 		if (obj.length && obj[0]) {
 			$scope.businessInfo = obj[0].entity[0];
 			hideLoader();
-		} else $scope.logOut();			
+		} else $scope.logOut().then(function(){
+			hideLoader();
+		});
+	}, function(error){
+		hideLoader();
+		$scope.logOut();
 	});
 
 	$scope.unpaidInvoiceCount = 0;
