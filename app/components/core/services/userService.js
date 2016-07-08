@@ -7,6 +7,21 @@ invoicesUnlimited.factory('userFactory',function(){
 		entity : []
 	};
 
+	var fields = [
+		'EPNrestrictKey',
+		'merchantID',
+		'colorTheme',
+		'role',
+		'username',
+		'country',
+		'phonenumber',
+		'EPNusername',
+		'fullName',
+		'firstScreen',
+		'email',
+		'company'
+	];
+
 	var User = {
 		entity : []
 	};
@@ -22,6 +37,9 @@ invoicesUnlimited.factory('userFactory',function(){
 			Parse.User.logIn(params.username, params.password,{
 				success: function(user){
 					User.justLoggedIn = true;
+					setObjectOperations({
+						object 		: user,
+						fields 		: fields});
 					User.entity.push(user);
 					console.log("Logged in successfuly!");
 					successCallback();
@@ -45,8 +63,12 @@ invoicesUnlimited.factory('userFactory',function(){
 			var user = new Parse.User;
 			return user.signUp(params,{
 				success: function(user){
+					setObjectOperations({
+						object 		: user,
+						fields 		: fields});
 					User.entity.pop();
 					User.entity.push(user);
+					console.log(user.className + ' created');
 				},
 				error : function(user,error){
 					console.log(error.message);
@@ -59,6 +81,7 @@ invoicesUnlimited.factory('userFactory',function(){
 				console.log('Unable to save user. The user is undefined');
 				return;
 			}
+			if (params === undefined) params = null;
 			return User.entity[0].save(params);
 		}
 	}

@@ -38,8 +38,7 @@ invoicesUnlimited.factory('roleFactory',
 		roleACL.setPublicWriteAccess(true);
 
 		var object = new Parse.Role(params.name,roleACL);
-		object.getUsers().add(params.user);
-debugger;
+		object.getUsers().add(params.userID);
 		return object.save({
 			success : function(obj){
 				role.entity.push(obj);
@@ -49,6 +48,14 @@ debugger;
 				console.log(error.message);
 			}
 		});
+	}
+
+	role.createACL = function(){
+		if (!role.entity.length) return;
+		var newACL = new Parse.ACL();
+		newACL.setRoleWriteAccess(role.entity[0],true);
+		newACL.setRoleReadAccess(role.entity[0],true);
+		return newACL;
 	}
 
 	return role;

@@ -115,9 +115,25 @@ invoicesUnlimited.controller('BusinessInfoController',
 			});
 		}
 		var user = signUpFactory.getFactory('User');
-		signUpFactory.setField('BusinessInfo',
-							   'userID',
-							   user.entity[0]);
+		
+		['BusinessInfo',
+		 'Organization',
+		 'Role'].forEach(function(table){
+		 	signUpFactory.setField(table,'userID',user.entity[0]);
+		 });
+
+		['Organization',
+		 'Role'].forEach(function(table){
+		 	signUpFactory.setField(table,'name',user.entity[0].company);
+		 });
+
+		signUpFactory.setField('Organization',"email",user.entity[0].email);
+
+		var org  = signUpFactory.create('Organization');
+
+		/*org.then(function(obj){
+			signUpFactory.setField('BusinessInfo','organization',obj);
+		})*/
 
 /*
 		var Organization = Parse.Object.extend('Organization');
@@ -177,30 +193,26 @@ invoicesUnlimited.controller('BusinessInfoController',
 			console.log(error.message);
 		}).then(function(){
 */
-		var errorCallback = function(error){
-			console.log(error.message);
-			return error;
-		}
+		
+		var business 	= signUpFactory.create('BusinessInfo');
+		var role 		= signUpFactory.create("Role");
 
-		var business = signUpFactory.create('BusinessInfo');
-
-		var role = signUpFactory
-				   	.create("Role",{
-				   		name : signUpFactory.getField('User','company'),
-				   		user : user.entity[0]
-				   	});
-
-		Parse.Promise.when([business,role])
-		.then(function(busObj, roleObj){
-			var busACL = new Parse.ACL();
-			busACL.setRoleWriteAccess(roleObj,true);
-			busACL.setRoleReadAccess(roleObj,true);
-			busObj.setACL(busACL);
-			return busObj;
+		Parse.Promise.when([business,role,org])
+		.then(function(busObj, roleObj, orgObj){
+			busObj.setACL(roleFactory.createACL());
+			orgObj.setACL(roleFactory.createACL());
+			busObj.set('organization',orgObj);
+			return Parse.Promise.when([busObj.save(),orgObj.save()]);
 		},errorCallback)
-		.then(function(obj){
-			return signUpFactory.save('User',{'businessInfo':obj});
-		},errorCallback)
+		.then(function(busObj,orgObj){
+			return signUpFactory.save('User',{'businessInfo':busObj});
+		},
+		function(err){
+			if (!err.length) console.log(err.message);
+			err.forEach(function(er){
+				console.log(er.message);
+			});
+		})
 		.then(function(){
 			hideLoader();
 			$state.go('signup.principal-info');

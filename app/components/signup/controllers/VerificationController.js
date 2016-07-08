@@ -39,7 +39,9 @@ invoicesUnlimited.controller('VerificationController',
 
 	$scope.verifyCode = function(){
 		if (!$('#signUpForm').valid()) return;
+		showLoader();
 		signUpFactory.signup().then(function(){
+			hideLoader();
 			$state.go('signup.business-info');
 		},function(error){
 			console.log(error.message);

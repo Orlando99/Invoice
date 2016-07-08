@@ -1,31 +1,146 @@
 'use strict';
 
-invoicesUnlimited.factory('organizationFactory',['userFullFactory',
-	function(userFactory){
+invoicesUnlimited.factory('organizationFactory',
+	function(userFactory) {
 	
 	var user = userFactory;
 
-	var org;
-	var fields;
-	var complexFields = {
-			'logo' : 'File'
-		};
+	var organization = {
+		entity 		: [],
+		entities 	: []
+	};
 
-	if (!org) {
-		var fieldName = "selectedOrganization";
-		var org_p = user.get(fieldName);
-		org = org_p.fetch().then(function(object){
+	var fields = [
+		"creditNumber",
+		"portalURL",
+		"dateFormat",
+		"fiscalYearStart",
+		"name",
+		"fieldSeparator",
+		"estimateNumber",
+		"invoiceNumber",
+		"companyAddress",
+		"language",
+		"timeZone",
+		"email"
+	]
+
+	var fetchObject = function(pointer,field) {
+		return pointer
+		.fetch()
+		.then(function(object){
 			setObjectOperations({
 				object 		: object,
 				fieldName	: fieldName,
-				parent 		: user,
-				fields 		: fields,
-				xFields 	: complexFields
-			});
-			return object;
+				parent 		: user.entity.length ? 
+							  user.entity[0] : 
+							  null,
+				fields 		: fields});
+
+			if (field == "entity") organization[field].pop();	
+			
+			organization[field].push(object);
+			return organization;
+		},function(error){
+			console.log(error.message);
 		});
 	}
 
-	return org;
+	var loadSelectedOrg = function() {
+		var fieldName = "selectedOrganization", org_p;
+		if (user.get) org_p = user.get(fieldName);
+		else if (user.entity[0] && 
+				 user.entity[0].get)
+			org_p = user.entity[0].get(fieldName);
 
-}]);
+		if (!org_p) {
+			organization.empty = true;
+			return org_p;
+		}
+
+		return fetchObject(org_p,'entity');
+	}
+
+	var loadAllOrgs = function() {
+		var fieldName = "organizations", org_p;
+		if (user.get) org_p = user.get(fieldName);
+		else if (user.entity[0] && 
+				 user.entity[0].get)
+			org_p = user.entity[0].get(fieldName);
+
+		if (!org_p) {
+			organization.empty = true;
+			return org_p;
+		}
+
+		var promises = org_p.map(function(obj){
+			return fetchObject(obj,'entities');
+		});
+
+		return Parse.Promise.when(promises);
+	}
+
+	organization.load = function(){
+		if (organization.entity.length) return organization;
+		return loadSelectedOrg();
+	}
+
+	organization.createNew = function(params){
+		if (organization.entity.length) return;
+		var ctor = Parse.Object.extend("Organization");
+		var object = new ctor();
+		return object.save(params,{
+			success : function(obj){
+				setObjectOperations({
+					object 		: obj,
+					fieldName	: "selectedOrganization",
+					parent 		: user.entity.length ?
+								  user.entity[0] :
+								  null,
+					fields 		: fields});
+				organization.entity.push(obj);
+				console.log(obj.className + ' created');
+			},
+			error : function(obj,error){
+				console.log(error.message);
+			}
+		})
+		.then(function(obj){
+			user.entity[0].add('organizations',obj);
+			return [user.save({
+				selectedOrganization : obj
+			}),obj];
+		},errorCallback)
+		.then(function(res){
+			return res[1];
+		},errorCallback);
+	}
+
+	organization.createNewWithoutSelect = function(params){
+		if (organization.entity.length) return;
+		var ctor = Parse.Object.extend("Organization");
+		var object = new ctor();
+		return object.save(params,{
+			success : function(obj){
+				setObjectOperations({
+					object 		: obj,
+					fields 		: fields});
+				organization.entities.push(obj);
+				console.log(obj.className + ' created');
+			},
+			error : function(obj,error){
+				console.log(error.message);
+			}
+		})
+		.then(function(obj){
+			user.entity[0].add('organizations',obj);
+			return [user.save(),obj];
+		},errorCallback)
+		.then(function(res){
+			return res[1];
+		},errorCallback);
+	}
+
+	return organization;
+
+});

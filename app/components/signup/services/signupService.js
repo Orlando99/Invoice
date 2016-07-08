@@ -4,6 +4,7 @@ invoicesUnlimited.factory('signUpFactory',
 	['userFullFactory',
 	 'userFactory',
 	 'businessFactory',
+	 'organizationFactory',
 	 'accountFactory',
 	 'principalFactory',
 	 'signatureFactory',
@@ -11,6 +12,7 @@ invoicesUnlimited.factory('signUpFactory',
 	function(userFullFactory,
 			 userFactory,
 			 businessFactory,
+			 organizationFactory,
 			 accountFactory,
 			 principalFactory,
 			 signatureFactory,
@@ -30,7 +32,8 @@ invoicesUnlimited.factory('signUpFactory',
 		'BusinessInfo' 	: businessFactory,
 		'AccountInfo' 	: accountFactory,
 		'PrincipalInfo'	: principalFactory,
-		'Signature'		: signatureFactory
+		'Signature'		: signatureFactory,
+		'Organization'	: organizationFactory
 	};
 
 	var loadValues = [];
@@ -80,7 +83,18 @@ invoicesUnlimited.factory('signUpFactory',
 		},
 		Signature : {
 			imageName : ''
-		}
+		},
+		Organization : {
+			invoiceNumber 	: 'INV-0001',
+			estimateNumber 	: 'EST-0001',
+			creditNumber 	: 'CN-0001',
+			fiscalYearStart : 'January',
+			dateFormat 		: 'MM/dd/yyyy',
+			fieldSeparator 	: '/',
+			language		: 'en-us',
+			timeZone 		: '( PDT ) America/Los_Angeles ( Pacific Standard Time )'
+		},
+		Role : {}
 	};
 
 	return {

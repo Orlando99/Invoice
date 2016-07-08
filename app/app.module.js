@@ -66,6 +66,11 @@ function alphabeticalSort(a,b){
   return (dispA < dispB) ? -1 : (dispA > dispB) ? 1 : 0;
 }
 
+var errorCallback = function(error){
+  console.log(error.message);
+  return error;
+}
+
 function loadColorTheme(user){
   if (!user) alert('User is empty! Unable to load color theme!');
   var color = user.get ? user.get('colorTheme') : user.entity[0].get('colorTheme');
@@ -121,7 +126,7 @@ var defineXProperties = function(object,fields){
 
 function setObjectOperations(object,fieldName,parent,fields,xFields){
 
-  if (!fieldName && !parent && !fields && !xFields) {
+  if (!(arguments.length>1)) {
     fields = object.fields;
     parent = object.parent;
     fieldName = object.fieldName;
