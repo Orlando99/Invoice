@@ -8,7 +8,8 @@ invoicesUnlimited.factory('signUpFactory',
 	 'accountFactory',
 	 'principalFactory',
 	 'signatureFactory',
-	 'roleFactory','$q',
+	 'roleFactory',
+	 'currencyFactory','$q',
 	function(userFullFactory,
 			 userFactory,
 			 businessFactory,
@@ -17,6 +18,7 @@ invoicesUnlimited.factory('signUpFactory',
 			 principalFactory,
 			 signatureFactory,
 			 roleFactory,
+			 currencyFactory,
 			 $q){
 
 	var verificationCode = undefined;
@@ -33,7 +35,8 @@ invoicesUnlimited.factory('signUpFactory',
 		'AccountInfo' 	: accountFactory,
 		'PrincipalInfo'	: principalFactory,
 		'Signature'		: signatureFactory,
-		'Organization'	: organizationFactory
+		'Organization'	: organizationFactory,
+		'Currency'		: currencyFactory
 	};
 
 	var loadValues = [];
@@ -94,7 +97,13 @@ invoicesUnlimited.factory('signUpFactory',
 			language		: 'en-us',
 			timeZone 		: '( PDT ) America/Los_Angeles ( Pacific Standard Time )'
 		},
-		Role : {}
+		Role : {},
+		Currency : {
+			currencySymbol 	: '$',
+			decimalPlace 	: 2,
+			format 			: '###,###,###',
+			title 			: 'USD - US Dollar'
+		}
 	};
 
 	return {

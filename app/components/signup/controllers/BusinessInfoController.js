@@ -114,98 +114,14 @@ invoicesUnlimited.controller('BusinessInfoController',
 				value : $scope.bsnsInfo[field]
 			});
 		}
-		var user = signUpFactory.getFactory('User');
-		
-		['BusinessInfo',
-		 'Organization',
-		 'Role'].forEach(function(table){
-		 	signUpFactory.setField(table,'userID',user.entity[0]);
-		 });
-
-		['Organization',
-		 'Role'].forEach(function(table){
-		 	signUpFactory.setField(table,'name',user.entity[0].company);
-		 });
-
-		signUpFactory.setField('Organization',"email",user.entity[0].email);
-
-		var org  = signUpFactory.create('Organization');
-
-		/*org.then(function(obj){
-			signUpFactory.setField('BusinessInfo','organization',obj);
-		})*/
-
-/*
-		var Organization = Parse.Object.extend('Organization');
-		var org = new Organization();
-		org.set('userID', user.entity[0]);
-		org.set('name', signUpFactory.getField('User', 'company'));
-		org.set('email', signUpFactory.getField('User', 'email'));
-		org.set('invoiceNumber', 'INV-0001');
-		org.set('estimateNumber', 'EST-0001');
-		org.set('creditNumber', 'CN-0001');
-		org.set('fiscalYearStart', 'January');
-		org.set('dateFormat', 'MM/dd/yyyy');
-		org.set('fieldSeparator', '/');
-		org.set('language', 'en-us');
-		// set timezone somehow
-		org.set('timeZone', '( PDT ) America/Los_Angeles ( Pacific Standard Time )');
-
-		var data = {};
-		org.save().then(function(obj) {
-			data.organization = obj;
-			signUpFactory.setField('BusinessInfo', 'organization', obj);
-
-			var Currency = Parse.Object.extend('Currency');
-			var currency = new Currency();
-
-			return currency.save({
-				'userID' : user.entity[0],
-				'organization' : obj,
-				'currencySymbol' : '$',
-				'decimalPlace' : 2,
-				'format' : '###,###,###',
-				'title' : 'USD - US Dollar'
-			});
-		})
-		.then(function(obj) {
-			data.currency = obj;
-			
-			var business = signUpFactory.create('BusinessInfo');
-
-			if (!business) {
-				$state.go('signup');
-				return;
-			}
-
-			return business;	
-		})
-		.then(function(obj){
-			var save = signUpFactory.save('User',{
-				'businessInfo' : obj,
-				'organizations' : [data.organization],
-				'selectedOrganization' : data.organization,
-				'currency' : data.currency
-			});
-			if (save) return save;
-			window.reload();
-		},function(error){
-			console.log(error.message);
-		}).then(function(){
-*/
 		
 		var business 	= signUpFactory.create('BusinessInfo');
-		var role 		= signUpFactory.create("Role");
 
-		Parse.Promise.when([business,role,org])
-		.then(function(busObj, roleObj, orgObj){
-			busObj.setACL(roleFactory.createACL());
-			orgObj.setACL(roleFactory.createACL());
-			busObj.set('organization',orgObj);
-			return Parse.Promise.when([busObj.save(),orgObj.save()]);
-		},errorCallback)
-		.then(function(busObj,orgObj){
-			return signUpFactory.save('User',{'businessInfo':busObj});
+		business
+		.then(function(busObj){
+			return signUpFactory.save('User',{
+				'businessInfo' : busObj,
+			});
 		},
 		function(err){
 			if (!err.length) console.log(err.message);

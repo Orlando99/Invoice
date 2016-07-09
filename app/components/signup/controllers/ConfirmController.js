@@ -10,6 +10,7 @@ invoicesUnlimited.controller('ConfirmController',
 
 	$scope.getStarted = function(){
 		debugger;
-		$state.go('dashboard');
+		if (signUpFactory.getFactory('User').entity.length)
+			$state.go('dashboard');
 	}
 }]);

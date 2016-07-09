@@ -1,9 +1,7 @@
 'use strict';
 
 invoicesUnlimited.controller('AccountInfoController',
-	['$scope','$state','userFullFactory','signUpFactory',
-	 'userFactory',
-	function($scope,$state,userFullFactory,signUpFactory,userFactory){
+	function($scope,$state,signUpFactory,userFactory){
 
 	if (!signUpFactory.getFactory('User').entity.length) {
 		$state.go('signup');
@@ -102,26 +100,12 @@ invoicesUnlimited.controller('AccountInfoController',
 			value : ($scope.accountInfo['inPerson'] == 'inPerson')
 		});
 
-		signUpFactory.setField('AccountInfo',{
-			field : 'organization',
-			value : signUpFactory.getField('BusinessInfo', 'organization')
-		});
-
-		var user = signUpFactory.getFactory('User');
-
-		signUpFactory.setField('AccountInfo',
-							   'userID',
-							   user.entity[0]);
-
 		var account = signUpFactory.create('AccountInfo');
-
-		if (!account) {
-			$state.go('signup');
-			return;
-		}
-
+		
 		account.then(function(obj){
-			var save = signUpFactory.save('User',{'accountInfo':obj});
+			var save = signUpFactory.save('User',{
+				'accountInfo':obj
+			});
 			if (save) return save;
 			window.reload();
 		},function(error){
@@ -139,4 +123,4 @@ invoicesUnlimited.controller('AccountInfoController',
 			$state.go('dashboard');
 	};
 
-}]);
+});

@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.factory('businessFactory',
-	['userFactory','$rootScope',
-	function(userFactory,$rootScope){
+	['userFactory','roleFactory','$rootScope',
+	function(userFactory,roleFactory,$rootScope){
 	
 	var user = userFactory;
 
@@ -53,6 +53,7 @@ invoicesUnlimited.factory('businessFactory',
 		if (businessInfo.entity.length) return;
 		var ctr = Parse.Object.extend("BusinessInfo");
 		var object = new ctr();
+		object.setACL(roleFactory.createACL());
 		return object.save(params,{
 			success : function(obj){
 				setObjectOperations({

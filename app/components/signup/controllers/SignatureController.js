@@ -31,11 +31,6 @@ invoicesUnlimited.controller('SignatureController',
 			value : new Parse.File("Signature.png", { base64 : sigData})
 		});
 
-		signUpFactory.setField('Signature',{
-			field : 'userID',
-			value : user.entity[0]
-		});
-
 		var signature = signUpFactory.create('Signature');
 
 		if (!signature) {

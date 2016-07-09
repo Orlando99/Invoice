@@ -1,8 +1,7 @@
 'use strict';
 
 invoicesUnlimited.factory('signatureFactory',
-	['userFactory',
-	function(userFactory){
+	function(userFactory,roleFactory){
 	
 	var user = userFactory;
 
@@ -46,6 +45,7 @@ invoicesUnlimited.factory('signatureFactory',
 		if (signature.entity.length) return;
 		var ctr = Parse.Object.extend("Signature");
 		var object = new ctr();
+		object.setACL(roleFactory.createACL());
 		return object.save(params,{
 			success : function(obj){
 				setObjectOperations({
@@ -64,4 +64,4 @@ invoicesUnlimited.factory('signatureFactory',
 
 	return signature;
 
-}]);
+});

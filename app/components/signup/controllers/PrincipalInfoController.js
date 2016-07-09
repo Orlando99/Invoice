@@ -4,6 +4,8 @@ invoicesUnlimited.controller('PrincipalInfoController',
 	['$scope','$state','signUpFactory',
 	function($scope,$state,signUpFactory){
 
+	var user = signUpFactory.getFactory('User');
+
 	var dobMaskOptions = {
 		onKeyPress: function(val, e, field, options) {
       		
@@ -69,7 +71,7 @@ invoicesUnlimited.controller('PrincipalInfoController',
 	}
 
 	if (!signUpFactory.getVerification.code()) {
-		userFactory.logout();
+		user.logout();
 		$state.go('signup');
 		return;
 	}
@@ -113,16 +115,11 @@ invoicesUnlimited.controller('PrincipalInfoController',
 	var fields = ['streetName','city','state','zipCode'];
 
 	$scope.toggleHomeInfo = function(){
-
-		if (!$scope.toggleHomeChecked) {
-			fields.forEach(function(field){
-				$scope.principalInfo[field] = "";
-			});
-			return;
-		}
-
 		fields.forEach(function(field){
-			$scope.principalInfo[field] = getBusField(field);
+			$scope.principalInfo[field] = 
+				$scope.toggleHomeChecked ? 
+				getBusField(field) :
+				"";
 		});
 	};
 
@@ -144,25 +141,14 @@ invoicesUnlimited.controller('PrincipalInfoController',
 				value : $scope.principalInfo[field]
 			});
 		}
-		signUpFactory.setField('PrincipalInfo',{
-			field : 'organization', 
-			value : getBusField('organization')
-		});
-
-		var user = signUpFactory.getFactory('User');
-
-		signUpFactory.setField('PrincipalInfo','userID',
-								user.entity[0]);
 
 		var principal = signUpFactory.create('PrincipalInfo');
 
-		if (!principal) {
-			$state.go('signup');
-			return;
-		}
-
-		principal.then(function(obj){
-			var save = signUpFactory.save('User',{'principalInfo':obj});
+		principal
+		.then(function(obj){
+			var save = signUpFactory.save('User',{
+				'principalInfo' : obj
+			});
 			if (save) return save;
 			window.reload();
 		},function(error){
@@ -176,7 +162,8 @@ invoicesUnlimited.controller('PrincipalInfoController',
 	};
 
 	$scope.saveAndContinueLater = function(){
-		$state.go('dashboard');
+		if (signUpFactory.getFactory('User').entity.length)
+			$state.go('dashboard');
 	};
 
 }]);

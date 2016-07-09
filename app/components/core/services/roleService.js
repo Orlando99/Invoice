@@ -1,18 +1,17 @@
 'use strict';
 
 invoicesUnlimited.factory('roleFactory',
-	function(businessFactory){
+	function(userFactory){
 
-	var business = businessFactory;
+	var user = userFactory.entity;
 
 	var role = {entity:[]};
 
 	var loadRole = function() {
-		if (!business.entity.length) return;
+		if (!user.length) return;
 		if (role.entity.length) return role;
-		var name = business.entity[0].businessName;
 		var query = new Parse.Query(Parse.Role);
-		query.equalTo('name',name);
+		query.equalTo('name',user[0].company);
 		return query.first().then(
 			function(roleObj){
 				role.entity.pop();
@@ -31,22 +30,38 @@ invoicesUnlimited.factory('roleFactory',
 		return loadRole();
 	};
 
+	role.getRole = function(params) {
+		var query = new Parse.Query(Parse.Role);
+		query.equalTo('name',params.name);
+		return query.first();
+	}
+
 	role.createNew = function(params) {
 		if (role.entity.length) return;
-		var roleACL = new Parse.ACL();
-		roleACL.setPublicReadAccess(true);
-		roleACL.setPublicWriteAccess(true);
 
-		var object = new Parse.Role(params.name,roleACL);
-		object.getUsers().add(params.userID);
-		return object.save({
-			success : function(obj){
-				role.entity.push(obj);
-				console.log(obj.className);
-			},
-			error : function(obj,error){
-				console.log(error.message);
-			}
+		return role.getRole(params)
+		.then(function(roleObj) {
+			var roleACL = new Parse.ACL();
+			roleACL.setPublicReadAccess(true);
+			roleACL.setPublicWriteAccess(true);
+
+			var object = roleObj ? 
+						 roleObj : 
+						 (new Parse.Role(params.name,roleACL));
+
+			object.getUsers().add(params.userID);
+
+			return object.save({
+				success : function(obj){
+					role.entity.pop();
+					role.entity.push(obj);
+					console.log(obj.className + ' created');
+				},
+				error : function(obj,error){
+					console.log(error.message);
+				}
+			});
+
 		});
 	}
 
