@@ -53,6 +53,7 @@ invoicesUnlimited.controller('VerificationController',
 			 'Organization',
 			 'Signature',
 			 'Currency',
+			 'Preferences',
 			 'Role'].forEach(function(table){
 			 	signUpFactory.setField(table,'userID',user);
 			 });
@@ -80,19 +81,25 @@ invoicesUnlimited.controller('VerificationController',
 			 'AccountInfo',
 			 'PrincipalInfo',
 			 'Signature',
+			 'Preferences',
 			 'Currency'].forEach(function(table){
 				signUpFactory.setField(table,'organization',orgObj);
 			});
 			var curr = signUpFactory.create('Currency');
-			return curr;
+			var pref = signUpFactory.create('Preferences');
+			return Parse.Promise.when([curr,pref]);
 		},function(err){
 			console.log(err.message);
 		})
-		.then(function(currObj) {
+		.then(function(currObj,prefObj) {
 			hideLoader();
 			$state.go('signup.business-info');
 		},function(err){
-			console.log(err.message);
+			if (!err.length) {
+				console.log(err.message);
+				return;
+			}
+			err.forEach(function(er){console.log(er.message);});
 		});
 	};
 

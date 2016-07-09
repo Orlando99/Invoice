@@ -31,7 +31,7 @@ invoicesUnlimited.factory('organizationFactory',
 		.then(function(object){
 			setObjectOperations({
 				object 		: object,
-				fieldName	: fieldName,
+				fieldName	: field,
 				parent 		: user.entity.length ? 
 							  user.entity[0] : 
 							  null,

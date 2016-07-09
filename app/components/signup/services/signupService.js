@@ -9,7 +9,8 @@ invoicesUnlimited.factory('signUpFactory',
 	 'principalFactory',
 	 'signatureFactory',
 	 'roleFactory',
-	 'currencyFactory','$q',
+	 'currencyFactory',
+	 'preferencesFactory','$q',
 	function(userFullFactory,
 			 userFactory,
 			 businessFactory,
@@ -19,6 +20,7 @@ invoicesUnlimited.factory('signUpFactory',
 			 signatureFactory,
 			 roleFactory,
 			 currencyFactory,
+			 preferencesFactory,
 			 $q){
 
 	var verificationCode = undefined;
@@ -36,10 +38,9 @@ invoicesUnlimited.factory('signUpFactory',
 		'PrincipalInfo'	: principalFactory,
 		'Signature'		: signatureFactory,
 		'Organization'	: organizationFactory,
-		'Currency'		: currencyFactory
+		'Currency'		: currencyFactory,
+		'Preferences'	: preferencesFactory
 	};
-
-	var loadValues = [];
 
 	var newUser = {
 		User : {
@@ -50,8 +51,8 @@ invoicesUnlimited.factory('signUpFactory',
 			username	: '',
 			password	: '',
 			phonenumber	: '',
-			colorTheme : 'appBlueColor',
-			role : 'Admin',
+			colorTheme 	: 'appBlueColor',
+			role 		: 'Admin',
 			firstScreen : 'Overview',
 			getInvoiceNotification : 1,
 			isTrackUsage : 1,
@@ -103,6 +104,22 @@ invoicesUnlimited.factory('signUpFactory',
 			decimalPlace 	: 2,
 			format 			: '###,###,###',
 			title 			: 'USD - US Dollar'
+		},
+		Preferences : {
+			invoiceShippingCharges 	: 0,
+			creditNotes 			: "Thank you for your business. If you have any questions, please contact us as soon as possible.",
+			invoiceThanksNotes 		: "Thank you for your payment. We appreciate your business and look forward to assisting you in the future.",
+			creditTerms 			: "",
+			invoiceDiscount 		: 0,
+			invoiceNotes 			: "Thank you for your business. If you have any questions, please contact us as soon as possible.",
+			estimateNotes 			: "Thank you for your business. If you have any questions, please contact us as soon as possible.",
+			invoiceTerms 			: "",
+			estimateTerms 			: "",
+			invoiceAdjustments 		: 0,
+			invoiceSalesPerson 		: 0,
+			invoiceAg 				: 1,
+			estimateAg 				: 1,
+			creditAg 				: 1
 		}
 	};
 
