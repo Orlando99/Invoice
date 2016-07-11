@@ -164,3 +164,7 @@ label#verificationCode-error {
 .tooltip-sec:hover .info-tooltip{
 	z-index: 1 !important;
 }
+
+.navigation > li .submenu li a:hover {
+	color: #000;
+}
