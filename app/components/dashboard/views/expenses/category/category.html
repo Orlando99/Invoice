@@ -18,65 +18,15 @@
        <td class="text-uppercase text-info layout-padding-tb-lg">Category Name</td>
        <td class="text-uppercase text-info layout-padding-tb-lg text-left">Description</td>
      </tr>
-     <tr class="trow">
+     <tr class="trow" ng-repeat="category in categories">
        <td class="text-uppercase text-info layout-padding-tb-lg">
          <label class="input-container input-checkbox-container layout-margin-tb">
            <input type="checkbox">
            <span class="checkbox float-left"></span>
          </label>
        </td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">Automotive</td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left">Expenses related to driving and autos like maintenance, cost of fuel and mileage.</td>
-     </tr>
-     <tr class="trow">
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">
-         <label class="input-container input-checkbox-container layout-margin-tb">
-           <input type="checkbox">
-           <span class="checkbox float-left"></span>
-         </label>
-       </td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">Cleaning Services</td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left">Money paid to maids or janitors to keep the cleanliness of the office.</td>
-     </tr>
-     <tr class="trow">
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">
-         <label class="input-container input-checkbox-container layout-margin-tb">
-           <input type="checkbox">
-           <span class="checkbox float-left"></span>
-         </label>
-       </td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">Consultant</td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left">Expenses related to any hiring of a consultant for business.</td>
-     </tr>
-     <tr class="trow">
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">
-         <label class="input-container input-checkbox-container layout-margin-tb">
-           <input type="checkbox">
-           <span class="checkbox float-left"></span>
-         </label>
-       </td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">Credit Card Fees</td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left">Fees charge for the business credit card as in annual/monthly fees, transfer fees, or interest charges.</td>
-     </tr>
-     <tr class="trow">
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">
-         <label class="input-container input-checkbox-container layout-margin-tb">
-           <input type="checkbox">
-           <span class="checkbox float-left"></span>
-         </label>
-       </td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">Depreciation</td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left">Any loss in value of assets for your business.</td>
-     </tr>
-     <tr class="trow">
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">
-         <label class="input-container input-checkbox-container layout-margin-tb">
-           <input type="checkbox">
-           <span class="checkbox float-left"></span>
-         </label>
-       </td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">Food &amp; Entertainment</td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left">Expenses related to food and business entertainment for business purposes.</td>
+       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">{{category.entity.name}}</td>
+       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left">{{category.entity.notes}}</td>
      </tr>
    </table>
 
@@ -86,7 +36,7 @@
    <div class="modal container">
 
      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">New Category</h3>
-     <button class="button button-icon float-right modal-close button-no-margin"><img src="../../../dist/images/icon-times.png" alt=""></button>
+     <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
      <div class="clearfix"></div>
      <hr class="layout-margin-tb">
 

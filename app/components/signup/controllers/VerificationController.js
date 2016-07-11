@@ -76,6 +76,15 @@ invoicesUnlimited.controller('VerificationController',
 		},function(err){
 			console.log(err.message);
 		})
+		.then(function(orgObj) {
+			signUpFactory.copyDefaultCategories({
+				user : userFactory.entity[0],
+				organization : orgObj
+			})
+			.then(function() {
+				return orgObj;
+			});
+		})
 		.then(function(orgObj){
 			['BusinessInfo',
 			 'AccountInfo',

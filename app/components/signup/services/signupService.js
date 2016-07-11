@@ -284,6 +284,30 @@ invoicesUnlimited.factory('signUpFactory',
 				}
 			});
 		},
+		copyDefaultCategories : function(params) {
+			var DefaultCategory = Parse.Object.extend('CategoryDefaults');
+			var query = new Parse.Query(DefaultCategory);
+			query.limit(1000);
+	
+			return query.find()
+			.then(function(objs) {
+				var Category = Parse.Object.extend('Category');
+				var newCategories = [];
+				objs.forEach(function(obj) {
+					var parseObj = new Category();
+					parseObj.set('userID', params.user);
+					parseObj.set('organization', params.organization);
+					parseObj.set('name', obj.get('name'));
+					parseObj.set('color', obj.get('color'));
+					parseObj.set('notes', obj.get('notes'));
+					parseObj.setACL(roleFactory.createACL());
+
+					newCategories.push(parseObj);
+				});
+
+				return Parse.Object.saveAll(newCategories);
+			});
+		},
 		setVerification : {
 			code : function(code){
 				verificationCode = code;	

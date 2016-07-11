@@ -350,7 +350,7 @@ angular.module('invoicesUnlimited')
 				url : '/expenses/category',
 				views : {
 					'@' : {
-						controller : 'ExpenseController',
+						controller : 'ExpenseCategoryController',
 						templateUrl : COMPONENTS + 'dashboard/views/expenses/category/category.html'
 					}
 				}
