@@ -270,9 +270,17 @@ invoicesUnlimited.controller('SignupController',
 				postParams.email = $('input[name=email]').val();
 			}
 
-			$.post('./assets/php/sendVerificationCode.php',
+			var Template = Parse.Object.extend('InvoiceTemplate');
+			var query = new Parse.Query(Template);
+			query.equalTo ('name', 'Template 1');
+			query.first()
+			.then(function(t) {
+				signUpFactory.setField('User', 'defaultTemplate', t);
+				$.post('./assets/php/sendVerificationCode.php',
 				postParams,
 				saveCodeHash);
+			});
+
 		});
 	};
 

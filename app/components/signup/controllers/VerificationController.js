@@ -77,7 +77,7 @@ invoicesUnlimited.controller('VerificationController',
 			console.log(err.message);
 		})
 		.then(function(orgObj) {
-			signUpFactory.copyDefaultCategories({
+			return signUpFactory.copyDefaultCategories({
 				user : userFactory.entity[0],
 				organization : orgObj
 			})
