@@ -4,18 +4,64 @@ String.prototype.capitilize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-invoicesUnlimited.controller('SettingsController',['$scope','$state', '$controller', 'userFullFactory',
-	function($scope,$state,$controller,userFullFactory){
+invoicesUnlimited.controller('SettingsController',['$scope','$state', '$controller', 'userFactory',
+function($scope,$state,$controller, userFactory){
 
-	var user = userFullFactory.authorized();
+if(! userFactory.entity.length) {
+	console.log('User not logged in');
+	$state.go('login');
+	return undefined;
+}
 
-	loadColorTheme(user);
+var user = userFactory.entity[0];
+$controller('DashboardController',{$scope:$scope,$state:$state});
 
-	$scope.selectedColor;
+var isGoTo = {
+	users : function(to){
+		return to.endsWith('users');
+	},
+	currencies : function(to){
+		return to.endsWith('currencies');
+	},
+	preferences : function(to){
+		return to.endsWith('general-preferences');
+	},
+	payments : function(to){
+		return to.endsWith('payments');
+	},
+	templates : function(to){
+		return to.endsWith('invoice-templates');
+	}
+};
 
-	if (!userFullFactory.authorized()) $state.go('login');
+CheckUseCase();
 
-	$controller('DashboardController',{$scope:$scope,$state:$state});
+function CheckUseCase(stateName) {
+	if (! stateName)
+		stateName = $state.current.name;
+
+	if (isGoTo.users(stateName)) {
+		console.log('its in users')
+		showUserFields();
+
+	} else if (isGoTo.currencies(stateName)) {
+		console.log('its in currency');
+	}
+
+}
+
+function showUserFields() {
+	$scope.users = [{
+		name : user.get('username'),
+		email : user.get('email'),
+		role : user.get('role'),
+		status : 'Active',
+		textClass : 'text-positive'
+	}];
+}
+
+//	$scope.selectedColor;
+
 /*
 	userFullFactory.loadAll(function(state){
 		if (state) $state.go(state);
@@ -26,6 +72,7 @@ invoicesUnlimited.controller('SettingsController',['$scope','$state', '$controll
 		} 
 	});
 */
+/*
 	$scope.BusinessInfo = {
 		company : userFullFactory.get("BusinessInfo","businessName")
 	}
@@ -36,5 +83,6 @@ invoicesUnlimited.controller('SettingsController',['$scope','$state', '$controll
 		userFullFactory.save({colorTheme:colorToSave}).then(function(){
 			window.location.reload();
 		});
-	}	
+	}
+*/
 }]);

@@ -416,7 +416,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/settings',
 				views 	: {
 					'@'	: {
-						controler 	: 'SettingsController',
+						controler 	: 'CompanyProfileController',
 						templateUrl : COMPONENTS + 'dashboard/views/settings/companyprofile.html'
 					}
 				}

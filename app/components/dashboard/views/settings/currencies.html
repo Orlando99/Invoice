@@ -16,6 +16,15 @@
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
       <tr>
+        <td class="text-color-light text-weight-normalize layout-padding">USD - US Dollar</td>
+        <td class="text-color-light text-weight-normalize layout-padding">&dollar;</td>
+        <td class="text-color-light text-weight-normalize layout-padding"></td>
+        <td class="text-color-light text-weight-normalize layout-padding"></td>
+        <td class="is-active no"><img src="./assets/images/icon-tick-circle.png" alt=""></td>
+        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
+      </tr>
+      <!--
+      <tr>
         <td class="text-color-light text-weight-normalize layout-padding">AUD - Australian Dollar</td>
         <td class="text-color-light text-weight-normalize layout-padding">&dollar;</td>
         <td class="text-color-light text-weight-normalize layout-padding"></td>
@@ -72,14 +81,6 @@
         <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
       <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">USD - US Dollar</td>
-        <td class="text-color-light text-weight-normalize layout-padding">&dollar;</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active no"><img src="./assets/images/icon-tick-circle.png" alt=""></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
         <td class="text-color-light text-weight-normalize layout-padding">ZAR - Rand</td>
         <td class="text-color-light text-weight-normalize layout-padding">R</td>
         <td class="text-color-light text-weight-normalize layout  -padding"></td>
@@ -87,7 +88,7 @@
         <td class="is-active yes"></td>
         <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
-
+      -->
     </table>
 
   </div>
@@ -179,15 +180,4 @@
       <div class="clearfix"></div>
     </div>
   </div>
-
-  
-  <div class="onmobile">
-    <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="./dist/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="./dist/images/AppStore.png" alt="Google Play"></a>
-  </div>
-  
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="./assets/js/moment.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
-  <script src="./assets/js/main.js"></script>
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>
