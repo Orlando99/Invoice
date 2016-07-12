@@ -506,7 +506,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/credit-notes',
 				views 	: {
 					'@'	: {
-						controller 	: 'SettingsController',
+						controller 	: 'CreditNoteSettingsController',
 						templateUrl	: COMPONENTS + 'dashboard/views/settings/creditnotes.html'
 					}
 				}

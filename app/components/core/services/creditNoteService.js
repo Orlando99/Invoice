@@ -77,6 +77,33 @@ return {
 
 		});
 	},
+	setPreferences : function (user, params) {
+		var organization = getOrganization(user);
+		if (! organization) {
+			var message = 'user: ' + user.id + ' has no Organization assigned.'
+			return Parse.Promise.error(message);
+		}
+
+		var promises = [];
+		if(params.creditAg) {
+			organization.set('creditNumber', params.creditNumber);
+		}
+		promises.push(organization.save());
+
+		var Preference = Parse.Object.extend('Preferencies');
+		var query = new Parse.Query(Preference);
+		query.equalTo("organization", organization);
+	
+		return query.first().then(function(prefObj) {
+			prefObj.set("creditAg", params.creditAg);
+			prefObj.set("creditNotes", params.notes);
+			prefObj.set("creditTerms", params.terms);
+
+			promises.push(prefObj.save());
+			return Parse.Promise.when(promises);
+		});
+
+	},
 	createNewCreditNote : function(creditNote, creditItems, role) {
 		var items = [];
 		var acl = new Parse.ACL();
