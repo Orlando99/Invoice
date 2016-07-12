@@ -69,11 +69,11 @@ return {
 		}).then(function() {
 			var orgTable = Parse.Object.extend("Organization");
 			query = new Parse.Query(orgTable);
-			query.select("dateFormat", "estimatesFields", "estimateNumber");
+			query.select("dateFormat", "estimateFields", "estimateNumber");
 
 			return query.get(organization.id).then(function(orgObj) {
 				prefs.dateFormat = orgObj.get("dateFormat");
-				prefs.customFields = orgObj.get("estimatesFields");
+				prefs.customFields = orgObj.get("estimateFields");
 				prefs.estimateNumber = orgObj.get("estimateNumber");
 
 			}).then(function() {
@@ -81,6 +81,34 @@ return {
 			});
 
 		});
+	},
+	setPreferences : function (user, params) {
+		var organization = getOrganization(user);
+		if (! organization) {
+			var message = 'user: ' + user.id + ' has no Organization assigned.'
+			return Parse.Promise.error(message);
+		}
+
+		var promises = [];
+		organization.set('estimateFields', params.customFields);
+		if(params.estimateAg) {
+			organization.set('estimateNumber', params.estimateNumber);
+		}
+		promises.push(organization.save());
+
+		var Preference = Parse.Object.extend('Preferencies');
+		var query = new Parse.Query(Preference);
+		query.equalTo("organization", organization);
+	
+		return query.first().then(function(prefObj) {
+			prefObj.set("estimateAg", params.estimateAg);
+			prefObj.set("estimateNotes", params.notes);
+			prefObj.set("estimateTerms", params.terms);
+
+			promises.push(prefObj.save());
+			return Parse.Promise.when(promises);
+		});
+
 	},
 	createNewEstimate : function(estimate, estimateItems, role) {
 		var items = [];

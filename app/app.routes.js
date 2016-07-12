@@ -486,7 +486,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/estimates',
 				views 	: {
 					'@'	: {
-						controller 	: 'SettingsController',
+						controller 	: 'EstimateSettingsController',
 						templateUrl	: COMPONENTS + 'dashboard/views/settings/estimates.html'
 					}
 				}

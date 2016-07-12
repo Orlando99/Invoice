@@ -15,6 +15,7 @@ $controller('DashboardController',{$scope:$scope,$state:$state});
 loadInvoicePrefs();
 
 function loadInvoicePrefs() {
+	showLoader();
 	$q.when(invoiceService.getPreferences(user))
 	.then(function(prefs) {
 		$scope.prefs = prefs;
@@ -56,8 +57,10 @@ function loadInvoicePrefs() {
 			$scope.discountPlace = 'after';
 			break;
 		}
+		hideLoader();
 
 	}, function(error) {
+		hideLoader();
 		console.log(error.message);
 	});
 }
