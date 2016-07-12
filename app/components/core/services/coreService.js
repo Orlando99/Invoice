@@ -74,6 +74,12 @@ invoicesUnlimited.factory('coreFactory',
 		});
 	}
 
+	core.getInvoiceTemplates = function() {
+		var query = new Parse.Query('InvoiceTemplate');
+		query.select('name', 'templatePreview');
+		return query.find();
+	}
+
 	return core;
 
 });

@@ -5,13 +5,15 @@
     <h3 class="layout-margin-t section-title">Invoice Templates</h3>
     <hr>
 
-    <div class="col-50">
-      <img src="./assets/images/template1.png" alt="">
-      <p>Template 1</p>
+    <div class="col-50" ng-repeat="template in templates">
+      <img ng-src="{{template.url}}" alt="">
+      <p>{{template.name}}</p>
       <div class="text-center">
-        <button class="button button-info text-uppercase">Set as Default</button>
+        <button class="button button-info text-uppercase" ng-disabled="template.isDefault"
+          ng-click="setDefaultTemplate($index)">Set as Default</button>
       </div>
     </div>
+<!--
     <div class="col-50 text-right">
       <img src="./assets/images/template2.png" class="pull-right" alt="">
       <p class="text-left">Template 2</p>
@@ -19,19 +21,8 @@
         <button class="button button-info text-uppercase">Set as Default</button>
       </div>
     </div>
-
+-->
   </div>
+  <div class="clearfix"></div>
 
-  
-  <div class="onmobile">
-    <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="./assets/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="./assets/images/AppStore.png" alt="Google Play"></a>
-  </div>
-  
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="./assets/js/moment.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
-  <script src="./assets/js/main.js"></script>
-</body>
-</html>
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

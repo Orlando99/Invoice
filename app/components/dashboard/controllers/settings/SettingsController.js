@@ -4,8 +4,9 @@ String.prototype.capitilize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
-invoicesUnlimited.controller('SettingsController',['$scope','$state', '$controller', 'userFactory',
-function($scope,$state,$controller, userFactory){
+invoicesUnlimited.controller('SettingsController',['$q','$scope','$state', '$controller',
+	'userFactory', 'coreFactory',
+function($q,$scope,$state,$controller, userFactory, coreFactory){
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -46,6 +47,9 @@ function CheckUseCase(stateName) {
 
 	} else if (isGoTo.currencies(stateName)) {
 		console.log('its in currency');
+	} else if (isGoTo.templates(stateName)) {
+		console.log('select invoice template');
+		loadInvoiceTemplates();
 	}
 
 }
@@ -58,6 +62,51 @@ function showUserFields() {
 		status : 'Active',
 		textClass : 'text-positive'
 	}];
+}
+
+function loadInvoiceTemplates() {
+	$q.when(coreFactory.getInvoiceTemplates())
+	.then(function(templateObjs) {
+		var defaultTemplate = user.get('defaultTemplate');
+		
+		var templates = [];
+		templateObjs.forEach(function(t) {
+			var obj = {
+				entity : t,
+				name : t.get('name'),
+				url : t.get('templatePreview').url()
+			}
+			if (!defaultTemplate && obj.name == 'Template 1')
+				obj.isDefault = true;
+			else
+				obj.isDefault = (defaultTemplate.id == t.id ? true : false);
+
+			templates.push(obj);
+
+		});
+		$scope.templates = templates;
+
+	}, function(error) {
+		console.log(error.message);
+	});
+}
+
+$scope.setDefaultTemplate = function(index) {
+	showLoader();
+	$scope.templates.forEach(function(t) {
+		t.isDefault = false;
+	});
+	$scope.templates[index].isDefault = true;
+
+	user.set('defaultTemplate', $scope.templates[index].entity);
+	user.save().then(function() {
+		hideLoader();
+		console.log('default template selected');
+
+	}, function(error) {
+		hideLoader();
+		console.log(error,message);
+	});
 }
 
 //	$scope.selectedColor;

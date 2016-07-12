@@ -168,3 +168,7 @@ label#verificationCode-error {
 .navigation > li .submenu li a:hover {
 	color: #000;
 }
+
+button[disabled] {
+	background-color: #b3b3b3;
+}
