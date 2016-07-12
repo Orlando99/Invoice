@@ -7,41 +7,35 @@
     <form class="inputs-white col-60">
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Time Zone</label>
-        <select class="col-75">
-          <option value="mst" selected>(MST) Mountain Standard Time)</option>
+        <select class="col-75" ng-model="timeZones.selectedTimeZone">
+          <option value="" disabled>Select Time Zone</option>
+          <option ng-repeat="timezone in timeZones.timeZones">{{timezone}}</option>
         </select>
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Fiscal Year Starts In</label>
-        <select class="col-75">
-          <option value="April" selected>April</option>
+        <select class="col-75" ng-model="months.selectedMonth">
+          <option value="" disabled>Select Month</option>
+          <option ng-repeat="month in months.months">{{month}}</option>
         </select>
       </div>
       <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-smm">Email</label>
-        <select class="col-75">
-          <option value="ddmmmmmyyyy" selected>dd MMMM yyyy</option>
+        <label class="layout-padding-t-smm">Date Format</label>
+        <select class="col-75" ng-model="dateFormats.selectedFormat">
+          <option value="" disabled>Select Date Format</option>
+          <option ng-repeat="format in dateFormats.formats">{{format}}</option>
         </select>
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Date Separator</label>
-        <input class="col-75" type="text" value="/">
+        <select class="col-75" ng-model="fieldSeparators.selectedSeparator">
+          <option value="" disabled>Select Date Separator</option>
+          <option ng-repeat="separator in fieldSeparators.separators">{{separator}}</option>
+        </select>
       </div>
 
       <div class="clearfix spacer"></div>
-      <button class="button button-info text-uppercase">Save</button>
+      <button class="button button-info text-uppercase" ng-click="setDefaultPrefs()">Save</button>
     </form>
 
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="./assets/js/moment.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
-  <script src="./assets/js/main.js"></script>
-</body>
-
- <div class="onmobile">
-    <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="./assets/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="./assets/images/AppStore.png" alt="Google Play"></a>
-  </div>
-  
-</html>
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

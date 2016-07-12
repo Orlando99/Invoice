@@ -80,6 +80,14 @@ invoicesUnlimited.factory('coreFactory',
 		return query.find();
 	}
 
+	core.getGeneralPrefs = function(user) {
+		var query = new Parse.Query('Organization');
+		query.equalTo('userID', user);
+		query.select('timeZone', 'fiscalYearStart',
+			'dateFormat', 'fieldSeparator');
+		return query.first();
+	}
+
 	return core;
 
 });
