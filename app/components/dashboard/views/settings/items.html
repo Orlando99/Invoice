@@ -2,7 +2,7 @@
 
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title float-left">All Items <i class="arrow-down-black"></i></h3>
-    <a href="javascript:" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="new-item">New</a>
+    <a href="javascript:" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="new-item" ng-click="clearAddItemFields()">New</a>
     <form class="float-right layout-margin-tb">
       <input type="text" class="search-bar layout-margin-r" placeholder="Search">
     </form>
@@ -14,10 +14,10 @@
         <td class="text-uppercase text-info layout-padding">Rate</td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr ng-repeat="item in items">
+      <tr ng-repeat="item in items" ng-dblclick="showItemDetail($index)">
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.title}}</td>
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.itemDescription}}</td>
-        <td class="text-color-light text-weight-normalize layout-padding">${{item.entity.rate}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.rate | currency:$:2}}</td>
         <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
     </table>
@@ -37,34 +37,34 @@
         <form class="layout-margin-tb col-100 inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Name</label>
-            <select class="col-75">
-              <option value="select" disabled selected>Select or Type to Add</option>
-            </select>
+            <input type="text" class="col-75" ng-model="itemName">
           </div>
+          <!--
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Unit</label>
             <select class="col-75">
               <option value="select" disabled selected>Select or Type to Add</option>
             </select>
           </div>
+          -->
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Rate</label>
-            <input type="text" class="col-75" placeholder="USD">
+            <input type="text" class="col-75" placeholder="USD" ng-model="itemRate">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Description</label>
-            <textarea class="col-75">Lorem Ipsum</textarea>
+            <textarea class="col-75" ng-model="itemDesc"></textarea>
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Tax</label>
-            <select class="col-75">
-              <option value="select" disabled selected>Select Tax</option>
+            <select class="col-75" ng-model="itemTax" ng-options="tax.name for tax in taxes">
+              <option value="" selected>None</option>
             </select>
           </div>
         </form>
       </div>
       <div class="clearfix"></div>
-      <button class="button button-info text-uppercase">Save</button>
+      <button class="button button-info text-uppercase" ng-click="saveNewItem()">Save</button>
     </div>
   </div>
 
@@ -80,46 +80,37 @@
         <form class="layout-margin-tb col-100 inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Name</label>
-            <select class="col-75">
-              <option value="select" disabled selected>Select or Type to Add</option>
-            </select>
+            <input type="text" class="col-75" ng-model="itemName">
           </div>
+          <!--
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Unit</label>
             <select class="col-75">
               <option value="select" disabled selected>Select or Type to Add</option>
             </select>
           </div>
+          -->
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Rate</label>
-            <input type="text" class="col-75" placeholder="USD">
+            <input type="text" class="col-75" placeholder="USD" ng-model="itemRate">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Description</label>
-            <textarea class="col-75">Lorem Ipsum</textarea>
+            <textarea class="col-75" ng-model="itemDesc"></textarea>
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Tax</label>
-            <select class="col-75">
-              <option value="select" disabled selected>Select Tax</option>
+            <select class="col-75" ng-model="itemTax" ng-options="tax.name for tax in taxes">
+              <option value="" selected>None</option>
             </select>
           </div>
         </form>
       </div>
       <div class="clearfix"></div>
-      <button class="button button-info text-uppercase float-left">Save</button>
+      <button class="button button-info text-uppercase float-left" ng-click="saveEditedItem()">Save</button>
       <button class="button button-danger text-uppercase float-right">Delete</button>
       <div class="clearfix"></div>
     </div>
   </div>
 
-   <div class="onmobile">
-    <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="./assets/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="./assets/images/AppStore.png" alt="Google Play"></a>
-  </div>
-  
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="./assets/js/moment.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
-  <script src="./assets/js/main.js"></script>
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>
