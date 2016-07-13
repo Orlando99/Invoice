@@ -476,7 +476,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/payments',
 				views 	: {
 					'@'	: {
-						controller 	: 'SettingsController',
+						controller 	: 'PaymentsController',
 						templateUrl	: COMPONENTS + 'dashboard/views/settings/payments.html'
 					}
 				}

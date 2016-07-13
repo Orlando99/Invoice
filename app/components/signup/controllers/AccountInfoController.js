@@ -1,11 +1,28 @@
 'use strict';
 
 invoicesUnlimited.controller('AccountInfoController',
-	function($scope,$state,signUpFactory,userFactory){
+	function($rootScope,$scope,$state,signUpFactory,userFactory){
 
 	if (!signUpFactory.getFactory('User').entity.length) {
 		$state.go('signup');
 		return;
+	}
+
+	if($rootScope.fromPaymentSettings) {
+		var userObj = signUpFactory.getFactory('User').entity[0];
+		signUpFactory.setField('AccountInfo', 'userID', userObj);
+		signUpFactory.setField('AccountInfo', 'organization',
+			userObj.get('selectedOrganization'));
+
+		showLoader();
+		signUpFactory.getFactory('Role').load()
+		.then(function() {
+			hideLoader();
+
+		}, function(error) {
+			hideLoader();
+			console.log(error.message);
+		});
 	}
 
 	$.validator.addMethod(
@@ -83,11 +100,7 @@ invoicesUnlimited.controller('AccountInfoController',
 		monthlySales	: ''
 	};
 
-	$scope.saveAccountInfo = function(){
-		if (!$('#signUpForm').valid()) return;
-
-		showLoader();
-
+	function saveHelper() {
 		for (var field in $scope.accountInfo){
 			signUpFactory.setField('AccountInfo',{
 				field : field,
@@ -102,25 +115,44 @@ invoicesUnlimited.controller('AccountInfoController',
 
 		var account = signUpFactory.create('AccountInfo');
 		
-		account.then(function(obj){
+		return account
+		.then(function(obj){
 			var save = signUpFactory.save('User',{
 				'accountInfo':obj
 			});
 			if (save) return save;
-			window.reload();
-		},function(error){
-			console.log(error.message);
-		}).then(function(){
+		//	window.reload();
+		});
+	}
+
+	$scope.saveAccountInfo = function(){
+		if (!$('#signUpForm').valid()) return;
+
+		showLoader();
+		saveHelper().then(function(){
 			hideLoader();
 			$state.go('signup.signature');
+
 		},function(error){
+			hideLoader();
 			console.log(error.message);
 		});
 	};
 
 	$scope.saveAndContinueLater = function(){
-		if (signUpFactory.getFactory('User').entity.length)
+		if (!$('#signUpForm').valid()) return;
+
+		showLoader();
+		saveHelper().then(function(){
+			hideLoader();
+			if (signUpFactory.getFactory('User').entity.length)
 			$state.go('dashboard');
+
+		},function(error){
+			hideLoader();
+			console.log(error.message);
+		});
+
 	};
 
 });

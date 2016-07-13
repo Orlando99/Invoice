@@ -1,65 +1,49 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   
   <div class="container hidesm">
-    <h3 class="layout-margin-t section-title float-left">Payments Received <i class="arrow-down-black"></i></h3>
-    <a href="#" class="float-right layout-margin-tb button button-refresh text-transform modal-opener" data-toggle="add-contact-person"></a>
-    <form class="float-right layout-margin-tb">
-      <input type="text" class="search-bar layout-margin-r" placeholder="Search">
-    </form>
+    <h3 class="layout-margin-t section-title float-left">Payments Settings</h3>
+    
+    <div class="clearfix"></div>
+    <p>{{infoMsg}}</p>
+    
+    <div class="clearfix"></div>
+    
+    <div ng-show="processingRequest">
+      <label class="col-50">Phone Number</label>
+      <label>{{phoneNumber}}</label>
+      <br />
+      <label class="col-50">Email</label>
+      <label>{{email}}</label>
+    </div>
 
-    <table class="table-border-tb">
-      <tr class="thead">
-        <td class="text-uppercase text-info layout-padding">Date</td>
-        <td class="text-uppercase text-info layout-padding">Payment#</td>
-        <td class="text-uppercase text-info layout-padding">Ref#</td>
-        <td class="text-uppercase text-info layout-padding">Cust.Name</td>
-        <td class="text-uppercase text-info layout-padding">Invoice#</td>
-        <td class="text-uppercase text-info layout-padding">Mode <img src="./assets/images/dropdown-arrow-primary.png" alt="" /></td>
-        <td class="text-uppercase text-info layout-padding">Amount</td>
-        <td class="text-uppercase text-info layout-padding">Balance</td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">12/03/2014</td>
-        <td class="text-color-light text-weight-normalize layout-padding">01</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding">John Doe</td>
-        <td class="text-color-light text-weight-normalize layout-padding">INV-000001</td>
-        <td class="text-color-light text-weight-normalize layout-padding">Authorize.net</td>
-        <td class="text-color-light text-weight-normalize layout-padding">$10.00</td>
-        <td class="text-color-light text-weight-normalize layout-padding">$10.00</td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">12/05/2014</td>
-        <td class="text-color-light text-weight-normalize layout-padding">02</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding">Frank West</td>
-        <td class="text-color-light text-weight-normalize layout-padding">INV-000002</td>
-        <td class="text-color-light text-weight-normalize layout-padding">Google Che...</td>
-        <td class="text-color-light text-weight-normalize layout-padding">$5.00</td>
-        <td class="text-color-light text-weight-normalize layout-padding">$5.00</td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">12/03/2014</td>
-        <td class="text-color-light text-weight-normalize layout-padding">03</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding">John Doe</td>
-        <td class="text-color-light text-weight-normalize layout-padding">INV-000001</td>
-        <td class="text-color-light text-weight-normalize layout-padding">Authorize.net</td>
-        <td class="text-color-light text-weight-normalize layout-padding">$10.00</td>
-        <td class="text-color-light text-weight-normalize layout-padding">$10.00</td>
-      </tr>
+    <div ng-show="approved">
 
-    </table>
+      <label class="col-50">Merchant ID</label>
+      <label>{{merchantID}}</label>
+      <br />
+      <label class="col-50">Business Name</label>
+      <label>{{businessName}}</label>
+      
+      <br /><br />
+      <p>24/7 Merchant Account Support:</p>
+      <br />
+      <label class="col-50">Phone Number</label>
+      <label>{{accountSupportNumber}}</label>
+
+      <br /><br/>
+      <p>Software Support:</p>
+      <br />
+      <label class="col-50">Phone Number</label>
+      <label>{{softwareSupportNumber}}</label>
+      <br />      
+      <label class="col-50">Email</label>
+      <label>{{email}}</label>
+
+    </div>
+
+    <a ng-click="continueProcess()" ng-show="incompleteProfile"
+      class="button button-primary button-next">Continue</a>
 
   </div>
 
- <div class="onmobile">
-    <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="./assets/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="./assets/images/AppStore.png" alt="Google Play"></a>
-  </div>
-  
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="./assets/js/moment.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
-  <script src="./assets/js/main.js"></script>
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

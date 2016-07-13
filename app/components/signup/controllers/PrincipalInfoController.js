@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.controller('PrincipalInfoController',
-	['$scope','$state','signUpFactory',
-	function($scope,$state,signUpFactory){
+	['$q','$rootScope','$scope','$state','signUpFactory',
+	function($q,$rootScope,$scope,$state,signUpFactory){
 
 	var user = signUpFactory.getFactory('User');
 
@@ -70,7 +70,7 @@ invoicesUnlimited.controller('PrincipalInfoController',
 		return;
 	}
 
-	if (!signUpFactory.getVerification.code()) {
+	if (!signUpFactory.getVerification.code() && ! $rootScope.fromPaymentSettings) {
 		user.logout();
 		$state.go('signup');
 		return;
@@ -123,6 +123,38 @@ invoicesUnlimited.controller('PrincipalInfoController',
 		});
 	};
 
+	if($rootScope.fromPaymentSettings) {
+		var userObj = user.entity[0];
+		signUpFactory.setField('PrincipalInfo', 'userID', userObj);
+		signUpFactory.setField('PrincipalInfo', 'organization',
+			userObj.get('selectedOrganization'));
+
+		showLoader();
+		var p = undefined;
+		var promises = [];
+		p = $q.when(userObj.get('businessInfo').fetch())
+		.then(function(bInfo) {
+			for(var i=0; i < fields.length; ++i) {
+				signUpFactory.setField('BusinessInfo', fields[i],
+					bInfo.get(fields[i]));
+			}
+			$scope.toggleHomeInfo();
+		});
+		promises.push(p);
+
+		p = $q.when(signUpFactory.getFactory('Role').load());
+		promises.push(p);
+
+		$q.all(promises).then(function() {
+			hideLoader();
+
+		}, function(error) {
+			hideLoader();
+			console.log(error.message);
+		});
+
+	}
+
 	$scope.$watch(function(){return signUpFactory.get('BusinessInfo')},function(newValue,oldValue){
 		if (oldValue == newValue) return;
 		fields.forEach(function(field){
@@ -130,11 +162,7 @@ invoicesUnlimited.controller('PrincipalInfoController',
 		});
 	},true);
 
-	$scope.savePrincipalInfo = function(){
-		if (!$('#signUpForm').valid()) return;
-
-		showLoader();
-
+	function saveHelper() {
 		for (var field in $scope.principalInfo){
 			signUpFactory.setField('PrincipalInfo',{
 				field : field, 
@@ -144,26 +172,43 @@ invoicesUnlimited.controller('PrincipalInfoController',
 
 		var principal = signUpFactory.create('PrincipalInfo');
 
-		principal
+		return principal
 		.then(function(obj){
 			var save = signUpFactory.save('User',{
 				'principalInfo' : obj
 			});
 			if (save) return save;
-			window.reload();
-		},function(error){
-			console.log(error.message);
-		}).then(function(){
+		//	window.reload();
+		});
+	}
+
+	$scope.savePrincipalInfo = function(){
+		if (!$('#signUpForm').valid()) return;
+		
+		showLoader();
+		saveHelper().then(function(){
 			hideLoader();
 			$state.go('signup.account-info');
+
 		},function(error){
+			hideLoader();
 			console.log(error.message);
 		});
 	};
 
 	$scope.saveAndContinueLater = function(){
-		if (signUpFactory.getFactory('User').entity.length)
-			$state.go('dashboard');
+		if (!$('#signUpForm').valid()) return;
+
+		showLoader();
+		saveHelper().then(function(){
+			hideLoader();
+			if (signUpFactory.getFactory('User').entity.length)
+				$state.go('dashboard');
+
+		},function(error){
+			hideLoader();
+			console.log(error.message);
+		});
 	};
 
 }]);

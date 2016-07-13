@@ -18,18 +18,27 @@ $(document).ready(function(){
 });
 
 invoicesUnlimited.controller('BusinessInfoController',
-	['$scope','$state','signUpFactory','userFactory','roleFactory',
-	function($scope,$state,signUpFactory,userFactory,roleFactory){
+	['$rootScope','$scope','$state','signUpFactory','userFactory','roleFactory',
+	function($rootScope,$scope,$state,signUpFactory,userFactory,roleFactory){
 
 	if (!userFactory.entity.length){
 		$state.go('signup');
 		return;
 	}
 
-	if (!signUpFactory.getVerification.code()) {
+	if (!signUpFactory.getVerification.code() && ! $rootScope.fromPaymentSettings) {
 		userFactory.logout();
 		$state.go('signup');
 		return;
+	}
+
+	// User object in signUpFactory doesn't have data.
+	if($rootScope.fromPaymentSettings) {
+		var user = userFactory.entity[0];
+		signUpFactory.setField('User','company', user.get('company'));
+		signUpFactory.setField('User','phonenumber', user.get('phonenumber'));
+		signUpFactory.setField('BusinessInfo', 'organization',
+			user.get('selectedOrganization'));
 	}
 
 	$("#signUpForm").validate({

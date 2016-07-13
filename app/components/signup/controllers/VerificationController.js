@@ -1,9 +1,9 @@
 'use strict';
 
 invoicesUnlimited.controller('VerificationController',
-	['$scope','$state','userFullFactory',
+	['$rootScope','$scope','$state','userFullFactory',
 	 'signUpFactory','userFactory',
-	function($scope,$state,userFullFactory,signUpFactory,userFactory){
+	function($rootScope,$scope,$state,userFullFactory,signUpFactory,userFactory){
 	
 	if (!signUpFactory.getVerification.code()) {
 		$state.go('signup');
@@ -102,6 +102,7 @@ invoicesUnlimited.controller('VerificationController',
 		})
 		.then(function(currObj,prefObj) {
 			hideLoader();
+			$rootScope.fromPaymentSettings = false;
 			$state.go('signup.business-info');
 		},function(err){
 			if (!err.length) {

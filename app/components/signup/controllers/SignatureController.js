@@ -1,14 +1,32 @@
 'use strict';
 
 invoicesUnlimited.controller('SignatureController',
-	['$scope','$state','signUpFactory','$ocLazyLoad',
-	function($scope,$state,signUpFactory,$ocLazyLoad){
+	['$rootScope','$scope','$state','signUpFactory','$ocLazyLoad',
+	function($rootScope,$scope,$state,signUpFactory,$ocLazyLoad){
 
 	var user = signUpFactory.getFactory('User');
 
 	if (!user.entity.length) {
 		$state.go('signup');
 		return;
+	}
+
+	if($rootScope.fromPaymentSettings) {
+		var userObj = user.entity[0];
+		signUpFactory.setField('User', 'fullName', userObj.get('fullName'));
+		signUpFactory.setField('Signature', 'userID', userObj);
+		signUpFactory.setField('Signature', 'organization',
+			userObj.get('selectedOrganization'));
+
+		showLoader();
+		signUpFactory.getFactory('Role').load()
+		.then(function() {
+			hideLoader();
+
+		}, function(error) {
+			hideLoader();
+			console.log(error.message);
+		});
 	}
 
 	$scope.fullName = signUpFactory.getField('User', 'fullName');
