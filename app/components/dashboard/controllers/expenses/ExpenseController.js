@@ -30,6 +30,46 @@ var isGoTo = {
 
 CheckUseCase();
 
+$('#addExpenseForm').validate({
+	rules: {
+		expCategory: 'required',
+		date : 'required',
+		amount : {
+			required : true,
+			min : 0.01
+		},
+		customer : 'required'
+	},
+	messages: {
+		expCategory : 'Please Select an Expense category',
+		date : 'Please specify enpense date',
+		amount : {
+			required : 'Please enter expenes amount'
+		},
+		customer : 'Please select a customer'
+	}
+});
+
+$('#editExpenseForm').validate({
+	rules: {
+		expCategory: 'required',
+		date : 'required',
+		amount : {
+			required : true,
+			min : 0.01
+		},
+		customer : 'required'
+	},
+	messages: {
+		expCategory : 'Please Select an Expense category',
+		date : 'Please specify enpense date',
+		amount : {
+			required : 'Please enter expenes amount'
+		},
+		customer : 'Please select a customer'
+	}
+});
+
 function CheckUseCase(stateName) {
 	if (! stateName)
 		stateName = $state.current.name;
@@ -197,6 +237,8 @@ function listExpenses() {
 }
 
 $scope.saveNewExpense = function() {
+	if(! $('#addExpenseForm').valid()) return;
+
 	showLoader();
 	var expense = {
 		userID : user,
@@ -226,6 +268,12 @@ $scope.saveNewExpense = function() {
 }
 
 $scope.saveEditedExpense = function() {
+	if(! $('#editExpenseForm').valid()) return;
+	else {
+		console.log('valid data');
+		return;
+	}
+
 	showLoader();
 	var expense = $scope.expense;
 	expense.set('customer', $scope.selectedCustomer.entity);

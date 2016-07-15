@@ -16,6 +16,40 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 	initalizeModalClasses();
 	initializeScopeVariables();
 
+	$('#addTaxForm').validate({
+		rules: {
+			name: 'required',
+			rate : {
+				required : true,
+				number : true
+			}
+		},
+		messages: {
+			name : 'Please enter Tax name',
+			rate : {
+				required : 'tax rate is required',
+				number : 'please enter a valid rate(number)'
+			}
+		}
+	});
+
+	$('#editTaxForm').validate({
+		rules: {
+			name: 'required',
+			rate : {
+				required : true,
+				number : true
+			}
+		},
+		messages: {
+			name : 'Please enter Tax name',
+			rate : {
+				required : 'tax rate is required',
+				number : 'please enter a valid rate(number)'
+			}
+		}
+	});
+
 	function initializeScopeVariables() {
 		$scope.taxId = 0;
 		$scope.taxName = '';
@@ -37,10 +71,12 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 
 	$scope.clearAddItemFields = function() {
 		initializeScopeVariables();
+		$('#addTaxForm').validate().resetForm();
 	}
 
 	$scope.saveNewTax = function() {
-		// run form validation
+		if(! $('#addTaxForm').valid()) return;
+		
 		var params = {
 			title: $scope.taxName,
 			value: Number($scope.taxRate),
@@ -56,6 +92,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 	}
 	
 	$scope.editTax = function(tax) {
+		$('#editTaxForm').validate().resetForm();
 		$(".edit-tax").addClass("show");
 		// record selected tax attributes
 		$scope.taxId = tax.id;
@@ -65,7 +102,8 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 	}
 
 	$scope.saveEditedTax = function() {
-		// run form validation
+		if(! $('#editTaxForm').valid()) return;
+
 		var params = {
 			taxId: $scope.taxId,
 			taxName: $scope.taxName,

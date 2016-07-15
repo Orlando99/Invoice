@@ -33,14 +33,14 @@
       <hr class="layout-margin-tb">
 
       <div class="col-80 text-left layout-center">
-        <form action="" class="layout-margin-tb inputs-white">
+        <form id="addTaxForm" class="layout-margin-tb inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Tax Name</label>
-            <input type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
+            <input name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Rate %</label>
-            <input type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
+            <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
           </div>
           <div class="col-25 spacer"></div>
           <label class="input-container input-checkbox-container col-75 pull-right">
@@ -54,7 +54,6 @@
               </p>
             </div>
           </label>
-
         </form>
       </div>
       <div class="clearfix"></div>
@@ -73,14 +72,14 @@
       <hr class="layout-margin-tb">
 
       <div class="col-80 text-left layout-center">
-        <form action="" class="layout-margin-tb inputs-white">
+        <form id="editTaxForm" class="layout-margin-tb inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Tax Name</label>
-            <input type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
+            <input name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Rate %</label>
-            <input type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
+            <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
           </div>
           <div class="col-25 spacer"></div>
           <label class="input-container input-checkbox-container col-75 pull-right">
@@ -94,7 +93,6 @@
               </p>
             </div>
           </label>
-
         </form>
       </div>
       <div class="clearfix"></div>

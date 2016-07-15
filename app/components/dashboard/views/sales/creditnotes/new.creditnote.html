@@ -4,17 +4,17 @@
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">New Credit Note</h3>
     <div class="clearfix"></div>
     <hr>
-    <form class="inputs-white layout-margin-b">
+    <form id="addCreditNoteForm" novalidate class="inputs-white layout-margin-b">
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Customer Name</label>
-        <select class="col-75" ng-model="selectedCustomer" ng-change="customerChanged()"
+        <select name="customer" class="col-75" ng-model="selectedCustomer" ng-change="customerChanged()"
           ng-options="customer.entity.displayName for customer in customers">
           <option value="" disabled>Select customer name</option>
         </select>
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Credit Note#</label>
-        <input class="col-75" type="text" ng-model="creditNo" ng-disabled="disableCreditNo">
+        <input name="creditNumber" class="col-75" type="text" ng-model="creditNo" ng-disabled="disableCreditNo">
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Reference #</label>
@@ -22,7 +22,7 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Credit note Date</label>
-        <input class="col-75 form-control" type="text" uib-datepicker-popup="MM-dd-yyyy"
+        <input name="creditCreateDate" class="col-75 form-control" type="text" uib-datepicker-popup="MM-dd-yyyy"
           ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)">
       </div>
       <div class="clearfix"></div>
@@ -56,21 +56,23 @@
       <div class="clearfix"></div>
       <div class="tbody no-border inputs-white">
 
+      <form id="itemInfoForm" novalidate>
         <div class="table-row" ng-repeat="creditItem in creditItems">
+
           <div class="col-30 layout-padding">
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-            <select ng-model="creditItem.selectedItem" ng-options="item.entity.title for item in items"
-              ng-change="itemChanged($index)">
+            <select tri:fix-input-name name="item{{$index}}" class="check-item" ng-model="creditItem.selectedItem"
+              ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
               <option value="" disabled>Select or Type to add</option>
             </select>
           </div>
           <div class="col-15 layout-padding layout-padding-l text-right">
-            <input type="number" placeholder="1.0" ng-model="creditItem.quantity"
-              ng-change="reCalculateItemAmount($index)">
+            <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" placeholder="1"
+              ng-model="creditItem.quantity" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-15 layout-padding layout-padding-l text-right">
-            <input type="number" placeholder="10.00" ng-model="creditItem.rate"
-              ng-change="reCalculateItemAmount($index)">
+            <input tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number" placeholder="10.00"
+              ng-model="creditItem.rate" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-15 layout-padding layout-padding-l">
             <select ng-model="creditItem.selectedTax" ng-options="tax.name for tax in taxes"
@@ -84,7 +86,9 @@
           <div class="col-5 layout-padding layout-padding-l text-right">
             <button class="button button-icon button-no-margin" ng-click="removeCreditItem($index)"><img src="./assets/images/icon-times-round.png" alt=""></button>
           </div>
+
         </div>
+      </form>
 
         <a href="javascript:" class="button layout-margin-tb" ng-click="addCreditItem()">
           + Add another item</a>

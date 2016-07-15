@@ -214,6 +214,24 @@ invoicesUnlimited.directive('fileModel', ['$parse', function ($parse) {
   };
 }]);
 
+invoicesUnlimited.directive('triFixInputName', function () {
+  return {
+      // just postLink
+      link: function (scope, element, attrs, ngModelCtrl) {
+          // do nothing in case of no 'name' attribiute
+          if (!attrs.name) { 
+              return;
+          }
+          // fix what should be fixed
+          ngModelCtrl.$name = attrs.name;
+      },
+      // ngModel's priority is 0
+      priority: '-100',
+      // we need it to fix it's behavior
+      require: 'ngModel'
+   };
+});
+
 $(document).on('keypress','.sign-up input',function(e) {
   if (e.keyCode == 13) {
     $('.sign-up .button-next')[0].click();
@@ -251,4 +269,8 @@ function calculateTax(amount, tax) {
   }
 
   return res;
+}
+
+function isNaturalNumber(x) {
+  return Number.isInteger(x) && x > 0;
 }

@@ -32,6 +32,67 @@ var isGoTo = {
 
 CheckUseCase();
 
+$('#editCreditNoteForm').validate({
+	rules: {
+		customer : 'required',
+		creditNumber : 'required',
+		creditCreateDate : 'required'
+	},
+	messages: {
+		customer : 'Please select a customer',
+		creditNumber : 'Please enter credit note number',
+		creditCreateDate : 'Please provide credit note create date'
+	}
+});
+
+$('#itemInfoForm').validate();
+
+function setValidationRules() {
+/*		
+	if (! $('.check-item').length) {
+		console.log('atleast one item');
+		return false;
+	}
+*/	
+	$('.check-item').each(function() {
+		$(this).rules ('remove');
+		$(this).rules('add', {
+			required : true,
+			messages : {
+				required : 'its required'
+			}
+		});
+	});
+
+	$('.check-qty').each(function() {
+		$(this).rules ('remove');
+		$(this).rules('add', {
+			required : true,
+			min : 1,
+			digits : true,
+			messages : {
+				required : 'its required',
+				min : '>= 1',
+				digits : 'must be integer'
+			}
+		});
+	});
+
+	$('.check-rate').each(function() {
+		$(this).rules ('remove');
+		$(this).rules('add', {
+			required : true,
+			min : 0.01,
+			number : true,
+			messages : {
+				required : 'its required',
+				min : '>= 0.01'
+			}
+		});
+	});
+
+}
+
 function CheckUseCase(stateName) {
 	if (! stateName)
 		stateName = $state.current.name;
@@ -164,6 +225,11 @@ function saveAndSendEditedCreditNote () {
 }
 
 $scope.save = function() {
+	setValidationRules();
+	var a = $('#editCreditNoteForm').valid();
+	var b = $('#itemInfoForm').valid();
+	if(! (a && b)) return;
+
 	showLoader();
 	useAllIds();
 	saveEditedCreditNote()
@@ -179,6 +245,11 @@ $scope.save = function() {
 }
 
 $scope.saveAndSend = function () {
+	setValidationRules();
+	var a = $('#editCreditNoteForm').valid();
+	var b = $('#itemInfoForm').valid();
+	if(! (a && b)) return;
+
 	showLoader();
 	useAllIds();
 	saveAndSendEditedCreditNote()

@@ -16,6 +16,40 @@ initalizeModalClasses();
 
 loadItemsAndTaxes();
 
+$('#addItemForm').validate({
+	rules: {
+		name : 'required',
+		rate : {
+			required : true,
+			number : true
+		}
+	},
+	messages: {
+		name : 'Please enter Item name',
+		rate : {
+			required : 'Item rate is required',
+			number : 'Please enter valid rate(number)'
+		}
+	}
+});
+
+$('#editItemForm').validate({
+	rules: {
+		name : 'required',
+		rate : {
+			required : true,
+			number : true
+		}
+	},
+	messages: {
+		name : 'Please enter Item name',
+		rate : {
+			required : 'Item rate is required',
+			number : 'Please enter valid rate(number)'
+		}
+	}
+});
+
 function loadItemsAndTaxes() {
 	showLoader();
 	var p = undefined;
@@ -54,9 +88,11 @@ function initializeScopeVariables() {
 
 $scope.clearAddItemFields = function() {
 	initializeScopeVariables();
+	$('#addItemForm').validate().resetForm();
 }
 
 $scope.showItemDetail = function(index) {
+	$('#editItemForm').validate().resetForm();
 	$(".edit-item").addClass("show");
 	var item = $scope.items[index];
 
@@ -64,6 +100,7 @@ $scope.showItemDetail = function(index) {
 	$scope.itemName = item.entity.title;
 	$scope.itemRate = item.entity.rate;
 	$scope.itemDesc = item.entity.itemDescription;
+	$scope.itemTax = undefined;
 
 	if (item.tax) {
 		var taxes = $scope.taxes;
@@ -77,6 +114,8 @@ $scope.showItemDetail = function(index) {
 }
 
 $scope.saveNewItem = function() {
+	if(! $('#addItemForm').valid()) return;
+
 	showLoader();
 	var params = {
 		user : user,
@@ -112,6 +151,8 @@ $scope.saveNewItem = function() {
 }
 
 $scope.saveEditedItem = function() {
+	if(! $('#editItemForm').valid()) return;
+
 	var item = $scope.items[$scope.itemIndex];
 	if (! item) return;
 

@@ -34,6 +34,98 @@ var isGoTo = {
 
 CheckUseCase();
 
+$('#editInvoiceForm').validate({
+	rules: {
+		customer : 'required',
+		invoiceNumber : 'required',
+		invoiceCreateDate : 'required',
+		invoiceDueDate : 'required'
+	},
+	messages: {
+		customer : 'Please select a customer',
+		invoiceNumber : 'Please enter invoice number',
+		invoiceCreateDate : 'Please provide invoice create date',
+		invoiceDueDate : 'Please provide invoice due date'
+	}
+});
+
+$('#extrasForm').validate({
+	rules: {
+		discount : {
+			number : true,
+			min : 0.01
+		},
+		shipCharges : {
+			number : true,
+			min : 0.01
+		},
+		adjustment : {
+			number : true
+		}
+	}
+});
+
+$('#itemInfoForm').validate();
+
+function setValidationRules() {
+/*		
+	if (! $('.check-item').length) {
+		console.log('atleast one item');
+		return false;
+	}
+*/	
+	$('.check-item').each(function() {
+		$(this).rules ('remove');
+		$(this).rules('add', {
+			required : true,
+			messages : {
+				required : 'its required'
+			}
+		});
+	});
+
+	$('.check-qty').each(function() {
+		$(this).rules ('remove');
+		$(this).rules('add', {
+			required : true,
+			min : 1,
+			digits : true,
+			messages : {
+				required : 'its required',
+				min : '>= 1',
+				digits : 'must be integer'
+			}
+		});
+	});
+
+	$('.check-rate').each(function() {
+		$(this).rules ('remove');
+		$(this).rules('add', {
+			required : true,
+			min : 0.01,
+			number : true,
+			messages : {
+				required : 'its required',
+				min : '>= 0.01'
+			}
+		});
+	});
+
+	$('.check-discount').each(function() {
+		$(this).rules ('remove');
+		$(this).rules('add', {
+			min : 0,
+			max : 100,
+			number : true,
+			messages : {
+				min : '>= 0.01',
+				max : '<= 100'
+			}
+		});
+	});
+
+}
+
 function CheckUseCase(stateName) {
 	if (! stateName)
 		stateName = $state.current.name;
@@ -294,6 +386,12 @@ function saveAndSendEditedInvoice () {
 }
 
 $scope.save = function() {
+	setValidationRules();
+	var a = $('#editInvoiceForm').valid();
+	var b = $('#extrasForm').valid();
+	var c = $('#itemInfoForm').valid();
+	if(! (a && b && c)) return;
+
 	showLoader();
 	useAllIds();
 	saveEditedInvoice()
@@ -309,6 +407,12 @@ $scope.save = function() {
 }
 
 $scope.saveAndSend = function () {
+	setValidationRules();
+	var a = $('#editInvoiceForm').valid();
+	var b = $('#extrasForm').valid();
+	var c = $('#itemInfoForm').valid();
+	if(! (a && b && c)) return;
+
 	showLoader();
 	useAllIds();
 	saveAndSendEditedInvoice()

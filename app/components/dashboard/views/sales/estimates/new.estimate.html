@@ -4,17 +4,17 @@
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">New Estimate</h3>
     <div class="clearfix"></div>
     <hr>
-    <form class="inputs-white layout-margin-b">
+    <form id="addEstimateForm" novalidate class="inputs-white layout-margin-b">
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Customer Name</label>
-        <select class="col-75" ng-model="selectedCustomer" ng-change="customerChanged()"
+        <select name="customer" class="col-75" ng-model="selectedCustomer" ng-change="customerChanged()"
           ng-options="customer.entity.displayName for customer in customers">
           <option value="" disabled>Select customer to estimate</option>
         </select>
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="padding-t-sm">Estimate #</label>
-        <input class="col-75" type="text" ng-model="estimateNo" ng-disabled="disableEstNo">
+        <input name="estimateNumber" class="col-75" type="text" ng-model="estimateNo" ng-disabled="disableEstNo">
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="padding-t-sm">Referenece #</label>
@@ -22,8 +22,8 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="padding-t-sm">Estimate Date</label>
-        <input class="col-75 form-control" type="text" uib-datepicker-popup="MM-dd-yyyy" placeholder="12/03/2014"
-          ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)">
+        <input name="estimateCreateDate" class="col-75 form-control" type="text"
+          uib-datepicker-popup="MM-dd-yyyy" ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)">
       </div>
       <!--
       <div class="input-container col-60 layout-margin-b">
@@ -68,25 +68,27 @@
       <div class="clearfix"></div>
       <div class="tbody no-border inputs-white">
 
+      <form id="itemInfoForm" novalidate>
         <div class="table-row" ng-repeat="estItem in estimateItems">
+
           <div class="col-30 layout-padding">
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-            <select ng-model="estItem.selectedItem" ng-options="item.entity.title for item in items"
-              ng-change="itemChanged($index)">
+            <select tri:fix-input-name name="item{{$index}}" class="check-item" ng-model="estItem.selectedItem"
+              ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
               <option value="" disabled>Select or Type to add</option>
             </select>
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
-            <input type="number" placeholder="1.0" ng-model="estItem.quantity"
-              ng-change="reCalculateItemAmount($index)">
+            <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" placeholder="1"
+            ng-model="estItem.quantity" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
-            <input type="number" placeholder="10.00" ng-model="estItem.rate"
-              ng-change="reCalculateItemAmount($index)">
+            <input tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number"
+              placeholder="10.00" ng-model="estItem.rate" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right" ng-show="itemLevelTax">
-            <input type="number" placeholder="10.00" ng-model="estItem.discount"
-              ng-change="reCalculateItemAmount($index)">
+            <input tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number"
+              placeholder="10.00" ng-model="estItem.discount" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l">
             <select ng-model="estItem.selectedTax" ng-options="tax.name for tax in taxes"
@@ -102,7 +104,9 @@
           <div class="col-5 layout-padding layout-padding-l text-right">
             <button class="button button-icon button-no-margin" ng-click="removeEstimateItem($index)"><img src="./assets/images/icon-times-round.png" alt=""></button>
           </div>
+
         </div>
+      </form>
 
         <a href="javascript:" class="button layout-margin-tb" ng-click="addEstimateItem()">
           + Add another item</a>
@@ -111,20 +115,23 @@
           <div class="col-25">Sub Total</div>
           <div class="col-65 text-right">{{subTotalStr}}</div>
           <br>
-          <form class="inputs-white">
+          <form id="extrasForm" class="inputs-white">
             <div class="input-container layout-margin-tb" ng-show="invoiceLevelTax">
               <label class="layout-padding-t-smm">Discount (%)</label>
-              <input type="number" class="col-30" ng-model="discount" ng-change="reCalculateTotal()">
+              <input name="discount" type="number" class="col-30" ng-model="discount"
+                ng-change="reCalculateTotal()">
               <label class="col-35 text-right layout-padding-t-smm">{{discountStr}}</label>
             </div>
             <div class="input-container layout-margin-tb" ng-show="showShippingCharges">
               <label class="layout-padding-t-smm">Shipping Charges</label>
-              <input type="number" class="col-30" ng-model="shippingCharges" ng-change="reCalculateTotal()">
+              <input name="shipCharges" type="number" class="col-30" ng-model="shippingCharges"
+                ng-change="reCalculateTotal()">
               <label class="col-35 text-right layout-padding-t-smm">{{shippingChargesStr}}</label>
             </div>
             <div class="input-container input-info layout-margin-tb" ng-show="showAdjustments">
               <label class="layout-padding-t-smm">Adjustment</label>
-              <input type="number" class="col-30" ng-model="adjustments" ng-change="reCalculateTotal()">
+              <input name="adjustment" type="number" class="col-30" ng-model="adjustments"
+                ng-change="reCalculateTotal()">
               <span class="info-icon info-icon-gray estimates-custom-info-icon"></span>
               <p class="info-tooltip tooltip-dark info-left estimates-custom-tooltip">
                 Add any additional adjustments needed for the total amount ex: +5 or -5

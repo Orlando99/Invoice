@@ -2,24 +2,26 @@
   <div class="container hidesm">
 
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">New Expense</h3>
+    <div class="clearfix"></div>
     <hr>
 
-    <form class="inputs-white layout-margin-tb">
+    <form id="addExpenseForm" class="inputs-white layout-margin-tb">
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Category Name</label>
-        <select class="col-70" ng-model="selectedCategory"
+        <select name="expCategory" class="col-70" ng-model="selectedCategory"
           ng-options="category.entity.name for category in categories">>
           <option value="" disabled>Select category name</option>
         </select>
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Date</label>
-        <input class="col-70" type="text" uib-datepicker-popup="MM-dd-yyyy" placeholder="Select or enter date"
+        <input name="date" class="col-70" type="text" uib-datepicker-popup="MM-dd-yyyy"
+          placeholder="Select or enter date"
           ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)">
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Amount</label>
-        <input type="number" class="col-70" placeholder="USD" ng-model="amount">
+        <input name="amount" type="number" class="col-70" placeholder="USD" ng-model="amount">
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Tax</label>
@@ -37,7 +39,7 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Customer Name</label>
-        <select class="col-70" ng-model="selectedCustomer" ng-change="customerSelected()"
+        <select name="customer" class="col-70" ng-model="selectedCustomer" ng-change="customerSelected()"
           ng-options="customer.entity.displayName for customer in customers">
           <option value="" disabled>Select customer</option>
         </select>
