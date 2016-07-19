@@ -55,6 +55,19 @@ var Expense = function(parseObject, params) {
 			});
 			this.customer = customer;
 		}
+	} else if (params.operation == 'summary') {
+		expenseFields = ['category', 'amount'];
+		var customer = parseObject.get('customer');
+		if (customer) {
+			var customerFields = ['displayName'];
+			setObjectOperations({
+				object 		: customer,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: customerFields
+			});
+			this.customer = customer;
+		}
 	}
 
 	setObjectOperations({

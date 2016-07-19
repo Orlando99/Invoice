@@ -5,6 +5,23 @@ return {
 	test : function() {
 		console.log("working");
 	},
+	getInvoicesForSummary : function(params) {
+		var invoiceTable = Parse.Object.extend('Invoices');
+		var query = new Parse.Query(invoiceTable);
+		query.equalTo('organization', params.organization);
+		// set year,month,day constraint
+		query.select('invoiceDate', 'dueDate', 'status', 'balanceDue', 'lateFee', 'total');
+
+		return query.find().then(function(objs) {
+			var invoices = [];
+			objs.forEach(function(invoice) {
+				invoices.push(new invoiceFactory(invoice, {
+					operation : 'summary'
+				}));
+			});
+			return invoices;
+		});
+	},
 	getInvoice : function(invoiceId) {
 		var invoiceTable = Parse.Object.extend('Invoices');
 		var query = new Parse.Query(invoiceTable);

@@ -306,7 +306,7 @@ invoicesUnlimited.controller('CustomersController',
 			LoadCustomers();
 		} else if (!toState.name.contains('customers')) {
 			console.log('destroy else');
-			//stateChangeEvent();
+			stateChangeEvent();
 			stateChangeEvent = null;
 		}
 	});

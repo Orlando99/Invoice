@@ -269,10 +269,6 @@ $scope.saveNewExpense = function() {
 
 $scope.saveEditedExpense = function() {
 	if(! $('#editExpenseForm').valid()) return;
-	else {
-		console.log('valid data');
-		return;
-	}
 
 	showLoader();
 	var expense = $scope.expense;

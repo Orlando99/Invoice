@@ -7,7 +7,7 @@
 		<title>Home | InvoicesUnlimited</title>
 		<meta name="keywords" content=""/>
 		<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
-	<!--	<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"> -->
+<!--	<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"> -->
 
 		<link rel="stylesheet" href="./assets/css/main.css"/>
 		<link rel="stylesheet" href="" id="appStyle"/>
@@ -96,6 +96,11 @@
 	<script src='./assets/js/moment.js'></script>
 	<script src='./assets/js/fullcalendar.min.js'></script>
 	<!-- FULL CALENDAR LIBS -->
+
+	<!-- moment.js should be included before chart.js if time axes is used -->
+	<!-- currently time axes not used, but to avoid potential future issue -->
+	<!-- its already added after moment.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
 
     <script src="./assets/js/md5.js"></script>
 

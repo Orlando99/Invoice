@@ -4,6 +4,25 @@ invoicesUnlimited.factory('expenseService', ['expenseFactory',
 function(expenseFactory) {
 
 return {
+	getExpensesForSummary : function(params) {
+		var expenseTable = Parse.Object.extend('Expanses');
+		var query = new Parse.Query(expenseTable);
+
+		query.equalTo('organization', params.organization);
+		query.notEqualTo('status', 'Non-Billable');
+		query.include('customer');
+		query.select('category', 'amount', 'customer');
+
+		return query.find().then(function(expenseObjs) {
+			var expenses = [];
+			expenseObjs.forEach(function(expense) {
+				expenses.push(new expenseFactory(expense, {
+					operation : 'summary'
+				}));
+			});
+			return expenses;
+		});
+	},
 	getExpenseDetails : function(expenseId) {
 		var Expense = Parse.Object.extend('Expanses');
 		var query = new Parse.Query(Expense);

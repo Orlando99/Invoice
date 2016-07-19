@@ -72,6 +72,9 @@ function Invoice(parseObject, params) {
 			});
 			this.organization = orgObj;
 		}
+	} else if (params.operation == 'summary') {
+		invoiceFields = ['invoiceDate', 'dueDate', 'status',
+			'balanceDue', 'lateFee', 'total'];
 	}
 
 	setObjectOperations({
