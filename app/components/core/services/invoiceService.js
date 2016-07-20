@@ -22,6 +22,19 @@ return {
 			return invoices;
 		});
 	},
+	getInvoiceDetails : function(invoiceId) {
+		var Invoice = Parse.Object.extend('Invoices');
+		var query = new Parse.Query(Invoice);
+		query.include('comments', 'payment');
+
+		return query.get(invoiceId)
+		.then(function(invObj) {
+			var invoice = new invoiceFactory(invObj, {
+				operation : 'details'
+			});
+			return invoice;
+		});
+	},
 	getInvoice : function(invoiceId) {
 		var invoiceTable = Parse.Object.extend('Invoices');
 		var query = new Parse.Query(invoiceTable);

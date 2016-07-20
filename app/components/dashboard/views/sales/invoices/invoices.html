@@ -20,7 +20,7 @@
         <td class="text-uppercase text-info">Balance</td>
       </tr>
       <tr class="trow" ng-repeat="invoice in invoiceList"
-      ui-sref="dashboard.sales.invoices.edit({invoiceId:invoice.entity.id})">
+      ui-sref="dashboard.sales.invoices.details({invoiceId:invoice.entity.id})">
         <td class="text-color-light">{{invoice.invoiceDate}}</td>
         <td class="text-color-light">{{invoice.entity.invoiceNumber}}</td>
         <td class="text-color-light"></td>

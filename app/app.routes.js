@@ -246,7 +246,7 @@ angular.module('invoicesUnlimited')
 					url : '/sales/invoices/:invoiceId',
 					views : {
 						'@' : {
-							controller : 'InvoiceController',
+							controller : 'InvoiceDetailController',
 							templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/details.html'
 						}
 					}

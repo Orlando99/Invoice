@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceFactory',function(userFactory, invoiceItemFactory) {
+invoicesUnlimited.factory('invoiceFactory',function(userFactory, invoiceItemFactory, commentFactory,
+	paymentFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -72,6 +73,32 @@ function Invoice(parseObject, params) {
 			});
 			this.organization = orgObj;
 		}
+	} else if (params.operation == 'details') {
+		invoiceFields = ['invoiceNumber', 'invoiceReceipt',
+			'invoiceInfo'];
+
+		var comments = parseObject.get('comments');
+		if (comments) {
+			comments = comments.map(function(elem){
+				return new commentFactory(elem);
+			});
+			this.comments = comments;
+		}
+
+		var payments = parseObject.get('payment');
+		if (payments) {
+			payments = payments.map(function(elem){
+				return new paymentFactory(elem);
+			});
+			this.payments = payments;
+		}
+
+		var attachments = parseObject.get('invoiceFiles');
+		if (attachments) {
+			this.attachments = attachments;
+		}
+
+
 	} else if (params.operation == 'summary') {
 		invoiceFields = ['invoiceDate', 'dueDate', 'status',
 			'balanceDue', 'lateFee', 'total'];
