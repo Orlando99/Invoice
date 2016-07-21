@@ -192,7 +192,7 @@ function prepareEditForm() {
 	hideLoader();
 }
 
-function saveEditedCreditNote() {
+function saveEditedCreditNote(params) {
 	var creditNote = $scope.creditNote.entity;
 	creditNote.set('customer', $scope.selectedCustomer.entity);
 	creditNote.set('creditNoteDate', $scope.todayDate);
@@ -211,11 +211,20 @@ function saveEditedCreditNote() {
 
 	return creditNoteService.updateCreditNote
 		($scope.creditNote, $scope.creditItems, $scope.deletedItems,
-			user, $scope.userRole);
+			user, $scope.userRole)
+
+	.then(function(obj) {
+		if (params.generateReceipt) {
+			return creditNoteService.createCreditNoteReceipt(obj.id);
+
+		} else {
+			return obj;
+		}
+	});
 }
 
 function saveAndSendEditedCreditNote () {
-	return saveEditedCreditNote()
+	return saveEditedCreditNote({generateReceipt:false})
 	.then(function(creditNote) {
 		return creditNoteService.createCreditNoteReceipt(creditNote.id)
 		.then(function(creditObj) {
@@ -232,7 +241,7 @@ $scope.save = function() {
 
 	showLoader();
 	useAllIds();
-	saveEditedCreditNote()
+	saveEditedCreditNote({generateReceipt:true})
 	.then(function(creditNote) {
 		hideLoader();
 		console.log(creditNote);

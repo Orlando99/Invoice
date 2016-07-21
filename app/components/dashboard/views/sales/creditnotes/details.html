@@ -1,12 +1,13 @@
 ﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
-    <a href="../../../dashboard/sales/creditnotes/creditnotes.html" class="button-icon float-left">
-      <img src="../../../dist/images/icon-back.png" alt="Kappa">
+    <a ui-sref="dashboard.sales.creditnotes.all" class="button-icon float-left">
+      <img src="./assets/images/icon-back.png" alt="Kappa">
     </a>
-    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">CN-000003</h3>
+    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{creditNo}}</h3>
     <div class="actions float-right layout-margin-tb">
-      <a href="edit.creditnote.html" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
-      <button class="button button-small button-neutral text-uppercase">More <img src="../../../dist/images/dropdown-arrow-w.png" alt="">
+      <a ui-sref="dashboard.sales.creditnotes.edit({creditNoteId:creditNote.entity.id})"
+        class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
+      <button class="button button-small button-neutral text-uppercase">More <img src="./assets/images/dropdown-arrow-w.png" alt="">
         <ul class="submenu list-clear layout-no-padding text-left text-normalize">
           <li><a href="">Email</a></li>
           <li><a href="">Print</a></li>
@@ -16,19 +17,49 @@
     <div class="clearfix"></div>
     <hr>
 
-    <p class="log text-color-light text-weight-normalize">12/03/2014 02:22 PM <span>Estimate created for $10.00 - John</span></p>
-    <p class="log text-color-light text-weight-normalize">12/03/2014 02:13 AM <span>Estimate EST-0001 emailed - John</span></p>
-    <p class="log text-color-light text-weight-normalize">12/03/2014 09:10 AM <span>Estimate converted to Invoice INV-000002 - John - <a href="#">View</a></span></p>
-    <a href="#" class="layout-margin-tb">+ New Comment</a>
+    <div ng-repeat="comment in comments">
+      <p class="log text-color-light text-weight-normalize">{{comment.date}} <span>
+        {{comment.entity.comment}} - {{comment.entity.name}}</span></p>
+    </div>
+    <a href="javascript:" class="layout-margin-tb">+ New Comment</a>
 
     <div class="text-center layout-margin-tb">
-      <img src="../../../dist/images/invoiced.png" alt="">
+      <iframe ng-src="{{templateUrl}}" name="targetframe"
+        width="1050px" height="600px" frameborder="1" >
+      </iframe>
+      <!-- <img src="./assets/images/invoiced.png" alt=""> -->
     </div>
 
-    <p class="layout-no-padding text-center">Template: 'Standard Template' - <a href="#">Change</a></p>
+    <p class="layout-no-padding text-center">
+      Template: 'Standard Template' - <a ng-click="changeTemplate()">Change</a>
+    </p>
+
+    <div class="popup-modal change-template hidesm">
+      <div class="modal container">
+        <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize
+          float-left">Select Template</h3>
+        <button class="button button-icon float-right modal-close button-no-margin">
+          <img src="./assets/images/icon-times.png" alt=""></button>
+        <div class="clearfix"></div>
+        <hr class="layout-margin-tb">
+        
+        <div class="col-80 layout-center">
+        <div class="col-30" ng-repeat="template in templates">
+          <img ng-src="{{template.url}}" alt="">
+          <p>{{template.name}}</p>
+          <div class="text-center">
+            <button class="button button-info text-uppercase"
+              ng-click="setDefaultTemplate($index)">Set as Default</button>
+          </div>
+        </div>
+      </div>
+
+        <div class="clearfix"></div>
+      </div>
+    </div>
 
     <div class="clearfix"></div>
-
+<!--
     <h3 class="layout-margin-t section-title text-uppercase text-color-normalize">Attachments</h3>
 
     <table class="container table-border-tb layout-margin-tb-lg">
@@ -42,10 +73,10 @@
         <td class="layout-padding-tb-lg valign-top">12/03/2014</td>
         <td class="layout-padding-tb-lg valign-top">INV-000001</td>
         <td class="layout-padding-tb-lg valign-top">Amount Credited</td>
-        <td class="layout-padding-tb-lg valign-top actions"><a href="#" class="action-edit">Edit</a> <button class="button button-icon button-no-margin"><img src="../../../dist/images/icon-times-round.png" alt=""></button></td>
+        <td class="layout-padding-tb-lg valign-top actions"><a href="#" class="action-edit">Edit</a> <button class="button button-icon button-no-margin"><img src="./assets/images/icon-times-round.png" alt=""></button></td>
       </tr>
     </table>
-
+-->
     <div class="spacer"></div>
 
   </div>
@@ -54,7 +85,7 @@
     <div class="modal container">
 
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Convert to Invoice</h3>
-      <button class="button button-icon float-right modal-close button-no-margin"><img src="../../../dist/images/icon-times.png" alt=""></button>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
       <div class="clearfix"></div>
       <hr class="layout-margin-tb">
 

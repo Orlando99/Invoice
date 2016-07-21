@@ -341,7 +341,7 @@ function useAllIds() {
 	});
 }
 
-function saveEditedInvoice() {
+function saveEditedInvoice(params) {
 	var invoice = $scope.invoice.entity;
 	invoice.set('customer', $scope.selectedCustomer.entity);
 	invoice.set('invoiceDate', $scope.todayDate);
@@ -369,11 +369,22 @@ function saveEditedInvoice() {
 
 	return invoiceService.updateInvoice
 		($scope.invoice, $scope.invoiceItems, $scope.deletedItems,
-			user, $scope.userRole, $scope.filepicker);
+			user, $scope.userRole, $scope.filepicker)
+
+	.then(function(obj) {
+		if (params.generateReceipt) {
+			var info = obj.get('invoiceInfo');
+			if (info) info = info.id;
+			return invoiceService.createInvoiceReceipt(obj.id, info);
+
+		} else {
+			return obj;
+		}
+	});
 }
 
 function saveAndSendEditedInvoice () {
-	return saveEditedInvoice()
+	return saveEditedInvoice({generateReceipt:false})
 	.then(function(invoice) {
 		return invoiceService.copyInInvoiceInfo(invoice)
 		.then(function(invoiceInfo) {
@@ -394,7 +405,7 @@ $scope.save = function() {
 
 	showLoader();
 	useAllIds();
-	saveEditedInvoice()
+	saveEditedInvoice({generateReceipt:true})
 	.then(function(invoice) {
 		hideLoader();
 		console.log(invoice);

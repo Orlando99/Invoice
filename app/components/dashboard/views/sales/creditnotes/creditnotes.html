@@ -20,7 +20,7 @@
         <td class="text-uppercase text-info">Balance</td>
       </tr>
       <tr class="trow" ng-repeat="creditNote in creditNoteList"
-        ui-sref="dashboard.sales.creditnotes.edit({creditNoteId:creditNote.entity.id})">
+        ui-sref="dashboard.sales.creditnotes.details({creditNoteId:creditNote.entity.id})">
         <td class="text-color-light">{{creditNote.creditNoteDate}}</td>
         <td class="text-color-light">{{creditNote.entity.creditNumber}}</td>
         <td class="text-color-light text-center">{{creditNote.entity.reference}}</td>

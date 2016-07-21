@@ -290,6 +290,16 @@ angular.module('invoicesUnlimited')
 						}
 					}
 				},
+				details : {
+					name : 'dashboard.sales.estimates.details',
+					url : '/sales/estimates/:estimateId',
+					views : {
+						'@' : {
+							controller : 'EstimateDetailController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/estimates/details.html'
+						}
+					}
+				},
 				edit : {
 					name	: 'dashboard.sales.estimates.edit',
 					url 	: '/sales/estimates/:estimateId/edit',
@@ -326,6 +336,16 @@ angular.module('invoicesUnlimited')
 						'@' : {
 							controller 	 : 'CreateCreditNoteController',
 							templateUrl : COMPONENTS + 'dashboard/views/sales/creditnotes/new.creditnote.html'
+						}
+					}
+				},
+				details : {
+					name : 'dashboard.sales.creditnotes.details',
+					url : '/sales/creditnotes/:creditNoteId',
+					views : {
+						'@' : {
+							controller : 'CreditNoteDetailController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/creditnotes/details.html'
 						}
 					}
 				},

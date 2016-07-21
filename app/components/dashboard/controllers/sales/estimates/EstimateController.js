@@ -322,7 +322,7 @@ function useAllIds() {
 	});
 }
 
-function saveEditedEstimate() {
+function saveEditedEstimate(params) {
 	var estimate = $scope.estimate.entity;
 	estimate.set('customer', $scope.selectedCustomer.entity);
 	estimate.set('estimateDate', $scope.todayDate);
@@ -345,11 +345,20 @@ function saveEditedEstimate() {
 
 	return estimateService.updateEstimate
 		($scope.estimate, $scope.estimateItems, $scope.deletedItems,
-			user, $scope.userRole);
+			user, $scope.userRole)
+
+	.then(function(obj) {
+		if (params.generateReceipt) {
+			return estimateService.createEstimateReceipt(obj.id);
+
+		} else {
+			return obj;
+		}
+	});
 }
 
 function saveAndSendEditedEstimate () {
-	return saveEditedEstimate()
+	return saveEditedEstimate({generateReceipt:false})
 		.then(function(estimate) {
 		return estimateService.createEstimateReceipt(estimate.id)
 		.then(function(estimateObj) {
@@ -367,7 +376,7 @@ $scope.save = function() {
 
 	showLoader();
 	useAllIds();
-	saveEditedEstimate()
+	saveEditedEstimate({generateReceipt:true})
 	.then(function(estimate) {
 		hideLoader();
 		console.log(estimate);

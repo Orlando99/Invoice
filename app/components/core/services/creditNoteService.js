@@ -8,6 +8,19 @@ return {
 	test : function() {
 		console.log("working");
 	},
+	getCreditNoteDetails : function(creditNoteId) {
+		var CreditNote = Parse.Object.extend('CreditNotes');
+		var query = new Parse.Query(CreditNote);
+		query.include('comments');
+
+		return query.get(creditNoteId)
+		.then(function(cnObj) {
+			var creditNote = new creditNoteFactory(cnObj, {
+				operation : 'details'
+			});
+			return creditNote;
+		});
+	},
 	getCreditNote : function(creditNoteId) {
 		var CreditNote = Parse.Object.extend('CreditNotes');
 		var query = new Parse.Query(CreditNote);

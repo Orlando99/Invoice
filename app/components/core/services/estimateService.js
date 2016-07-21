@@ -7,6 +7,19 @@ return {
 	test : function() {
 		console.log("working");
 	},
+	getEstimateDetails : function(estimateId) {
+		var Estimate = Parse.Object.extend('Estimates');
+		var query = new Parse.Query(Estimate);
+		query.include('comments');
+
+		return query.get(estimateId)
+		.then(function(estObj) {
+			var estimate = new estimateFactory(estObj, {
+				operation : 'details'
+			});
+			return estimate;
+		});
+	},
 	getEstimate : function(estimateId) {
 		var Estimate = Parse.Object.extend('Estimates');
 		var query = new Parse.Query(Estimate);

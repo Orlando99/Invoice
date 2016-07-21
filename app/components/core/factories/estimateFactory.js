@@ -1,8 +1,8 @@
 'use strict';
 
-invoicesUnlimited.factory('estimateFactory', ['userFactory', 'estimateItemFactory',
+invoicesUnlimited.factory('estimateFactory', ['userFactory', 'estimateItemFactory', 'commentFactory',
 
-function(userFactory, estimateItemFactory) {
+function(userFactory, estimateItemFactory, commentFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -72,6 +72,18 @@ function Estimate (parseObject, params) {
 			});
 			this.organization = orgObj;
 		}
+
+	} else if (params.operation == 'details') {
+		estimateFields = ['estimateNumber', 'estimateReceipt'];
+
+		var comments = parseObject.get('comments');
+		if (comments) {
+			comments = comments.map(function(elem){
+				return new commentFactory(elem);
+			});
+			this.comments = comments;
+		}
+
 	}
 
 	setObjectOperations({

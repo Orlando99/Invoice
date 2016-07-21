@@ -1,8 +1,8 @@
 'use strict';
 
-invoicesUnlimited.factory('creditNoteFactory', ['userFactory', 'creditNoteItemFactory',
+invoicesUnlimited.factory('creditNoteFactory', ['userFactory', 'creditNoteItemFactory', 'commentFactory',
 
-function(userFactory, creditNoteItemFactory) {
+function(userFactory, creditNoteItemFactory, commentFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -68,6 +68,18 @@ function CreditNote (parseObject, params) {
 			});
 			this.organization = orgObj;
 		}
+
+	} else if (params.operation == 'details') {
+		creditNoteFields = ['creditNumber', 'creditReceipt'];
+
+		var comments = parseObject.get('comments');
+		if (comments) {
+			comments = comments.map(function(elem){
+				return new commentFactory(elem);
+			});
+			this.comments = comments;
+		}
+
 	}
 
 	setObjectOperations({
