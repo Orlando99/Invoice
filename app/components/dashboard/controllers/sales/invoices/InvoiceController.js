@@ -200,6 +200,13 @@ function prepareEditForm() {
 		$scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms[1];
 	}
 
+	var files = invoice.entity.invoiceFiles;
+	files.forEach(function(file) {
+		file.fileName = file.name();
+		file.exist = true;
+	});
+	$scope.files = files;
+
 	switch($scope.prefs.discountType) {
 		case 0:
 			$scope.itemLevelTax = false;
@@ -369,7 +376,7 @@ function saveEditedInvoice(params) {
 
 	return invoiceService.updateInvoice
 		($scope.invoice, $scope.invoiceItems, $scope.deletedItems,
-			user, $scope.userRole, $scope.filepicker)
+			user, $scope.userRole, $scope.files)
 
 	.then(function(obj) {
 		if (params.generateReceipt) {
@@ -436,6 +443,17 @@ $scope.saveAndSend = function () {
 		hideLoader();
 		console.log(error);
 	});
+}
+
+$scope.addNewFile = function(obj) {
+	var file = obj.files[0];
+	file.fileName = file.name; // to avoid naming conflict
+	$scope.files.push(file);
+	$scope.$apply();
+}
+
+$scope.removeFile = function(index) {
+	$scope.files.splice(index,1);
 }
 
 //----- common --------

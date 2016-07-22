@@ -185,6 +185,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			selectedTerm : {name: "Due on Receipt", value : 1}
 		};
 
+		$scope.files = [];
 		$scope.hasDueDate = true;
 		$scope.todayDate = new Date();
 		$scope.calculateDueDate();
@@ -281,7 +282,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		if(email) invoice.customerEmails = [email];
 
 		return invoiceService.createNewInvoice
-			(invoice, $scope.invoiceItems, $scope.userRole, $scope.filepicker);
+			(invoice, $scope.invoiceItems, $scope.userRole, $scope.files);
 	}
 
 	function saveAndSendInvoice() {
@@ -340,6 +341,15 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 	$scope.cancel = function() {
 		$state.go('dashboard.sales.invoices.all');
+	}
+
+	$scope.addNewFile = function(obj) {
+		$scope.files.push(obj.files[0]);
+		$scope.$apply();
+	}
+
+	$scope.removeFile = function(index) {
+		$scope.files.splice(index,1);
 	}
 
 	$scope.calculateDueDate = function() {		

@@ -113,7 +113,7 @@ return {
 		});
 
 	},
-	updateInvoice : function(invoiceObj, invoiceItems, deletedItems, user, role, file) {
+	updateInvoice : function(invoiceObj, invoiceItems, deletedItems, user, role, files) {
 		var invItems = [];
 		var itemsToDelete = [];
 		var itemsToCreate = [];
@@ -144,8 +144,37 @@ return {
 			objectType : InvoiceItem
 		};
 
-		// create new items
-		return createNewItems(itemsToCreate, otherData)
+		var promise = undefined;
+		var newFiles = undefined; // store already saved and newly created files
+		if(files.length) {
+			newFiles = [];
+			var promises = [];
+			files.forEach(function(file) {
+				if(file.exist) {
+					delete file.exist;
+					delete file.fileName;
+					newFiles.push(file);
+
+				} else {
+					var parseFile = new Parse.File(file.name, file);
+					promises.push(parseFile.save());
+				}
+			});
+
+			promise = $q.all(promises);
+
+		} else
+			promise = Parse.Promise.as(undefined);
+
+		return promise.then(function(fileObjs) {
+			if (fileObjs)
+				newFiles = newFiles.concat(fileObjs);
+
+			invoiceObj.entity.set('invoiceFiles', newFiles);
+			
+			// create new items
+			return createNewItems(itemsToCreate, otherData)
+		})
 		.then(function (items) {
 		//	console.log('created items');
 		//	console.log(items);
@@ -214,20 +243,26 @@ return {
 		});
 
 	},
-	createNewInvoice : function(invoice, invoiceItems, role, file) {
+	createNewInvoice : function(invoice, invoiceItems, role, files) {
 		var items = [];
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
 
 		var promise = undefined;
-		if(file) {
-			var parseFile = new Parse.File(file.name, file);
-			promise = parseFile.save()
-			.then(function(savedFile) {
-				console.log(savedFile.url());
-				return [savedFile];
+		if(files.length) {
+			var promises = [];
+			files.forEach(function(file) {
+				var parseFile = new Parse.File(file.name, file);
+				promises.push(parseFile.save());
 			});
+
+			promise = $q.all(promises)
+			.then(function(savedFiles) {
+				console.log(savedFiles);
+				return savedFiles;
+			});
+			
 		} else
 			promise = Parse.Promise.as(undefined);
 
@@ -251,7 +286,7 @@ return {
 			invoiceItems = itemThatExist.concat(newItems);
 			return promise;		// just to make code structure clean.
 		})
-		.then(function(fileObj) {
+		.then(function(fileObjs) {
 			var invItem = Parse.Object.extend("InvoiceItems");
 			invoiceItems.forEach(function(item) {
 				var obj = new invItem();
@@ -279,7 +314,7 @@ return {
 				var Invoice = Parse.Object.extend("Invoices");
 				var obj = new Invoice();
 				obj.setACL(acl);
-				obj.set("invoiceFiles", fileObj);
+				obj.set("invoiceFiles", fileObjs);
 				invoice.invoiceItems = list;
 				
 				return obj.save(invoice)
