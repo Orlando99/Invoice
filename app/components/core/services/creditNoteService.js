@@ -8,6 +8,25 @@ return {
 	test : function() {
 		console.log("working");
 	},
+	getCustomerCreditNotes : function(customer) {
+		var CreditNote = Parse.Object.extend('CreditNotes');
+		var query = new Parse.Query(CreditNote);
+		query.select('remainingCredits', 'creditsUsed');
+		query.equalTo('customer', customer);
+		query.equalTo('status', 'Open');
+
+		return query.find()
+		.then(function(objs) {
+			var creditNotes = [];
+			objs.forEach(function(obj) {
+				creditNotes.push(new creditNoteFactory(obj, {
+					operation : 'apply2Invoice'
+				}));
+			});
+			return creditNotes;
+		});
+
+	},
 	getCreditNoteDetails : function(creditNoteId) {
 		var CreditNote = Parse.Object.extend('CreditNotes');
 		var query = new Parse.Query(CreditNote);

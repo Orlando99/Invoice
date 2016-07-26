@@ -4,26 +4,27 @@
       <img src="./assets/images/icon-back.png" alt="goBack">
     </a>
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{invoiceNo}}</h3>
-    <div class="actions float-right layout-margin-tb">
+    <div class="actions float-right layout-margin-tb" uib-dropdown>
       <a ui-sref="dashboard.sales.invoices.edit({invoiceId:invoice.entity.id})"
         class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
-      <button class="button button-small button-neutral text-uppercase">More
-          <img src="./assets/images/dropdown-arrow-w.png" alt="">
-        <ul class="submenu list-clear layout-no-padding text-left text-normalize">
+      <button class="button button-small button-neutral text-uppercase" uib-dropdown-toggle>More
+        <img src="./assets/images/dropdown-arrow-w.png" alt="">
+      </button>
+      <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
           <li><a href="">Email</a></li>
           <li><a href="">Print</a></li>
           <li class="modal-opener" data-toggle="record-payment"><a href="">Record Payment</a></li>
-          <li><a href="">Create Credit Note</a></li>
+          <li><a href="javascript:" ng-click="showAvailableCredits()">Apply Credit Note</a></li>
           <li><a href="">Clone</a></li>
           <li><a href="">Print Delivery Note</a></li>
           <li><a href="">Print Packing Slip</a></li>
           <li><a href="">Delete</a></li>
-        </ul>
-      </button>
+      </ul>
+      
+      
     </div>
     <div class="clearfix"></div>
     <hr>
-
 
     <div ng-repeat="comment in comments">
       <p class="log text-color-light text-weight-normalize">{{comment.date}} <span>
@@ -186,12 +187,59 @@
     </div>
 
     <div class="clearfix spacer"></div>
-
     <div class="spacer"></div>
-
-
   </div>
 
+  <div class="popup-modal apply-credit hidesm">
+
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize
+        float-left">Apply Credit worth {{totalCreditStr}}</h3>
+      <button class="button button-icon float-right modal-close button-no-margin">
+        <img src="./assets/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+      
+      <div class="col-80 layout-center">
+        <label class="float-left">Balance</label>
+        <label class="float-right">{{totalCreditStr}}</label>
+        <br/>
+        <br/>
+
+        <div>
+          <label class="float-left">Invoice No</label>
+          <label class="float-right">{{invoiceNo}}</label>
+          <br/>
+          <label class="float-left">Amount Due</label>
+          <label class="float-right">{{balanceDueStr}}</label>
+          <br/>
+          <label class="float-left" style="margin-top:10px">Amount to Credit</label>
+          <form id="applyCreditForm" novalidate>
+            <input name="usedCredit" type="number" ng-model="creditUsed"
+              class="col-15 float-right" style="display: block;" placeholder="1.0" >
+          </form>
+        </div>
+        <br/>
+        <br/>
+
+        <div style="margin-top:20px">
+          <label class="float-left">Amount to Credit</label>
+          <label class="float-right">{{totalCreditStr}}</label>
+          <br/>
+          <label class="float-left">Remaining Credit</label>
+          <label class="float-right">{{remainingCreditStr}}</label>
+        </div>
+
+        <br/>
+        <br/>
+        <button class="button button-small button-info text-uppercase"
+          ng-click="applyCredit()">Save</button>
+      </div>
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
 
   <div class="popup-modal record-payment hidesm">
     <div class="modal container">

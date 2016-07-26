@@ -75,7 +75,7 @@ function Invoice(parseObject, params) {
 		}
 	} else if (params.operation == 'details') {
 		invoiceFields = ['invoiceNumber', 'invoiceReceipt',
-			'invoiceInfo'];
+			'invoiceInfo', 'balanceDue', 'creditApplied'];
 
 		var comments = parseObject.get('comments');
 		if (comments) {
