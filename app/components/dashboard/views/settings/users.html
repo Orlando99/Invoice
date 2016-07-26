@@ -6,7 +6,7 @@
       <h3 class="layout-margin-t section-title">Users</h3>
       <ul class="tabs tabs-vertical">
         <li class="active" data-toggle="allusers">All users</li>
-        <li data-toggle="roles">Roles</li>
+        <!--<li data-toggle="roles">Roles</li>-->
       </ul>
     </div>
     <div class="col-80 tabs-border-left">
@@ -29,33 +29,17 @@
             <td class="text-uppercase text-info layout-padding text-right actions"></td>
           </tr>
           <tr ng-repeat="user in users">
-            <td class="text-color-light text-weight-normalize layout-padding">{{user.name}}</td>
+            <td class="text-color-light text-weight-normalize layout-padding">{{user.fullName}}</td>
             <td class="text-color-light text-weight-normalize layout-padding">{{user.email}}</td>
             <td class="text-color-light text-weight-normalize layout-padding">{{user.role}}</td>
             <td class="text-color-light text-weight-normalize layout-padding {{user.textClass}}">{{user.status}}</td>
             <td class="text-color-light text-weight-normalize layout-padding text-right actions"><img src="./assets/images/icon-times-round.png" alt="" /></td>
           </tr>
-          <!--
-          <tr>
-            <td class="text-color-light text-weight-normalize layout-padding">Felix Munch</td>
-            <td class="text-color-light text-weight-normalize layout-padding"></td>
-            <td class="text-color-light text-weight-normalize layout-padding">Admin</td>
-            <td class="text-color-light text-weight-normalize layout-padding text-positive">Active</td>
-            <td class="text-color-light text-weight-normalize layout-padding text-right actions"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-          </tr>
-          <tr>
-            <td class="text-color-light text-weight-normalize layout-padding">Olivia Benson</td>
-            <td class="text-color-light text-weight-normalize layout-padding"></td>
-            <td class="text-color-light text-weight-normalize layout-padding">Staff</td>
-            <td class="text-color-light text-weight-normalize layout-padding text-danger">Inactive</td>
-            <td class="text-color-light text-weight-normalize layout-padding text-right actions"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-          </tr>
-        -->
 
         </table>
       </div>
 
-      <div class="tab" data-name="roles">
+      <!--<div class="tab" data-name="roles">
         <h3 class="layout-margin-t section-title float-left">Roles</h3>
         <a href="#" class="float-right layout-margin-tb button button-add text-uppercase modal-opener" data-toggle="new-role">New</a>
         <form class="float-right layout-margin-tb">
@@ -70,25 +54,8 @@
             <td class="text-uppercase text-info layout-padding">Lorem Ipsum</td>
             <td class="text-uppercase text-info layout-padding text-right actions"></td>
           </tr>
-          <!--
-          <tr>
-            <td class="text-color-light text-weight-normalize layout-padding">Admin</td>
-            <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum</td>
-            <td class="text-color-light text-weight-normalize layout-padding text-right actions"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-          </tr>
-          <tr>
-            <td class="text-color-light text-weight-normalize layout-padding">Staff</td>
-            <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum</td>
-            <td class="text-color-light text-weight-normalize layout-padding text-right actions"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-          </tr>
-          <tr>
-            <td class="text-color-light text-weight-normalize layout-padding">Timesheet Staff</td>
-            <td class="text-color-light text-weight-normalize layout-padding">Lorem Ipsum</td>
-            <td class="text-color-light text-weight-normalize layout-padding text-right actions"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-          </tr>
-          -->
         </table>
-      </div>
+      </div>-->
 
     </div>
 

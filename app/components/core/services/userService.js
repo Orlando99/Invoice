@@ -1,36 +1,26 @@
 'use strict';
 
-invoicesUnlimited.factory('userFactory',function(){
+invoicesUnlimited.factory('userFactory',function(appFields){
 	
 	var currentUser = Parse.User.current() || {
 		justLoggedIn : false,
 		entity : []
 	};
 
-	var fields = [
-		'EPNrestrictKey',
-		'merchantID',
-		'colorTheme',
-		'role',
-		'username',
-		'country',
-		'phonenumber',
-		'EPNusername',
-		'fullName',
-		'firstScreen',
-		'email',
-		'company'
-	];
-
 	var User = {
 		entity : []
 	};
 
-	if (Parse.User.current()) 
-		User.entity.push(Parse.User.current());
+	if (Parse.User.current()) {
+		var user = Parse.User.current();
+		setObjectOperations({
+			object 	: user,
+			fields 	: appFields.user});
+		User.entity.push(user);
+	}
 	
 	function setUserFields(){
-		
+
 		User.login = function(params,successCallback,errorCallback){
 			if (User.entity.length &&
 				User.entity[0].id) return;
@@ -39,7 +29,7 @@ invoicesUnlimited.factory('userFactory',function(){
 					User.justLoggedIn = true;
 					setObjectOperations({
 						object 		: user,
-						fields 		: fields});
+						fields 		: appFields.user});
 					User.entity.push(user);
 					console.log("Logged in successfuly!");
 					successCallback();

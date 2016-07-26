@@ -466,7 +466,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/users',
 				views 	: {
 					'@'	: {
-						controller 	: 'SettingsController',
+						controller 	: 'UsersController',
 						templateUrl	: COMPONENTS + 'dashboard/views/settings/users.html'
 					}
 				}
