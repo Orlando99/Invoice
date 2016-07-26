@@ -150,8 +150,10 @@ $scope.showAvailableCredits = function() {
 		$scope.balanceDueStr = currencyFilter($scope.balanceDue, '$', 2);
 		$scope.creditUsed = $scope.balanceDue > total ?
 			total : $scope.balanceDue;
-		$scope.remainingCreditStr = currencyFilter(
-			total-$scope.balanceDue, '$', 2);
+		
+		var remaining = total - $scope.balanceDue;
+		remaining = remaining > 0 ? remaining : 0;
+		$scope.remainingCreditStr = currencyFilter(remaining, '$', 2);
 
 		var smaller = $scope.totalCredit > $scope.balanceDue ?
 			$scope.balanceDue : $scope.totalCredit;
