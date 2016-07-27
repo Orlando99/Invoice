@@ -304,7 +304,7 @@ invoicesUnlimited.controller('CustomersController',
 			doCreateEditObject();
 		} else if (fromState.name.endsWith('new')) {
 			LoadCustomers();
-		} else if (!toState.name.contains('customers')) {
+		} else if (!toState.name.includes('customers')) {
 			console.log('destroy else');
 			stateChangeEvent();
 			stateChangeEvent = null;

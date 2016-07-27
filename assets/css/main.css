@@ -23,6 +23,10 @@ label#verificationCode-error {
 	right: 100px;
 }
 
+option:first {
+    color: #999;
+}
+
 .window-shadow {
     position: fixed;
     top: 0;
@@ -49,7 +53,17 @@ label#verificationCode-error {
     margin-top: 120px;
     padding: 15px;
     background-color: #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
 }
+
+/*.modal-open .modal {
+	position: fixed;
+	left: 0;
+	right: 0;
+	height: auto;
+	background-color: transparent;
+	width: 100%;
+}*/
 
 .modal-open {
 	overflow: hidden;

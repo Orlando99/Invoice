@@ -35,7 +35,7 @@
 		</div>
 	</div>
 
-	<div ui-view></div>
+	<div id="view" ui-view></div>
 
 	<script type="text/ng-template" id="modal-contact">
     
@@ -75,6 +75,49 @@
 	      <div class="clearfix"></div>
 	      <button ng-click="Save();" class="button button-small button-info text-uppercase">Save</button>
 	    </div>
+    
+  	</script>
+
+  	<script type="text/ng-template" id="modal-window">
+  		<div id="modal" class="div-refuse center" modal-render="{{$isRendered}}" role="dialog" uib-modal-animation-class="fade" modal-in-class="in" ng-style="{'z-index': 1050 + (index && 1 || 0) + index*10,'position':'fixed','width':'100%','height':'100%'}">
+  			<div class="modal-dialog">
+	      		<div class="modal-content" uib-modal-transclude></div>
+	      	</div>
+	    </div>
+  	</script>
+
+  	<script type="text/ng-template" id="modal-user">
+    
+		<h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add User</h3>
+		<button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
+		<div class="clearfix"></div>
+		<hr class="layout-margin-tb">
+
+		<div class="col-80 text-left layout-center">
+		<form class="layout-margin-tb col-100 inputs-white">
+		  <div class="input-container layout-margin-b">
+		    <label class="layout-padding-t-smm">Email</label>
+		    <select class="col-75">
+		      <option value="select" disabled selected>Select or Type to Add</option>
+		    </select>
+		  </div>
+		  <div class="input-container layout-margin-b">
+		    <label class="layout-padding-t-smm">Name</label>
+		    <input type="text" class="col-75">
+		  </div>
+		  <div class="input-container layout-margin-b">
+		    <label class="layout-padding-t-smm">Role</label>
+		    <select class="col-75">
+		    	<option value="" selected>Select the Role</option>
+				<option value="select">Admin</option>
+				<option value="select">Staff</option>
+		    </select>
+		    <p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
+		  </div>
+		</form>
+		</div>
+		<div class="clearfix"></div>
+		<button class="button button-info text-uppercase">Save</button>
     
   	</script>
 
@@ -132,6 +175,7 @@
 	<script src="./app/components/dashboard/controllers/settings/InvoiceSettingsController.js"></script>
 	<script src="./app/components/dashboard/controllers/settings/EstimateSettingsController.js"></script>
 	<script src="./app/components/dashboard/controllers/settings/CreditNoteSettingsController.js"></script>
+	<script src="./app/components/dashboard/controllers/settings/Users/NewUserController.js"></script>
 	<script src="./app/components/dashboard/controllers/settings/Users/UsersController.js"></script>
 
 	<script src="./app/components/dashboard/controllers/sales/invoices/InvoiceController.js"></script>

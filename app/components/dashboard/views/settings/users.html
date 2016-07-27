@@ -13,7 +13,7 @@
       <div class="tab active" data-name="allusers">
         <h3 class="layout-margin-t section-title float-left">All Users</h3>
         <button class="float-right layout-margin-tb button button-info text-uppercase">Invite User</button>
-        <a href="#" class="float-right layout-margin-tb layout-margin-r button button-add text-uppercase modal-opener" data-toggle="invite-user">New</a>
+        <a ng-click="createUser();" class="float-right layout-margin-tb layout-margin-r button button-add text-uppercase modal-opener" data-toggle="invite-user">New</a>
         <form class="float-right layout-margin-tb">
           <input type="text" class="search-bar layout-margin-r" placeholder="Search">
         </form>
@@ -61,7 +61,7 @@
 
   </div>
 
-  <div class="popup-modal edit-user hidesm">
+  <!--<div class="popup-modal edit-user hidesm">
     <div class="modal container">
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit User</h3>
       <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
@@ -96,9 +96,9 @@
       <button class="button button-danger text-uppercase float-right">Delete</button>
       <div class="clearfix"></div>
     </div>
-  </div>
+  </div>-->
 
-  <div class="popup-modal invite-user hidesm">
+  <!--<div class="popup-modal invite-user hidesm">
     <div class="modal container">
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add User</h3>
       <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
@@ -131,6 +131,6 @@
       <div class="clearfix"></div>
       <button class="button button-info text-uppercase">Save</button>
     </div>
-  </div>
+  </div>-->
 
   <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

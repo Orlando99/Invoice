@@ -1,7 +1,7 @@
 'use strict';
 
 invoicesUnlimited.controller('UsersController',
-	function($scope,$state,$uibModal,$controller,userFactory,queryService,appFields,$q){
+	function($scope,$state,$uibModal,$controller,$document,userFactory,queryService,appFields,$q){
 
 	var user = userFactory;
 
@@ -19,6 +19,17 @@ invoicesUnlimited.controller('UsersController',
 		field 		: 'company',
 		value 		: user.entity[0].company
 	});
+
+	$scope.createUser = function(){
+		var modalInstance = $uibModal.open({
+			animation 			: true,
+			templateUrl 		: 'modal-user',
+			controller 			: 'NewUserController',
+			backdrop 			: true,
+			appendTo 			: angular.element(document.querySelector('#view')),
+			windowTemplateUrl 	: 'modal-window'
+		});
+	}
 
 	$q.when(query).then(function(users,arg2){
 
