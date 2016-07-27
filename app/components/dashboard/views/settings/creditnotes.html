@@ -4,7 +4,7 @@
     <h3 class="layout-margin-t section-title">Credit Notes</h3>
     <hr>
 
-    <form class="col-60">
+    <form id="settingsForm" class="col-60">
       <div class="clearfix"></div>
       <br>
       <h3 class="text-uppercase text-weight-normalize layout-margin-b">Credit Note Number</h3><br>
@@ -29,11 +29,11 @@
 
       <div class="input-container layout-margin-b" ng-show="creditAg == 'yes'">
         <label class="layout-padding-t-smm">Prefix</label>
-        <input type="text" class="col-75" value="CN-" ng-model="prefix">
+        <input name="prefix" type="text" class="col-75" value="CN-" ng-model="prefix">
       </div>
       <div class="input-container layout-margin-b" ng-show="creditAg == 'yes'">
         <label class="layout-padding-t-smm">Next Number</label>
-        <input type="text" class="col-75" value="000002" ng-model="nxtNumber">
+        <input name="nextNumber" type="text" class="col-75" value="000002" ng-model="nxtNumber">
       </div>
 
       <div class="clearfix"></div>

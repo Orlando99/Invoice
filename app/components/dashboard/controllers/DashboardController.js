@@ -24,6 +24,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 	$scope.logOut = function(){
 		return user.logout().then(function(){
 			resetColorTheme();
+			businessFactory.entity = [];
 			$state.go('login');
 		});
 	};

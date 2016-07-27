@@ -14,6 +14,17 @@ $controller('DashboardController',{$scope:$scope,$state:$state});
 
 loadEstimatePrefs();
 
+$('#settingsForm').validate({
+	rules: {
+		prefix : 'required',
+		nextNumber : {
+			required : true,
+			digits : true,
+			min : 1
+		}
+	}
+});
+
 function loadEstimatePrefs() {
 	showLoader();
 	$q.when(estimateService.getPreferences(user))
@@ -56,6 +67,8 @@ $scope.addField = function() {
 }
 
 $scope.save = function() {
+	if (! $('#settingsForm').valid()) return;
+
 	showLoader();
 	var prefs = {
 		estimateAg : ($scope.estimateAg == 'yes' ? 1 : 0),

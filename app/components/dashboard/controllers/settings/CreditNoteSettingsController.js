@@ -14,6 +14,17 @@ $controller('DashboardController',{$scope:$scope,$state:$state});
 
 loadCreditNotePrefs();
 
+$('#settingsForm').validate({
+	rules: {
+		prefix : 'required',
+		nextNumber : {
+			required : true,
+			digits : true,
+			min : 1
+		}
+	}
+});
+
 function loadCreditNotePrefs() {
 	showLoader();
 	$q.when(creditNoteService.getPreferences(user))
@@ -38,6 +49,8 @@ function loadCreditNotePrefs() {
 }
 
 $scope.save = function() {
+	if (! $('#settingsForm').valid()) return;
+
 	showLoader();
 	var prefs = {
 		creditAg : ($scope.creditAg == 'yes' ? 1 : 0),

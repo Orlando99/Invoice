@@ -18,18 +18,31 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 	prepareToCreateInvoice();
 
+	$.validator.addMethod(
+		"notBackDate",
+		function(value,element){
+			return $scope.todayDate <= $scope.dueDate;
+		}
+	);
+
 	$('#addInvoiceForm').validate({
 		rules: {
 			customer : 'required',
 			invoiceNumber : 'required',
 			invoiceCreateDate : 'required',
-			invoiceDueDate : 'required'
+			invoiceDueDate : {
+				required : true,
+				notBackDate : true
+			}
 		},
 		messages: {
 			customer : 'Please select a customer',
 			invoiceNumber : 'Please enter invoice number',
 			invoiceCreateDate : 'Please provide invoice create date',
-			invoiceDueDate : 'Please provide invoice due date'
+			invoiceDueDate : {
+				required : 'Please provide invoice due date',
+				notBackDate : 'Expiration date can not be before Create date'
+			}
 		}
 	});
 

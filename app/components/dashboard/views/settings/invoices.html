@@ -3,7 +3,7 @@
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title">Invoices</h3>
     <hr/>
-    <form class="inputs-white col-60">
+    <form id="settingsForm" class="inputs-white col-60">
       <div class="input-container input-radio-container layout-margin-b">
         <label class="col-25">Include Thank you Note on Receipt</label>
         <label class="layout-padding-t-sm col-10">
@@ -46,11 +46,11 @@
 
       <div class="input-container layout-margin-b" ng-show="invoiceAg == 'yes'">
         <label class="layout-padding-t-smm">Prefix</label>
-        <input type="text" class="col-75" value="INV-" ng-model="prefix">
+        <input name="prefix" type="text" class="col-75" value="INV-" ng-model="prefix">
       </div>
       <div class="input-container layout-margin-b" ng-show="invoiceAg == 'yes'">
         <label class="layout-padding-t-smm">Next Number</label>
-        <input type="text" class="col-75" value="000002" ng-model="nxtNumber">
+        <input name="nextNumber" type="text" class="col-75" value="000002" ng-model="nxtNumber">
       </div>
 
       <div class="clearfix"></div>

@@ -14,6 +14,17 @@ $controller('DashboardController',{$scope:$scope,$state:$state});
 
 loadInvoicePrefs();
 
+$('#settingsForm').validate({
+	rules: {
+		prefix : 'required',
+		nextNumber : {
+			required : true,
+			digits : true,
+			min : 1
+		}
+	}
+});
+
 function loadInvoicePrefs() {
 	showLoader();
 	$q.when(invoiceService.getPreferences(user))
@@ -80,6 +91,8 @@ $scope.addField = function() {
 }
 
 $scope.save = function() {
+	if (! $('#settingsForm').valid()) return;
+
 	showLoader();
 	var prefs = {
 		invoiceAg : ($scope.invoiceAg == 'yes' ? 1 : 0),

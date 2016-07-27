@@ -5,7 +5,7 @@ invoicesUnlimited.controller('PrincipalInfoController',
 	function($q,$rootScope,$scope,$state,signUpFactory){
 
 	var user = signUpFactory.getFactory('User');
-
+/*
 	var dobMaskOptions = {
 		onKeyPress: function(val, e, field, options) {
       		
@@ -63,7 +63,7 @@ invoicesUnlimited.controller('PrincipalInfoController',
 	}
 
 	$('[name=dob]').mask("00-00-0000",dobMaskOptions);
-	$('[name=ssn]').mask("000-00-0000");
+*/	$('[name=ssn]').mask("000-00-0000");
 
 	if (!signUpFactory.getFactory('User').entity.length) {
 		$state.go('signup');
@@ -163,6 +163,7 @@ invoicesUnlimited.controller('PrincipalInfoController',
 	},true);
 
 	function saveHelper() {
+		$scope.principalInfo.dob = formatDate($scope.dob, "MM-DD-YYYY");
 		for (var field in $scope.principalInfo){
 			signUpFactory.setField('PrincipalInfo',{
 				field : field, 
@@ -210,5 +211,11 @@ invoicesUnlimited.controller('PrincipalInfoController',
 			console.log(error.message);
 		});
 	};
+
+	$scope.openDatePicker = function(n) {
+		switch (n) {
+			case 1: $scope.openPicker1 = true; break;
+		}
+  	}
 
 }]);

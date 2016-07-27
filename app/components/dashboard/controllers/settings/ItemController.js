@@ -113,6 +113,30 @@ $scope.showItemDetail = function(index) {
 	}
 }
 
+$scope.confirmDelete = function(index) {
+	var item = $scope.items[index];
+	if (! item) return;
+
+	$scope.confirmItem = item;
+	$(".confirm-delete").addClass("show");
+}
+
+$scope.deleteItem = function(confirmed, index) {
+	if(confirmed) {
+		showLoader();
+		$scope.confirmItem.entity.set('isDeleted', 1);
+		$scope.confirmItem.entity.save()
+		.then(function() {
+			$(".confirm-delete").removeClass("show");
+			hideLoader();
+			$state.reload();
+		});
+
+	} else {
+		$(".confirm-delete").removeClass("show");
+	}
+}
+
 $scope.saveNewItem = function() {
 	if(! $('#addItemForm').valid()) return;
 

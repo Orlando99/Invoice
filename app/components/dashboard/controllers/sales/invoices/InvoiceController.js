@@ -34,18 +34,31 @@ var isGoTo = {
 
 CheckUseCase();
 
+$.validator.addMethod(
+	"notBackDate",
+	function(value,element){
+		return $scope.todayDate <= $scope.dueDate;
+	}
+);
+
 $('#editInvoiceForm').validate({
 	rules: {
 		customer : 'required',
 		invoiceNumber : 'required',
 		invoiceCreateDate : 'required',
-		invoiceDueDate : 'required'
+		invoiceDueDate : {
+			required : true,
+			notBackDate : true
+		}
 	},
 	messages: {
 		customer : 'Please select a customer',
 		invoiceNumber : 'Please enter invoice number',
 		invoiceCreateDate : 'Please provide invoice create date',
-		invoiceDueDate : 'Please provide invoice due date'
+		invoiceDueDate : {
+			required : 'Please provide invoice due date',
+			notBackDate : 'Expiration date can not be before Create date'
+		}
 	}
 });
 
@@ -201,11 +214,15 @@ function prepareEditForm() {
 	}
 
 	var files = invoice.entity.invoiceFiles;
-	files.forEach(function(file) {
-		file.fileName = file.name();
-		file.exist = true;
-	});
-	$scope.files = files;
+	if (files) {
+		files.forEach(function(file) {
+			file.fileName = file.name();
+			file.exist = true;
+		});
+		$scope.files = files;
+	} else {
+		$scope.files = [];
+	}
 
 	switch($scope.prefs.discountType) {
 		case 0:

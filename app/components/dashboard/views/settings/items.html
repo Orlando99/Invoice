@@ -18,12 +18,28 @@
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.title}}</td>
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.itemDescription}}</td>
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.rate | currency:$:2}}</td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
+        <td class="text-color-light text-weight-normalize layout-padding text-right"
+          ng-click="confirmDelete($index)"><img src="./assets/images/icon-times-round.png" alt="" />
+        </td>
       </tr>
     </table>
 
   </div>
 
+
+  <div class="popup-modal confirm-delete hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
+        float-left">Do you really want to delete item '{{confirmItem.entity.title}}'</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <button class="button button-info text-uppercase" ng-click="deleteItem(true)">Yes</button>
+      <button class="button button-info text-uppercase" ng-click="deleteItem(false)">No</button>
+    </div>
+  </div>
 
   <div class="popup-modal new-item hidesm">
     <div class="modal container">
