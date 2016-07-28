@@ -24,10 +24,7 @@ invoicesUnlimited.controller('UsersController',
 	$scope.deleteUser = function($index) {
 		showLoader();
 		Parse.Cloud.run('deleteUser',{
-			identificator : $scope.users[$index].id,
-			user : {
-				id : user.entity[0].id
-			}
+			identificator : $scope.users[$index].id
 		})
 		.then(function(res){
 			$scope.$apply(function() {
