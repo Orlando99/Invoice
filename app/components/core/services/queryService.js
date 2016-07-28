@@ -11,4 +11,10 @@ invoicesUnlimited.service('queryService',
 		return query.find();
 	}
 
+	this.first = function(params) {
+		var query = new Parse.Query(params.className);
+		query.equalTo(params.field, params.value);
+		return query.first();
+	}
+
 });
