@@ -2,7 +2,7 @@
 
 invoicesUnlimited.controller('NewUserController',
 	function($scope,$state,userFactory,
-		$controller,$q,$uibModalInstance,user){
+		$controller,$q,$uibModalInstance,user,method,title){
 
 	if (!userFactory.entity.length) {
 		$uibModalInstance.dismiss('No signed in user');
@@ -10,8 +10,41 @@ invoicesUnlimited.controller('NewUserController',
 		return;
 	}
 
+	$scope.method = method;
+	$scope.title = title;
 	$scope.user = user;
 	$scope.password = '';
+
+	$scope.update = function(){
+		var params = {}; 
+		['username','fullName','email','role']
+		.forEach(function(fld){
+			params[fld] = $scope.user[fld];
+		});
+		showLoader();
+		Parse.Cloud.run('UpdateUser',{
+			user : {
+				id 		: $scope.user.id,
+				params 	: params
+			}
+		}).then(function(id){
+			queryService.first({
+				className  	: '_User',
+				field 		: 'id',
+				value 		: id
+			}).then(function(user){
+				$uibModalInstance.close(user);
+			},function(er){
+				console.log(er.message);
+				hideLoader();
+				$uibModalInstance.dismiss(er.message);
+			});
+		},function(er){
+			console.log(er);
+			hideLoader();
+			$uibModalInstance.dismiss(er.message);
+		});
+	}
 
 	$scope.save = function(){
 		var form = document.querySelector('.modal-content form');

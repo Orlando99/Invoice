@@ -88,7 +88,7 @@
 
   	<script type="text/ng-template" id="modal-user">
     
-	    <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add User</h3>
+	    <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">{{title}}</h3>
 	    <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="" ng-click="closeModal();"></button>
 	    <div class="clearfix"></div>
 	    <hr class="layout-margin-tb">
@@ -107,20 +107,23 @@
 	        	<label class="layout-padding-t-smm">Email ID</label>
 	        	<input ng-model="user.email" placeholder="Click or Tap to enter" type="email" class="col-75" required></input>
 	      	</div>
-	      	<div class="input-container layout-margin-b">
+	      	<div class="input-container layout-margin-b" ng-if="method == 'create'">
 	        	<label class="layout-padding-t-smm">Password</label>
 	        	<input ng-model="password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required></input>
 	      	</div>
 	      	<div class="input-container layout-margin-b">
 	        	<label class="layout-padding-t-smm">Role</label>
-	        	<select ng-model="user.role" pattern="Staff|Admin" required class="col-75">
+	        	<select ng-model="user.role" pattern="Staff|Admin|Timesheet Staff" required class="col-75">
 	          		<option value="" selected>Select the Role</option>
 	        		<option value="Admin">Admin</option>
 	        		<option value="Staff">Staff</option>
+	        		<option value="Timesheet Staff">Timesheet Staff</option>
 	        	</select>
 	        	<p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
 	    	</div>
-	    	<button ng-click="save();" type="submit" class="button button-info text-uppercase">Save</button>
+	    	<button ng-show="method == 'create'" ng-click="save();" type="submit" class="button button-info text-uppercase">Save</button>
+	    	<button ng-show="method == 'update'" ng-click="update();" class="button button-info text-uppercase float-left">Save</button>
+      		<button ng-show="method == 'update'" class="button button-danger text-uppercase float-right">Delete</button>
 	    </form>
 	    </div>
 	    <div class="clearfix"></div>

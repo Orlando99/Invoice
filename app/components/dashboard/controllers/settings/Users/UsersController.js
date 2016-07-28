@@ -20,6 +20,40 @@ invoicesUnlimited.controller('UsersController',
 		value 		: user.entity[0].company
 	});
 
+	$scope.editUser = function(id) {
+		var modalInstance = $uibModal.open({
+			animation 			: true,
+			templateUrl 		: 'modal-user',
+			controller 			: 'NewUserController',
+			backdrop 			: true,
+			appendTo 			: angular.element(document.querySelector('#view')),
+			windowTemplateUrl 	: 'modal-window',
+			resolve 			: {
+				user : function() {
+					return $scope.users[id];
+				},
+				method : function() {
+					return 'update';
+				},
+				title : function() {
+					return 'Edit user';
+				}
+			}
+		});
+
+		modalInstance.result.then(function(user){
+			setObjectOperations({
+				object 		: user,
+				fields 		: appFields.user
+			});
+			$scope.users[id] = user;
+		},function(){
+			console.log('Dismiss modal');
+		});
+
+
+	}
+
 	$scope.createUser = function(){
 		var modalInstance = $uibModal.open({
 			animation 			: true,
@@ -37,6 +71,12 @@ invoicesUnlimited.controller('UsersController',
 						fields 		: appFields.user
 					});
 					return obj;
+				},
+				method 	: function(){
+					return 'create';
+				},
+				title 	: function() {
+					return 'Add User';
 				}
 			}
 		});
@@ -49,7 +89,7 @@ invoicesUnlimited.controller('UsersController',
 			$scope.users.push(user);
 		},function(){
 			console.log('Dismiss modal');
-		})
+		});
 	}
 
 	$q.when(query).then(function(users,arg2){
