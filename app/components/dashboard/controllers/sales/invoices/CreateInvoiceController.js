@@ -3,9 +3,10 @@
 invoicesUnlimited.controller('CreateInvoiceController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
 	'invoiceService', 'coreFactory', 'taxService', 'expenseService',
-	'currencyFilter',
+	'lateFeeService', 'currencyFilter',
 	function($scope, $state, $controller, $q, userFactory,
-		invoiceService,coreFactory,taxService,expenseService,currencyFilter) {
+		invoiceService,coreFactory,taxService,expenseService,
+		lateFeeService,currencyFilter) {
 
 	if(! userFactory.entity.length) {
 		console.log('User not logged in');
@@ -123,6 +124,13 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 	}
 
+	function lateFeeNameHelper(obj) {
+		var fee = obj.entity;
+		return fee.name + ' ' +
+			fee.price + ' (' +
+			fee.type + ')';
+	}
+
 	function prepareToCreateInvoice() {
 		showLoader();
 		var promises = [];
@@ -165,6 +173,16 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		p = taxService.getTaxes(user, function(taxes) {
 			$scope.taxes = taxes;
 		});
+		promises.push(p);
+
+		p = lateFeeService.getAllLateFees({
+			organization : organization
+		}).then(function(objs) {
+			$scope.lateFeeList = objs.map(function(obj) {
+				obj.toStr = lateFeeNameHelper(obj);
+				return obj;
+			});
+		})
 		promises.push(p);
 
 		$q.all(promises).then(function() {
@@ -284,6 +302,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			total : Number($scope.total),
 			balanceDue : Number($scope.total),
 			poNumber : $scope.poNumber,
+			lateFee : $scope.selectedLateFee.entity,
 			salesPerson : $scope.salesPerson,
 			notes : $scope.notes,
 			terms : $scope.terms

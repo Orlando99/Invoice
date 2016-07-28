@@ -1,18 +1,19 @@
 'use strict';
 
 invoicesUnlimited.controller('InvoiceSettingsController',['$q' ,'$scope', '$state', '$controller',
-	'userFactory', 'invoiceService',
+	'userFactory', 'invoiceService', 'coreFactory', 'lateFeeService',
 	
-function($q, $scope, $state, $controller, userFactory, invoiceService) {
+function($q, $scope, $state, $controller, userFactory, invoiceService, coreFactory, lateFeeService) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
 	return undefined;
 }
 var user = userFactory.entity[0];
+var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
-loadInvoicePrefs();
+loadPrefs();
 
 $('#settingsForm').validate({
 	rules: {
@@ -21,16 +22,22 @@ $('#settingsForm').validate({
 			required : true,
 			digits : true,
 			min : 1
-		}
+		},
+		discntplace : 'required'
 	}
 });
 
-function loadInvoicePrefs() {
+function loadPrefs() {
 	showLoader();
+
+	var promise = $q.when(lateFeeService.getAllLateFees({
+		organization : organization
+	}));
+
 	$q.when(invoiceService.getPreferences(user))
 	.then(function(prefs) {
 		$scope.prefs = prefs;
-		console.log(prefs);
+	//	console.log(prefs);
 
 		$scope.invoiceAg   = (prefs.numAutoGen  == 1 ? 'yes' : 'no');
 		$scope.shipCharges = (prefs.shipCharges == 1 ? 'yes' : 'no');
@@ -68,12 +75,67 @@ function loadInvoicePrefs() {
 			$scope.discountPlace = 'after';
 			break;
 		}
+		
+		return promise;
+	})
+	.then(function(objs) {
+		$scope.lateFees = objs;
+		$scope.feeList = objs.map(lateFeeNameHelper);
+		$scope.latefeeTypes = ['%', '$'];
+		$scope.selectedFeeType = '%';
 		hideLoader();
 
 	}, function(error) {
 		hideLoader();
 		console.log(error.message);
 	});
+}
+
+function lateFeeNameHelper(obj) {
+	var fee = obj.entity;
+	return fee.name + ' ' +
+		fee.price + ' (' +
+		fee.type + ')';
+}
+
+$scope.prepareAddLateFee = function() {
+	$('#latefeeForm').validate({
+		rules: {
+			name : 'required',
+			type : 'required',
+			amount : {
+				required : true,
+				number : true,
+				min : 0.01
+			}
+		}
+	});
+	$('#latefeeForm').validate().resetForm();
+}
+
+$scope.addLateFee = function() {
+	if (! $('#latefeeForm').valid()) return;
+	
+	showLoader();
+	var params = {
+		userID : user,
+		organization : organization,
+		name : $scope.latefeeName,
+		type : $scope.selectedFeeType,
+		price: Number($scope.latefeeAmount)
+	};
+
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return lateFeeService.createLateFee(params, role);
+	})
+	.then(function(obj) {
+		$scope.lateFees.push(obj);
+		$scope.feeList.push(lateFeeNameHelper(obj));
+		$('.add-latefee').removeClass('show');
+		hideLoader();
+	});
+
 }
 
 $scope.removeField = function(index) {

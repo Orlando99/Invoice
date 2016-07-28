@@ -13,7 +13,8 @@
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
           <li><a href="">Email</a></li>
           <li><a href="">Print</a></li>
-          <li class="modal-opener" data-toggle="record-payment"><a href="">Record Payment</a></li>
+          <li class="modal-opener" data-toggle="record-payment"><a href=""
+              ng-click="prepareAddPayment()">Record Payment</a></li>
           <li><a href="javascript:" ng-click="showAvailableCredits()">Apply Credit Note</a></li>
           <li><a href="">Clone</a></li>
           <li><a href="">Print Delivery Note</a></li>
@@ -250,41 +251,39 @@
       <hr class="layout-margin-tb">
 
       <div class="col-80 text-left layout-center">
-        <form action="" class="inputs-white layout-margin-t float-left">
+        <form id="paymentForm" class="inputs-white layout-margin-t float-left">
           <div class="input-container layout-margin-b">
             <label>Date</label>
-            <select class="col-75">
-              <option value="null" disabled selected>Select or Type to add</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>
+            <input name="paymentDate" class="col-75" type="text" uib-datepicker-popup="MM-dd-yyyy"
+              ng-model="paymentDate" is-open="openPicker1" ng-click="openDatePicker(1)" readonly>
           </div>
           <div class="input-container layout-margin-b">
             <label>Amount</label>
-            <input type="text" class="col-75" placeholder="Type to add">
+            <input name="paymentAmount" type="text" class="col-75" placeholder="Type to add"
+              ng-model="paymentAmount">
           </div>
           <div class="input-container layout-margin-b">
             <label>Reference #</label>
-            <input type="text" class="col-75" placeholder="Type to add">
+            <input name="paymentRef" type="text" class="col-75" placeholder="Type to add"
+              ng-model="paymentRef">
           </div>
           <div class="input-container layout-margin-b">
             <label>Payment Mode</label>
-            <select class="col-75" placeholder="Select or Type to add">
-              <option value="null" disabled selected>Select Payment Mode</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
+            <select name="paymentMode" class="col-75" placeholder="Select or Type to add"
+              ng-model="selectedPaymentMode" ng-options="mode for mode in paymentModes">
+              <option value="" disabled>Select Payment Mode</option>
             </select>
           </div>
           <div class="input-container layout-margin-b">
             <label>Notes</label>
-            <textarea class="col-75"></textarea>
+            <textarea class="col-75" ng-model="paymentNotes"></textarea>
           </div>
         </form>
         <div class="clearfix"></div>
         <br/>
       </div>
       <div class="clearfix"></div>
-      <button class="button button-small button-info text-uppercase">Save</button>
+      <button class="button button-small button-info text-uppercase" ng-click="addPayment()">Save</button>
     </div>
   </div>
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

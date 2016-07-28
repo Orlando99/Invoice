@@ -41,6 +41,13 @@
         <input name="invoiceDueDate" id="end_date" class="col-75" type="text" ng-model="dueDate"
           uib-datepicker-popup="MM-dd-yyyy" is-open="openPicker2" ng-click="openDatePicker(2)" readonly>
       </div>
+      <div class="input-container col-60 layout-margin-b">
+        <label class="layout-padding-t-sm">Late Fee</label>
+        <select name="latefee" class="col-75" ng-model="selectedLateFee"
+          ng-options="fee.toStr for fee in lateFeeList">
+          <option value="">No Late Fee</option>
+        </select>
+      </div>
       <div class="input-container col-60 layout-margin-b" ng-show="showSalesPerson">
         <label class="layout-padding-t-sm">Sales Person</label>
         <input class="col-75" type="text" ng-model="salesPerson">

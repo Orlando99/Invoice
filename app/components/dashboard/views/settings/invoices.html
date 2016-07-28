@@ -84,7 +84,7 @@
           <label style="display:none;"> </label>
           <label style="padding: 0 30px 0;">
           <span class="layout-margin-r">
-            <input type="radio" name="discountplace" value="before" ng-model="discountPlace">
+            <input name="discntplace" type="radio" name="discountplace" value="before" ng-model="discountPlace">
             <span class="radio"></span>
           </span>
           Before Tax
@@ -92,7 +92,7 @@
 
         <label style="padding: 0 30px 0;">
           <span class="layout-margin-r">
-            <input type="radio" name="discountplace" value="after" ng-model="discountPlace">
+            <input name="discntplace" type="radio" name="discountplace" value="after" ng-model="discountPlace">
             <span class="radio"></span>
           </span>
           After Tax
@@ -120,11 +120,17 @@
           No
         </label>
       </div>
-      <select class="col-45" ng-show="showLateFee == 'yes'"
-          ng-options="lateFee.name for lateFee in lateFeeList">
-          <option value="" disabled>List of late fee</option>
+      <a class="modal-opener" data-toggle="add-latefee" ng-click="prepareAddLateFee()"
+        href="javascript:">+ Add New</a>
+      <div class="clearfix"></div>
+      
+      <div ng-show="showLateFee == 'yes'">
+      <br/>
+      <select class="col-45"
+        ng-options="fee for fee in feeList" ng-model="abc">
+          <option value="" disabled selected>List of late fee</option>
       </select>
-
+    </div>
 
       <div class="clearfix"></div>
 
@@ -231,5 +237,37 @@
       <button class="button button-info text-uppercase" ng-click="save()">Save</button>
     </form>
     <div class="clearfix spacer"></div>
+
+    <div class="popup-modal add-latefee hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Late Fee</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="latefeeForm" class="layout-margin-tb col-100 inputs-white">
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Name</label>
+            <input name="name" type="text" class="col-75" ng-model="latefeeName">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Type</label>
+            <select name="type" class="col-75" ng-model="selectedFeeType"
+              ng-options="type for type in latefeeTypes">
+              <option value="" disabled>Choose Type</option>
+            </select>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Amount</label>
+            <input name="amount" type="text" class="col-75" ng-model="latefeeAmount">
+          </div>
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-info text-uppercase" ng-click="addLateFee()">Save</button>
+    </div>
+    </div>
 
   <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

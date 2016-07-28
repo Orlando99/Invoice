@@ -3,10 +3,10 @@
 invoicesUnlimited.controller('InvoiceController',
 	['$q', '$scope', '$state', '$controller', 'userFactory',
 		'invoiceService', 'coreFactory', 'taxService', 'expenseService',
-		'currencyFilter',
+		'lateFeeService', 'currencyFilter',
 
 function($q, $scope, $state, $controller, userFactory,
-	invoiceService, coreFactory, taxService, expenseService, currencyFilter) {
+	invoiceService, coreFactory, taxService, expenseService, lateFeeService, currencyFilter) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -213,6 +213,17 @@ function prepareEditForm() {
 		$scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms[1];
 	}
 
+	var lateFee = invoice.entity.lateFee;
+	if(lateFee) {
+		var list = $scope.lateFeeList;
+		for(var i=0; i < list.length; ++i) {
+			if(list[i].entity.id == lateFee.id) {
+				$scope.selectedLateFee = list[i];
+				break;
+			}
+		}
+	}
+
 	var files = invoice.entity.invoiceFiles;
 	if (files) {
 		files.forEach(function(file) {
@@ -381,6 +392,10 @@ function saveEditedInvoice(params) {
 	invoice.set('salesPerson', $scope.salesPerson);
 	invoice.set('notes', $scope.notes);
 	invoice.set('terms', $scope.terms);
+
+	if($scope.selectedLateFee)
+		invoice.set('lateFee', $scope.selectedLateFee.entity);
+	else	invoice.unset('lateFee');
 
 	if($scope.paymentTerms.selectedTerm.value == 1)
 		invoice.set('dueDate', $scope.dueDate);
@@ -638,6 +653,12 @@ $scope.customerChanged = function() {
 	});
 }
 //----------------
+function lateFeeNameHelper(obj) {
+	var fee = obj.entity;
+	return fee.name + ' ' +
+		fee.price + ' (' +
+		fee.type + ')';
+}
 
 function LoadRequiredData() {
 	var promises = [];
@@ -680,6 +701,16 @@ function LoadRequiredData() {
 	p = taxService.getTaxes(user, function(taxes) {
 		$scope.taxes = taxes;
 	});
+	promises.push(p);
+
+	p = lateFeeService.getAllLateFees({
+		organization : organization
+	}).then(function(objs) {
+		$scope.lateFeeList = objs.map(function(obj) {
+			obj.toStr = lateFeeNameHelper(obj);
+			return obj;
+		});
+	})
 	promises.push(p);
 
 	return $q.all(promises);

@@ -5,6 +5,28 @@ return {
 	test : function() {
 		console.log("working");
 	},
+	addPayment : function(invoice, params, role) {
+		var Payment = Parse.Object.extend('Payment');
+		var payment = new Payment();
+
+		var acl = new Parse.ACL();
+		acl.setRoleWriteAccess(role.get("name"), true);
+		acl.setRoleReadAccess(role.get("name"), true);
+		payment.setACL(acl);
+		var paymentList = invoice.get('payment');
+
+		return payment.save(params)
+		.then(function(obj) {
+			if (paymentList) {
+				paymentList.push(obj);
+			} else {
+				paymentList= [obj];
+			}
+
+			invoice.set('payment', paymentList);
+			return invoice.save();
+		});
+	},
 	getInvoicesForSummary : function(params) {
 		var invoiceTable = Parse.Object.extend('Invoices');
 		var query = new Parse.Query(invoiceTable);

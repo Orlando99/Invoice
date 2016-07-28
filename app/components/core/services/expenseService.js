@@ -1,7 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('expenseService', ['expenseFactory',
-function(expenseFactory) {
+invoicesUnlimited.factory('expenseService', ['$q', 'expenseFactory',
+function($q, expenseFactory) {
 
 return {
 	getExpensesForSummary : function(params) {
@@ -83,19 +83,26 @@ return {
 			return expenses;
 		});
 	},
-	createNewExpense : function(expense, role, file) {
+	createNewExpense : function(expense, role, files) {
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
 
 		var promise = undefined;
-		if(file) {
-			var parseFile = new Parse.File(file.name, file);
-			promise = parseFile.save()
-			.then(function(savedFile) {
-				console.log(savedFile.url());
-				return [savedFile];
+		if(files.length) {
+			var promises = [];
+			files.forEach(function(file) {
+				delete file.fileName;
+				var parseFile = new Parse.File(file.name, file);
+				promises.push(parseFile.save());
 			});
+
+			promise = $q.all(promises)
+			.then(function(savedFiles) {
+				console.log(savedFiles);
+				return savedFiles;
+			});
+
 		} else
 			promise = Parse.Promise.as(undefined);
 
@@ -112,14 +119,43 @@ return {
 			return obj.save(expense);
 		});
 	},
-	updateExpense : function(expense) {
+	updateExpense : function(expense, files) {
 		if (expense.tax) {
 			expense.tax = Parse.Object.extend("Tax")
 				.createWithoutData(expense.tax.id)
 		} else {
 			expense.unset('tax');
 		}
-		return expense.save();
+
+		var promise = undefined;
+		var newFiles = undefined; // store already saved and newly created files
+		if(files.length) {
+			newFiles = [];
+			var promises = [];
+			files.forEach(function(file) {
+				if(file.exist) {
+					delete file.exist;
+					delete file.fileName;
+					newFiles.push(file);
+
+				} else {
+					var parseFile = new Parse.File(file.name, file);
+					promises.push(parseFile.save());
+				}
+			});
+
+			promise = $q.all(promises);
+
+		} else
+			promise = Parse.Promise.as(undefined);
+
+		return promise.then(function(fileObjs) {
+			if (fileObjs)
+				newFiles = newFiles.concat(fileObjs);
+
+			expense.set('expenseFiles', newFiles);
+			return expense.save();
+		});
 	}
 };
 

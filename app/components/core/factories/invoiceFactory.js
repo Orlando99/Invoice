@@ -38,7 +38,7 @@ function Invoice(parseObject, params) {
 			'invoiceInfo', 'adjustments', 'discountType',
 			'discounts', 'shippingCharges', 'balanceDue',
 			'subTotal', 'total', 'notes', 'terms', 'poNumber',
-			'salesPerson'
+			'salesPerson', 'lateFee'
 		];
 		var invoiceItems = parseObject.get('invoiceItems');
 		if (invoiceItems) {

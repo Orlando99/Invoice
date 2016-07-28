@@ -239,4 +239,59 @@ $scope.applyCredit = function() {
 	});
 }
 
+$scope.openDatePicker = function(n) {
+	switch (n) {
+		case 1: $scope.openPicker1 = true; break;
+	}
+}
+
+$scope.prepareAddPayment = function() {
+	$scope.paymentDate = new Date();
+	$scope.paymentModes = ['Check', 'Cash', 'Bank Transfer', 'Bank Remittance'];
+	$scope.selectedPaymentMode = 'Cash';
+
+	$('#paymentForm').validate({
+		rules: {
+			paymentDate : 'required',
+			paymentAmount : {
+				required : true,
+				number : true,
+				min : 0.01
+			},
+			paymentRef : 'required',
+			paymentMode : 'required'
+		}
+	});
+	$('#paymentForm').validate().resetForm();
+}
+
+$scope.addPayment = function() {
+	if (! $('#paymentForm').valid()) return;
+
+	showLoader();
+	var payment = {
+		userID : user,
+		organization : organization,
+		date : $scope.paymentDate,
+		mode : $scope.selectedPaymentMode,
+		amount : Number($scope.paymentAmount),
+		reference : $scope.paymentRef,
+		notes : $scope.paymentNotes,
+	};
+
+	var invoiceObj = $scope.invoice.entity;
+	invoiceObj.unset('invoiceReceipt');
+	invoiceObj.increment('paymentMade', payment.amount);
+	invoiceObj.increment('balanceDue', -payment.amount);
+
+	var promise = $q.when(coreFactory.getUserRole(user))
+	promise.then(function(role) {
+		return $q.when(invoiceService.addPayment(invoiceObj, payment, role));
+	})
+	.then(function() {
+		hideLoader();
+		$state.reload();
+	});
+}
+
 }]);

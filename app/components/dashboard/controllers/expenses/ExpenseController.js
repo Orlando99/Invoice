@@ -149,6 +149,17 @@ function prepareToEditExpense() {
 			})[0];
 		}
 
+		var files = expense.entity.expenseFiles;
+		if (files) {
+			files.forEach(function(file) {
+				file.fileName = file.name();
+				file.exist = true;
+			});
+			$scope.files = files;
+		} else {
+			$scope.files = [];
+		}
+
 		hideLoader();
 	});
 }
@@ -164,6 +175,7 @@ function prepareToCreateExpense() {
 			selectedType: {name:'Non Billable', value:'Non-Billable'}
 		}
 
+		$scope.files = [];
 		$scope.todayDate = new Date();		
 		hideLoader();
 		console.log('data loaded');
@@ -255,7 +267,7 @@ $scope.saveNewExpense = function() {
 	};
 	expense.billable = (expense.status == 'Billable')? 'Yes' : 'No';
 
-	expenseService.createNewExpense(expense, $scope.userRole, $scope.filepicker)
+	expenseService.createNewExpense(expense, $scope.userRole, $scope.files)
 	.then(function(expenseObj) {
 		hideLoader();
 		console.log(expenseObj);
@@ -285,7 +297,7 @@ $scope.saveEditedExpense = function() {
 		expense.set('billable', 'Yes');
 	else expense.set('billable', 'No');
 
-	expenseService.updateExpense(expense)
+	expenseService.updateExpense(expense, $scope.files)
 	.then(function(expenseObj) {
 		console.log(expenseObj);
 		hideLoader();
@@ -299,6 +311,17 @@ $scope.saveEditedExpense = function() {
 
 $scope.cancel = function() {
 	$state.go('dashboard.expenses.all');
+}
+
+$scope.addNewFile = function(obj) {
+	var file = obj.files[0];
+	file.fileName = file.name; // to avoid naming conflict
+	$scope.files.push(file);
+	$scope.$apply();
+}
+
+$scope.removeFile = function(index) {
+	$scope.files.splice(index,1);
 }
 
 $scope.customerSelected = function() {

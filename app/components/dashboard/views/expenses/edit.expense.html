@@ -16,8 +16,8 @@
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Date</label>
         <input name="date" class="col-70" type="text" uib-datepicker-popup="MM-dd-yyyy"
-          placeholder="Select or enter date"
-          ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)">
+          placeholder="Select or enter date" ng-model="todayDate" is-open="openPicker1"
+          ng-click="openDatePicker(1)" readonly>
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Amount</label>
@@ -54,7 +54,16 @@
       <div class="input-container col-60 layout-margin-b">
         <p class="col-25 layout-no-padding">Attach Reference File</p>
         <p class="col-70">
-          <input type="file" file-model="filepicker">
+          <div ng-repeat="file in files">
+            <label class="col-60">{{file.fileName}}</label>
+            <button class="button button-icon button-no-margin" ng-click="removeFile($index)">
+              <img src="./assets/images/icon-times-round.png" alt=""></button>
+          </div>
+          <label>
+          <input type="file" style="display: none;"
+            onchange="angular.element(this).scope().addNewFile(this)">
+            <div class="div-button">Import file...</div>
+          </label>
         </p>
       </div>
 
