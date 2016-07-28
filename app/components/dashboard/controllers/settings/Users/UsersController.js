@@ -20,6 +20,26 @@ invoicesUnlimited.controller('UsersController',
 		value 		: user.entity[0].company
 	});
 
+
+	$scope.deleteUser = function($index) {
+		showLoader();
+		Parse.Cloud.run('deleteUser',{
+			identificator : $scope.users[$index].id,
+			user : {
+				id : user.entity[0].id
+			}
+		})
+		.then(function(res){
+			$scope.$apply(function() {
+				$scope.users.splice($index,1);
+			});
+			hideLoader();
+		},function(e){
+			console.log(e.message);
+			hideLoader();
+		});
+	}
+
 	$scope.editUser = function(id) {
 		var modalInstance = $uibModal.open({
 			animation 			: true,

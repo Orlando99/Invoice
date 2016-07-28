@@ -28,12 +28,12 @@
             <td class="text-uppercase text-info layout-padding">Status</td>
             <td class="text-uppercase text-info layout-padding text-right actions"></td>
           </tr>
-          <tr ng-repeat="user in users track by $index" ng-click="editUser($index);" class="user-row">
-            <td class="text-color-light text-weight-normalize layout-padding">{{user.fullName}}</td>
-            <td class="text-color-light text-weight-normalize layout-padding">{{user.email}}</td>
-            <td class="text-color-light text-weight-normalize layout-padding">{{user.role}}</td>
-            <td class="text-color-light text-weight-normalize layout-padding {{user.textClass}}">{{user.status}}</td>
-            <td class="text-color-light text-weight-normalize layout-padding text-right actions"><img src="./assets/images/icon-times-round.png" alt="" /></td>
+          <tr ng-repeat="user in users track by $index" class="user-row">
+            <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.fullName}}</td>
+            <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.email}}</td>
+            <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.role}}</td>
+            <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding {{user.textClass}}">{{user.status}}</td>
+            <td class="text-color-light text-weight-normalize layout-padding text-right actions" ng-click="deleteUser($index);"><img src="./assets/images/icon-times-round.png" alt="" /></td>
           </tr>
 
         </table>

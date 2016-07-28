@@ -15,6 +15,25 @@ invoicesUnlimited.controller('NewUserController',
 	$scope.user = user;
 	$scope.password = '';
 
+	$scope.delete = function() {
+		showLoader();
+		Parse.Cloud.run('deleteUser',{
+			identificator : $scope.user.id,
+			user : {
+				id : userFactory.entity[0].id
+			}
+		})
+		.then(function(res){
+			$scope.$apply(function() {
+				$scope.users.splice($index,1);
+			});
+			hideLoader();
+		},function(e){
+			console.log(e.message);
+			hideLoader();
+		});
+	}
+
 	$scope.update = function(){
 		var params = {}; 
 		['username','fullName','email','role']
