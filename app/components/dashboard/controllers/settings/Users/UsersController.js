@@ -27,8 +27,29 @@ invoicesUnlimited.controller('UsersController',
 			controller 			: 'NewUserController',
 			backdrop 			: true,
 			appendTo 			: angular.element(document.querySelector('#view')),
-			windowTemplateUrl 	: 'modal-window'
+			windowTemplateUrl 	: 'modal-window',
+			resolve 			: {
+				user : function() {
+					var ctor = Parse.Object.extend(Parse.User);
+					var obj = new ctor();
+					setObjectOperations({
+						object 		: obj,
+						fields 		: appFields.user
+					});
+					return obj;
+				}
+			}
 		});
+
+		modalInstance.result.then(function(user){
+			setObjectOperations({
+				object 		: user,
+				fields 		: appFields.user
+			});
+			$scope.users.push(user);
+		},function(){
+			console.log('Dismiss modal');
+		})
 	}
 
 	$q.when(query).then(function(users,arg2){

@@ -88,38 +88,44 @@
 
   	<script type="text/ng-template" id="modal-user">
     
-		<h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add User</h3>
-		<button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
-		<div class="clearfix"></div>
-		<hr class="layout-margin-tb">
+	    <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add User</h3>
+	    <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="" ng-click="closeModal();"></button>
+	    <div class="clearfix"></div>
+	    <hr class="layout-margin-tb">
 
-		<div class="col-80 text-left layout-center">
-		<form class="layout-margin-tb col-100 inputs-white">
-		  <div class="input-container layout-margin-b">
-		    <label class="layout-padding-t-smm">Email</label>
-		    <select class="col-75">
-		      <option value="select" disabled selected>Select or Type to Add</option>
-		    </select>
-		  </div>
-		  <div class="input-container layout-margin-b">
-		    <label class="layout-padding-t-smm">Name</label>
-		    <input type="text" class="col-75">
-		  </div>
-		  <div class="input-container layout-margin-b">
-		    <label class="layout-padding-t-smm">Role</label>
-		    <select class="col-75">
-		    	<option value="" selected>Select the Role</option>
-				<option value="select">Admin</option>
-				<option value="select">Staff</option>
-		    </select>
-		    <p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
-		  </div>
-		</form>
-		</div>
-		<div class="clearfix"></div>
-		<button class="button button-info text-uppercase">Save</button>
-    
-  	</script>
+	    <div class="col-80 text-left layout-center">
+	    <form class="layout-margin-tb col-100 inputs-white">
+	      	<div class="input-container layout-margin-b">
+	        	<label class="layout-padding-t-smm">Username</label>
+	        	<input ng-model="user.username" placeholder="Click or Tap to enter" type="text" class="col-75" required></input>
+	      	</div>
+	      	<div class="input-container layout-margin-b">
+		        <label class="layout-padding-t-smm">Name</label>
+		        <input ng-model="user.fullName" placeholder="Click or Tap to enter" type="text" class="col-75"></input>
+	    	</div>
+	      	<div class="input-container layout-margin-b">
+	        	<label class="layout-padding-t-smm">Email ID</label>
+	        	<input ng-model="user.email" placeholder="Click or Tap to enter" type="email" class="col-75" required></input>
+	      	</div>
+	      	<div class="input-container layout-margin-b">
+	        	<label class="layout-padding-t-smm">Password</label>
+	        	<input ng-model="password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required></input>
+	      	</div>
+	      	<div class="input-container layout-margin-b">
+	        	<label class="layout-padding-t-smm">Role</label>
+	        	<select ng-model="user.role" pattern="Staff|Admin" required class="col-75">
+	          		<option value="" selected>Select the Role</option>
+	        		<option value="Admin">Admin</option>
+	        		<option value="Staff">Staff</option>
+	        	</select>
+	        	<p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
+	    	</div>
+	    	<button ng-click="save();" type="submit" class="button button-info text-uppercase">Save</button>
+	    </form>
+	    </div>
+	    <div class="clearfix"></div>
+	    
+	  </script>
 
 	<script src="http://www.parsecdn.com/js/parse-1.6.14.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
