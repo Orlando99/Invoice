@@ -152,6 +152,12 @@
             <label class="col-i-30">Terms &amp; Conditions</label>
             <textarea class="col-70" ng-model="terms"></textarea>
           </div>
+          <div class="clearfix"></div>
+          <br />
+          <div class="input-container" ng-repeat="field in customFields">
+            <label class="col-i-30">{{field.name}}</label>
+            <input type="text" class="col-70" ng-model="field.value"></input>
+          </div>
 <!--
           <p class="col-i-30">Attach Reference File</p>
           <p class="col-70">

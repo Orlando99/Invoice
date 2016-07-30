@@ -283,6 +283,19 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			});
 		}
 
+		var customFields = [];
+		if($scope.prefs.customFields) {
+			$scope.prefs.customFields.forEach(function(field) {
+				if (field.isChecked == 'YES') {
+					customFields.push({
+						name : field.name,
+						value: ""
+					});
+				}
+			});
+		}
+		$scope.customFields = customFields;
+
 		hideLoader();
 	}
 
@@ -302,14 +315,30 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			total : Number($scope.total),
 			balanceDue : Number($scope.total),
 			poNumber : $scope.poNumber,
-			lateFee : $scope.selectedLateFee.entity,
 			salesPerson : $scope.salesPerson,
 			notes : $scope.notes,
 			terms : $scope.terms
 
 		};
+		if($scope.customFields.length) {
+			var fields = [];
+			$scope.customFields.forEach(function(field) {
+				if (field.value) {
+					var obj = {};
+					obj[field.name] = field.value;
+					fields.push(obj);
+				}
+			});
+			if (fields.length) {
+				invoice.customFields = fields;
+			}
+		}
+		if($scope.selectedLateFee) {
+			invoice.lateFee = $scope.selectedLateFee.entity;
+		}
 		if ($scope.paymentTerms.selectedTerm.value == 1)
 			invoice.dueDate = $scope.dueDate;
+
 		var email = $scope.selectedCustomer.entity.email;
 		if(email) invoice.customerEmails = [email];
 
@@ -341,7 +370,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		saveInvoice()
 		.then(function(invoice) {
 			hideLoader();
-			console.log(invoice);
+		//	console.log(invoice);
 			$state.go('dashboard.sales.invoices.all');
 
 		}, function (error) {

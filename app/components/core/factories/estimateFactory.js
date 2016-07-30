@@ -37,7 +37,7 @@ function Estimate (parseObject, params) {
 			'estimateNumber', 'status', 'adjustments',
 			'discountType', 'discounts', 'shippingCharges',
 			'subTotal', 'totalAmount', 'notes', 'termsConditions',
-			'salesPerson'
+			'salesPerson', 'customFields'
 		];
 		var estimateItems = parseObject.get('estimateItems');
 		if (estimateItems) {

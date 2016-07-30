@@ -75,8 +75,21 @@ function showUserFields() {
 function loadGeneralSettings() {
 	showLoader();
 	$scope.timeZones = {
-		timeZones : ['( PDT ) America/Los_Angeles ( Pacific Standard Time )',
-			'( GMT 5:00 ) Asia/Karachi ( Pakistan Standard Time )'],
+		timeZones : [
+			'( PDT ) America/Los_Angeles ( Pacific Standard Time )',
+			'( GMT 5:00 ) Asia/Karachi ( Pakistan Standard Time )',
+			'( GMT 0:00 ) Dublin, Edinburgh, Lisbon, London ( Greenwich Mean Time )',
+			'( GMT -4:00 ) Canada ( Atlantic Standard Time )',
+			'( GMT -4:00 ) Santiago ( Pacific SA Standard Time )',
+			'( GMT -5:00 ) US & Canada ( Eastern Standard Time )',
+			'( GMT -5:00 ) Indiana (East) ( US Eastern Standard Time )',
+			'( GMT -6:00 ) ( Central America Standard Time )',
+			'( GMT -6:00 ) US & Canada ( Central Standard Time )',
+			'( GMT -7:00 ) US & Canada ( Mountain Standard Time )',
+			'( GMT -8:00 ) US & Canada ( Pacific Standard Time )',
+			'( GMT -9:00 ) ( Alaskan Standard Time )',
+			'( GMT -10:00 ) ( Hawaiian Standard Time )'
+			],
 		selectedTimeZone : ''
 	};
 

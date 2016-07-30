@@ -254,6 +254,31 @@ function prepareEditForm() {
 		$scope.estimateItems.push(obj);
 	}
 
+	var customFields = [];
+	if($scope.prefs.customFields) {
+		$scope.prefs.customFields.forEach(function(field) {
+			if (field.isChecked == 'YES') {
+				customFields.push({
+					name : field.name,
+					value: ""
+				});
+			}
+		});
+	}
+
+	var fields = estimate.entity.customFields;
+	if (fields && fields.length) {
+		customFields.forEach(function(field) {
+			for(var i=0; i < fields.length; ++i) {
+				if (fields[i][field.name]) {
+					field.value = fields[i][field.name];
+					break;
+				}
+			}
+		});
+	}
+	$scope.customFields = customFields;
+
 	reCalculateSubTotal();
 	hideLoader();
 }
@@ -337,6 +362,22 @@ function saveEditedEstimate(params) {
 	estimate.set('salesPerson', $scope.salesPerson);
 	estimate.set('notes', $scope.notes);
 	estimate.set('termsConditions', $scope.terms);
+
+	if($scope.customFields.length) {
+		var fields = [];
+		$scope.customFields.forEach(function(field) {
+			if (field.value) {
+				var obj = {};
+				obj[field.name] = field.value;
+				fields.push(obj);
+			}
+		});
+		if (fields.length) {
+			estimate.set('customFields', fields);
+		} else {
+			estimate.unset('customFields');	
+		}
+	}
 
 	var email = $scope.selectedCustomer.entity.email;
 	if(email)

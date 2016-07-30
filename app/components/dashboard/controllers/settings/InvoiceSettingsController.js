@@ -27,6 +27,18 @@ $('#settingsForm').validate({
 	}
 });
 
+function setValidationRules() {
+	$('.check-name').each(function() {
+		$(this).rules ('remove');
+		$(this).rules('add', {
+			required : true,
+			messages : {
+				required : 'Please provide field name'
+			}
+		});
+	});
+}
+
 function loadPrefs() {
 	showLoader();
 
@@ -153,6 +165,7 @@ $scope.addField = function() {
 }
 
 $scope.save = function() {
+	setValidationRules();
 	if (! $('#settingsForm').valid()) return;
 
 	showLoader();

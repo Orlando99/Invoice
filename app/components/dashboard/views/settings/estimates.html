@@ -42,7 +42,8 @@
       <div class="input-container layout-margin-b" ng-repeat="field in customFields">
         <input type="checkbox" style="box-sizing:initial;" ng-model="field.checked">
         <label class="layout-padding-t-smm">Custom Field {{$index+1}}</label>
-        <input type="text" class="col-45" ng-model="field.name">
+        <input tri:fix-input-name name="name{{$index}}" class="col-45 check-name" type="text"
+          ng-model="field.name">
         <button class="button button-icon button-no-margin" ng-click="removeField($index)">
           <img src="./assets/images/icon-times-round.png" alt=""></button>
       </div>

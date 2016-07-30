@@ -231,7 +231,7 @@ function prepareForm() {
 		})[0];
 		$q.when(customerChangedHelper())
 		.then(function() {
-			console.log($scope.items);
+		//	console.log($scope.items);
 			$scope.addEstimateItem();
 			$scope.estimateItems[0].selectedItem = $scope.items.filter(function(item) {
 				return item.entity.expanseId == expenseId;
@@ -240,6 +240,19 @@ function prepareForm() {
 			$scope.itemChanged(0);
 		});
 	}
+
+	var customFields = [];
+	if($scope.prefs.customFields) {
+		$scope.prefs.customFields.forEach(function(field) {
+			if (field.isChecked == 'YES') {
+				customFields.push({
+					name : field.name,
+					value: ""
+				});
+			}
+		});
+	}
+	$scope.customFields = customFields;
 
 	hideLoader();
 }
@@ -336,7 +349,7 @@ $scope.reCalculateItemAmount = function(index) {
 
 
 $scope.itemChanged = function(index) {
-	console.log('item changed');
+//	console.log('item changed');
 	var itemInfo = $scope.estimateItems[index];
 	itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
 	var tax = itemInfo.selectedItem.tax;
@@ -446,6 +459,19 @@ function saveEstimate() {
 		termsConditions : $scope.terms
 
 	};
+	if($scope.customFields.length) {
+		var fields = [];
+		$scope.customFields.forEach(function(field) {
+			if (field.value) {
+				var obj = {};
+				obj[field.name] = field.value;
+				fields.push(obj);
+			}
+		});
+		if (fields.length) {
+			estimate.customFields = fields;
+		}
+	}
 	var email = $scope.selectedCustomer.entity.email;
 	if(email) estimate.customerEmails = [email];
 
@@ -478,7 +504,7 @@ $scope.save = function() {
 	saveEstimate()
 	.then(function(estimate) {
 		hideLoader();
-		console.log(estimate);
+	//	console.log(estimate);
 		$state.go('dashboard.sales.estimates.all');
 
 	}, function (error) {
@@ -498,7 +524,7 @@ $scope.saveAndSend = function () {
 	saveAndSendEstimate()
 	.then(function(estimate) {
 		hideLoader();
-		console.log(estimate);
+	//	console.log(estimate);
 
 		$state.go('dashboard.sales.estimates.all');
 

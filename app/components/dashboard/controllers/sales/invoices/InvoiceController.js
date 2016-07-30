@@ -167,8 +167,7 @@ function prepareToEditInvoice() {
 		return $q.when(invoiceService.getInvoice(invoiceId));
 	})
 	.then(function (invoice) {
-		console.log(invoice);
-
+	//	console.log(invoice);
 		$scope.invoice = invoice;
 		$scope.invoiceItems = [];
 		$scope.deletedItems = [];
@@ -307,6 +306,31 @@ function prepareEditForm() {
 		$scope.invoiceItems.push(obj);
 	}
 
+	var customFields = [];
+	if($scope.prefs.customFields) {
+		$scope.prefs.customFields.forEach(function(field) {
+			if (field.isChecked == 'YES') {
+				customFields.push({
+					name : field.name,
+					value: ""
+				});
+			}
+		});
+	}
+
+	var fields = invoice.entity.customFields;
+	if (fields && fields.length) {
+		customFields.forEach(function(field) {
+			for(var i=0; i < fields.length; ++i) {
+				if (fields[i][field.name]) {
+					field.value = fields[i][field.name];
+					break;
+				}
+			}
+		});
+	}
+	$scope.customFields = customFields;
+
 	reCalculateSubTotal();
 	hideLoader();
 }
@@ -392,6 +416,22 @@ function saveEditedInvoice(params) {
 	invoice.set('salesPerson', $scope.salesPerson);
 	invoice.set('notes', $scope.notes);
 	invoice.set('terms', $scope.terms);
+
+	if($scope.customFields.length) {
+		var fields = [];
+		$scope.customFields.forEach(function(field) {
+			if (field.value) {
+				var obj = {};
+				obj[field.name] = field.value;
+				fields.push(obj);
+			}
+		});
+		if (fields.length) {
+			invoice.set('customFields', fields);
+		} else {
+			invoice.unset('customFields');	
+		}
+	}
 
 	if($scope.selectedLateFee)
 		invoice.set('lateFee', $scope.selectedLateFee.entity);
