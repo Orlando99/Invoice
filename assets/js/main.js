@@ -33,9 +33,6 @@ $(document).ready(function(){
             $(this).addClass("active").show())
         })
     });
-    $(document).on("click",".button", function() {
-        $(this).find(".submenu").toggleClass("showsub")
-    });
 
     $(document).on('click','.overlay.message',function(){
         $(this).slideUp();

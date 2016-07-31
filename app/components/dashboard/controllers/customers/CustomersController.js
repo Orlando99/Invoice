@@ -1,5 +1,22 @@
 'use strict';
 
+$(document).ready(function(){
+	$(document).on('click','.menu',function(){
+		var self = $(this).children('.submenu')[0];
+		$('.menu .submenu')
+		.toArray()
+		.filter(function(menu){
+			return (menu != self)&&($(menu).hasClass('showsub'));
+		})
+		.forEach(function(menu){
+			$(menu).removeClass('showsub');
+		});
+
+		$(this).children('.submenu').toggleClass('showsub');
+
+	})
+});
+
 invoicesUnlimited.controller('CustomersController',
 	function($scope,$rootScope,$state,$uibModal,userFactory,
 			 contactPersonFactory, customerFactory, coreFactory, 
