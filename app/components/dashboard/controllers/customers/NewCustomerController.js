@@ -5,6 +5,23 @@ invoicesUnlimited.controller('NewCustomerController',
 			 contactPersonFactory,customerFactory,$controller,$q){
 
 	var user = userFactory;
+	
+	if (!user.entity.length) {
+		$state.go('login');
+		return;
+	}
+
+	var mobileOptions = {
+		onKeyPress : function(cep,e,field,options){
+			var masks = ['9 (999) 999-9999','(999) 999-9999'];
+			var mask = cep[0] == "1" ? masks[0] : masks[1];
+			$('#mobilePhone').mask(mask,options);
+		}
+	}
+
+	$('#workPhone').mask('(999) 999-9999');
+	$('#mobilePhone').mask('9 (999) 999-9999',mobileOptions);
+
 	var def = $q.defer();
 
 	var address = {
@@ -21,7 +38,7 @@ invoicesUnlimited.controller('NewCustomerController',
 	var Customer = Parse.Object.extend("Customer");
 
 	$scope.newCustomer = new customerFactory(new Customer());
-	$scope.newCustomer.entity.set('userID',user);
+	$scope.newCustomer.entity.set('userID',user.entity[0]);
 
 	$scope.newCustomer.billingAddress = Object.create(address);
 
@@ -51,6 +68,11 @@ invoicesUnlimited.controller('NewCustomerController',
 
 	$scope.saveCustomer = function(){
 
+		var form = document.getElementById('new-customer-form');
+		if (!form.reportValidity()) return;
+
+		showLoader();
+
 		$scope.newCustomer.entity.billingAddress = JSON.stringify(
 			$scope.newCustomer.billingAddress);
 
@@ -60,7 +82,7 @@ invoicesUnlimited.controller('NewCustomerController',
 		var ContactPerson = Parse.Object.extend('ContactPerson');
 		var contact = new contactPersonFactory(new ContactPerson());
 		var cust = $scope.newCustomer;
-		contact.entity.set('userID',user);
+		contact.entity.set('userID',user.entity[0]);
 		contact.entity.set('defaultPerson',1);
 		var fields = ['email','phone','mobile','lastName','firstName','salutaion'];
 		for (var i in fields) {
@@ -68,16 +90,19 @@ invoicesUnlimited.controller('NewCustomerController',
 			= $scope.newCustomer.entity[fields[i]];
 		}
 		
-		contact.save().then(function() {
+		contact.save()
+		.then(function() {
 			$scope.newCustomer.entity.add('contactPersons',contact.entity);
-			$scope.newCustomer.entity.set('organization',user.get('selectedOrganization'));
-			$scope.newCustomer.save().then(function(){
+			$scope.newCustomer.entity.set('organization',user.entity[0].get('selectedOrganization'));
+			$scope.newCustomer.save()
+			.then(function(){
 			
 				$scope.newCustomer = new customerFactory(new Customer());
-				$scope.newCustomer.entity.set('userID',user);
+				$scope.newCustomer.entity.set('userID',user.entity[0]);
 				
 				$scope.newCustomer.billingAddress = Object.create(address);
 				$scope.newCustomer.shippingAddress = Object.create(address);
+				hideLoader();
 
 				$state.go('dashboard.customers.all');
 			});

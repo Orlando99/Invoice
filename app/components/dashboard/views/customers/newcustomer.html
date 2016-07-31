@@ -2,28 +2,28 @@
     <h3 class="text-uppercase text-weight-normalize text-color-normalize layout-margin-t">New Customer</h3>
     <hr class="layout-margin-tb">
 
-    <form class="col-60 inputs-white">
+    <form class="col-60 inputs-white" id="new-customer-form">
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Primary Contact</label>
         <select class="layout-margin-t col-30 layout-margin-r" ng-model="newCustomer.entity.salutation">
-          <option value="">None</option>
-          <option value="Ms." selected>Ms.</option>
+          <option value="" selected>None</option>
+          <option value="Ms.">Ms.</option>
           <option value="Mr.">Mr.</option>
         </select>
-        <input class="col-20  layout-margin-r" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName">
+        <input class="col-20  layout-margin-r" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName"/>
         <input class="col-20" type="text" placeholder="Last Name" 
-               ng-model="newCustomer.entity.lastName">
+               ng-model="newCustomer.entity.lastName"/>
       </div>
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Company Name</label>
-        <input class="col-75 pull-right " type="text" placeholder="Company Name" ng-model="newCustomer.entity.companyName">
+        <input class="col-75 pull-right" type="text" placeholder="Company Name" ng-model="newCustomer.entity.companyName"/>
       </div>
 
       <div class="input-container input-info input-select-info layout-margin-b">
         <label class="layout-padding-t-sm">Display Name</label>
-        <input class="col-75 pull-right " type="text" placeholder="Display Name" ng-model="newCustomer.entity.displayName">
+        <input class="col-75 pull-right " type="text" placeholder="Display Name" ng-model="newCustomer.entity.displayName" required/>
         <span class="info-icon info-icon-gray"></span>
         <p class="info-tooltip tooltip-dark">
           This is the name that will display for this contact for invoices, estimates, &amp; projects.
@@ -32,13 +32,13 @@
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Phone Number</label>
-        <input type="text" placeholder="Work Phone" ng-model="newCustomer.entity.phone" class="col-35">
-        <input type="text" placeholder="Mobile" ng-model="newCustomer.entity.mobile" class="col-35 pull-right">
+        <input type="text" placeholder="Work Phone" ng-model="newCustomer.entity.phone" class="col-35" id="workPhone"/>
+        <input type="text" placeholder="Mobile" id="mobilePhone" ng-model="newCustomer.entity.mobile" class="col-35 pull-right">
       </div>
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Email Address</label>
-        <input type="email" ng-model="newCustomer.entity.email" class="col-75">
+        <input type="email" placeholder="Email" ng-model="newCustomer.entity.email" class="col-75" required>
       </div>
 
     </form>
@@ -56,7 +56,7 @@
 
     <div class="container tab active" data-name="tab1">
 
-      <form class="col-60 inputs-white">
+      <form class="col-60 inputs-white" id="payment-details-form">
         <div class="input-container layout-margin-b">
           <label class="layout-padding-t">Currency</label>
           <select class="col-75 layout-margin-tb" ng-model="newCustomer.entity.currency">
@@ -85,7 +85,7 @@
     <div class="container tab" data-name="tab2">
       <h3 class="layout-margin-tb text-weight-normalize text-color-normalize">Billing Address</h3>
       <div class="clearfix"></div>
-      <form class="col-60 inputs-white">
+      <form class="col-60 inputs-white" id="address-form">
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">Street</label>
           <input type="text" class="col-75" ng-model="newCustomer.billingAddress.Street">
@@ -152,7 +152,7 @@
         <p class="text-color-normalize text-weight-normalize layout-no-padding layout-no-margin">Notes <br/><span class="text-color-light">(For Internal Use Only)</span></p>
       </div>
 
-      <form class="col-40 inputs-white">
+      <form class="col-40 inputs-white" id="notes-form">
         <div class="input-container">
           <textarea ng-model="newCustomer.entity.notes"></textarea>
         </div>

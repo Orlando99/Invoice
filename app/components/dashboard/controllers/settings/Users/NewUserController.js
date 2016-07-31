@@ -65,6 +65,7 @@ invoicesUnlimited.controller('NewUserController',
 	$scope.save = function(){
 		var form = document.querySelector('.modal-content form');
 		if (!form.checkValidity()) return;
+
 		$scope.user.set('password',$scope.password);
 		$scope.user.set('colorTheme','appBlueColor');
 		$scope.user.set('isTrackUsage',1);
