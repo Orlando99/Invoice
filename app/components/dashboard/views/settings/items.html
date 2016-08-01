@@ -1,10 +1,10 @@
 ﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container hidesm">
-    <h3 class="layout-margin-t section-title float-left">All Items <i class="arrow-down-black"></i></h3>
+    <h3 class="layout-margin-t section-title float-left">All Items <!--<i class="arrow-down-black"></i>--></h3>
     <a href="javascript:" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="new-item" ng-click="clearAddItemFields()">New</a>
     <form class="float-right layout-margin-tb">
-      <input type="text" class="search-bar layout-margin-r" placeholder="Search">
+      <input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.entity.title">
     </form>
 
     <table class="table-border-tb">
@@ -14,7 +14,7 @@
         <td class="text-uppercase text-info layout-padding">Rate</td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr ng-repeat="item in items" ng-dblclick="showItemDetail($index)">
+      <tr ng-repeat="item in items | filter:search" ng-dblclick="showItemDetail($index)">
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.title}}</td>
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.itemDescription}}</td>
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.rate | currency:$:2}}</td>

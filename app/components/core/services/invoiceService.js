@@ -5,6 +5,18 @@ return {
 	test : function() {
 		console.log("working");
 	},
+	checkInvoiceNumAvailable : function(params) {
+		var invoiceTable = Parse.Object.extend('Invoices');
+		var query = new Parse.Query(invoiceTable);
+		query.equalTo('organization', params.organization);
+		query.equalTo('invoiceNumber', params.invoiceNumber);
+		query.select('invoiceNumber');
+
+		return query.first()
+		.then(function(obj) {
+			return obj ? false : true;
+		});
+	},
 	addPayment : function(invoice, params, role) {
 		var Payment = Parse.Object.extend('Payment');
 		var payment = new Payment();

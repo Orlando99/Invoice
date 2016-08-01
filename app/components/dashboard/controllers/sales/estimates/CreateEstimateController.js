@@ -501,15 +501,26 @@ $scope.save = function() {
 	if(! (a && b && c)) return;
 	
 	showLoader();
-	saveEstimate()
+	$q.when(estimateService.checkEstimateNumAvailable({
+		estimateNumber : $scope.estimateNo,
+		organization : organization
+	}))
+	.then(function(avilable) {
+		if (avilable) {
+			return saveEstimate();
+
+		} else {
+			showEstimateNumberError();
+			return Promise.reject('Estimate with this number already exists');
+		}
+	})
 	.then(function(estimate) {
 		hideLoader();
-	//	console.log(estimate);
 		$state.go('dashboard.sales.estimates.all');
 
 	}, function (error) {
 		hideLoader();
-		console.log(error.message);
+		console.log(error);
 	});
 }
 
@@ -521,11 +532,21 @@ $scope.saveAndSend = function () {
 	if(! (a && b && c)) return;
 
 	showLoader();
-	saveAndSendEstimate()
+	$q.when(estimateService.checkEstimateNumAvailable({
+		estimateNumber : $scope.estimateNo,
+		organization : organization
+	}))
+	.then(function(avilable) {
+		if (avilable) {
+			return saveAndSendEstimate();
+
+		} else {
+			showEstimateNumberError();
+			return Promise.reject('Estimate with this number already exists');
+		}
+	})
 	.then(function(estimate) {
 		hideLoader();
-	//	console.log(estimate);
-
 		$state.go('dashboard.sales.estimates.all');
 
 	}, function (error) {
@@ -533,6 +554,13 @@ $scope.saveAndSend = function () {
 		console.log(error);
 	});
 
+}
+
+function showEstimateNumberError () {
+	var validator = $( "#addEstimateForm" ).validate();
+	validator.showErrors({
+		"estimateNumber": "Estimate with this number already exists"
+	});
 }
 
 }]);

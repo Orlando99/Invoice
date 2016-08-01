@@ -8,6 +8,18 @@ return {
 	test : function() {
 		console.log("working");
 	},
+	checkCreditNoteNumAvailable : function(params) {
+		var CreditNote = Parse.Object.extend('CreditNotes');
+		var query = new Parse.Query(CreditNote);
+		query.equalTo('organization', params.organization);
+		query.equalTo('creditNumber', params.creditNumber);
+		query.select('creditNumber');
+
+		return query.first()
+		.then(function(obj) {
+			return obj ? false : true;
+		});
+	},
 	getCustomerCreditNotes : function(customer) {
 		var CreditNote = Parse.Object.extend('CreditNotes');
 		var query = new Parse.Query(CreditNote);

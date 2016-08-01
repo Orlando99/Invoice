@@ -359,6 +359,13 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		});
 	}
 
+	function showInvoiceNumberError () {
+		var validator = $( "#addInvoiceForm" ).validate();
+		validator.showErrors({
+			"invoiceNumber": "Invoice with this number already exists"
+		});
+	}
+
 	$scope.save = function() {
 		setValidationRules();
 		var a = $('#addInvoiceForm').valid();
@@ -367,15 +374,26 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		if(! (a && b && c)) return;
 
 		showLoader();
-		saveInvoice()
+		$q.when(invoiceService.checkInvoiceNumAvailable({
+			invoiceNumber : $scope.invoiceNo,
+			organization : organization
+		}))
+		.then(function(avilable) {
+			if (avilable) {
+				return saveInvoice();
+
+			} else {
+				showInvoiceNumberError();
+				return Promise.reject('Invoice with this number already exists');
+			}
+		})
 		.then(function(invoice) {
 			hideLoader();
-		//	console.log(invoice);
 			$state.go('dashboard.sales.invoices.all');
 
 		}, function (error) {
 			hideLoader();
-			console.log(error.message);
+			console.log(error);
 		});
 	}
 
@@ -387,11 +405,21 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		if(! (a && b && c)) return;
 
 		showLoader();
-		saveAndSendInvoice()
+		$q.when(invoiceService.checkInvoiceNumAvailable({
+			invoiceNumber : $scope.invoiceNo,
+			organization : organization
+		}))
+		.then(function(avilable) {
+			if (avilable) {
+				return saveAndSendInvoice()
+
+			} else {
+				showInvoiceNumberError();
+				return Promise.reject('Invoice with this number already exists');
+			}
+		})
 		.then(function(invoice) {
 			hideLoader();
-		//	console.log(invoice);
-
 			$state.go('dashboard.sales.invoices.all');
 
 		}, function (error) {

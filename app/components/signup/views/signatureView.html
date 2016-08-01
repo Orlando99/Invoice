@@ -6,11 +6,13 @@
 
     <h2 class="text-uppercase text-center">Signature</h2>
 
+  <form id="sigForm">
     <div class="container">
       <label class="float-left input-checkbox-container checkbox-agree layout-margin-b">
         <input type="checkbox">
         <span class="checkbox float-left"></span>
         <p class="float-left">Allow portal access for this contact</p>
+        <label name="sigError"></label>
       </label>
       <div class="clearfix"></div>
 
@@ -20,6 +22,7 @@
       <span></span>
 
     </div>
+  </form>
 
     <div class="container signature-footer">
       <h3>{{fullName}}</h3>

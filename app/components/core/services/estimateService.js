@@ -7,6 +7,18 @@ return {
 	test : function() {
 		console.log("working");
 	},
+	checkEstimateNumAvailable : function(params) {
+		var Estimate = Parse.Object.extend('Estimates');
+		var query = new Parse.Query(Estimate);
+		query.equalTo('organization', params.organization);
+		query.equalTo('estimateNumber', params.estimateNumber);
+		query.select('estimateNumber');
+
+		return query.first()
+		.then(function(obj) {
+			return obj ? false : true;
+		});
+	},
 	getEstimateDetails : function(estimateId) {
 		var Estimate = Parse.Object.extend('Estimates');
 		var query = new Parse.Query(Estimate);

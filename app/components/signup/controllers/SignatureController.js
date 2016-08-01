@@ -34,7 +34,13 @@ invoicesUnlimited.controller('SignatureController',
 	$('.signature').css({height:$(window).height()-$('.sticky-nav').height() - parseInt($('.sticky-nav').css('padding-top'))*2 - 1});
 
 	$scope.submitSignature = function(){
-
+		if ($('#sig').signature("isEmpty")) {
+			$('#sigForm').validate().showErrors({
+				'sigError' : 'Please provide signature'
+			});
+			return;
+		}
+		
 		showLoader();
 
 		var sigData = $('.kbw-signature canvas')[0].toDataURL().replace("data:image/png;base64,","");

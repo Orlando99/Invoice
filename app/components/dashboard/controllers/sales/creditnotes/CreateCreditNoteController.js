@@ -222,15 +222,26 @@ $scope.save = function() {
 	if(! (a && b)) return;
 
 	showLoader();
-	saveCreditNote()
+	$q.when(creditNoteService.checkCreditNoteNumAvailable({
+		creditNumber : $scope.creditNo,
+		organization : organization
+	}))
+	.then(function(avilable) {
+		if (avilable) {
+			return saveCreditNote();
+
+		} else {
+			showCreditNoteNumberError();
+			return Promise.reject('CreditNote with this number already exists');
+		}
+	})
 	.then(function(creditNote) {
 		hideLoader();
-		console.log(creditNote);
 		$state.go('dashboard.sales.creditnotes.all');
 
 	}, function (error) {
 		hideLoader();
-		console.log(error.message);
+		console.log(error);
 	});
 }
 
@@ -241,10 +252,21 @@ $scope.saveAndSend = function () {
 	if(! (a && b)) return;
 
 	showLoader();
-	saveAndSendCreditNote()
+	$q.when(creditNoteService.checkCreditNoteNumAvailable({
+		creditNumber : $scope.creditNo,
+		organization : organization
+	}))
+	.then(function(avilable) {
+		if (avilable) {
+			return saveAndSendCreditNote();
+
+		} else {
+			showCreditNoteNumberError();
+			return Promise.reject('CreditNote with this number already exists');
+		}
+	})
 	.then(function(creditNote) {
 		hideLoader();
-		console.log(creditNote);
 		$state.go('dashboard.sales.creditnotes.all');
 
 	}, function (error) {
@@ -258,6 +280,12 @@ $scope.cancel = function() {
 	$state.go('dashboard.sales.creditnotes.all');
 }
 
+function showCreditNoteNumberError () {
+	var validator = $( "#addCreditNoteForm" ).validate();
+	validator.showErrors({
+		"creditNumber": "CreditNote with this number already exists"
+	});
+}
 
 function customerChangedHelper() {
 	return $q.when(expenseService.getCustomerExpenses({
