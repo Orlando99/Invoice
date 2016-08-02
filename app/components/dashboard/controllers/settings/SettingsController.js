@@ -140,6 +140,10 @@ function loadGeneralSettings() {
 		var format = prefs.get('dateFormat');
 		var separator = prefs.get('fieldSeparator');
 
+		// ios version not saving date format,
+		// so did this to make web version work
+		format = format.replace(/[.,-//]/g, separator);
+
 		$scope.timeZones.selectedTimeZone =
 		$scope.timeZones.timeZones.filter(function(z) {
 			return z == timeZone;
