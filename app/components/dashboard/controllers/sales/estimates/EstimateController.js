@@ -30,7 +30,11 @@ var isGoTo = {
 	}
 };
 
-CheckUseCase();
+userFactory.getField('dateFormat')
+.then(function(obj) {
+	$scope.dateFormat = obj;
+	CheckUseCase();
+});
 
 $('#editEstimateForm').validate({
 	rules: {
@@ -651,6 +655,7 @@ function listEstimates() {
 	showLoader();
 	$q.when(estimateService.listEstimates(user))
 	.then(function(res) {
+		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		res.forEach(function(obj) {
 			// Draft, Sent, Invoiced, Accepted, Declined
 			switch (obj.entity.status) {
@@ -670,7 +675,7 @@ function listEstimates() {
 			}
 
 			obj.estimateDate = formatDate(
-				obj.entity.estimateDate, "MM/DD/YYYY");
+				obj.entity.estimateDate, dateFormat);
 			obj.totalAmount = currencyFilter(obj.entity.totalAmount, '$', 2);
 		});
 

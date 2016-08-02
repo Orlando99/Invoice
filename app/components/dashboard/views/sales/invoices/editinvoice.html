@@ -23,7 +23,7 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Invoice Date &amp; Terms</label>
-        <input name="invoiceCreateDate" class="col-35" type="text" uib-datepicker-popup="MM-dd-yyyy"
+        <input name="invoiceCreateDate" class="col-35" type="text" uib-datepicker-popup="{{dateFormat}}"
           ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)" ng-change="calculateDueDate()" readonly>
         <select class="col-35 pull-right" ng-change="paymentTermsChanged()"
           ng-options="term.name for term in paymentTerms.terms track by term.value"
@@ -34,7 +34,7 @@
       <div class="input-container col-60 layout-margin-b" ng-show="hasDueDate">
         <label class="layout-padding-t-sm">Expiration Date</label>
         <input name="invoiceDueDate" class="col-75" type="text" ng-model="dueDate" is-open="openPicker2"
-          uib-datepicker-popup="MM-dd-yyyy" ng-click="openDatePicker(2)" readonly>
+          uib-datepicker-popup="{{dateFormat}}" ng-click="openDatePicker(2)" readonly>
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Late Fee</label>

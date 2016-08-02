@@ -28,7 +28,7 @@
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Date Separator</label>
-        <select class="col-75" ng-model="fieldSeparators.selectedSeparator">
+        <select class="col-75" ng-model="fieldSeparators.selectedSeparator" ng-change="dateSeperatorChanged()">
           <option value="" disabled>Select Date Separator</option>
           <option ng-repeat="separator in fieldSeparators.separators">{{separator}}</option>
         </select>

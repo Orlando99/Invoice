@@ -271,6 +271,15 @@ function calculateTax(amount, tax) {
   return res;
 }
 
+function isEmpty(obj) {
+  for(var key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function isNaturalNumber(x) {
   return Number.isInteger(x) && x > 0;
 }

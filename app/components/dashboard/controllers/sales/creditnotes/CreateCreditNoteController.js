@@ -122,6 +122,12 @@ function prepareToCreateCreditNote() {
 	});
 	promises.push(p);
 
+	p = userFactory.getField('dateFormat')
+	.then(function(obj) {
+		$scope.dateFormat = obj;
+	});
+	promises.push(p);
+
 	$q.all(promises).then(function() {
 		prepareForm();
 		//--

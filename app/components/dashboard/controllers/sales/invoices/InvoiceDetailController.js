@@ -16,7 +16,11 @@ var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
-showInvoiceDetail();
+userFactory.getField('dateFormat')
+.then(function(obj) {
+	$scope.dateFormat = obj;
+	showInvoiceDetail();
+});
 
 function showInvoiceDetail() {
 	var invoiceId = $state.params.invoiceId;
@@ -26,13 +30,14 @@ function showInvoiceDetail() {
 	$q.when(invoiceService.getInvoiceDetails(invoiceId))
 	.then(function(invoice) {
 		console.log(invoice);
+		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		$scope.invoice = invoice;
 		$scope.invoiceNo = invoice.entity.invoiceNumber;
 		$scope.comments = invoice.comments;
 
 		if(invoice.payments) {
 			invoice.payments.forEach(function(payment) {
-				payment.date = formatDate(payment.entity.date, "MM/DD/YYYY");
+				payment.date = formatDate(payment.entity.date, dateFormat);
 				payment.amount = currencyFilter(payment.entity.amount, '$', 2);
 			});
 			$scope.payments = invoice.payments;

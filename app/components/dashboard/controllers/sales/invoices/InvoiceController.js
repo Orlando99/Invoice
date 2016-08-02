@@ -32,7 +32,11 @@ var isGoTo = {
 	}
 };
 
-CheckUseCase();
+userFactory.getField('dateFormat')
+.then(function(obj) {
+	$scope.dateFormat = obj;
+	CheckUseCase();
+});
 
 $.validator.addMethod(
 	"notBackDate",
@@ -760,6 +764,7 @@ function ListInvoices() {
 	showLoader();
 	$q.when(invoiceService.listInvoices(user))
 	.then(function(res) {
+		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		res.forEach(function(obj) {
 			switch (obj.entity.status) {
 			case "Unpaid":
@@ -776,9 +781,9 @@ function ListInvoices() {
 			}
 
 			obj.invoiceDate = formatDate(
-				obj.entity.invoiceDate, "MM/DD/YYYY");
+				obj.entity.invoiceDate, dateFormat); // "MM/DD/YYYY"
 			obj.dueDate = formatDate(
-				obj.entity.dueDate, "MM/DD/YYYY");
+				obj.entity.dueDate, dateFormat);
 			obj.balanceDue = currencyFilter(obj.entity.balanceDue, '$', 2);
 			obj.total = currencyFilter(obj.entity.total, '$', 2);
 		});

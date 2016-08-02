@@ -30,12 +30,15 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		return user.logout().then(function(){
 			resetColorTheme();
 			businessFactory.entity = [];
+			user.commonData = {};
 			$state.go('login');
 		});
 	};
 
-	$q
-	.all([businessFactory.load()])
+	var promises = [];
+	promises.push(businessFactory.load());
+
+	$q.all(promises)
 	.then(function(obj){
 		if (obj.length && obj[0]) {
 			$scope.businessInfo = obj[0].entity[0];

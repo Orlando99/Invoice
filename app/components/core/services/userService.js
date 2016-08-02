@@ -8,7 +8,8 @@ invoicesUnlimited.factory('userFactory',function(appFields){
 	};
 
 	var User = {
-		entity : []
+		entity : [],
+		commonData : {}
 	};
 
 	if (Parse.User.current()) {
@@ -19,7 +20,30 @@ invoicesUnlimited.factory('userFactory',function(appFields){
 		User.entity.push(user);
 	}
 	
+	function loadCommonData() {
+		if(! User.entity.length)
+			return Promise.reject('');
+
+		return User.entity[0].get("organizations")[0].fetch()
+		.then(function(org) {
+			User.commonData.dateFormat = org.get('dateFormat');
+			return Promise.resolve('');
+		});
+	}
+
 	function setUserFields(){
+
+		User.getField = function(fieldName) {
+			if (! isEmpty(User.commonData)) {
+				return Promise.resolve(User.commonData[fieldName]);
+
+			} else {
+				console.log('data loaded');
+				return loadCommonData().then(function() {
+					return User.commonData[fieldName];
+				});
+			}
+		}
 
 		User.login = function(params,successCallback,errorCallback){
 			if (User.entity.length &&

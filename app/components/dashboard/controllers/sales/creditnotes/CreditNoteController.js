@@ -30,7 +30,11 @@ var isGoTo = {
 	}
 };
 
-CheckUseCase();
+userFactory.getField('dateFormat')
+.then(function(obj) {
+	$scope.dateFormat = obj;
+	CheckUseCase();
+});
 
 $('#editCreditNoteForm').validate({
 	rules: {
@@ -523,6 +527,7 @@ function listCreditNotes() {
 	showLoader();
 	$q.when(creditNoteService.listCreditNotes(user))
 	.then(function(res) {
+		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		res.forEach(function(obj) {
 			switch (obj.entity.status) {
 			case "Open":
@@ -536,7 +541,7 @@ function listCreditNotes() {
 			}
 
 			obj.creditNoteDate = formatDate(
-				obj.entity.creditNoteDate, "MM/DD/YYYY");
+				obj.entity.creditNoteDate, dateFormat);
 			obj.total = currencyFilter(obj.entity.total, '$', 2);
 			obj.remainingCredits = currencyFilter(obj.entity.remainingCredits, '$', 2);
 		});

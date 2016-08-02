@@ -43,18 +43,18 @@ function CheckUseCase(stateName) {
 		stateName = $state.current.name;
 
 	if (isGoTo.users(stateName)) {
-		console.log('its in users')
+	//	console.log('its in users')
 		showUserFields();
 
 	} else if (isGoTo.currencies(stateName)) {
 		console.log('its in currency');
 
 	} else if (isGoTo.templates(stateName)) {
-		console.log('select invoice template');
+	//	console.log('select invoice template');
 		loadInvoiceTemplates();
 
 	} else if (isGoTo.general(stateName)) {
-		console.log('in general preferences')
+	//	console.log('in general preferences')
 		loadGeneralSettings();
 	}
 
@@ -72,6 +72,29 @@ function showUserFields() {
 }
 
 //------ General Preferences Settings ------
+
+function dateFormatHelper (seperator) {
+	var dateLiterals = [
+		['dd','MM','yy'], ['MM','dd','yy'],
+		['yy','MM','dd'], ['dd','MM','yyyy'],
+		['MM','dd','yyyy'], ['yyyy','MM','dd'],
+	];
+
+	var fixedFormats = [
+		'dd MMM yyyy', 'EEE, MMMM dd, yyyy',
+		'EEEE, MMMM dd, yyyy', 'MMM dd, yyyy',
+		'MMMM dd, yyyy', 'yyyy MM dd'
+	];
+
+	var finalFormats = [];
+	dateLiterals.forEach(function(literal) {
+		finalFormats.push(literal.join(seperator));
+	});
+
+	finalFormats = finalFormats.concat(fixedFormats);
+	return finalFormats;
+}
+
 function loadGeneralSettings() {
 	showLoader();
 	$scope.timeZones = {
@@ -101,11 +124,7 @@ function loadGeneralSettings() {
 	};
 
 	$scope.dateFormats = {
-		formats : ['dd/MM/yy', 'MM/dd/yy', 'yy/MM/dd',
-			'dd/MM/yyyy', 'MM/dd/yyyy', 'yyyy/MM/dd',
-			'dd MMM yyyy', 'EEE, MMMM dd, yyyy',
-			'EEEE, MMMM dd, yyyy', 'MMM dd, yyyy',
-			'MMMM dd, yyyy', 'yyyy MM dd'],
+		formats : [],
 		selectedFormat : ''
 	};
 
@@ -131,14 +150,17 @@ function loadGeneralSettings() {
 			return m == month;
 		})[0];
 
-		$scope.dateFormats.selectedFormat =
-		$scope.dateFormats.formats.filter(function(f) {
-			return f == format;
-		})[0];
-
 		$scope.fieldSeparators.selectedSeparator =
 		$scope.fieldSeparators.separators.filter(function(s) {
 			return s == separator;
+		})[0];
+
+		$scope.dateFormats.formats = dateFormatHelper(
+			$scope.fieldSeparators.selectedSeparator);
+
+		$scope.dateFormats.selectedFormat =
+		$scope.dateFormats.formats.filter(function(f) {
+			return f == format;
 		})[0];
 
 		hideLoader();
@@ -149,6 +171,18 @@ function loadGeneralSettings() {
 	});
 }
 
+$scope.dateSeperatorChanged = function() {
+ 	var index = $scope.dateFormats.formats.indexOf(
+ 		$scope.dateFormats.selectedFormat);
+
+	$scope.dateFormats.formats = dateFormatHelper(
+		$scope.fieldSeparators.selectedSeparator);
+
+	$scope.dateFormats.selectedFormat =
+		$scope.dateFormats.formats[index];
+
+}
+
 $scope.setDefaultPrefs = function() {
 	showLoader();
 	organization.set('timeZone', $scope.timeZones.selectedTimeZone);
@@ -157,6 +191,7 @@ $scope.setDefaultPrefs = function() {
 	organization.set('fieldSeparator', $scope.fieldSeparators.selectedSeparator);
 
 	organization.save().then(function() {
+		userFactory.commonData = {};
 		hideLoader();
 		console.log('general preferences are saved.')
 
@@ -204,7 +239,7 @@ $scope.setDefaultTemplate = function(index) {
 	user.set('defaultTemplate', $scope.templates[index].entity);
 	user.save().then(function() {
 		hideLoader();
-		console.log('default template selected');
+	//	console.log('default template selected');
 
 	}, function(error) {
 		hideLoader();
