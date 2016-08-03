@@ -7,7 +7,7 @@
 		<title>Home | InvoicesUnlimited</title>
 		<meta name="keywords" content=""/>
 		<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
-<!--	<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"> -->
+	<!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
 
 		<link rel="stylesheet" href="./assets/css/bootstrap_dropdown.css"/>
 		<link rel="stylesheet" href="./assets/css/main.css"/>
@@ -36,6 +36,20 @@
 	</div>
 
 	<div id="view" ui-view></div>
+
+	<script type="text/ng-template" id="template/datepickerPopUp/customPopUp.html">
+
+	<ul class="uib-datepicker-popup dropdown-menu uib-position-measure" dropdown-nested ng-if="isOpen" ng-keydown="keydown($event)" ng-click="$event.stopPropagation()">
+	  <li ng-transclude></li>
+	  <li ng-if="showButtonBar" class="uib-button-bar">
+	    <span class="btn-group pull-left">
+	      <button type="button" class="btn btn-sm btn-info uib-datepicker-current" ng-click="select('today', $event)" ng-disabled="isDisabled('today')">{{ getText('current') }}</button>
+	    </span>
+	    <button type="button" class="btn btn-sm btn-success pull-right uib-close" ng-click="close($event)">{{ getText('close') }}</button>
+	</li>
+	</ul>
+
+	</script>
 
 	<script type="text/ng-template" id="modal-contact">
     
@@ -134,7 +148,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.js"></script>
 	<!--<script src="./assets/js/ui-bootstrap.min.js"></script>
 	<script src="./assets/js/ui-bootstrap-tpls.min.js"></script>-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>

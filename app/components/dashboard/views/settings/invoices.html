@@ -104,6 +104,7 @@
       <div class="clearfix"></div>
       <br>
       <h3 class="text-uppercase text-weight-normalize layout-margin-tb">Late Fee</h3><br>
+      <!--
       <div class="input-container input-radio-container layout-margin-b">
         <label class="layout-padding-t-sm col-10">
           <span class="layout-margin-r">
@@ -120,11 +121,12 @@
           No
         </label>
       </div>
+      -->
       <a class="modal-opener" data-toggle="add-latefee" ng-click="prepareAddLateFee()"
         href="javascript:">+ Add New</a>
       <div class="clearfix"></div>
       
-      <div ng-show="showLateFee == 'yes'">
+      <div> <!--ng-show="showLateFee == 'yes'"-->
       <br/>
       <select class="col-45"
         ng-options="fee for fee in feeList" ng-model="abc">

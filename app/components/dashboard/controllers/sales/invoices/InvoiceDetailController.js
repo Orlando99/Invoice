@@ -253,6 +253,7 @@ $scope.openDatePicker = function(n) {
 $scope.prepareAddPayment = function() {
 	$scope.paymentDate = new Date();
 	$scope.paymentAmount = $scope.invoice.entity.balanceDue;
+	$scope.paymentRef = '' + Math.random().toString(10).substr(2,6);
 	$scope.paymentModes = ['Check', 'Cash', 'Bank Transfer', 'Bank Remittance'];
 	$scope.selectedPaymentMode = 'Cash';
 
@@ -289,6 +290,11 @@ $scope.addPayment = function() {
 	invoiceObj.unset('invoiceReceipt');
 	invoiceObj.increment('paymentMade', payment.amount);
 	invoiceObj.increment('balanceDue', -payment.amount);
+
+	if(invoiceObj.balanceDue <= 0)
+		invoiceObj.set('status', 'Paid');
+	else
+		invoiceObj.set('status', 'Partial Paid');
 
 	var promise = $q.when(coreFactory.getUserRole(user))
 	promise.then(function(role) {
@@ -337,7 +343,6 @@ $scope.refundPayment = function() {
 
 	$q.all(promises)
 	.then(function() {
-		console.log('refunded');
 		hideLoader();
 		$state.reload();
 	});
