@@ -11,7 +11,7 @@ if(! userFactory.entity.length) {
 
 function Payment (parseObject) {
 	if (!parseObject) return undefined;
-	var paymentFields = ['date', 'reference', 'mode', 'amount', 'notes'];
+	var paymentFields = ['date', 'reference', 'mode', 'amount', 'notes', 'deleted'];
 
 	setObjectOperations({
 		object 		: parseObject,

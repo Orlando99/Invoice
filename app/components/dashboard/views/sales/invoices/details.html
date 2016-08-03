@@ -132,17 +132,20 @@
         </div>
       </div>
       <div class="clearfix"></div>
-      <div class="tbody no-border inputs-white" ng-repeat="payment in payments">
+      <div class="tbody no-border inputs-white modal-opener" ng-repeat="payment in payments" data-toggle="refund-payment"
+        ng-click="showPaymentDetail($index)">
 
         <div class="table-row row-border">
           <div class="col-15">
             <p class="layout-margin-tb">{{payment.date}}</p>
           </div>
           <div class="col-15 layout-padding-l">
-            <a class="layout-margin-tb" href="">{{$index+1}}</a>
+            <label class="layout-margin-tb text-color-light">{{$index+1}}</label>
           </div>
           <div class="col-20 layout-padding-l">
-            <p>{{payment.entity.reference}}</p>
+            <p>{{payment.entity.reference}} <br/>
+              <label ng-show="payment.entity.deleted" class="col-20 text-danger">REFUNDED</label>
+            </p>
           </div>
           <div class="col-25 layout-padding-l">
             <h3 class="text-weight-normalize layout-margin-tb text-color-light">{{payment.entity.mode}}</h3>
@@ -254,7 +257,7 @@
         <form id="paymentForm" class="inputs-white layout-margin-t float-left">
           <div class="input-container layout-margin-b">
             <label>Date</label>
-            <input name="paymentDate" class="col-75" type="text" uib-datepicker-popup="MM-dd-yyyy"
+            <input name="paymentDate" class="col-75" type="text" uib-datepicker-popup="{{dateFormat}}"
               ng-model="paymentDate" is-open="openPicker1" ng-click="openDatePicker(1)" readonly>
           </div>
           <div class="input-container layout-margin-b">
@@ -286,4 +289,45 @@
       <button class="button button-small button-info text-uppercase" ng-click="addPayment()">Save</button>
     </div>
   </div>
+
+  <div class="popup-modal refund-payment hidesm">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Payment Details</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="paymentForm" class="inputs-white layout-margin-t float-left">
+          <div class="input-container layout-margin-b">
+            <label>Date</label>
+            <label>{{selectedPayment.date}}</label>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Amount</label>
+            <label>{{selectedPayment.amount}}</label>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Reference #</label>
+            <label>{{selectedPayment.entity.reference}}</label>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Payment Mode</label>
+            <label>{{selectedPayment.entity.mode}}</label>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Notes</label>
+            <label>{{selectedPayment.entity.notes}}</label>
+          </div>
+        </form>
+        <div class="clearfix"></div>
+        <br/>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase" ng-disabled="selectedPayment.disableRefund"
+        ng-click="refundPayment()">Refund</button>
+    </div>
+  </div>
+
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

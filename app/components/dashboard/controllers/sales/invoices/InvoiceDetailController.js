@@ -252,6 +252,7 @@ $scope.openDatePicker = function(n) {
 
 $scope.prepareAddPayment = function() {
 	$scope.paymentDate = new Date();
+	$scope.paymentAmount = $scope.invoice.entity.balanceDue;
 	$scope.paymentModes = ['Check', 'Cash', 'Bank Transfer', 'Bank Remittance'];
 	$scope.selectedPaymentMode = 'Cash';
 
@@ -294,6 +295,49 @@ $scope.addPayment = function() {
 		return $q.when(invoiceService.addPayment(invoiceObj, payment, role));
 	})
 	.then(function() {
+		hideLoader();
+		$state.reload();
+	});
+}
+
+$scope.showPaymentDetail = function(index) {
+	$scope.selectedPayment = $scope.payments[index];
+	var payment = $scope.selectedPayment.entity;
+	var mode = payment.mode;
+	var refunded = payment.deleted
+
+	if ( !refunded && (mode == 'Cash' || mode == 'Check') )
+		$scope.selectedPayment.disableRefund = false;
+	else
+		$scope.selectedPayment.disableRefund = true;
+}
+
+$scope.refundPayment = function() {
+	var mode = $scope.selectedPayment.entity.mode;
+	var refunded = $scope.selectedPayment.entity.deleted;
+	if ( refunded || (mode != 'Cash' && mode != 'Check') ) return;
+
+	showLoader();
+	var payment = $scope.selectedPayment.entity;
+	payment.set('deleted', true);
+
+	var invoiceObj = $scope.invoice.entity;
+	invoiceObj.unset('invoiceReceipt');
+	invoiceObj.increment('paymentMade', -payment.amount);
+	invoiceObj.increment('balanceDue', payment.amount);
+
+	if (invoiceObj.paymentMade <= 0)
+		invoiceObj.set('status', 'Refunded');
+	else
+		invoiceObj.set('status', 'Partial Refunded');
+
+	var promises = [];
+	promises.push(payment.save());
+	promises.push(invoiceObj.save());
+
+	$q.all(promises)
+	.then(function() {
+		console.log('refunded');
 		hideLoader();
 		$state.reload();
 	});
