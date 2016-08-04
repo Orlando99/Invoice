@@ -26,7 +26,7 @@ $('#addCreditNoteForm').validate({
 	messages: {
 		customer : 'Please select a customer',
 		creditNumber : 'Please enter credit note number',
-		creditCreateDate : 'Please provide credit note create date'
+		creditCreateDate : 'Please provide credit note Create date'
 	}
 });
 
@@ -44,7 +44,7 @@ function setValidationRules() {
 		$(this).rules('add', {
 			required : true,
 			messages : {
-				required : 'its required'
+				required : 'Please select an item'
 			}
 		});
 	});
@@ -56,9 +56,9 @@ function setValidationRules() {
 			min : 1,
 			digits : true,
 			messages : {
-				required : 'its required',
-				min : '>= 1',
-				digits : 'must be integer'
+				required : 'Please provide item quantity',
+				min : 'quantity should be >= 1',
+				digits : 'quantity must be integer'
 			}
 		});
 	});
@@ -67,11 +67,11 @@ function setValidationRules() {
 		$(this).rules ('remove');
 		$(this).rules('add', {
 			required : true,
-			min : 0.01,
+			min : 0,
 			number : true,
 			messages : {
-				required : 'its required',
-				min : '>= 0.01'
+				required : 'Please provide item rate',
+				min : 'rate should be >= 0'
 			}
 		});
 	});
@@ -225,7 +225,10 @@ $scope.save = function() {
 	setValidationRules();
 	var a = $('#addCreditNoteForm').valid();
 	var b = $('#itemInfoForm').valid();
-	if(! (a && b)) return;
+	if(! (a && b)) {
+		scrollTop();
+		return;
+	}
 
 	showLoader();
 	$q.when(creditNoteService.checkCreditNoteNumAvailable({
@@ -238,6 +241,7 @@ $scope.save = function() {
 
 		} else {
 			showCreditNoteNumberError();
+			scrollTop();
 			return Promise.reject('CreditNote with this number already exists');
 		}
 	})
@@ -255,7 +259,10 @@ $scope.saveAndSend = function () {
 	setValidationRules();
 	var a = $('#addCreditNoteForm').valid();
 	var b = $('#itemInfoForm').valid();
-	if(! (a && b)) return;
+	if(! (a && b)) {
+		scrollTop();
+		return;
+	}
 
 	showLoader();
 	$q.when(creditNoteService.checkCreditNoteNumAvailable({
@@ -268,6 +275,7 @@ $scope.saveAndSend = function () {
 
 		} else {
 			showCreditNoteNumberError();
+			scrollTop();
 			return Promise.reject('CreditNote with this number already exists');
 		}
 	})

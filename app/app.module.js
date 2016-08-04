@@ -280,6 +280,12 @@ function isEmpty(obj) {
   return true;
 }
 
+function scrollTop() {
+  $("html, body").animate({
+    scrollTop: 0
+  }, 400);
+}
+
 function isNaturalNumber(x) {
   return Number.isInteger(x) && x > 0;
 }

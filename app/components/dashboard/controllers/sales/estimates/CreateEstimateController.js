@@ -21,14 +21,12 @@ $('#addEstimateForm').validate({
 	rules: {
 		customer : 'required',
 		estimateNumber : 'required',
-		estimateCreateDate : 'required',
-		estimateDueDate : 'required'
+		estimateCreateDate : 'required'
 	},
 	messages: {
 		customer : 'Please select a customer',
 		estimateNumber : 'Please enter estimate number',
-		estimateCreateDate : 'Please provide estimate create date',
-		estimateDueDate : 'Please provide estimate due date'
+		estimateCreateDate : 'Please provide estimate Create date'
 	}
 });
 
@@ -62,7 +60,7 @@ function setValidationRules() {
 		$(this).rules('add', {
 			required : true,
 			messages : {
-				required : 'its required'
+				required : 'Please select an item'
 			}
 		});
 	});
@@ -74,9 +72,9 @@ function setValidationRules() {
 			min : 1,
 			digits : true,
 			messages : {
-				required : 'its required',
-				min : '>= 1',
-				digits : 'must be integer'
+				required : 'Please provide item quantity',
+				min : 'quantity should be >= 1',
+				digits : 'quantity must be integer'
 			}
 		});
 	});
@@ -85,11 +83,11 @@ function setValidationRules() {
 		$(this).rules ('remove');
 		$(this).rules('add', {
 			required : true,
-			min : 0.01,
+			min : 0,
 			number : true,
 			messages : {
-				required : 'its required',
-				min : '>= 0.01'
+				required : 'Please provide item rate',
+				min : 'rate should be >= 0'
 			}
 		});
 	});
@@ -101,8 +99,8 @@ function setValidationRules() {
 			max : 100,
 			number : true,
 			messages : {
-				min : '>= 0.01',
-				max : '<= 100'
+				min : 'discount should be >= 0',
+				max : 'discount should be <= 100'
 			}
 		});
 	});
@@ -504,7 +502,10 @@ $scope.save = function() {
 	var a = $('#addEstimateForm').valid();
 	var b = $('#extrasForm').valid();
 	var c = $('#itemInfoForm').valid();
-	if(! (a && b && c)) return;
+	if(! (a && b && c)) {
+		scrollTop();
+		return;
+	}
 	
 	showLoader();
 	$q.when(estimateService.checkEstimateNumAvailable({
@@ -517,6 +518,7 @@ $scope.save = function() {
 
 		} else {
 			showEstimateNumberError();
+			scrollTop();
 			return Promise.reject('Estimate with this number already exists');
 		}
 	})
@@ -535,7 +537,10 @@ $scope.saveAndSend = function () {
 	var a = $('#addEstimateForm').valid();
 	var b = $('#extrasForm').valid();
 	var c = $('#itemInfoForm').valid();
-	if(! (a && b && c)) return;
+	if(! (a && b && c)) {
+		scrollTop();
+		return;
+	}
 
 	showLoader();
 	$q.when(estimateService.checkEstimateNumAvailable({
@@ -548,6 +553,7 @@ $scope.saveAndSend = function () {
 
 		} else {
 			showEstimateNumberError();
+			scrollTop();
 			return Promise.reject('Estimate with this number already exists');
 		}
 	})

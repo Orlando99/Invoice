@@ -39,10 +39,10 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		messages: {
 			customer : 'Please select a customer',
 			invoiceNumber : 'Please enter invoice number',
-			invoiceCreateDate : 'Please provide invoice create date',
+			invoiceCreateDate : 'Please provide invoice Create date',
 			invoiceDueDate : {
-				required : 'Please provide invoice due date',
-				notBackDate : 'Expiration date can not be before Create date'
+				required : 'Please provide invoice Due date',
+				notBackDate : 'Due date can not be before Create date'
 			}
 		}
 	});
@@ -377,7 +377,10 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		var a = $('#addInvoiceForm').valid();
 		var b = $('#extrasForm').valid();
 		var c = $('#itemInfoForm').valid();
-		if(! (a && b && c)) return;
+		if(! (a && b && c)) {
+			scrollTop();
+			return;
+		}
 
 		showLoader();
 		$q.when(invoiceService.checkInvoiceNumAvailable({
@@ -390,6 +393,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 			} else {
 				showInvoiceNumberError();
+				scrollTop();
 				return Promise.reject('Invoice with this number already exists');
 			}
 		})
@@ -408,7 +412,10 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		var a = $('#addInvoiceForm').valid();
 		var b = $('#extrasForm').valid();
 		var c = $('#itemInfoForm').valid();
-		if(! (a && b && c)) return;
+		if(! (a && b && c)) {
+			scrollTop();
+			return;
+		}
 
 		showLoader();
 		$q.when(invoiceService.checkInvoiceNumAvailable({
@@ -421,6 +428,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 			} else {
 				showInvoiceNumberError();
+				scrollTop();
 				return Promise.reject('Invoice with this number already exists');
 			}
 		})

@@ -58,10 +58,10 @@ $('#editInvoiceForm').validate({
 	messages: {
 		customer : 'Please select a customer',
 		invoiceNumber : 'Please enter invoice number',
-		invoiceCreateDate : 'Please provide invoice create date',
+		invoiceCreateDate : 'Please provide invoice Create date',
 		invoiceDueDate : {
-			required : 'Please provide invoice due date',
-			notBackDate : 'Expiration date can not be before Create date'
+			required : 'Please provide invoice Due date',
+			notBackDate : 'Due date can not be before Create date'
 		}
 	}
 });
@@ -484,7 +484,10 @@ $scope.save = function() {
 	var a = $('#editInvoiceForm').valid();
 	var b = $('#extrasForm').valid();
 	var c = $('#itemInfoForm').valid();
-	if(! (a && b && c)) return;
+	if(! (a && b && c)) {
+		scrollTop();
+		return;
+	}
 
 	showLoader();
 	useAllIds();
@@ -505,7 +508,10 @@ $scope.saveAndSend = function () {
 	var a = $('#editInvoiceForm').valid();
 	var b = $('#extrasForm').valid();
 	var c = $('#itemInfoForm').valid();
-	if(! (a && b && c)) return;
+	if(! (a && b && c)) {
+		scrollTop();
+		return;
+	}
 
 	showLoader();
 	useAllIds();
