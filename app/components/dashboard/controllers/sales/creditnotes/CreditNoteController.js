@@ -237,14 +237,27 @@ function saveAndSendEditedCreditNote () {
 	});
 }
 
-$scope.save = function() {
+function validateForms () {
 	setValidationRules();
 	var a = $('#editCreditNoteForm').valid();
 	var b = $('#itemInfoForm').valid();
-	if(! (a && b)) {
-		scrollTop();
-		return;
+	
+	if (a && b) return true;
+	else {
+		var v = undefined;
+		if (!a)
+			v = $('#editCreditNoteForm').validate();
+		else if (!b)
+			v = $('#itemInfoForm').validate();
+
+		var offset = $(v.errorList[0].element).offset().top - 30;
+		scrollToOffset(offset);
+		return false;
 	}
+}
+
+$scope.save = function() {
+	if (! validateForms())	return;
 
 	showLoader();
 	useAllIds();
@@ -261,13 +274,7 @@ $scope.save = function() {
 }
 
 $scope.saveAndSend = function () {
-	setValidationRules();
-	var a = $('#editCreditNoteForm').valid();
-	var b = $('#itemInfoForm').valid();
-	if(! (a && b)) {
-		scrollTop();
-		return;
-	}
+	if (! validateForms())	return;
 
 	showLoader();
 	useAllIds();

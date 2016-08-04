@@ -49,7 +49,12 @@ function loadCreditNotePrefs() {
 }
 
 $scope.save = function() {
-	if (! $('#settingsForm').valid()) return;
+	if (! $('#settingsForm').valid()) {
+		var v = $('#settingsForm').validate();
+		var offset = $(v.errorList[0].element).offset().top - 30;
+		scrollToOffset(offset);
+		return;	
+	}
 
 	showLoader();
 	var prefs = {

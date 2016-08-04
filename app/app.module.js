@@ -280,9 +280,10 @@ function isEmpty(obj) {
   return true;
 }
 
-function scrollTop() {
+function scrollToOffset(offset) {
+  var offset = typeof offset !== 'undefined' ? offset : 0;
   $("html, body").animate({
-    scrollTop: 0
+    scrollTop: offset
   }, 400);
 }
 

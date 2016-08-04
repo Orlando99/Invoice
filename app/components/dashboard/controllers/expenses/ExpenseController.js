@@ -249,7 +249,12 @@ function listExpenses() {
 }
 
 $scope.saveNewExpense = function() {
-	if(! $('#addExpenseForm').valid()) return;
+	if(! $('#addExpenseForm').valid()) {
+		var v = $('#addExpenseForm').validate();
+		var offset = $(v.errorList[0].element).offset().top - 30;
+		scrollToOffset(offset);
+		return;	
+	}
 
 	showLoader();
 	var expense = {
@@ -280,7 +285,12 @@ $scope.saveNewExpense = function() {
 }
 
 $scope.saveEditedExpense = function() {
-	if(! $('#editExpenseForm').valid()) return;
+	if(! $('#editExpenseForm').valid()) {
+		var v = $('#editExpenseForm').validate();
+		var offset = $(v.errorList[0].element).offset().top - 30;
+		scrollToOffset(offset);
+		return;	
+	}
 
 	showLoader();
 	var expense = $scope.expense;

@@ -34,11 +34,11 @@ $('#extrasForm').validate({
 	rules: {
 		discount : {
 			number : true,
-			min : 0.01
+			min : 0
 		},
 		shipCharges : {
 			number : true,
-			min : 0.01
+			min : 0
 		},
 		adjustment : {
 			number : true
@@ -497,16 +497,31 @@ $scope.cancel = function() {
 	$state.go('dashboard.sales.estimates.all');
 }
 
-$scope.save = function() {
+function validateForms () {
 	setValidationRules();
 	var a = $('#addEstimateForm').valid();
-	var b = $('#extrasForm').valid();
-	var c = $('#itemInfoForm').valid();
-	if(! (a && b && c)) {
-		scrollTop();
-		return;
-	}
+	var b = $('#itemInfoForm').valid();
+	var c = $('#extrasForm').valid();
 	
+	if (a && b && c) return true;
+	else {
+		var v = undefined;
+		if (!a)
+			v = $('#addEstimateForm').validate();
+		else if (!b)
+			v = $('#itemInfoForm').validate();
+		else if (!c)
+			v = $('#extrasForm').validate();
+
+		var offset = $(v.errorList[0].element).offset().top - 30;
+		scrollToOffset(offset);
+		return false;
+	}
+}
+
+$scope.save = function() {
+	if (! validateForms())	return;
+
 	showLoader();
 	$q.when(estimateService.checkEstimateNumAvailable({
 		estimateNumber : $scope.estimateNo,
@@ -518,7 +533,7 @@ $scope.save = function() {
 
 		} else {
 			showEstimateNumberError();
-			scrollTop();
+			scrollToOffset();
 			return Promise.reject('Estimate with this number already exists');
 		}
 	})
@@ -533,14 +548,7 @@ $scope.save = function() {
 }
 
 $scope.saveAndSend = function () {
-	setValidationRules();
-	var a = $('#addEstimateForm').valid();
-	var b = $('#extrasForm').valid();
-	var c = $('#itemInfoForm').valid();
-	if(! (a && b && c)) {
-		scrollTop();
-		return;
-	}
+	if (! validateForms())	return;
 
 	showLoader();
 	$q.when(estimateService.checkEstimateNumAvailable({
@@ -553,7 +561,7 @@ $scope.saveAndSend = function () {
 
 		} else {
 			showEstimateNumberError();
-			scrollTop();
+			scrollToOffset();
 			return Promise.reject('Estimate with this number already exists');
 		}
 	})

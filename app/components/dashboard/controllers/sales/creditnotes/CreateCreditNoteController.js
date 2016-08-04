@@ -221,14 +221,27 @@ function saveAndSendCreditNote() {
 	});
 }
 
-$scope.save = function() {
+function validateForms () {
 	setValidationRules();
 	var a = $('#addCreditNoteForm').valid();
 	var b = $('#itemInfoForm').valid();
-	if(! (a && b)) {
-		scrollTop();
-		return;
+	
+	if (a && b) return true;
+	else {
+		var v = undefined;
+		if (!a)
+			v = $('#addCreditNoteForm').validate();
+		else if (!b)
+			v = $('#itemInfoForm').validate();
+
+		var offset = $(v.errorList[0].element).offset().top - 30;
+		scrollToOffset(offset);
+		return false;
 	}
+}
+
+$scope.save = function() {
+	if (! validateForms())	return;
 
 	showLoader();
 	$q.when(creditNoteService.checkCreditNoteNumAvailable({
@@ -241,7 +254,7 @@ $scope.save = function() {
 
 		} else {
 			showCreditNoteNumberError();
-			scrollTop();
+			scrollToOffset();
 			return Promise.reject('CreditNote with this number already exists');
 		}
 	})
@@ -256,13 +269,7 @@ $scope.save = function() {
 }
 
 $scope.saveAndSend = function () {
-	setValidationRules();
-	var a = $('#addCreditNoteForm').valid();
-	var b = $('#itemInfoForm').valid();
-	if(! (a && b)) {
-		scrollTop();
-		return;
-	}
+	if (! validateForms())	return;
 
 	showLoader();
 	$q.when(creditNoteService.checkCreditNoteNumAvailable({
@@ -275,7 +282,7 @@ $scope.saveAndSend = function () {
 
 		} else {
 			showCreditNoteNumberError();
-			scrollTop();
+			scrollToOffset();
 			return Promise.reject('CreditNote with this number already exists');
 		}
 	})
