@@ -6,10 +6,10 @@ invoicesUnlimited.controller('SignatureController',
 
 	var user = signUpFactory.getFactory('User');
 
-//	if (!user.entity.length) {
-//		$state.go('signup');
-//		return;
-//	}
+	if (!user.entity.length) {
+		$state.go('signup');
+		return;
+	}
 
 	if($rootScope.fromPaymentSettings) {
 		var userObj = user.entity[0];
