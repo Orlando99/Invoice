@@ -6,7 +6,8 @@ $(document).ready(function(){
 		$('.menu .submenu')
 		.toArray()
 		.filter(function(menu){
-			return (menu != self)&&($(menu).hasClass('showsub'));
+			return (menu != self)
+					&& ($(menu).hasClass('showsub'));
 		})
 		.forEach(function(menu){
 			$(menu).removeClass('showsub');
@@ -184,7 +185,6 @@ invoicesUnlimited.controller('CustomersController',
 	function LoadCustomers() {
 		//showLoader();
 		$q.when(coreFactory.getAllCustomers()).then(function(res){
-		
 			$scope.customers = res.sort(function(a,b){
 				return alphabeticalSort(a.entity.displayName,b.entity.displayName);
 			});
@@ -201,15 +201,13 @@ invoicesUnlimited.controller('CustomersController',
 			var customersNum = $scope.customers.length;
 
 			$scope.customers.forEach(function(cust){
-				var filtered = invoices.filter(function(inv){
+				cust.invoices = invoices.filter(function(inv){
 					return inv.entity.get('customer').id == cust.entity.id;
 				});
-				cust.comments = [];
-				filtered.forEach(function(inv){
-					cust.comments = cust.comments.concat(inv.comments);
-				});
-				cust.invoices = filtered;
-		//		hideLoader();
+				cust.comments = 
+				cust.invoices.reduce(function(res,cur){
+					return res.concat(cur.comments);
+				},[]);
 			});
 
 			if (isGoTo.details($state.current.name))

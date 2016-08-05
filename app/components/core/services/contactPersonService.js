@@ -2,13 +2,11 @@
 
 invoicesUnlimited.factory('contactPersonFactory',function(userFactory){
 	var user = userFactory;
-	if (!user) return undefined;
+	if (!user.entity.length) return {};
 
 	function contactPerson(parseObject){
 		setObjectOperations({
 			object 		: parseObject,
-			fieldName	: undefined,
-			parent 		: undefined,
 			fields 		: fields
 		});
 

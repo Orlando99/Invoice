@@ -4,10 +4,10 @@ invoicesUnlimited.factory('expenseCategoryFactory', ['userFactory', function(use
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return {};
 }
 
-var ExpenseCategory = function(parseObject) {
+function ExpenseCategory(parseObject) {
 	if (!parseObject) return undefined;
 	var categoryFields = [
 		'color', 'name', 'notes'
@@ -15,8 +15,6 @@ var ExpenseCategory = function(parseObject) {
 
 	setObjectOperations({
 		object 		: parseObject,
-		fieldName	: undefined,
-		parent 		: undefined,
 		fields 		: categoryFields
 	});
 	this.entity = parseObject;

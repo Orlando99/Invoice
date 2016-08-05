@@ -16,5 +16,22 @@ app.value('appFields',{
 		'firstScreen',
 		'email',
 		'company'
+	],
+	customer : [
+		"companyName",
+		"displayName",
+		"lastName",
+		"firstName",
+		"phone",
+		"email",
+		"mobile",
+		"unusedCredits",
+		"outstanding",
+		"currency",
+		"paymentTerms",
+		"billingAddress",
+		"shippingAddress",
+		"notes",
+		"salutation"
 	]
 });

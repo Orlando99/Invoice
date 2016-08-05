@@ -1,29 +1,31 @@
 'use strict';
 
-invoicesUnlimited.factory('customerFactory',function(userFactory,contactPersonFactory){
+invoicesUnlimited.factory('customerFactory',
+	function(userFactory,contactPersonFactory,appFields){
 
 	var user = userFactory;
-	if (!user) return undefined;
+	if (!user.entity.length) return {};
 
 	function customer(parseObject){
 		setObjectOperations({
 			object 		: parseObject,
-			fieldName	: undefined,
-			parent 		: undefined,
-			fields 		: customerFields
+			fields 		: appFields.customer
 		});
 
 		var contactPersons = parseObject.get('contactPersons');
-		if (contactPersons)
-			contactPersons = contactPersons.map(function(elem){
-				var contact = new contactPersonFactory(elem);
-				return contact;
+
+		if (contactPersons) {
+			contactPersons = 
+			contactPersons.filter(function(elem){
+				if (elem) return elem;
+			}).map(function(elem){
+				return new contactPersonFactory(elem);
 			});
+		}
 
 		this.id = parseObject.get('objectId');
 		this.entity = parseObject;
 		this.contactPersons = contactPersons;
-		this.customerFields = customerFields;
 
 		this.save = function(params){
 			if (arguments.length) return this.entity.save(params);
@@ -41,24 +43,6 @@ invoicesUnlimited.factory('customerFactory',function(userFactory,contactPersonFa
 			return this.entity.destroy();
 		}
 	};
-
-	var customerFields = [
-		"companyName",
-		"displayName",
-		"lastName",
-		"firstName",
-		"phone",
-		"email",
-		"mobile",
-		"unusedCredits",
-		"outstanding",
-		"currency",
-		"paymentTerms",
-		"billingAddress",
-		"shippingAddress",
-		"notes",
-		"salutation"
-	];
 	
 	return customer;
 

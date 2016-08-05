@@ -4,14 +4,12 @@ invoicesUnlimited.factory('itemFactory', function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return {};
 }
 
 function item(parseObject) {
 	setObjectOperations({
 		object 		: parseObject,
-		fieldName	: undefined,
-		parent 		: undefined,
 		fields 		: itemFields
 	});
 
