@@ -281,7 +281,7 @@ invoicesUnlimited.controller('CustomersController',
 					console.log('Resolve Contact');
 					var ContactPerson = Parse.Object.extend('ContactPerson');
 					var contactObject = new contactPersonFactory(new ContactPerson());
-					contactObject.entity.set('userID',user);
+					contactObject.entity.set('userID',user.entity[0]);
 					return contactObject;
 				},
 				customer : function() {
