@@ -144,6 +144,10 @@ option:first {
 	margin-bottom: 10px;
 }
 
+.overlay.message {
+	opacity: 1;
+}
+
 .overlay {
 	position: fixed;
 	z-index: 9999;
@@ -151,7 +155,7 @@ option:first {
 	height: 100%;
 	background-image: url('./../images/overlay.png');
 	background-repeat: repeat;
-	 opacity: 0.5;
+	opacity: 0.5;
 }
 
 .loader {

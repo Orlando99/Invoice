@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.controller('NewUserController',
-	function($scope,$state,userFactory,
-		$controller,$q,$uibModalInstance,user,method,title){
+	function($scope,$state,userFactory,$controller,
+		$q,$uibModalInstance,user,method,title,appFields){
 
 	if (!userFactory.entity.length) {
 		$uibModalInstance.dismiss('No signed in user');
@@ -71,18 +71,7 @@ invoicesUnlimited.controller('NewUserController',
 		$scope.user.set('isTrackUsage',1);
 		$scope.user.set('getInvoiceNotification',1);
 		$scope.user.set('subscription',false);
-		[
-			'businessInfo',
-			'principalInfo',
-			'organizations',
-			'signatureImage',
-			'selectedOrganization',
-			'currency',
-			'company',
-			'phonenumber',
-			'country',
-			'defaultTemplate'
-		].forEach(function(field){
+		appFields.newCustomer.forEach(function(field){
 			$scope.user.set(field,userFactory.entity[0].get(field));
 		});
 		$scope.user.save()

@@ -33,5 +33,17 @@ app.value('appFields',{
 		"shippingAddress",
 		"notes",
 		"salutation"
+	],
+	newCustomer : [
+		'businessInfo',
+		'principalInfo',
+		'organizations',
+		'signatureImage',
+		'selectedOrganization',
+		'currency',
+		'company',
+		'phonenumber',
+		'country',
+		'defaultTemplate'
 	]
 });

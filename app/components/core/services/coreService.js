@@ -1,7 +1,13 @@
 'use strict';
 
 invoicesUnlimited.factory('coreFactory',
-	function(userFactory,customerFactory,invoicesFactory,itemFactory,expenseCategoryFactory){
+	function(
+		userFactory,
+		customerFactory,
+		invoicesFactory,
+		itemFactory,
+		expenseCategoryFactory,
+		queryService){
 
 	var user = userFactory;
 	var core = {};
@@ -9,12 +15,18 @@ invoicesUnlimited.factory('coreFactory',
 
 	//var wrapObject = function
 
-	core.getAllCustomers = function(){
-		if (core.allCustomers) return core.allCustomers;
-		var query = new Parse.Query("Customer");
-		query.equalTo('userID',user.entity.length ? user.entity[0] : {});
-		query.include('contactPersons');
-		return query.find().then(function(customers){
+	core.getAllCustomers = function(loadAgain){
+		if (core.allCustomers && !loadAgain) return core.allCustomers;
+		return queryService.ext.find(
+			"Customer",
+			"userID",
+			(user.entity.length ? user.entity[0] : {}),
+			[{
+				name  : 'include',
+				param : 'contactPersons'
+			}]
+		)
+		.then(function(customers){
 			var result = [];
 			customers.forEach(function(elem){
 				var customer = new customerFactory(elem);

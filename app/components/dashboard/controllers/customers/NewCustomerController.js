@@ -84,11 +84,11 @@ invoicesUnlimited.controller('NewCustomerController',
 		var cust = $scope.newCustomer;
 		contact.entity.set('userID',user.entity[0]);
 		contact.entity.set('defaultPerson',1);
-		var fields = ['email','phone','mobile','lastName','firstName','salutaion'];
-		for (var i in fields) {
-			contact.entity[fields[i].toLowerCase()] 
-			= $scope.newCustomer.entity[fields[i]];
-		}
+		['email','phone','mobile','lastName','firstName','salutaion']
+		.forEach(function(el){
+			contact.entity[el.toLowerCase()] 
+			= $scope.newCustomer.entity[el];
+		})
 		
 		contact.save()
 		.then(function() {
