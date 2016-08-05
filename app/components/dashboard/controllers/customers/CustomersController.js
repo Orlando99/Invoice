@@ -301,13 +301,6 @@ invoicesUnlimited.controller('CustomersController',
 	$rootScope.$on('$viewContentLoaded',
 		function(event){
 			if (isGoTo.edit($state.current.name)) {
-				var mobileOptions = {
-					onKeyPress : function(cep,e,field,options){
-						var masks = ['9 (999) 999-9999','(999) 999-9999'];
-						var mask = cep[0] == "1" ? masks[0] : masks[1];
-						$('#mobilePhone').mask(mask,options);
-					}
-				}
 				$('#workPhone').mask('(999) 999-9999');
 				$('#mobilePhone').mask('9 (999) 999-9999',mobileOptions);
 			}

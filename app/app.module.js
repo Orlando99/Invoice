@@ -36,13 +36,39 @@ var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router','oc.laz
       });
     }
   };
+})
+.directive('fileModel', ['$parse', function ($parse) {
+  return {
+    restrict: 'A',
+      link: function(scope, element, attrs) {
+        var model = $parse(attrs.fileModel);
+        var modelSetter = model.assign;
+            
+        element.bind('change', function(){
+           scope.$apply(function(){
+              modelSetter(scope, element[0].files[0]);
+           });
+        });
+      }
+  };
+}])
+.directive('triFixInputName', function () {
+  return {
+      // just postLink
+      link: function (scope, element, attrs, ngModelCtrl) {
+          // do nothing in case of no 'name' attribiute
+          if (!attrs.name) { 
+              return;
+          }
+          // fix what should be fixed
+          ngModelCtrl.$name = attrs.name;
+      },
+      // ngModel's priority is 0
+      priority: '-100',
+      // we need it to fix it's behavior
+      require: 'ngModel'
+   };
 });
-
-/*
-$(window).on('beforeunload',function(e){
-    Parse.User.logOut();
-});
-*/
 
 function ShowMessage(text,type) {
   $('.message-type,.close-btn').addClass(type);
@@ -198,39 +224,14 @@ function initalizeModalClasses()
     });
 }
 
-invoicesUnlimited.directive('fileModel', ['$parse', function ($parse) {
-  return {
-    restrict: 'A',
-      link: function(scope, element, attrs) {
-        var model = $parse(attrs.fileModel);
-        var modelSetter = model.assign;
-            
-        element.bind('change', function(){
-           scope.$apply(function(){
-              modelSetter(scope, element[0].files[0]);
-           });
-        });
-      }
-  };
-}]);
-
-invoicesUnlimited.directive('triFixInputName', function () {
-  return {
-      // just postLink
-      link: function (scope, element, attrs, ngModelCtrl) {
-          // do nothing in case of no 'name' attribiute
-          if (!attrs.name) { 
-              return;
-          }
-          // fix what should be fixed
-          ngModelCtrl.$name = attrs.name;
-      },
-      // ngModel's priority is 0
-      priority: '-100',
-      // we need it to fix it's behavior
-      require: 'ngModel'
-   };
-});
+var mobileOptions = {
+  onKeyPress : function(cep,e,field,options){
+    var masks = ['0 (000) 000-0000','(000) 000-0000'];
+    var cond = cep.replace("(","");
+    var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
+    $('.mobilePhone').mask(mask,options);
+  }
+}
 
 $(document).on('keypress','.sign-up input',function(e) {
   if (e.keyCode == 13) {

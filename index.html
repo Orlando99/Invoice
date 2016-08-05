@@ -76,8 +76,8 @@
 
 	          <div class="input-container layout-margin-b">
 	            <label class="layout-padding-t-sm">Phone Number</label>
-	            <input class="col-35" type="text" ng-model="contact.entity.phone" placeholder="Work">
-	            <input class="col-35 pull-right" type="text" ng-model="contact.entity.mobile" placeholder="Mobile">
+	            <input class="col-35 workPhone" type="text" ng-model="contact.entity.phone" placeholder="Work"/>
+	            <input class="col-35 pull-right mobilePhone" type="text" ng-model="contact.entity.mobile" placeholder="Mobile" />
 	          </div>
 
 	          <div class="input-container layout-margin-b">
@@ -86,7 +86,7 @@
 	          </div>
 	        </form>
 	      </div>
-	      <div class="clearfix"></div>
+	      <div ng-init="maskPhones();" class="clearfix"></div>
 	      <button ng-click="Save();" class="button button-small button-info text-uppercase">Save</button>
 	    </div>
     

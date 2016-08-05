@@ -28,4 +28,9 @@ invoicesUnlimited.controller('ModalContactController',function(
 		$uibModalInstance.dismiss('Close')
 	}
 
+	$scope.maskPhones = function() {
+		$('.workPhone').mask('(000) 000-0000');
+		$('.mobilePhone').mask('0 (000) 000-0000',mobileOptions);
+	}
+
 })
