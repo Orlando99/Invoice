@@ -6,10 +6,10 @@ invoicesUnlimited.controller('SignatureController',
 
 	var user = signUpFactory.getFactory('User');
 
-	if (!user.entity.length) {
-		$state.go('signup');
-		return;
-	}
+//	if (!user.entity.length) {
+//		$state.go('signup');
+//		return;
+//	}
 
 	if($rootScope.fromPaymentSettings) {
 		var userObj = user.entity[0];
@@ -79,12 +79,17 @@ invoicesUnlimited.controller('SignatureController',
 	}
 
 	$scope.$on('$viewContentLoaded',function($scope,$timeout){
+		// "./assets/js/sig.js"
 		$ocLazyLoad.load([
 					"./assets/js/excanvas.js",
   					"./assets/js/jquery.signature.min.js",
-  					"./assets/js/jquery.ui.touch-punch.min.js",
-  					"./assets/js/sig.js"
-					]);
+  					"./assets/js/jquery.ui.touch-punch.min.js"
+					]).then(function() {
+						$("#sig").signature(),
+						$("#clear").click(function(){$("#sig").signature("clear")}),
+						$("#json").click(function(){alert($("#sig").signature("toJSON"))}),
+						$("#svg").click(function(){alert($("#sig").signature("toSVG"))})
+					});
 	});
 
 }]);
