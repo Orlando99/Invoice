@@ -9,6 +9,10 @@ body {
 	height: 100%;
 }
 
+.min-width-0 {
+	min-width: 0 !important;
+}
+
 .sticky-nav {
 	z-index: 100;
 	position: relative;
