@@ -25,6 +25,19 @@ invoicesUnlimited.factory('roleFactory',
 		);
 	};
 
+	role.addUser = function(user) {
+		if (!role.entity.length) {
+			return loadRole()
+			.then(function(){
+				role.entity[0].getUsers().add(user);
+				return role.entity[0].save();
+			});
+		} else {
+			role.entity[0].getUsers().add(user);
+			return role.entity[0].save();
+		}
+	}
+
 	role.load = function() {
 		//if (role.entity.length) return role;
 		return loadRole();

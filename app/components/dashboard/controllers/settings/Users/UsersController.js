@@ -67,8 +67,6 @@ invoicesUnlimited.controller('UsersController',
 		},function(){
 			console.log('Dismiss modal');
 		});
-
-
 	}
 
 	$scope.createUser = function(){

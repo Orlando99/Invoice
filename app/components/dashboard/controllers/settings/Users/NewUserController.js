@@ -1,7 +1,7 @@
 'use strict';
 
 invoicesUnlimited.controller('NewUserController',
-	function($scope,$state,userFactory,$controller,
+	function($scope,$state,userFactory,roleFactory,$controller,
 		$q,$uibModalInstance,user,method,title,appFields){
 
 	if (!userFactory.entity.length) {
@@ -13,7 +13,7 @@ invoicesUnlimited.controller('NewUserController',
 	$scope.method = method;
 	$scope.title = title;
 	$scope.user = user;
-	$scope.password = '';
+	$scope.user.password = '';
 
 	$scope.delete = function() {
 		showLoader();
@@ -66,22 +66,27 @@ invoicesUnlimited.controller('NewUserController',
 		var form = document.querySelector('.modal-content form');
 		if (!form.checkValidity()) return;
 
-		$scope.user.set('password',$scope.password);
+		$scope.user.set('password',$scope.user.password);
 		$scope.user.set('colorTheme','appBlueColor');
 		$scope.user.set('isTrackUsage',1);
 		$scope.user.set('getInvoiceNotification',1);
 		$scope.user.set('subscription',false);
+		debugger;
+		var errorFunc = function(er){
+			$uibModalInstance.dismiss(er);
+			alert(er.message);
+			console.log(er.message);
+		};
 		appFields.newCustomer.forEach(function(field){
 			$scope.user.set(field,userFactory.entity[0].get(field));
 		});
 		$scope.user.save()
 		.then(function(user){
-			$uibModalInstance.close(user);
-		},function(er){
-			$uibModalInstance.dismiss(er);
-			alert(er.message);
-			console.log(er.message);
-		});
+			return roleFactory.addUser(user);
+		},errorFunc)
+		.then(function(role){
+			$uibModalInstance.close($scope.user);
+		},errorFunc);
 	}
 
 	$scope.closeModal = function(){
