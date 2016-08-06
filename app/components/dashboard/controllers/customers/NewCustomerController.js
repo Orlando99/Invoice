@@ -103,7 +103,7 @@ invoicesUnlimited.controller('NewCustomerController',
 		});
 	}
 
-	var changeDispName = function() {
+	var changeDispName = function(newV,oldV) {
 		if (!$scope.displayNameClicked) {
 			var c = $scope.newCustomer.entity;
 			if (!c.firstName && !c.lastName) {
@@ -117,13 +117,9 @@ invoicesUnlimited.controller('NewCustomerController',
 		}
 	}
 
-	$scope.$watch("newCustomer.entity.firstName",function(newV,oldV){
-		changeDispName();
-	});
+	$scope.$watch("newCustomer.entity.firstName",changeDispName);
 
-	$scope.$watch("newCustomer.entity.lastName",function(newV,oldV){
-		changeDispName();
-	});
+	$scope.$watch("newCustomer.entity.lastName",changeDispName);
 
 	$scope.cancelSaveCustomer = function(){
 		$state.go('dashboard.customers.all');

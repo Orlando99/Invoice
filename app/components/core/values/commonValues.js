@@ -27,6 +27,7 @@ app.value('appFields',{
 		"mobile",
 		"unusedCredits",
 		"outstanding",
+		"status",
 		"currency",
 		"paymentTerms",
 		"billingAddress",

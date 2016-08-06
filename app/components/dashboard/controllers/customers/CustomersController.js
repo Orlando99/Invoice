@@ -173,6 +173,17 @@ invoicesUnlimited.controller('CustomersController',
 		})
 	}
 
+	$scope.changeStatus = function(status) {
+		showLoader();
+		$scope.selectedCustomer.entity.set('status',status);
+		$scope.selectedCustomer.entity.save()
+		.then(function(cust){
+			hideLoader();
+		},function(er){
+			console.log(er.message);
+		});
+	}
+
 	$scope.cancelSaveSelectedCustomer = function(){
 		$scope.selectedCustomerEdit = null;
 		$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
