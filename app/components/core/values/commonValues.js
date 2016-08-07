@@ -46,5 +46,14 @@ app.value('appFields',{
 		'phonenumber',
 		'country',
 		'defaultTemplate'
+	],
+	projectUser : [
+		'userName',
+		'emailID',
+		'title',
+		'role',
+		'status',
+		'companyName',
+		'country'
 	]
 });

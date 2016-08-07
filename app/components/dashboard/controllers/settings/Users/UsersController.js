@@ -1,7 +1,9 @@
 'use strict';
 
 invoicesUnlimited.controller('UsersController',
-	function($scope,$state,$uibModal,$controller,$document,userFactory,queryService,appFields,$q){
+	function($scope,$state,$uibModal,
+			 $controller,$document,userFactory,
+			 projectUserFactory,queryService,appFields,$q){
 
 	var user = userFactory;
 
@@ -101,22 +103,32 @@ invoicesUnlimited.controller('UsersController',
 				object 		: user,
 				fields 		: appFields.user
 			});
-			$scope.users.push(user);
+			var prUser = projectUserFactory
+			.createNew({
+				emailID 	 : user.email,
+				role 		 : user.role,
+				userName	 : user.username,
+				country		 : user.country,
+				title		 : user.fullName,
+				organization : user.selectedOrganization,
+				companyName  : user.company,
+				userID 		 : user
+			}).then(function(res){
+				$scope.users = res;
+			});
 		},function(){
 			console.log('Dismiss modal');
 		});
 	}
 
-	$q.when(query).then(function(users,arg2){
-
-		users.forEach(function(el){
+	$q.when(projectUserFactory.getAll()).then(function(users,arg2){
+		$scope.users = users.map(function(el){
 			setObjectOperations({
 				object 		: el,
-				fields 		: appFields.user
+				fields 		: appFields.projectUser
 			});
-			el.status = 'Active';
+			return el;
 		});
-		$scope.users = users;
-	})
+	});
 
 });
