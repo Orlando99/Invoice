@@ -8,11 +8,13 @@
 		<meta name="keywords" content=""/>
 		<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
 	<!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
+		<link rel="stylesheet" href="./assets/css/glyphicon.css"/>	
 
 		<link rel="stylesheet" href="./assets/css/bootstrap_dropdown.css"/>
 		<link rel="stylesheet" href="./assets/css/main.css"/>
 		<link rel="stylesheet" href="" id="appStyle"/>
 		<link rel="stylesheet" href="./assets/js/fullcalendar.min.css"/>
+		<link rel="stylesheet" href="./assets/css/custom.css"/>
 
 		<!--[if lt IE 9]>
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -36,7 +38,7 @@
 	</div>
 
 	<div id="view" ui-view></div>
-
+<!--
 	<script type="text/ng-template" id="template/datepickerPopUp/customPopUp.html">
 
 	<ul class="uib-datepicker-popup dropdown-menu uib-position-measure" dropdown-nested ng-if="isOpen" ng-keydown="keydown($event)" ng-click="$event.stopPropagation()">
@@ -50,7 +52,7 @@
 	</ul>
 
 	</script>
-
+-->
 	<script type="text/ng-template" id="modal-contact">
     
 	    <div class="modal-container">
@@ -76,8 +78,8 @@
 
 	          <div class="input-container layout-margin-b">
 	            <label class="layout-padding-t-sm">Phone Number</label>
-	            <input class="col-35 workPhone" type="text" ng-model="contact.entity.phone" placeholder="Work"/>
-	            <input class="col-35 pull-right mobilePhone" type="text" ng-model="contact.entity.mobile" placeholder="Mobile" />
+	            <input class="col-35" type="text" ng-model="contact.entity.phone" placeholder="Work">
+	            <input class="col-35 pull-right" type="text" ng-model="contact.entity.mobile" placeholder="Mobile">
 	          </div>
 
 	          <div class="input-container layout-margin-b">
@@ -86,7 +88,7 @@
 	          </div>
 	        </form>
 	      </div>
-	      <div ng-init="maskPhones();" class="clearfix"></div>
+	      <div class="clearfix"></div>
 	      <button ng-click="Save();" class="button button-small button-info text-uppercase">Save</button>
 	    </div>
     
@@ -123,27 +125,18 @@
 	      	</div>
 	      	<div class="input-container layout-margin-b" ng-if="method == 'create'">
 	        	<label class="layout-padding-t-smm">Password</label>
-	        	<input ng-model="user.password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required></input>
+	        	<input ng-model="password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required></input>
 	      	</div>
-	      	<div class="input-container layout-margin-b input-checkbox-container">
+	      	<div class="input-container layout-margin-b">
 	        	<label class="layout-padding-t-smm">Role</label>
-	        	<select ng-model="user.role" pattern="Staff|Admin|Timesheet Staff" required class="col-75 layout-margin-b">
+	        	<select ng-model="user.role" pattern="Staff|Admin|Timesheet Staff" required class="col-75">
 	          		<option value="" selected>Select the Role</option>
 	        		<option value="Admin">Admin</option>
 	        		<option value="Staff">Staff</option>
 	        		<option value="Timesheet Staff">Timesheet Staff</option>
 	        	</select>
-	        	<label class="layout-padding-t-smm"></label>
-	      		<label class="min-width-0 layout-margin-b">
-					<input type="checkbox">
-					<span class="checkbox float-left"></span>
-				</label>
-				<span class="pull-right layout-no-padding">Send invitation</span>
-				<p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
+	        	<p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
 	    	</div>
-	    	<!--<div class="input-container input-checkbox-container layout-margin-b">
-	    		
-	      	</div>-->
 	    	<button ng-show="method == 'create'" ng-click="save();" type="submit" class="button button-info text-uppercase">Save</button>
 	    	<button ng-show="method == 'update'" ng-click="update();" class="button button-info text-uppercase float-left">Save</button>
       		<button ng-show="method == 'update'" ng-click="delete();" class="button button-danger text-uppercase float-right">Delete</button>
@@ -258,7 +251,6 @@
 
 	<script src="./app/components/core/factories/itemFactory.js"></script>
 	<script src="./app/components/core/factories/invoiceFactory.js"></script>
-	<script src="./app/components/core/factories/projectUserFactory.js"></script>
 	<script src="./app/components/core/factories/invoiceItemFactory.js"></script>
 	<script src="./app/components/core/factories/estimateFactory.js"></script>
 	<script src="./app/components/core/factories/estimateItemFactory.js"></script>

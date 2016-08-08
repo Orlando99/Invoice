@@ -21,7 +21,7 @@
         <label class="layout-padding-t-sm">Order #</label>
         <input class="col-75" type="text" ng-model="poNumber">
       </div>
-      <div class="input-container col-60 layout-margin-b">
+      <div class="input-container col-60 layout-margin-b datepicker-noclear">
         <label class="layout-padding-t-sm">Invoice Date &amp; Terms</label>
         <input name="invoiceCreateDate" class="col-35" type="text" uib-datepicker-popup="{{dateFormat}}"
           ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)" ng-change="calculateDueDate()" readonly>
@@ -31,7 +31,7 @@
         </select>
       <!--  <span class="due-date">Due Date 12/25/2014</span> -->
       </div>
-      <div class="input-container col-60 layout-margin-b" ng-show="hasDueDate">
+      <div class="input-container col-60 layout-margin-b datepicker-noclear" ng-show="hasDueDate">
         <label class="layout-padding-t-sm">Due Date</label>
         <input name="invoiceDueDate" class="col-75" type="text" ng-model="dueDate" is-open="openPicker2"
           uib-datepicker-popup="{{dateFormat}}" ng-click="openDatePicker(2)" readonly>
@@ -86,7 +86,7 @@
 
           <div class="col-30 layout-padding">
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-            <select tri:fix-input-name name="item{{$index}}" class="check-item" ng-model="invItem.selectedItem"
+            <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis" ng-model="invItem.selectedItem"
               ng-options="item.entity.title for item in items"
               ng-change="itemChanged($index)">
               <option value="" disabled>Select or Type to add</option>
@@ -106,7 +106,7 @@
           </div>
           <div class="col-12 layout-padding layout-padding-l">
             <select ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
-              ng-change="reCalculateItemAmount($index)">
+              ng-change="reCalculateItemAmount($index)" class="ellipsis">
               <option value="">None</option>
              <!-- <option value="1">1</option>
               <option value="2">2</option> -->
@@ -170,24 +170,27 @@
           </div>
           <div class="clearfix"></div>
           <br />
-          <div class="input-container" ng-repeat="field in customFields">
+          <div class="input-container layout-margin-b" ng-repeat="field in customFields">
             <label class="col-i-30">{{field.name}}</label>
             <input type="text" class="col-70" ng-model="field.value"></input>
           </div>
-
-          <p class="col-i-30">Attach Reference File</p>
-          <p class="col-70">
+          <div class="input-container layout-margin-tb">
+            <label class="col-i-30">Attach Reference File</label>
+            <div class="col-70 file_div" >
             <div ng-repeat="file in files">
-              <label class="col-60">{{file.fileName}}</label>
+              <label class="col-90">{{file.name}}</label>
               <button class="button button-icon button-no-margin" ng-click="removeFile($index)">
-                <img src="./assets/images/icon-times-round.png" alt=""></button>
+              <img src="./assets/images/icon-times-round.png" alt=""></button>
+              <div class="clearfix"></div>
+              <br/>
             </div>
             <label>
-            <input type="file" style="display: none;"
-              onchange="angular.element(this).scope().addNewFile(this)">
+              <input type="file" style="display: none;"
+                onchange="angular.element(this).scope().addNewFile(this)">
               <div class="div-button">Import file...</div>
             </label>
-          </p>
+            </div>
+          </div>
 
           <!--
           <div class="clearfix"></div>

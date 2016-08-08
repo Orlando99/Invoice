@@ -21,7 +21,7 @@
         <label class="padding-t-sm">Referenece #</label>
         <input class="col-75" type="text" ng-model="refNumber">
       </div>
-      <div class="input-container col-60 layout-margin-b">
+      <div class="input-container col-60 layout-margin-b datepicker-noclear">
         <label class="padding-t-sm">Estimate Date</label>
         <input name="estimateCreateDate" class="col-75" type="text" uib-datepicker-popup="{{dateFormat}}"
           ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)" readonly>
@@ -73,7 +73,7 @@
         <div class="table-row" ng-repeat="estItem in estimateItems">
           <div class="col-30 layout-padding">
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-            <select tri:fix-input-name name="item{{$index}}" class="check-item" ng-model="estItem.selectedItem"
+            <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis" ng-model="estItem.selectedItem"
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
               <option value="" disabled>Select or Type to add</option>
             </select>
@@ -92,7 +92,7 @@
           </div>
           <div class="col-12 layout-padding layout-padding-l">
             <select ng-model="estItem.selectedTax" ng-options="tax.name for tax in taxes"
-              ng-change="reCalculateItemAmount($index)">
+              ng-change="reCalculateItemAmount($index)" class="ellipsis">
                <option value="">None</option>
             </select>
           </div>
@@ -155,7 +155,7 @@
           </div>
           <div class="clearfix"></div>
           <br />
-          <div class="input-container" ng-repeat="field in customFields">
+          <div class="input-container layout-margin-b" ng-repeat="field in customFields">
             <label class="col-i-30">{{field.name}}</label>
             <input type="text" class="col-70" ng-model="field.value"></input>
           </div>

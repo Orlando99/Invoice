@@ -35,6 +35,41 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		});
 	};
 
+	$scope.pageReady = function(event) {
+		var c = $state.current.name;
+		$('.nav-item').removeClass('active');
+
+		if (c.includes('customers'))
+			$('#customers').addClass('active');
+
+		else if (c.includes('sales'))
+			$('#sales').addClass('active');
+
+		else if (c.includes('expenses'))
+			$('#expenses').addClass('active');
+
+		else if (c.includes('reports'))
+			$('#reports').addClass('active');
+
+		else if (c.includes('settings'))
+			$('#settings').addClass('active');
+
+		else if(c.includes('dashboard'))
+			$('#dashboard').addClass('active');
+/*
+
+		$('.nav-item').click(function(event) {
+			$('.nav-item').removeClass('active');
+			var a = $(this).parents('li');
+			if (a.length) {
+				a.addClass('active')
+			} else {
+				$(this).addClass('active');
+			}
+		});
+*/
+	}
+
 	var promises = [];
 	promises.push(businessFactory.load());
 

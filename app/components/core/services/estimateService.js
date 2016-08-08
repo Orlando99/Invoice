@@ -513,16 +513,23 @@ function fillInXmlData(xmlUrl, user, estimate) {
 		labels['refid'] = estimate.get("estimateNumber");
 
 		var customFields = jsonObj.items.customFields;
+		customFields.customField = [];
+
+		var salesPerson = estimate.get('salesPerson');
+		if (salesPerson) {
+			customFields.customField.push({'name':'Sales Person', 'value':salesPerson});
+		}
+
 		var fields = estimate.get("customFields");
 		if (fields) {
-			customFields.customField = [];
 			for (var i = 0; i < fields.length; ++i) {
 				var key = Object.keys(fields[i])[0];
 				var value = fields[i][key];
 				customFields.customField.push({'name':key, 'value':value});
 			}
 		}
-		else
+
+		if (! customFields.customField.length)
 			customFields.customField = undefined;
 
 		var attachments = jsonObj.items.attachments;

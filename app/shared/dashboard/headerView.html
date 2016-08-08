@@ -10,10 +10,10 @@
         </ul>
       </div>
     </div>
-    <ul class="navigation">
-      <li class="active"><a ui-sref="dashboard">Dashboard</a></li>
-      <li><a ui-sref="dashboard.customers.all">Customers</a></li>
-      <li>
+    <ul class="navigation" elem-ready="pageReady()">
+      <li id="dashboard" class="nav-item"><a ui-sref="dashboard">Dashboard</a></li>
+      <li id="customers" class="nav-item"><a ui-sref="dashboard.customers.all">Customers</a></li>
+      <li id="sales" class="nav-item">
         <a href="javascript:">Sales</a>
         <div class="container-fluid">
           <ul class="submenu">
@@ -24,7 +24,7 @@
         </div>
       </li>
       
-      <li>
+      <li id="expenses" class="nav-item">
         <a href="javascript:">Expenses</a>
         <div class="container-fluid">
           <ul class="submenu">
@@ -39,9 +39,9 @@
       <li><a href="timesheets/timesheets.html">Timesheets</a></li>
       -->
 
-      <li><a ui-sref="dashboard.reports">Reports</a></li>
+      <li id="reports"><a class="nav-item" ui-sref="dashboard.reports">Reports</a></li>
       
-      <li>
+      <li id="settings" class="nav-item">
         <a href="javascript:">Settings</a>
         <div class="container-fluid">
           <ul class="submenu">

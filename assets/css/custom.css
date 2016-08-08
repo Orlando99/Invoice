@@ -1,0 +1,24 @@
+.input-container .file_div label:first-of-type:not(.input-checkbox-container) {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+.ellipsis{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+/*
+select.ellipsis {
+    background-image: none;
+}
+
+select {
+    background-image: none;
+}
+*/
+
+.datepicker-noclear .uib-datepicker-popup .btn-group .btn-danger.btn{
+    display: none;
+}
+ 

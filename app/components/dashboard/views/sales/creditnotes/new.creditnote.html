@@ -20,7 +20,7 @@
         <label class="layout-padding-t-sm">Reference #</label>
         <input class="col-75" type="text" ng-model="refNumber">
       </div>
-      <div class="input-container col-60 layout-margin-b">
+      <div class="input-container col-60 layout-margin-b datepicker-noclear">
         <label class="layout-padding-t-sm">Credit note Date</label>
         <input name="creditCreateDate" class="col-75 form-control" type="text" uib-datepicker-popup="{{dateFormat}}"
           ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)" readonly>
@@ -61,7 +61,7 @@
 
           <div class="col-30 layout-padding">
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-            <select tri:fix-input-name name="item{{$index}}" class="check-item" ng-model="creditItem.selectedItem"
+            <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis" ng-model="creditItem.selectedItem"
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
               <option value="" disabled>Select or Type to add</option>
             </select>
@@ -76,7 +76,7 @@
           </div>
           <div class="col-15 layout-padding layout-padding-l">
             <select ng-model="creditItem.selectedTax" ng-options="tax.name for tax in taxes"
-              ng-change="reCalculateItemAmount($index)">
+              ng-change="reCalculateItemAmount($index)" class="ellipsis">
               <option value="">None</option>
             </select>
           </div>

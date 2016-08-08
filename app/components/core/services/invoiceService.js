@@ -649,17 +649,25 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 		labels['refid'] = invoice.get("invoiceNumber");
 
 		var customFields = jsonObj.items.customFields;
+		customFields.customField = [];
+
+		var salesPerson = invoice.get("salesPerson");
+		if (salesPerson) {
+			customFields.customField.push({'name':'Sales Person', 'value':salesPerson});
+		}
+
 		var fields = invoice.get("customFields");
 		if (fields) {
-			customFields.customField = [];
 			for (var i = 0; i < fields.length; ++i) {
 				var key = Object.keys(fields[i])[0];
 				var value = fields[i][key];
 				customFields.customField.push({'name':key, 'value':value});
 			}
 		}
-		else
+
+		if (! customFields.customField.length)
 			customFields.customField = undefined;
+
 
 		var attachments = jsonObj.items.attachments;
 		var files = invoice.get("invoiceFiles");
