@@ -7,13 +7,13 @@
       <input type="text" class="search-bar layout-margin-r" placeholder="Search">
     </form>
 
-    <table class="table-border-tb">
+    <table class="table-border-tb show_table_hover">
       <tr class="thead">
         <td class="text-uppercase text-info layout-padding">Name</td>
         <td class="text-uppercase text-info layout-padding">Rate % <img src="./assets/images/dropdown-arrow-primary.png" alt=""></td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr ng-repeat="tax in taxes" ng-dblclick="editTax(tax)" >
+      <tr class="trow" ng-repeat="tax in taxes" ng-dblclick="editTax(tax)" >
         <td class="text-color-light text-weight-normalize layout-padding">{{tax.name}}</td>
         <td class="text-color-light text-weight-normalize layout-padding">{{tax.rate}}</td>
         <td class="text-color-light text-weight-normalize layout-padding text-right">

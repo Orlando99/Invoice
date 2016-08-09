@@ -1,6 +1,6 @@
 .input-container .file_div label:first-of-type:not(.input-checkbox-container) {
-    max-width: 100%;
-    word-wrap: break-word;
+	max-width: 100%;
+	word-wrap: break-word;
 }
 
 .ellipsis{
@@ -10,7 +10,7 @@
 }
 /*
 select.ellipsis {
-    background-image: none;
+	background-image: none;
 }
 
 select {
@@ -19,6 +19,17 @@ select {
 */
 
 .datepicker-noclear .uib-datepicker-popup .btn-group .btn-danger.btn{
-    display: none;
+	display: none;
 }
- 
+
+.show_table_hover tr.trow td{
+	cursor: pointer;
+}
+
+.show_hover {
+	cursor: pointer;
+}
+
+.organization .submenu.show {
+	min-width: 100px;
+}

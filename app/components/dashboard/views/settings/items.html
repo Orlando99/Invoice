@@ -7,14 +7,14 @@
       <input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.entity.title">
     </form>
 
-    <table class="table-border-tb">
+    <table class="table-border-tb show_table_hover">
       <tr class="thead">
         <td class="text-uppercase text-info layout-padding">Name</td>
         <td class="text-uppercase text-info layout-padding">Description</td>
         <td class="text-uppercase text-info layout-padding">Rate</td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr ng-repeat="item in items | filter:search" ng-dblclick="showItemDetail($index)">
+      <tr class="trow" ng-repeat="item in items | filter:search" ng-dblclick="showItemDetail($index)">
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.title}}</td>
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.itemDescription}}</td>
         <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.rate | currency:$:2}}</td>
