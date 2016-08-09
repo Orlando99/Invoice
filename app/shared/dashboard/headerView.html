@@ -14,8 +14,8 @@
       <li id="dashboard" class="nav-item"><a ui-sref="dashboard">Dashboard</a></li>
       <li id="customers" class="nav-item"><a ui-sref="dashboard.customers.all">Customers</a></li>
       <li id="sales" class="nav-item">
-        <a href="javascript:">Sales</a>
-        <div class="container-fluid">
+        <a href="javascript:" id="link-sales">Sales</a>
+        <div class="container-fluid link-sales-div">
           <ul class="submenu">
             <li><a ui-sref="dashboard.sales.estimates.all">Estimates</a></li>
             <li><a ui-sref="dashboard.sales.invoices.all">Invoices</a></li>
@@ -25,8 +25,8 @@
       </li>
       
       <li id="expenses" class="nav-item">
-        <a href="javascript:">Expenses</a>
-        <div class="container-fluid">
+        <a href="javascript:" id="link-expense">Expenses</a>
+        <div class="container-fluid link-expense-div">
           <ul class="submenu">
             <li><a ui-sref="dashboard.expenses.all">Expenses</a></li>
           <!-- <li><a href="#">Recurring Expenses</a></li> -->
@@ -42,8 +42,8 @@
       <li id="reports"><a class="nav-item" ui-sref="dashboard.reports">Reports</a></li>
       
       <li id="settings" class="nav-item">
-        <a href="javascript:">Settings</a>
-        <div class="container-fluid">
+        <a href="javascript:" id="link-settings">Settings</a>
+        <div class="container-fluid link-settings-div">
           <ul class="submenu">
             <li>
               <a ui-sref="dashboard.settings.company-profile">Company Profile</a>

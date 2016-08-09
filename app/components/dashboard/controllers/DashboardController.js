@@ -1,5 +1,11 @@
 'use strict';
 
+$(document).ready(function() {
+
+
+});
+
+
 Array.prototype.rotate = function( n ) {
   this.unshift.apply( this, this.splice( n, this.length ) )
   return this;
@@ -35,7 +41,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		});
 	};
 
-	$scope.pageReady = function(event) {
+	$scope.pageReady = function($event) {
 		var c = $state.current.name;
 		$('.nav-item').removeClass('active');
 
@@ -56,6 +62,19 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 
 		else if(c.includes('dashboard'))
 			$('#dashboard').addClass('active');
+
+		var pos = parseInt($('#link-sales').offset().left);
+		var negative_pos = pos * (-1) ;
+		$('.navigation > li .link-sales-div').css('left',negative_pos);
+
+		pos = parseInt($('#link-expense').offset().left);
+		negative_pos = pos * (-1) ;
+		$('.navigation > li .link-expense-div').css('left',negative_pos);
+
+		pos = parseInt($('#link-settings').offset().left);
+		negative_pos = pos * (-1) ;
+		$('.navigation > li .link-settings-div').css('left',negative_pos);
+		
 /*
 
 		$('.nav-item').click(function(event) {

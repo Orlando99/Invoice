@@ -33,3 +33,17 @@ select {
 .organization .submenu.show {
 	min-width: 100px;
 }
+.navigation > li .link-sales-div{
+   position: absolute;
+   top: 40px !important;
+}
+
+.navigation > li .link-expense-div{
+   position: absolute;
+   top: 40px !important;
+}
+
+.navigation > li .link-settings-div{
+   position: absolute;
+   top: 40px !important;
+}
