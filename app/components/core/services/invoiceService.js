@@ -513,7 +513,7 @@ return {
 		});
 		var toEmail = inv.entity.customerEmails[0];
 		var customerName = inv.customer.displayName;
-		var amount = currencyFilter(inv.entity.balanceDue, $, 2);
+		var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
 		var businessName = inv.organization.name;
 		var link = inv.entity.invoiceReceipt.url();
 		
@@ -688,8 +688,10 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 		var orgObj = invoice.get("organization");
 		if (orgObj) {
 			labels['mailto'] = "mailto:" + orgObj.get("email");
-			labels['logo'] = orgObj.get("logo").url();
 			labels['title'] = "Invoice from " + orgObj.get("name");
+			var logo = orgObj.get("logo");
+			if(logo)
+				labels['logo'] = orgObj.get("logo").url();
 		}
 
 		// values available from BusinessInfo

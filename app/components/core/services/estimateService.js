@@ -372,7 +372,7 @@ return {
 		});
 		var toEmail = est.entity.customerEmails[0];
 		var customerName = est.customer.displayName;
-		var amount = currencyFilter(est.entity.totalAmount, $, 2);
+		var amount = currencyFilter(est.entity.totalAmount, '$', 2);
 		var businessName = est.organization.name;
 		var link = est.entity.estimateReceipt.url();
 		
@@ -552,8 +552,10 @@ function fillInXmlData(xmlUrl, user, estimate) {
 		var orgObj = estimate.get("organization");
 		if (orgObj) {
 			labels['mailto'] = "mailto:" + orgObj.get("email");
-			labels['logo'] = orgObj.get("logo").url();
 			labels['title'] = "Estimate from " + orgObj.get("name");
+			var logo = orgObj.get("logo");
+			if(logo)
+				labels['logo'] = orgObj.get("logo").url();
 		}
 
 		// values available from BusinessInfo

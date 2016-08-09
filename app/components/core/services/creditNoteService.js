@@ -374,7 +374,7 @@ return {
 		});
 		var toEmail = credit.entity.customerEmails[0];
 		var customerName = credit.customer.displayName;
-		var amount = currencyFilter(credit.entity.remainingCredits, $, 2);
+		var amount = currencyFilter(credit.entity.remainingCredits, '$', 2);
 		var businessName = credit.organization.name;
 		var link = credit.entity.creditReceipt.url();
 		
@@ -548,8 +548,10 @@ function fillInXmlData(xmlUrl, user, creditNote) {
 		var orgObj = creditNote.get("organization");
 		if (orgObj) {
 			labels['mailto'] = "mailto:" + orgObj.get("email");
-			labels['logo'] = orgObj.get("logo").url();
 			labels['title'] = "Credit from " + orgObj.get("name");
+			var logo = orgObj.get("logo");
+			if(logo)
+				labels['logo'] = orgObj.get("logo").url();
 		}
 
 		// values available from BusinessInfo
