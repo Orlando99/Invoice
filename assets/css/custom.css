@@ -35,15 +35,15 @@ select {
 }
 .navigation > li .link-sales-div{
    position: absolute;
-   top: 40px !important;
+   top: 38px !important;
 }
 
 .navigation > li .link-expense-div{
    position: absolute;
-   top: 40px !important;
+   top: 38px !important;
 }
 
 .navigation > li .link-settings-div{
    position: absolute;
-   top: 40px !important;
+   top: 38px !important;
 }
