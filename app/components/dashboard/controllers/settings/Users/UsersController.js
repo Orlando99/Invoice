@@ -16,13 +16,6 @@ invoicesUnlimited.controller('UsersController',
 
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
-	var query = queryService.find({
-		className 	: 'User',
-		field 		: 'company',
-		value 		: user.entity[0].company
-	});
-
-
 	$scope.deleteUser = function($index) {
 		showLoader();
 		Parse.Cloud.run('deleteUser',{
@@ -60,12 +53,12 @@ invoicesUnlimited.controller('UsersController',
 			}
 		});
 
-		modalInstance.result.then(function(user){
+		modalInstance.result.then(function(prUser){
 			setObjectOperations({
-				object 		: user,
-				fields 		: appFields.user
+				object 		: prUser,
+				fields 		: appFields.projectUser
 			});
-			$scope.users[id] = user;
+			$scope.users[id] = prUser;
 		},function(){
 			console.log('Dismiss modal');
 		});
@@ -98,23 +91,24 @@ invoicesUnlimited.controller('UsersController',
 			}
 		});
 
-		modalInstance.result.then(function(user){
+		modalInstance.result.then(function(newUser){
 			setObjectOperations({
-				object 		: user,
+				object 		: newUser,
 				fields 		: appFields.user
 			});
 			var prUser = projectUserFactory
 			.createNew({
-				emailID 	 : user.email,
-				role 		 : user.role,
-				userName	 : user.username,
-				country		 : user.country,
-				title		 : user.fullName,
-				organization : user.selectedOrganization,
-				companyName  : user.company,
-				userID 		 : user
+				emailID 	 : newUser.email,
+				role 		 : newUser.role,
+				userName	 : newUser.username,
+				country		 : newUser.country,
+				title		 : newUser.fullName,
+				organization : newUser.selectedOrganization,
+				companyName  : newUser.company,
+				userID 		 : newUser
 			}).then(function(res){
-				$scope.users = res;
+				debugger;
+				$scope.users.push(res);
 			});
 		},function(){
 			console.log('Dismiss modal');

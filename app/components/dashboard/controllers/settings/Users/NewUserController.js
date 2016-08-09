@@ -10,9 +10,20 @@ invoicesUnlimited.controller('NewUserController',
 		return;
 	}
 
+	var errorHandler = function(er){
+		console.log(er);
+		hideLoader();
+		$uibModalInstance.dismiss(er.message);
+	}
+
+	$scope.user = user.get('userID') || user;
+	setObjectOperations({
+		object : $scope.user,
+		fields : appFields.user
+	});
+
 	$scope.method = method;
 	$scope.title = title;
-	$scope.user = user;
 	$scope.user.password = '';
 
 	$scope.delete = function() {
@@ -25,10 +36,7 @@ invoicesUnlimited.controller('NewUserController',
 				$scope.users.splice($index,1);
 			});
 			hideLoader();
-		},function(e){
-			console.log(e.message);
-			hideLoader();
-		});
+		},errorHandler);
 	}
 
 	$scope.update = function(){
@@ -44,22 +52,25 @@ invoicesUnlimited.controller('NewUserController',
 				params 	: params
 			}
 		}).then(function(id){
-			queryService.first({
-				className  	: '_User',
-				field 		: 'id',
-				value 		: id
-			}).then(function(user){
-				$uibModalInstance.close(user);
-			},function(er){
-				console.log(er.message);
-				hideLoader();
-				$uibModalInstance.dismiss(er.message);
+			var ptr = Parse.User.createWithoutData(id);
+			return queryService.ext.first({
+				className  	: 'ProjectUser',
+				field 		: 'userID',
+				value 		: ptr,
+				methods 	: [{name:'include',param:'userID'}]
 			});
-		},function(er){
-			console.log(er);
-			hideLoader();
-			$uibModalInstance.dismiss(er.message);
-		});
+		},errorHandler)
+		.then(function(user){
+			return user.save({
+				role 		: $scope.user.role,
+				userName 	: $scope.user.username,
+				title 		: $scope.user.fullName,
+				emailID 	: $scope.user.email
+			});
+		},errorHandler)
+		.then(function(user){
+			$uibModalInstance.close(user);
+		},errorHandler);
 	}
 
 	$scope.save = function(){
@@ -73,9 +84,8 @@ invoicesUnlimited.controller('NewUserController',
 		$scope.user.set('subscription',false);
 		debugger;
 		var errorFunc = function(er){
-			$uibModalInstance.dismiss(er);
-			alert(er.message);
 			console.log(er.message);
+			$uibModalInstance.dismiss(er);
 		};
 		appFields.newCustomer.forEach(function(field){
 			$scope.user.set(field,userFactory.entity[0].get(field));

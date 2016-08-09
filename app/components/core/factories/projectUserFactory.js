@@ -28,7 +28,7 @@ invoicesUnlimited.factory('projectUserFactory',
 				fields : appFields.projectUser
 			});
 			projectUser.entities.push(o);
-			return projectUser.entities;
+			return o;
 		},function(e){
 			console.log(e.message);
 		});
@@ -42,6 +42,7 @@ invoicesUnlimited.factory('projectUserFactory',
 	var loadAll = function(){
 		var query = new Parse.Query('ProjectUser');
 		query.equalTo('companyName',user.entity[0].company);
+		query.include('userID');
 		return query.find()
 		.then(function(res){
 			projectUser.entities = res.map(function(obj){

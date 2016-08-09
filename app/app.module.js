@@ -152,7 +152,7 @@ var defineXProperties = function(object,fields){
 
 function setObjectOperations(object,fieldName,parent,fields,xFields){
 
-  if (!(arguments.length>1)) {
+  if (arguments.length == 1) {
     fields = object.fields;
     parent = object.parent;
     fieldName = object.fieldName;
@@ -167,7 +167,7 @@ function setObjectOperations(object,fieldName,parent,fields,xFields){
   object.destroyDeep = function(){
     return object.destory().then(function(obj){
       parent.unset(fieldName);
-      return user.save();
+      return parent.save();
     });
   };
 }
