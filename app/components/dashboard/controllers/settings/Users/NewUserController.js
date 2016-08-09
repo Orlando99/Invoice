@@ -32,11 +32,12 @@ invoicesUnlimited.controller('NewUserController',
 			identificator : $scope.user.id
 		})
 		.then(function(res){
-			$scope.$apply(function() {
-				$scope.users.splice($index,1);
-			});
+			return user.destroy();	
+		},errorHandler)
+		.then(function(user){
 			hideLoader();
-		},errorHandler);
+			$uibModalInstance.dismiss({deleted : true});
+		});
 	}
 
 	$scope.update = function(){

@@ -7,8 +7,6 @@ invoicesUnlimited.controller('UsersController',
 
 	var user = userFactory;
 
-	$scope.users = [];
-
 	if (!user.entity.length) {
 		$state.go('login');
 		return;
@@ -16,10 +14,23 @@ invoicesUnlimited.controller('UsersController',
 
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
+	$scope.users = [];
+	$scope.sendInvite = false;
+
 	$scope.deleteUser = function($index) {
 		showLoader();
+		var userObj = $scope.users[$index].get('userID');
+
+		if (!userObj) return;
+
 		Parse.Cloud.run('deleteUser',{
-			identificator : $scope.users[$index].id
+			identificator : userObj.id
+		})
+		.then(function(res){
+			return $scope.users[$index].destroy();
+		},function(e){
+			console.log(e.message);
+			hideLoader();
 		})
 		.then(function(res){
 			$scope.$apply(function() {
@@ -59,8 +70,11 @@ invoicesUnlimited.controller('UsersController',
 				fields 		: appFields.projectUser
 			});
 			$scope.users[id] = prUser;
-		},function(){
+		},function(res){
 			console.log('Dismiss modal');
+			if (res && res.deleted) {
+				$scope.users.splice(id,1);
+			}
 		});
 	}
 
@@ -105,10 +119,14 @@ invoicesUnlimited.controller('UsersController',
 				title		 : newUser.fullName,
 				organization : newUser.selectedOrganization,
 				companyName  : newUser.company,
-				userID 		 : newUser
+				userID 		 : newUser,
+				status 		 : 'Activated'
 			}).then(function(res){
-				debugger;
-				$scope.users.push(res);
+				$scope.$apply(function(){
+					$scope.users.push(res);
+				});
+			},function(e){
+				console.log(e.message);
 			});
 		},function(){
 			console.log('Dismiss modal');
