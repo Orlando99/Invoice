@@ -79,7 +79,7 @@ invoicesUnlimited.factory('userFactory',function(appFields){
 				success: function(user){
 					setObjectOperations({
 						object 		: user,
-						fields 		: fields});
+						fields 		: appFields.user});
 					User.entity.pop();
 					User.entity.push(user);
 					console.log(user.className + ' created');

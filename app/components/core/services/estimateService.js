@@ -382,11 +382,11 @@ return {
 			+ '. Please confirm that the estimate is correct. <a href="'
 			+ link + '">Click here to view.</a>';
 
-		return Parse.Cloud.run("sendMailgun", {
+		return Parse.Cloud.run("sendMailgunHtml", {
 			toEmail: toEmail,
 			fromEmail: "no-reply@invoicesunlimited.com",
 			subject : emailSubject,
-			message : emailBody
+			html : emailBody
 		}).then(function(msg) {
 			console.log(msg);
 			estimate.set('status', 'Sent');
