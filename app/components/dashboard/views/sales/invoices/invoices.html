@@ -23,7 +23,7 @@
       ui-sref="dashboard.sales.invoices.details({invoiceId:invoice.entity.id})">
         <td class="text-color-light">{{invoice.invoiceDate}}</td>
         <td class="text-color-light">{{invoice.entity.invoiceNumber}}</td>
-        <td class="text-color-light"></td>
+        <td class="text-color-light">{{invoice.entity.poNumber}}</td>
         <td class="text-color-light">{{invoice.customer.displayName}}</td>
         <td><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
         <td class="text-color-light">{{invoice.dueDate}}</td>

@@ -149,7 +149,7 @@ invoicesUnlimited.controller('SignupController',
 			company : "Please specify your company !",
 			password: {
 				required : "Please specify your password !",
-				minlength : "password should contain atleast 6 characters"
+				minlength : "Password should contain atleast 6 characters"
 			}, //"Please specify your password !",
 			confirmpassword: {
 				required : "Please specify your confirm password !",

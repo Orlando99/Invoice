@@ -15,7 +15,7 @@
         <button class="float-right layout-margin-tb button button-info text-uppercase">Invite User</button>
         <a ng-click="createUser();" class="float-right layout-margin-tb layout-margin-r button button-add text-uppercase modal-opener" data-toggle="invite-user">New</a>
         <form class="float-right layout-margin-tb">
-          <input type="text" class="search-bar layout-margin-r" placeholder="Search">
+          <input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.title">
         </form>
 
         <div class="clearfix"></div>
@@ -28,7 +28,7 @@
             <td class="text-uppercase text-info layout-padding">Status</td>
             <td class="text-uppercase text-info layout-padding text-right actions"></td>
           </tr>
-          <tr ng-repeat="user in users track by $index" class="user-row">
+          <tr ng-repeat="user in users | filter:search track by $index" class="user-row">
             <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.title}}</td>
             <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.emailID}}</td>
             <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.role}}</td>

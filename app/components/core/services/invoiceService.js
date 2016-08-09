@@ -454,7 +454,7 @@ return {
 		query.equalTo("organization", organization);
 		query.include("customer");
 		query.select("invoiceNumber", "invoiceDate", "dueDate",
-			"total", "balanceDue", "status", "customer");
+			"total", "balanceDue", "status", "customer", "poNumber");
 
 		return query.find().then(function(invoiceObjs) {
 			var invoices = [];

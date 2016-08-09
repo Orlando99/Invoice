@@ -16,7 +16,7 @@ function Invoice(parseObject, params) {
 		invoiceFields = [
 			"invoiceNumber", "invoiceDate",
 			"dueDate", "total", "balanceDue",
-			"status"
+			"status", "poNumber"
 		];
 		var customer = parseObject.get("customer");
 		if (customer) {
