@@ -127,15 +127,22 @@
 	        	<label class="layout-padding-t-smm">Password</label>
 	        	<input ng-model="password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required></input>
 	      	</div>
-	      	<div class="input-container layout-margin-b">
+	      	<div class="input-container layout-margin-b input-checkbox-container">
 	        	<label class="layout-padding-t-smm">Role</label>
-	        	<select ng-model="user.role" pattern="Staff|Admin|Main" required class="col-75">
+	        	<select ng-model="user.role" pattern="Staff|Admin|Main" required class="col-75 layout-margin-b">
 	          		<option value="" selected>Select the Role</option>
 	        		<option value="Admin">Admin</option>
 	        		<option value="Staff">Staff</option>
 	        		<option value="Main">Main</option>
 	        	</select>
-	        	<p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
+	        	<label class="layout-padding-t-smm"></label>
+	      		<label class="min-width-0 layout-margin-b">
+					<input type="checkbox">
+					<span class="checkbox float-left"></span>
+				</label>
+				<span class="pull-right layout-no-padding">Send invitation</span>
+				<p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
+
 	    	</div>
 	    	<button ng-show="method == 'create'" ng-click="save();" type="submit" class="button button-info text-uppercase">Save</button>
 	    	<button ng-show="method == 'update'" ng-click="update();" class="button button-info text-uppercase float-left">Save</button>
