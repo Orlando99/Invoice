@@ -28,6 +28,12 @@ return {
 		.then(function(fee) {
 			return new lateFeeFactory(fee);
 		});
+	},
+	updateLateFee : function(obj) {
+		return obj.save()
+		.then(function(fee) {
+			return new lateFeeFactory(fee);
+		});
 	}
 };
 

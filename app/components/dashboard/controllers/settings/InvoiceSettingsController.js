@@ -110,8 +110,12 @@ function lateFeeNameHelper(obj) {
 		fee.type + ')';
 }
 
-$scope.prepareAddLateFee = function() {
-	$('#latefeeForm').validate({
+$scope.prepareAddFeeForm = function() {
+	$scope.latefeeName = '';
+	$scope.selectedFeeType = $scope.latefeeTypes[0];
+	$scope.latefeeAmount = '';
+
+	$('#addLateFeeForm').validate({
 		rules: {
 			name : 'required',
 			type : 'required',
@@ -122,12 +126,12 @@ $scope.prepareAddLateFee = function() {
 			}
 		}
 	});
-	$('#latefeeForm').validate().resetForm();
+	$('#addLateFeeForm').validate().resetForm();
 }
 
 $scope.addLateFee = function() {
-	if (! $('#latefeeForm').valid()) return;
-	
+	if (! $('#addLateFeeForm').valid()) return;
+
 	showLoader();
 	var params = {
 		userID : user,
@@ -148,6 +152,51 @@ $scope.addLateFee = function() {
 		hideLoader();
 	});
 
+}
+
+$scope.prepareEditFeeForm = function() {
+	var obj = $scope.lateFees[
+		$scope.feeList.indexOf($scope.selectedFee)];
+	if (! obj) return;
+
+	var obj = obj.entity;
+	$scope.latefeeName = obj.name;
+	$scope.selectedFeeType = obj.type;
+	$scope.latefeeAmount = obj.price;
+
+	$('#editLateFeeForm').validate({
+		rules: {
+			name : 'required',
+			type : 'required',
+			amount : {
+				required : true,
+				number : true,
+				min : 0.01
+			}
+		}
+	});
+	$('#editLateFeeForm').validate().resetForm();
+}
+
+$scope.updateLateFee = function() {
+	var index = $scope.feeList.indexOf($scope.selectedFee);
+	var obj = $scope.lateFees[index];
+	if (! (obj && $('#editLateFeeForm').valid()) ) return;
+	
+	showLoader();
+	obj = obj.entity;
+	obj.set('name', $scope.latefeeName);
+	obj.set('type', $scope.selectedFeeType);
+	obj.set('price', Number($scope.latefeeAmount));
+
+	$q.when(lateFeeService.updateLateFee(obj))
+	.then(function(newObj) {
+		$scope.lateFees[index] = newObj;
+		$scope.feeList[index] = lateFeeNameHelper(newObj);
+		$scope.selectedFee = $scope.feeList[index];
+		$('.edit-latefee').removeClass('show');
+		hideLoader();
+	});
 }
 
 $scope.removeField = function(index) {
