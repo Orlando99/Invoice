@@ -31,7 +31,8 @@ label#verificationCode-error {
 	right: 100px;
 }
 
-option:first {
+option:first-child {
+    background-color: lightgrey;
     color: #999;
 }
 

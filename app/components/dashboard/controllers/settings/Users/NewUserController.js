@@ -2,15 +2,13 @@
 
 invoicesUnlimited.controller('NewUserController',
 	function($scope,$state,userFactory,roleFactory,$controller,
-		$q,$uibModalInstance,user,method,title,appFields){
+		$q,$uibModalInstance,user,method,title,appFields,queryService){
 
 	if (!userFactory.entity.length) {
 		$uibModalInstance.dismiss('No signed in user');
 		$state.go('login');
 		return;
 	}
-
-	$scope.sendInvite = false;
 
 	var errorHandler = function(er){
 		if (!er) return;
@@ -20,6 +18,7 @@ invoicesUnlimited.controller('NewUserController',
 	}
 
 	$scope.user = user.get('userID') || user;
+	$scope.user.status = user.status;
 	setObjectOperations({
 		object : $scope.user,
 		fields : appFields.user
@@ -51,6 +50,7 @@ invoicesUnlimited.controller('NewUserController',
 			params[fld] = $scope.user[fld];
 		});
 		showLoader();
+
 		Parse.Cloud.run('UpdateUser',{
 			user : {
 				id 		: $scope.user.id,
@@ -58,22 +58,25 @@ invoicesUnlimited.controller('NewUserController',
 			}
 		}).then(function(id){
 			var ptr = Parse.User.createWithoutData(id);
-			return queryService.ext.first({
+			return queryService.ext.find({
 				className  	: 'ProjectUser',
 				field 		: 'userID',
 				value 		: ptr,
 				methods 	: [{name:'include',param:'userID'}]
 			});
 		},errorHandler)
-		.then(function(user){
-			return user.save({
+		.then(function(res){
+			if (!res.length) return Parse.Promise.as(false);
+			return res[0].save({
 				role 		: $scope.user.role,
 				userName 	: $scope.user.username,
 				title 		: $scope.user.fullName,
-				emailID 	: $scope.user.email
+				emailID 	: $scope.user.email,
+				status 		: $scope.user.status
 			});
 		},errorHandler)
 		.then(function(user){
+			hideLoader();
 			$uibModalInstance.close(user);
 		},errorHandler);
 	}
@@ -87,11 +90,9 @@ invoicesUnlimited.controller('NewUserController',
 		$scope.user.set('isTrackUsage',1);
 		$scope.user.set('getInvoiceNotification',1);
 		$scope.user.set('subscription',false);
-		var errorFunc = function(er){
-			console.log(er.message);
-			$uibModalInstance.dismiss(er);
-		};
-		appFields.newCustomer.forEach(function(field){
+
+		appFields.newCustomer
+		.forEach(function(field){
 			$scope.user.set(field,userFactory.entity[0].get(field));
 		});
 
@@ -104,16 +105,12 @@ invoicesUnlimited.controller('NewUserController',
 					 + "Password: " + $scope.user.password + "<br/><br/>"
 					 + "Sent from Invoices Unlimited";
 
-		debugger;
-
 		$scope.user.save()
 		.then(function(user){
 			return roleFactory.addUser(user);
 		},errorHandler)
 		.then(function(role){
-			debugger;
 			if (!$scope.user.sendInvite) return Parse.Promise.as(true);
-			debugger;
 			return Parse.Cloud.run('sendMailgunHtml',{
 				toEmail 	: $scope.user.email,
 				fromEmail 	: "no-reply@invoicesunlimited.com",
