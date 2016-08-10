@@ -135,7 +135,7 @@
 	        		<option value="Staff">Staff</option>
 	        		<option value="Main">Main</option>
 	        	</select>
-	        	<label class="layout-padding-t-smm">Status</label>
+	        	<label class="layout-padding-t-smm" ng-if="method == 'update'">Status</label>
 	        	<select ng-model="user.status" ng-if="method == 'update'" pattern="Activated|Deactivated" required class="col-75 layout-margin-b">
 	          		<option value="" disabled>Change the Status</option>
 	        		<option value="Activated">Activated</option>
