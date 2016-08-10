@@ -30,6 +30,11 @@ select {
 	cursor: pointer;
 }
 
+.organization .submenu {
+	position: absolute;
+	left: 0px;
+}
+
 .organization .submenu.show {
 	min-width: 100px;
 }
