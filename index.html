@@ -125,7 +125,7 @@
 	      	</div>
 	      	<div class="input-container layout-margin-b" ng-if="method == 'create'">
 	        	<label class="layout-padding-t-smm">Password</label>
-	        	<input ng-model="password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required></input>
+	        	<input ng-model="user.password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required></input>
 	      	</div>
 	      	<div class="input-container layout-margin-b input-checkbox-container">
 	        	<label class="layout-padding-t-smm">Role</label>
@@ -137,7 +137,7 @@
 	        	</select>
 	        	<label class="layout-padding-t-smm"></label>
 	      		<label class="min-width-0 layout-margin-b" ng-if="method == 'create'">
-					<input type="checkbox" ng-model="sendInvite">
+					<input type="checkbox" ng-model="user.sendInvite">
 					<span class="checkbox float-left"></span>
 				</label>
 				<span class="pull-right layout-no-padding" ng-if="method == 'create'">Send invitation</span>

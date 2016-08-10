@@ -15,7 +15,6 @@ invoicesUnlimited.controller('UsersController',
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
 	$scope.users = [];
-	$scope.sendInvite = false;
 
 	$scope.deleteUser = function($index) {
 		showLoader();

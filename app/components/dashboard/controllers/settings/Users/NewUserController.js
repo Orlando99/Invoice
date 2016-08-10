@@ -10,7 +10,10 @@ invoicesUnlimited.controller('NewUserController',
 		return;
 	}
 
+	$scope.sendInvite = false;
+
 	var errorHandler = function(er){
+		if (!er) return;
 		console.log(er);
 		hideLoader();
 		$uibModalInstance.dismiss(er.message);
@@ -25,6 +28,7 @@ invoicesUnlimited.controller('NewUserController',
 	$scope.method = method;
 	$scope.title = title;
 	$scope.user.password = '';
+	$scope.user.sendInvite = false;
 
 	$scope.delete = function() {
 		showLoader();
@@ -83,7 +87,6 @@ invoicesUnlimited.controller('NewUserController',
 		$scope.user.set('isTrackUsage',1);
 		$scope.user.set('getInvoiceNotification',1);
 		$scope.user.set('subscription',false);
-		debugger;
 		var errorFunc = function(er){
 			console.log(er.message);
 			$uibModalInstance.dismiss(er);
@@ -91,13 +94,40 @@ invoicesUnlimited.controller('NewUserController',
 		appFields.newCustomer.forEach(function(field){
 			$scope.user.set(field,userFactory.entity[0].get(field));
 		});
+
+		var htmlBody = "Hello " + $scope.user.fullName + ",<br/><br/>"
+					 + "You have been invited by " + $scope.user.company + " to use "
+					 + "Invoice Unlimited as " + $scope.user.role + ".<br/>"
+					 + "Please visit the <a href='http://invoicesunlimited.com/app/'>Link</a> and log in"
+					 + "with your username and password listed below.<br/><br/>"
+					 + "Username: " + $scope.user.username + "<br/>"
+					 + "Password: " + $scope.user.password + "<br/><br/>"
+					 + "Sent from Invoices Unlimited";
+
+		debugger;
+
 		$scope.user.save()
 		.then(function(user){
 			return roleFactory.addUser(user);
-		},errorFunc)
+		},errorHandler)
 		.then(function(role){
+			debugger;
+			if (!$scope.user.sendInvite) return Parse.Promise.as(true);
+			debugger;
+			return Parse.Cloud.run('sendMailgunHtml',{
+				toEmail 	: $scope.user.email,
+				fromEmail 	: "no-reply@invoicesunlimited.com",
+				subject 	: 'Invoice Unlimited Login',
+				html 		: htmlBody
+			}).then(function(res) {
+				return res;
+			},function(e){
+				return e;
+			});
+		},errorHandler)
+		.then(function(res){
 			$uibModalInstance.close($scope.user);
-		},errorFunc);
+		},errorHandler);
 	}
 
 	$scope.closeModal = function(){
