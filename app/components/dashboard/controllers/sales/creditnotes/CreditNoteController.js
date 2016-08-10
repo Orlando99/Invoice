@@ -377,6 +377,7 @@ function reCalculateSubTotal() {
 	var items = $scope.creditItems;
 	var subTotal = 0;
 	var totalTax = 0;
+	$scope.itemTaxes = [];
 
 	// no need to check discountType,
 	// itemInfo.discount is zero, so, expression will evaluate to 1.
@@ -384,6 +385,12 @@ function reCalculateSubTotal() {
 		subTotal += item.amount * ((100 - item.discount) * 0.01);
 		item.taxValue = calculateTax(item.amount, item.selectedTax);
 		totalTax += item.taxValue;
+		if (item.selectedTax) {
+			$scope.itemTaxes.push({
+				nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
+				amount: currencyFilter(item.taxValue, '$', 2)
+			});
+		}
 	});
 
 	$scope.totalTax = totalTax;

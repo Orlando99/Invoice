@@ -135,6 +135,10 @@
               </p>
               <label class="col-35 text-right layout-padding-t-smm">{{adjustmentsStr}}</label>
             </div>
+            <div class="col-90 layout-margin-tb" ng-repeat="tax in itemTaxes">
+              <label class="col-60 text-right layout-padding-t-smm">{{tax.nameValue}}</label>
+              <label class="col-40 text-right layout-padding-t-smm">{{tax.amount}}</label>
+            </div>
           </form>
         </div>
         <div class="table-row row-border layout-padding layout-margin-tb">

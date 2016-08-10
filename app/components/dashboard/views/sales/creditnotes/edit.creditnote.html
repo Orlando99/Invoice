@@ -98,6 +98,12 @@
           <div class="col-25">Sub Total</div>
           <div class="col-65 text-right">{{subTotalStr}}</div>
           <br>
+          <form class="inputs-white">
+            <div class="col-90 layout-margin-tb" ng-repeat="tax in itemTaxes">
+              <label class="col-60 text-right layout-padding-t-smm">{{tax.nameValue}}</label>
+              <label class="col-40 text-right layout-padding-t-smm">{{tax.amount}}</label>
+            </div>
+          </form>
         </div>
         <div class="table-row row-border layout-padding layout-margin-tb">
           <div class="col-60 pull-right">
