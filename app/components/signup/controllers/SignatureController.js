@@ -34,12 +34,21 @@ invoicesUnlimited.controller('SignatureController',
 	$('.signature').css({height:$(window).height()-$('.sticky-nav').height() - parseInt($('.sticky-nav').css('padding-top'))*2 - 1});
 
 	$scope.submitSignature = function(){
+		var a = false, b = false;
+		$('#sigForm').validate().resetForm();
 		if ($('#sig').signature("isEmpty")) {
 			$('#sigForm').validate().showErrors({
 				'sigError' : 'Please provide signature'
 			});
-			return;
-		}
+		} else a = true;
+
+		if(! $('input[name="agree"]:checked').length) {
+			$('#sigForm').validate().showErrors({
+				'agree' : 'Please agree to the Terms'
+			});
+		} else b = true;
+
+		if(! (a && b)) return;
 		
 		showLoader();
 
