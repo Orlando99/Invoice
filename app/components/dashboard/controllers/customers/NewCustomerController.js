@@ -43,6 +43,16 @@ invoicesUnlimited.controller('NewCustomerController',
 		tempShippingAddress : {}
 	}
 
+	$('#new-customer-form').validate({
+		rules: {
+			displayName: 'required',
+			email : {
+				required : true,
+				email : true
+			}
+		}
+	});
+
 	$scope.setShippingAddress = function(){
 		if ($scope.newCustomer && !$scope.shipping.setShippingTheSame) {
 			$scope.newCustomer.shippingAddress = 
@@ -62,8 +72,13 @@ invoicesUnlimited.controller('NewCustomerController',
 
 	$scope.saveCustomer = function(){
 
-		var form = document.getElementById('new-customer-form');
-		if (!form.reportValidity()) return;
+	//	var form = document.getElementById('new-customer-form');
+		if (! $('#new-customer-form').valid()) {
+			var v = $('#new-customer-form').validate();
+			var offset = $(v.errorList[0].element).offset().top - 30;
+			scrollToOffset(offset);
+			return;
+		}
 
 		showLoader();
 

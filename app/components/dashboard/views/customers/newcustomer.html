@@ -23,7 +23,7 @@
 
       <div class="input-container input-info input-select-info layout-margin-b">
         <label class="layout-padding-t-sm">Display Name</label>
-        <input class="col-75 pull-right" ng-click="displayNameClicked = true;" type="text" placeholder="Display Name" ng-model="newCustomer.entity.displayName" required/>
+        <input class="col-75 pull-right" ng-click="displayNameClicked = true;" type="text" placeholder="Display Name" ng-model="newCustomer.entity.displayName" name="displayName" required/>
         <span class="info-icon info-icon-gray"></span>
         <p class="info-tooltip tooltip-dark">
           This is the name that will display for this contact for invoices, estimates, &amp; projects.
@@ -38,7 +38,7 @@
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Email Address</label>
-        <input type="email" placeholder="Email" ng-model="newCustomer.entity.email" class="col-75" required>
+        <input name="email" type="text" placeholder="Email" ng-model="newCustomer.entity.email" class="col-75" required/>
       </div>
 
     </form>
