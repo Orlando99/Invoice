@@ -78,7 +78,11 @@
     <div class="clearfix"></div>
 
     <h3 class="layout-margin-t section-title text-uppercase text-color-normalize float-left">Attachments</h3>
-  <!-- <button class="layout-margin-t button button-no-bg float-right">+ Add</button> -->
+    <label>
+      <input type="file" style="display: none;"
+        onchange="angular.element(this).scope().addAttachment(this)">
+      <div class="layout-margin-t button button-no-bg float-right">+ Add</div>
+    </label>
 
     <div class="clearfix"></div>
 

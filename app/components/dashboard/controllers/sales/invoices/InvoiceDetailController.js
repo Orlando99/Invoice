@@ -348,4 +348,30 @@ $scope.refundPayment = function() {
 	});
 }
 
+$scope.addAttachment = function(obj) {
+	var file = obj.files[0];
+	if (!file) return;
+
+	showLoader();
+	var invoiceObj = $scope.invoice.entity;
+	var parseFile = new Parse.File(file.name, file);
+
+	$q.when(parseFile.save())
+	.then(function(fileObj) {
+		var fileList = invoiceObj.get('invoiceFiles');
+		if(fileList)
+			fileList.push(fileObj)
+		else
+			fileList = [fileObj];
+
+		invoiceObj.set('invoiceFiles', fileList);
+		invoiceObj.unset('invoiceReceipt');
+		return invoiceObj.save();
+	})
+	.then(function(invObj) {
+		$state.reload();
+		hideLoader();
+	});
+}
+
 }]);
