@@ -222,8 +222,6 @@ invoicesUnlimited.controller('CustomersController',
 			});
 
 			if (isGoTo.details($state.current.name)) {
-				$('.workPhone').mask('(000) 000-0000');
-				$('.mobilePhone').mask('0 (000) 000-0000',mobileOptions);
 				doSelectCustomerIfValidId(customerId);
 			}
 			else if (isGoTo.edit($state.current.name)) {
@@ -303,6 +301,8 @@ invoicesUnlimited.controller('CustomersController',
 				}
 			}
 		});
+		$('.workPhone').mask('(000) 000-0000');
+		$('.mobilePhone').mask('0 (000) 000-0000',mobileOptions);
 
 		modalInstance.result.then(function(contact){
 			$scope.selectedCustomer.contactPersons.push(contact);
