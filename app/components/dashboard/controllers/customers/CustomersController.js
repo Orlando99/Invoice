@@ -159,7 +159,7 @@ invoicesUnlimited.controller('CustomersController',
 	$scope.deleteSelectedCustomer = function(){
 		if ($scope.selectedCustomer.invoices &&
 			$scope.selectedCustomer.invoices.length) {
-			ShowMessage("Customer with invoices involved cannot be deleted!","error");
+			ShowMessage("Customers with invoices involved cannot be deleted!","error");
 			return;
 		}
 		showLoader();

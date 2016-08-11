@@ -101,7 +101,11 @@
           <td class="layout-padding-tb"></td>
         </tr>
         <tr class="text-color-light" ng-repeat="person in selectedCustomer.contactPersons track by $index">
-          <td class="layout-padding-tb-lg valign-top">{{person.entity.firstname+' '+person.entity.lastname}}</td>
+          <td class="layout-padding-tb-lg valign-top">{{person.entity.firstname+' '+person.entity.lastname}}
+           <div ng-show="person.entity.defaultPerson">
+           <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+         </div>
+          </td>
           <td class="layout-padding-tb-lg valign-top">
           <span ng-show="person.entity.mobile">{{'M: '+person.entity.mobile}}<br/></span>
           <span ng-show="person.entity.phone">{{'W: '+person.entity.phone}}</td>
