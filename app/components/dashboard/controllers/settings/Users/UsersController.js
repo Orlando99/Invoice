@@ -16,6 +16,8 @@ invoicesUnlimited.controller('UsersController',
 
 	$scope.users = [];
 
+	hideLoader();
+
 	$scope.deleteUser = function($index) {
 		showLoader();
 		var userObj = $scope.users[$index].get('userID');

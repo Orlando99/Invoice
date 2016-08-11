@@ -53,6 +53,7 @@ if (! (bInfo && pInfo && aInfo && signature)) {
 	$scope.email = 'support@invoicesunlimited.com';
 }
 
+hideLoader();
 
 $scope.continueProcess = function() {
 	$rootScope.fromPaymentSettings = true;

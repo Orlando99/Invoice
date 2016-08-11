@@ -228,6 +228,7 @@ invoicesUnlimited.controller('CustomersController',
 				doSelectCustomerIfValidId(customerId);
 				doCreateEditObject();
 			}
+			hideLoader();
 		});
 	};
 

@@ -13,6 +13,8 @@ invoicesUnlimited.controller('CompanyProfileController',
 	if (!user) $state.go('login');
 	else loadColorTheme(user);
 
+	hideLoader();
+
 	$scope.UserInfo = {
 		name 		: user.get("fullName"),
 		email 		: user.get("email"),

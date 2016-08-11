@@ -52,3 +52,7 @@ select {
    position: absolute;
    top: 38px !important;
 }
+
+.optionDropDown > ul {
+	left : -80px;
+}

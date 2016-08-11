@@ -48,6 +48,7 @@ function CheckUseCase(stateName) {
 
 	} else if (isGoTo.currencies(stateName)) {
 		console.log('its in currency');
+		hideLoader();
 
 	} else if (isGoTo.templates(stateName)) {
 	//	console.log('select invoice template');
@@ -56,12 +57,15 @@ function CheckUseCase(stateName) {
 	} else if (isGoTo.general(stateName)) {
 	//	console.log('in general preferences')
 		loadGeneralSettings();
+	} else {
+		hideLoader();
 	}
 
 }
 
 //------ Users Settings ------
 function showUserFields() {
+	console.log('xyzz');
 	$scope.users = [{
 		name : user.get('username'),
 		email : user.get('email'),
@@ -69,6 +73,7 @@ function showUserFields() {
 		status : 'Active',
 		textClass : 'text-positive'
 	}];
+	hideLoader();
 }
 
 //------ General Preferences Settings ------
@@ -207,6 +212,7 @@ $scope.setDefaultPrefs = function() {
 
 //------ Invoice Template Settings ------
 function loadInvoiceTemplates() {
+	showLoader();
 	$q.when(coreFactory.getInvoiceTemplates())
 	.then(function(templateObjs) {
 		var defaultTemplate = user.get('defaultTemplate');
@@ -227,8 +233,10 @@ function loadInvoiceTemplates() {
 
 		});
 		$scope.templates = templates;
+		hideLoader();
 
 	}, function(error) {
+		hideLoader();
 		console.log(error.message);
 	});
 }

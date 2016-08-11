@@ -31,6 +31,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		.then(function(){
 			resetColorTheme();
 			businessFactory.entity = [];
+			coreFactory.allCustomers = undefined;
 			user.commonData = {};
 			$state.go('login');
 		});
@@ -97,18 +98,19 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 	.then(function(obj){
 		if (obj.length && obj[0]) {
 			$scope.businessInfo = obj[0].entity[0];
-			hideLoader();
+	//		hideLoader();
 		} else $scope.logOut().then(function(){
-			hideLoader();
+	//		hideLoader();
 		});
 	}, function(error){
-		hideLoader();
+	//	hideLoader();
 		$scope.logOut();
 	});
 
 	if (! $state.current.name.endsWith('dashboard'))
 		return;
 
+	hideLoader();
 	var organization = user.entity[0].get("organizations")[0];
 
 	var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY',

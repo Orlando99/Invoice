@@ -12,6 +12,7 @@ invoicesUnlimited.controller('AppPreferencesController',
 		if (color) color = color.replace(/app|Color/g,"").toLowerCase();
 		if (color) $('.colors li a.' + color).parent().addClass("active");
 	}
+	hideLoader();
 
 	$scope.saveAppPreferences = function(){
 		showLoader();
