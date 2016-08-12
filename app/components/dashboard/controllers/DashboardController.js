@@ -6,9 +6,9 @@ Array.prototype.rotate = function( n ) {
 }
 
 invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory','businessFactory','$q',
-	'invoiceService', 'expenseService', 'coreFactory', 'currencyFilter',
+	'invoiceService', 'expenseService', 'coreFactory', 'currencyFilter','projectUserFactory',
 function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseService,
-	coreFactory,currencyFilter){
+	coreFactory,currencyFilter,projectUserFactory){
 
 	showLoader();
 
@@ -33,6 +33,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 			businessFactory.entity = [];
 			coreFactory.allCustomers = undefined;
 			user.commonData = {};
+			projectUserFactory.clearAllOnLogOut();
 			$state.go('login');
 		});
 	};

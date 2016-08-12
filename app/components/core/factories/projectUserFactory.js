@@ -10,6 +10,11 @@ invoicesUnlimited.factory('projectUserFactory',
 		entities : []
 	}
 
+	projectUser.clearAllOnLogOut = function() {
+		if (user.entity.length) throw "User should be logged out first!";
+		projectUser.entities.length = 0;
+	};
+
 	projectUser.prepareNew = function() {
 		var ctor = Parse.Object.extend('ProjectUser');
 		var prUser = new ctor();
@@ -18,7 +23,7 @@ invoicesUnlimited.factory('projectUserFactory',
 			fields : appFields.projectUser
 		});
 		return prUser;
-	}
+	};
 
 	projectUser.saveNew = function(obj,props) {
 		return obj.save(props ? props : null)
@@ -32,12 +37,12 @@ invoicesUnlimited.factory('projectUserFactory',
 		},function(e){
 			console.log(e.message);
 		});
-	}
+	};
 
 	projectUser.createNew = function(params) {
 		var prUser = projectUser.prepareNew();
 		return projectUser.saveNew(prUser,params);
-	}
+	};
 
 	var loadAll = function(){
 		var query = new Parse.Query('ProjectUser');
@@ -56,14 +61,14 @@ invoicesUnlimited.factory('projectUserFactory',
 		},function(e){
 			console.log(e.message);
 		});
-	}
+	};
 
 	projectUser.getAll = function(params) {
 		if ((params && params.reload) ||
 			(!params && !projectUser.entities.length))
 			return loadAll();
 		return Parse.Promise.as(projectUser.entities);
-	}
+	};
 
 	return projectUser;
 

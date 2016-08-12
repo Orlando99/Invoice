@@ -8,7 +8,7 @@ invoicesUnlimited.controller('SettingsController',['$q','$scope','$state', '$con
 	'userFactory', 'coreFactory',
 function($q,$scope,$state,$controller, userFactory, coreFactory){
 
-if(! userFactory.entity.length) {
+if(!userFactory.entity.length) {
 	console.log('User not logged in');
 	$state.go('login');
 	return undefined;
