@@ -37,16 +37,16 @@ $('#addExpenseForm').validate({
 		amount : {
 			required : true,
 			min : 0.01
-		},
-		customer : 'required'
+		}//,
+		//customer : 'required'
 	},
 	messages: {
-		expCategory : 'Please Select an Expense category',
-		date : 'Please specify enpense date',
+		expCategory : 'Please select an expense category',
+		date : 'Please specify expense date',
 		amount : {
-			required : 'Please enter expenes amount'
-		},
-		customer : 'Please select a customer'
+			required : 'Please enter expense amount'
+		}//,
+		//customer : 'Please select a customer'
 	}
 });
 
@@ -57,16 +57,16 @@ $('#editExpenseForm').validate({
 		amount : {
 			required : true,
 			min : 0.01
-		},
-		customer : 'required'
+		}//,
+		//customer : 'required'
 	},
 	messages: {
-		expCategory : 'Please Select an Expense category',
-		date : 'Please specify enpense date',
+		expCategory : 'Please select an expense category',
+		date : 'Please specify expense date',
 		amount : {
-			required : 'Please enter expenes amount'
-		},
-		customer : 'Please select a customer'
+			required : 'Please enter expense amount'
+		}//,
+		//customer : 'Please select a customer'
 	}
 });
 
@@ -139,9 +139,12 @@ function prepareToEditExpense() {
 			return expense.entity.category == category.entity.name;
 		})[0];
 
-		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
-			return expense.entity.get('customer').id == cust.entity.id;
-		})[0];
+		var custObj = expense.entity.get('customer');
+		if (custObj) {
+			$scope.selectedCustomer = $scope.customers.filter(function(cust) {
+				return custObj.id == cust.entity.id;
+			})[0];
+		}
 
 		if(expense.entity.tax) {
 			$scope.selectedTax = $scope.taxes.filter(function(tax) {
@@ -178,7 +181,6 @@ function prepareToCreateExpense() {
 		$scope.files = [];
 		$scope.todayDate = new Date();		
 		hideLoader();
-		console.log('data loaded');
 	});
 }
 
@@ -260,7 +262,6 @@ $scope.saveNewExpense = function() {
 	var expense = {
 		userID : user,
 		organization : organization,
-		customer : $scope.selectedCustomer.entity,
 		tax : $scope.selectedTax,
 		amount : $scope.amount,
 		referenceNumber : $scope.refNumber,
@@ -270,6 +271,9 @@ $scope.saveNewExpense = function() {
 		status : $scope.expenseType.selectedType.value,
 		currency: 'USD - US Dollar'
 	};
+	if ($scope.selectedCustomer)
+		expense.customer = $scope.selectedCustomer.entity;
+
 	expense.billable = (expense.status == 'Billable')? 'Yes' : 'No';
 
 	expenseService.createNewExpense(expense, $scope.userRole, $scope.files)
@@ -294,7 +298,6 @@ $scope.saveEditedExpense = function() {
 
 	showLoader();
 	var expense = $scope.expense;
-	expense.set('customer', $scope.selectedCustomer.entity);
 	expense.set('tax', $scope.selectedTax);
 	expense.set('amount', $scope.amount);
 	expense.set('referenceNumber', $scope.refNumber);
@@ -303,6 +306,11 @@ $scope.saveEditedExpense = function() {
 	expense.set('notes', $scope.notes);
 	expense.set('status', $scope.expenseType.selectedType.value);
 	
+	if($scope.selectedCustomer)
+		expense.set('customer', $scope.selectedCustomer.entity);
+	else
+		expense.unset('customer');
+
 	if ($scope.expenseType.selectedType.value == 'Billable')
 		expense.set('billable', 'Yes');
 	else expense.set('billable', 'No');
