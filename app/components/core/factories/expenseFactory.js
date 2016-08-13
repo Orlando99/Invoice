@@ -55,6 +55,11 @@ var Expense = function(parseObject, params) {
 			});
 			this.customer = customer;
 		}
+
+		var attachments = parseObject.get('expenseFiles');
+		if (attachments) {
+			this.attachments = attachments;
+		}
 	} else if (params.operation == 'summary') {
 		expenseFields = ['category', 'amount'];
 		var customer = parseObject.get('customer');

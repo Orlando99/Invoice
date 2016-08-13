@@ -100,8 +100,19 @@ function showExpenseDetails () {
 		expenseObj.date = formatDate(expenseObj.entity.expanseDate, 'dddd, MMMM DD, YYYY');
 		// Thursday, Decemer 03, 2014
 
+		if(expenseObj.attachments) {
+			$scope.attachments = expenseObj.attachments;
+			$scope.attachments.forEach(function(attach) {
+				attach.fileName = attach.name();
+				attach.fileUrl = attach.url();
+			});
+			
+		} else {
+			$scope.attachments = [];
+		}
+
 		$scope.expense = expenseObj;
-		console.log(expenseObj);
+	//	console.log(expenseObj);
 		hideLoader();
 
 	}, function(error) {
@@ -350,6 +361,32 @@ $scope.openDatePicker = function(n) {
 	switch (n) {
 		case 1: $scope.openPicker1 = true; break;
 	}
+}
+
+// from expense details page
+$scope.addAttachment = function(obj) {
+	var file = obj.files[0];
+	if (!file) return;
+
+	showLoader();
+	var expenseObj = $scope.expense.entity;
+	var parseFile = new Parse.File(file.name, file);
+
+	$q.when(parseFile.save())
+	.then(function(fileObj) {
+		var fileList = expenseObj.get('expenseFiles');
+		if(fileList)
+			fileList.push(fileObj)
+		else
+			fileList = [fileObj];
+
+		expenseObj.set('expenseFiles', fileList);
+		return expenseObj.save();
+	})
+	.then(function(invObj) {
+		$state.reload();
+		hideLoader();
+	});
 }
 
 }]);

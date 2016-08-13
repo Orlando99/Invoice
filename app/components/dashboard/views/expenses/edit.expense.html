@@ -51,20 +51,22 @@
         </select>
       </div>
 
-      <div class="input-container col-60 layout-margin-b">
-        <p class="col-25 layout-no-padding">Attach Reference File</p>
-        <p class="col-70">
-          <div ng-repeat="file in files">
-            <label class="col-60">{{file.fileName}}</label>
-            <button class="button button-icon button-no-margin" ng-click="removeFile($index)">
-              <img src="./assets/images/icon-times-round.png" alt=""></button>
-          </div>
-          <label>
+      <div class="input-container layout-margin-tb col-60">
+        <label class="col-i-20">Attach Reference File</label>
+        <div class="col-70 file_div" >
+        <div ng-repeat="file in files">
+          <label class="col-90">{{file.fileName}}</label>
+          <button class="button button-icon button-no-margin" ng-click="removeFile($index)">
+          <img src="./assets/images/icon-times-round.png" alt=""></button>
+          <div class="clearfix"></div>
+          <br/>
+        </div>
+        <label>
           <input type="file" style="display: none;"
             onchange="angular.element(this).scope().addNewFile(this)">
-            <div class="div-button">Import file...</div>
-          </label>
-        </p>
+          <div class="div-button">Import file...</div>
+        </label>
+        </div>
       </div>
 
       <div class="clearfix"></div>
