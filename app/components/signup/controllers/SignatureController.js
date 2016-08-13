@@ -29,6 +29,8 @@ invoicesUnlimited.controller('SignatureController',
 		});
 	}
 
+	$('#sig').signature();
+	$("#clear").click(function(){$("#sig").signature("clear")});
 	$scope.fullName = signUpFactory.getField('User', 'fullName');
 	$('h2.text-uppercase').css({padding:'50px 0',margin:0});
 	$('.signature').css({height:$(window).height()-$('.sticky-nav').height() - parseInt($('.sticky-nav').css('padding-top'))*2 - 1});
@@ -49,7 +51,7 @@ invoicesUnlimited.controller('SignatureController',
 		} else b = true;
 
 		if(! (a && b)) return;
-		
+
 		showLoader();
 
 		var sigData = $('.kbw-signature canvas')[0].toDataURL().replace("data:image/png;base64,","");
@@ -86,13 +88,13 @@ invoicesUnlimited.controller('SignatureController',
 			console.log(error.messge);
 		});
 	}
-
-	$scope.$on('$viewContentLoaded',function($scope,$timeout){
+/*
+	$scope.$on('$viewContentLoaded',function($scope){
 		// "./assets/js/sig.js"
+		// "./assets/js/jquery.ui.touch-punch.min.js"
 		$ocLazyLoad.load([
 					"./assets/js/excanvas.js",
-  					"./assets/js/jquery.signature.min.js",
-  					"./assets/js/jquery.ui.touch-punch.min.js"
+  					"./assets/js/jquery.signature.js"
 					]).then(function() {
 						$("#sig").signature(),
 						$("#clear").click(function(){$("#sig").signature("clear")}),
@@ -100,5 +102,5 @@ invoicesUnlimited.controller('SignatureController',
 						$("#svg").click(function(){alert($("#sig").signature("toSVG"))})
 					});
 	});
-
+*/
 }]);
