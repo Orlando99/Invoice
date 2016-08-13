@@ -2,13 +2,16 @@
   
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title float-left">Payments Settings</h3>
-    
     <div class="clearfix"></div>
-    <p>{{infoMsg}}</p>
+    <div class="spacer"></div>
+
+    <div class="paymentInfo" ng-show="incompleteProfile">
+      <p>{{infoMsg}}</p>
+      <a ng-click="continueProcess()" class="button button-primary button-next">Continue</a>
+    </div>
     
-    <div class="clearfix"></div>
-    
-    <div ng-show="processingRequest">
+    <div class="paymentInfo" ng-show="processingRequest">
+      <p>{{infoMsg}}</p>
       <label class="col-50">Phone Number</label>
       <label>{{phoneNumber}}</label>
       <br />
@@ -16,8 +19,8 @@
       <label>{{email}}</label>
     </div>
 
-    <div ng-show="approved">
-
+    <div class="paymentInfo" ng-show="approved">
+      <p>{{infoMsg}}</p>
       <label class="col-50">Merchant ID</label>
       <label>{{merchantID}}</label>
       <br />
@@ -26,23 +29,18 @@
       
       <br /><br />
       <p>24/7 Merchant Account Support:</p>
-      <br />
       <label class="col-50">Phone Number</label>
       <label>{{accountSupportNumber}}</label>
 
       <br /><br/>
       <p>Software Support:</p>
-      <br />
       <label class="col-50">Phone Number</label>
       <label>{{softwareSupportNumber}}</label>
-      <br />      
+      <br />
       <label class="col-50">Email</label>
       <label>{{email}}</label>
 
     </div>
-
-    <a ng-click="continueProcess()" ng-show="incompleteProfile"
-      class="button button-primary button-next">Continue</a>
 
   </div>
 

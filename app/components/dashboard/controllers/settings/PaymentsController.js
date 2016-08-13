@@ -14,11 +14,11 @@ var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
 
-var incompleteAccountMsg = 'You have not completed the merchant account application.\
+var incompleteAccountMsg = 'You have not completed the merchant account application. \
 Please click continue below to resume where you left off.';
 
-var processingMsg = 'Your application has been submitted.\
-Please wait two business days for the approval process.\
+var processingMsg = 'Your application has been submitted. \
+Please wait two business days for the approval process. \
 If you have not heard anything from us within two business days,\
 please call or email us at:';
 

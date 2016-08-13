@@ -11,7 +11,7 @@
      <tr class="thead">
        <td class="text-uppercase text-info layout-padding-tb-lg">
          <label class="input-container input-checkbox-container layout-margin-tb">
-           <input type="checkbox">
+           <input type="checkbox" ng-model="selectAll">
            <span class="checkbox float-left"></span>
          </label>
        </td>
@@ -21,7 +21,7 @@
      <tr class="trow" ng-repeat="category in categories">
        <td class="text-uppercase text-info layout-padding-tb-lg">
          <label class="input-container input-checkbox-container layout-margin-tb">
-           <input type="checkbox">
+           <input type="checkbox" ng-checked="selectAll">
            <span class="checkbox float-left"></span>
          </label>
        </td>

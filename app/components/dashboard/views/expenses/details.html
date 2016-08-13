@@ -9,7 +9,8 @@
       <a ui-sref="dashboard.expenses.edit({expenseId:expense.entity.id})"
         class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <a ui-sref="dashboard.sales.invoices.new({expenseId:expense.entity.id, customerId:expense.customer.id})"
-        class="button button-small button-info text-uppercase layout-margin-r">Convert to Invoice</a>
+        class="button button-small button-info text-uppercase layout-margin-r"
+        ng-show="expense.entity.status == 'Billable'">Convert to Invoice</a>
       <button class="button button-small button-neutral text-uppercase">More <img src="./assets/images/dropdown-arrow-w.png" alt="">
         <ul class="submenu list-clear layout-no-padding text-left text-normalize">
           <li><a href="">Make Recurring</a></li>

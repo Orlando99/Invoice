@@ -56,3 +56,17 @@ select {
 .optionDropDown > ul {
 	left : -80px;
 }
+
+div.paymentInfo > p {
+	margin: 0;
+	padding: 0;
+	color: #000;
+}
+
+div.paymentInfo > label {
+	color: #8c8c8c;
+}
+
+div.paymentInfo > a {
+	top: 10px;
+}
