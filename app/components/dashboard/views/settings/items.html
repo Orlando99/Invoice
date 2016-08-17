@@ -14,10 +14,10 @@
         <td class="text-uppercase text-info layout-padding">Rate</td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr class="trow" ng-repeat="item in items | filter:search" ng-dblclick="showItemDetail($index)">
-        <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.title}}</td>
-        <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.itemDescription}}</td>
-        <td class="text-color-light text-weight-normalize layout-padding">{{item.entity.rate | currency:$:2}}</td>
+      <tr class="trow" ng-repeat="item in items | filter:search">
+        <td ng-click="showItemDetail($index)" class="text-color-light text-weight-normalize layout-padding">{{item.entity.title}}</td>
+        <td ng-click="showItemDetail($index)" class="text-color-light text-weight-normalize layout-padding">{{item.entity.itemDescription}}</td>
+        <td ng-click="showItemDetail($index)" class="text-color-light text-weight-normalize layout-padding">{{item.entity.rate | currency:$:2}}</td>
         <td class="text-color-light text-weight-normalize layout-padding text-right"
           ng-click="confirmDelete($index)"><img src="./assets/images/icon-times-round.png" alt="" />
         </td>

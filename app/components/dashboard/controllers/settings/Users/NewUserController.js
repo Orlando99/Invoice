@@ -81,10 +81,17 @@ invoicesUnlimited.controller('NewUserController',
 		},errorHandler);
 	}
 
+	var prevEmail = '';
 	$scope.save = function(){
+		if (prevEmail != $scope.user.email) {
+			prevEmail = $scope.user.email;
+			$('input[id="newUserId"]')[0].setCustomValidity('');
+		}
+
 		var form = document.querySelector('.modal-content form');
 		if (!form.checkValidity()) return;
 
+		showLoader();
 		$scope.user.set('password',$scope.user.password);
 		$scope.user.set('colorTheme','appBlueColor');
 		$scope.user.set('isTrackUsage',1);
@@ -108,7 +115,15 @@ invoicesUnlimited.controller('NewUserController',
 		$scope.user.save()
 		.then(function(user){
 			return roleFactory.addUser(user);
-		},errorHandler)
+		},function(error) {
+			if(error.code == 203) {
+				// email already taken
+				var elem = $('input[id="newUserId"]')[0];
+				elem.setCustomValidity(error.message);
+				$('button[id="newUserSubmit"]').click();
+			}
+			hideLoader();
+		})
 		.then(function(role){
 			if (!$scope.user.sendInvite) return Parse.Promise.as(true);
 			return Parse.Cloud.run('sendMailgunHtml',{
@@ -123,6 +138,7 @@ invoicesUnlimited.controller('NewUserController',
 			});
 		},errorHandler)
 		.then(function(res){
+			hideLoader();
 			$uibModalInstance.close($scope.user);
 		},errorHandler);
 	}

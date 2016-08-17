@@ -9,7 +9,7 @@ invoicesUnlimited.factory('roleFactory',
 
 	var loadRole = function() {
 		if (!user.length) return;
-		if (role.entity.length) return role;
+		if (role.entity.length) return Promise.resolve(role);
 		var query = new Parse.Query(Parse.Role);
 		query.equalTo('name',user[0].company);
 		return query.first().then(
