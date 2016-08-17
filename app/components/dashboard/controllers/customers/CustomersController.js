@@ -278,6 +278,24 @@ invoicesUnlimited.controller('CustomersController',
 		});
 	}
 
+	function autoFormatTelephoneNumbers () {
+		$('#workPhone').mask("(Z00) 000-0000",{
+			translation : {
+				'Z': {
+					pattern : /[2-9]/g
+				}
+			}
+		});
+		$('#mobilePhone').mask('0 (000) 000-0000',{
+			onKeyPress : function(cep,e,field,options){
+				var masks = ['0 (000) 000-0000','(000) 000-0000'];
+				var cond = cep.replace("(","");
+				var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
+				$('#mobilePhone').mask(mask,options);
+			}
+		});
+	}
+
 	$scope.createContact = function(){
 		var modalInstance = $uibModal.open({
 			animation 		: true,
@@ -302,8 +320,6 @@ invoicesUnlimited.controller('CustomersController',
 				}
 			}
 		});
-		$('.workPhone').mask('(000) 000-0000');
-		$('.mobilePhone').mask('0 (000) 000-0000',mobileOptions);
 
 		modalInstance.result.then(function(contact){
 			$scope.selectedCustomer.contactPersons.push(contact);
@@ -315,9 +331,8 @@ invoicesUnlimited.controller('CustomersController',
 
 	$rootScope.$on('$viewContentLoaded',
 		function(event){
-			if (isGoTo.edit($state.current.name)) {
-				$('#workPhone').mask('(999) 999-9999');
-				$('#mobilePhone').mask('9 (999) 999-9999',mobileOptions);
+			if (isGoTo.edit($state.current.name) || isGoTo.newCustomer($state.current.name)) {
+				autoFormatTelephoneNumbers();
 			}
 		});
 
