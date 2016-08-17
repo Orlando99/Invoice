@@ -44,9 +44,9 @@ invoicesUnlimited.controller('SignatureController',
 			});
 		} else a = true;
 
-		if(! $('input[name="agree"]:checked').length) {
+		if(! $('input[name="agree-box"]:checked').length) {
 			$('#sigForm').validate().showErrors({
-				'agree' : 'Please agree to the Terms'
+				'agree-box' : 'Please agree to the Terms'
 			});
 		} else b = true;
 

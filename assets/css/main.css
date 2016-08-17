@@ -216,3 +216,16 @@ button[disabled] {
     padding: 5px;
     text-align: center;
 }
+
+#agree-box-error {
+	right: inherit;
+	left: 95px;
+}
+
+#undefined-error {
+	top: 100px;
+}
+
+.navigation>li .container-fluid {
+	z-index: 6 !important;
+}
