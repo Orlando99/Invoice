@@ -261,11 +261,14 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 				)
 			);
 
-			expenseList.push({
+			var expObj = {
 				name: name,
-				value: currencyFilter(value, '$', 2),
-				customer: expense.customer.displayName
-			});
+				value: currencyFilter(value, '$', 2)
+			};
+			if (expense.customer)
+				expObj.customer = expense.customer.displayName;
+
+			expenseList.push(expObj);
 		});
 		$scope.expenseList = expenseList;
 		$scope.totalExpenseAmount = currencyFilter(totalExpense, '$', 2);

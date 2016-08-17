@@ -241,6 +241,19 @@ angular.module('invoicesUnlimited')
 						}
 					}
 				},
+				cloneInvoice : {
+					name : 'dashboard.sales.invoices.clone',
+					url : '/sales/invoices/clone',
+					params : {
+						invoiceId : null
+					},
+					views : {
+						'@' : {
+							controller : 'CloneInvoiceController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/newinvoice.html'
+						}
+					}
+				},
 				details : {
 					name : 'dashboard.sales.invoices.details',
 					url : '/sales/invoices/:invoiceId',

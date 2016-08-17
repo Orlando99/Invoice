@@ -11,12 +11,12 @@
         <img src="./assets/images/dropdown-arrow-w.png" alt="">
       </button>
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
-          <li><a href="">Email</a></li>
-          <li><a href="">Print</a></li>
+          <li><a href="" ng-click="emailReceipt()">Email</a></li>
+          <li><a href="" ng-click="printReceipt()">Print</a></li>
           <li class="modal-opener" data-toggle="record-payment"><a href=""
               ng-click="prepareAddPayment()">Record Payment</a></li>
           <li><a href="javascript:" ng-click="showAvailableCredits()">Apply Credit Note</a></li>
-          <li><a href="">Clone</a></li>
+          <li><a ui-sref="dashboard.sales.invoices.clone({invoiceId:invoice.entity.id})">Clone</a></li>
           <!--
           <li><a href="">Print Delivery Note</a></li>
           <li><a href="">Print Packing Slip</a></li>
@@ -39,7 +39,7 @@
     <a href="javascript:" class="layout-margin-tb">+ New Comment</a>
 
     <div class="text-center layout-margin-tb">
-      <iframe ng-src="{{templateUrl}}" name="targetframe"
+      <iframe id="targetframe" ng-src="{{templateUrl}}" name="targetframe"
         width="1050px" height="600px" frameborder="1" >
       </iframe>
       <!-- <img src="./assets/images/invoiced.png" alt=""> -->

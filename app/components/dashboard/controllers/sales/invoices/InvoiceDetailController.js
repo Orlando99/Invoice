@@ -374,4 +374,21 @@ $scope.addAttachment = function(obj) {
 	});
 }
 
+$scope.emailReceipt = function() {
+	showLoader();
+	$q.when(invoiceService.sendInvoiceReceipt($scope.invoice.entity))
+	.then(function(obj) {
+		console.log('Receipt sent successfully.');
+		hideLoader();
+	});
+}
+
+$scope.printReceipt = function() {
+	console.log('print feature not implemented yet');
+//	var frame = window.frames['targetframe'].contentWindow;
+//	frame.focus();
+//	frame.print();
+
+}
+
 }]);

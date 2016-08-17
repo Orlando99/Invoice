@@ -458,7 +458,9 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	}
 
 	$scope.addNewFile = function(obj) {
-		$scope.files.push(obj.files[0]);
+		var file = obj.files[0];
+		file.fileName = file.name; // to avoid naming conflict
+		$scope.files.push(file);
 		$scope.$apply();
 	}
 

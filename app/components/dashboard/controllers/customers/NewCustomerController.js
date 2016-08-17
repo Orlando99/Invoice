@@ -28,6 +28,7 @@ invoicesUnlimited.controller('NewCustomerController',
 	};
 
 	$controller('DashboardController',{$scope:$scope,$state:$state});
+	hideLoader();
 
 	var Customer = Parse.Object.extend("Customer");
 

@@ -284,17 +284,27 @@ return {
 		acl.setRoleReadAccess(role.get("name"), true);
 
 		var promise = undefined;
+		var newFiles = undefined; // store already saved and newly created files
 		if(files.length) {
+			newFiles = [];
 			var promises = [];
 			files.forEach(function(file) {
-				var parseFile = new Parse.File(file.name, file);
-				promises.push(parseFile.save());
+				if(file.exist) {
+					delete file.exist;
+					delete file.fileName;
+					newFiles.push(file);
+
+				} else {
+					var parseFile = new Parse.File(file.name, file);
+					promises.push(parseFile.save());
+				}
 			});
 
 			promise = $q.all(promises)
-			.then(function(savedFiles) {
-				console.log(savedFiles);
-				return savedFiles;
+			.then(function(fileObjs) {
+				if (fileObjs)
+					newFiles = newFiles.concat(fileObjs);
+				return newFiles;
 			});
 			
 		} else
