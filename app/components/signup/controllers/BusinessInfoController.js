@@ -15,6 +15,12 @@ $(document).ready(function(){
 			return true;
 		}
 	)
+	$.validator.addMethod(
+		"exactlength",
+		function(value, element, param) {
+ 			return value.length == param;
+		}
+	);
 });
 
 invoicesUnlimited.controller('BusinessInfoController',
@@ -56,7 +62,9 @@ invoicesUnlimited.controller('BusinessInfoController',
 				OwhershipTypeNotSelected : true
 			},
 			federalTaxID : {
-				FederalTaxIDisMissing : true
+				FederalTaxIDisMissing : true,
+				exactlength : 10
+
 			}
 		},
 		messages: {
@@ -71,10 +79,13 @@ invoicesUnlimited.controller('BusinessInfoController',
 				OwhershipTypeNotSelected : "Please select your ownership type!"
 			},
 			federalTaxID : {
-				FederalTaxIDisMissing : 'Please specify your phone number!'
+				FederalTaxIDisMissing : 'Please specify your Federal Tax ID!',
+				exactlength : 'Please enter exactly 9 digits'
 			}
 		}
 	});
+
+	$('input[name="federalTaxID"]').mask('00-0000000');
 
 	$scope.bsnsInfo = {
 		'businessName'  : signUpFactory.getField('User','company'),

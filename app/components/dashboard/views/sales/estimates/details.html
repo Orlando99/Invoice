@@ -4,18 +4,18 @@
       <img src="./assets/images/icon-back.png" alt="goBack">
     </a>
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{estimateNo}}</h3>
-    <div class="actions float-right layout-margin-tb">
+    <div class="actions float-right layout-margin-tb" uib-dropdown>
       <a ui-sref="dashboard.sales.estimates.edit({estimateId:estimate.entity.id})"
         class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <a class="button button-small button-info text-uppercase layout-margin-r modal-opener" data-toggle="convert-to-invoice">Convert To Invoice</a>
-      <button class="button button-small button-neutral text-uppercase">More <img src="./assets/images/dropdown-arrow-w.png" alt="">
-      <ul class="submenu list-clear layout-no-padding text-left text-normalize">
+      <button class="button button-small button-neutral text-uppercase" uib-dropdown-toggle>More <img src="./assets/images/dropdown-arrow-w.png" alt="">
+      </button>
+      <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
         <li><a href="">Email</a></li>
         <li><a href="">Print</a></li>
         <li><a href="">Clone</a></li>
         <li><a href="">Delete</a></li>
       </ul>
-      </button>
     </div>
     <div class="clearfix"></div>
     <hr>

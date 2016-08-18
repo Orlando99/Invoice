@@ -384,3 +384,8 @@
     position: absolute;
     right: 8%;
 }
+
+ul.dropdown-menu {
+  left: inherit;
+  right: 0;
+}

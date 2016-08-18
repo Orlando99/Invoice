@@ -1,12 +1,13 @@
 ﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title float-left">Currencies</h3>
-    <a href="#" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="edit-currency">New</a>
+    <a href="" class="float-right layout-margin-tb button button-add text-transform modal-opener"
+      data-toggle="new-currency">New</a>
     <form class="float-right layout-margin-tb">
       <input type="text" class="search-bar layout-margin-r" placeholder="Search">
     </form>
 
-    <table class="table-border-tb">
+    <table class="table-border-tb show_table_hover">
       <tr class="thead">
         <td class="text-uppercase text-info layout-padding">Name</td>
         <td class="text-uppercase text-info layout-padding">Symbol</td>
@@ -15,12 +16,17 @@
         <td class="is-active-head"></td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">USD - US Dollar</td>
-        <td class="text-color-light text-weight-normalize layout-padding">&dollar;</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active no"><img src="./assets/images/icon-tick-circle.png" alt=""></td>
+      <tr class="trow">
+        <td ng-click="showCurrencyDetail($index)"
+          class="text-color-light text-weight-normalize layout-padding">USD - US Dollar</td>
+        <td ng-click="showCurrencyDetail($index)"
+          class="text-color-light text-weight-normalize layout-padding">&dollar;</td>
+        <td ng-click="showCurrencyDetail($index)"
+          class="text-color-light text-weight-normalize layout-padding"></td>
+        <td ng-click="showCurrencyDetail($index)"
+          class="text-color-light text-weight-normalize layout-padding"></td>
+        <td ng-click="showCurrencyDetail($index)"
+          class="is-active no"><img src="./assets/images/icon-tick-circle.png" alt=""></td>
         <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
       <!--

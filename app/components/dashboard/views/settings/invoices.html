@@ -207,6 +207,7 @@
       <div class="input-container input-radio-container layout-margin-b"
         ng-repeat="field in customFields">
         <input type="checkbox" style="box-sizing:initial;" ng-model="field.checked">
+        <label>Show in Invoice</label>
         <label class="col-25">Custom Field {{$index+1}}</label>
         <input tri:fix-input-name name="name{{$index}}" class="col-45 check-name" type="text"
           ng-model="field.name">

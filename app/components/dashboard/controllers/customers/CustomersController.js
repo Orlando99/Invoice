@@ -279,11 +279,20 @@ invoicesUnlimited.controller('CustomersController',
 	}
 
 	function autoFormatTelephoneNumbers () {
-		$('#workPhone').mask("(Z00) 000-0000",{
+	/*	$('#workPhone').mask("(Z00) 000-0000",{
 			translation : {
 				'Z': {
 					pattern : /[2-9]/g
 				}
+			}
+		}); */
+
+		$('#workPhone').mask('0 (000) 000-0000',{
+			onKeyPress : function(cep,e,field,options){
+				var masks = ['0 (000) 000-0000','(000) 000-0000'];
+				var cond = cep.replace("(","");
+				var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
+				$('#workPhone').mask(mask,options);
 			}
 		});
 		$('#mobilePhone').mask('0 (000) 000-0000',{

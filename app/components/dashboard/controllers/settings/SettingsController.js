@@ -259,6 +259,10 @@ $scope.setDefaultTemplate = function(index) {
 	});
 }
 
+$scope.showCurrencyDetail = function(index) {
+	$(".edit-currency").addClass("show");
+}
+
 //	$scope.selectedColor;
 
 /*
