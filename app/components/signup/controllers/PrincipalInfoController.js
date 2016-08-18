@@ -198,6 +198,11 @@ invoicesUnlimited.controller('PrincipalInfoController',
 	};
 
 	$scope.saveAndContinueLater = function(){
+		if(! allFieldsFilled()) {
+			$state.go('dashboard');
+			return;
+		}
+
 		if (!$('#signUpForm').valid()) return;
 
 		showLoader();
@@ -216,6 +221,17 @@ invoicesUnlimited.controller('PrincipalInfoController',
 		switch (n) {
 			case 1: $scope.openPicker1 = true; break;
 		}
+  	}
+
+  	function allFieldsFilled() {
+  		fields.forEach(function(field) {
+  			if(! $scope.principalInfo[field])
+  				return false;
+  		});
+  		if (! $scope.dob || !$scope.principalInfo['ssn'])
+  			return false;
+
+  		return true;
   	}
 
 }]);

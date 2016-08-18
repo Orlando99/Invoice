@@ -140,6 +140,11 @@ invoicesUnlimited.controller('AccountInfoController',
 	};
 
 	$scope.saveAndContinueLater = function(){
+		if(! allFieldsFilled()) {
+			$state.go('dashboard');
+			return;
+		}
+
 		if (!$('#signUpForm').valid()) return;
 
 		showLoader();
@@ -154,5 +159,13 @@ invoicesUnlimited.controller('AccountInfoController',
 		});
 
 	};
+
+	function allFieldsFilled() {
+  		for(var field in $scope.accountInfo) {
+  			if (! $scope.accountInfo[field])
+  				return false;
+  		}
+  		return true;
+  	}
 
 });
