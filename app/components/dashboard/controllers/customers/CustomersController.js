@@ -21,7 +21,7 @@ $(document).ready(function(){
 invoicesUnlimited.controller('CustomersController',
 	function($scope,$rootScope,$state,$uibModal,userFactory,
 			 contactPersonFactory, customerFactory, coreFactory, 
-			 invoicesFactory ,$controller,$q){
+			 invoicesFactory ,$controller,$q, appFields){
 
 	var customerId = parseInt($state.params.customerId);
 	var user = userFactory;
@@ -140,7 +140,7 @@ invoicesUnlimited.controller('CustomersController',
 			JSON.stringify(selected.shippingAddressJSON);
 
 		for (var property in $scope.selectedCustomerEdit) {
-			if (selected.customerFields.some(function(el){
+			if (appFields.customer.some(function(el){
 				return property == el;
 			}))
 	  		selected.entity[property] = 
