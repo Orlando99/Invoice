@@ -35,6 +35,10 @@ invoicesUnlimited.factory('accountFactory',
 		});
 	}
 
+	accountInfo.clearAllOnLogOut = function(){
+		accountInfo.entity.length = 0;
+	}
+
 	accountInfo.load = function(){
 		if (accountInfo.entity.length) return accountInfo.entity[0];
 		return loadAccountInfo();

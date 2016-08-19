@@ -41,6 +41,10 @@ invoicesUnlimited.factory('currencyFactory',
 		});
 	}
 
+	currency.clearAllOnLogOut = function(){
+		currency.entity.length = 0;
+	}
+
 	currency.load = function(){
 		if (currency.entity.length) return currency;
 		return loadCurrency();

@@ -6,9 +6,9 @@ Array.prototype.rotate = function( n ) {
 }
 
 invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory','businessFactory','$q',
-	'invoiceService', 'expenseService', 'coreFactory', 'currencyFilter','projectUserFactory',
+	'invoiceService', 'expenseService', 'coreFactory', 'currencyFilter', 'cleanDataService',
 function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseService,
-	coreFactory,currencyFilter,projectUserFactory){
+	coreFactory,currencyFilter,cleanDataService){
 
 	showLoader();
 
@@ -30,10 +30,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		return user.logout()
 		.then(function(){
 			resetColorTheme();
-			businessFactory.entity = [];
-			coreFactory.allCustomers = undefined;
-			user.commonData = {};
-			projectUserFactory.clearAllOnLogOut();
+			cleanDataService.clearAllOnLogOut();
 			$state.go('login');
 		});
 	};

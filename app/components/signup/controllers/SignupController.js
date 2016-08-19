@@ -60,6 +60,8 @@ invoicesUnlimited.controller('SignupController',
 		});
 	}
 
+	signUpFactory.setDefaultValues();
+
 	$('#phone').mask("(Z00) 000-0000",{
 		translation : {
 			'Z': {

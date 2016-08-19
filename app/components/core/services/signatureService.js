@@ -36,6 +36,10 @@ invoicesUnlimited.factory('signatureFactory',
 		});
 	}
 
+	signature.clearAllOnLogOut = function(){
+		signature.entity.length = 0;
+	}
+
 	signature.load = function(){
 		if (signature.entity.length) return signature.entity[0];
 		return loadSignature();

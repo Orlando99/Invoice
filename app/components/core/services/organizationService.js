@@ -80,6 +80,11 @@ invoicesUnlimited.factory('organizationFactory',
 		return Parse.Promise.when(promises);
 	}
 
+	organization.clearAllOnLogOut = function(){
+		organization.entity.length = 0;
+		organization.entities.length = 0;
+	}
+
 	organization.load = function(){
 		if (organization.entity.length) return organization;
 		return loadSelectedOrg();

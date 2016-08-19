@@ -44,6 +44,10 @@ invoicesUnlimited.factory('businessFactory',
 		});
 	}
 
+	businessInfo.clearAllOnLogOut = function(){
+		businessInfo.entity.length = 0;
+	}
+	
 	businessInfo.load = function(){
 		if (businessInfo.entity.length) return businessInfo;
 		return loadBusinessInfo();

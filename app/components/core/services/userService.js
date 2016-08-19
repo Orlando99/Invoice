@@ -33,6 +33,10 @@ invoicesUnlimited.factory('userFactory',function(appFields){
 
 	function setUserFields(){
 
+		User.clearAllOnLogOut = function(){
+			User.commonData = {};
+		}
+
 		User.getField = function(fieldName) {
 			if (! isEmpty(User.commonData)) {
 				return Promise.resolve(User.commonData[fieldName]);

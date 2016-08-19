@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.controller('PaymentsController',['$rootScope','$scope', '$state',
-	'$controller', '$q', 'userFactory',
-function($rootScope,$scope,$state,$controller,$q,userFactory){
+	'$controller', '$q', 'userFactory', 'signUpFactory',
+function($rootScope,$scope,$state,$controller,$q,userFactory,signUpFactory){
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -12,6 +12,7 @@ if(! userFactory.entity.length) {
 var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
+signUpFactory.setDefaultValues();
 
 
 var incompleteAccountMsg = 'You have not completed the merchant account application. \

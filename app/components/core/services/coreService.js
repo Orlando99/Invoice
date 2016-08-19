@@ -15,6 +15,10 @@ invoicesUnlimited.factory('coreFactory',
 
 	//var wrapObject = function
 
+	core.clearAllOnLogOut = function(){
+		core.allCustomers = undefined;
+	}
+
 	core.getAllCustomers = function(loadAgain){
 		if (core.allCustomers && !loadAgain) return core.allCustomers;
 		return queryService.ext.find(

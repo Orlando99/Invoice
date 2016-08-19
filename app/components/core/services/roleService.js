@@ -25,6 +25,10 @@ invoicesUnlimited.factory('roleFactory',
 		);
 	};
 
+	role.clearAllOnLogOut = function(){
+		role.entity.length = 0;
+	}
+
 	role.addUser = function(user) {
 		if (!role.entity.length) {
 			return loadRole()

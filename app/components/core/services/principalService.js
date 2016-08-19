@@ -37,6 +37,10 @@ invoicesUnlimited.factory('principalFactory',
 		});
 	}
 
+	principalInfo.clearAllOnLogOut = function(){
+		principalInfo.entity.length = 0;
+	}
+
 	principalInfo.load = function(){
 		if (principalInfo.entity.length) return principalInfo.entity[0];
 		return loadPrincipalInfo();

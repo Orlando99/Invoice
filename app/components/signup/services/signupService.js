@@ -42,7 +42,9 @@ invoicesUnlimited.factory('signUpFactory',
 		'Preferences'	: preferencesFactory
 	};
 
-	var newUser = {
+	var newUser;
+	function setDefaultValues() {
+		newUser = {
 		User : {
 			country		: '',
 			company 	: '',
@@ -122,8 +124,12 @@ invoicesUnlimited.factory('signUpFactory',
 			creditAg 				: 1
 		}
 	};
+	}
 
 	return {
+		setDefaultValues : function(){
+			setDefaultValues();
+		},
 		getParse : function(className){
 			return parseObjects[className];
 		},
