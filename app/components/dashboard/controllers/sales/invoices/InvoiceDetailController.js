@@ -143,7 +143,6 @@ $scope.showAvailableCredits = function() {
 	$q.when(creditNoteService.getCustomerCreditNotes(
 		$scope.invoice.entity.get('customer')))
 	.then(function(objs) {
-	//	console.log(objs);
 		$scope.creditNotes = objs;
 		var total = 0;
 		objs.forEach(function(obj) {
@@ -188,12 +187,14 @@ $scope.applyCredit = function() {
 		return;
 	}
 
+	showLoader();
 	// sort in ascending order
 	$scope.creditNotes = $scope.creditNotes.sort(function(a,b) {
 		return a.entity.remainingCredits - b.entity.remainingCredits;
 	});
 	
 	var crNotes = [];
+	var payments = [];
 	var objs = $scope.creditNotes;
 	var credits = $scope.creditUsed;
 
@@ -202,22 +203,36 @@ $scope.applyCredit = function() {
 
 		var remaining = objs[i].entity.remainingCredits;
 		var usedAlready = objs[i].entity.creditsUsed;
+		var creditObj = objs[i].entity;
+		var contribution = 0;
 
 		if (remaining <= credits) {
 			credits -= remaining;
-			objs[i].entity.set('creditsUsed', usedAlready + remaining);
-			objs[i].entity.set('remainingCredits', 0);
-			objs[i].entity.set('status', 'Closed');
+			contribution = remaining;
+			creditObj.set('creditsUsed', usedAlready + remaining);
+			creditObj.set('remainingCredits', 0);
+			creditObj.set('status', 'Closed');
 
 		} else {
 			remaining -= credits;
-			objs[i].entity.set('creditsUsed', usedAlready + credits);
-			objs[i].entity.set('remainingCredits', remaining);
+			contribution = credits;
+			creditObj.set('creditsUsed', usedAlready + credits);
+			creditObj.set('remainingCredits', remaining);
 			credits = 0;
 		}
 
-		objs[i].entity.unset('creditReceipt');
-		crNotes.push(objs[i].entity);
+		creditObj.unset('creditReceipt');
+		crNotes.push(creditObj);
+
+		payments.push({
+			userID : user,
+			organization : organization,
+			creditNote : creditObj,
+			date : new Date(),
+			mode : 'Credit Note',
+			amount : contribution,
+			reference : creditObj.creditNumber
+		});
 	}
 
 	credits = $scope.creditUsed;
@@ -227,6 +242,8 @@ $scope.applyCredit = function() {
 	due = due <= 0.001 ? 0 : due;
 	if(! due) {
 		invoiceObj.set('status', 'Paid');
+	} else {
+		invoiceObj.set('status', 'Partial Paid');
 	}
 
 	invoiceObj.set('balanceDue', due);
@@ -235,9 +252,24 @@ $scope.applyCredit = function() {
 
 	var promises = [];
 	promises.push(Parse.Object.saveAll(crNotes));
-	promises.push(invoiceObj.save());
 
-	$q.all(promises).then(function() {
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return invoiceService.addPayments(payments, role);
+	})
+	.then(function(payObjs) {
+		var paymentList = invoiceObj.get('payment');
+		if (paymentList) {
+			paymentList = paymentList.concat(payObjs);
+		} else {
+			paymentList = payObjs;
+		}
+
+		invoiceObj.set('payment', paymentList);
+		promises.push(invoiceObj.save());
+		return $q.all(promises);
+	})
+	.then(function() {
 		hideLoader();
 		console.log('Saved successfully');
 		$state.reload();
@@ -298,12 +330,24 @@ $scope.addPayment = function() {
 
 	var promise = $q.when(coreFactory.getUserRole(user))
 	promise.then(function(role) {
-		return $q.when(invoiceService.addPayment(invoiceObj, payment, role));
+		return $q.when(invoiceService.addPayments([payment], role));
+	})
+	.then(function(objs) {
+		var paymentList = invoiceObj.get('payment');
+		if (paymentList) {
+			paymentList = paymentList.concat(objs);
+		} else {
+			paymentList= objs;
+		}
+
+		invoiceObj.set('payment', paymentList);
+		return invoiceObj.save();
 	})
 	.then(function() {
 		hideLoader();
 		$state.reload();
 	});
+
 }
 
 $scope.showPaymentDetail = function(index) {

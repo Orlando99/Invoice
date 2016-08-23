@@ -23,7 +23,7 @@ return {
 	getCustomerCreditNotes : function(customer) {
 		var CreditNote = Parse.Object.extend('CreditNotes');
 		var query = new Parse.Query(CreditNote);
-		query.select('remainingCredits', 'creditsUsed');
+		query.select('remainingCredits', 'creditsUsed', 'creditNumber');
 		query.equalTo('customer', customer);
 		query.equalTo('status', 'Open');
 

@@ -254,6 +254,19 @@ angular.module('invoicesUnlimited')
 						}
 					}
 				},
+				estimateToInvoice: {
+					name : 'dashboard.sales.invoices.convertEstimate',
+					url : '/sales/invoices/convertEstimate',
+					params : {
+						estimateId : null
+					},
+					views : {
+						'@' : {
+							controller : 'EstimateToInvoiceController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/newinvoice.html'
+						}
+					}
+				},
 				details : {
 					name : 'dashboard.sales.invoices.details',
 					url : '/sales/invoices/:invoiceId',

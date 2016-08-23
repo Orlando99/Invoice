@@ -81,7 +81,7 @@ function CreditNote (parseObject, params) {
 		}
 
 	} else if (params.operation == 'apply2Invoice') {
-		creditNoteFields = ['remainingCredits', 'creditsUsed'];
+		creditNoteFields = ['remainingCredits', 'creditsUsed', 'creditNumber'];
 	}
 
 	setObjectOperations({

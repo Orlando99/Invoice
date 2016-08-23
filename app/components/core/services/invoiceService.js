@@ -17,27 +17,20 @@ return {
 			return obj ? false : true;
 		});
 	},
-	addPayment : function(invoice, params, role) {
+	addPayments : function(objs, role) {
+		var promises = [];
 		var Payment = Parse.Object.extend('Payment');
-		var payment = new Payment();
-
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
-		payment.setACL(acl);
-		var paymentList = invoice.get('payment');
 
-		return payment.save(params)
-		.then(function(obj) {
-			if (paymentList) {
-				paymentList.push(obj);
-			} else {
-				paymentList= [obj];
-			}
-
-			invoice.set('payment', paymentList);
-			return invoice.save();
-		});
+		for (var i=0; i < objs.length; ++i) {
+			var payment = new Payment();
+			payment.setACL(acl);
+			promises.push(payment.save(objs[i]));
+		}
+		
+		return $q.all(promises);
 	},
 	getInvoicesForSummary : function(params) {
 		var invoiceTable = Parse.Object.extend('Invoices');

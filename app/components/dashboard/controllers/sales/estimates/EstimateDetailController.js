@@ -25,7 +25,7 @@ function showEstimateDetail() {
 	showLoader();
 	$q.when(estimateService.getEstimateDetails(estimateId))
 	.then(function(estimate) {
-		console.log(estimate);
+	//	console.log(estimate);
 		$scope.estimate = estimate;
 		$scope.estimateNo = estimate.entity.estimateNumber;
 		$scope.comments = estimate.comments;

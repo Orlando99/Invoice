@@ -7,7 +7,8 @@
     <div class="actions float-right layout-margin-tb" uib-dropdown>
       <a ui-sref="dashboard.sales.estimates.edit({estimateId:estimate.entity.id})"
         class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
-      <a class="button button-small button-info text-uppercase layout-margin-r modal-opener" data-toggle="convert-to-invoice">Convert To Invoice</a>
+      <!--data-toggle="convert-to-invoice"-->
+      <a ui-sref="dashboard.sales.invoices.convertEstimate({estimateId:estimate.entity.id})" class="button button-small button-info text-uppercase layout-margin-r modal-opener">Convert To Invoice</a>
       <button class="button button-small button-neutral text-uppercase" uib-dropdown-toggle>More <img src="./assets/images/dropdown-arrow-w.png" alt="">
       </button>
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>

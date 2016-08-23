@@ -32,10 +32,7 @@ p = $q.when(salesCommon.loadRequiredData({
 	user : user,
 	organization : organization,
 	_scope : $scope
-}))
-.then(function(data) {
-	Object.assign($scope, data);
-});
+}));
 promises.push(p);
 
 $q.all(promises)
@@ -52,11 +49,10 @@ function prepareForm() {
 		organization : organization,
 		_scope : $scope
 	}))
-	.then(function(data) {
-		Object.assign($scope, data);
+	.then(function() {
 		return salesCommon.fillInvoiceForm($scope);
 	})
-	.then(function(data) {
+	.then(function() {
 		$scope.invoiceNo = $scope.prefs.invoiceNumber; // invoice number should be new
 		salesCommon.addValidationExceptItems($scope);
 		salesCommon.reCalculateSubTotal($scope);
@@ -64,119 +60,19 @@ function prepareForm() {
 	})
 }
 
-function saveInvoice() {
-	var invoice = {
-		userID : user,
-		organization : organization,
-		customer : $scope.selectedCustomer.entity,
-		invoiceDate : $scope.todayDate,
-		invoiceNumber : $scope.invoiceNo,
-		status : "Unpaid",
-		discountType : $scope.prefs.discountType,
-		discounts : $scope.discount,
-		shippingCharges : $scope.shippingCharges,
-		adjustments : $scope.adjustments,
-		subTotal : Number($scope.subTotal),
-		total : Number($scope.total),
-		balanceDue : Number($scope.total),
-		poNumber : $scope.poNumber,
-		salesPerson : $scope.salesPerson,
-		notes : $scope.notes,
-		terms : $scope.terms
-
-	};
-	if($scope.customFields.length) {
-		var fields = [];
-		$scope.customFields.forEach(function(field) {
-			if (field.value) {
-				var obj = {};
-				obj[field.name] = field.value;
-				fields.push(obj);
-			}
-		});
-		if (fields.length) {
-			invoice.customFields = fields;
-		}
-	}
-	if($scope.selectedLateFee) {
-		invoice.lateFee = $scope.selectedLateFee.entity;
-	}
-	if ($scope.paymentTerms.selectedTerm.value == 1)
-		invoice.dueDate = $scope.dueDate;
-
-	var email = $scope.selectedCustomer.entity.email;
-	if(email) invoice.customerEmails = [email];
-
-	return invoiceService.createNewInvoice
-		(invoice, $scope.invoiceItems, $scope.userRole, $scope.files);
-}
-
-function saveAndSendInvoice() {
-	return saveInvoice()
-	.then(function(invoice) {
-		return invoiceService.copyInInvoiceInfo(invoice)
-		.then(function(invoiceInfo) {
-			return invoiceService.createInvoiceReceipt(invoice.id, invoiceInfo.id);
-		})
-		.then(function(invoiceObj) {
-			return invoiceService.sendInvoiceReceipt(invoiceObj);
-		});
-	});
-}
-
 $scope.save = function() {
-	if (! salesCommon.validateForms())	return;
-
-	showLoader();
-	$q.when(invoiceService.checkInvoiceNumAvailable({
-		invoiceNumber : $scope.invoiceNo,
+	salesCommon.save({
+		_scope : $scope,
+		user : user,
 		organization : organization
-	}))
-	.then(function(avilable) {
-		if (avilable) {
-			return saveInvoice();
-
-		} else {
-			salesCommon.showInvoiceNumberError();
-			scrollToOffset();
-			return Promise.reject('Invoice with this number already exists');
-		}
-	})
-	.then(function(invoice) {
-		hideLoader();
-		$state.go('dashboard.sales.invoices.all');
-
-	}, function (error) {
-		hideLoader();
-		console.log(error);
 	});
 }
 
-$scope.saveAndSend = function () {
-	if (! salesCommon.validateForms())	return;
-
-	showLoader();
-	$q.when(invoiceService.checkInvoiceNumAvailable({
-		invoiceNumber : $scope.invoiceNo,
+$scope.saveAndSend = function() {
+	salesCommon.saveAndSend({
+		_scope : $scope,
+		user : user,
 		organization : organization
-	}))
-	.then(function(avilable) {
-		if (avilable) {
-			return saveAndSendInvoice()
-
-		} else {
-			salesCommon.showInvoiceNumberError();
-			scrollToOffset();
-			return Promise.reject('Invoice with this number already exists');
-		}
-	})
-	.then(function(invoice) {
-		hideLoader();
-		$state.go('dashboard.sales.invoices.all');
-
-	}, function (error) {
-		hideLoader();
-		console.log(error);
 	});
 }
 

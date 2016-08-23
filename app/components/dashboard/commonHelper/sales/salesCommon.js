@@ -1,8 +1,9 @@
 'use strict';
 
-invoicesUnlimited.factory('salesCommon', ['$q', 'userFactory', 'coreFactory', 'invoiceService', 'taxService',
-	'lateFeeService', 'expenseService', 'currencyFilter',
-function($q, userFactory, coreFactory, invoiceService, taxService, lateFeeService, expenseService, currencyFilter){
+invoicesUnlimited.factory('salesCommon', ['$q', '$state', 'userFactory', 'coreFactory', 'invoiceService',
+	'taxService', 'lateFeeService', 'expenseService', 'currencyFilter',
+function($q, $state, userFactory, coreFactory, invoiceService, taxService, lateFeeService,
+	expenseService, currencyFilter){
 
 return {
 	loadRequiredData : function(params) {
@@ -268,6 +269,62 @@ return {
 		_scope.customFields = customFields;
 		return Promise.resolve('');
 	},
+	save : function(params) {
+		if (! this.validateForms())	return;
+
+		showLoader();
+		var _scope = params._scope;
+		$q.when(invoiceService.checkInvoiceNumAvailable({
+			invoiceNumber : _scope.invoiceNo,
+			organization : params.organization
+		}))
+		.then(function(avilable) {
+			if (avilable) {
+				return saveInvoice(params);
+
+			} else {
+				this.showInvoiceNumberError();
+				scrollToOffset();
+				return Promise.reject('Invoice with this number already exists');
+			}
+		})
+		.then(function(invoice) {
+			hideLoader();
+			$state.go('dashboard.sales.invoices.all');
+
+		}, function (error) {
+			hideLoader();
+			console.log(error);
+		});
+	},
+	saveAndSend : function (params) {
+		if (! this.validateForms())	return;
+
+		showLoader();
+		var _scope = params._scope;
+		$q.when(invoiceService.checkInvoiceNumAvailable({
+			invoiceNumber : _scope.invoiceNo,
+			organization : params.organization
+		}))
+		.then(function(avilable) {
+			if (avilable) {
+				return saveAndSendInvoice(params);
+
+			} else {
+				this.showInvoiceNumberError();
+				scrollToOffset();
+				return Promise.reject('Invoice with this number already exists');
+			}
+		})
+		.then(function(invoice) {
+			hideLoader();
+			$state.go('dashboard.sales.invoices.all');
+
+		}, function (error) {
+			hideLoader();
+			console.log(error);
+		});
+	},
 	addValidationExceptItems : function(_scope) {
 		$.validator.addMethod(
 			"notBackDate",
@@ -496,6 +553,67 @@ return {
 	}
 
 };
+
+function saveInvoice(params) {
+	var _scope = params._scope;
+	var invoice = {
+		userID : params.user,
+		organization : params.organization,
+		customer : _scope.selectedCustomer.entity,
+		invoiceDate : _scope.todayDate,
+		invoiceNumber : _scope.invoiceNo,
+		status : "Unpaid",
+		discountType : _scope.prefs.discountType,
+		discounts : _scope.discount,
+		shippingCharges : _scope.shippingCharges,
+		adjustments : _scope.adjustments,
+		subTotal : Number(_scope.subTotal),
+		total : Number(_scope.total),
+		balanceDue : Number(_scope.total),
+		poNumber : _scope.poNumber,
+		salesPerson : _scope.salesPerson,
+		notes : _scope.notes,
+		terms : _scope.terms
+
+	};
+	if(_scope.customFields.length) {
+		var fields = [];
+		_scope.customFields.forEach(function(field) {
+			if (field.value) {
+				var obj = {};
+				obj[field.name] = field.value;
+				fields.push(obj);
+			}
+		});
+		if (fields.length) {
+			invoice.customFields = fields;
+		}
+	}
+	if(_scope.selectedLateFee) {
+		invoice.lateFee = _scope.selectedLateFee.entity;
+	}
+	if (_scope.paymentTerms.selectedTerm.value == 1)
+		invoice.dueDate = _scope.dueDate;
+
+	var email = _scope.selectedCustomer.entity.email;
+	if(email) invoice.customerEmails = [email];
+
+	return invoiceService.createNewInvoice
+		(invoice, _scope.invoiceItems, _scope.userRole, _scope.files);
+}
+
+function saveAndSendInvoice(params) {
+	return saveInvoice(params)
+	.then(function(invoice) {
+		return invoiceService.copyInInvoiceInfo(invoice)
+		.then(function(invoiceInfo) {
+			return invoiceService.createInvoiceReceipt(invoice.id, invoiceInfo.id);
+		})
+		.then(function(invoiceObj) {
+			return invoiceService.sendInvoiceReceipt(invoiceObj);
+		});
+	});
+}
 
 function addItemValidation() {
 	$('.check-item').each(function() {
