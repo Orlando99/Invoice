@@ -316,6 +316,19 @@ angular.module('invoicesUnlimited')
 						}
 					}
 				},
+				cloneEstimate : {
+					name : 'dashboard.sales.estimates.clone',
+					url : '/sales/estimates/clone',
+					params : {
+						estimateId : null
+					},
+					views : {
+						'@' : {
+							controller : 'CloneEstimateController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/estimates/new.estimate.html'
+						}
+					}
+				},
 				details : {
 					name : 'dashboard.sales.estimates.details',
 					url : '/sales/estimates/:estimateId',

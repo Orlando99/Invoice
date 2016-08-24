@@ -110,4 +110,36 @@ $scope.setDefaultTemplate = function(index) {
 	});
 }
 
+$scope.emailReceipt = function() {
+	showLoader();
+	$q.when(estimateService.sendEstimateReceipt($scope.estimate.entity))
+	.then(function(obj) {
+		console.log('Receipt sent successfully.');
+		hideLoader();
+	});
+}
+
+$scope.deleteEstimate = function() {
+	showLoader();
+	var estimate = $scope.estimate.entity;
+	var children = [];
+	var x = undefined;
+
+	['comments', 'estimateItems']
+	.forEach(function(field) {
+		x = estimate.get(field);
+		if(x) children = children.concat(x);
+	});
+
+	Parse.Object.destroyAll(children)
+	.then(function() {
+		return estimate.destroy();
+	})
+	.then(function() {
+		hideLoader();
+		$state.go('dashboard.sales.estimates.all');
+	});
+
+}
+
 }]);

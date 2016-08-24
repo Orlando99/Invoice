@@ -435,4 +435,38 @@ $scope.printReceipt = function() {
 
 }
 
+$scope.deleteInvoice = function() {
+	if ($scope.invoice.entity.get('payment')) {
+		console.log('invoice cannot be deleted, it contains payments');
+		return;
+	}
+
+	showLoader();
+	var invoice = $scope.invoice.entity;
+	var children = [];
+	var x = undefined;
+
+	['comments', 'invoiceItems']
+	.forEach(function(field) {
+		x = invoice.get(field);
+		if(x) children = children.concat(x);
+	});
+
+	['invoiceInfo', 'lateFee']
+	.forEach(function(field) {
+		x = invoice.get(field);
+		if(x) children.push(x);
+	});
+
+	Parse.Object.destroyAll(children)
+	.then(function() {
+		return invoice.destroy();
+	})
+	.then(function() {
+		hideLoader();
+		$state.go('dashboard.sales.invoices.all');
+	});
+
+}
+
 }]);
