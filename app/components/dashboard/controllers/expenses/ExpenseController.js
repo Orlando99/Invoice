@@ -354,7 +354,10 @@ $scope.removeFile = function(index) {
 }
 
 $scope.customerSelected = function() {
-	$scope.showType = true;
+	if(! $scope.selectedCustomer) {
+		$scope.expenseType.selectedType =
+			$scope.expenseType.types[0];
+	}
 }
 
 $scope.openDatePicker = function(n) {

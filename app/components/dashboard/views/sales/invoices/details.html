@@ -21,7 +21,7 @@
           <li><a href="">Print Delivery Note</a></li>
           <li><a href="">Print Packing Slip</a></li>
           -->
-          <li><a href="" ng-click="deleteInvoice()">Delete</a></li>
+          <li><a href="" ng-click="canDeleteInvoice()">Delete</a></li>
       </ul>
       
       
@@ -336,6 +336,33 @@
       <div class="clearfix"></div>
       <button class="button button-small button-info text-uppercase" ng-disabled="selectedPayment.disableRefund"
         ng-click="refundPayment()">Refund</button>
+    </div>
+  </div>
+
+  <div class="popup-modal confirm-delete hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
+        float-left">Are you sure you want to delete this invoice?</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <button class="button button-info text-uppercase" ng-click="deleteInvoice()">Yes</button>
+      <button class="button button-info text-uppercase modal-close">No</button>
+    </div>
+  </div>
+
+  <div class="popup-modal cannot-delete hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
+        float-left">You can't delete this invoice because there are recorded payments.</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <button class="button button-info text-uppercase modal-close">OK</button>
     </div>
   </div>
 

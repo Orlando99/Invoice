@@ -435,6 +435,13 @@ $scope.printReceipt = function() {
 
 }
 
+$scope.canDeleteInvoice = function() {
+	if ($scope.invoice.entity.get('payment'))
+		$('.cannot-delete').addClass('show');
+	else
+		$('.confirm-delete').addClass('show');
+}
+
 $scope.deleteInvoice = function() {
 	if ($scope.invoice.entity.get('payment')) {
 		console.log('invoice cannot be deleted, it contains payments');

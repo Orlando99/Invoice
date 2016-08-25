@@ -155,4 +155,12 @@ invoicesUnlimited.controller('BusinessInfoController',
 		},errorCallback);
 	};
 
+	$scope.federalTaxIdClick = function() {
+		var checked = $('.federal-tax-id').prop('checked');
+		$('.federal-tax-id-input').hide();
+		$scope.bsnsInfo.federalTaxID = '';
+		if(checked == true)
+			$('.federal-tax-id-input').show();
+	}
+
 }]);

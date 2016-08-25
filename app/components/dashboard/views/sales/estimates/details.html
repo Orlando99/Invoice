@@ -15,7 +15,7 @@
         <li><a href="" ng-click="emailReceipt()">Email</a></li>
         <li><a href="">Print</a></li>
         <li><a ui-sref="dashboard.sales.estimates.clone({estimateId:estimate.entity.id})">Clone</a></li>
-        <li><a href="" ng-click="deleteEstimate()">Delete</a></li>
+        <li><a href="" class="modal-opener" data-toggle="confirm-delete">Delete</a></li>
       </ul>
     </div>
     <div class="clearfix"></div>
@@ -125,6 +125,20 @@
       </div>
       <div class="clearfix"></div>
       <button class="button button-small button-info text-uppercase">Save</button>
+    </div>
+  </div>
+
+  <div class="popup-modal confirm-delete hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
+        float-left">Are you sure you want to delete this estimate?</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <button class="button button-info text-uppercase" ng-click="deleteEstimate()">Yes</button>
+      <button class="button button-info text-uppercase modal-close">No</button>
     </div>
   </div>
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

@@ -3,10 +3,10 @@
 invoicesUnlimited.controller('CreateInvoiceController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
 	'invoiceService', 'coreFactory', 'taxService', 'expenseService',
-	'lateFeeService', 'currencyFilter',
+	'lateFeeService', 'currencyFilter', 'itemService',
 	function($scope, $state, $controller, $q, userFactory,
 		invoiceService,coreFactory,taxService,expenseService,
-		lateFeeService,currencyFilter) {
+		lateFeeService,currencyFilter, itemService) {
 
 	if(! userFactory.entity.length) {
 		console.log('User not logged in');
@@ -694,6 +694,64 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			console.log(msg);
 		});
 */
+	}
+
+	$scope.prepareCreateItem = function() {
+		$scope.newItem = {
+			name : '',
+			rate : '',
+			desc : '',
+			tax : undefined
+		}
+		$('#addItemForm').validate({
+			rules: {
+				name : 'required',
+				rate : {
+					required : true,
+					number : true
+				}
+			},
+			messages: {
+				name : 'Please enter Item name',
+				rate : {
+					required : 'Item rate is required',
+					number : 'Please enter valid rate(number)'
+				}
+			}
+		});
+	}
+
+	$scope.createNewItem = function() {
+		if(! $('#addItemForm').valid()) return;
+
+		showLoader();
+		var params = {
+			user : user,
+			organization : organization,
+			items : [{
+				title : $scope.newItem.name,
+				rate : $scope.newItem.rate,
+				tax : $scope.newItem.tax,
+				desc : $scope.newItem.desc
+			}]
+		};
+
+		$q.when(coreFactory.getUserRole(user))
+		.then(function(role) {
+			var acl = new Parse.ACL();
+			acl.setRoleWriteAccess(role.get("name"), true);
+			acl.setRoleReadAccess(role.get("name"), true);
+
+			params.acl = acl;
+
+			return itemService.createItems(params);
+		})
+		.then(function(items) {
+			$scope.actualItems.push(items[0]);
+			$(".new-item").removeClass("show");
+			hideLoader();
+
+		});
 	}
 
 }]);

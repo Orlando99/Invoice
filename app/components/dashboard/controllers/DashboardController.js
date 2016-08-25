@@ -105,12 +105,17 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		$scope.logOut();
 	});
 
+	
+	// return if we are not on Dashboard
 	if (! $state.current.name.endsWith('dashboard'))
 		return;
 
 	hideLoader();
 	var organization = user.entity[0].get("organizations")[0];
+	drawBarChart();
+	drawPieChart();
 
+function drawBarChart() {
 	var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY',
 		'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 	var colors = ['#0ea81c', '#2aa7f7', '#c31e1e']
@@ -225,13 +230,31 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		});
 	});
 
-	$q.when(coreFactory.getExpenseCategories({
+}
+
+function drawPieChart() {
+	var promiseList = [];
+	var promise = undefined;
+
+	promise = $q.when(coreFactory.getExpenseCategories({
 		organization : organization
-	}))
-	.then(function(objs) {
+	})).then(function(objs) {
 		$scope.categories = objs;
-		return expenseService.getExpensesForSummary({
-			organization : organization
+	});
+	promiseList.push(promise);
+
+	promise = $q.when(coreFactory.getDefaultExpenseCategories())
+	.then(function(objs) {
+		$scope.defaultCategories = objs;
+	});
+	promiseList.push(promise);
+
+	expenseService.getExpensesForSummary({
+		organization : organization
+	}).then(function(objs) {
+		return $q.all(promiseList)
+		.then(function() {
+			return objs;
 		});
 	})
 	.then(function(objs) {
@@ -248,15 +271,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 			totalExpense += value;
 			expenseNameList.push(name);
 			expenseValueList.push(value);
-			expenseColorList.push(
-				getColorCode(
-					$scope.categories.find(
-						function(category) {
-							return category.entity.name == name;
-						})
-					.entity.color
-				)
-			);
+			expenseColorList.push(getColorCode(name));
 
 			var expObj = {
 				name: name,
@@ -299,8 +314,9 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 				}
 			}
 		});
-
 	});
+
+}
 
 function getrotateCount(month) {
 	var mnth = month.slice(0,3).toUpperCase();
@@ -350,8 +366,20 @@ function addToRelevantRange(creatDate, expireDate, amount) {
 
 }
 
-function getColorCode(number) {
-	switch(number) {
+function getColorCode(name) {
+	var category =
+	$scope.categories.find(function(obj) {
+		return obj.entity.name == name;
+	});
+	if(! category) {
+		category =
+		$scope.defaultCategories.find(function(obj) {
+			return obj.entity.name == name;
+		});
+		if(! category) category = {entity:{color:-1}};
+	}
+
+	switch(category.entity.color) {
 	case 0:
 		return 'rgba(47,112,225,1)';
 	case 1:
@@ -552,7 +580,5 @@ function getColorCode(number) {
 		return 'rgba(236,214,197,1)';
 	}
 }
-
-
 
 }]);

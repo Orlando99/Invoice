@@ -46,11 +46,11 @@ invoicesUnlimited.controller('NewCustomerController',
 
 	$('#new-customer-form').validate({
 		rules: {
-			displayName: 'required',
-			email : {
-				required : true,
-				email : true
-			}
+			displayName: 'required'//,
+		//	email : {
+		//		required : true,
+		//		email : true
+		//	}
 		}
 	});
 

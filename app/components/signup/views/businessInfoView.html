@@ -16,10 +16,11 @@
       <textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)" ng-model="bsnsInfo.businessDescription" name="businessDescription"></textarea>
       <label class="input-container input-checkbox-container">
         <p>Do You Have a Federal Tax ID?</p>
-        <input type="checkbox" class="federal-tax">
+        <input type="checkbox" class="federal-tax-id" ng-change="federalTaxIdClick();" ng-model="x2">
         <span class="checkbox"></span>
-        <input class="layout-margin-tb federal-tax" type="text" placeholder="Federaly Tax ID" ng-model="bsnsInfo.federalTaxID" name="federalTaxID"> <!--pattern=".{9,}"-->
-      </label>
+        </label>
+      <input class="layout-margin-tb federal-tax federal-tax-id-input" type="text" placeholder="Federaly Tax ID" ng-model="bsnsInfo.federalTaxID" name="federalTaxID"> <!--pattern=".{9,}"-->
+      
       <select class="custom-dd" name="ownershipType"
               ng-init="bsnsInfo.ownershipType = 'ownershipTitle'"
               ng-model="bsnsInfo.ownershipType">

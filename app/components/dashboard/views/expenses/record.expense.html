@@ -44,7 +44,7 @@
           <option value="">Select customer</option>
         </select>
       </div>
-      <div class="input-container col-60 layout-margin-b" ng-show="showType">
+      <div class="input-container col-60 layout-margin-b" ng-show="selectedCustomer">
         <label class="col-30 layout-padding-t-sm">Expense Type</label>
         <select class="col-70" ng-model="expenseType.selectedType"
           ng-options="type.name for type in expenseType.types track by type.value">

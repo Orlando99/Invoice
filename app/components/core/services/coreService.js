@@ -77,6 +77,18 @@ invoicesUnlimited.factory('coreFactory',
 		});
 	}
 
+	core.getDefaultExpenseCategories = function() {
+		var query = new Parse.Query('CategoryDefaults');
+		query.select('color', 'name', 'notes');
+		return query.find().then(function(res) {
+			var categories = [];
+			res.forEach(function(category) {
+				categories.push(new expenseCategoryFactory(category));
+			});
+			return categories;
+		});
+	}
+
 	core.getExpenseCategories = function(params) {
 		var query = new Parse.Query('Category');
 		query.equalTo('organization', params.organization);
