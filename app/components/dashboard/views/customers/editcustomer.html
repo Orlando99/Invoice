@@ -127,7 +127,7 @@
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">Fax</label>
-          <input type="text" class="col-75" ng-model="billingAddressEdit.Fax">
+          <input id="billFax" type="text" class="col-75" ng-model="billingAddressEdit.Fax">
         </div>
         <div class="clearfix"></div><br>
         <label class="input-container input-checkbox-container layout-margin-tb">
@@ -138,6 +138,7 @@
             <span class="checkbox float-right layout-margin-r"></span>
           </div>
         </label>
+        <div ng-hide="shipping.setShippingTheSame">
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Street</label>
           <input type="text" class="col-75" ng-model="shippingAddressEdit.Street">
@@ -160,8 +161,9 @@
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Fax</label>
-          <input type="text" class="col-75" ng-model="shippingAddressEdit.Fax">
+          <input id="shipFax" type="text" class="col-75" ng-model="shippingAddressEdit.Fax">
         </div>
+      </div>
       </form>
 
     </div>

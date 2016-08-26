@@ -127,6 +127,11 @@ invoicesUnlimited.controller('CustomersController',
 	}
 
 	$scope.saveSelectedCustomer = function(){
+		// billing address may be filled after checking the same as box
+		if ($scope.selectedCustomer && $scope.shipping.setShippingTheSame) {
+			$scope.shippingAddressEdit = 
+				$.extend(true,{},$scope.billingAddressEdit);
+		}
 
 		var selected = $scope.selectedCustomer;
 
@@ -303,6 +308,23 @@ invoicesUnlimited.controller('CustomersController',
 				$('#mobilePhone').mask(mask,options);
 			}
 		});
+		$('#billFax').mask('0 (000) 000-0000',{
+			onKeyPress : function(cep,e,field,options){
+				var masks = ['0 (000) 000-0000','(000) 000-0000'];
+				var cond = cep.replace("(","");
+				var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
+				$('#billFax').mask(mask,options);
+			}
+		});
+		$('#shipFax').mask('0 (000) 000-0000',{
+			onKeyPress : function(cep,e,field,options){
+				var masks = ['0 (000) 000-0000','(000) 000-0000'];
+				var cond = cep.replace("(","");
+				var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
+				$('#shipFax').mask(mask,options);
+			}
+		});
+
 	}
 
 	$scope.createContact = function(){
@@ -347,7 +369,7 @@ invoicesUnlimited.controller('CustomersController',
 
 	var stateChangeEvent = $rootScope.$on('$stateChangeStart',
 	function(event,toState,toParams,fromState,fromParams,options){
-		console.log('here');
+	//	console.log('here');
 		if (isGoTo.customers(toState.name) ||
 			isGoTo.newCustomer(toState.name)) {
 			$scope.selectedCustomer = null;
@@ -368,7 +390,7 @@ invoicesUnlimited.controller('CustomersController',
 		} else if (fromState.name.endsWith('new')) {
 			LoadCustomers(true);
 		} else if (!toState.name.includes('customers')) {
-			console.log('destroy else');
+		//	console.log('destroy else');
 			stateChangeEvent();
 			stateChangeEvent = null;
 		}

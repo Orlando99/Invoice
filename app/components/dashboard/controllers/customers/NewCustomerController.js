@@ -72,6 +72,11 @@ invoicesUnlimited.controller('NewCustomerController',
 	}
 
 	$scope.saveCustomer = function(){
+		// billing address may be filled after checking the same as box
+		if ($scope.newCustomer && $scope.shipping.setShippingTheSame) {
+			$scope.newCustomer.shippingAddress = 
+				$.extend(true,{},$scope.newCustomer.billingAddress);
+		}
 
 	//	var form = document.getElementById('new-customer-form');
 		if (! $('#new-customer-form').valid()) {

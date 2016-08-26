@@ -271,7 +271,7 @@ function drawPieChart() {
 			totalExpense += value;
 			expenseNameList.push(name);
 			expenseValueList.push(value);
-			expenseColorList.push(getColorCode(name));
+			expenseColorList.push(getColor(name));
 
 			var expObj = {
 				name: name,
@@ -366,7 +366,7 @@ function addToRelevantRange(creatDate, expireDate, amount) {
 
 }
 
-function getColorCode(name) {
+function getColor(name) {
 	var category =
 	$scope.categories.find(function(obj) {
 		return obj.entity.name == name;
@@ -379,206 +379,7 @@ function getColorCode(name) {
 		if(! category) category = {entity:{color:-1}};
 	}
 
-	switch(category.entity.color) {
-	case 0:
-		return 'rgba(47,112,225,1)';
-	case 1:
-		return 'rgba(83,215,106,1)';
-	case 2:
-		return 'rgba(221,170,59,1)';
-	case 3:
-		return 'rgba(229,0,15,1)';
-	case 4:
-		return 'rgba(250,235,215,1)';
-	case 5:
-		return 'rgba(253,245,230,1)';
-	case 6:
-		return 'rgba(255,255,240,1)';
-	case 7:
-		return 'rgba(255,245,238,1)';
-	case 8:
-		return 'rgba(248,248,255,1)';
-	case 9:
-		return 'rgba(255,250,250,1)';
-	case 10:
-		return 'rgba(250,240,230,1)';
-	case 11:
-		return 'rgba(64,64,64,1)';
-	case 12:
-		return 'rgba(128,128,128,1)';
-	case 13:
-		return 'rgba(191,191,191,1)';
-	case 14:
-		return 'rgba(133,117,112,1)';
-	case 15:
-		return 'rgba(118,122,133,1)';
-	case 16:
-		return 'rgba(34,34,34,1)';
-	case 17:
-		return 'rgba(28,160,170,1)';
-	case 18:
-		return 'rgba(103,153,170,1)';
-	case 19:
-		return 'rgba(141,218,247,1)';
-	case 20:
-		return 'rgba(99,161,247,1)';
-	case 21:
-		return 'rgba(112,219,219,1)';
-	case 22:
-		return 'rgba(0,178,238,1)';
-	case 23:
-		return 'rgba(13,79,139,1)';
-	case 24:
-		return 'rgba(67,114,170,1)';
-	case 25:
-		return 'rgba(89,113,173,1)';
-	case 26:
-		return 'rgba(100,149,237,1)';
-	case 27:
-		return 'rgba(190,220,230,1)';
-	case 28:
-		return 'rgba(13,26,35,1)';
-	case 29:
-		return 'rgba(23,137,155,1)';
-	case 30:
-		return 'rgba(200,213,219,1)';
-	case 31:
-		return 'rgba(102,169,251,1)';
-	case 32:
-		return 'rgba(1,152,117,1)';
-	case 33:
-		return 'rgba(99,214,74,1)';
-	case 34:
-		return 'rgba(126,242,124,1)';
-	case 35:
-		return 'rgba(77,226,140,1)';
-	case 36:
-		return 'rgba(176,226,172,1)';
-	case 37:
-		return 'rgba(99,111,87,1)';
-	case 38:
-		return 'rgba(69,139,0,1)';
-	case 39:
-		return 'rgba(32,87,14,1)';
-	case 40:
-		return 'rgba(91,114,34,1)';
-	case 41:
-		return 'rgba(107,142,35,1)';
-	case 42:
-		return 'rgba(134,198,124,1)';
-	case 43:
-		return 'rgba(216,255,231,1)';
-	case 44:
-		return 'rgba(56,237,56,1)';
-	case 45:
-		return 'rgba(87,121,107,1)';
-	case 46:
-		return 'rgba(233,87,95,1)';
-	case 47:
-		return 'rgba(151,27,16,1)';
-	case 48:
-		return 'rgba(241,167,162,1)';
-	case 49:
-		return 'rgba(228,31,54,1)';
-	case 50:
-		return 'rgba(255,95,154,1)';
-	case 51:
-		return 'rgba(205,92,92,1)';
-	case 52:
-		return 'rgba(190,38,37,1)';
-	case 53:
-		return 'rgba(240,128,128,1)';
-	case 54:
-		return 'rgba(80,4,28,1)';
-	case 55:
-		return 'rgba(242,71,63,1)';
-	case 56:
-		return 'rgba(255,99,71,1)';
-	case 57:
-		return 'rgba(255,105,180,1)';
-	case 58:
-		return 'rgba(255,228,225,1)';
-	case 59:
-		return 'rgba(187,18,36,1)';
-	case 60:
-		return 'rgba(105,5,98,1)';
-	case 61:
-		return 'rgba(207,100,235,1)';
-	case 62:
-		return 'rgba(229,180,235,1)';
-	case 63:
-		return 'rgba(140,93,228,1)';
-	case 64:
-		return 'rgba(191,95,255,1)';
-	case 65:
-		return 'rgba(139,102,139,1)';
-	case 66:
-		return 'rgba(204,153,204,1)';
-	case 67:
-		return 'rgba(135,38,87,1)';
-	case 68:
-		return 'rgba(255,20,147,1)';
-	case 69:
-		return 'rgba(54,11,88,1)';
-	case 70:
-		return 'rgba(135,159,237,1)';
-	case 71:
-		return 'rgba(218,112,214,1)';
-	case 72:
-		return 'rgba(215,170,51,1)';
-	case 73:
-		return 'rgba(192,242,39,1)';
-	case 74:
-		return 'rgba(229,227,58,1)';
-	case 75:
-		return 'rgba(205,171,45,1)';
-	case 76:
-		return 'rgba(254,241,181,1)';
-	case 77:
-		return 'rgba(139,117,18,1)';
-	case 78:
-		return 'rgba(240,226,187,1)';
-	case 79:
-		return 'rgba(240,238,215,1)';
-	case 80:
-		return 'rgba(240,238,215,1)';
-	case 81:
-		return 'rgba(245,245,220,1)';
-	case 82:
-		return 'rgba(242,187,97,1)';
-	case 83:
-		return 'rgba(184,102,37,1)';
-	case 84:
-		return 'rgba(248,197,143,1)';
-	case 85:
-		return 'rgba(250,154,79,1)';
-	case 86:
-		return 'rgba(237,145,33,1)';
-	case 87:
-		return 'rgba(247,145,55,1)';
-	case 88:
-		return 'rgba(199,63,23,1)';
-	case 89:
-		return 'rgba(138,54,15,1)';
-	case 90:
-		return 'rgba(94,38,5,1)';
-	case 91:
-		return 'rgba(141,60,15,1)';
-	case 92:
-		return 'rgba(123,63,9,1)';
-	case 93:
-		return 'rgba(196,142,72,1)';
-	case 94:
-		return 'rgba(252,230,201,1)';
-	case 95:
-		return 'rgba(222,182,151,1)';
-	case 96:
-		return 'rgba(70,45,29,1)';
-	case 97:
-		return 'rgba(160,82,45,1)';
-	default:
-		return 'rgba(236,214,197,1)';
-	}
+	return colorCodeToValue(category.entity.color);
 }
 
 }]);

@@ -2,8 +2,9 @@
   <div class="container hidesm">
 
    <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">Expense Category <i class="arrow-down-black"></i></h3>
-   <a href="#" class="float-right button button-add text-uppercase modal-opener" data-toggle="new-category">New</a>
-   <a href="#" class="float-right button button-danger text-uppercase layout-margin-t">Delete</a>
+   <a href="" class="float-right button button-add text-uppercase modal-opener" data-toggle="new-category"
+    ng-click="prepareAddCategory()">New</a>
+   <a href="" class="float-right button button-danger text-uppercase layout-margin-t">Delete</a>
 
    <div class="clearfix"></div>
 
@@ -18,15 +19,17 @@
        <td class="text-uppercase text-info layout-padding-tb-lg">Category Name</td>
        <td class="text-uppercase text-info layout-padding-tb-lg text-left">Description</td>
      </tr>
-     <tr class="trow" ng-repeat="category in categories">
+     <tr class="trow show_hover" ng-repeat="category in categories">
        <td class="text-uppercase text-info layout-padding-tb-lg">
          <label class="input-container input-checkbox-container layout-margin-tb">
            <input type="checkbox" ng-checked="selectAll">
            <span class="checkbox float-left"></span>
          </label>
        </td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg">{{category.entity.name}}</td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left">{{category.entity.notes}}</td>
+       <td class="text-color-light text-weight-normalize layout-padding-tb-lg"
+        ng-click="showCategoryDetail($index)">{{category.entity.name}}</td>
+       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left"
+        ng-click="showCategoryDetail($index)">{{category.entity.notes}}</td>
      </tr>
    </table>
 
@@ -41,20 +44,70 @@
      <hr class="layout-margin-tb">
 
      <div class="col-80 text-left layout-center">
-       <form action="" class="layout-margin-tb inputs-white">
+       <form id="addCategoryForm" action="" class="layout-margin-tb inputs-white">
          <div class="input-container layout-margin-b">
            <label class="layout-padding-t-sm">Category Name</label>
-           <input class="col-75" type="text" placeholder="Select or Type to add">
+           <input name="name" ng-model="newCategory.name" class="col-75" type="text" placeholder="Select or Type to add">
          </div>
 
          <div class="input-container layout-margin-b">
            <label class="layout-padding-t-sm">Description</label>
-           <textarea class="col-75"></textarea>
+           <textarea ng-model="newCategory.desc" class="col-75"></textarea>
+         </div>
+         <div class="input-container layout-margin-b">
+           <label class="layout-padding-t-sm">Color</label>
+           <div ng-model="selectedColor" class="col-75 modal-opener show_hover" data-toggle="select-color"
+            ng-style="{'height':'40px', 'background-color':selectedColor}"></div>
          </div>
        </form>
      </div>
      <div class="clearfix"></div>
-     <button class="button button-small button-info text-uppercase">Save</button>
+     <button class="button button-small button-info text-uppercase" ng-click="createNewCategory()">Save</button>
+   </div>
+ </div>
+
+ <div class="popup-modal edit-category hidesm">
+   <div class="modal container">
+
+     <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit Category</h3>
+     <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+     <div class="clearfix"></div>
+     <hr class="layout-margin-tb">
+
+     <div class="col-80 text-left layout-center">
+       <form id="editCategoryForm" action="" class="layout-margin-tb inputs-white">
+         <div class="input-container layout-margin-b">
+           <label class="layout-padding-t-sm">Category Name</label>
+           <input name="name" ng-model="editCategory.name" class="col-75" type="text" placeholder="Select or Type to add">
+         </div>
+
+         <div class="input-container layout-margin-b">
+           <label class="layout-padding-t-sm">Description</label>
+           <textarea ng-model="editCategory.desc" class="col-75"></textarea>
+         </div>
+         <div class="input-container layout-margin-b">
+           <label class="layout-padding-t-sm">Color</label>
+           <div ng-model="selectedColor" class="col-75 modal-opener show_hover" data-toggle="select-color"
+            ng-style="{'height':'40px', 'background-color':selectedColor}"></div>
+         </div>
+       </form>
+     </div>
+     <div class="clearfix"></div>
+     <button class="button button-small button-info text-uppercase" ng-click="saveEditedCategory()">Save</button>
+   </div>
+ </div>
+
+  <div class="popup-modal select-color hidesm">
+   <div class="modal container">
+
+     <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Select Color</h3>
+     <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+     <div class="clearfix"></div>
+     <hr class="layout-margin-tb">
+     <div style="height:400px; overflow-y:scroll">
+      <div class="show_hover modal-close" ng-repeat="color in colors track by $index" ng-click="setColor($index)"
+        ng-style="{'height':'40px', 'background-color':color}"></div>
+     </div>
    </div>
  </div>
 
