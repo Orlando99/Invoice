@@ -16,6 +16,7 @@ var CSS_DIR = './assets/css/';
 var IMG_DIR = './assets/images/';
 var JS_DIR = './assets/js/';
 var colorCount = 98;
+var createItemOpener = {'entity':{'title':'+ Create new item'}, 'dummy':true};
 
 var GetTemplate = function(name,file) {
   return COMPONENTS + name + '/views/' + file;

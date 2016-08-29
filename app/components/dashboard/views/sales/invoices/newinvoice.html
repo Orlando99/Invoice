@@ -97,7 +97,7 @@
 
           <div class="col-30 layout-padding">
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-            <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis" ng-model="invItem.selectedItem"
+            <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item" ng-model="invItem.selectedItem"
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
               <option value="" disabled>Select or Type to add</option>
             </select>
@@ -136,9 +136,11 @@
 
         <a href="javascript:" class="button layout-margin-tb" ng-click="addInvoiceItem()">
           + Add another item</a>
+        <!--
         <a href="javascript:" class="button layout-margin-tb modal-opener" data-toggle="new-item"
           ng-click="prepareCreateItem()">
           + Create new item</a>
+        -->
         <hr>
         <div class="col-60 pull-right">
           <div class="col-25">Sub Total</div>

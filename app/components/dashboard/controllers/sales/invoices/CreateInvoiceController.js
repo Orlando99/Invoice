@@ -3,10 +3,10 @@
 invoicesUnlimited.controller('CreateInvoiceController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
 	'invoiceService', 'coreFactory', 'taxService', 'expenseService',
-	'lateFeeService', 'currencyFilter', 'itemService',
+	'lateFeeService', 'currencyFilter', 'itemService', 'salesCommon',
 	function($scope, $state, $controller, $q, userFactory,
 		invoiceService,coreFactory,taxService,expenseService,
-		lateFeeService,currencyFilter, itemService) {
+		lateFeeService,currencyFilter, itemService, salesCommon) {
 
 	if(! userFactory.entity.length) {
 		console.log('User not logged in');
@@ -158,6 +158,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				return item.entity.expanseId;
 			});
 			$scope.items = $scope.actualItems;
+			$scope.items.push(createItemOpener);
 		});
 		promises.push(p);
 
@@ -282,7 +283,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			})[0];
 			$q.when(customerChangedHelper())
 			.then(function() {
-				console.log($scope.items);
+			//	console.log($scope.items);
 				$scope.addInvoiceItem();
 				$scope.invoiceItems[0].selectedItem = $scope.items.filter(function(item) {
 					return item.entity.expanseId == expenseId;
@@ -583,6 +584,17 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	$scope.itemChanged = function(index) {
 		console.log('item changed');
 		var itemInfo = $scope.invoiceItems[index];
+
+		// if create item is pressed
+		if(itemInfo.selectedItem.dummy) {
+			itemInfo.selectedItem = null;
+			$('.new-item').addClass('show');
+			// save index to select newly created item
+			$scope.itemChangedIndex = index;
+			$scope.prepareCreateItem();
+			return;
+		}
+
 		itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
 		var tax = itemInfo.selectedItem.tax;
 		if (!tax) {
@@ -601,6 +613,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	}
 
 	function customerChangedHelper() {
+		$scope.items.pop(); // remove createItem field
 		return $q.when(expenseService.getCustomerExpenses({
 			organization : organization,
 			customer : $scope.selectedCustomer.entity
@@ -648,6 +661,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				});
 			});
 		//	console.log($scope.invoiceItems);
+			newItems.push(createItemOpener); // add createItem field
 			return $scope.items = newItems;
 		});
 	}
@@ -697,60 +711,16 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	}
 
 	$scope.prepareCreateItem = function() {
-		$scope.newItem = {
-			name : '',
-			rate : '',
-			desc : '',
-			tax : undefined
-		}
-		$('#addItemForm').validate({
-			rules: {
-				name : 'required',
-				rate : {
-					required : true,
-					number : true
-				}
-			},
-			messages: {
-				name : 'Please enter Item name',
-				rate : {
-					required : 'Item rate is required',
-					number : 'Please enter valid rate(number)'
-				}
-			}
+		salesCommon.prepareCreateItem({
+			_scope : $scope
 		});
 	}
 
 	$scope.createNewItem = function() {
-		if(! $('#addItemForm').valid()) return;
-
-		showLoader();
-		var params = {
+		salesCommon.createNewItem({
+			_scope : $scope,
 			user : user,
-			organization : organization,
-			items : [{
-				title : $scope.newItem.name,
-				rate : $scope.newItem.rate,
-				tax : $scope.newItem.tax,
-				desc : $scope.newItem.desc
-			}]
-		};
-
-		$q.when(coreFactory.getUserRole(user))
-		.then(function(role) {
-			var acl = new Parse.ACL();
-			acl.setRoleWriteAccess(role.get("name"), true);
-			acl.setRoleReadAccess(role.get("name"), true);
-
-			params.acl = acl;
-
-			return itemService.createItems(params);
-		})
-		.then(function(items) {
-			$scope.actualItems.push(items[0]);
-			$(".new-item").removeClass("show");
-			hideLoader();
-
+			organization : organization
 		});
 	}
 

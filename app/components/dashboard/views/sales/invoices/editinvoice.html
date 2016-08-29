@@ -86,7 +86,7 @@
 
           <div class="col-30 layout-padding">
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-            <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis" ng-model="invItem.selectedItem"
+            <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item" ng-model="invItem.selectedItem"
               ng-options="item.entity.title for item in items"
               ng-change="itemChanged($index)">
               <option value="" disabled>Select or Type to add</option>
@@ -214,6 +214,40 @@
     </div>
     <div class="clearfix spacer"></div>
     <div class="spacer"></div>
+  </div>
+  <div class="popup-modal new-item hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Item</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="addItemForm" class="layout-margin-tb col-100 inputs-white">
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Name</label>
+            <input name="name" type="text" class="col-75" ng-model="newItem.name">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Rate</label>
+            <input name="rate" type="text" class="col-75" placeholder="USD" ng-model="newItem.rate">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Description</label>
+            <textarea class="col-75" ng-model="newItem.desc"></textarea>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Tax</label>
+            <select class="col-75" ng-model="newItem.tax" ng-options="tax.name for tax in taxes">
+              <option value="" selected>None</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-info text-uppercase" ng-click="createNewItem()">Create</button>
+    </div>
   </div>
 
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

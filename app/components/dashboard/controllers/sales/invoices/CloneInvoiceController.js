@@ -142,4 +142,18 @@ $scope.customerChanged = function() {
 	});
 }
 
+$scope.prepareCreateItem = function() {
+	salesCommon.prepareCreateItem({
+		_scope : $scope
+	});
+}
+
+$scope.createNewItem = function() {
+	salesCommon.createNewItem({
+		_scope : $scope,
+		user : user,
+		organization : organization
+	});
+}
+
 }]);

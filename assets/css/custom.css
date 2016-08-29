@@ -70,3 +70,9 @@ div.paymentInfo > label {
 div.paymentInfo > a {
 	top: 10px;
 }
+
+select.can-create-item option:last-child{
+    background-color: transparent;
+    color: #0ea81c;
+}
+

@@ -1,11 +1,80 @@
 'use strict';
 
 invoicesUnlimited.factory('salesCommon', ['$q', '$state', 'userFactory', 'coreFactory', 'invoiceService',
-	'taxService', 'lateFeeService', 'expenseService', 'currencyFilter',
+	'taxService', 'lateFeeService', 'expenseService', 'itemService', 'currencyFilter',
 function($q, $state, userFactory, coreFactory, invoiceService, taxService, lateFeeService,
-	expenseService, currencyFilter){
+	expenseService, itemService, currencyFilter){
 
 return {
+	prepareCreateItem : function(params) {
+		var _scope = params._scope;
+		_scope.newItem = {
+			name : '',
+			rate : '',
+			desc : '',
+			tax : undefined
+		}
+		$('#addItemForm').validate({
+			rules: {
+				name : 'required',
+				rate : {
+					required : true,
+					number : true
+				}
+			},
+			messages: {
+				name : 'Please enter Item name',
+				rate : {
+					required : 'Item rate is required',
+					number : 'Please enter valid rate(number)'
+				}
+			}
+		});
+		$('#addItemForm').validate().resetForm();
+	},
+	createNewItem : function(params) {
+		var _scope = params._scope;
+		if(! $('#addItemForm').valid()) return;
+
+		showLoader();
+		var params1 = {
+			user : params.user,
+			organization : params.organization,
+			items : [{
+				title : _scope.newItem.name,
+				rate : _scope.newItem.rate,
+				tax : _scope.newItem.tax,
+				desc : _scope.newItem.desc
+			}]
+		};
+
+		$q.when(coreFactory.getUserRole(params.user))
+		.then(function(role) {
+			var acl = new Parse.ACL();
+			acl.setRoleWriteAccess(role.get("name"), true);
+			acl.setRoleReadAccess(role.get("name"), true);
+
+			params1.acl = acl;
+
+			return itemService.createItems(params1);
+		})
+		.then(function(items) {
+			_scope.items.pop(); // remove createItem field
+			_scope.actualItems.push(items[0]);
+			if(_scope.items !== _scope.actualItems)
+				_scope.items.push(items[0]);
+
+			_scope.items.push(createItemOpener); // add createItem field
+			var itemInfo = _scope.invoiceItems[_scope.itemChangedIndex];
+			itemInfo.selectedItem = _scope.items.find(function(item) {
+				return item.entity.id == items[0].entity.id;
+			});
+			_scope.itemChanged(_scope.itemChangedIndex);
+			$(".new-item").removeClass("show");
+			hideLoader();
+
+		});
+	},
 	loadRequiredData : function(params) {
 		var promises = [];
 		var p = null;
@@ -29,6 +98,7 @@ return {
 				return item.entity.expanseId;
 			});
 			_scope.items = _scope.actualItems;
+			_scope.items.push(createItemOpener);
 		});
 		promises.push(p);
 
@@ -71,6 +141,7 @@ return {
 	},
 	customerChangedHelper : function(params) {
 		var _scope = params._scope;
+		_scope.items.pop(); // remove createItem field
 		return $q.when(expenseService.getCustomerExpenses({
 			organization : params.organization,
 			customer : _scope.selectedCustomer.entity
@@ -118,6 +189,7 @@ return {
 				});
 			});
 		//	console.log($scope.invoiceItems);
+			newItems.push(createItemOpener); // add createItem field
 			_scope.items = newItems;
 			return Promise.resolve('');
 		});
@@ -516,6 +588,17 @@ return {
 	itemChanged : function(params) {
 		var _scope = params._scope;
 		var itemInfo = _scope.invoiceItems[params.index];
+		
+		// if create item is pressed
+		if(itemInfo.selectedItem.dummy) {
+			itemInfo.selectedItem = null;
+			$('.new-item').addClass('show');
+			// save index to select newly created item
+			_scope.itemChangedIndex = params.index;
+			_scope.prepareCreateItem();
+			return;
+		}
+
 		itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
 		var tax = itemInfo.selectedItem.tax;
 		if (!tax) {

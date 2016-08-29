@@ -3,10 +3,10 @@
 invoicesUnlimited.controller('InvoiceController',
 	['$q', '$scope', '$state', '$controller', 'userFactory',
 		'invoiceService', 'coreFactory', 'taxService', 'expenseService',
-		'lateFeeService', 'currencyFilter',
+		'lateFeeService', 'currencyFilter', 'salesCommon',
 
 function($q, $scope, $state, $controller, userFactory,
-	invoiceService, coreFactory, taxService, expenseService, lateFeeService, currencyFilter) {
+	invoiceService, coreFactory, taxService, expenseService, lateFeeService, currencyFilter, salesCommon) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -630,6 +630,17 @@ $scope.reCalculateItemAmount = function(index) {
 
 $scope.itemChanged = function(index) {
 	var itemInfo = $scope.invoiceItems[index];
+	
+	// if create item is pressed
+	if(itemInfo.selectedItem.dummy) {
+		itemInfo.selectedItem = null;
+		$('.new-item').addClass('show');
+		// save index to select newly created item
+		$scope.itemChangedIndex = index;
+		$scope.prepareCreateItem();
+		return;
+	}
+
 	itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
 	var tax = itemInfo.selectedItem.tax;
 	if (!tax) {
@@ -648,6 +659,7 @@ $scope.itemChanged = function(index) {
 }
 
 function customerChangedHelper() {
+	$scope.items.pop(); // remove createItem field
 	return $q.when(expenseService.getCustomerExpenses({
 		organization : organization,
 		customer : $scope.selectedCustomer.entity
@@ -695,6 +707,7 @@ function customerChangedHelper() {
 			});
 		});
 	//	console.log($scope.invoiceItems);
+		newItems.push(createItemOpener); // add createItem field
 		return $scope.items = newItems;
 	});
 }
@@ -748,6 +761,7 @@ function LoadRequiredData() {
 			return item.entity.expanseId;
 		});
 		$scope.items = $scope.actualItems;
+		$scope.items.push(createItemOpener);
 	});
 	promises.push(p);
 
@@ -817,6 +831,20 @@ function ListInvoices() {
 		hideLoader();
 		console.log(error.message);
 	});	
+}
+
+$scope.prepareCreateItem = function() {
+	salesCommon.prepareCreateItem({
+		_scope : $scope
+	});
+}
+
+$scope.createNewItem = function() {
+	salesCommon.createNewItem({
+		_scope : $scope,
+		user : user,
+		organization : organization
+	});
 }
 
 }]);
