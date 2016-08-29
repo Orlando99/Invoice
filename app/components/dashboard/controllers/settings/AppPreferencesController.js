@@ -14,11 +14,17 @@ invoicesUnlimited.controller('AppPreferencesController',
 	}
 	hideLoader();
 
+	$scope.openingScreens = ['Overview', 'Customer List',
+		'Invoices List', 'Expense List', 'Estimate List', 'Credit Notes List',
+		'Reports', 'Settings'];
+
+	$scope.selectedScreen = user.entity[0].get('firstScreen');
+
 	$scope.saveAppPreferences = function(){
 		showLoader();
 		var color = $(".colors li.active").find('a').attr('class');
 		var colorToSave = "app" + color[0].toUpperCase() + color.slice(1) + "Color";
-		userFactory.save({colorTheme:colorToSave}).then(function(){
+		userFactory.save({colorTheme:colorToSave, firstScreen:$scope.selectedScreen}).then(function(){
 			window.location.reload();
 			hideLoader();
 		});

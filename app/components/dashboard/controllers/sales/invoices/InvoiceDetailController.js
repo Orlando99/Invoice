@@ -427,14 +427,6 @@ $scope.emailReceipt = function() {
 	});
 }
 
-$scope.printReceipt = function() {
-	console.log('print feature not implemented yet');
-//	var frame = window.frames['targetframe'].contentWindow;
-//	frame.focus();
-//	frame.print();
-
-}
-
 $scope.canDeleteInvoice = function() {
 	if ($scope.invoice.entity.get('payment'))
 		$('.cannot-delete').addClass('show');

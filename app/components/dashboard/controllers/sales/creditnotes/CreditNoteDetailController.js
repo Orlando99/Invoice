@@ -110,4 +110,13 @@ $scope.setDefaultTemplate = function(index) {
 	});
 }
 
+$scope.emailReceipt = function() {
+	showLoader();
+	$q.when(creditNoteService.sendCreditNoteReceipt($scope.creditNote.entity))
+	.then(function(obj) {
+		console.log('Receipt sent successfully.');
+		hideLoader();
+	});
+}
+
 }]);

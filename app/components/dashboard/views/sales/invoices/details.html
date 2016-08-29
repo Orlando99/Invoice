@@ -12,7 +12,7 @@
       </button>
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
           <li><a href="" ng-click="emailReceipt()">Email</a></li>
-          <li><a href="" ng-click="printReceipt()">Print</a></li>
+          <li><a ng-href="{{templateUrl}}" target="_blank">Print</a></li>
           <li class="modal-opener" data-toggle="record-payment"><a href=""
               ng-click="prepareAddPayment()">Record Payment</a></li>
           <li><a href="javascript:" ng-click="showAvailableCredits()">Apply Credit Note</a></li>

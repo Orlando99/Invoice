@@ -29,7 +29,19 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 			password : $scope.password
 		},function(){
 			$('.errorMessage').html('').hide();
-			$state.go('dashboard');
+			// test
+			var firstScreen = user.entity[0].get('firstScreen');
+			switch(firstScreen) {
+			case 'Overview': 		  $state.go('dashboard'); break;
+			case 'Customer List': 	  $state.go('dashboard.customers.all'); break;
+			case 'Invoices List': 	  $state.go('dashboard.sales.invoices.all'); break;
+			case 'Expense List': 	  $state.go('dashboard.expenses.all'); break;
+			case 'Estimate List': 	  $state.go('dashboard.sales.estimates.all'); break;
+			case 'Credit Notes List': $state.go('dashboard.sales.creditnotes.all'); break;
+			case 'Reports': 		  $state.go('dashboard.reports'); break;
+			case 'Settings': 		  $state.go('dashboard.settings.company-profile'); break;
+			default: 				  $state.go('dashboard'); break;
+			}
 		},function(error){
 			hideLoader();
 			$('.errorMessage').html(error.message.capitilize()).show();
