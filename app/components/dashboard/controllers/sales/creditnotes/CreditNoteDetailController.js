@@ -2,10 +2,10 @@
 
 invoicesUnlimited.controller('CreditNoteDetailController',
 	['$q', '$scope', '$state', '$sce', '$controller', 'userFactory',
-		'creditNoteService', 'coreFactory', 'currencyFilter',
+		'creditNoteService', 'coreFactory', 'commentFactory', 'currencyFilter',
 
 function($q, $scope, $state, $sce, $controller, userFactory,
-	creditNoteService, coreFactory, currencyFilter) {
+	creditNoteService, coreFactory, commentFactory, currencyFilter) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -117,6 +117,55 @@ $scope.emailReceipt = function() {
 		console.log('Receipt sent successfully.');
 		hideLoader();
 	});
+}
+
+$scope.addComment = function() {
+	if (! $scope.newComment) {
+		$('.add-comment').removeClass('show');
+		return;
+	}
+
+	showLoader();
+	var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : false,
+		comment : $scope.newComment
+	}
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var creditNote = $scope.creditNote.entity;
+		var prevComments = creditNote.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		creditNote.set('comments', prevComments);
+		return creditNote.save();
+	})
+	.then(function() {
+		var comment = new commentFactory(data.commentObj);
+
+		if($scope.comments)
+			$scope.comments.push(comment);
+		else
+			$scope.comments = [comment];
+
+		console.log(comment);
+		$('.add-comment').removeClass('show');
+		$scope.newComment = '';
+		hideLoader();
+	});
+
 }
 
 }]);

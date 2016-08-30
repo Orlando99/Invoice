@@ -18,6 +18,18 @@ invoicesUnlimited.factory('commentFactory', function(userFactory){
 		this.entity = parseObject;
 	};
 
+	Comment.createNewComment = function(params, role) {
+		var commentObj = Parse.Object.extend('Comments');
+		var obj = new commentObj();
+
+		var acl = new Parse.ACL();
+		acl.setRoleWriteAccess(role.get("name"), true);
+		acl.setRoleReadAccess(role.get("name"), true);
+		obj.setACL(acl);
+
+		return obj.save(params);
+	}
+
 	var fields = [
 		"date",
 		"comment",

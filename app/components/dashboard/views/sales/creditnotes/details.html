@@ -21,7 +21,7 @@
       <p class="log text-color-light text-weight-normalize">{{comment.date}} <span>
         {{comment.entity.comment}} - {{comment.entity.name}}</span></p>
     </div>
-    <a href="javascript:" class="layout-margin-tb">+ New Comment</a>
+    <a href="" class="layout-margin-tb modal-opener" data-toggle="add-comment">+ New Comment</a>
 
     <div class="text-center layout-margin-tb">
       <iframe ng-src="{{templateUrl}}" name="targetframe"
@@ -117,4 +117,18 @@
       <button class="button button-small button-info text-uppercase">Save</button>
     </div>
   </div>
+  <div class="popup-modal add-comment hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
+        float-left">Add Comment</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+      <textarea ng-model="newComment"></textarea>
+      <br/>
+      <button class="button button-info text-uppercase" ng-click="addComment()">Save</button>
+    </div>
+  </div>
+
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

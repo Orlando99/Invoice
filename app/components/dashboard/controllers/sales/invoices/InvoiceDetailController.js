@@ -2,10 +2,11 @@
 
 invoicesUnlimited.controller('InvoiceDetailController',
 	['$q', '$scope', '$state', '$sce', '$controller', 'userFactory',
-		'invoiceService', 'creditNoteService', 'coreFactory', 'currencyFilter',
+		'invoiceService', 'creditNoteService', 'coreFactory',
+		'commentFactory', 'currencyFilter',
 
 function($q, $scope, $state, $sce, $controller, userFactory,
-	invoiceService, creditNoteService, coreFactory, currencyFilter) {
+	invoiceService, creditNoteService, coreFactory, commentFactory, currencyFilter) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -29,7 +30,7 @@ function showInvoiceDetail() {
 	showLoader();
 	$q.when(invoiceService.getInvoiceDetails(invoiceId))
 	.then(function(invoice) {
-		console.log(invoice);
+	//	console.log(invoice);
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		$scope.invoice = invoice;
 		$scope.invoiceNo = invoice.entity.invoiceNumber;
@@ -464,6 +465,54 @@ $scope.deleteInvoice = function() {
 	.then(function() {
 		hideLoader();
 		$state.go('dashboard.sales.invoices.all');
+	});
+
+}
+
+$scope.addComment = function() {
+	if (! $scope.newComment) {
+		$('.add-comment').removeClass('show');
+		return;
+	}
+
+	showLoader();
+	var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : false,
+		comment : $scope.newComment
+	}
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var invoice = $scope.invoice.entity;
+		var prevComments = invoice.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		invoice.set('comments', prevComments);
+		return invoice.save();
+	})
+	.then(function() {
+		var comment = new commentFactory(data.commentObj);
+
+		if($scope.comments)
+			$scope.comments.push(comment);
+		else
+			$scope.comments = [comment];
+
+		console.log(comment);
+		$('.add-comment').removeClass('show');
+		hideLoader();
 	});
 
 }

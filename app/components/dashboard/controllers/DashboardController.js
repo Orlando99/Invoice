@@ -264,25 +264,44 @@ function drawPieChart() {
 		var expenseValueList = [];
 		var expenseColorList = [];
 
-		objs.forEach(function(expense) {
+		var uniqueExpenses = {};
+		for(var i=0; i < objs.length; ++i) {
+			var expense = objs[i];
 			var name = expense.entity.category;
 			var value = expense.entity.amount;
-			
-			totalExpense += value;
-			expenseNameList.push(name);
-			expenseValueList.push(value);
-			expenseColorList.push(getColor(name));
+
+			if(uniqueExpenses[name]) {
+				uniqueExpenses[name] += value;
+			} else {
+				uniqueExpenses[name] = value;
+				expenseNameList.push(name);
+			}
 
 			var expObj = {
 				name: name,
-				value: currencyFilter(value, '$', 2)
+				value : value
 			};
 			if (expense.customer)
 				expObj.customer = expense.customer.displayName;
 
 			expenseList.push(expObj);
+		}
+		expenseList.sort(function(a,b) {
+			return b.value - a.value;
+		});
+		expenseList.forEach(function(exp) {
+			exp.value = currencyFilter(exp.value, '$', 2);
 		});
 		$scope.expenseList = expenseList;
+
+		for(var i=0; i < expenseNameList.length; ++i) {
+			var name = expenseNameList[i];
+			var value = uniqueExpenses[name];
+
+			totalExpense += value;
+			expenseValueList.push(value);
+			expenseColorList.push(getColor(name));
+		}
 		$scope.totalExpenseAmount = currencyFilter(totalExpense, '$', 2);
 
 		var ctx = document.getElementById("piechart");

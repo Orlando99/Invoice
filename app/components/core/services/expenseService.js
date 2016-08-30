@@ -9,7 +9,7 @@ return {
 		var query = new Parse.Query(expenseTable);
 
 		query.equalTo('organization', params.organization);
-		query.notEqualTo('status', 'Non-Billable');
+	//	query.notEqualTo('status', 'Non-Billable');
 		query.include('customer');
 		query.select('category', 'amount', 'customer');
 
