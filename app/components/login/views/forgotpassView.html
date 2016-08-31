@@ -1,39 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <title>Invoices Unlimited</title>
-  <link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="../dist/css/main.css">
-</head>
-<body>
-
   <header class="sticky-nav logo-only">
-    <a href="#"><img src="../dist/images/logo.png" alt="Invoices Unlimited"></a>
+    <a href="#"><img src="./assets/images/01_IU-Web-Admin.png" alt="Invoices Unlimited"></a>
   </header>
 
+<div class="container layout-padding hidesm">
   <section class="sign-up">
 
     <h2 class="text-uppercase text-center">FORGOT PASSWORD</h2>
 
     <form name="signUp">
+      <p class="errorMessage" style="display:none;color:red;"></p>
+      <p class="successMessage" style="display:none;color:green;"></p>
       <div class="input-container layout-margin-b">
-        <input type="text" class="layout-no-margin" placeholder="EMAIL">
+        <input type="text" class="layout-no-margin" placeholder="EMAIL" ng-model="email">
       </div>
       
     </form>
 
-    <a href="signature.html" class="button button-primary button-next">SEND REQUEST</a>
-    <a href="#" class="button button-neutral-lg">BACK TO LOGIN</a>
+    <a href="" ng-click="sendPasswordResetLink()" class="button button-primary button-next">SEND REQUEST</a>
+    <a ui-sref="login" class="button button-neutral-lg">BACK TO LOGIN</a>
 
-    <p><a href="#">Dont have an Account? Singup now in three quick steps.</a></p>
+    <p><a ui-sref="signup">Dont have an Account? Singup now in three quick steps.</a></p>
 
   </section>
+</div>
 
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>
 
-
+<!--
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="../dist/js/main.js"></script>
-</body>
-</html>
+  <script src="./assets/js/main.js"></script>-->

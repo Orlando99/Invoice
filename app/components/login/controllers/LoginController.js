@@ -29,7 +29,7 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 			password : $scope.password
 		},function(){
 			$('.errorMessage').html('').hide();
-			// test
+
 			var firstScreen = user.entity[0].get('firstScreen');
 			switch(firstScreen) {
 			case 'Overview': 		  $state.go('dashboard'); break;
@@ -48,6 +48,35 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 			$('.input-container').css({'border':'1px solid red'});
 			//$('.input-container input').val('');
 		});
+	}
+
+	$scope.sendPasswordResetLink = function() {
+		if(! $scope.email) {
+			showError('Please enter email address.');
+			return;
+		}
+
+		showLoader();
+		Parse.User.requestPasswordReset($scope.email)
+		.then(function() {
+			showSuccess('Reset Password Link sent to specified email.');
+			hideLoader();
+		}, function(error) {
+			showError(error.message);
+			hideLoader();
+		});
+	}
+
+	function showError(msg) {
+		$('.successMessage').html('').hide();
+		$('.errorMessage').html(msg).show();
+		$('.input-container').css({'border':'1px solid red'});
+	}
+
+	function showSuccess(msg) {
+		$('.errorMessage').html('').hide();
+		$('.successMessage').html(msg).show();
+		$('.input-container').css({'border':''});
 	}
 
 }]);

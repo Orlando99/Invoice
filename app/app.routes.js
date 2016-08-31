@@ -147,6 +147,12 @@ angular.module('invoicesUnlimited')
 			url 	: '/login',
 			controller : "LoginController",
 			templateUrl : COMPONENTS + "login/views/loginView.html"
+		},
+		resetPassword : {
+			name : 'resetPassword',
+			url : '/resetPassword',
+			controller : "LoginController",
+			templateUrl : COMPONENTS + 'login/views/forgotpassView.html'
 		}
 	}
 
