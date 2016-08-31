@@ -315,10 +315,12 @@ function drawPieChart() {
 				}]
 			},
 			options: {
+				events : false,
+				showAllTooltips: true,
 				responsive: false,
 				rotation: 0,
 				legend: {
-					display: false
+					display: true
 				},
 				tooltips: {
 					callbacks: {
@@ -327,7 +329,7 @@ function drawPieChart() {
 							var label = data.labels[item.index];
 							var percentage =
 								((value / totalExpense) * 100).toFixed(1);
-							return [percentage + ' %', label];
+							return [percentage + ' %']; // [,label]
 						}
 					}
 				}

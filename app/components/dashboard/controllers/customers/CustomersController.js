@@ -284,14 +284,7 @@ invoicesUnlimited.controller('CustomersController',
 	}
 
 	function autoFormatTelephoneNumbers () {
-	/*	$('#workPhone').mask("(Z00) 000-0000",{
-			translation : {
-				'Z': {
-					pattern : /[2-9]/g
-				}
-			}
-		}); */
-
+		/*
 		$('#workPhone').mask('0 (000) 000-0000',{
 			onKeyPress : function(cep,e,field,options){
 				var masks = ['0 (000) 000-0000','(000) 000-0000'];
@@ -299,31 +292,17 @@ invoicesUnlimited.controller('CustomersController',
 				var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
 				$('#workPhone').mask(mask,options);
 			}
-		});
-		$('#mobilePhone').mask('0 (000) 000-0000',{
-			onKeyPress : function(cep,e,field,options){
-				var masks = ['0 (000) 000-0000','(000) 000-0000'];
-				var cond = cep.replace("(","");
-				var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
-				$('#mobilePhone').mask(mask,options);
+		});*/
+		var obj = {
+			translation:  {
+				'Z': {pattern: /[1]/, optional: true},
+				'Y': {pattern: /[0-02-9]/}
 			}
-		});
-		$('#billFax').mask('0 (000) 000-0000',{
-			onKeyPress : function(cep,e,field,options){
-				var masks = ['0 (000) 000-0000','(000) 000-0000'];
-				var cond = cep.replace("(","");
-				var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
-				$('#billFax').mask(mask,options);
-			}
-		});
-		$('#shipFax').mask('0 (000) 000-0000',{
-			onKeyPress : function(cep,e,field,options){
-				var masks = ['0 (000) 000-0000','(000) 000-0000'];
-				var cond = cep.replace("(","");
-				var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
-				$('#shipFax').mask(mask,options);
-			}
-		});
+		}
+		$('#workPhone').mask('Z (Y00) 000-0000', obj);
+		$('#mobilePhone').mask('Z (Y00) 000-0000', obj);
+		$('#billFax').mask('Z (Y00) 000-0000', obj);
+		$('#shipFax').mask('Z (Y00) 000-0000', obj);
 
 	}
 
