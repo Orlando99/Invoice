@@ -66,9 +66,10 @@ return {
 
 			_scope.items.push(createItemOpener); // add createItem field
 			var itemInfo = _scope.invoiceItems[_scope.itemChangedIndex];
-			itemInfo.selectedItem = _scope.items.find(function(item) {
+			var index = _scope.items.findIndex(function(item) {
 				return item.entity.id == items[0].entity.id;
 			});
+			itemInfo.selectedItem = _scope.items[index];
 			_scope.itemChanged(_scope.itemChangedIndex);
 			$(".new-item").removeClass("show");
 			hideLoader();
