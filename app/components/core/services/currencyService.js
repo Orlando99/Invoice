@@ -1,7 +1,7 @@
 'use strict';
 
 invoicesUnlimited.factory('currencyFactory',
-	function(userFactory,roleFactory){
+	function(userFactory,roleFactory, currencyFactoryService){
 	
 	var user = userFactory;
 
@@ -50,6 +50,7 @@ invoicesUnlimited.factory('currencyFactory',
 		return loadCurrency();
 	}
 
+	// for signup
 	currency.createNew = function(params){
 		if (currency.entity.length) return;
 		var ctr = Parse.Object.extend("Currency");
@@ -78,6 +79,43 @@ invoicesUnlimited.factory('currencyFactory',
 			return res[1];
 		},function(err){
 			debugger;
+		});
+	}
+
+	currency.loadAll = function(params){
+		var Currency = Parse.Object.extend('Currency');
+		var query = new Parse.Query(Currency);
+		query.equalTo('organization', params.organization);
+
+		return query.find()
+		.then(function(objs) {
+			var currencies = [];
+			objs.forEach(function(obj) {
+				currencies.push(new currencyFactoryService(obj));
+			});
+			return currencies;
+		});
+
+	}
+
+	currency.createNewCurrency = function(params, role) {
+		var acl = new Parse.ACL();
+		acl.setRoleWriteAccess(role.get("name"), true);
+		acl.setRoleReadAccess(role.get("name"), true);
+ 
+		var ctr = Parse.Object.extend("Currency");
+		var object = new ctr();
+		object.setACL(acl);
+		return object.save(params)
+		.then(function(obj) {
+			return new currencyFactoryService(obj);
+		});
+	}
+
+	currency.saveEditedCurrency = function(obj) {
+		return obj.save()
+		.then(function(newObj) {
+			return new currencyFactoryService(newObj);
 		});
 	}
 

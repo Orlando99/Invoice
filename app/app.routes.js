@@ -501,7 +501,7 @@ angular.module('invoicesUnlimited')
 				url 	: '/currencies',
 				views 	: {
 					'@'	: {
-						controller 	: 'SettingsController',
+						controller 	: 'CurrencyController',
 						templateUrl	: COMPONENTS + 'dashboard/views/settings/currencies.html'
 					}
 				}

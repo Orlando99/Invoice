@@ -22,9 +22,6 @@ var isGoTo = {
 	users : function(to){
 		return to.endsWith('users');
 	},
-	currencies : function(to){
-		return to.endsWith('currencies');
-	},
 	general : function(to){
 		return to.endsWith('general-preferences');
 	},
@@ -45,10 +42,6 @@ function CheckUseCase(stateName) {
 	if (isGoTo.users(stateName)) {
 	//	console.log('its in users')
 		showUserFields();
-
-	} else if (isGoTo.currencies(stateName)) {
-		console.log('its in currency');
-		hideLoader();
 
 	} else if (isGoTo.templates(stateName)) {
 	//	console.log('select invoice template');
@@ -259,33 +252,4 @@ $scope.setDefaultTemplate = function(index) {
 	});
 }
 
-$scope.showCurrencyDetail = function(index) {
-	$(".edit-currency").addClass("show");
-}
-
-//	$scope.selectedColor;
-
-/*
-	userFullFactory.loadAll(function(state){
-		if (state) $state.go(state);
-		else {
-			$scope.$apply(function(){
-				$scope.BusinessInfo.company = userFullFactory.get("BusinessInfo","businessName");
-			});
-		} 
-	});
-*/
-/*
-	$scope.BusinessInfo = {
-		company : userFullFactory.get("BusinessInfo","businessName")
-	}
-
-	$scope.saveAppPreferences = function(){
-		var color = $(".colors li.active").find('a').attr('class');
-		var colorToSave = "app" + color[0].toUpperCase() + color.slice(1) + "Color";
-		userFullFactory.save({colorTheme:colorToSave}).then(function(){
-			window.location.reload();
-		});
-	}
-*/
 }]);

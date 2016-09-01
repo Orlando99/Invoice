@@ -2,7 +2,7 @@
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title float-left">Currencies</h3>
     <a href="" class="float-right layout-margin-tb button button-add text-transform modal-opener"
-      data-toggle="new-currency">New</a>
+      data-toggle="new-currency" ng-click="prepareAddCurrency()">New</a>
     <form class="float-right layout-margin-tb">
       <input type="text" class="search-bar layout-margin-r" placeholder="Search">
     </form>
@@ -16,85 +16,19 @@
         <td class="is-active-head"></td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr class="trow">
-        <td ng-click="showCurrencyDetail($index)"
-          class="text-color-light text-weight-normalize layout-padding">USD - US Dollar</td>
-        <td ng-click="showCurrencyDetail($index)"
-          class="text-color-light text-weight-normalize layout-padding">&dollar;</td>
-        <td ng-click="showCurrencyDetail($index)"
+      <tr class="trow" ng-repeat="currency in currencies">
+        <td ng-click="prepareEditCurrency($index)"
+          class="text-color-light text-weight-normalize layout-padding">{{currency.entity.title}}</td>
+        <td ng-click="prepareEditCurrency($index)"
+          class="text-color-light text-weight-normalize layout-padding">{{currency.entity.currencySymbol}}</td>
+        <td ng-click="prepareEditCurrency($index)"
+          class="text-color-light text-weight-normalize layout-padding">{{currency.entity.exchangeRate}}</td>
+        <td ng-click="prepareEditCurrency($index)"
           class="text-color-light text-weight-normalize layout-padding"></td>
-        <td ng-click="showCurrencyDetail($index)"
-          class="text-color-light text-weight-normalize layout-padding"></td>
-        <td ng-click="showCurrencyDetail($index)"
+        <td ng-click="prepareEditCurrency($index)"
           class="is-active no"><img src="./assets/images/icon-tick-circle.png" alt=""></td>
         <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
-      <!--
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">AUD - Australian Dollar</td>
-        <td class="text-color-light text-weight-normalize layout-padding">&dollar;</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active no"></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">CAD - Canadian Dollar</td>
-        <td class="text-color-light text-weight-normalize layout-padding">&dollar;</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active no"></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">CNY - Yuan Renminbi</td>
-        <td class="text-color-light text-weight-normalize layout-padding">CNY</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active no"></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">EUR - Euro</td>
-        <td class="text-color-light text-weight-normalize layout-padding">&euro;</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active no"></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">GBP - Pound Sterling</td>
-        <td class="text-color-light text-weight-normalize layout-padding">&pound;</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active no"></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">INR - Indian Rupee</td>
-        <td class="text-color-light text-weight-normalize layout-padding">Rs.</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active no"></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">JPY - Yen</td>
-        <td class="text-color-light text-weight-normalize layout-padding">&yen;</td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active no"></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      <tr>
-        <td class="text-color-light text-weight-normalize layout-padding">ZAR - Rand</td>
-        <td class="text-color-light text-weight-normalize layout-padding">R</td>
-        <td class="text-color-light text-weight-normalize layout  -padding"></td>
-        <td class="text-color-light text-weight-normalize layout-padding"></td>
-        <td class="is-active yes"></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
-      </tr>
-      -->
     </table>
 
   </div>
@@ -108,37 +42,44 @@
       <hr class="layout-margin-tb">
 
       <div class="col-80 text-left layout-center">
-        <form class="layout-margin-tb col-100 inputs-white">
+        <form id="addCurrencyForm" class="layout-margin-tb col-100 inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Currency Code</label>
-            <select class="col-75">
-              <option value="select" disabled selected>Select or Type to add</option>
+            <select name="currencyCode" class="col-75" ng-options="currency for currency in availableCurrencies"
+              ng-model="currencyObj.title" ng-change="currencyChanged()">
+              <option value="" disabled selected>Select or Type to add</option>
             </select>
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Currency Symbol</label>
-            <select class="col-75">
-              <option value="select" disabled selected>Select or Type to add</option>
-            </select>
+            <input name="currencySymbol" type="text" class="col-75" placeholder="Type to add"
+              ng-model="currencyObj.currencySymbol">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Decimal Places</label>
-            <input type="text" class="col-75" placeholder="Type to add">
+            <select class="col-75" ng-model="currencyObj.decimalPlace">
+              <option value="0">0</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Format</label>
-            <select class="col-75">
-              <option value="select" disabled selected>Select format</option>
+            <select class="col-75" ng-model="currencyObj.format">
+              <option value="#,###,####">1,234,5678</option>
+              <option value="###,###,###">123,456,789</option>
+              <option value="##,##,##,##">12,34,56,78</option>
             </select>
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Exchange Rate</label>
-            <input type="text" class="col-75" placeholder="Type to add">
+            <input name="exchangeRate" ng-model="currencyObj.exchangeRate" type="text" class="col-75"
+              placeholder="Type to add">
           </div>
         </form>
       </div>
       <div class="clearfix"></div>
-      <button class="button button-info text-uppercase">Save</button>
+      <button class="button button-info text-uppercase" ng-click="saveNewCurrency()">Save</button>
     </div>
   </div>
 
@@ -150,39 +91,47 @@
       <hr class="layout-margin-tb">
 
       <div class="col-80 text-left layout-center">
-        <form class="layout-margin-tb col-100 inputs-white">
+        <form id="editCurrencyForm" class="layout-margin-tb col-100 inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Currency Code</label>
-            <select class="col-75">
-              <option value="select" selected>EUR - Euro</option>
+            <select name="currencyCode" class="col-75" ng-options="currency for currency in availableCurrencies"
+              ng-model="currencyObj.title" ng-change="currencyChanged()">
+              <option value="" disabled selected>Select or Type to add</option>
             </select>
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Currency Symbol</label>
-            <select class="col-75">
-              <option value="select" selected>&euro;</option>
-            </select>
+            <input name="currencySymbol" type="text" class="col-75" placeholder="Type to add"
+              ng-model="currencyObj.currencySymbol">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Decimal Places</label>
-            <input type="text" class="col-75" placeholder="Type to add" value="2">
+            <select class="col-75" ng-model="currencyObj.decimalPlace">
+              <option value="0">0</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Format</label>
-            <select class="col-75">
-              <option value="select" selected>123,456,789</option>
+            <select class="col-75" ng-model="currencyObj.format">
+              <option value="#,###,####">1,234,5678</option>
+              <option value="###,###,###">123,456,789</option>
+              <option value="##,##,##,##">12,34,56,78</option>
             </select>
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Exchange Rate</label>
-            <input type="text" class="col-75" placeholder="Type to add">
+            <input name="exchangeRate" type="text" class="col-75" placeholder="Type to add"
+              ng-model="currencyObj.exchangeRate">
           </div>
         </form>
       </div>
       <div class="clearfix"></div>
-      <button class="button button-info text-uppercase float-left">Save</button>
-      <button class="button button-danger text-uppercase float-right">Delete</button>
-      <button class="button button-neutral text-uppercase float-right layout-margin-r">Set as Default</button>
+      <button class="button button-info text-uppercase float-left" ng-click="saveEditedCurrency()">Save</button>
+      <button class="button button-danger text-uppercase float-right" ng-click="deleteCurrency()">Delete</button>
+      <button class="button button-neutral text-uppercase float-right layout-margin-r"
+        ng-click="setDefaultCurrency()">Set as Default</button>
       <div class="clearfix"></div>
     </div>
   </div>
