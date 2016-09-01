@@ -10,10 +10,16 @@ if(!userFactory.entity.length) {
 	return undefined;
 }
 
-var user = userFactory.entity[0];
-var organization = user.get("organizations")[0];
-$controller('DashboardController',{$scope:$scope,$state:$state});
-loadCurrencies();
+var user = undefined;
+var organization = undefined;
+
+$q.when(userFactory.entity[0].fetch())
+.then(function(obj) {
+	user = obj;
+	organization = user.get("organizations")[0];
+	$controller('DashboardController',{$scope:$scope,$state:$state});
+	loadCurrencies();
+});
 
 $scope.availableCurrencies = ['AUD - Australian Dollar',
 	'CAD - Canadian Dollar', 'PCNY - Yuan Renminbi',
@@ -26,7 +32,16 @@ function loadCurrencies() {
 	}))
 	.then(function(currencies) {
 		$scope.currencies = currencies;
+		setDefaultCurrencyIndex();
 		hideLoader();
+	});
+}
+
+function setDefaultCurrencyIndex() {
+	var curr = user.get('currency');
+	$scope.defaultCurrencyIndex =
+	$scope.currencies.findIndex(function(currency) {
+		return currency.entity.id == curr.id;
 	});
 }
 
@@ -124,11 +139,36 @@ $scope.saveEditedCurrency = function() {
 }
 
 $scope.setDefaultCurrency = function() {
-	console.log('set selected currency to be default of user, simple.')
+	if(! $scope.currencies[$scope.selectedIndex].entity.exchangeRate) {
+		$('.add-exchangeRate').addClass('show');
+		return;
+	}
+
+	showLoader();
+	var curr = $scope.currencies[$scope.selectedIndex].entity;
+	user.set('currency', curr);
+	$q.when(user.save())
+	.then(function() {
+		setDefaultCurrencyIndex();
+		$('.edit-currency').removeClass('show');
+		hideLoader();
+	});
 }
 
 $scope.deleteCurrency = function() {
-	console.log('lookip ios what delete means, -selectedCurrency-');
+	if($scope.selectedIndex == $scope.defaultCurrencyIndex) {
+		$('.cannot-delete').addClass('show');
+		return;
+	}
+
+	showLoader();
+	var curr = $scope.currencies.splice($scope.selectedIndex,1)[0]
+	$q.when(curr.entity.destroy())
+	.then(function() {
+		setDefaultCurrencyIndex();
+		$('.edit-currency').removeClass('show');
+		hideLoader();
+	});
 }
 
 $scope.currencyChanged = function() {

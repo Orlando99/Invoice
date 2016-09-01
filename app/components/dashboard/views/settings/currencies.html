@@ -25,7 +25,7 @@
           class="text-color-light text-weight-normalize layout-padding">{{currency.entity.exchangeRate}}</td>
         <td ng-click="prepareEditCurrency($index)"
           class="text-color-light text-weight-normalize layout-padding"></td>
-        <td ng-click="prepareEditCurrency($index)"
+        <td ng-click="prepareEditCurrency($index)" ng-show="defaultCurrencyIndex == $index"
           class="is-active no"><img src="./assets/images/icon-tick-circle.png" alt=""></td>
         <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
@@ -131,8 +131,30 @@
       <button class="button button-info text-uppercase float-left" ng-click="saveEditedCurrency()">Save</button>
       <button class="button button-danger text-uppercase float-right" ng-click="deleteCurrency()">Delete</button>
       <button class="button button-neutral text-uppercase float-right layout-margin-r"
-        ng-click="setDefaultCurrency()">Set as Default</button>
+        ng-click="setDefaultCurrency()" ng-show="selectedIndex != defaultCurrencyIndex">Set as Default</button>
       <div class="clearfix"></div>
+    </div>
+  </div>
+  <div class="popup-modal cannot-delete hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
+        float-left">You cannot delete your default currency.</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+      <button class="button button-info text-uppercase modal-close">OK</button>
+    </div>
+  </div>
+  <div class="popup-modal add-exchangeRate hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
+        float-left">Please save currency with Expense Rate provided, then try again.</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+      <button class="button button-info text-uppercase modal-close">OK</button>
     </div>
   </div>
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>
