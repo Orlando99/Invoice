@@ -465,15 +465,68 @@ angular.module('invoicesUnlimited')
 		},
 		reports : {
 			index : {
-				name 	 : 'dashboard.reports',
-				url 	 : '/reports',
-				views 	: {
+				name : 'dashboard.reports'
+			},
+			salesByCustomer : {
+				name : 'dashboard.reports.salesByCustomer',
+				url : '/reports/salesByCustomer',
+				views : {
 					'@' : {
-						controller : 'SettingsController',
-						templateUrl	: COMPONENTS + 'dashboard/views/reports/invoicedetails.html'
+						controller : 'SalesByCustomerController',
+						templateUrl : COMPONENTS + 'dashboard/views/reports/salesbycustomer.html'
 					}
 				}
-			}
+			},
+			salesByItem : {
+				name : 'dashboard.reports.salesByItem',
+				url : '/reports/salesByItem',
+				views : {
+					'@' : {
+						controller : 'SalesByItemController',
+						templateUrl : COMPONENTS + 'dashboard/views/reports/salesbyitem.html'
+					}
+				}
+			},
+			customerBalance : {
+				name : 'dashboard.reports.customerBalance',
+				url : '/reports/customerBalance',
+				views : {
+					'@' : {
+						controller : 'CustomerBalanceController',
+						templateUrl : COMPONENTS + 'dashboard/views/reports/customerbalances.html'
+					}
+				}
+			},
+			invoiceAging : {
+				name : 'dashboard.reports.invoiceAging',
+				url : '/reports/invoiceAging',
+				views : {
+					'@' : {
+						controller : 'InvoiceAgingController',
+						templateUrl : COMPONENTS + 'dashboard/views/reports/invoicedetails.html'
+					}
+				}
+			},
+			paymentsReceived : {
+				name : 'dashboard.reports.paymentsReceived',
+				url : '/reports/paymentsReceived',
+				views : {
+					'@' : {
+						controller : 'PaymentsReceivedController',
+						templateUrl : COMPONENTS + 'dashboard/views/reports/paymentsreceived.html'
+					}
+				}
+			},
+			expenseByCategory : {
+				name : 'dashboard.reports.expenseByCategory',
+				url : '/reports/expenseByCategory',
+				views : {
+					'@' : {
+						controller : 'ExpenseByCategoryController',
+						templateUrl : COMPONENTS + 'dashboard/views/reports/expensebycategory.html'
+					}
+				}
+			},
 		},
 		settings : {
 			index : {

@@ -102,6 +102,78 @@ function Invoice(parseObject, params) {
 	} else if (params.operation == 'summary') {
 		invoiceFields = ['invoiceDate', 'dueDate', 'status',
 			'balanceDue', 'lateFee', 'total'];
+
+	} else if (params.operation == 'salesByCustomerReport') {
+		invoiceFields = ['invoiceNumber', 'total'];
+		var customer = parseObject.get('customer');
+		if (customer) {
+			setObjectOperations({
+				object 		: customer,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: ['displayName']
+			});
+			this.customer = customer;
+		}
+
+	} else if (params.operation == 'salesByItemReport') {
+		invoiceFields = ['invoiceNumber'];
+		var invoiceItems = parseObject.get('invoiceItems');
+		if (invoiceItems) {
+			invoiceItems = invoiceItems.map(function(elem){
+				var item = new invoiceItemFactory(elem);
+				return item;
+			});
+			this.invoiceItems = invoiceItems;
+		}
+
+	} else if (params.operation == 'customerBalance') {
+		invoiceFields = ['invoiceNumber', 'balanceDue'];
+		var customer = parseObject.get('customer');
+		if (customer) {
+			setObjectOperations({
+				object 		: customer,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: ['displayName']
+			});
+			this.customer = customer;
+		}
+
+	} else if (params.operation == 'invoiceAging') {
+		invoiceFields = ['invoiceNumber', 'balanceDue', 'invoiceDate'];
+		var customer = parseObject.get('customer');
+		if (customer) {
+			setObjectOperations({
+				object 		: customer,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: ['displayName']
+			});
+			this.customer = customer;
+		}
+
+	} else if (params.operation == 'paymentsReceived') {
+		invoiceFields = ['invoiceNumber', 'invoiceDate'];
+		var customer = parseObject.get('customer');
+		if (customer) {
+			setObjectOperations({
+				object 		: customer,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: ['displayName']
+			});
+			this.customer = customer;
+		}
+
+		var payments = parseObject.get('payment');
+		if (payments) {
+			payments = payments.map(function(elem){
+				return new paymentFactory(elem);
+			});
+			this.payments = payments;
+		}
+
 	}
 
 	setObjectOperations({

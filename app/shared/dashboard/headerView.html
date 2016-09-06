@@ -39,7 +39,25 @@
       <li><a href="timesheets/timesheets.html">Timesheets</a></li>
       -->
 
-      <li id="reports"><a class="nav-item" ui-sref="dashboard.reports" ui-sref-opts="{reload:true}">Reports</a></li>
+      <li id="reports" class="nav-item">
+        <a  href="javascript:" id="link-reports">Reports</a>
+        <div class="container-fluid link-reports-div">
+          <ul class="submenu">
+            <li>
+              <a ui-sref="dashboard.reports.salesByCustomer" ui-sref-opts="{reload:true}">Sales By Customer</a>
+              <a ui-sref="dashboard.reports.salesByItem" ui-sref-opts="{reload:true}">Sales By Item</a>
+            </li>
+            <li>
+              <a ui-sref="dashboard.reports.customerBalance" ui-sref-opts="{reload:true}">Customer Balance</a>
+              <a ui-sref="dashboard.reports.invoiceAging" ui-sref-opts="{reload:true}">Invoice Aging</a>
+              <a ui-sref="dashboard.reports.paymentsReceived" ui-sref-opts="{reload:true}">Payments Received</a>
+            </li>
+            <li>
+              <a ui-sref="dashboard.reports.expenseByCategory" ui-sref-opts="{reload:true}">Expense by Category</a>
+            </li>
+          </ul>
+        </div>
+      </li>
       
       <li id="settings" class="nav-item">
         <a href="javascript:" id="link-settings">Settings</a>

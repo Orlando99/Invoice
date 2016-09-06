@@ -39,19 +39,19 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		var c = $state.current.name;
 		$('.nav-item').removeClass('active');
 
-		if (c.includes('customers'))
+		if (c.includes('customers.'))
 			$('#customers').addClass('active');
 
-		else if (c.includes('sales'))
+		else if (c.includes('sales.'))
 			$('#sales').addClass('active');
 
-		else if (c.includes('expenses'))
+		else if (c.includes('expenses.'))
 			$('#expenses').addClass('active');
 
-		else if (c.includes('reports'))
+		else if (c.includes('reports.'))
 			$('#reports').addClass('active');
 
-		else if (c.includes('settings'))
+		else if (c.includes('settings.'))
 			$('#settings').addClass('active');
 
 		else if(c.includes('dashboard'))
@@ -73,6 +73,12 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 			pos = parseInt($('#link-settings').offset().left);
 			negative_pos = pos * (-1);
 			$('.navigation > li .link-settings-div').css('left',negative_pos);
+		}
+
+		if ($('#link-reports').offset) {
+			pos = parseInt($('#link-reports').offset().left);
+			negative_pos = pos * (-1);
+			$('.navigation > li .link-reports-div').css('left',negative_pos);
 		}
 		
 /*

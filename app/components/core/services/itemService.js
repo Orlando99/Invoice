@@ -38,6 +38,13 @@ return {
 			});
 			return items;
 		});
+	},
+	getItemNames : function(params) {
+		var query = new Parse.Query("Item");
+		query.equalTo("organization", params.organization);
+		query.select('title');
+
+		return query.find();
 	}
 };
 }]);

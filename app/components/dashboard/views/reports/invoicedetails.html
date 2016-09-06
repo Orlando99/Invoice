@@ -1,6 +1,6 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
-    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">Sales by Item</h3>
+    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">Invoice Aging</h3>
     <button class="button button-small button-neutral text-uppercase float-right layout-margin-t-sm">More <img
       src="./assets/images/dropdown-arrow-w.png" alt="">
       <ul class="submenu list-clear layout-no-padding text-left text-normalize">
@@ -18,21 +18,22 @@
         <p class="layout-margin-tb col-20 text-uppercase text-color-normalize text-weight-normalize">To</p>
         <p class="layout-margin-tb col-20 text-uppercase text-color-normalize text-weight-normalize"></p>
       </div>
-      <div class="table-row row-border">
+      <div class="table-row row-border datepicker-noclear">
         <p class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
-          <select class="layout-no-padding layout-padding-l">
-            <option value="Previous Year">Previous Year</option>
-            <option value="Option 2">Option 2</option>
+          <select class="layout-no-padding layout-padding-l" ng-options="range for range in dateRanges"
+            ng-model="selectedDateRange" ng-change="dateRangeChanged()">
           </select>
         </p>
-        <p class="col-20 input-container layout-margin-tb text-color-light text-weight-normalize">
-          <input type="text" value="01/01/2014">
+        <p class="col-20 datepicker-reports-fix input-container layout-margin-tb text-color-light text-weight-normalize">
+          <input type="text" uib-datepicker-popup="{{dateFormat}}"
+            ng-model="fromDate" is-open="openPicker1" ng-click="openDatePicker(1)" readonly>
         </p>
-        <p class="col-20 layout-container layout-margin-tb text-color-light text-weight-normalize">
-          <input type="text" value="12/31/2014">
+        <p class="col-20 datepicker-reports-fix layout-container layout-margin-tb text-color-light text-weight-normalize">
+          <input type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="toDate"
+            is-open="openPicker2" ng-click="openDatePicker(2)" readonly>
         </p>
         <p class="col-20 layout-margin-tb text-color-light text-weight-normalize">
-          <button class="button button-info text-uppercase">Run Report</button>
+          <button class="button button-info text-uppercase" ng-click="generateReport()">Run Report</button>
         </p>
       </div>
     </div>
@@ -40,15 +41,21 @@
     <div class="clearfix"></div><br>
 
     <div class="container text-center">
-      <h3 class="layout-margin-tb text-color-normalize text-weight-normalize">Lorem Ipsum Sin Dolor</h3>
+      <h3 class="layout-margin-tb text-color-normalize text-weight-normalize">Merchant Account Solutions</h3>
       <p class="layout-no-margin text-color-light text-weight-normalize">Invoice Details</p>
-      <p class="layout-no-margin text-color-light text-weight-normalize">From 03/16/2014 To 03/31/2015</p>
+      <p class="layout-no-margin text-color-light text-weight-normalize">From {{fromDateStr}} To {{toDateStr}}</p>
     </div>
     <br>
 
     <div class="container-table layout-margin-t inputs-white filter">
       <div class="thead">
-        <h3 class="layout-margin-tb col-10 text-uppercase text-weight-normalize">Status</h3>
+        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Customer Name</h3>
+        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Overdue days</h3>
+        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Balance</h3>
+      </div>
+      <!--
+      <div class="thead">
+        <h3 class="layout-margin-tb col-10 text-uppercase text-weight-normalize">Customer Name</h3>
         <h3 class="layout-margin-tb col-15 text-uppercase text-weight-normalize">Invoice Date <img
           src="./assets/images/dropdown-arrow-primary.png" alt=""></h3>
         <h3 class="layout-margin-tb col-12 text-uppercase text-weight-normalize">Due Date</h3>
@@ -57,24 +64,31 @@
         <h3 class="layout-margin-tb col-12 text-uppercase text-weight-normalize">Cus. Name</h3>
         <h3 class="layout-margin-tb col-12 text-uppercase text-weight-normalize">Invoice AMT</h3>
         <h3 class="layout-margin-tb col-12 text-uppercase text-weight-normalize text-right pull-right">Balance Due</h3>
+      </div> -->
+      <div class="table-row row-border" ng-repeat="id in ids">
+        <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
+          {{info[id].name}}
+        </div>
+        <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
+          {{info[id].overDueDays}}
+        </div>
+        <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
+          {{info[id].balanceDueStr}}
+        </div>
       </div>
-      <div class="table-row row-border no-results text-center">
-        <p>No data to display</p>
+
+      <div class="table-row row-border">
+        <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
+          Total
+        </div>
+        <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
+          {{totalOverDueDays}}
+        </div>
+        <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
+          {{totalBalanceStr}}
+        </div>
       </div>
     </div>
 
-
   </div>
-
-   <div class="onmobile">
-    <h2>Need to work on a Mobile ? Download our app!</h2>
-    <a href="#"><img src="./assets/images/google-play-icon.png" alt="Google Play"></a>
-    <a href="#"><img src="./assets/images/AppStore.png" alt="Google Play"></a>
-  </div>
-  
-  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-  <script src="./assets/js/moment.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.6.1/fullcalendar.min.js"></script>
-  <script src="./assets/js/main.js"></script>
-</body>
-</html>
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>
