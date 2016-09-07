@@ -27,6 +27,11 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 	}
 
 	$scope.signInAction = function(){
+		if(! ($scope.username && $scope.password)) {
+			showError('Please provide both username and password.');
+			return;
+		}
+
 		showLoader();
 		//userFullFactory.login({
 		user.login({

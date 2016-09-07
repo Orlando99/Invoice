@@ -33,10 +33,6 @@ invoicesUnlimited.factory('userFactory',function(appFields){
 
 	function setUserFields(){
 
-		User.clearAllOnLogOut = function(){
-			User.commonData = {};
-		}
-
 		User.getField = function(fieldName) {
 			if (! isEmpty(User.commonData)) {
 				return Promise.resolve(User.commonData[fieldName]);
@@ -74,6 +70,7 @@ invoicesUnlimited.factory('userFactory',function(appFields){
 				if (currentUser.entity) currentUser.entity.pop();
 				if (currentUser.justLoggedIn) currentUser.justLoggedIn = false;
 				User.entity.pop();
+				User.commonData = {};
 			});
 		};
 

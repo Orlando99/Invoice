@@ -1,16 +1,15 @@
 'use strict';
 
-invoicesUnlimited.factory('cleanDataService', ['businessFactory', 'coreFactory', 'userFactory',
+invoicesUnlimited.factory('cleanDataService', ['businessFactory', 'coreFactory',
 	'projectUserFactory', 'roleFactory', 'currencyFactory', 'organizationFactory', 'preferencesFactory',
 	'accountFactory', 'principalFactory', 'signatureFactory',
-function(businessFactory,coreFactory,userFactory,projectUserFactory,roleFactory,currencyFactory,
+function(businessFactory,coreFactory,projectUserFactory,roleFactory,currencyFactory,
 	organizationFactory,preferencesFactory,accountFactory,principalFactory,signatureFactory){
 
 return {
 	clearAllOnLogOut : function() {
 		businessFactory.clearAllOnLogOut();
 		coreFactory.clearAllOnLogOut();
-		userFactory.clearAllOnLogOut();
 		projectUserFactory.clearAllOnLogOut();
 		roleFactory.clearAllOnLogOut();
 		currencyFactory.clearAllOnLogOut();
