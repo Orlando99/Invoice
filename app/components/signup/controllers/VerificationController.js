@@ -34,11 +34,20 @@ invoicesUnlimited.controller('VerificationController',
 		}
 	})
 
+	var dirty = false;
+	$scope.codeChanged = function() {
+		if(dirty) {
+			$('#signUpForm').validate().resetForm();
+			dirty = false;
+		}
+	}
+
 	$scope.verificationCodeProvider = signUpFactory.getVerification.provider();
 
 	$scope.verifyCode = function(){
 		if (!$('#signUpForm').valid()) {
-			alert('Code is wrong!');
+		//	alert('Code is wrong!');
+			dirty = true;
 			return;
 		}
 		showLoader();

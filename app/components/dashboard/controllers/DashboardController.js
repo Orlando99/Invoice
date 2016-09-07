@@ -26,12 +26,12 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 						  businessFactory.entity[0] :
 						  {};
 
-	$scope.logOut = function(){
+	$scope.logOut = function(errorMsg){
 		return user.logout()
 		.then(function(){
 			resetColorTheme();
 			cleanDataService.clearAllOnLogOut();
-			$state.go('login');
+			$state.go('login', {'errorMsg' : errorMsg});
 		});
 	};
 
@@ -95,6 +95,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 */
 	}
 
+	var organization = undefined;
 	var promises = [];
 	promises.push(businessFactory.load());
 
@@ -102,24 +103,23 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 	.then(function(obj){
 		if (obj.length && obj[0]) {
 			$scope.businessInfo = obj[0].entity[0];
-	//		hideLoader();
-		} else $scope.logOut().then(function(){
-	//		hideLoader();
-		});
+
+			// return if we are not on Dashboard
+			if (! $state.current.name.endsWith('dashboard')) return;
+
+			organization = user.entity[0].get("organizations")[0];
+			hideLoader();
+			drawBarChart();
+			drawPieChart();
+
+		} else {
+			$scope.logOut('Your account is not setup correctly.');
+		}
+
 	}, function(error){
-	//	hideLoader();
-		$scope.logOut();
+		$scope.logOut('Your account is not setup correctly.');
 	});
 
-	
-	// return if we are not on Dashboard
-	if (! $state.current.name.endsWith('dashboard'))
-		return;
-
-	hideLoader();
-	var organization = user.entity[0].get("organizations")[0];
-	drawBarChart();
-	drawPieChart();
 
 function drawBarChart() {
 	var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY',

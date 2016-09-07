@@ -17,6 +17,11 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 		return;
 	}
 
+	if ($state.params.errorMsg) {
+		showError($state.params.errorMsg);
+		hideLoader();
+	}
+
 	$scope.signUpAction = function(){
 		$state.go('signup');
 	}

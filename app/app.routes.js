@@ -145,6 +145,9 @@ angular.module('invoicesUnlimited')
 		index : {
 			name 	: 'login',
 			url 	: '/login',
+			params : {
+				errorMsg : null
+			},
 			controller : "LoginController",
 			templateUrl : COMPONENTS + "login/views/loginView.html"
 		},
