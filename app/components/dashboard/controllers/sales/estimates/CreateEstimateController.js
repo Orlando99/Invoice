@@ -120,6 +120,7 @@ function prepareToCreateEstimate() {
 		$scope.customers = res.sort(function(a,b){
 			return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 		});
+		$scope.customers.push(createCustomerOpener);
 	//	$scope.selectedCustomer = $scope.customers[0];
 	});
 	promises.push(p);
@@ -236,16 +237,22 @@ function prepareForm() {
 		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
 			return cust.entity.id == customerId;
 		})[0];
-		$q.when(customerChangedHelper())
-		.then(function() {
-		//	console.log($scope.items);
-			$scope.addEstimateItem();
-			$scope.estimateItems[0].selectedItem = $scope.items.filter(function(item) {
-				return item.entity.expanseId == expenseId;
-			})[0];
-			$scope.estimateItems[0].selectedItem.create = true; // create new item everytime
-			$scope.itemChanged(0);
-		});
+
+		// there will be no expenseId,
+		// if we came back from Create New Customer
+		if(expenseId) {
+			$q.when(customerChangedHelper())
+			.then(function() {
+			//	console.log($scope.items);
+				$scope.addEstimateItem();
+				$scope.estimateItems[0].selectedItem = $scope.items.filter(function(item) {
+					return item.entity.expanseId == expenseId;
+				})[0];
+				$scope.estimateItems[0].selectedItem.create = true; // create new item everytime
+				$scope.itemChanged(0);
+			});
+		}
+
 	}
 
 	var customFields = [];
@@ -435,6 +442,11 @@ function customerChangedHelper() {
 }
 
 $scope.customerChanged = function() {
+	if($scope.selectedCustomer.dummy) {
+		$state.go('dashboard.customers.new', {backLink : $state.current.name});
+		return;
+	}
+
 	showLoader();
 	$q.when(customerChangedHelper())
 	.then(function() {

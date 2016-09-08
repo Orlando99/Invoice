@@ -2,7 +2,7 @@
 
 invoicesUnlimited.controller('NewCustomerController',
 	function($scope,$rootScope,$state,userFactory,
-			 contactPersonFactory,customerFactory,$controller,$q){
+			 contactPersonFactory,customerFactory,$controller,$q,coreFactory){
 
 	var user = userFactory;
 	
@@ -34,6 +34,7 @@ invoicesUnlimited.controller('NewCustomerController',
 
 	$scope.newCustomer = new customerFactory(new Customer());
 	$scope.newCustomer.entity.set('userID',user.entity[0]);
+	$scope.newCustomer.entity.set('status','active');
 
 	$scope.newCustomer.billingAddress = Object.create(address);
 
@@ -110,7 +111,7 @@ invoicesUnlimited.controller('NewCustomerController',
 			$scope.newCustomer.entity.add('contactPersons',contact.entity);
 			$scope.newCustomer.entity.set('organization',user.entity[0].get('selectedOrganization'));
 			$scope.newCustomer.save()
-			.then(function(){
+			.then(function(custObj){
 			
 				$scope.newCustomer = new customerFactory(new Customer());
 				$scope.newCustomer.entity.set('userID',user.entity[0]);
@@ -119,7 +120,12 @@ invoicesUnlimited.controller('NewCustomerController',
 				$scope.newCustomer.shippingAddress = Object.create(address);
 				hideLoader();
 
-				$state.go('dashboard.customers.all');
+				if($state.params.backLink) {
+					coreFactory.clearAllOnLogOut();
+					$state.go($state.params.backLink, {customerId:custObj.id});
+				} else {
+					$state.go('dashboard.customers.all');
+				}
 			});
 		});
 	}

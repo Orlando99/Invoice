@@ -80,6 +80,12 @@ select.can-create-item option:last-child{
     background-color: transparent;
     color: #0ea81c;
 }
+
+select.can-create-customer option:last-child{
+    background-color: transparent;
+    color: #0ea81c;
+}
+
 .datepicker-reports-fix {
   position: relative;
 }

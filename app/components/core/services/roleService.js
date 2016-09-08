@@ -74,7 +74,7 @@ invoicesUnlimited.factory('roleFactory',
 					role.entity.push(obj);
 					console.log(obj.className + ' created');
 				},
-				error : function(obj,error){
+				error : function(error){
 					console.log(error.message);
 				}
 			});

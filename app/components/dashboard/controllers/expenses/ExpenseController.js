@@ -84,7 +84,6 @@ function CheckUseCase(stateName) {
 		prepareToCreateExpense();
 
 	} else if (isGoTo.edit(stateName)) {
-		console.log('its in edit');
 		prepareToEditExpense();
 	}
 }
@@ -131,7 +130,6 @@ function prepareToEditExpense() {
 		return $q.when(expenseService.getExpense(expenseId));
 	})
 	.then(function(expense) {
-		console.log(expense);
 		$scope.expense = expense.entity;
 		$scope.expenseType = {
 			types : [
@@ -189,6 +187,16 @@ function prepareToCreateExpense() {
 			selectedType: {name:'Non Billable', value:'Non-Billable'}
 		}
 
+		// coming back from Create New Customer
+		var customerId = $state.params.customerId;
+		if(customerId) {
+			$scope.expenseType.selectedType =
+				$scope.expenseType.types[1];
+			$scope.selectedCustomer = $scope.customers.filter(function(cust) {
+				return cust.entity.id == customerId;
+			})[0];
+		}
+
 		$scope.files = [];
 		$scope.todayDate = new Date();		
 		hideLoader();
@@ -218,6 +226,8 @@ function loadRequiredData() {
 		$scope.customers = res.sort(function(a,b){
 			return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 		});
+		if(isGoTo.newExpense($state.current.name))
+			$scope.customers = $scope.customers.concat([createCustomerOpener]);
 	});
 	promises.push(p);
 
@@ -354,6 +364,11 @@ $scope.removeFile = function(index) {
 }
 
 $scope.customerSelected = function() {
+	if( isGoTo.newExpense($state.current.name) && $scope.selectedCustomer.dummy) {
+		$state.go('dashboard.customers.new', {backLink : $state.current.name});
+		return;
+	}
+
 	if(! $scope.selectedCustomer) {
 		$scope.expenseType.selectedType =
 			$scope.expenseType.types[0];

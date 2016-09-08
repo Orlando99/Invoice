@@ -38,7 +38,6 @@ invoicesUnlimited.factory('userFactory',function(appFields){
 				return Promise.resolve(User.commonData[fieldName]);
 
 			} else {
-				console.log('data loaded');
 				return loadCommonData().then(function() {
 					return User.commonData[fieldName];
 				});

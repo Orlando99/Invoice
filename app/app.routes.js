@@ -193,6 +193,9 @@ angular.module('invoicesUnlimited')
 			newCust	: {
 				name	: 'dashboard.customers.new',
 				url 	: '/new',
+				params : {
+					backLink : null
+				},
 				views 		: {
 					'customersView' : {
 						controller : 'NewCustomerController',
@@ -437,6 +440,9 @@ angular.module('invoicesUnlimited')
 			newExpense : {
 				name : 'dashboard.expenses.new',
 				url : '/expenses/new',
+				params : {
+					customerId : null
+				},
 				views : {
 					'@' : {
 						controller : 'ExpenseController',

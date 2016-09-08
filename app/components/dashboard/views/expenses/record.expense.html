@@ -9,7 +9,7 @@
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Category Name</label>
         <select name="expCategory" class="col-70" ng-model="selectedCategory"
-          ng-options="category.entity.name for category in categories">>
+          ng-options="category.entity.name for category in categories">
           <option value="" disabled>Select category name</option>
         </select>
       </div>
@@ -39,7 +39,7 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Customer Name</label>
-        <select name="customer" class="col-70" ng-model="selectedCustomer" ng-change="customerSelected()"
+        <select name="customer" class="col-70 can-create-customer" ng-model="selectedCustomer" ng-change="customerSelected()"
           ng-options="customer.entity.displayName for customer in customers">
           <option value="">Select customer</option>
         </select>
