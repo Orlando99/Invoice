@@ -20,11 +20,12 @@ $(document).ready(function(){
 
 invoicesUnlimited.controller('CustomersController',
 	function($scope,$rootScope,$state,$uibModal,userFactory,
-			 contactPersonFactory, customerFactory, coreFactory, 
-			 invoicesFactory ,$controller,$q, appFields){
+			 contactPersonFactory, customerFactory, coreFactory, expenseService, 
+			 invoicesFactory ,$controller,$q, appFields, currencyFilter){
 
 	var customerId = parseInt($state.params.customerId);
 	var user = userFactory;
+	var organization = user.entity[0].get("organizations")[0];
 	
 	if (!user.entity.length) {
 		$state.go('login');
@@ -94,6 +95,87 @@ invoicesUnlimited.controller('CustomersController',
 	    $scope.selectedCustomer.billingAddress = formBillingAddress(billingAddress);
 	    $scope.selectedCustomer.billingAddressJSON = billingAddress;
 	    $scope.selectedCustomer.shippingAddressJSON = shippingAddress;
+	    drawBarChart();
+	}
+
+	function drawBarChart() {
+		var promises = [];
+		promises.push ( $q.when(expenseService.getCustomerExpenses({
+			organization : organization,
+			customer : $scope.selectedCustomer.entity
+		})) );
+		promises.push( $q.when(organization.fetch()) );
+
+		$q.all(promises).then(function(results) {
+			$scope.selectedCustomer.expenses = results[0];
+			var org = results[1];
+			var fiscalMonth = org.get('fiscalYearStart');
+			var count = getrotateCount(fiscalMonth);
+			var invTotal = 0;
+			var expTotal = 0;
+			var monthlyIncome  = [0,0,0,0,0,0,0,0,0,0,0,0];
+			var monthlyExpense  = [0,0,0,0,0,0,0,0,0,0,0,0];
+			var colors = ['#0ea81c', '#c31e1e'];
+			var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY',
+				'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+
+			$scope.selectedCustomer.invoices
+			.forEach(function(inv) {
+				var index = inv.entity.invoiceDate.getMonth();
+				monthlyIncome[index] += inv.entity.total;
+				invTotal += inv.entity.total;
+			});
+
+			$scope.selectedCustomer.expenses
+			.forEach(function(exp) {
+				var index = exp.entity.expanseDate.getMonth();
+				monthlyExpense[index] += exp.entity.amount;
+				expTotal += exp.entity.amount;
+			});
+
+			months.rotate(count);
+			monthlyIncome.rotate(count);
+			monthlyExpense.rotate(count);
+			$scope.totalIncome =  currencyFilter(invTotal, '$', 2);
+			$scope.totalExpense = currencyFilter(expTotal, '$', 2);
+
+			var ctx = $("#barchart");
+			var myChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+					labels: months,
+					datasets: [{
+						backgroundColor: colors[0],
+						data: monthlyIncome
+					}, {
+						backgroundColor: colors[1],
+						data: monthlyExpense
+					}]
+				},
+				options: {
+					responsive: false,
+					legend: {
+						display: false
+					},
+					scales: {
+						xAxes: [{
+							gridLines: {
+								display : false
+							}
+						}],
+						yAxes: [{
+							gridLines: {
+								display : false
+							},
+							ticks: {
+								beginAtZero:true
+							}
+						}]
+					}
+				}
+			});
+		});
+
 	}
 
 	var isGoTo = {
@@ -234,6 +316,7 @@ invoicesUnlimited.controller('CustomersController',
 				doCreateEditObject();
 			}
 			hideLoader();
+
 		});
 	};
 

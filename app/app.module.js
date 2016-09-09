@@ -3,6 +3,11 @@
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
+
+Array.prototype.rotate = function( n ) {
+  this.unshift.apply( this, this.splice( n, this.length ) )
+  return this;
+}
 /*
 var IUKeys = {
 	appID : "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
@@ -301,6 +306,26 @@ function scrollToOffset(offset) {
 
 function isNaturalNumber(x) {
   return Number.isInteger(x) && x > 0;
+}
+
+function getrotateCount(month) {
+  var mnth = month.slice(0,3).toUpperCase();
+  switch(mnth) {
+  case 'JAN': return 0;
+  case 'FEB': return 1;
+  case 'MAR': return 2;
+  case 'APR': return 3;
+  case 'MAY': return 4;
+  case 'JUN': return 5;
+  case 'JUL': return 6;
+  case 'AUG': return -5;
+  case 'SEP': return -4;
+  case 'OCT': return -3;
+  case 'NOV': return -2;
+  case 'DEC': return -1;
+  default: return 0;
+  }
+
 }
 
 function colorCodeToValue(number) {

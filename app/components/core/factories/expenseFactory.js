@@ -36,7 +36,7 @@ var Expense = function(parseObject, params) {
 		];
 	} else if (params.operation == 'getCustomerExpenses') {
 		expenseFields = [
-			'customer', 'tax', 'amount', 'category'
+			'customer', 'tax', 'amount', 'category', 'expanseDate'
 		];
 	} else if (params.operation == 'details') {
 		expenseFields = [

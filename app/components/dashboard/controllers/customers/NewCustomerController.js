@@ -121,6 +121,9 @@ invoicesUnlimited.controller('NewCustomerController',
 				hideLoader();
 
 				if($state.params.backLink) {
+					// clear customer in core factory,
+					// or send loadAgain = true from all the
+					// places where coreFactory.loadAllCustomers in used.
 					coreFactory.clearAllOnLogOut();
 					$state.go($state.params.backLink, {customerId:custObj.id});
 				} else {
