@@ -41,21 +41,25 @@ select {
 .navigation > li .link-sales-div{
    position: absolute;
    top: 38px !important;
+    left: -278px !important;
 }
 
 .navigation > li .link-expense-div{
    position: absolute;
    top: 38px !important;
+    left: -383px !important;
 }
 
 .navigation > li .link-settings-div{
    position: absolute;
    top: 38px !important;
+    left: -648px !important;
 }
 
 .navigation > li .link-reports-div{
    position: absolute;
    top: 38px !important;
+    left: -519px !important;
 }
 
 .optionDropDown > ul {
