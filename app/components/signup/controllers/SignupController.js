@@ -18,6 +18,8 @@ $(document).ready(function(){
 		},''
 	);
 
+    
+    
 	$.validator.addMethod(
 		"CountryNotSelected",
 		function(value,element){
@@ -60,6 +62,14 @@ invoicesUnlimited.controller('SignupController',
 		});
 	}
 
+        
+    $("input").keyup(function(event){
+            var id = event.target.id;
+            $('#' + id + '-' + 'error').css('display', 'none');
+       
+            $('#' + id).removeClass('error');
+    });
+        
 	signUpFactory.setDefaultValues();
 
 	$('#phone').mask("(Z00) 000-0000",{
@@ -70,6 +80,10 @@ invoicesUnlimited.controller('SignupController',
 		}
 	});
 
+        
+    
+    
+        
 	var showIndexInfo = function(){
 		if ($('.extended-signup').css({'display':'none'}))
 			$('.extended-signup').show();

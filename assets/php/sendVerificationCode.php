@@ -1,7 +1,7 @@
 <?php
 
 require_once('./twilio-php/Services/Twilio.php');
-require_once('/PHPMailer/PHPMailerAutoload.php');
+require_once('PHPMailer/PHPMailerAutoload.php');
 
 $sid = "AC439073eae4b847809b8ee31d2259c6e4"; 
 $token = "afb444494d89fda4372a4d2048841359"; 

@@ -142,13 +142,17 @@
 	        		<option value="Activated">Activated</option>
 	        		<option value="Deactivated">Deactivated</option>
 	        	</select>
+                <p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
 	        	<label class="layout-padding-t-smm"></label>
+                <label class="layout-padding-t-smm"></label>
+                <br/>
 	      		<label class="min-width-0 layout-margin-b" ng-if="method == 'create'">
 					<input type="checkbox" ng-model="user.sendInvite">
 					<span class="checkbox float-left"></span>
 				</label>
+                
 				<span class="pull-right layout-no-padding" ng-if="method == 'create'">Send invitation</span>
-				<p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
+				
 
 	    	</div>
 	    	<button id="newUserSubmit" ng-show="method == 'create'" ng-click="save();" type="submit" class="button button-info text-uppercase">Save</button>
@@ -300,6 +304,7 @@
 	<script src="./app/components/dashboard/commonHelper/reportsCommon.js"></script>
 
     <script src="./assets/js/main.js"></script>
+        <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 
 	</body>
 </html>

@@ -7,6 +7,8 @@ $(document).ready(function(){
 		$(t).css("width",100/(t.length-.44)+"%"),
 		$(t[t.length-1]).addClass("text-right")
 	}
+    
+    
 
 	$(".organization").on("click",function(){
 		$(".organization .submenu").toggleClass("show"),
@@ -16,6 +18,8 @@ $(document).ready(function(){
 	$(".se-filter").on("click",function(){
 		$(this).toggleClass("expand-h")
 	});
+    
+    
 
 	for (var e = ".sales-list li", a = 0; a < $(e).length; a++) {
         var s = $(e + ":nth-child(" + (a + 1) + ") > h4").width()

@@ -24,6 +24,13 @@ invoicesUnlimited.controller('AccountInfoController',
 			console.log(error.message);
 		});
 	}
+    
+    $("input").keyup(function(event){
+            var id = event.target.id;
+            $('#' + id + '-' + 'error').css('display', 'none');
+       
+            $('#' + id).removeClass('error');
+    });
 
 	$.validator.addMethod(
 		"AvgSaleRequired",

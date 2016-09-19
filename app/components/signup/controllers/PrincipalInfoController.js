@@ -69,6 +69,13 @@ invoicesUnlimited.controller('PrincipalInfoController',
 		$state.go('signup');
 		return;
 	}
+        
+        $("input").keyup(function(event){
+            var id = event.target.id;
+            $('#' + id + '-' + 'error').css('display', 'none');
+       
+            $('#' + id).removeClass('error');
+    });
 
 	if (!signUpFactory.getVerification.code() && ! $rootScope.fromPaymentSettings) {
 		user.logout();

@@ -16,12 +16,19 @@ var IUKeys = {
 
 Parse.initialize(IUKeys.appID,IUKeys.jsKey);
 */
-
+/*
 var OurParse = {
   appID : "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
   serverURL : "https://invoiceunlimited.herokuapp.com/parse"
 }
-Parse.initialize(OurParse.appID);
+*/
+var OurParse = {
+  appID : "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
+  serverURL : "https://invoice101.herokuapp.com/parse",
+    jsKey: "Xjf3GvwUO0SNsz0nCeM0NjlvQlDlmxGHOi6PqfzI"
+}
+
+Parse.initialize(OurParse.appID,OurParse.jsKey);
 Parse.serverURL = OurParse.serverURL;
 
 var COMPONENTS = './app/components/';
