@@ -142,17 +142,17 @@
 	        		<option value="Activated">Activated</option>
 	        		<option value="Deactivated">Deactivated</option>
 	        	</select>
-                <p class="col-75 pull-right layout-no-padding">Unrestricted access to all modules</p>
-	        	<label class="layout-padding-t-smm"></label>
+                <p class="col-75 pull-right layout-no-padding" ng-if="user.role == 'Admin'">Unrestricted access to all modules</p>
+	        	<label class="layout-padding-t-smm" ng-if="user.role == 'Admin'"></label>
                 <label class="layout-padding-t-smm"></label>
-                <br/>
-	      		<label class="min-width-0 layout-margin-b" ng-if="method == 'create'">
-					<input type="checkbox" ng-model="user.sendInvite">
-					<span class="checkbox float-left"></span>
-				</label>
-                
-				<span class="pull-right layout-no-padding" ng-if="method == 'create'">Send invitation</span>
-				
+                <p style="margin-top: 10px">
+                    <label class="min-width-0 layout-margin-b" ng-if="method == 'create'">
+                        <input type="checkbox" ng-model="user.sendInvite">
+                        <span class="checkbox float-left"></span>
+                    </label>
+
+                    <span class="pull-right layout-no-padding" ng-if="method == 'create'"><strong>Send invitation</strong></span>
+                </p>
 
 	    	</div>
 	    	<button id="newUserSubmit" ng-show="method == 'create'" ng-click="save();" type="submit" class="button button-info text-uppercase">Save</button>

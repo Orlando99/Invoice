@@ -176,6 +176,8 @@ function prepareForm() {
 			return cust.entity.id == customerId;
 		})[0];
 
+        customerChanged();
+        
 		// there will be no expenseId,
 		// if we came back from Create New Customer
 		if(expenseId) {
@@ -369,7 +371,7 @@ function customerChangedHelper() {
 	});
 }
 
-$scope.customerChanged = function() {
+    function customerChanged() {
 	if($scope.selectedCustomer.dummy) {
 		$state.go('dashboard.customers.new', {backLink : $state.current.name});
 		return;
@@ -392,6 +394,8 @@ $scope.customerChanged = function() {
 		hideLoader();
 	});
 }
+    
+$scope.customerChanged = customerChanged;
 
 $scope.openDatePicker = function(n) {
 	switch (n) {

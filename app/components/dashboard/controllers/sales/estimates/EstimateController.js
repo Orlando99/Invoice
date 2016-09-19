@@ -603,8 +603,8 @@ function customerChangedHelper() {
 		return $scope.items = newItems;
 	});
 }
-
-$scope.customerChanged = function() {
+    
+    function customerChanged() {
 	showLoader();
 	$q.when(customerChangedHelper())
 	.then(function() {
@@ -622,6 +622,8 @@ $scope.customerChanged = function() {
 		hideLoader();
 	});
 }
+
+$scope.customerChanged = customerChanged;
 //----------------
 
 function LoadRequiredData() {

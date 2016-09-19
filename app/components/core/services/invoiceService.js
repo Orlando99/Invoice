@@ -514,27 +514,31 @@ return {
 		var inv = new invoiceFactory(invoice, {
 			operation : 'sendReceipt'
 		});
-		var toEmail = inv.entity.customerEmails[0];
-		var customerName = inv.customer.displayName;
-		var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
-		var businessName = inv.organization.name;
-		var link = inv.entity.invoiceReceipt.url();
-		
-		var emailSubject = 'Invoice From ' + businessName;
-		var emailBody = customerName + ',<br/>'
-			+ businessName + ' has sent you an invoice of ' + amount
-			+ '. <a href="' + link + '">Click here to view.</a>';
-
-        handleAuthClick();
         
-        sendMessage(
-          {
-            'To': toEmail,
-            'Subject': emailSubject
-          },
-          emailBody,
-          composeTidy
-        );
+        if(inv.entity.customerEmails)
+        {
+            var toEmail = inv.entity.customerEmails[0];
+            var customerName = inv.customer.displayName;
+            var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
+            var businessName = inv.organization.name;
+            var link = inv.entity.invoiceReceipt.url();
+
+            var emailSubject = 'Invoice From ' + businessName;
+            var emailBody = customerName + ',<br/>'
+                + businessName + ' has sent you an invoice of ' + amount
+                + '. <a href="' + link + '">Click here to view.</a>';
+
+            handleAuthClick();
+
+            sendMessage(
+              {
+                'To': toEmail,
+                'Subject': emailSubject
+              },
+              emailBody,
+              composeTidy
+            );
+        }
         
         return invoice;
         /*
@@ -556,11 +560,9 @@ return {
     
     var clientId = '432731941713-t0s6gan7ngg2dn38dk13capvvsut0k61.apps.googleusercontent.com';
       var apiKey = 'AIzaSyCJkLVj9RY-hOU-hYvETQlOnBQ5VCNwyKk';
-      var scopes =
-        'https://www.googleapis.com/auth/gmail.readonly '+
-        'https://www.googleapis.com/auth/gmail.send';
+      var scopes = 'https://www.googleapis.com/auth/gmail.send';
       function handleClientLoad() {
-        gapi.client.setApiKey(apiKey);
+        //gapi.client.setApiKey(apiKey);
         window.setTimeout(checkAuth, 1);
       }
       function checkAuth() {

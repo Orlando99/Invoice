@@ -25,8 +25,8 @@
           class="text-color-light text-weight-normalize layout-padding">{{currency.entity.exchangeRate}}</td>
         <td ng-click="prepareEditCurrency($index)"
           class="text-color-light text-weight-normalize layout-padding"></td>
-        <td ng-click="prepareEditCurrency($index)" ng-show="defaultCurrencyIndex == $index"
-          class="is-active no"><img src="./assets/images/icon-tick-circle.png" alt=""></td>
+        <td ng-click="prepareEditCurrency($index)" 
+          class="is-active no"><img src="./assets/images/icon-tick-circle.png" ng-show="defaultCurrencyIndex == $index" alt=""></td>
         <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
     </table>

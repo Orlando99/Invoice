@@ -283,6 +283,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				return cust.entity.id == customerId;
 			})[0];
 
+            customerChanged();
+            
 			// there will be no expenseId,
 			// if we came back from Create New Customer
 			if(expenseId) {
@@ -673,7 +675,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		});
 	}
 
-	$scope.customerChanged = function() {
+        function customerChanged() {
 		if($scope.selectedCustomer.dummy) {
 			$state.go('dashboard.customers.new', {backLink : $state.current.name});
 			return;
@@ -696,6 +698,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			hideLoader();
 		});
 	}
+        
+	$scope.customerChanged = customerChanged;
 
 	$scope.printSelected = function() {
 		/*

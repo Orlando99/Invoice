@@ -61,7 +61,7 @@ var Expense = function(parseObject, params) {
 			this.attachments = attachments;
 		}
 	} else if (params.operation == 'summary') {
-		expenseFields = ['category', 'amount'];
+		expenseFields = ['category', 'amount', 'expanseDate'];
 		var customer = parseObject.get('customer');
 		if (customer) {
 			var customerFields = ['displayName'];

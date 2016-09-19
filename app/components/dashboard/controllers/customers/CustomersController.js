@@ -34,6 +34,8 @@ invoicesUnlimited.controller('CustomersController',
 	
 	var def = $q.defer();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
+    
+    
 
 	$scope.selectedCustomer;
 	$scope.selectedCustomerId;
@@ -82,6 +84,22 @@ invoicesUnlimited.controller('CustomersController',
 			$.extend(true,{},$scope.selectedCustomer.shippingAddressJSON);
 	}
 
+    $scope.NewExpense = function(){
+        $state.go('dashboard.expenses.new', {customerId:$scope.selectedCustomer.entity.id});
+    }
+    
+    $scope.NewInvoice = function(){
+        $state.go('dashboard.sales.invoices.new', {customerId:$scope.selectedCustomer.entity.id});
+    }
+    
+    $scope.NewCreditNote = function(){
+        $state.go('dashboard.sales.creditnotes.new', {customerId:$scope.selectedCustomer.entity.id});
+    }
+    
+    $scope.NewEstimate = function(){
+        $state.go('dashboard.sales.estimates.new', {customerId:$scope.selectedCustomer.entity.id});
+    }
+    
 	var selectCustomer = function(item){
 		$scope.selectedCustomer = item;
 		var obj = $scope.selectedCustomer.entity;

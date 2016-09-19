@@ -123,6 +123,16 @@ function drawBarChart() {
 	var monthlySales   = [0,0,0,0,0,0,0,0,0,0,0,0];
 	var monthlyIncome  = [0,0,0,0,0,0,0,0,0,0,0,0];
 	var monthlyExpense = [0,0,0,0,0,0,0,0,0,0,0,0];
+    
+    expenseService.getExpensesForSummary({
+		organization : organization
+	}).then(function(objs) {
+		objs.forEach(function(expense){
+            var eDate = expense.entity.expanseDate;
+            var index = eDate.getMonth();
+            monthlyExpense[index] += expense.entity.amount;
+        });
+	});
 
 	$q.when(invoiceService.getInvoicesForSummary({
 		organization : organization

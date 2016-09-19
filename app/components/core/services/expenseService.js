@@ -11,7 +11,7 @@ return {
 		query.equalTo('organization', params.organization);
 	//	query.notEqualTo('status', 'Non-Billable');
 		query.include('customer');
-		query.select('category', 'amount', 'customer');
+		query.select('category', 'amount', 'customer', 'expanseDate');
 
 		return query.find().then(function(expenseObjs) {
 			var expenses = [];

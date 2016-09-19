@@ -1,4 +1,4 @@
-﻿  <div class="container hidesm">
+  <div class="container hidesm">
     <a ui-sref="dashboard.customers.all" class="button-icon float-left">
       <img src="./assets/images/icon-back.png" alt="Kappa">
     </a>
@@ -7,12 +7,16 @@
       <a ui-sref="dashboard.customers.edit({customerId:selectedCustomerId})" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <button class="button button-small button-info text-uppercase layout-margin-r menu">New <img src="./assets/images/dropdown-arrow-w.png" alt="">
         <ul class="submenu list-clear layout-no-padding text-left text-normalize">
-          <li><a ui-sref="dashboard.sales.estimates.new">Estimate</a><li>
-          <li><a ui-sref="dashboard.sales.invoices.new">Invoice</a><li>
+          <!--<li><a ui-sref="dashboard.sales.estimates.new">Estimate</a><li>
+          <li><a ui-sref="dashboard.sales.invoices.new">Invoice</a><li>-->
+            <li><a ng-click="NewEstimate();">Estimate</a><li>
+          <li><a ng-click="NewInvoice();">Invoice</a><li>
           <!--<li><a href="">Recurring Invoices</a></li>-->
-          <li><a ui-sref="dashboard.sales.creditnotes.new">Credit Notes</a></li>
+          <!--<li><a ui-sref="dashboard.sales.creditnotes.new">Credit Notes</a></li>-->
+            <li><a ng-click="NewCreditNote();">Credit Notes</a></li>
         <!--<li><a href="">Invoice Payments</a></li>-->
-          <li><a ui-sref="dashboard.expenses.new">Expense</a><li>
+          <!--<li><a ui-sref="dashboard.expenses.new">Expense</a><li>-->
+            <li><a ng-click="NewExpense();">Expense</a><li>
           <!--<li><a href="">Recurring Expenses</a></li>
           <li><a href="">Project</a><li>-->
         </ul>
