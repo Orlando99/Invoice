@@ -15,6 +15,12 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		$state.go('login');
 		return;
 	}
+    
+    var cc = user.entity[0].currency.attributes;
+    
+    
+    $scope.currentCurrency = cc;
+    
 
 	loadColorTheme(user);
 	$scope.businessInfo = businessFactory.entity.length ?
@@ -130,7 +136,7 @@ function drawBarChart() {
 		objs.forEach(function(expense){
             var eDate = expense.entity.expanseDate;
             var index = eDate.getMonth();
-            monthlyExpense[index] += expense.entity.amount;
+            monthlyExpense[index] += expense.entity.amount * cc.exchangeRate;
         });
 	});
 
@@ -149,8 +155,8 @@ function drawBarChart() {
 		$scope.overDueFromOver45 = 0;
 
 		objs.forEach(function(invoice) {
-			var total = invoice.entity.total;
-			var due = invoice.entity.balanceDue;
+			var total = invoice.entity.total * cc.exchangeRate;
+			var due = invoice.entity.balanceDue * cc.exchangeRate;
 			var date = invoice.entity.invoiceDate;
 			var expireDate = invoice.entity.dueDate;
 			var index = date.getMonth();
@@ -301,7 +307,7 @@ function drawPieChart() {
 			return b.value - a.value;
 		});
 		expenseList.forEach(function(exp) {
-			exp.value = currencyFilter(exp.value, '$', 2);
+			exp.value = currencyFilter(exp.value*cc.exchangeRate, cc.currencySymbol, 2);
 		});
 		$scope.expenseList = expenseList;
 
@@ -313,7 +319,7 @@ function drawPieChart() {
 			expenseValueList.push(value);
 			expenseColorList.push(getColor(name));
 		}
-		$scope.totalExpenseAmount = currencyFilter(totalExpense, '$', 2);
+		$scope.totalExpenseAmount = currencyFilter(totalExpense*cc.exchangeRate, cc.currencySymbol, 2);
 
 		var ctx = document.getElementById("piechart");
 		var myChart = new Chart(ctx, {

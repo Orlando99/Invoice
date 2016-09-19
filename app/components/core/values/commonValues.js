@@ -15,7 +15,8 @@ app.value('appFields',{
 		'fullName',
 		'firstScreen',
 		'email',
-		'company'
+		'company',
+        'currency'
 	],
 	customer : [
 		"companyName",
