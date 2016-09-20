@@ -41,8 +41,39 @@ invoicesUnlimited.controller('BusinessInfoController',
 	// User object in signUpFactory doesn't have data.
 	if($rootScope.fromPaymentSettings) {
 		var user = userFactory.entity[0];
+        /*
+		signUpFactory.setField('PrincipalInfo', 'userID', user);
+		signUpFactory.setField('PrincipalInfo', 'organization',
+			user.get('selectedOrganization'));
+/*
+		showLoader();
+		var p = undefined;
+		var promises = [];
+		p = $q.when(user.get('businessInfo').fetch())
+		.then(function(bInfo) {
+			for(var i=0; i < fields.length; ++i) {
+				signUpFactory.setField('BusinessInfo', fields[i],
+					bInfo.get(fields[i]));
+			}
+			$scope.toggleHomeInfo();
+		});
+		promises.push(p);
+
+		p = $q.when(signUpFactory.getFactory('Role').load());
+		promises.push(p);
+
+		$q.all(promises).then(function() {
+			hideLoader();
+
+		}, function(error) {
+			hideLoader();
+			console.log(error.message);
+		});
+        */
+        
+        
 		signUpFactory.setField('User','company', user.get('company'));
-		signUpFactory.setField('User','phonenumber', user.get('phonenumber'));
+		//signUpFactory.setField('User','phonenumber', user.get('phonenumber'));
 		signUpFactory.setField('BusinessInfo', 'organization',
 			user.get('selectedOrganization'));
 	}
@@ -59,12 +90,12 @@ invoicesUnlimited.controller('BusinessInfoController',
 		onfocusout : false,
 		rules: {
 			company 			: 'required',
+            
 			streetName			: 'required',
 			city 				: 'required',
 			state 				: 'required',
 			zipCode 			: 'required',
-			phoneNumber 		: 'required',
-			businessDescription : 'required',
+			//businessDescription : 'required',
 			ownershipType : {
 				OwhershipTypeNotSelected : true
 			},
@@ -76,12 +107,11 @@ invoicesUnlimited.controller('BusinessInfoController',
 		},
 		messages: {
 			company 	: 'Please specify your business name!',
-			streetName	: 'Please specify your street name!',
-			city 		: 'Please specify your city!',
-			state 		: 'Please specify your state!',
-			zipCode 	: 'Please specify your zip code!',
-			phoneNumber : 'Please specify your phone number!',
-			businessDescription : 'Please specify your business description!',
+			streetName	: 'Please specify your business street name!',
+			city 		: 'Please specify your business city!',
+			state 		: 'Please specify your business business state!',
+			zipCode 	: 'Please specify your business zip code!',
+			//businessDescription : 'Please specify your business description!',
 			ownershipType : {
 				OwhershipTypeNotSelected : "Please select your ownership type!"
 			},
@@ -100,12 +130,19 @@ invoicesUnlimited.controller('BusinessInfoController',
 		'city'			: '',
 		'state'			: '',
 		'zipCode'		: '',
-		'phoneNumber'	: signUpFactory.getField('User','phonenumber'),
-		'businessDescription' : '',
+		//'businessDescription' : '',
 		'federalTaxID'	: '',
 		ownershipType	: 'Ownership Type'
 	}
+    /*
+    $scope.toggleHomeInfo = function(){
+		if($scope.toggleHomeChecked)
+            {
+                $('#homeAdressDiv')
+            }
+	};
 
+    /*
 	$('#phone').mask("(Z00) 000-0000",{
 		translation : {
 			'Z': {
@@ -113,7 +150,7 @@ invoicesUnlimited.controller('BusinessInfoController',
 			}
 		}
 	}).val(signUpFactory.getField('User','phonenumber'));
-
+*/
 	$scope.options = [{
    		name: 'ownershipTitle',
    		value: 'Ownership Type'

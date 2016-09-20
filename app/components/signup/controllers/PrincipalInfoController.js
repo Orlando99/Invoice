@@ -1,10 +1,18 @@
 'use strict';
 
 invoicesUnlimited.controller('PrincipalInfoController',
-	['$q','$rootScope','$scope','$state','signUpFactory',
-	function($q,$rootScope,$scope,$state,signUpFactory){
+	['$q','$rootScope','$scope','$state','signUpFactory','userFactory',
+	function($q,$rootScope,$scope,$state,signUpFactory, userFactory){
 
 	var user = signUpFactory.getFactory('User');
+        
+        var currentUser = undefined;
+        
+        $q.when(userFactory.entity[0].fetch())
+.then(function(obj) {
+	currentUser = obj;
+});
+        
 /*
 	var dobMaskOptions = {
 		onKeyPress: function(val, e, field, options) {
@@ -92,7 +100,8 @@ invoicesUnlimited.controller('PrincipalInfoController',
 			state 		: 'required',
 			zipCode 	: 'required',
 			dob			: 'required',
-			ssn			: 'required'
+			ssn			: 'required',
+            fullName    : 'required'
 		},
 		messages: {
 			streetName	: 'Please specify your street name!',
@@ -100,7 +109,8 @@ invoicesUnlimited.controller('PrincipalInfoController',
 			state 		: 'Please specify your state!',
 			zipCode 	: 'Please specify your zip code!',
 			dob 		: 'Please specify your Date Of Birth!',
-			ssn			: 'Please specify your SSN!'
+			ssn			: 'Please specify your SSN!',
+            fullName	: 'Please specify your Full Name!'
 		}
 	});
 
@@ -116,6 +126,8 @@ invoicesUnlimited.controller('PrincipalInfoController',
 		dob				: '',
 		ssn				: ''
 	};
+        
+        $scope.fullName = '';
 
 	$scope.toggleHomeChecked = true;
 
@@ -194,7 +206,11 @@ invoicesUnlimited.controller('PrincipalInfoController',
 		if (!$('#signUpForm').valid()) return;
 		
 		showLoader();
-		saveHelper().then(function(){
+        
+            currentUser.set('fullName', $scope.fullName);
+        $q.when(user.save())
+        .then(function() {
+            saveHelper().then(function(){
 			hideLoader();
 			$state.go('signup.account-info');
 
@@ -202,6 +218,9 @@ invoicesUnlimited.controller('PrincipalInfoController',
 			hideLoader();
 			console.log(error.message);
 		});
+        });
+        
+		
 	};
 
 	$scope.saveAndContinueLater = function(){

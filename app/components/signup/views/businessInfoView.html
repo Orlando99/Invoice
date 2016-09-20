@@ -1,4 +1,76 @@
-  <header class="sticky-nav logo-only">
+<!--
+<header class="sticky-nav logo-only">
+    <a href="#"><img src="./assets/images/01_IU-Web-Admin.png" alt="Invoices Unlimited"></a>
+  </header>
+
+  <section class="sign-up text-center">
+
+    <h2 class="text-uppercase">Principle Info</h2>
+
+    <form name="signUp" id="signUpForm">
+        <input type="text" placeholder="Full Name" name="fullName" ng-model="fullName" required>
+        <div class="input-container input-info">
+            <input type="text" placeholder="DOB (MM-DD-YYYY)" name="dob" ng-model="dob"
+                uib-datepicker-popup="MM-dd-yyyy" is-open="openPicker1" ng-click="openDatePicker(1)"
+                show-button-bar="false" readonly>
+            <span class="info-icon"></span>
+            <p class="info-tooltip">
+                We require your birth date to validate your identity. Invoices Unlimited follows industry recognized security safeguards to protect your personal data from misuse.
+            </p>
+        </div>
+        <div class="input-container input-info">
+            <input type="text" placeholder="SSN" name="ssn" ng-model="principalInfo.ssn">
+            <span class="info-icon"></span>
+            <p class="info-tooltip">
+                We require your SSN to validate your identity. Invoices Unlimited follows industry recognized security safeguards to protect your personal data from misuse.
+            </p>
+        </div>
+        
+        <div>
+            <input type="text" placeholder="Street Name" name="principleStreetName" ng-model="principalInfo.streetName" required>
+            <input type="text" placeholder="City" name="principleCity" ng-model="principalInfo.city" required>
+            <input type="text" placeholder="State" name="principleState" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.state">
+            <input type="text" placeholder="Zip Code" name="principleZipCode" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.zipCode">
+        </div>
+        
+      <input type="text" placeholder="Business Name" name="company" ng-model="bsnsInfo.businessName" required>
+        <label class="input-checkbox-container icc-left">
+        <input type="checkbox" ng-model="toggleHomeChecked" id="toggleHome" ng-change="toggleHomeInfo();">
+        <span class="checkbox"></span>
+        <p>Uncheck if home address is different from the business.</p>
+        </label>
+      <input type="text" placeholder="Street Name" name="streetName" ng-model="bsnsInfo.streetName" required>
+      <input type="text" placeholder="City" name="city" ng-model="bsnsInfo.city" required>
+      <input type="text" placeholder="State" name="state" ng-model="bsnsInfo.state" required class="input-50">
+      <input type="text" placeholder="Zip Code" name="zipCode" ng-model="bsnsInfo.zipCode" required class="input-50">
+      <textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)" ng-model="bsnsInfo.businessDescription" name="businessDescription"></textarea>
+      <label class="input-container input-checkbox-container">
+        <p>Do You Have a Federal Tax ID?</p>
+        <input type="checkbox" class="federal-tax-id" ng-change="federalTaxIdClick();" ng-model="x2">
+        <span class="checkbox"></span>
+        </label>
+      <input class="layout-margin-tb federal-tax federal-tax-id-input" type="text" placeholder="Federaly Tax ID" ng-model="bsnsInfo.federalTaxID" name="federalTaxID"> 
+      
+      <select class="custom-dd" name="ownershipType"
+              ng-init="bsnsInfo.ownershipType = 'ownershipTitle'"
+              ng-model="bsnsInfo.ownershipType">
+        <option value="ownershipTitle" disabled>Ownership Type</option>
+        <option value="Sole Proprietor">Sole Proprietor</option>
+        <option value="LLC">LLC</option>
+        <option value="Corporation and Non Profit">Corporation and Non Profit</option>
+      </select>
+
+    </form>
+
+    <a href="" ng-click="saveBusinessInfo();" class="button button-primary button-next">Next</a>
+
+  </section>
+
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  <script src="./dist/js/main.js"></script>
+-->
+
+<header class="sticky-nav logo-only">
     <a href="#"><img src="./assets/images/01_IU-Web-Admin.png" alt="Invoices Unlimited"></a>
   </header>
 
@@ -8,12 +80,12 @@
 
     <form name="signUp" id="signUpForm">
       <input type="text" placeholder="Business Name" name="company" ng-model="bsnsInfo.businessName" required>
-      <input type="text" placeholder="Street Name" name="streetName" ng-model="bsnsInfo.streetName" required>
+      <input type="text" placeholder="Business Address" name="streetName" ng-model="bsnsInfo.streetName" required>
       <input type="text" placeholder="City" name="city" ng-model="bsnsInfo.city" required>
       <input type="text" placeholder="State" name="state" ng-model="bsnsInfo.state" required class="input-50">
       <input type="text" placeholder="Zip Code" name="zipCode" ng-model="bsnsInfo.zipCode" required class="input-50">
-      <input type="text" placeholder="Phone Number" name="phoneNumber" id="phone" ng-model="bsnsInfo.phoneNumber">
-      <textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)" ng-model="bsnsInfo.businessDescription" name="businessDescription"></textarea>
+     <!-- <input type="text" placeholder="Phone Number" name="phoneNumber" id="phone" ng-model="bsnsInfo.phoneNumber">
+      <textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)" ng-model="bsnsInfo.businessDescription" name="businessDescription"></textarea>-->
       <label class="input-container input-checkbox-container">
         <p>Do You Have a Federal Tax ID?</p>
         <input type="checkbox" class="federal-tax-id" ng-change="federalTaxIdClick();" ng-model="x2">
@@ -27,7 +99,7 @@
         <option value="ownershipTitle" disabled>Ownership Type</option>
         <option value="Sole Proprietor">Sole Proprietor</option>
         <option value="LLC">LLC</option>
-        <option value="Corporation and Non Profit">Corporation and Non Profit</option>-->
+        <option value="Corporation and Non Profit">Corporation and Non Profit</option>
       </select>
 
     </form>

@@ -1,4 +1,4 @@
-﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>  
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>  
   <div class="container hidesm">
 
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb" ng-click="printSelected()">New Invoice</h3>
@@ -108,7 +108,7 @@
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
             <input tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number"
-              placeholder="10.00" ng-model="invItem.rate"
+              placeholder="10.00" ng-model="invItem.rate * currentCurrency.exchangeRate"
               ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right" ng-show="itemLevelTax">
@@ -125,7 +125,7 @@
             </select>
           </div>
           <div class="col-16 layout-padding layout-padding-l text-center">
-            <p class="layout-no-margin">{{invItem.amount | currency:$:2}}</p>
+            <p class="layout-no-margin">{{invItem.amount*currentCurrency.exchangeRate | currency:currentCurrency.currencySymbol:2}}</p>
           </div>
           <div class="col-5 layout-padding layout-padding-l text-right">
             <button class="button button-icon button-no-margin" ng-click="removeInvoiceItem($index)"><img src="./assets/images/icon-times-round.png" alt=""></button>

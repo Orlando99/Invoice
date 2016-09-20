@@ -12,6 +12,7 @@
     </div>
 
     <form id="signUpForm" name="signUpForm" novalidate style="position:relative">
+        <!--
         <select class="custom-dd countries" ng-model="selectedCountry"
                 ng-change="selectedCountryChanged();" name="country">
             <option value="Select Country" selected disabled>Select Country</option>
@@ -19,6 +20,7 @@
             <option value="none" disabled>---------------------------------------------------------------------------</option>
             <option ng-repeat="item in otherCountries" value="{{item}}">{{item}}</option>
         </select>
+
 
         <div class="extended-signup" style="display:none">
             <div class="input-container">
@@ -45,6 +47,25 @@
                 <input type="text" id="phone" placeholder="" name="phonenumber" />
             </div>
 
+        </div>
+-->
+        
+        <div class="extended-signup" >
+            <div class="input-container">
+                <input type="text" placeholder="Company Name" id="company" name="company" />
+            </div>
+            <div class="input-container">
+                <input type="text" id="username" placeholder="Username" name="username" />
+                <input type="hidden" id="username-exists" value="false"/>
+            </div>
+            <div class="input-container">
+                <input type="text" id="email" placeholder="Email (To Recover Forgotten Password)" name="email" />
+                <input type="hidden" id="email-exists" value="false"/>
+            </div>
+            <div class="input-container">
+                <input type="password" placeholder="Password (6 Characters)" id="password" name="password" />
+            </div>
+            
         </div>
     </form>
     

@@ -12,6 +12,10 @@ if(! userFactory.entity.length) {
 	console.log('User not logged in');
 	return undefined;
 }
+    
+    var cc = userFactory.entity[0].currency.attributes;
+    
+    $scope.currentCurrency = cc;
 
 var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
@@ -39,7 +43,7 @@ function showInvoiceDetail() {
 		if(invoice.payments) {
 			invoice.payments.forEach(function(payment) {
 				payment.date = formatDate(payment.entity.date, dateFormat);
-				payment.amount = currencyFilter(payment.entity.amount, '$', 2);
+				payment.amount = currencyFilter(payment.entity.amount*cc.exchangeRate, cc.currencySymbol, 2);
 			});
 			$scope.payments = invoice.payments;
 		} else {
@@ -151,14 +155,14 @@ $scope.showAvailableCredits = function() {
 		});
 		$scope.totalCredit = total;
 		$scope.balanceDue = $scope.invoice.entity.get('balanceDue');
-		$scope.totalCreditStr = currencyFilter(total, '$', 2);
-		$scope.balanceDueStr = currencyFilter($scope.balanceDue, '$', 2);
+		$scope.totalCreditStr = currencyFilter(total*cc.exchangeRate, cc.currencySymbol, 2);
+		$scope.balanceDueStr = currencyFilter($scope.balanceDue*cc.exchangeRate, cc.currencySymbol, 2);
 		$scope.creditUsed = $scope.balanceDue > total ?
 			total : $scope.balanceDue;
 		
 		var remaining = total - $scope.balanceDue;
 		remaining = remaining > 0 ? remaining : 0;
-		$scope.remainingCreditStr = currencyFilter(remaining, '$', 2);
+		$scope.remainingCreditStr = currencyFilter(remaining*cc.exchangeRate, cc.currencySymbol, 2);
 
 		var smaller = $scope.totalCredit > $scope.balanceDue ?
 			$scope.balanceDue : $scope.totalCredit;

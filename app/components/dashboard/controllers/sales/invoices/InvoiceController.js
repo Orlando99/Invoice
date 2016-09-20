@@ -12,6 +12,11 @@ if(! userFactory.entity.length) {
 	console.log('User not logged in');
 	return undefined;
 }
+    
+    var cc = userFactory.entity[0].currency.attributes;
+    
+    
+    $scope.currentCurrency = cc;
 
 var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
@@ -588,10 +593,10 @@ $scope.reCalculateTotal = function() {
 
 	discount = Math.abs(sum - subTotal - totalTax);
 	$scope.total = sum + shipCharges + adjustments;
-	$scope.discountStr = currencyFilter(discount, '$', 2);
-	$scope.shippingChargesStr = currencyFilter(shipCharges, '$', 2);
-	$scope.adjustmentsStr = currencyFilter(adjustments, '$', 2);
-	$scope.totalStr = currencyFilter($scope.total, '$', 2);
+	$scope.discountStr = currencyFilter(discount*cc.exchangeRate, cc.currencySymbol, 2);
+	$scope.shippingChargesStr = currencyFilter(shipCharges*cc.exchangeRate, cc.currencySymbol, 2);
+	$scope.adjustmentsStr = currencyFilter(adjustments*cc.exchangeRate, cc.currencySymbol, 2);
+	$scope.totalStr = currencyFilter($scope.total*cc.exchangeRate, cc.currencySymbol, 2);
 }
 
 function reCalculateSubTotal() {
@@ -609,14 +614,14 @@ function reCalculateSubTotal() {
 		if (item.selectedTax) {
 			$scope.itemTaxes.push({
 				nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
-				amount: currencyFilter(item.taxValue, '$', 2)
+				amount: currencyFilter(item.taxValue*cc.exchangeRate, cc.currencySymbol, 2)
 			});
 		}
 	});
 
 	$scope.totalTax = totalTax;
 	$scope.subTotal = subTotal;
-	$scope.subTotalStr = currencyFilter(subTotal, '$', 2);
+	$scope.subTotalStr = currencyFilter(subTotal*cc.exchangeRate, cc.currencySymbol, 2);
 	$scope.reCalculateTotal();
 }
 
@@ -720,7 +725,7 @@ $scope.customerChanged = function() {
 			$scope.addInvoiceItem();
 			$scope.totalTax = 0;
 			$scope.subTotal = 0;
-			$scope.subTotalStr = currencyFilter(0, '$', 2);
+			$scope.subTotalStr = currencyFilter(0, cc.currencySymbol, 2);
 			$scope.reCalculateTotal();
 
 		} else {
@@ -819,8 +824,8 @@ function ListInvoices() {
 				obj.entity.invoiceDate, dateFormat); // "MM/DD/YYYY"
 			obj.dueDate = formatDate(
 				obj.entity.dueDate, dateFormat);
-			obj.balanceDue = currencyFilter(obj.entity.balanceDue, '$', 2);
-			obj.total = currencyFilter(obj.entity.total, '$', 2);
+			obj.balanceDue = currencyFilter(obj.entity.balanceDue*cc.exchangeRate, cc.currencySymbol, 2);
+			obj.total = currencyFilter(obj.entity.total*cc.exchangeRate, cc.currencySymbol, 2);
 		});
 
 		res = res.reverse();

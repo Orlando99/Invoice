@@ -5,7 +5,7 @@
   <section class="sign-up">
 
     <h2 class="text-uppercase text-center">Account Info</h2>
-
+<!--
     <div class="input-radio-container">
       <p class="layout-margin-tb">How do you sell to your customers? </p>
       <label>
@@ -19,8 +19,11 @@
         <p>Not In Person</p>
       </label>
     </div>
-
+-->
     <form name="signUp" id="signUpForm">
+        <div class="input-container layout-margin-b">
+        <input type="text" class="layout-no-margin" id="phoneNumber" placeholder="Phone Number" id="phoneNumber" name="phoneNumber" ng-model="phoneNumber">
+      </div>
       <div class="input-container layout-margin-b">
       <select class="layout-no-margin" name="avgSale"
               ng-init="accountInfo.avgSale = 'avgSaleTitle'"

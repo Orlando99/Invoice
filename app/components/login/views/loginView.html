@@ -4,7 +4,7 @@
   
   <div class="container layout-padding hidesm">
   <section class="sign-up">
-    <h2 class="text-uppercase text-center">LOGIN</h2>
+    <h2 class="text-uppercase text-center">SIGN IN TO YOUR ACCOUNT</h2>
 
     <form name="signUp">
       <p class="errorMessage" style="display:none;color:red;"></p>
@@ -15,14 +15,20 @@
         <input type="password" class="layout-no-margin" placeholder="PASSWORD" ng-model="password">
       </div>
     </form>
-
-    <a ng-click="signInAction();" class="button button-primary button-next">SIGN IN</a>
-      <p><a ui-sref="resetPassword">FORGOT PASSWORD?</a></p>
+<p>
+    <input style="width: 25px; display: inline;" type="checkbox"/><label>Keep Me Signed In</label>
+    <a style="margin-left: 100px;" class="text-right" ui-sref="resetPassword">FORGOT PASSWORD?</a>
+      </p>
       
+      
+    <a ng-click="signInAction();" class="button button-primary button-next">SIGN IN</a>
+      
+   <!--   
     <a ng-click="signUpAction();" class="button button-neutral-lg">SIGN UP</a>
 
     <p class="text-center">Don't have an Account? Sign Up now in three quick steps.</p>
-
+-->
+      <p class="text-center">Don't have an Account Yet?  <span><a href="javascript:" ng-click="signUpAction();"> Sign Up Today</a></span></p>
   </section>
   </div>
 

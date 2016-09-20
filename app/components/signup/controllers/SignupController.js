@@ -103,17 +103,25 @@ invoicesUnlimited.controller('SignupController',
 	
 	$scope.selectedCountry = (signUpCountry == '' ? 'Select Country' : signUpCountry);
 
+        /*
 	var fields = ['company',
 				  'fullName',
 				  'email',
 				  'username',
 				  'password',
 				  'phonenumber'];
+                  */
+        
+        var fields = ['email',
+				      'username',
+				      'password',
+                      'company'];
 	
 	fields.forEach(function(field){
 		$('input[name='+field+']').val(signUpFactory.getField('User',field));
 	});
 
+        /*
 	$("#signUpForm").validate({
 		onkeyup : false,
 		onfocusout : false,
@@ -180,7 +188,45 @@ invoicesUnlimited.controller('SignupController',
 			}
 		}
 	});
+        */
 
+        $("#signUpForm").validate({
+		onkeyup : false,
+		onfocusout : false,
+		rules: {
+			username: {
+				required : true,
+				UserNameExists : true
+			},
+            company : 'required',
+			email : {
+				required : true,
+				email : true,
+				EmailExists : true
+			},
+			password: {
+				required : true,
+				minlength : 6
+			}
+		},
+		messages: {
+			username: {
+				required : "Please specify your username !",
+				UserNameExists : "The username is already taken!"
+			},
+            company : "Please specify your company !",
+			email : {
+				required : "Please specify your email !",
+				email : "Please write valid email address",
+				EmailExists : "The email is already taken!"
+			},
+			password: {
+				required : "Please specify your password !",
+				minlength : "Password should contain atleast 6 characters"
+			}
+		}
+	});
+        
 	$scope.ValidateForm = function(callback){
 		var queryUsername = new Parse.Query(Parse.User);
         queryUsername.equalTo("username",$('input[name=username]').val());
@@ -220,6 +266,7 @@ invoicesUnlimited.controller('SignupController',
 
 	$scope.sendMessage = function(){
 		showLoader();
+        /*
 		var validCountry = $('#signUpForm')
 							.validate()
 							.element('[name=country]');
@@ -228,7 +275,7 @@ invoicesUnlimited.controller('SignupController',
 			hideLoader();
 			return;
 		}
-
+        */
 		var result = $scope.ValidateForm(function(validated){
 			if (!validated) {
 				hideLoader();
@@ -242,6 +289,7 @@ invoicesUnlimited.controller('SignupController',
 
 			var handleError = function() {
 				var error = {};
+                /*
 				if ($scope.usaAndCanada.includes($scope.selectedCountry)) {
 					console.log('invalid phone number');
 					error.phonenumber = "phone number does not exist";
@@ -249,6 +297,10 @@ invoicesUnlimited.controller('SignupController',
 					console.log('invalid email address');
 					error.email = "email address does not exist";
 				}
+                */
+                console.log('invalid email address');
+				error.email = "email address does not exist";
+                
 				$("#signUpForm").validate().showErrors(error);
 				hideLoader();
 			}
@@ -268,7 +320,7 @@ invoicesUnlimited.controller('SignupController',
 					} else {
 						code = code[1];
 						signUpFactory.setVerification.code(code);
-						signUpFactory.setField('User','country',$scope.selectedCountry);
+						//signUpFactory.setField('User','country',$scope.selectedCountry);
 						hideLoader();
 						$state.go('signup.verification');
 					}
@@ -278,6 +330,7 @@ invoicesUnlimited.controller('SignupController',
 
 			var postParams = {};
 
+            /*
 			if ($scope.usaAndCanada.includes($scope.selectedCountry)) {
 				postParams.dest = 'phone';
 				postParams.phonenumber = $('#phone').val();
@@ -285,7 +338,11 @@ invoicesUnlimited.controller('SignupController',
 				postParams.dest = 'email';
 				postParams.email = $('input[name=email]').val();
 			}
-
+            */
+            
+            postParams.dest = 'email';
+            postParams.email = $('input[name=email]').val();
+            
 			var Template = Parse.Object.extend('InvoiceTemplate');
 			var query = new Parse.Query(Template);
 			query.equalTo ('name', 'Template 1');

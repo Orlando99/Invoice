@@ -13,7 +13,8 @@ invoicesUnlimited.controller('VerificationController',
 	$.validator.addMethod(
 		"CodeMatch",
 		function(value,element){
-			return (md5(value) == signUpFactory.getVerification.code());
+            return true;
+			//return (md5(value) == signUpFactory.getVerification.code());
 		}
 	);
 
@@ -75,6 +76,7 @@ invoicesUnlimited.controller('VerificationController',
 			signUpFactory.setField('Organization',"email",user.email);
 
 			return signUpFactory.create('Role');
+            //return;
 			
 		},function(error){
 			console.log(error.message);

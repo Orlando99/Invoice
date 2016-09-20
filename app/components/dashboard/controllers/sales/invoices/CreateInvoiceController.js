@@ -13,6 +13,10 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		return undefined;
 	}
 
+    var cc = userFactory.entity[0].currency.attributes;
+    
+    $scope.currentCurrency = cc;
+        
 	var user = userFactory.entity[0];
 	var organization = user.get("organizations")[0];
 	$controller('DashboardController',{$scope:$scope,$state:$state});
@@ -231,7 +235,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		$scope.hasDueDate = true;
 		$scope.todayDate = new Date();
 		$scope.calculateDueDate();
-		$scope.subTotalStr = currencyFilter(0, '$', 2);
+		$scope.subTotalStr = currencyFilter(0*cc.exchangeRate, cc.currencySymbol, 2);
 
 		switch($scope.prefs.discountType) {
 			case 0:
@@ -248,18 +252,18 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			case 3:
 				$scope.itemLevelTax = false;
 				$scope.invoiceLevelTax = true;
-				$scope.discountStr = currencyFilter(0, '$', 2);
+				$scope.discountStr = currencyFilter(0*cc.exchangeRate, cc.currencySymbol, 2);
 				break;
 		}
 
 		if ($scope.prefs.shipCharges) {
 			$scope.showShippingCharges = true;
-			$scope.shippingChargesStr = currencyFilter(0, '$', 2);
+			$scope.shippingChargesStr = currencyFilter(0*cc.exchangeRate, cc.currencySymbol, 2);
 		}
 
 		if ($scope.prefs.adjustments) {
 			$scope.showAdjustments = true;
-			$scope.adjustmentsStr = currencyFilter(0, '$', 2);
+			$scope.adjustmentsStr = currencyFilter(0*cc.exchangeRate, cc.currencySymbol, 2);
 		}
 
 		if ($scope.prefs.salesPerson)
@@ -527,10 +531,10 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 		discount = Math.abs(sum - subTotal - totalTax);
 		$scope.total = sum + shipCharges + adjustments;
-		$scope.discountStr = currencyFilter(discount, '$', 2);
-		$scope.shippingChargesStr = currencyFilter(shipCharges, '$', 2);
-		$scope.adjustmentsStr = currencyFilter(adjustments, '$', 2);
-		$scope.totalStr = currencyFilter($scope.total, '$', 2);
+		$scope.discountStr = currencyFilter(discount*cc.exchangeRate, cc.currencySymbol, 2);
+		$scope.shippingChargesStr = currencyFilter(shipCharges*cc.exchangeRate, cc.currencySymbol, 2);
+		$scope.adjustmentsStr = currencyFilter(adjustments*cc.exchangeRate, cc.currencySymbol, 2);
+		$scope.totalStr = currencyFilter($scope.total*cc.exchangeRate, cc.currencySymbol, 2);
 	}
 
 	function reCalculateSubTotal() {
@@ -548,14 +552,14 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			if (item.selectedTax) {
 				$scope.itemTaxes.push({
 					nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
-					amount: currencyFilter(item.taxValue, '$', 2)
+					amount: currencyFilter(item.taxValue*cc.exchangeRate, cc.currencySymbol, 2)
 				});
 			}
 		});
 
 		$scope.totalTax = totalTax;
 		$scope.subTotal = subTotal;
-		$scope.subTotalStr = currencyFilter(subTotal, '$', 2);
+		$scope.subTotalStr = currencyFilter(subTotal*cc.exchangeRate, cc.currencySymbol, 2);
 		$scope.reCalculateTotal();
 	}
 
@@ -688,7 +692,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				$scope.addInvoiceItem();
 				$scope.totalTax = 0;
 				$scope.subTotal = 0;
-				$scope.subTotalStr = currencyFilter(0, '$', 2);
+				$scope.subTotalStr = currencyFilter(0*cc.exchangeRate, cc.currencySymbol, 2);
 				$scope.reCalculateTotal();
 
 			} else {

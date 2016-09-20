@@ -18,6 +18,10 @@ select {
 }
 */
 
+.button-next{
+    margin: 20px 0 !important;
+}
+
 .datepicker-noclear .uib-datepicker-popup .btn-group .btn-danger.btn{
 	display: none;
 }

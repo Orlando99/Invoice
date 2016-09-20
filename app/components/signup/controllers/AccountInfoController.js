@@ -1,12 +1,21 @@
 'use strict';
 
 invoicesUnlimited.controller('AccountInfoController',
-	function($rootScope,$scope,$state,signUpFactory,userFactory){
+	function($q,$rootScope,$scope,$state,signUpFactory,userFactory){
 
 	if (!signUpFactory.getFactory('User').entity.length) {
 		$state.go('signup');
 		return;
 	}
+    
+    var user = signUpFactory.getFactory('User');
+    
+    var currentUser = undefined;
+        
+        $q.when(userFactory.entity[0].fetch())
+        .then(function(obj) {
+            currentUser = obj;
+        });
 
 	if($rootScope.fromPaymentSettings) {
 		var userObj = signUpFactory.getFactory('User').entity[0];
@@ -48,6 +57,13 @@ invoicesUnlimited.controller('AccountInfoController',
 
 	$('[name=routingNumber]').mask('000000000');
 	$('[name=accountNumber]').mask('0000000000');
+    $('#phoneNumber').mask("(Z00) 000-0000",{
+		translation : {
+			'Z': {
+				pattern : /[2-9]/g
+			}
+		}
+	});
 
 	$("#signUpForm").validate({
 		onkeyup : false,
@@ -63,7 +79,8 @@ invoicesUnlimited.controller('AccountInfoController',
 			},
 			bankName 		: 'required',
 			routingNumber	: 'required',
-			accountNumber	: 'required'
+			accountNumber	: 'required',
+            phoneNumber     : 'required'
 
 		},
 		messages: {
@@ -71,10 +88,13 @@ invoicesUnlimited.controller('AccountInfoController',
 			monthlySales 	: 'Please specify your estimated montly credit card sales!',
 			bankName 		: 'Please specify your bank name!',
 			routingNumber	: 'Please specify your bank routing number',
-			accountNumber	: 'Please specify your bank account number'			
+			accountNumber	: 'Please specify your bank account number',
+            phoneNumber     : 'Please specify your bank phone number'
 		}
 	});
 
+    
+    
 	$scope.avgSaleList 		= [];
 	$scope.monthlySalesList = [];
 	
@@ -103,7 +123,7 @@ invoicesUnlimited.controller('AccountInfoController',
 		routingNumber	: '',
 		accountNumber	: '',
 		avgSale			: '',
-		inPerson		: 'inPerson',
+		//inPerson		: 'inPerson',
 		monthlySales	: ''
 	};
 
@@ -114,12 +134,13 @@ invoicesUnlimited.controller('AccountInfoController',
 				value : $scope.accountInfo[field]
 			});
 		}
-
+        
 		signUpFactory.setField('AccountInfo',{
 			field : 'inPerson',
-			value : ($scope.accountInfo['inPerson'] == 'inPerson')
+            value : false
+			//value : ($scope.accountInfo['inPerson'] == 'inPerson')
 		});
-
+        
 		var account = signUpFactory.create('AccountInfo');
 		
 		return account
@@ -136,14 +157,23 @@ invoicesUnlimited.controller('AccountInfoController',
 		if (!$('#signUpForm').valid()) return;
 
 		showLoader();
-		saveHelper().then(function(){
+        
+        currentUser.set('phonenumber', $scope.phoneNumber);
+        $q.when(user.save())
+        .then(function() {
+            
+            saveHelper().then(function(){
 			hideLoader();
 			$state.go('signup.signature');
-
-		},function(error){
-			hideLoader();
-			console.log(error.message);
+            },function(error){
+                hideLoader();
+                console.log(error.message);
+            });
+		
 		});
+        
+        
+		
 	};
 
 	$scope.saveAndContinueLater = function(){
