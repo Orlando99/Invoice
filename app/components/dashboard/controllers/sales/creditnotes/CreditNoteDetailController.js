@@ -116,7 +116,59 @@ $scope.emailReceipt = function() {
 	.then(function(obj) {
 		console.log('Receipt sent successfully.');
 		hideLoader();
+	}, function(error) {
+        addNewComment('Credit Note sent by email', true);
+		hideLoader();
+		console.log(error.message);
 	});
+}
+
+$scope.creditNotePrinted = function(){
+    addNewComment('Credit Note printed', true);
+}
+
+function addNewComment(body, isAuto) {
+	var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : isAuto,
+		comment : body
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var creditNote = $scope.creditNote.entity;
+		var prevComments = creditNote.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		creditNote.set('comments', prevComments);
+		return creditNote.save();
+	})
+	.then(function() {
+		var comment = new commentFactory(data.commentObj);
+
+		if($scope.comments)
+			$scope.comments.push(comment);
+		else
+			$scope.comments = [comment];
+
+		console.log(comment);
+	});
+
 }
 
 $scope.addComment = function() {

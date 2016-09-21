@@ -1,10 +1,10 @@
 'use strict';
 
 invoicesUnlimited.controller('CreditNoteController',['$q', '$scope', '$state', '$controller',
-	'userFactory', 'creditNoteService', 'coreFactory', 'taxService', 'expenseService', 'currencyFilter',
+	'userFactory', 'creditNoteService', 'coreFactory', 'taxService', 'expenseService', 'commentFactory', 'currencyFilter',
 
 function($q, $scope, $state, $controller, userFactory, creditNoteService,
-	coreFactory, taxService, expenseService, currencyFilter){
+	coreFactory, taxService, expenseService, commentFactory, currencyFilter){
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -218,6 +218,7 @@ function saveEditedCreditNote(params) {
 			user, $scope.userRole)
 
 	.then(function(obj) {
+        addNewComment('Credit Note edited', true);
 		if (params.generateReceipt) {
 			return creditNoteService.createCreditNoteReceipt(obj.id);
 
@@ -225,6 +226,40 @@ function saveEditedCreditNote(params) {
 			return obj;
 		}
 	});
+}
+    
+function addNewComment(body, isAuto) {
+	var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : isAuto,
+		comment : body
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var creditNote = $scope.creditNote.entity;
+		var prevComments = creditNote.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		creditNote.set('comments', prevComments);
+		return creditNote.save();
+	});
+
 }
 
 function saveAndSendEditedCreditNote () {

@@ -2,10 +2,10 @@
 
 invoicesUnlimited.controller('CreateInvoiceController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
-	'invoiceService', 'coreFactory', 'taxService', 'expenseService',
+	'invoiceService', 'coreFactory', 'commentFactory', 'taxService', 'expenseService',
 	'lateFeeService', 'currencyFilter', 'itemService', 'salesCommon',
 	function($scope, $state, $controller, $q, userFactory,
-		invoiceService,coreFactory,taxService,expenseService,
+		invoiceService,coreFactory,commentFactory,taxService,expenseService,
 		lateFeeService,currencyFilter, itemService, salesCommon) {
 
 	if(! userFactory.entity.length) {
@@ -21,7 +21,13 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	var organization = user.get("organizations")[0];
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
-	prepareToCreateInvoice();
+        $q.when(userFactory.entity[0].currency.fetch())
+    .then(function(obj){
+        cc = obj.attributes;
+            $scope.currentCurrency = cc;
+        prepareToCreateInvoice();
+    });
+	//prepareToCreateInvoice();
 
 	$.validator.addMethod(
 		"notBackDate",
@@ -365,8 +371,17 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		var email = $scope.selectedCustomer.entity.email;
 		if(email) invoice.customerEmails = [email];
 
-		return invoiceService.createNewInvoice
-			(invoice, $scope.invoiceItems, $scope.userRole, $scope.files);
+		return invoiceService.createNewInvoice(invoice, $scope.invoiceItems, $scope.userRole, $scope.files);
+        
+        /*
+        $q.when(invoiceService.createNewInvoice
+			(invoice, $scope.invoiceItems, $scope.userRole, $scope.files))
+        .then(function(obj){
+            return obj;
+        });
+        
+        return 1;
+        */
 	}
 
 	function saveAndSendInvoice() {
@@ -430,6 +445,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			}
 		})
 		.then(function(invoice) {
+            addNewComment('Invoice created for ' + currencyFilter(invoice.balanceDue, '$', 2) +' amount', true, invoice);
 			hideLoader();
 			$state.go('dashboard.sales.invoices.all');
 
@@ -438,6 +454,50 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			console.log(error);
 		});
 	}
+    
+    function addNewComment(commentbody, isAuto, invoice){
+    var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : isAuto,
+		comment : commentbody
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		//var invoice = $scope.invoice.entity;
+		var prevComments = invoice.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		invoice.set('comments', prevComments);
+		return invoice.save();
+	})
+	.then(function() {
+		var comment = new commentFactory(data.commentObj);
+
+		if($scope.comments)
+			$scope.comments.push(comment);
+		else
+			$scope.comments = [comment];
+
+		console.log(comment);
+	});
+}
+
 
 	$scope.saveAndSend = function () {
 		if (! validateForms())	return;
@@ -458,6 +518,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			}
 		})
 		.then(function(invoice) {
+            addNewComment('Invoice created for ' + currencyFilter(invoice.balanceDue, '$', 2) +' amount', true, invoice);
 			hideLoader();
 			$state.go('dashboard.sales.invoices.all');
 

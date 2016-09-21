@@ -19,12 +19,13 @@ invoicesUnlimited.controller('AppPreferencesController',
 		'Reports', 'Settings'];
 
 	$scope.selectedScreen = user.entity[0].get('firstScreen');
+    if(user.entity[0].get('isTrackUsage')) $scope.trackUsage = true;
 
 	$scope.saveAppPreferences = function(){
 		showLoader();
 		var color = $(".colors li.active").find('a').attr('class');
 		var colorToSave = "app" + color[0].toUpperCase() + color.slice(1) + "Color";
-		userFactory.save({colorTheme:colorToSave, firstScreen:$scope.selectedScreen}).then(function(){
+		userFactory.save({colorTheme:colorToSave, firstScreen:$scope.selectedScreen, isTrackUsage:$scope.trackUsage?1:0}).then(function(){
 			window.location.reload();
 			hideLoader();
 		});

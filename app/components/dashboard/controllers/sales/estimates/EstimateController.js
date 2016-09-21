@@ -1,10 +1,10 @@
 'use strict';
 
 invoicesUnlimited.controller('EstimateController',['$q', '$scope', '$state', '$controller',
-	'userFactory', 'estimateService', 'coreFactory', 'taxService', 'expenseService', 'currencyFilter',
+	'userFactory', 'estimateService', 'coreFactory', 'taxService', 'expenseService', 'commentFactory', 'currencyFilter',
 
 function($q, $scope, $state, $controller, userFactory, estimateService,
-	coreFactory, taxService, expenseService, currencyFilter) {
+	coreFactory, taxService, expenseService, commentFactory, currencyFilter) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -391,6 +391,7 @@ function saveEditedEstimate(params) {
 			user, $scope.userRole)
 
 	.then(function(obj) {
+        addNewComment('Estimate edited', true);
 		if (params.generateReceipt) {
 			return estimateService.createEstimateReceipt(obj.id);
 
@@ -398,6 +399,40 @@ function saveEditedEstimate(params) {
 			return obj;
 		}
 	});
+}
+    
+function addNewComment(body, isAuto) {
+	var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : false,
+		comment : body
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var estimate = $scope.estimate.entity;
+		var prevComments = estimate.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		estimate.set('comments', prevComments);
+		return estimate.save();
+	});
+
 }
 
 function saveAndSendEditedEstimate () {

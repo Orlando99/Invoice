@@ -3,10 +3,10 @@
 invoicesUnlimited.controller('InvoiceController',
 	['$q', '$scope', '$state', '$controller', 'userFactory',
 		'invoiceService', 'coreFactory', 'taxService', 'expenseService',
-		'lateFeeService', 'currencyFilter', 'salesCommon',
+		'lateFeeService', 'commentFactory', 'currencyFilter', 'salesCommon',
 
 function($q, $scope, $state, $controller, userFactory,
-	invoiceService, coreFactory, taxService, expenseService, lateFeeService, currencyFilter, salesCommon) {
+	invoiceService, coreFactory, taxService, expenseService, lateFeeService, commentFactory, currencyFilter, salesCommon) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -40,7 +40,13 @@ var isGoTo = {
 userFactory.getField('dateFormat')
 .then(function(obj) {
 	$scope.dateFormat = obj;
-	CheckUseCase();
+    $q.when(userFactory.entity[0].currency.fetch())
+    .then(function(obj){
+        cc = obj.attributes;
+        $scope.currentCurrency = cc;
+        CheckUseCase();
+    });
+	//CheckUseCase();
 });
 
 $.validator.addMethod(
@@ -460,6 +466,16 @@ function saveEditedInvoice(params) {
 			user, $scope.userRole, $scope.files)
 
 	.then(function(obj) {
+        //----------------------------
+        
+        var commentbody = 'Invoice edited';
+        var isAuto = true;
+        
+        addNewComment(commentbody, isAuto);
+        
+        
+        
+        //----------------------------
 		if (params.generateReceipt) {
 			var info = obj.get('invoiceInfo');
 			if (info) info = info.id;
@@ -468,6 +484,39 @@ function saveEditedInvoice(params) {
 		} else {
 			return obj;
 		}
+	});
+}
+    
+    function addNewComment(commentbody, isAuto){
+    var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : isAuto,
+		comment : commentbody
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var invoice = $scope.invoice.entity;
+		var prevComments = invoice.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		invoice.set('comments', prevComments);
+		return invoice.save();
 	});
 }
 

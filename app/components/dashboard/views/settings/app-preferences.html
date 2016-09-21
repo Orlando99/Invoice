@@ -1,4 +1,4 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container hidesm">
 
@@ -7,6 +7,11 @@
 
     <form action="" class="inputs-white col-60">
 
+        <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Track Usage</label>
+            <input type="checkbox" ng-model="trackUsage" class="col-75" style="margin-top: 15px;"/>
+      </div>
+        
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Opening Screen</label>
         <select class="col-75" ng-model="selectedScreen" ng-options="screen for screen in openingScreens">

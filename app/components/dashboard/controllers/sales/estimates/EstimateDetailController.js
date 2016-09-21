@@ -116,6 +116,10 @@ $scope.emailReceipt = function() {
 	.then(function(obj) {
 		console.log('Receipt sent successfully.');
 		hideLoader();
+	}, function(error) {
+        addNewComment('Estimate sent by email', true);
+		hideLoader();
+		console.log(error.message);
 	});
 }
 
@@ -140,6 +144,58 @@ $scope.deleteEstimate = function() {
 		$state.go('dashboard.sales.estimates.all');
 	});
 
+}
+
+function addNewComment(body, isAuto) {
+	var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : false,
+		comment : body
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var estimate = $scope.estimate.entity;
+		var prevComments = estimate.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		estimate.set('comments', prevComments);
+		return estimate.save();
+	})
+	.then(function() {
+		var comment = new commentFactory(data.commentObj);
+
+		if($scope.comments)
+			$scope.comments.push(comment);
+		else
+			$scope.comments = [comment];
+
+		console.log(comment);
+	});
+
+}
+    
+$scope.estimatePrinted = function(){
+    addNewComment('Estimate printed', true);
+}
+
+$scope.estimateCloned = function(){
+    addNewComment('Estimate cloned', true);
 }
 
 $scope.addComment = function() {

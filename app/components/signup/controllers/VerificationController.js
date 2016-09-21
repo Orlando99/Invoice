@@ -13,8 +13,8 @@ invoicesUnlimited.controller('VerificationController',
 	$.validator.addMethod(
 		"CodeMatch",
 		function(value,element){
-            return true;
-			//return (md5(value) == signUpFactory.getVerification.code());
+            //return true;
+			return (md5(value) == signUpFactory.getVerification.code());
 		}
 	);
 

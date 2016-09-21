@@ -528,8 +528,9 @@ return {
                 + businessName + ' has sent you an invoice of ' + amount
                 + '. <a href="' + link + '">Click here to view.</a>';
 
-            handleAuthClick();
+            //handleAuthClick();
 
+            /*
             sendMessage(
               {
                 'To': toEmail,
@@ -538,6 +539,7 @@ return {
               emailBody,
               composeTidy
             );
+            */
         }
         
         return invoice;

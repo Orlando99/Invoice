@@ -39,7 +39,11 @@ function showInvoiceDetail() {
 		$scope.invoice = invoice;
 		$scope.invoiceNo = invoice.entity.invoiceNumber;
 		$scope.comments = invoice.comments;
-
+        
+        if(invoice.entity.balanceDue > 0){
+            
+        }
+        
 		if(invoice.payments) {
 			invoice.payments.forEach(function(payment) {
 				payment.date = formatDate(payment.entity.date, dateFormat);
@@ -84,6 +88,10 @@ function showInvoiceDetail() {
 		console.log(error.message);
 	});
 
+}
+    
+$scope.invoicePrinted = function(){
+    addNewComment('Invoice printed', true);
 }
 
 $scope.changeTemplate = function() {
@@ -141,6 +149,15 @@ $scope.setDefaultTemplate = function(index) {
 		hideLoader();
 		console.log(error,message);
 	});
+}
+
+$scope.cloneInvoice = function() {
+    
+    $q.when(addNewComment('Invoice cloned', true))
+    .then(function(){
+        $state.go('dashboard.sales.invoices.clone', {'invoiceId':$scope.invoice.entity.id });
+    });
+    
 }
 
 $scope.showAvailableCredits = function() {
@@ -275,6 +292,10 @@ $scope.applyCredit = function() {
 		return $q.all(promises);
 	})
 	.then(function() {
+        
+        var body = 'Credit Note applied for '+ currencyFilter($scope.creditUsed, '$', 2) +' amount';
+        addNewComment(body, true);
+        
 		hideLoader();
 		console.log('Saved successfully');
 		$state.reload();
@@ -349,6 +370,8 @@ $scope.addPayment = function() {
 		return invoiceObj.save();
 	})
 	.then(function() {
+        var body = 'Payment made for '+ currencyFilter($scope.paymentAmount, '$', 2) +' amount';
+        addNewComment(body, true);
 		hideLoader();
 		$state.reload();
 	});
@@ -427,6 +450,7 @@ $scope.emailReceipt = function() {
 	showLoader();
 	$q.when(invoiceService.sendInvoiceReceipt($scope.invoice.entity))
 	.then(function(obj) {
+        addNewComment('Invoice sent by email', true);
 		console.log('Receipt sent successfully.');
 		hideLoader();
 	});
@@ -471,6 +495,49 @@ $scope.deleteInvoice = function() {
 		$state.go('dashboard.sales.invoices.all');
 	});
 
+}
+
+function addNewComment(commentbody, isAuto){
+    var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : isAuto,
+		comment : commentbody
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var invoice = $scope.invoice.entity;
+		var prevComments = invoice.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		invoice.set('comments', prevComments);
+		return invoice.save();
+	})
+	.then(function() {
+		var comment = new commentFactory(data.commentObj);
+
+		if($scope.comments)
+			$scope.comments.push(comment);
+		else
+			$scope.comments = [comment];
+
+		console.log(comment);
+	});
 }
 
 $scope.addComment = function() {

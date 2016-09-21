@@ -2,10 +2,10 @@
 
 invoicesUnlimited.controller('CreateEstimateController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
-	'estimateService', 'coreFactory', 'taxService', 'expenseService',
+	'estimateService', 'coreFactory', 'taxService', 'commentFactory', 'expenseService',
 	'currencyFilter',
 function($scope, $state, $controller, $q, userFactory,
-	estimateService,coreFactory,taxService,expenseService,currencyFilter) {
+	estimateService,coreFactory,taxService,commentFactory,expenseService,currencyFilter) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -506,7 +506,11 @@ function saveEstimate() {
 	if(email) estimate.customerEmails = [email];
 
 	return estimateService.createNewEstimate
-		(estimate, $scope.estimateItems, $scope.userRole);
+		(estimate, $scope.estimateItems, $scope.userRole)
+    .then(function(estimate){
+        addNewComment('Estimate created for ' + currencyFilter(estimate.attributes.totalAmount, '$', 2) +' amount', true, estimate);
+        return estimate;
+    });
 }
 
 function saveAndSendEstimate() {
@@ -543,6 +547,42 @@ function validateForms () {
 		scrollToOffset(offset);
 		return false;
 	}
+}
+    
+function addNewComment(body, isAuto, estimate) {
+	
+	var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : false,
+		comment : body
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		//var estimate = $scope.estimate.entity;
+		var prevComments = estimate.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		estimate.set('comments', prevComments);
+		estimate.save();
+        hideLoader();
+	});
+
 }
 
 $scope.save = function() {
@@ -597,6 +637,7 @@ $scope.saveAndSend = function () {
 
 	}, function (error) {
 		hideLoader();
+        $state.go('dashboard.sales.estimates.all');
 		console.log(error);
 	});
 

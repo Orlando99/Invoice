@@ -16,8 +16,17 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		return;
 	}
     
-    var cc = user.entity[0].currency.attributes;
-    
+    var cc = user.entity[0].currency;
+    /*
+    $q.when(userFactory.entity[0].fetch())
+.then(function(obj) {
+	
+      cc = obj.get('currency').attributes;
+	
+});
+    */
+    //var cc = user.entity[0].currency.attributes;
+    //var cc = user.entity[0].get('currency').attributes;
     
     $scope.currentCurrency = cc;
     
@@ -109,10 +118,17 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 			if (! $state.current.name.endsWith('dashboard')) return;
 
 			organization = user.entity[0].get("organizations")[0];
-			hideLoader();
-			drawBarChart();
-			drawPieChart();
-
+            
+            $q.when(cc.fetch())
+            .then(function(obj) {
+                cc = obj.attributes;
+                $scope.currentCurrency = cc;
+                hideLoader();
+                drawBarChart();
+                drawPieChart();
+            });
+            
+			
 		} else {
 			$scope.logOut('Your account is not setup correctly.');
 		}

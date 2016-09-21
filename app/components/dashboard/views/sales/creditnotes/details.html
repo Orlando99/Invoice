@@ -1,4 +1,4 @@
-﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
     <a ui-sref="dashboard.sales.creditnotes.all" class="button-icon float-left">
       <img src="./assets/images/icon-back.png" alt="Kappa">
@@ -11,7 +11,7 @@
       </button>
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
         <li><a href="" ng-click="emailReceipt()">Email</a></li>
-        <li><a ng-href="{{templateUrl}}" target="_blank">Print</a></li>
+        <li><a ng-href="{{templateUrl}}" target="_blank" ng-click="creditNotePrinted()">Print</a></li>
       </ul>
     </div>
     <div class="clearfix"></div>
