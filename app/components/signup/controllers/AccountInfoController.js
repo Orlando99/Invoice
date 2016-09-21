@@ -24,6 +24,7 @@ invoicesUnlimited.controller('AccountInfoController',
 			userObj.get('selectedOrganization'));
 
 		showLoader();
+		debugger;
 		signUpFactory.getFactory('Role').load()
 		.then(function() {
 			hideLoader();

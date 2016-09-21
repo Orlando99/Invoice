@@ -1012,20 +1012,28 @@ function getInvoiceInfo (invoiceInfoId){
             if (result.userId != undefined) {
                 userQuery.get(result.userId, {
                     success: function(user){
-                        result['restrictKey'] = user.get('EPNrestrictKey');
-                        result['ePNAccount'] = user.get('EPNusername');
+                        $('#gateway').val(user.get('paymentGateway'));
+                        if ($('#gateway').val() == 1) {
+                            result['restrictKey'] = user.get('EPNrestrictKey');
+                            result['ePNAccount'] = user.get('EPNusername');
+                        } else if ($('#gateway').val() == 2) {
+                            result['AuthKey'] = user.get('AuthKey');
+                            result['AuthNet'] = user.get('AuthNet');
+                        }
                     },
                     error: function(object, error) {
                         $('.full-screen-loader').hide();
                         $('.error-load').html('ERROR: ' + error.message).show();
                     }
                 }).then(function(){
-                    if ( !result.ePNAccount || !result.restrictKey){
+                    if ( !result.EPNusername && !result.restrictKey && !result.AuthKey && !result.AuthNet){
                         $('#index').hide();
                         $('#accept').show();
                         $('.full-screen-loader,.full-screen-white-overlay').hide();
                         return;
                     }
+                    $('#AuthNet').val(result.AuthNet);
+                    $('#AuthKey').val(result.AuthKey)
                     $('#ePNAccount').val(result.ePNAccount);
                     $('#RestrictKey').val(result.restrictKey);
                 });
@@ -1075,24 +1083,48 @@ $(document).ready(function(){
         if (!validateForm()) return false;
         $('.white-overlay, #loader').show();
         //event.preventDefault();
+
+        var url,data = {
+            'Zip'           : $('#Zip').val(),
+            'CardNo'        : $('#CardNo').val(),
+            'ExpirationDate': $('#ExpirationDate').val(),
+            'CVV2'          : $('#CVV2').val(),
+            'Total'         : $('#Total').val(),
+            'CVV2Type'      : $('#CVV2Type').val(),
+            'ExpMonth'      : $('#ExpMonth').val(),
+            'ExpYear'       : $('#ExpYear').val()
+        };
+        switch($('#gateway').val()){
+            case "1":
+                url = "./request.php";
+                data = Object.assign({},data,{
+                    'NameOnCard'  : $('#Name').val(),
+                    'HTML'        : 'No',
+                    'ePNAccount'  : $('#ePNAccount').val(),
+                    'Address'     : $('#Address').val(),
+                    'RestrictKey' : $('#RestrictKey').val()
+                });
+                break;
+            case "2":
+                url = "./request-auth.php";
+                data = Object.assign({},data,{
+                    'CardNo'  : parseInt($('#CardNo').val().replace(/\s/g,"")),
+                    'CVV2'    : parseInt($('#CVV2').val()),
+                    'AuthNet' : $('#AuthNet').val(),
+                    'Total'   : parseFloat($('#Total').val()),
+                    'AuthKey' : $('#AuthKey').val(),
+                });
+                break;
+            default:
+                alert('Wrong paymentGateway! Contact the business owner!');
+                return;
+
+        }
+        
         $.ajax({
             method:"POST",
-            url: "./request.php",
-            data: {
-                'NameOnCard'    : $('#Name').val(),
-                'Zip'           : $('#Zip').val(),
-                'CardNo'        : $('#CardNo').val(),
-                'ExpirationDate': $('#ExpirationDate').val(),
-                'CVV2'          : $('#CVV2').val(),
-                'HTML'          : 'No',
-                'ePNAccount'    : $('#ePNAccount').val(),
-                'Total'         : $('#Total').val(),
-                'Address'       : $('#Address').val(),
-                'RestrictKey'   : $('#RestrictKey').val(),
-                'CVV2Type'      : $('#CVV2Type').val(),
-                'ExpMonth'      : $('#ExpMonth').val(),
-                'ExpYear'       : $('#ExpYear').val()
-            },
+            url: url,
+            data: data,
             complete:function(data){
                 console.log("Reguest is done: " + data);
             },
@@ -1100,6 +1132,7 @@ $(document).ready(function(){
                 alert("ERROR: " + data);
             },
             success:function(data){
+                debugger;
                 var response = data.match(/[^,]+/g);
                 if (response.length) {
                     var cleanResponse = [];
@@ -1109,18 +1142,26 @@ $(document).ready(function(){
 
                     var auth = cleanResponse.length > 1 ? cleanResponse[0] : cleanResponse;
 
-                    if (/^[N|U].*/g.test(auth)) {
-                        $('#invoice-error-message').text(auth.slice(0,auth.length));
+                    if (($('#gateway').val() == 1 && /^[N|U].*/g.test(auth)) || 
+                        ($('#gateway').val() == 2 && /Failed/g.test(data))) {
+                        var error = $('#gateway').val() == 1 ? 
+                                    auth.slice(0,auth.length) :
+                                    data.match(/Error message.*/g)[0];
+                        $('#invoice-error-message').text(error);
                         $('#invoice-process').hide();
                         $('#invoice-error').show();
-                    } else if (/^Y.*/g.test(auth)) {
-                        var InvoiceInfo = Parse.Object.extend("InvoiceInfo");
-                        var query = new Parse.Query(InvoiceInfo);
+                    } else if (/^Y.*/g.test(auth) || /AUTH CODE/g.test(data)) {
+                        if (/AUTH CODE/g.test(data))
+                            data = data.match(/(AUTH CODE.*)|(TRANS ID.*)/g).join(", ");
+                        var query = new Parse.Query("InvoiceInfo");
                         query.equalTo("objectId",invoiceInfoId);
                         query.first({
                             success: function(invoiceInfo) {
                                 invoiceInfo.set('paymentStatus',data);
                                 invoiceInfo.save();
+                            },
+                            error : function(obj,error) {
+                                console.log(error.message);
                             }
                         }).then(function(){
                             
@@ -1147,6 +1188,7 @@ $(document).ready(function(){
                                 $('#pdf-subtotal').text(result.subtotal);
                                 paymentDate = result.date;
                                 invoiceId = result.invoiceId;
+                                debugger;
                                 status = result.paymentStatus;
                                 paymentId = result.paymentId;
                                 receiptUrl = result.receiptLink;
@@ -1320,10 +1362,13 @@ $(document).ready(function(){
                     </div>
                     <div class="hide">
                         <input type="text" name="Zip" id="Zip" placeholder="Zip Code" />
+                        <input type="number" name="gateway" id="gateway" placeholder="paymentGateway"/>
+                        <input type="text" name="AuthNet" id="AuthNet" />
+                        <input type="text" name="AuthKey" id="AuthKey" />
                         <input type="text" name="ePNAccount" id="ePNAccount" />
+                        <input type="text" name="RestrictKey" id="RestrictKey" />
                         <input type="text" name="Total" id="Total" value=".1" />
                         <input type="text" name="Address" id="Address" value="Address: 123 Fake St." />
-                        <input type="text" name="RestrictKey" id="RestrictKey" />
                         <input type="text" name="CVV2Type" id="CVV2Type" value="1" />
                         <input type="text" name="ExpMonth" id="ExpMonth" value="" />
                         <input type="text" name="ExpYear" id="ExpYear" value="" />

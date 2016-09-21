@@ -17,7 +17,7 @@ invoicesUnlimited.controller('NewUserController',
 		$uibModalInstance.dismiss(er.message);
 	}
 
-	$scope.user = user.get('userID') || user;
+	$scope.user = user;
 	$scope.user.status = user.status;
 	setObjectOperations({
 		object : $scope.user,

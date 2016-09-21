@@ -31,7 +31,7 @@
             <td class="text-uppercase text-info layout-padding text-right actions"></td>
           </tr>
           <tr ng-repeat="user in users | filter:search track by $index" class="user-row">
-            <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.title}}</td>
+            <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.userName}}</td>
             <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.emailID}}</td>
             <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.role}}</td>
             <td ng-click="editUser($index);" ng-class="user.status=='Activated' ? 'text-positive' : 'text-danger'" class="text-color-light text-weight-normalize layout-padding">{{user.status}}</td>

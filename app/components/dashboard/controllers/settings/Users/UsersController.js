@@ -120,7 +120,7 @@ invoicesUnlimited.controller('UsersController',
 				title		 : newUser.fullName,
 				organization : newUser.selectedOrganization,
 				companyName  : newUser.company,
-				userID 		 : newUser,
+				userID 		 : userFactory.entity[0],//newUser,
 				status 		 : 'Activated'
 			}).then(function(res){
 				$scope.$apply(function(){

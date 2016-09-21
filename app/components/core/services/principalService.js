@@ -42,6 +42,7 @@ invoicesUnlimited.factory('principalFactory',
 	}
 
 	principalInfo.load = function(){
+		debugger;
 		if (principalInfo.entity.length) return principalInfo.entity[0];
 		return loadPrincipalInfo();
 	}

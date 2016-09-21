@@ -26,6 +26,10 @@ select {
 	display: none;
 }
 
+.container-fluid.link-settings-div {
+  width: 99vw;
+}
+
 .show_table_hover tr.trow td{
 	cursor: pointer;
 }
@@ -43,27 +47,28 @@ select {
 	min-width: 100px;
 }
 .navigation > li .link-sales-div{
-   position: absolute;
-   top: 38px !important;
-    left: -278px !important;
+  position: absolute;
+  top: 38px !important;
+  /*left: -278px !important;*/
 }
 
 .navigation > li .link-expense-div{
-   position: absolute;
-   top: 38px !important;
-    left: -383px !important;
+  position: absolute;
+  top: 38px !important;
+  /*left: -383px !important;*/
 }
 
 .navigation > li .link-settings-div{
    position: absolute;
    top: 38px !important;
-    left: -648px !important;
+   /*left: -648px !important;*/
+   /*left: -793px !important;*/
 }
 
 .navigation > li .link-reports-div{
    position: absolute;
    top: 38px !important;
-    left: -519px !important;
+    /*left: -519px !important;*/
 }
 
 .optionDropDown > ul {
