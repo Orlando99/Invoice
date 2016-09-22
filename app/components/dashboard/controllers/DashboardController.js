@@ -9,6 +9,12 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 
 	var user = userFactory;
 	var business = businessFactory;
+    
+    $q.when(businessFactory.load())
+    .then(function(obj){
+       business = obj.entity[0]; 
+        $scope.businessInfo = business;
+    });
 
 	if (!user.entity.length) {
 		hideLoader();
@@ -106,6 +112,8 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 	}
 
 	var organization = undefined;
+    
+    /*
 	var promises = [];
 	promises.push(businessFactory.load());
 
@@ -136,7 +144,24 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 	}, function(error){
 		$scope.logOut('Your account is not setup correctly.');
 	});
-
+*/
+    
+    if (! $state.current.name.endsWith('dashboard')){
+        return;
+    }
+    else{
+        organization = user.entity[0].get("organizations")[0];
+        
+        $q.when(cc.fetch())
+        .then(function(obj) {
+            cc = obj.attributes;
+            //if(!cc.exchangeRate) cc.exchangeRate = 1;
+            $scope.currentCurrency = cc;
+            hideLoader();
+            drawBarChart();
+            drawPieChart();
+        });
+    }
 
 function drawBarChart() {
 	var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY',

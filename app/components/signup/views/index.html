@@ -51,11 +51,15 @@
 -->
         
         <div class="extended-signup" >
+            <!--
             <div class="input-container">
                 <input type="text" placeholder="Company Name" id="company" name="company" />
             </div>
+-->
+            <input type="hidden" placeholder="Company Name" ng-bind="username" id="company" name="company" />
+            <input type="hidden" id="country" name="country" value="United States of America" />
             <div class="input-container">
-                <input type="text" id="username" placeholder="Username" name="username" />
+                <input type="text" id="username" ng-model="username" placeholder="Username" name="username" />
                 <input type="hidden" id="username-exists" value="false"/>
             </div>
             <div class="input-container">

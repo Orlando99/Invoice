@@ -1,4 +1,4 @@
-﻿ <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+ <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title">Company Profile</h3>
@@ -37,8 +37,34 @@
     <br>
 
     <h3 class="text-info text-weight-normalize text-uppercase layout-margin-tb">Company Details</h3>
+      <div ng-hide="businessInfo">
+      <form class="inputs-white col-60">
+      
+          <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Business Name</label>
+        <input class="col-75" type="text" ng-model="bsnsInfo.businessName" placeholder="Business Name">
+      </div>
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Street</label>
+        <input class="col-75" type="text" ng-model="bsnsInfo.streetName" placeholder="Street Name">
+      </div>
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">City</label>
+        <input class="col-75" type="text" ng-model="bsnsInfo.city" placeholder="City">
+      </div>
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">State</label>
+        <input class="col-75" type="text" ng-model="bsnsInfo.state" placeholder="State">
+      </div>
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Zip Code</label>
+        <input class="col-75" type="text" ng-model="bsnsInfo.zipCode" placeholder="Zip Code">
+      </div>
+    
+      </form>
+          </div>
 
-    <div class="col-60">
+    <div ng-show="businessInfo" class="col-60">
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Business Name</p>
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="businessInfo.businessName || 'Business Name Placeholder'"></p>
 
@@ -58,7 +84,7 @@
 
     <div class="clearfix spacer"></div>
 
-    <button class="button button-info text-uppercase">Save</button>
+    <button ng-click="saveBusiness();" class="button button-info text-uppercase">Save</button>
 
   </div>
 

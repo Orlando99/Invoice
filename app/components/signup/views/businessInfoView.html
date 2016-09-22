@@ -1,4 +1,3 @@
-<!--
 <header class="sticky-nav logo-only">
     <a href="#"><img src="./assets/images/01_IU-Web-Admin.png" alt="Invoices Unlimited"></a>
   </header>
@@ -26,24 +25,27 @@
             </p>
         </div>
         
-        <div>
-            <input type="text" placeholder="Street Name" name="principleStreetName" ng-model="principalInfo.streetName" required>
-            <input type="text" placeholder="City" name="principleCity" ng-model="principalInfo.city" required>
-            <input type="text" placeholder="State" name="principleState" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.state">
-            <input type="text" placeholder="Zip Code" name="principleZipCode" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.zipCode">
+        
+        
+    <!--  <input type="text" placeholder="Business Name" name="company" ng-model="bsnsInfo.businessName" required>-->
+        <label class="input-checkbox-container icc-left">
+        <input type="checkbox" ng-model="toggleHomeChecked" id="toggleHome" ng-change="toggleHomeInfo();" checked>
+        <span class="checkbox"></span>
+        <p style="margin-left: -200px !important;">Uncheck if home address is different from the business.</p>
+        </label>
+        
+        <div ng-hide="toggleHomeChecked">
+            <input type="text" placeholder="Home Street Name" name="principleStreetName" ng-model="principalInfo.streetName" required>
+            <input type="text" placeholder="Home City" name="principleCity" ng-model="principalInfo.city" required>
+            <input type="text" placeholder="Home State" name="principleState" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.state">
+            <input type="text" placeholder="Home Zip Code" name="principleZipCode" required class="input-50 input-50-spacing-swap" ng-model="principalInfo.zipCode">
         </div>
         
-      <input type="text" placeholder="Business Name" name="company" ng-model="bsnsInfo.businessName" required>
-        <label class="input-checkbox-container icc-left">
-        <input type="checkbox" ng-model="toggleHomeChecked" id="toggleHome" ng-change="toggleHomeInfo();">
-        <span class="checkbox"></span>
-        <p>Uncheck if home address is different from the business.</p>
-        </label>
-      <input type="text" placeholder="Street Name" name="streetName" ng-model="bsnsInfo.streetName" required>
-      <input type="text" placeholder="City" name="city" ng-model="bsnsInfo.city" required>
-      <input type="text" placeholder="State" name="state" ng-model="bsnsInfo.state" required class="input-50">
-      <input type="text" placeholder="Zip Code" name="zipCode" ng-model="bsnsInfo.zipCode" required class="input-50">
-      <textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)" ng-model="bsnsInfo.businessDescription" name="businessDescription"></textarea>
+      <input type="text" placeholder="Business Street Name" name="streetName" ng-model="bsnsInfo.streetName" required>
+      <input type="text" placeholder="Business City" name="city" ng-model="bsnsInfo.city" required>
+      <input type="text" style="margin-left: -5px !important;" placeholder="Business State" name="state" ng-model="bsnsInfo.state" required class="input-50 input-50-spacing-swap">
+      <input type="text" style="margin-left: 10px !important;" placeholder="Business Zip Code" name="zipCode" ng-model="bsnsInfo.zipCode" required class="input-50 input-50-spacing-swap">
+    <!--  <textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)" ng-model="bsnsInfo.businessDescription" name="businessDescription"></textarea>-->
       <label class="input-container input-checkbox-container">
         <p>Do You Have a Federal Tax ID?</p>
         <input type="checkbox" class="federal-tax-id" ng-change="federalTaxIdClick();" ng-model="x2">
@@ -63,13 +65,14 @@
     </form>
 
     <a href="" ng-click="saveBusinessInfo();" class="button button-primary button-next">Next</a>
+    <a href="" ng-click="saveAndLaterBusinessInfo();" style="margin-bottom: 25px !important;" class="button button-neutral-lg">SAVE &amp; CONTINUE LATER</a>
 
   </section>
 
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="./dist/js/main.js"></script>
--->
 
+<!--
 <header class="sticky-nav logo-only">
     <a href="#"><img src="./assets/images/01_IU-Web-Admin.png" alt="Invoices Unlimited"></a>
   </header>
@@ -85,13 +88,13 @@
       <input type="text" placeholder="State" name="state" ng-model="bsnsInfo.state" required class="input-50">
       <input type="text" placeholder="Zip Code" name="zipCode" ng-model="bsnsInfo.zipCode" required class="input-50">
      <!-- <input type="text" placeholder="Phone Number" name="phoneNumber" id="phone" ng-model="bsnsInfo.phoneNumber">
-      <textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)" ng-model="bsnsInfo.businessDescription" name="businessDescription"></textarea>-->
+      <textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)" ng-model="bsnsInfo.businessDescription" name="businessDescription"></textarea>
       <label class="input-container input-checkbox-container">
         <p>Do You Have a Federal Tax ID?</p>
         <input type="checkbox" class="federal-tax-id" ng-change="federalTaxIdClick();" ng-model="x2">
         <span class="checkbox"></span>
         </label>
-      <input class="layout-margin-tb federal-tax federal-tax-id-input" type="text" placeholder="Federaly Tax ID" ng-model="bsnsInfo.federalTaxID" name="federalTaxID"> <!--pattern=".{9,}"-->
+      <input class="layout-margin-tb federal-tax federal-tax-id-input" type="text" placeholder="Federaly Tax ID" ng-model="bsnsInfo.federalTaxID" name="federalTaxID"> <!--pattern=".{9,}"
       
       <select class="custom-dd" name="ownershipType"
               ng-init="bsnsInfo.ownershipType = 'ownershipTitle'"
@@ -111,3 +114,4 @@
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
   <script src="./dist/js/main.js"></script>
 
+-->

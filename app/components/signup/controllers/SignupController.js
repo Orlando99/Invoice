@@ -51,8 +51,8 @@ $(document).ready(function(){
 });
 
 invoicesUnlimited.controller('SignupController',
-	['$scope','$state','signUpFactory','userFactory',
-	function($scope,$state,signUpFactory,userFactory){
+	['$rootScope','$scope','$state','signUpFactory','userFactory',
+	function($rootScope,$scope,$state,signUpFactory,userFactory){
 
 	if (userFactory.entity.length &&
 		!signUpFactory.getVerification.code()) {
@@ -115,7 +115,8 @@ invoicesUnlimited.controller('SignupController',
         var fields = ['email',
 				      'username',
 				      'password',
-                      'company'];
+                      'company',
+                      'country'];
 	
 	fields.forEach(function(field){
 		$('input[name='+field+']').val(signUpFactory.getField('User',field));
@@ -198,7 +199,6 @@ invoicesUnlimited.controller('SignupController',
 				required : true,
 				UserNameExists : true
 			},
-            company : 'required',
 			email : {
 				required : true,
 				email : true,
@@ -214,7 +214,6 @@ invoicesUnlimited.controller('SignupController',
 				required : "Please specify your username !",
 				UserNameExists : "The username is already taken!"
 			},
-            company : "Please specify your company !",
 			email : {
 				required : "Please specify your email !",
 				email : "Please write valid email address",
@@ -282,6 +281,9 @@ invoicesUnlimited.controller('SignupController',
 				return;
 			}
 	
+            $('#company').val($('#username').val());
+            $('#country').val('United States of America');
+            
 			fields.forEach(function(field){
 				signUpFactory
 				.setField('User',field,$('input[name='+field+']').val());
@@ -304,7 +306,80 @@ invoicesUnlimited.controller('SignupController',
 				$("#signUpForm").validate().showErrors(error);
 				hideLoader();
 			}
+            
+            signUpFactory.setVerification.code('1234');
 
+            signUpFactory.signup()
+            .then(function(){
+
+                var user = userFactory.entity[0];
+
+                ['BusinessInfo',
+                 'AccountInfo',
+                 'PrincipalInfo',
+                 'Organization',
+                 'Signature',
+                 'Currency',
+                 'Preferences',
+                 'Role'].forEach(function(table){
+                    signUpFactory.setField(table,'userID',user);
+                 });
+
+                ['Organization',
+                 'Role'].forEach(function(table){
+                    signUpFactory.setField(table,'name',user.company);
+                 });
+
+                signUpFactory.setField('Organization',"email",user.email);
+
+                return signUpFactory.create('Role');
+                //return;
+
+            },function(error){
+                console.log(error.message);
+            })
+            .then(function(){
+                var org = signUpFactory.create('Organization');
+                return org;
+            },function(err){
+                console.log(err.message);
+            })
+            .then(function(orgObj) {
+                return signUpFactory.copyDefaultCategories({
+                    user : userFactory.entity[0],
+                    organization : orgObj
+                })
+                .then(function() {
+                    return orgObj;
+                });
+            })
+            .then(function(orgObj){
+                ['BusinessInfo',
+                 'AccountInfo',
+                 'PrincipalInfo',
+                 'Signature',
+                 'Preferences',
+                 'Currency'].forEach(function(table){
+                    signUpFactory.setField(table,'organization',orgObj);
+                });
+                var curr = signUpFactory.create('Currency');
+                var pref = signUpFactory.create('Preferences');
+                return Parse.Promise.when([curr,pref]);
+            },function(err){
+                console.log(err.message);
+            })
+            .then(function(currObj,prefObj) {
+                hideLoader();
+                $rootScope.fromPaymentSettings = false;
+                $state.go('signup.accountActivated');
+            },function(err){
+                if (!err.length) {
+                    console.log(err.message);
+                    return;
+                }
+                err.forEach(function(er){console.log(er.message);});
+            });
+            
 			var saveCodeHash = function(res){
 				var codeString = res.match(/(Code:([0-9]|[a-f]){32}\;)/g);
 				if(codeString == null) {
@@ -343,6 +418,7 @@ invoicesUnlimited.controller('SignupController',
             postParams.dest = 'email';
             postParams.email = $('input[name=email]').val();
             
+            /*
 			var Template = Parse.Object.extend('InvoiceTemplate');
 			var query = new Parse.Query(Template);
 			query.equalTo ('name', 'Template 1');
@@ -353,6 +429,7 @@ invoicesUnlimited.controller('SignupController',
 				postParams,
 				saveCodeHash);
 			});
+            */
 
 		});
 	};

@@ -15,6 +15,7 @@ invoicesUnlimited.controller('AccountInfoController',
         $q.when(userFactory.entity[0].fetch())
         .then(function(obj) {
             currentUser = obj;
+            $scope.businessName = obj.get('company');
         });
 
 	if($rootScope.fromPaymentSettings) {
@@ -81,16 +82,18 @@ invoicesUnlimited.controller('AccountInfoController',
 			bankName 		: 'required',
 			routingNumber	: 'required',
 			accountNumber	: 'required',
-            phoneNumber     : 'required'
+            phoneNumber     : 'required',
+            businessName    : 'required'
 
 		},
 		messages: {
 			avgSale 		: 'Please specify your average sale per customer!',
 			monthlySales 	: 'Please specify your estimated montly credit card sales!',
 			bankName 		: 'Please specify your bank name!',
-			routingNumber	: 'Please specify your bank routing number',
-			accountNumber	: 'Please specify your bank account number',
-            phoneNumber     : 'Please specify your bank phone number'
+			routingNumber	: 'Please specify your bank routing number!',
+			accountNumber	: 'Please specify your bank account number!',
+            phoneNumber     : 'Please specify your phone number!',
+            businessName    : 'Please specify your business name!'
 		}
 	});
 
@@ -147,8 +150,16 @@ invoicesUnlimited.controller('AccountInfoController',
 		return account
 		.then(function(obj){
 			var save = signUpFactory.save('User',{
-				'accountInfo':obj
-			});
+				'accountInfo':obj,
+                'company':$scope.businessName,
+                'phonenumber':$scope.phoneNumber
+			})
+            .then(function(){
+                return signUpFactory.save('BusinessInfo',{
+				'businessName':$scope.businessName,
+                'phoneNumber':$scope.phoneNumber
+			     })
+            });
 			if (save) return save;
 		//	window.reload();
 		});
@@ -159,6 +170,15 @@ invoicesUnlimited.controller('AccountInfoController',
 
 		showLoader();
         
+        saveHelper().then(function(){
+			hideLoader();
+			$state.go('signup.signature');
+            },function(error){
+                hideLoader();
+                console.log(error.message);
+            });
+        
+        /*
         currentUser.set('phonenumber', $scope.phoneNumber);
         $q.when(user.save())
         .then(function() {
@@ -172,7 +192,7 @@ invoicesUnlimited.controller('AccountInfoController',
             });
 		
 		});
-        
+        */
         
 		
 	};

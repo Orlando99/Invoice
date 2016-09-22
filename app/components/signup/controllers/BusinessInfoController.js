@@ -24,8 +24,8 @@ $(document).ready(function(){
 });
 
 invoicesUnlimited.controller('BusinessInfoController',
-	['$rootScope','$scope','$state','signUpFactory','userFactory','roleFactory',
-	function($rootScope,$scope,$state,signUpFactory,userFactory,roleFactory){
+	['$q','$rootScope','$scope','$state','signUpFactory','userFactory','roleFactory',
+	function($q,$rootScope,$scope,$state,signUpFactory,userFactory,roleFactory){
 
 	if (!userFactory.entity.length){
 		$state.go('signup');
@@ -37,10 +37,19 @@ invoicesUnlimited.controller('BusinessInfoController',
 		$state.go('signup');
 		return;
 	}
+        
+        var user = signUpFactory.getFactory('User');
+        
+        var currentUser = undefined;
+        
+        $q.when(userFactory.entity[0].fetch())
+        .then(function(obj) {
+            currentUser = obj;
+        });
 
 	// User object in signUpFactory doesn't have data.
 	if($rootScope.fromPaymentSettings) {
-		var user = userFactory.entity[0];
+		var user1 = userFactory.entity[0];
         /*
 		signUpFactory.setField('PrincipalInfo', 'userID', user);
 		signUpFactory.setField('PrincipalInfo', 'organization',
@@ -72,10 +81,10 @@ invoicesUnlimited.controller('BusinessInfoController',
         */
         
         
-		signUpFactory.setField('User','company', user.get('company'));
+		signUpFactory.setField('User','company', user1.get('company'));
 		//signUpFactory.setField('User','phonenumber', user.get('phonenumber'));
 		signUpFactory.setField('BusinessInfo', 'organization',
-			user.get('selectedOrganization'));
+			user1.get('selectedOrganization'));
 	}
         
         $("input").keyup(function(event){
@@ -90,7 +99,9 @@ invoicesUnlimited.controller('BusinessInfoController',
 		onfocusout : false,
 		rules: {
 			company 			: 'required',
-            
+            fullName            : 'required',
+            dob                 : 'required',
+            ssn                 : 'required',
 			streetName			: 'required',
 			city 				: 'required',
 			state 				: 'required',
@@ -110,6 +121,9 @@ invoicesUnlimited.controller('BusinessInfoController',
 			streetName	: 'Please specify your business street name!',
 			city 		: 'Please specify your business city!',
 			state 		: 'Please specify your business business state!',
+            dob 		: 'Please specify your Date Of Birth!',
+			ssn			: 'Please specify your SSN!',
+            fullName	: 'Please specify your Full Name!',
 			zipCode 	: 'Please specify your business zip code!',
 			//businessDescription : 'Please specify your business description!',
 			ownershipType : {
@@ -166,8 +180,17 @@ invoicesUnlimited.controller('BusinessInfoController',
    		name: 'Corporation and Non Profit',
    		value: 'Corporation and Non Profit'
 	}];
+        
+        var nextScreen = 'signup.account-info';
+        
+    $scope.saveAndLaterBusinessInfo = function(){
+        nextScreen = 'dashboard';
+        saveData();
+    };
 
-	$scope.saveBusinessInfo = function(){
+	$scope.saveBusinessInfo = saveData;
+        
+    function saveData(){
 	
 		if (!$('#signUpForm').valid()) return;
 
@@ -179,7 +202,7 @@ invoicesUnlimited.controller('BusinessInfoController',
 			});
 		}
 		
-		var business 	= signUpFactory.create('BusinessInfo');
+		var business = signUpFactory.create('BusinessInfo');
 
 		business
 		.then(function(busObj){
@@ -194,10 +217,11 @@ invoicesUnlimited.controller('BusinessInfoController',
 			});
 		})
 		.then(function(){
-			hideLoader();
-			$state.go('signup.principal-info');
+            savePrincipalInfo();
+			//hideLoader();
+			//$state.go('signup.principal-info');
 		},errorCallback);
-	};
+	}
 
 	$scope.federalTaxIdClick = function() {
 		var checked = $('.federal-tax-id').prop('checked');
@@ -206,5 +230,96 @@ invoicesUnlimited.controller('BusinessInfoController',
 		if(checked == true)
 			$('.federal-tax-id-input').show();
 	}
+    
+    //------------------------------ Principle Info data------------
+    
+    $('[name=ssn]').mask("000-00-0000");
+    
+         function savePrincipalInfo(){
+
+            showLoader();
+
+                currentUser.set('fullName', $scope.fullName);
+            $q.when(user.save())
+            .then(function() {
+                saveHelper().then(function(){
+                hideLoader();
+                $state.go(nextScreen);
+
+            },function(error){
+                hideLoader();
+                console.log(error.message);
+            });
+            });
+
+
+        };
+    /*
+        $scope.toggleHomeInfo = function(){
+		fields.forEach(function(field){
+			$scope.principalInfo[field] = 
+				$scope.toggleHomeChecked ? 
+				$scope.bsnsInfo[field] :
+				"";
+		});
+	};
+        */
+        
+        $scope.toggleHomeChecked = true;
+        
+        $scope.principalInfo = {
+		streetName		: '',
+		city			: '',
+		state			: '',
+		zipCode			: '',
+		dob				: '',
+		ssn				: ''
+	};
+        
+        var fields = ['streetName','city','state','zipCode'];
+        
+        $scope.toggleHomeInfo = function(){
+		fields.forEach(function(field){
+			$scope.principalInfo[field] = $scope.bsnsInfo[field];
+		});
+	};
+    
+        function saveHelper() {
+            $scope.principalInfo.dob = formatDate($scope.dob, "MM-DD-YYYY");
+            
+            if($scope.toggleHomeChecked)
+                {
+                    fields.forEach(function(field){
+                        $scope.principalInfo[field] = $scope.bsnsInfo[field];
+                    });
+                }
+            
+            for (var field in $scope.principalInfo){
+                signUpFactory.setField('PrincipalInfo',{
+                    field : field, 
+                    value : $scope.principalInfo[field]
+                });
+            }
+
+            var principal = signUpFactory.create('PrincipalInfo');
+
+            return principal
+            .then(function(obj){
+                var save = signUpFactory.save('User',{
+                    'principalInfo' : obj
+                });
+                if (save) return save;
+            //	window.reload();
+            });
+        }
+        
+        $scope.openDatePicker = function(n) {
+		switch (n) {
+			case 1: $scope.openPicker1 = true; break;
+		}
+  	}
+    
+    
+    //------------------------------
 
 }]);
