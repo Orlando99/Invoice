@@ -59,13 +59,14 @@
             <input type="hidden" placeholder="Company Name" ng-bind="username" id="company" name="company" />
             <input type="hidden" id="country" name="country" value="United States of America" />
             <div class="input-container">
-                <input type="text" id="username" ng-model="username" placeholder="Username" name="username" />
-                <input type="hidden" id="username-exists" value="false"/>
-            </div>
-            <div class="input-container">
                 <input type="text" id="email" placeholder="Email (To Recover Forgotten Password)" name="email" />
                 <input type="hidden" id="email-exists" value="false"/>
             </div>
+            <div class="input-container">
+                <input type="text" id="username" ng-model="username" placeholder="Username" name="username" />
+                <input type="hidden" id="username-exists" value="false"/>
+            </div>
+            
             <div class="input-container">
                 <input type="password" placeholder="Password (6 Characters)" id="password" name="password" />
             </div>
