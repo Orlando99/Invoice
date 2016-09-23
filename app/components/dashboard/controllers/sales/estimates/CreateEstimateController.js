@@ -514,6 +514,8 @@ function saveEstimate() {
 }
 
 function saveAndSendEstimate() {
+    return saveEstimate();
+    /*
 	return saveEstimate()
 	.then(function(estimate) {
 		return estimateService.createEstimateReceipt(estimate.id)
@@ -521,6 +523,7 @@ function saveAndSendEstimate() {
 			return estimateService.sendEstimateReceipt(estimateObj);
 		});
 	});
+    */
 }
 
 $scope.cancel = function() {

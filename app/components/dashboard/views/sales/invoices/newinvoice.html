@@ -119,6 +119,8 @@
           <div class="col-12 layout-padding layout-padding-l">
             <select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
               ng-change="reCalculateItemAmount($index)">
+              <!--<select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
+              ng-change="taxChanged($index)">-->
               <option value="">None</option>
              <!-- <option value="1">1</option>
               <option value="2">2</option> -->
@@ -272,6 +274,44 @@
       <div class="clearfix"></div>
       <button class="button button-info text-uppercase" ng-click="createNewItem()">Create</button>
     </div>
+  </div>
+
+    <div class="popup-modal new-tax hidesm">
+        <div class="modal container">
+
+          <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Tax</h3>
+          <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
+          <div class="clearfix"></div>
+          <hr class="layout-margin-tb">
+
+          <div class="col-80 text-left layout-center">
+            <form id="addTaxForm" class="layout-margin-tb inputs-white">
+              <div class="input-container layout-margin-b">
+                <label class="layout-padding-t-sm">Tax Name</label>
+                <input name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
+              </div>
+              <div class="input-container layout-margin-b">
+                <label class="layout-padding-t-sm">Rate %</label>
+                <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
+              </div>
+              <div class="col-25 spacer"></div>
+              <label class="input-container input-checkbox-container col-75 pull-right">
+                <input type="checkbox" ng-model="isCompound">
+                <span class="checkbox float-left"></span>
+                <p class="float-left">Yes this tax is a compund tax</p>
+                <div class="tooltip-sec float-left">
+                  <i class="info-icon pull-top"></i>
+                  <p class="info-tooltip push-top">
+                    Check if it is a compound tax
+                  </p>
+                </div>
+              </label>
+            </form>
+          </div>
+          <div class="clearfix"></div>
+          <button class="button button-small button-info text-uppercase"
+            ng-click="saveNewTax()">Save</button>
+        </div>
   </div>
 
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

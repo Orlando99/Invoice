@@ -15,7 +15,20 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
     var cc = userFactory.entity[0].currency.attributes;
     
-    $scope.currentCurrency = cc;
+    if(cc.exchangeRate){
+        $scope.currentCurrency = cc;
+    }
+    else{
+        var temp = {
+            'currencySymbol': '$',
+            'exchangeRate'  : 1
+        };
+        $scope.currentCurrency = temp;
+
+        cc = temp;
+    }
+        
+    //$scope.currentCurrency = cc;
         
 	var user = userFactory.entity[0];
 	var organization = user.get("organizations")[0];
@@ -24,7 +37,18 @@ invoicesUnlimited.controller('CreateInvoiceController',
         $q.when(userFactory.entity[0].currency.fetch())
     .then(function(obj){
         cc = obj.attributes;
-            $scope.currentCurrency = cc;
+            if(cc.exchangeRate){
+                $scope.currentCurrency = cc;
+            }
+            else{
+                var temp = {
+                    'currencySymbol': '$',
+                    'exchangeRate'  : 1
+                };
+                $scope.currentCurrency = temp;
+
+                cc = temp;
+            }
         prepareToCreateInvoice();
     });
 	//prepareToCreateInvoice();
@@ -187,6 +211,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 		p = taxService.getTaxes(user, function(taxes) {
 			$scope.taxes = taxes;
+            //$scope.taxes.push(createTaxOpener);
 		});
 		promises.push(p);
 
@@ -385,6 +410,12 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	}
 
 	function saveAndSendInvoice() {
+        return saveInvoice()
+		.then(function(invoice) {
+			invoiceService.copyInInvoiceInfo(invoice);
+            return invoice;
+		});
+        /*
 		return saveInvoice()
 		.then(function(invoice) {
 			return invoiceService.copyInInvoiceInfo(invoice)
@@ -395,6 +426,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				return invoiceService.sendInvoiceReceipt(invoiceObj);
 			});
 		});
+        */
 	}
 
 	function showInvoiceNumberError () {
@@ -445,7 +477,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			}
 		})
 		.then(function(invoice) {
-            addNewComment('Invoice created for ' + currencyFilter(invoice.balanceDue, '$', 2) +' amount', true, invoice);
+            addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice);
 			hideLoader();
 			$state.go('dashboard.sales.invoices.all');
 
@@ -518,7 +550,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			}
 		})
 		.then(function(invoice) {
-            addNewComment('Invoice created for ' + currencyFilter(invoice.balanceDue, '$', 2) +' amount', true, invoice);
+            addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice);
 			hideLoader();
 			$state.go('dashboard.sales.invoices.all');
 
@@ -685,7 +717,39 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		}
 		$scope.reCalculateItemAmount(index);
 	}
+/*
+    $scope.taxChanged = function(index) {
+		console.log('tax changed');
+		var taxInfo = $scope.taxes[index];
 
+		// if create item is pressed
+		if(taxInfo.dummy) {
+			itemInfo.selectedItem = null;
+			$('.new-tax').addClass('show');
+			// save index to select newly created item
+			//$scope.itemChangedIndex = index;
+			//$scope.prepareCreateItem();
+			return;
+		}
+        /*
+		itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
+		var tax = itemInfo.selectedItem.tax;
+		if (!tax) {
+		//	console.log("no tax applied");
+			itemInfo.selectedTax = "";
+		} else {
+			var taxes = $scope.taxes;
+			for (var i = 0; i < taxes.length; ++i) {
+				if (tax.id == taxes[i].id) {
+					itemInfo.selectedTax = taxes[i];
+					break;
+				}
+			}
+		}
+        
+		$scope.reCalculateSubTotal();
+	}
+     */
 	function customerChangedHelper() {
 		$scope.items.pop(); // remove createItem field
 		return $q.when(expenseService.getCustomerExpenses({
@@ -804,5 +868,13 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			organization : organization
 		});
 	}
+    /*
+    $scope.saveNewTax = function() {
+		salesCommon.createNewTax({
+			_scope : $scope,
+			user : user
+		});
+	}
+    */
 
 }]);

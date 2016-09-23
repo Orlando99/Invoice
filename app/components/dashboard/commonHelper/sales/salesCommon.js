@@ -76,6 +76,38 @@ return {
 
 		});
 	},
+    createNewTax : function(params) {
+		var _scope = params._scope;
+		if(! $('#addTaxForm').valid()) return;
+
+		showLoader();
+        
+        var params1 = {
+			title: _scope.taxName,
+			value: Number(_scope.taxRate),
+			compound: (_scope.isCompound ? 1 : 0),
+			user: params.user
+		};
+        
+        taxService.saveNewTax(params, function(obj){
+			_scope.taxes.pop(); // remove createItem field
+            _scope.taxes.push(obj);
+            /*
+			_scope.actualtaxes.push(obj);
+			if(_scope.taxes !== _scope.actualtaxes)
+				_scope.taxes.push(obj);
+            */
+			_scope.taxes.push(createTaxOpener); // add createItem field
+			var taxInfo = _scope.invoiceItems[_scope.itemChangedIndex];
+			var index = _scope.items.findIndex(function(item) {
+				return item.entity.id == items[0].entity.id;
+			});
+			itemInfo.selectedItem = _scope.items[index];
+			_scope.itemChanged(_scope.itemChangedIndex);
+			$(".new-tax").removeClass("show");
+			hideLoader();
+		});
+	},
 	loadRequiredData : function(params) {
 		var promises = [];
 		var p = null;

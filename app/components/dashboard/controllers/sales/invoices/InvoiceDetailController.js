@@ -15,7 +15,18 @@ if(! userFactory.entity.length) {
     
     var cc = userFactory.entity[0].currency.attributes;
     
-    $scope.currentCurrency = cc;
+    if(cc.exchangeRate){
+        $scope.currentCurrency = cc;
+    }
+    else{
+        var temp = {
+            'currencySymbol': '$',
+            'exchangeRate'  : 1
+        };
+        $scope.currentCurrency = temp;
+
+        cc = temp;
+    }
 
 var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];

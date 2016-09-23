@@ -156,7 +156,20 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         .then(function(obj) {
             cc = obj.attributes;
             //if(!cc.exchangeRate) cc.exchangeRate = 1;
-            $scope.currentCurrency = cc;
+            
+            if(cc.exchangeRate){
+                $scope.currentCurrency = cc;
+            }
+            else{
+                var temp = {
+                    'currencySymbol': '$',
+                    'exchangeRate'  : 1
+                };
+                $scope.currentCurrency = temp;
+                
+                cc = temp;
+            }
+            
             hideLoader();
             drawBarChart();
             drawPieChart();

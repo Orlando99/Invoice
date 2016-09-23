@@ -14,6 +14,22 @@ if(! userFactory.entity.length) {
 var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
+    
+    var cc = userFactory.entity[0].currency.attributes;
+    
+    
+    if(cc.exchangeRate){
+        $scope.currentCurrency = cc;
+    }
+    else{
+        var temp = {
+            'currencySymbol': '$',
+            'exchangeRate'  : 1
+        };
+        $scope.currentCurrency = temp;
+
+        cc = temp;
+    }
 
 
 var invoiceId = $state.params.invoiceId;

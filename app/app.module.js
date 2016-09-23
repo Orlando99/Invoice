@@ -37,6 +37,7 @@ var IMG_DIR = './assets/images/';
 var JS_DIR = './assets/js/';
 var colorCount = 98;
 var createItemOpener = {'entity':{'title':'+ Create new item'}, 'dummy':true};
+var createTaxOpener = {'name':'+ Create new tax', 'dummy':true};
 var createCustomerOpener = {'entity':{'displayName':'+ Create new Customer'}, 'dummy':true};
 
 var GetTemplate = function(name,file) {

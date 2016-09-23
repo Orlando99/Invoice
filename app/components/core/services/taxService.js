@@ -67,7 +67,8 @@ invoicesUnlimited.factory('taxService', function($q){
 				tax.setACL(acl);
 				tax.save(params,{
 					success: function(object){
-						callback("New Tax created with objectId: " + object.id);
+                        callback(object);
+						//callback("New Tax created with objectId: " + object.id);
 					},
 					error: function(object, error){
 						callback("Failed to create new Tax, error code:" + error.message);
