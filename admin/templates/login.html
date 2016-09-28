@@ -1,0 +1,29 @@
+<!-- templates/login.html -->
+
+<!-- start LOGIN WRAPPER -->
+<div class="login-wrapper">
+    <h2>Please Sign In</h2>
+    <form id="form-signin" ng-submit="logIn()">
+        <p ng-show="loginError" class="alert-danger">The username & password do not match. Please try again.</p>
+        <p ng-show="notAdminError" class="alert-danger">The user is not in admin group.</p>
+        <div class="form-wrapper">
+            <div class="form-group cl">
+                <label>Username</label>
+                <input ng-model="username" type="text" name="username" class="form-control" />
+            </div>
+            <div class="form-group cl">
+                <label>Password</label>
+                <input ng-model="password" type="password" name="password" class="form-control" />
+            </div>
+            <div class="form-group form-checkbox cl">
+                <label></label>
+                <input type="checkbox" />
+                <p>Remember Me</p>
+            </div>
+            <div class="form-group cl">
+                <input type="submit" class="button" value="Login" />
+            </div>
+        </div>
+    </form>
+</div>
+<!-- end LOGIN WRAPPER -->

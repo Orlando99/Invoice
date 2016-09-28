@@ -1,0 +1,41 @@
+=== home.html,212 ===
+
+<!--<div class="form-group cl">
+                                        <label>Role</label>
+                                        <select class="form-control" ng-model="record.role" name="role" ng-disabled="record.username == 'iamsfs'">
+                                            <option value="user" selected>User</option>
+                                            <option value="admin">Admin</option>
+                                        </select>
+                                    </div>-->
+
+=== home.html,137 ===
+
+<!--<div class="form-group cl">
+                                        <label>Country</label>
+                                        <ul class="form-dropdown">
+                                            <li>
+                                                <a ng-click="record.showDropdownSelectCountry = true;" class="selectType">
+                                                    <span ng-bind="countryNames[record.country] || countryNames['']"></span>
+                                                    <span></span>
+                                                </a>
+                                                <div ng-click = "record.showDropdownSelectCountry = false;" ng-show="record.showDropdownSelectCountry">
+                                                    <div class="window-shadow"></div>
+                                                    <ul>
+                                                        <li ng-click="record.country = '';" class="select-empty"><a>----------------</a></li>
+                                                        <li ng-click="record.country = 'usa';"><a>USA</a></li>
+                                                        <li ng-click="record.country = 'ukraine';"><a>Ukraine</a></li>
+                                                        <li ng-click="record.country = 'poland';"><a>Poland</a></li>
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>-->
+
+=== home.html,108 ===
+
+<!--<div class="form-group cl">
+                                        <label for="skipApplication" ng-disabled="record.skipAppDisabled">
+                                        Skip Application
+                                        <input type="checkbox" ng-model="record.skipApplication" name="skipApplication" id="skipApplication" ng-disabled="record.skipAppDisabled"/>
+                                        </label>
+                                    </div>-->

@@ -1,0 +1,1240 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"User",
+				"UserRecord"
+			],
+			[
+				"account",
+				"accountInfoFactory"
+			],
+			[
+				"newUser",
+				"newUserRecord"
+			],
+			[
+				"business",
+				"businessName"
+			],
+			[
+				"phone",
+				"phonenumber"
+			],
+			[
+				"sign",
+				"signatureImage"
+			],
+			[
+				"princ",
+				"princInfo"
+			],
+			[
+				"pri",
+				"principalInfoFactory"
+			],
+			[
+				"busi",
+				"businessName"
+			],
+			[
+				"mer",
+				"merchantId"
+			],
+			[
+				"accou",
+				"accountInfoFactory"
+			],
+			[
+				"skipApp",
+				"skipApplication"
+			],
+			[
+				"proto",
+				"prototype"
+			],
+			[
+				"admin",
+				"adminIds"
+			],
+			[
+				"load",
+				"loadQuery"
+			],
+			[
+				"last",
+				"lastName"
+			],
+			[
+				"quer",
+				"queryEmail"
+			],
+			[
+				"Email",
+				"EmailExists"
+			],
+			[
+				"get",
+				"getVerification"
+			],
+			[
+				"veri",
+				"verificationCode"
+			],
+			[
+				"ver",
+				"verificationCodeProvider"
+			],
+			[
+				"signUp",
+				"signUpFactory"
+			],
+			[
+				"code",
+				"codeString"
+			],
+			[
+				"Confi",
+				"ConfirmPassMatch"
+			],
+			[
+				"Confirm",
+				"ConfirmPassMatch"
+			],
+			[
+				"valid",
+				"validator"
+			],
+			[
+				"Confir",
+				"ConfirmPassword"
+			],
+			[
+				"sc",
+				"scope"
+			],
+			[
+				"field",
+				"fieldError"
+			],
+			[
+				"ca",
+				"capitilize"
+			],
+			[
+				"us",
+				"usaAndCanada"
+			],
+			[
+				"signup",
+				"signUpIndex"
+			],
+			[
+				"selec",
+				"selectedCountry"
+			],
+			[
+				"delete",
+				"delete-vacancy"
+			],
+			[
+				"hot",
+				"hotReference"
+			],
+			[
+				"mouse",
+				"mouseleave	.mouseleave()"
+			],
+			[
+				"mou",
+				"mouseover	.mouseover()"
+			],
+			[
+				"ap",
+				"appendTo	.appendTo()"
+			],
+			[
+				"remo",
+				"removeClass	.removeClass()"
+			],
+			[
+				"fade",
+				"fadeToggle	.fadeToggle()"
+			],
+			[
+				"slide",
+				"slideUp	.slideUp()"
+			],
+			[
+				"sho",
+				"show	.show()"
+			],
+			[
+				"vac",
+				"vacancies_hot"
+			],
+			[
+				"vaca",
+				"vacancy_content"
+			],
+			[
+				"vacan",
+				"vacancy_content"
+			],
+			[
+				"selected",
+				"selectedVacancy"
+			],
+			[
+				"add-",
+				"add-new-vacancy"
+			],
+			[
+				"show",
+				"show-before"
+			],
+			[
+				"query_va",
+				"query_vacancy"
+			],
+			[
+				"query_vac",
+				"query_vac_content"
+			],
+			[
+				"act",
+				"activeEditor"
+			],
+			[
+				"white",
+				"whitesmoke"
+			],
+			[
+				"de",
+				"debugger"
+			],
+			[
+				"text",
+				"text-align"
+			],
+			[
+				"re",
+				"response"
+			],
+			[
+				"json_",
+				"json_encode"
+			],
+			[
+				"border-",
+				"border-right"
+			],
+			[
+				"backgrou",
+				"background-repeat"
+			],
+			[
+				"background",
+				"background-size"
+			],
+			[
+				"backgr",
+				"background-position"
+			],
+			[
+				"tex",
+				"text-decoration"
+			],
+			[
+				"toggle",
+				"toggleClass	.toggleClass()"
+			],
+			[
+				"b",
+				"background-color"
+			],
+			[
+				"font-",
+				"font-size"
+			],
+			[
+				"form_",
+				"form_sendCV"
+			],
+			[
+				"filter",
+				"filter_var"
+			],
+			[
+				"rep",
+				"repeat"
+			],
+			[
+				"im",
+				"important"
+			],
+			[
+				"back",
+				"background-position"
+			],
+			[
+				"backgro",
+				"background-repeat"
+			],
+			[
+				"ba",
+				"background-position"
+			],
+			[
+				"has",
+				"hasClass	.hasClass()"
+			],
+			[
+				"menu-",
+				"menu-item-1"
+			],
+			[
+				"ad",
+				"advantages"
+			],
+			[
+				"scro",
+				"scrollTop	.scrollTop()"
+			],
+			[
+				"backg",
+				"background-repeat"
+			],
+			[
+				"backgroun",
+				"background-size"
+			],
+			[
+				"center",
+				"centerPadding"
+			],
+			[
+				"te",
+				"text-align"
+			],
+			[
+				"ilni",
+				"inline-block"
+			],
+			[
+				"i",
+				"important"
+			],
+			[
+				"bordre-col",
+				"border-collapse"
+			],
+			[
+				"border-co",
+				"border-collapse"
+			],
+			[
+				"inli",
+				"inline-block"
+			],
+			[
+				"mo",
+				"mouseleave	.mouseleave()"
+			],
+			[
+				"text-",
+				"text-transform"
+			],
+			[
+				"background-",
+				"background-size"
+			],
+			[
+				"had",
+				"headerFlex"
+			],
+			[
+				"list",
+				"list-style"
+			],
+			[
+				"list-",
+				"list-style-position"
+			],
+			[
+				"header",
+				"headerFlexHeight"
+			],
+			[
+				"font",
+				"font-family"
+			],
+			[
+				"marin",
+				"margin-bottom"
+			],
+			[
+				"add",
+				"addClass	.addClass()"
+			],
+			[
+				"value",
+				"valueEl"
+			],
+			[
+				"ma",
+				"max_upload_size"
+			],
+			[
+				"sli",
+				"slideDown	.slideDown()"
+			],
+			[
+				"sl",
+				"slideInLeft"
+			],
+			[
+				"progress",
+				"progressXhr"
+			],
+			[
+				"an",
+				"animateProgress"
+			],
+			[
+				"ha",
+				"hasClass	.hasClass()"
+			],
+			[
+				"h",
+				"hover	.hover()"
+			],
+			[
+				"padin",
+				"padding-top"
+			],
+			[
+				"bac",
+				"background-image"
+			],
+			[
+				"bo",
+				"border-radius"
+			],
+			[
+				"margin",
+				"margin-left"
+			],
+			[
+				"mar",
+				"margin"
+			],
+			[
+				"inl",
+				"inline-block"
+			],
+			[
+				"border-r",
+				"border-radius"
+			],
+			[
+				"inlin",
+				"inline-table"
+			],
+			[
+				"padding-",
+				"padding-bottom"
+			],
+			[
+				"border",
+				"border-top"
+			],
+			[
+				"table",
+				"table-cell"
+			],
+			[
+				"padding",
+				"padding-bottom"
+			],
+			[
+				"inline",
+				"inline-block"
+			],
+			[
+				"ali",
+				"vertical-align"
+			],
+			[
+				"wid",
+				"width"
+			],
+			[
+				"created",
+				"created_at"
+			],
+			[
+				"jav",
+				"javascripts"
+			],
+			[
+				"gly",
+				"glyphicon-thumbs-up"
+			],
+			[
+				"state",
+				"stateParams"
+			],
+			[
+				"pos",
+				"posts"
+			],
+			[
+				"url",
+				"urlRouterProvider"
+			],
+			[
+				"Todo",
+				"TodoSchema"
+			],
+			[
+				"route",
+				"routeParams"
+			],
+			[
+				"ng",
+				"ng-model"
+			],
+			[
+				"remove",
+				"removeClass	.removeClass()"
+			],
+			[
+				"update",
+				"updateOnClick"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "js/controllers/UserRecordController.js",
+			"settings":
+			{
+				"buffer_size": 16851,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/E/parse-cloud/v3-admin/SmartSwipe/cloud/main.js",
+			"settings":
+			{
+				"buffer_size": 15572,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/controllers/ModalCreateController.js",
+			"settings":
+			{
+				"buffer_size": 8794,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "templates/home.html",
+			"settings":
+			{
+				"buffer_size": 19535,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 196.0,
+		"last_filter": "wr",
+		"selected_items":
+		[
+			[
+				"wr",
+				"Word Wrap: Toggle"
+			],
+			[
+				"set syntax: php",
+				"Set Syntax: PHP"
+			],
+			[
+				"set syntax: css",
+				"Set Syntax: CSS"
+			],
+			[
+				"set syntax:PHP",
+				"Set Syntax: PHP"
+			],
+			[
+				"set syntax:ph",
+				"Set Syntax: PHP"
+			],
+			[
+				"set syntax:html",
+				"Set Syntax: HTML"
+			],
+			[
+				"set syntax: xml",
+				"Set Syntax: XML"
+			],
+			[
+				"set syntax: c#",
+				"Set Syntax: C#"
+			],
+			[
+				"set syntax: html",
+				"Set Syntax: HTML"
+			],
+			[
+				"Set syntax:ja",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"Set syntax:html",
+				"Set Syntax: HTML"
+			],
+			[
+				"set syntax: ja",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"set",
+				"Set Syntax: JSON"
+			],
+			[
+				"set syntax: j",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"set json",
+				"Set Syntax: JSON"
+			],
+			[
+				"set ja",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"set js",
+				"Set Syntax: JSON"
+			],
+			[
+				"jshi",
+				"JSHint"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"snip",
+				"Snippet: $(this)"
+			],
+			[
+				"Snippet: ",
+				"Snippet: Prototype"
+			],
+			[
+				"jshit",
+				"JSHint"
+			],
+			[
+				"js",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"jsh",
+				"JSHint"
+			],
+			[
+				"set syntax: h",
+				"Set Syntax: HTML"
+			],
+			[
+				"set syntax:C",
+				"Set Syntax: C"
+			],
+			[
+				"set syntax: C",
+				"Set Syntax: C"
+			],
+			[
+				"Css",
+				"Set Syntax: CSS"
+			],
+			[
+				"Hml",
+				"Set Syntax: HTML"
+			]
+		],
+		"width": 512.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/xampp/htdocs/V3-admin",
+		"/C/xampp/htdocs/V3-admin/bower_components",
+		"/C/xampp/htdocs/V3-admin/js",
+		"/C/xampp/htdocs/V3-admin/js/controllers",
+		"/C/xampp/htdocs/V3-admin/templates"
+	],
+	"file_history":
+	[
+		"/E/parse-cloud/v3-admin/SmartSwipe/cloud/main.js",
+		"/C/xampp/htdocs/V3-admin/js/services.js",
+		"/C/xampp/htdocs/V3-admin/index.html",
+		"/C/xampp/htdocs/V3-admin/js/controllers/UserRecordController.js",
+		"/C/xampp/htdocs/V3-admin/templates/home.html",
+		"/C/xampp/htdocs/V3-admin/js/controllers/LoginController.js",
+		"/C/xampp/htdocs/V3-admin/js/controllers/ModalCreateController.js",
+		"/E/parse-cloud/v3-admin/SmartSwipe/cloud/_main.js",
+		"/C/xampp/htdocs/V3-admin/css/style.css",
+		"/C/xampp/htdocs/invoiceunlimited/app/signup/signature/SignatureController.js",
+		"/C/xampp/htdocs/invoiceunlimited/index.html",
+		"/C/xampp/htdocs/invoiceunlimited/dist/php/sendVerificationCode.php",
+		"/C/xampp/htdocs/invoiceunlimited/signup/verification.html",
+		"/C/xampp/htdocs/invoiceunlimited/signup/business-info.html",
+		"/C/xampp/htdocs/invoiceunlimited/dist/js/angular/controllers/SignUpController.js",
+		"/C/xampp/htdocs/invoiceunlimited/dist/js/angular/services.js",
+		"/C/xampp/htdocs/invoiceunlimited/dist/js/angular/routes.js",
+		"/C/xampp/htdocs/invoiceunlimited/signup/index.html",
+		"/C/xampp/htdocs/invoiceunlimited/signup/verification-email.html",
+		"/C/xampp/htdocs/invoiceunlimited/dist/js/angular/app.js",
+		"/C/xampp/htdocs/invoiceunlimited/dist/css/main.css",
+		"/C/Users/kleva_000/Dropbox/Valera/Outputs/_HTML/signup/signup-2.html",
+		"/C/xampp/htdocs/invoiceunlimited/dist/php/twilio-php/package.php",
+		"/C/Users/kleva_000/Dropbox/Valera/Payment/public/js/layout.js",
+		"/C/xampp/htdocs/invoiceunlimited/signup/signup-2.html",
+		"/C/Users/kleva_000/AppData/Roaming/Skype/My Skype Received Files/main(1).js",
+		"/C/Users/kleva_000/AppData/Roaming/Skype/My Skype Received Files/main.js",
+		"/C/Users/kleva_000/Dropbox/Valera/ParseCloud/main.js",
+		"/E/InvoicesUnlimited/CloudCode/cloud/main.js",
+		"/E/parse-cloud/parse-test/cloud/_main.js",
+		"/E/parse-cloud/parse-test/cloud/main.js",
+		"/C/Users/kleva_000/Dropbox/Valera/SSV3-Admin Panel/js/routes.js",
+		"/C/Users/kleva_000/Dropbox/Valera/SSV3-Admin Panel/index.html",
+		"/C/Users/kleva_000/Dropbox/Valera/SSV3-Admin Panel/js/app.js",
+		"/C/xampp/htdocs/8relocate/scripts/biz.sendRequest.php",
+		"/C/xampp/htdocs/8relocate/scripts/ppl.sendRequest.php",
+		"/C/xampp/htdocs/8relocate/admin/vacancies/hot-remove.php",
+		"/C/xampp/htdocs/8relocate/admin/styles/style.css",
+		"/C/xampp/htdocs/8relocate/admin/vacancies/getContent.php",
+		"/C/xampp/htdocs/8relocate/admin/js/dashboard.js",
+		"/C/xampp/htdocs/8relocate/admin/dashboard.php",
+		"/C/xampp/htdocs/8relocate/admin/vacancies/save.php",
+		"/C/xampp/htdocs/8relocate/admin/vacancies/vacancies.php",
+		"/C/xampp/htdocs/8relocate/admin/vacancies/delete.php",
+		"/C/xampp/htdocs/8relocate/ppl/index.html",
+		"/C/xampp/htdocs/8relocate/open/index.html",
+		"/C/xampp/htdocs/8relocate/admin/vacancies/hot.php",
+		"/C/xampp/htdocs/8relocate/admin/register.php",
+		"/C/xampp/htdocs/8relocate/admin/vacancies/add.php",
+		"/C/xampp/htdocs/8relocate/job/vacancies-14/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-13/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-9/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-8/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-7/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-6/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-5/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-4/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-3/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-2/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-12/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-11/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-10/index.html",
+		"/C/xampp/htdocs/8relocate/job/vacancies-1/index.html",
+		"/C/xampp/htdocs/8relocate/biz/thx/index.html",
+		"/C/xampp/htdocs/8relocate/ppl/thx/index.html",
+		"/C/xampp/htdocs/8relocate/ppl/js/libs.js",
+		"/C/xampp/htdocs/8relocate/biz/js/libs.js",
+		"/C/xampp/htdocs/8relocate/biz/index.html",
+		"/C/xampp/htdocs/8relocate/biz/style/styles.css",
+		"/C/xampp/htdocs/8relocate/ppl/style/animate.css",
+		"/C/xampp/htdocs/8relocate/admin/logout.php",
+		"/C/xampp/htdocs/8relocate/scripts/global-config.php",
+		"/C/xampp/htdocs/dedicateteam.com/index.php",
+		"/C/xampp/htdocs/8relocate/admin/index.php",
+		"/C/xampp/htdocs/8relocate/admin/login.php",
+		"/C/Users/kleva_000/Dropbox/Valera/lastname-imag117/portfolio/public_html/default.html",
+		"/C/Users/kleva_000/Dropbox/Valera/lastname-imag117/assets/css/final.css",
+		"/C/xampp/htdocs/8relocate/index.html",
+		"/C/xampp/htdocs/8relocate/job/js/libs.js",
+		"/C/xampp/htdocs/8relocate/ppl/style/styles.css",
+		"/C/xampp/htdocs/8relocate/scripts/noCV.ppl.sendRequest.php",
+		"/C/xampp/htdocs/8relocate/job/styles/styles.css",
+		"/C/xampp/htdocs/8relocate/job/vacancies-8/style/styles.css",
+		"/C/xampp/htdocs/8relocate/job/vacancies-7/style/styles.css",
+		"/C/xampp/htdocs/8relocate/job/vacancies-6/style/styles.css",
+		"/C/xampp/htdocs/8relocate/job/vacancies-5/style/styles.css",
+		"/C/xampp/htdocs/8relocate/job/vacancies-4/style/styles.css",
+		"/C/xampp/htdocs/8relocate/job/vacancies-3/style/styles.css",
+		"/C/xampp/htdocs/8relocate/job/vacancies-2/style/styles.css",
+		"/C/xampp/htdocs/8relocate/job/vacancies-1/style/styles.css",
+		"/C/xampp/htdocs/8relocate/open/js/libs.js",
+		"/C/xampp/htdocs/8relocate/open/style/styles.css",
+		"/E/parse-test/js/controllers/LoginController.js",
+		"/C/xampp/htdocs/8relocate/scripts/ajax.requests.js",
+		"/C/Users/kleva_000/Desktop/public/js/app.js",
+		"/C/xampp/htdocs/dedicateteam.com/styles/no-flex-style.css",
+		"/C/xampp/htdocs/8relocate/scripts/sendRequest.php",
+		"/C/Users/kleva_000/Desktop/PHPMailer-master/composer.json",
+		"/C/xampp/htdocs/dedicateteam.com/scripts/no-flex-helpers.js",
+		"/C/xampp/htdocs/dedicateteam.com/scripts/sendRequest.php",
+		"/C/xampp/htdocs/dedicateteam.com/styles/no-flex-portfolio-style.css",
+		"/C/xampp/htdocs/dedicateteam.com/styles/no-flex-portfolio-mobile-style.css",
+		"/C/xampp/htdocs/dedicateteam.com/styles/no-flex-mobile-style.css",
+		"/E/8relocate/www/index.html",
+		"/C/xampp/htdocs/dedicateteam.com/nerve/jquery.nerveSlider.js",
+		"/C/xampp/htdocs/dedicateteam.com/portfolio.php",
+		"/E/8relocate/www/ppl/js/РћРЅСѓС„СЂРёРµРІ РњР°РєСЃРёРј (1).pdf",
+		"/C/xampp/htdocs/dedicateteam.com/scripts/no-flex-portfolio-helpers.js",
+		"/C/xampp/htdocs/dedicateteam.com/index.html",
+		"/C/xampp/htdocs/dedicateteam.com/portfolio.html",
+		"/C/Users/kleva_000/Desktop/TwinstaFeed2/mansorytesr.html",
+		"/C/xampp/htdocs/dedicateteam.com/.htaccess",
+		"/C/Users/kleva_000/Desktop/NerveSlider9.5/demo.html",
+		"/E/8relocate/www/ppl/js/libs.js",
+		"/E/8relocate/www/ppl/index.html",
+		"/E/8relocate/www/biz/index.html",
+		"/E/8relocate/backup/www/biz/mail/mail2.php",
+		"/E/MyProjects/Web/dedicateteam.com/scripts/no-flex-portfolio-helpers.js",
+		"/E/MyProjects/Web/dedicateteam.com/scripts/no-flex-helpers.js",
+		"/E/8relocate/backup/www/biz/index.html",
+		"/E/MyProjects/Web/dedicateteam.com/portfolio.html",
+		"/E/MyProjects/Web/dedicateteam.com/index.html",
+		"/E/MyProjects/Web/dedicateteam.com/styles/style.css",
+		"/E/MyProjects/Web/dedicateteam.com/scripts/helpers.js",
+		"/E/8relocate/www/ppl/style/styles.css",
+		"/E/MyProjects/Web/dedicateteam.com/styles/no-flex-style.css",
+		"/E/MyProjects/Web/dedicateteam.com/styles/no-flex-mobile-style.css",
+		"/E/MyProjects/Web/dedicateteam.com/styles/no-flex-portfolio-mobile-style.css"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 90.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"account",
+			"accountA",
+			"window-shadow",
+			"modal",
+			"accountInfoFactory",
+			"userRecordFactory",
+			"userTables",
+			"merchantId",
+			"EPN",
+			"merchantId",
+			"merchantI",
+			"merchantRe",
+			"formInfo",
+			"EPN Usernam",
+			"epn",
+			"merchantId",
+			"password",
+			"newUserRecord",
+			"skip",
+			"skipApplication",
+			"Skip",
+			"password",
+			"new",
+			"newUserReco",
+			"Password",
+			"password",
+			"save",
+			"Parse.Prom",
+			"updateUser",
+			"principalInfoFactory",
+			"check",
+			"nth-child(7",
+			"UserRecordController",
+			"User",
+			"record",
+			"record.",
+			"record",
+			"s",
+			"selectType",
+			"Type",
+			"state",
+			"gatewayType",
+			"validated",
+			"$('#",
+			"$('#sign",
+			"getVeri",
+			"setVerifi",
+			"$scope.Validate",
+			"$scope",
+			"$scope.Validate",
+			"selectedVacancy",
+			"actions",
+			"last-child",
+			"ct-item",
+			"contactsFoo",
+			"display: table",
+			"great professionals",
+			"file",
+			"call1",
+			"php",
+			"slide .content",
+			"slide .content > p",
+			"feat-slider-",
+			"r-list",
+			"turnkey",
+			"in a few",
+			"filter",
+			"portfolio.html",
+			"index.html",
+			"pre-con",
+			"slider-item",
+			"pre-content",
+			",",
+			"\"",
+			"fit-width",
+			"slider-item",
+			":before",
+			"before ",
+			"content-wrapper:",
+			"content-wrapper",
+			"half-width",
+			".slider-item .content",
+			"slider-item",
+			"feat-button",
+			"transition",
+			"color",
+			"exploits",
+			"spamwords",
+			"company",
+			"php",
+			"name",
+			"	\n",
+			"border-radius",
+			"3px",
+			"feat-button",
+			"img-1",
+			"proposal-img",
+			"contact-item",
+			"img-1",
+			"contact-item",
+			"contact-us",
+			"png",
+			"jpg",
+			"flex-item.right",
+			"address",
+			";\n",
+			".slider",
+			"slider",
+			"s1",
+			"outstaff-reasons-list",
+			"s-li-1",
+			"s-li ",
+			"s-li",
+			"png",
+			"jpg",
+			"png",
+			".png",
+			"как ",
+			" и ",
+			"&shy;",
+			" в ",
+			" к ",
+			" и ",
+			" [а-я] ",
+			" [а-я]",
+			" [а-я] ",
+			"cost-plus-item",
+			"we-can-find"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"$scope.Validation",
+			"selectedVacancyFromAll",
+			"portfolio.php",
+			"index.php",
+			"",
+			"	$",
+			"name",
+			"",
+			" в&nbsp;",
+			" к&nbsp;",
+			" и&nbsp;",
+			" [а-я]",
+			"IT&#8209;",
+			"",
+			"mobile-padding",
+			"left",
+			"",
+			"full-width",
+			"feat-p",
+			"",
+			"\"",
+			"",
+			"feat-h3",
+			"elementPosition"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "js/controllers/UserRecordController.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 16851,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14793,
+								14793
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5961.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/E/parse-cloud/v3-admin/SmartSwipe/cloud/main.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15572,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3587,
+								3587
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 1200.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "js/controllers/ModalCreateController.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 8794,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8559,
+								8559
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4229.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "templates/home.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 19535,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								18254,
+								18254
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 4390.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "adminpanel.sublime-project",
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"",
+				"C:\\xampp\\htdocs\\V3-admin\\adminpanel.sublime-project"
+			]
+		],
+		"width": 380.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 307.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+		"max_columns": 1
+	}
+}
