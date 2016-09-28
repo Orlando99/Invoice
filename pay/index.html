@@ -20,7 +20,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
-    <script src="http://www.parsecdn.com/js/parse-1.6.14.min.js"></script>
+    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
         <!--[if lt IE 9]>
         <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
@@ -734,7 +734,11 @@
 
     <script>
 
-Parse.initialize('qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3', 'D7nGqgOC97j9ZM7p4rdurZ3P0pSaqTAmCN0xFK7T');
+Parse.initialize(
+  "wx4doiqt8fc5jl1l81s2mi2i00ys9ef186st6exh",
+  "cah1ks6eqm5x7kpe754y750yiv0le6dgs8sic9xi"
+);
+Parse.serverURL = 'https://pg-app-pxmounn4jijli2czy68sx59e0hsxsd.scalabl.cloud/1/';
 
 String.prototype.capitilizeFirstLetter = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
