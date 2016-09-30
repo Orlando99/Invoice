@@ -498,7 +498,7 @@ return {
 			return fillInHtmlData(xml.url(), data.htmlFile.url(), data.cardUrl);
 		})
 		.then(function(newHtml) {
-			var receiptFile = new Parse.File("test2.html",{base64: newHtml});
+			var receiptFile = new Parse.File("test2.html",{base64: newHtml}, "text/html");
 			return receiptFile.save();
 		})
 		.then(function(html) {
@@ -527,23 +527,9 @@ return {
             var emailBody = customerName + ',<br/>'
                 + businessName + ' has sent you an invoice of ' + amount
                 + '. <a href="' + link + '">Click here to view.</a>';
-
-            //handleAuthClick();
-
-            /*
-            sendMessage(
-              {
-                'To': toEmail,
-                'Subject': emailSubject
-              },
-              emailBody,
-              composeTidy
-            );
-            */
         }
         
-        return invoice;
-        /*
+        
 		return Parse.Cloud.run("sendMailgunHtml", {
 			toEmail: toEmail,
 			fromEmail: "no-reply@invoicesunlimited.com",
@@ -553,83 +539,10 @@ return {
 			console.log(msg);
 			return invoice;
 		});
-        */
+        
 	}
 
 };
-
-    //code to send mail with Google API
-    
-    var clientId = '432731941713-t0s6gan7ngg2dn38dk13capvvsut0k61.apps.googleusercontent.com';
-      var apiKey = 'AIzaSyCJkLVj9RY-hOU-hYvETQlOnBQ5VCNwyKk';
-      var scopes = 'https://www.googleapis.com/auth/gmail.send';
-      function handleClientLoad() {
-        //gapi.client.setApiKey(apiKey);
-        window.setTimeout(checkAuth, 1);
-      }
-      function checkAuth() {
-        gapi.auth.authorize({
-          client_id: clientId,
-          scope: scopes,
-          immediate: true
-        }, handleAuthResult);
-      }
-      function handleAuthClick() {
-        gapi.auth.authorize({
-          client_id: clientId,
-          scope: scopes,
-          immediate: false
-        }, handleAuthResult);
-        return false;
-      }
-      function handleAuthResult(authResult) {
-        if(authResult && !authResult.error) {
-          loadGmailApi();
-        } else {
-            //handleAuthClick();
-        }
-      }
-      function loadGmailApi() {
-        gapi.client.load('gmail', 'v1', displayInbox);
-      }
-    
-    function sendEmail()
-      {
-        sendMessage(
-          {
-            'To': $('#compose-to').val(),
-            'Subject': $('#compose-subject').val()
-          },
-          $('#compose-message').val(),
-          composeTidy
-        );
-        return false;
-      }
-    function composeTidy()
-      {
-        $('#compose-modal').modal('hide');
-        $('#compose-to').val('');
-        $('#compose-subject').val('');
-        $('#compose-message').val('');
-        $('#send-button').removeClass('disabled');
-      }
-    
-    function sendMessage(headers_obj, message, callback)
-      {
-        var email = '';
-        for(var header in headers_obj)
-          email += header += ": "+headers_obj[header]+"\r\n";
-        email += "\r\n" + message;
-        var sendRequest = gapi.client.gmail.users.messages.send({
-          'userId': 'me',
-          'resource': {
-            'raw': window.btoa(email).replace(/\+/g, '-').replace(/\//g, '_')
-          }
-        });
-        return sendRequest.execute(callback);
-      }
-    
-    
     
 function createNewItems (items, params) {
 	params.items = [];
@@ -679,8 +592,11 @@ function createInvoiceItem (itemData, otherData) {
 function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 	return $.ajax({
 		type: "GET",
-		url: htmlUrl,
-		dataType: "html"
+		url: 'proxy.php',
+		dataType: "html",
+        data: {
+        address: htmlUrl
+    }
 	}).then(function (htmlDoc) {
 		var s1 = 'Connect.open("GET", "uppage.xml"';
 		var s2 = 'Connect.open("GET", ' + '"' + xmlUrl + '"';
@@ -706,8 +622,11 @@ function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 	return $.ajax({
 		type: "GET",
-		url: xmlUrl,
-		dataType: "xml"
+		url: 'proxy.php',
+		dataType: "xml",
+        data: {
+        address: xmlUrl
+    }
 	}).then(function (xmlDoc) {
 		var x2js = new X2JS();
 		var jsonObj = x2js.xml2json(xmlDoc);
@@ -812,7 +731,8 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 			labels['clientmailto'] = "mailto:" + mail;
 			labels['clientname'] = custmr.get("displayName");
 			labels['clientnr'] = custmr.get("phone");
-			labels['body-currency'] = custmr.get("currency").split(" ")[0];
+            if(custmr.get("currency"))
+			     labels['body-currency'] = custmr.get("currency").split(" ")[0];
 		}
 
 		var discountType = invoice.get("discountType");

@@ -1,4 +1,18 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+<div class="overlay tutorial">
+    <section class="sign-up text-center">
+    
+        <h1><strong>STEP 4</strong></h1>
+        
+        <label>Create an item or service you are selling.</label>
+        
+        <a href="" ng-click="nextClicked();" class="button button-primary button-next">Next</a>
+        
+        <a ui-sref="dashboard.customers.new" href="" class="skip-tutorial" >SKIP</a>
+        
+    </section>
+</div> 
+
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title float-left">Items <!--<i class="arrow-down-black"></i>--></h3>
@@ -44,7 +58,7 @@
   <div class="popup-modal new-item hidesm">
     <div class="modal container">
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Item</h3>
-      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      <button ng-click="closeAddItem();" class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
       </button>
       <div class="clearfix"></div>
       <hr class="layout-margin-tb">

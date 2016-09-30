@@ -354,7 +354,7 @@ return {
 			return fillInHtmlData(xml.url(), data.htmlFile.url(), data.cardUrl);
 		})
 		.then(function(newHtml) {
-			var receiptFile = new Parse.File("test2.html",{base64: newHtml});
+			var receiptFile = new Parse.File("test2.html",{base64: newHtml}, "text/html");
 			return receiptFile.save();
 		})
 		.then(function(html) {
@@ -446,9 +446,14 @@ function createEstimateItem (itemData, otherData) {
 function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 	return $.ajax({
 		type: "GET",
-		url: htmlUrl,
-		dataType: "html"
+		url: 'proxy.php',
+		dataType: "html",
+        data: {
+        address: htmlUrl
+    }
 	}).then(function (htmlDoc) {
+        htmlDoc.replace('&lt;', '<');
+        htmlDoc.replace('&gt;', '>');
 		var s1 = 'Connect.open("GET", "uppage.xml"';
 		var s2 = 'Connect.open("GET", ' + '"' + xmlUrl + '"';
 		htmlDoc = htmlDoc.replace(s1,s2);
@@ -471,10 +476,14 @@ function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 }
 
 function fillInXmlData(xmlUrl, user, estimate) {
-	return $.ajax({
+	
+    return $.ajax({
 		type: "GET",
-		url: xmlUrl,
-		dataType: "xml"
+		url: 'proxy.php',
+		dataType: "xml",
+        data: {
+        address: xmlUrl
+    }
 	}).then(function (xmlDoc) {
 		var x2js = new X2JS();
 		var jsonObj = x2js.xml2json(xmlDoc);
@@ -580,7 +589,8 @@ function fillInXmlData(xmlUrl, user, estimate) {
 			labels['clientmailto'] = "mailto:" + mail;
 			labels['clientname'] = custmr.get("displayName");
 			labels['clientnr'] = custmr.get("phone");
-			labels['body-currency'] = custmr.get("currency").split(" ")[0];
+            if(custmr.get('currency'))
+			     labels['body-currency'] = custmr.get("currency").split(" ")[0];
 		}
 
 		var discountType = estimate.get("discountType");
@@ -695,7 +705,6 @@ function fillInXmlData(xmlUrl, user, estimate) {
 		});
 
 	});
-
 }
 
 function calculateTax(item, tax) {

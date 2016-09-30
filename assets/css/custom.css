@@ -110,3 +110,44 @@ select.can-create-customer option:last-child{
     padding-right: 5px !important;
 	word-break: normal;
 }
+
+.tutorial {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    
+}
+
+.tutorial label{
+    font-size: 23px !important;
+}
+
+.tutorial .button-next{
+    background: transparent !important;
+    border: solid !important;
+    margin-top: 90px !important;
+}
+
+.tutorial h1{
+    color: #ffffff !important;
+    margin-bottom: 70px !important;
+}
+
+.tutorial section{
+    top: 25%;
+}
+
+.tutorial .skip-tutorial{
+    font-size: 25px;
+    color: #fff;
+    border-bottom: 1px #fff solid !important;
+}
+
+.myoverlay {
+position: fixed;
+top: 0;
+left: 0;
+background: rgba(100, 100, 100, 0.8);
+width: 100%;
+height: 100%;
+z-index: 10;
+}

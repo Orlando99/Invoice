@@ -9,7 +9,6 @@ invoicesUnlimited.controller('MerchantAccountController',
 	if (!user1.entity.length) $state.go('signup');
 
 	$scope.goNext = function(){
-		debugger;
 		if (signUpFactory.getFactory('User').entity.length)
 			$state.go('signup.business-info');
 	}
@@ -104,7 +103,7 @@ invoicesUnlimited.controller('MerchantAccountController',
 		})
 		.then(function(){
 			hideLoader();
-			$state.go('dashboard');
+			$state.go('signup.invoiceTemplateInfo');
 		},errorCallback);
 	}
     

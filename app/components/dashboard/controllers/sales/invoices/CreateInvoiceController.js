@@ -410,12 +410,14 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	}
 
 	function saveAndSendInvoice() {
+        /*
         return saveInvoice()
 		.then(function(invoice) {
 			invoiceService.copyInInvoiceInfo(invoice);
             return invoice;
 		});
-        /*
+        */
+        
 		return saveInvoice()
 		.then(function(invoice) {
 			return invoiceService.copyInInvoiceInfo(invoice)
@@ -426,7 +428,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				return invoiceService.sendInvoiceReceipt(invoiceObj);
 			});
 		});
-        */
+        
 	}
 
 	function showInvoiceNumberError () {

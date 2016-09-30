@@ -141,7 +141,7 @@ angular.module('invoicesUnlimited')
 		},
         merchantAccount : {
 			name : 'signup.merchantAccount',
-			url  : '/accountActivated',
+			url  : '/merchantAccount',
 			views : {
 				'@' : {
 					controller  : 'MerchantAccountController',
@@ -156,6 +156,16 @@ angular.module('invoicesUnlimited')
 				'@' : {
 					controller  : 'ConfirmController',
 					templateUrl : GetTemplate('signup','confirmView.html')
+				}
+			}
+		},
+        invoiceTemplateInfo : {
+			name : 'signup.invoiceTemplateInfo',
+			url  : '/invoiceTemplateInfo',
+			views : {
+				'@' : {
+					controller  : 'InvoiceTemplateInfoController',
+					templateUrl : GetTemplate('signup','invoiceTemplateView.html')
 				}
 			}
 		}

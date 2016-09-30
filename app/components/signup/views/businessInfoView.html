@@ -53,7 +53,7 @@
         </label>
       <input class="layout-margin-tb federal-tax federal-tax-id-input" type="text" placeholder="Federaly Tax ID" ng-model="bsnsInfo.federalTaxID" name="federalTaxID"> 
       
-      <select class="custom-dd" name="ownershipType"
+      <select class="custom-dd ownershipTypeInput" ng-show="x2" name="ownershipType"
               ng-init="bsnsInfo.ownershipType = 'ownershipTitle'"
               ng-model="bsnsInfo.ownershipType">
         <option value="ownershipTitle" disabled>Ownership Type</option>

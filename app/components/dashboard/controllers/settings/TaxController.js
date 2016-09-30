@@ -9,6 +9,16 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 		return undefined;
 	}
 
+        if(fromTutorial){
+            $('.tutorial').show();
+            initializeScopeVariables();
+            $('#addTaxForm').validate().resetForm();
+            $('.new-tax').addClass('show');
+        }
+        else{
+            $('.tutorial').hide();
+        }
+        
 	var user = userFactory.entity[0];
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
@@ -86,10 +96,19 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 
 		taxService.saveNewTax(params, function(response){
 			console.log(response);
-			$(".new-tax").removeClass("show");
-			getTaxes();
+            if(fromTutorial){
+                $state.go('dashboard.settings.items')
+            }
+            else{
+                $(".new-tax").removeClass("show");
+                getTaxes();
+            }
 		});
 	}
+    
+    $scope.nextClicked = function(){
+        $('.tutorial').hide();
+    }
 	
 	$scope.editTax = function(tax) {
 		$('#editTaxForm').validate().resetForm();

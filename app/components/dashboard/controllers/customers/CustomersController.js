@@ -14,7 +14,7 @@ $(document).ready(function(){
 		});
 
 		$(this).children('.submenu').toggleClass('showsub');
-
+        
 	})
 });
 
@@ -31,11 +31,13 @@ invoicesUnlimited.controller('CustomersController',
 		$state.go('login');
 		return;
 	}
-	
+	$('.tutorial').hide();
 	var def = $q.defer();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
     
-    
+    $scope.nextClicked = function(){
+        $('.tutorial').hide();
+    }
 
 	$scope.selectedCustomer;
 	$scope.selectedCustomerId;

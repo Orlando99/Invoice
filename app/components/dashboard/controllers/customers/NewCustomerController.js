@@ -10,6 +10,13 @@ invoicesUnlimited.controller('NewCustomerController',
 		$state.go('login');
 		return;
 	}
+    
+    if(fromTutorial){
+        $('.tutorial').show();
+    }
+    else{
+        $('.tutorial').hide();
+    }
 
 	$scope.displayNameClicked = false;
 
@@ -127,7 +134,13 @@ invoicesUnlimited.controller('NewCustomerController',
 					coreFactory.clearAllOnLogOut();
 					$state.go($state.params.backLink, {customerId:custObj.id});
 				} else {
+                    if(fromTutorial){
+                        fromTutorial = false;
+                        $state.go('dashboard');
+                    }
+                    else{
 					$state.go('dashboard.customers.all');
+                    }
 				}
 			});
 		});
@@ -154,5 +167,9 @@ invoicesUnlimited.controller('NewCustomerController',
 	$scope.cancelSaveCustomer = function(){
 		$state.go('dashboard.customers.all');
 	}
+    
+    $scope.nextClicked = function(){
+        $('.tutorial').hide();
+    }
 
 });

@@ -58,6 +58,7 @@ invoicesUnlimited.factory('signUpFactory',
 			firstScreen : 'Overview',
 			getInvoiceNotification : 1,
 			isTrackUsage : 1,
+            tutorial     : 0,
 			subscription : false
 		},
 		AccountInfo : {

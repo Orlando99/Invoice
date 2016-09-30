@@ -169,23 +169,82 @@ invoicesUnlimited.controller('BusinessInfoController',
    		name: 'ownershipTitle',
    		value: 'Ownership Type'
 	}, {
-   		name: 'Sole Proprietor',
-   		value: 'Sole Proprietor'
+   		name: 'Individual or Sole Proprietor',
+   		value: 'Individual or Sole Proprietor'
 	},
 	{
-   		name: 'LLC',
-   		value: 'LLC'
+   		name: 'Limited Liability Compnay',
+   		value: 'Limited Liability Compnay'
+	},
+    {
+   		name: 'Non Profit',
+   		value: 'Non Profit'
+	},
+    {
+   		name: 'S-Corporation',
+   		value: 'S-Corporation'
 	},
 	{
-   		name: 'Corporation and Non Profit',
-   		value: 'Corporation and Non Profit'
+   		name: 'C-Corporation',
+   		value: 'C-Corporation'
+	},
+    {
+   		name: 'Partenership',
+   		value: 'Partenership'
 	}];
         
         var nextScreen = 'signup.account-info';
         
     $scope.saveAndLaterBusinessInfo = function(){
-        nextScreen = 'dashboard';
-        saveData();
+        nextScreen = 'signup.invoiceTemplateInfo';
+        if($('#signUpForm').validate().errorList)
+        {   
+            signUpFactory.setField('BusinessInfo',{
+                    field : 'businessName',
+                    value : signUpFactory.getField('User','company')
+                });
+            signUpFactory.setField('BusinessInfo',{
+                    field : 'streetName',
+                    value : ''
+                });
+            signUpFactory.setField('BusinessInfo',{
+                    field : 'city',
+                    value : ''
+                });
+            signUpFactory.setField('BusinessInfo',{
+                    field : 'state',
+                    value : ''
+                });
+            signUpFactory.setField('BusinessInfo',{
+                    field : 'zipCode',
+                    value : ''
+                });
+
+            var business = signUpFactory.create('BusinessInfo');
+
+            business
+            .then(function(busObj){
+                return signUpFactory.save('User',{
+                    'businessInfo' : busObj,
+                });
+            },
+            function(err){
+                if (!err.length) console.log(err.message);
+                err.forEach(function(er){
+                    console.log(er.message);
+                });
+            })
+            .then(function(){
+                hideLoader();
+                $state.go('signup.invoiceTemplateInfo')
+                //$state.go('signup.principal-info');
+            },errorCallback);
+            
+            //-------------------
+        }
+        else{
+            saveData();
+        }
     };
 
 	$scope.saveBusinessInfo = saveData;
@@ -223,12 +282,18 @@ invoicesUnlimited.controller('BusinessInfoController',
 		},errorCallback);
 	}
 
+    $('.federal-tax-id-input').hide();
+    $('.ownershipTypeInput').hide();
+        
 	$scope.federalTaxIdClick = function() {
 		var checked = $('.federal-tax-id').prop('checked');
 		$('.federal-tax-id-input').hide();
+        $('.ownershipTypeInput').hide();
 		$scope.bsnsInfo.federalTaxID = '';
-		if(checked == true)
+		if(checked == true){
 			$('.federal-tax-id-input').show();
+            $('.ownershipTypeInput').show();
+        }
 	}
     
     //------------------------------ Principle Info data------------
@@ -318,8 +383,7 @@ invoicesUnlimited.controller('BusinessInfoController',
 			case 1: $scope.openPicker1 = true; break;
 		}
   	}
-    
-    
+        
     //------------------------------
 
 }]);

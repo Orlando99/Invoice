@@ -22,10 +22,26 @@ var OurParse = {
   serverURL : "https://invoiceunlimited.herokuapp.com/parse"
 }
 */
+/*
 var OurParse = {
   appID : "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
   serverURL : "https://invoice101.herokuapp.com/parse",
     jsKey: "Xjf3GvwUO0SNsz0nCeM0NjlvQlDlmxGHOi6PqfzI"
+}
+*/
+/*
+var OurParse = {
+  appID : "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
+    serverURL : "https://invoiceunlimited.herokuapp.com/parse",
+  //serverURL : "https://sfsparse.com/parse",
+    jsKey: "Xjf3GvwUO0SNsz0nCeM0NjlvQlDlmxGHOi6PqfzI"
+}
+*/
+
+var OurParse = {
+  appID : "wx4doiqt8fc5jl1l81s2mi2i00ys9ef186st6exh",
+    serverURL : "https://pg-app-pxmounn4jijli2czy68sx59e0hsxsd.scalabl.cloud/1/",
+    jsKey: "cah1ks6eqm5x7kpe754y750yiv0le6dgs8sic9xi"
 }
 
 Parse.initialize(OurParse.appID,OurParse.jsKey);
@@ -39,6 +55,7 @@ var colorCount = 98;
 var createItemOpener = {'entity':{'title':'+ Create new item'}, 'dummy':true};
 var createTaxOpener = {'name':'+ Create new tax', 'dummy':true};
 var createCustomerOpener = {'entity':{'displayName':'+ Create new Customer'}, 'dummy':true};
+var fromTutorial = false;
 
 var GetTemplate = function(name,file) {
   return COMPONENTS + name + '/views/' + file;

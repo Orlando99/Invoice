@@ -8,9 +8,10 @@ invoicesUnlimited.controller('ConfirmController',
 
 	if (!user.entity.length) $state.go('signup');
 
-	$scope.getStarted = function(){
-		debugger;
+	$scope.getStarted1 = goNext; 
+        
+    function goNext(){
 		if (signUpFactory.getFactory('User').entity.length)
-			$state.go('dashboard');
+			$state.go('signup.invoiceTemplateInfo');
 	}
 }]);

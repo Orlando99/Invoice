@@ -89,6 +89,7 @@ function initializeScopeVariables() {
 $scope.clearAddItemFields = function() {
 	initializeScopeVariables();
 	$('#addItemForm').validate().resetForm();
+    //$('.new-item').show();
 }
 
 $scope.showItemDetail = function(index) {
@@ -163,9 +164,14 @@ $scope.saveNewItem = function() {
 		return itemService.createItems(params);
 	})
 	.then(function(items) {
-		$scope.items.push(items[0]);
-		$(".new-item").removeClass("show");
-		hideLoader();
+        hideLoader();
+        if(fromTutorial){
+            $state.go('dashboard.customers.new');
+        }
+        else{
+            $scope.items.push(items[0]);
+            $(".new-item").removeClass("show");
+        }
 
 	}, function(error) {
 		$(".new-item").removeClass("show");
@@ -203,6 +209,24 @@ $scope.saveEditedItem = function() {
 	})
 
 }
+
+$scope.nextClicked = function(){
+        $('.tutorial').hide();
+    }
+
+$scope.closeAddItem = function(){
+    $('.new-item').removeClass('show');
+}
+
+if(fromTutorial){
+        $('.tutorial').show();
+        initializeScopeVariables();
+	    $('#addItemForm').validate().resetForm();
+        $('.new-item').addClass('show');
+    }
+    else{
+        $('.tutorial').hide();
+    }
 
 //----
 /*

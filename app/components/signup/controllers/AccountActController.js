@@ -9,7 +9,6 @@ invoicesUnlimited.controller('AccountActController',
 	if (!user.entity.length) $state.go('signup');
 
 	$scope.goNext = function(){
-		debugger;
 		if (signUpFactory.getFactory('User').entity.length)
 			$state.go('signup.merchantAccount');
 	}
