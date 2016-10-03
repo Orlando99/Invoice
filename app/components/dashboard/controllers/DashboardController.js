@@ -155,7 +155,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         $q.when(cc.fetch())
         .then(function(obj) {
             cc = obj.attributes;
-            //if(!cc.exchangeRate) cc.exchangeRate = 1;
+            //if(!cc.exchangeRate) cc.set('exchangeRate', 1);
             
             if(cc.exchangeRate){
                 $scope.currentCurrency = cc;

@@ -117,10 +117,10 @@
               ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l">
-            <select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
-              ng-change="reCalculateItemAmount($index)">
-              <!--<select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
-              ng-change="taxChanged($index)">-->
+            <!--<select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
+              ng-change="reCalculateItemAmount($index)">-->
+              <select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
+              ng-change="taxChanged($index)">
               <option value="">None</option>
              <!-- <option value="1">1</option>
               <option value="2">2</option> -->
@@ -265,7 +265,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Tax</label>
-            <select class="col-75" ng-model="newItem.tax" ng-options="tax.name for tax in taxes">
+            <select class="col-75" ng-model="newItem.tax" ng-options="tax.name for tax in taxes" ng-change="taxChanged(-1)">
               <option value="" selected>None</option>
             </select>
           </div>

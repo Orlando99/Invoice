@@ -3,9 +3,9 @@
 invoicesUnlimited.controller('CreateEstimateController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
 	'estimateService', 'coreFactory', 'taxService', 'commentFactory', 'expenseService',
-	'currencyFilter',
+	'currencyFilter', 'salesCommon',
 function($scope, $state, $controller, $q, userFactory,
-	estimateService,coreFactory,taxService,commentFactory,expenseService,currencyFilter) {
+	estimateService,coreFactory,taxService,commentFactory,expenseService,currencyFilter,salesCommon) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -135,6 +135,7 @@ function prepareToCreateEstimate() {
 			return item.entity.expanseId;
 		});
 		$scope.items = $scope.actualItems;
+        $scope.items.push(createItemOpener);
 	});
 	promises.push(p);
 
@@ -153,6 +154,7 @@ function prepareToCreateEstimate() {
 	// TODO: tax factory
 	p = taxService.getTaxes(user, function(taxes) {
 		$scope.taxes = taxes;
+        $scope.taxes.push(createTaxOpener);
 	});
 	promises.push(p);
 
@@ -370,10 +372,34 @@ $scope.reCalculateItemAmount = function(index) {
 	reCalculateSubTotal();
 }
 
+$scope.prepareCreateItem = function() {
+		salesCommon.prepareCreateItem({
+			_scope : $scope
+		});
+	}
+
+$scope.createNewItem = function() {
+		salesCommon.createNewEstimateItem({
+			_scope : $scope,
+			user : user,
+			organization : organization
+		});
+	}
 
 $scope.itemChanged = function(index) {
 //	console.log('item changed');
 	var itemInfo = $scope.estimateItems[index];
+    
+    // if create item is pressed
+    if(itemInfo.selectedItem.dummy) {
+        itemInfo.selectedItem = null;
+        $('.new-item').addClass('show');
+        // save index to select newly created item
+        $scope.itemChangedIndex = index;
+        $scope.prepareCreateItem();
+        return;
+    }
+    
 	itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
 	var tax = itemInfo.selectedItem.tax;
 	if (!tax) {
@@ -439,6 +465,7 @@ function customerChangedHelper() {
 			});
 		});
 	//	console.log($scope.estimateItems);
+        newItems.push(createItemOpener); // add createItem field
 		return $scope.items = newItems;
 	});
 }
@@ -645,6 +672,53 @@ $scope.saveAndSend = function () {
 	});
 
 }
+
+$scope.taxChanged = function(index) {
+		console.log('tax changed');
+		
+        if(index == -1){
+            if($scope.newItem.tax.dummy){
+                $scope.currentItem = index;
+                $scope.newItem.tax = null;
+                
+                $scope.taxName = null;
+                $scope.taxRate = null;
+                
+                $('.new-tax').addClass('show');
+                return;
+            }
+        }
+        else{
+            var itemInfo = $scope.estimateItems[index];
+            
+            if(!itemInfo.selectedTax){
+                reCalculateSubTotal();
+            }
+            else if(itemInfo.selectedTax.dummy){
+                $scope.currentItem = index;
+                $scope.taxName = null;
+                $scope.taxRate = null;
+                itemInfo.selectedTax = null;
+                $('.new-tax').addClass('show');
+
+                return;
+            }
+        }
+        
+        reCalculateSubTotal();
+	}
+
+$scope.saveNewTax = function() {
+		salesCommon.createNewEstimateTax({
+			_scope : $scope,
+			user : user
+		}, function(){
+            reCalculateSubTotal();
+            $scope.$apply();
+            
+            
+        });
+	}
 
 function showEstimateNumberError () {
 	var validator = $( "#addEstimateForm" ).validate();

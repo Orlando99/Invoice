@@ -76,7 +76,51 @@ return {
 
 		});
 	},
-    createNewTax : function(params) {
+    createNewEstimateItem : function(params) {
+		var _scope = params._scope;
+		if(! $('#addItemForm').valid()) return;
+
+		showLoader();
+		var params1 = {
+			user : params.user,
+			organization : params.organization,
+			items : [{
+				title : _scope.newItem.name,
+				rate : _scope.newItem.rate,
+				tax : _scope.newItem.tax,
+				desc : _scope.newItem.desc
+			}]
+		};
+
+		$q.when(coreFactory.getUserRole(params.user))
+		.then(function(role) {
+			var acl = new Parse.ACL();
+			acl.setRoleWriteAccess(role.get("name"), true);
+			acl.setRoleReadAccess(role.get("name"), true);
+
+			params1.acl = acl;
+
+			return itemService.createItems(params1);
+		})
+		.then(function(items) {
+			_scope.items.pop(); // remove createItem field
+			_scope.actualItems.push(items[0]);
+			if(_scope.items !== _scope.actualItems)
+				_scope.items.push(items[0]);
+
+			_scope.items.push(createItemOpener); // add createItem field
+			var itemInfo = _scope.estimateItems[_scope.itemChangedIndex];
+			var index = _scope.items.findIndex(function(item) {
+				return item.entity.id == items[0].entity.id;
+			});
+			itemInfo.selectedItem = _scope.items[index];
+			_scope.itemChanged(_scope.itemChangedIndex);
+			$(".new-item").removeClass("show");
+			hideLoader();
+
+		});
+	},
+    createNewTax : function(params, callback) {
 		var _scope = params._scope;
 		if(! $('#addTaxForm').valid()) return;
 
@@ -89,21 +133,67 @@ return {
 			user: params.user
 		};
         
-        taxService.saveNewTax(params, function(obj){
+        taxService.saveNewTax(params1, function(obj){
 			_scope.taxes.pop(); // remove createItem field
-            _scope.taxes.push(obj);
-            /*
-			_scope.actualtaxes.push(obj);
-			if(_scope.taxes !== _scope.actualtaxes)
-				_scope.taxes.push(obj);
-            */
-			_scope.taxes.push(createTaxOpener); // add createItem field
-			var taxInfo = _scope.invoiceItems[_scope.itemChangedIndex];
-			var index = _scope.items.findIndex(function(item) {
-				return item.entity.id == items[0].entity.id;
-			});
-			itemInfo.selectedItem = _scope.items[index];
-			_scope.itemChanged(_scope.itemChangedIndex);
+            var newTax = {
+                id: obj.id,
+                name: obj.get("title") +
+                    (obj.get("type") == 2 ? ' (Tax Group)' : ''),
+                rate: obj.get("value"),
+                type: obj.get("type"),
+                isCompound: Boolean(obj.get("compound")),
+                compound: obj.get("compound")
+             }
+            _scope.taxes.push(newTax);
+            
+			_scope.taxes.push(createTaxOpener); // add createTax field
+            if(_scope.currentItem == -1){
+                _scope.newItem.tax = newTax;
+            }
+            else{
+                var itemInfo = _scope.invoiceItems[_scope.currentItem];
+                itemInfo.selectedTax = newTax;
+            }
+            callback();
+			$(".new-tax").removeClass("show");
+			hideLoader();
+		});
+	},
+    createNewEstimateTax : function(params, callback) {
+		var _scope = params._scope;
+		if(! $('#addTaxForm').valid()) return;
+
+		showLoader();
+        
+        var params1 = {
+			title: _scope.taxName,
+			value: Number(_scope.taxRate),
+			compound: (_scope.isCompound ? 1 : 0),
+			user: params.user
+		};
+        
+        taxService.saveNewTax(params1, function(obj){
+			_scope.taxes.pop(); // remove createItem field
+            var newTax = {
+                id: obj.id,
+                name: obj.get("title") +
+                    (obj.get("type") == 2 ? ' (Tax Group)' : ''),
+                rate: obj.get("value"),
+                type: obj.get("type"),
+                isCompound: Boolean(obj.get("compound")),
+                compound: obj.get("compound")
+             }
+            _scope.taxes.push(newTax);
+            
+			_scope.taxes.push(createTaxOpener); // add createTax field
+            if(_scope.currentItem == -1){
+                _scope.newItem.tax = newTax;
+            }
+            else{
+                var itemInfo = _scope.estimateItems[_scope.currentItem];
+                itemInfo.selectedTax = newTax;
+            }
+            callback();
 			$(".new-tax").removeClass("show");
 			hideLoader();
 		});

@@ -211,7 +211,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 		p = taxService.getTaxes(user, function(taxes) {
 			$scope.taxes = taxes;
-            //$scope.taxes.push(createTaxOpener);
+            $scope.taxes.push(createTaxOpener);
 		});
 		promises.push(p);
 
@@ -632,6 +632,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		$scope.totalStr = currencyFilter($scope.total*cc.exchangeRate, cc.currencySymbol, 2);
 	}
 
+    $scope.reCalculateSubTotal = reCalculateSubTotal;
+    
 	function reCalculateSubTotal() {
 		var items = $scope.invoiceItems;
 		var subTotal = 0;
@@ -719,39 +721,53 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		}
 		$scope.reCalculateItemAmount(index);
 	}
-/*
+
     $scope.taxChanged = function(index) {
 		console.log('tax changed');
-		var taxInfo = $scope.taxes[index];
+		
+        if(index == -1){
+            if($scope.newItem.tax.dummy){
+                $scope.currentItem = index;
+                $scope.newItem.tax = null;
+                
+                $scope.taxName = null;
+                $scope.taxRate = null;
+                
+                $('.new-tax').addClass('show');
+                return;
+            }
+        }
+        else{
+            var itemInfo = $scope.invoiceItems[index];
+            
+            if(!itemInfo.selectedTax){
+                reCalculateSubTotal();
+            }
+            else if(itemInfo.selectedTax.dummy){
+                $scope.currentItem = index;
+                $scope.taxName = null;
+                $scope.taxRate = null;
+                itemInfo.selectedTax = null;
+                $('.new-tax').addClass('show');
 
-		// if create item is pressed
-		if(taxInfo.dummy) {
-			itemInfo.selectedItem = null;
-			$('.new-tax').addClass('show');
-			// save index to select newly created item
-			//$scope.itemChangedIndex = index;
-			//$scope.prepareCreateItem();
-			return;
-		}
-        /*
-		itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
-		var tax = itemInfo.selectedItem.tax;
-		if (!tax) {
-		//	console.log("no tax applied");
-			itemInfo.selectedTax = "";
-		} else {
-			var taxes = $scope.taxes;
-			for (var i = 0; i < taxes.length; ++i) {
-				if (tax.id == taxes[i].id) {
-					itemInfo.selectedTax = taxes[i];
-					break;
-				}
-			}
-		}
+                return;
+            }
+            /*
+            if(itemInfo.selectedTax.dummy) {
+                $scope.currentItem = index;
+                $scope.taxName = null;
+                $scope.taxRate = null;
+                itemInfo.selectedTax = null;
+                $('.new-tax').addClass('show');
+
+                return;
+            }
+            */
+        }
         
-		$scope.reCalculateSubTotal();
+        reCalculateSubTotal();
 	}
-     */
+     
 	function customerChangedHelper() {
 		$scope.items.pop(); // remove createItem field
 		return $q.when(expenseService.getCustomerExpenses({
@@ -870,13 +886,18 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			organization : organization
 		});
 	}
-    /*
+    
     $scope.saveNewTax = function() {
 		salesCommon.createNewTax({
 			_scope : $scope,
 			user : user
-		});
+		}, function(){
+            reCalculateSubTotal();
+            $scope.$apply();
+            
+            
+        });
 	}
-    */
+    
 
 }]);
