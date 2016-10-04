@@ -93,5 +93,14 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 		$('.successMessage').html(msg).show();
 		$('.input-container').css({'border':''});
 	}
-        
+        /*
+        Parse.Cloud.run("sendMailgunSample", {
+			toEmail: 'mianazhar2005@gmail.com',
+			fromEmail: "no-reply@invoicesunlimited.com",
+			subject : 'Testing',
+			html : '<h1>This is test email.</h1>'
+		}).then(function(msg) {
+			console.log(msg);
+		});
+        */
 }]);

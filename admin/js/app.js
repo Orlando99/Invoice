@@ -15,10 +15,10 @@
 //Parse.initialize(SVV3keys.appID,SVV3keys.jsKey);
 
 Parse.initialize(
-  "wx4doiqt8fc5jl1l81s2mi2i00ys9ef186st6exh",
-  "cah1ks6eqm5x7kpe754y750yiv0le6dgs8sic9xi"
+  "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
+  "Xjf3GvwUO0SNsz0nCeM0NjlvQlDlmxGHOi6PqfzI"
 );
-Parse.serverURL = 'https://pg-app-pxmounn4jijli2czy68sx59e0hsxsd.scalabl.cloud/1/';
+Parse.serverURL = 'https://invoice101.herokuapp.com/parse';
 
 var clientAdminPortalApp = angular.module('clientAdminPortalApp', ['tagged.directives.infiniteScroll', 'ui.router', 'ui.bootstrap']);
 

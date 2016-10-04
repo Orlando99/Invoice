@@ -106,6 +106,7 @@ function prepareToCreateCreditNote() {
 			return item.entity.expanseId;
 		});
 		$scope.items = $scope.actualItems;
+        $scope.items.push(createItemOpener);
 	});
 	promises.push(p);
 
@@ -425,9 +426,33 @@ $scope.removeCreditItem = function(index) {
 	}
 }
 
+$scope.prepareCreateItem = function() {
+		salesCommon.prepareCreateItem({
+			_scope : $scope
+		});
+	}
+
+$scope.createNewItem = function() {
+		salesCommon.createNewCreditItem({
+			_scope : $scope,
+			user : user,
+			organization : organization
+		});
+	}
+
 $scope.itemChanged = function(index) {
 	console.log('item changed');
 	var itemInfo = $scope.creditItems[index];
+    
+    if(itemInfo.selectedItem.dummy) {
+        itemInfo.selectedItem = null;
+        $('.new-item').addClass('show');
+        // save index to select newly created item
+        $scope.itemChangedIndex = index;
+        $scope.prepareCreateItem();
+        return;
+    }
+    
 	itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
 	var tax = itemInfo.selectedItem.tax;
 	if (!tax) {
@@ -478,6 +503,53 @@ function reCalculateSubTotal() {
 	$scope.subTotal = subTotal;
 	$scope.subTotalStr = currencyFilter(subTotal, '$', 2);
 	$scope.reCalculateTotal();
+}
+    
+$scope.taxChanged = function(index) {
+    console.log('tax changed');
+
+    if(index == -1){
+        if($scope.newItem.tax.dummy){
+            $scope.currentItem = index;
+            $scope.newItem.tax = null;
+
+            $scope.taxName = null;
+            $scope.taxRate = null;
+
+            $('.new-tax').addClass('show');
+            return;
+        }
+    }
+    else{
+        var itemInfo = $scope.creditItems[index];
+
+        if(!itemInfo.selectedTax){
+            reCalculateSubTotal();
+        }
+        else if(itemInfo.selectedTax.dummy){
+            $scope.currentItem = index;
+            $scope.taxName = null;
+            $scope.taxRate = null;
+            itemInfo.selectedTax = null;
+            $('.new-tax').addClass('show');
+
+            return;
+        }
+    }
+
+    reCalculateSubTotal();
+}
+    
+$scope.saveNewTax = function() {
+    salesCommon.createNewCreditTax({
+        _scope : $scope,
+        user : user
+    }, function(){
+        reCalculateSubTotal();
+        $scope.$apply();
+
+
+    });
 }
 
 $scope.reCalculateItemAmount = function(index) {
