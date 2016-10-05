@@ -55,8 +55,8 @@
                         <td ng-bind="record.merchantID" class="merchantId"></td>
                         <td ng-bind="record.company"></td>
                         <td ng-bind="record.fullName"></td>
-                        <td ng-bind="record.email"</td>
-                        <td ng-bind="record.username"</td>
+                        <td ng-bind="record.email"></td>
+                        <td ng-bind="record.username"></td>
                         <td class="table-actions">
                             <a ng-click="saveAndNotify(record,selectedUserForm);$event.stopPropagation();" ng-show="record.showFull" class="table-save"></a>
                             <a ng-click="deleteAndNotify(record);$event.stopPropagation();" class="table-remove"></a></td>
@@ -151,7 +151,7 @@
                                                 <div ng-click = "record.showDropdownSelect = false;" ng-show="record.showDropdownSelect">
                                                     <div class="window-shadow"></div>
                                                     <ul>
-                                                        <li ng-click="record.paymentGateway = '';" class="select-empty"><a>----------------</a></li>
+                                                        <li ng-click="record.paymentGateway = '';" class="select-empty"><a>None</a></li>
                                                         <li ng-click="record.paymentGateway = 1;" class="select-epn"><a>Epn</a></li>
                                                         <li ng-click="record.paymentGateway = 2;" class="select-authnet"><a>Auth. Net</a></li>
                                                     </ul>
@@ -286,7 +286,7 @@
                                 <div ng-click = "newUserRecord.showDropdownSelect = false;" ng-show="newUserRecord.showDropdownSelect">
                                     <div class="window-shadow"></div>
                                     <ul style="display: initial;">
-                                        <li ng-click="newUserRecord.paymentGateway = '';" class="select-empty"><a>----------------</a></li>
+                                        <li ng-click="newUserRecord.paymentGateway = '';" class="select-empty"><a>None</a></li>
                                         <li ng-click="newUserRecord.paymentGateway = 'epn';" class="select-epn"><a>Epn</a></li>
                                         <li ng-click="newUserRecord.paymentGateway = 'authNet';" class="select-authnet"><a>Auth. Net</a></li>
                                         <li ng-click="newUserRecord.paymentGateway = 'pivotal';" class="select-pivotal"><a>Pivotal</a></li>

@@ -160,6 +160,13 @@ clientAdminPortalApp.controller('UserRecordController',
 
     if (!form.$valid) return;
 
+      if(user.paymentGateway.length < 1){
+          user.EPNrestrictKey = "";
+          user.EPNusername = "";
+          user.AuthKey = "";
+          user.AuthNet = "";
+      }
+      
     Parse.Cloud.run('UpdateUser',{
       user : {
         id     : user.id,
@@ -177,7 +184,7 @@ clientAdminPortalApp.controller('UserRecordController',
         }
       }
     }).then(function(res){
-      alert("User " + res + " was successfuly saved!");
+      alert("User was successfuly saved!");
       $scope.updateQueryResults();
     },function(err){
       console.log("User account update failed:" + err.message);
