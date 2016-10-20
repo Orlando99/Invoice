@@ -1,24 +1,36 @@
 'use strict';
 
-invoicesUnlimited.factory('estimateService', ['estimateFactory', 'itemService', 'currencyFilter',
-function(estimateFactory, itemService, currencyFilter){
+invoicesUnlimited.factory('projectService', ['projectFactory', 'itemService', 'currencyFilter',
+function(projectFactory, itemService, currencyFilter){
 
 return {
 	test : function() {
 		console.log("working");
 	},
-	checkEstimateNumAvailable : function(params) {
-		var Estimate = Parse.Object.extend('Estimates');
-		var query = new Parse.Query(Estimate);
-		query.equalTo('organization', params.organization);
-		query.equalTo('estimateNumber', params.estimateNumber);
-		query.select('estimateNumber');
+    listProjects : function(user) {
+		var organization = getOrganization(user);
+		if (! organization)	return;
 
-		return query.first()
-		.then(function(obj) {
-			return obj ? false : true;
+		var projectTable = Parse.Object.extend("Projects");
+		var query = new Parse.Query(projectTable);
+
+		query.equalTo("organization", organization);
+		query.include("customer");
+		//query.select("projectName", "projectDescription",
+			//"billingMethod", "projectBillingAmount", "customer");
+
+		return query.find().then(function(projectObjs) {
+			var projects = [];
+			projectObjs.forEach(function(project) {
+				projects.push(new projectFactory(project, {
+					operation : "listProjects"
+				}));
+			});
+			return projects;
 		});
-	},
+
+	}
+    /*
 	getEstimateDetails : function(estimateId) {
 		var Estimate = Parse.Object.extend('Estimates');
 		var query = new Parse.Query(Estimate);
@@ -45,29 +57,7 @@ return {
 			return estimate;
 		});
 	},
-	listEstimates : function(user) {
-		var organization = getOrganization(user);
-		if (! organization)	return;
-
-		var estimateTable = Parse.Object.extend("Estimates");
-		var query = new Parse.Query(estimateTable);
-
-		query.equalTo("organization", organization);
-		query.include("customer");
-		query.select("estimateNumber", "estimateDate",
-			"totalAmount", "referenceNumber", "status", "customer");
-
-		return query.find().then(function(estimateObjs) {
-			var estimates = [];
-			estimateObjs.forEach(function(estimate) {
-				estimates.push(new estimateFactory(estimate, {
-					operation : "listEstimates"
-				}));
-			});
-			return estimates;
-		});
-
-	},
+	
 	getPreferences : function(user) {
 		var organization = getOrganization(user);
 		if (! organization) {
@@ -142,16 +132,7 @@ return {
 		acl.setRoleReadAccess(role.get("name"), true);
 
 		var promise =  Parse.Promise.as(undefined);//undefined;
-/*		if(file) {
-			var parseFile = new Parse.File(file.name, file);
-			promise = parseFile.save()
-			.then(function(savedFile) {
-				console.log(savedFile.url());
-				return [savedFile];
-			});
-		} else
-			promise = Parse.Promise.as(undefined);
-*/
+
 		var itemsToCreate = [];
 		var itemThatExist = [];
 		estimateItems.forEach(function(item) {
@@ -219,8 +200,8 @@ return {
 						return estObj;
 					});
 
-				} /* add method to delete file and items */);
-			}/* add method to delete file*/);
+				} );
+			});
 
 		});
 
@@ -396,6 +377,7 @@ return {
 			return estObj;
 		});
 	}
+    */
 };
 
 function createNewItems (items, params) {
@@ -545,16 +527,7 @@ function fillInXmlData(xmlUrl, user, estimate) {
 
 		var attachments = jsonObj.items.attachments;
 		attachments.attachment = undefined;
-/*		var files = estimate.get("estimateFiles");
-		if (files) {
-			attachments.attachment = [];
-			for (var i = 0; i < files.length; ++i) {
-				attachments.attachment.push(files[i].url());
-			}
-		}
-		else
-			attachments.attachment = undefined;
-*/
+
 		// values available from User
 		labels['nr'] = user.get("phonenumber");
 		labels['mailtotxt'] = user.get("email");
@@ -600,9 +573,7 @@ function fillInXmlData(xmlUrl, user, estimate) {
 			(discountType == 2 ? "before" : (discountType == 3 ? "after" : ""))
 		};
 
-		/* tax is only on item level */
-		/* estimateItems, estimateItems.item and
-		   estimateItems.item.tax is already loaded */
+		
 		var items = jsonObj.items;
 		var taxes = jsonObj.items.label.taxes;
 		var totalTax = 0;

@@ -93,6 +93,12 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 		$('.successMessage').html(msg).show();
 		$('.input-container').css({'border':''});
 	}
+        
+        Parse.Cloud.run("hello12",{})
+        .then(function(msg){
+           console.log(msg); 
+        });
+        
         /*
         Parse.Cloud.run("sendMailgunSample", {
 			toEmail: 'mianazhar2005@gmail.com',
@@ -103,4 +109,5 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 			console.log(msg);
 		});
         */
+        
 }]);

@@ -502,6 +502,63 @@ angular.module('invoicesUnlimited')
 			}
 
 		},
+        projects : {
+				index: {
+                    name 	 : 'dashboard.projects',
+                    abstract : true,
+                    url 	 : '/projects',
+                    views 	 : {
+                        '@'  : {
+                            controller 	 : 'ProjectsController',
+                            templateUrl  : COMPONENTS + 'dashboard/views/projects/projects.html'
+                        }
+                    }
+                },
+				all : {
+					name : 'dashboard.projects.all',
+					url : '',
+					views : {
+						'@' : {
+							controller : 'ProjectsController',
+							templateUrl : COMPONENTS + 'dashboard/views/projects/projects.html'
+						}
+					}
+				},
+				newProject : {
+					name : 'dashboard.projects.new',
+					url : '/new',
+					params : {
+						expenseId : null,
+						customerId : null
+					},
+					views : {
+						'@' : {
+							controller 	 : 'CreateProjectController',
+							templateUrl : COMPONENTS + 'dashboard/views/projects/new.project.html'
+						}
+					}
+				},
+				details : {
+					name : 'dashboard.projects.details',
+					url : '/:projectId',
+					views : {
+						'@' : {
+							controller : 'ProjectDetailController',
+							templateUrl : COMPONENTS + 'dashboard/views/projects/details.html'
+						}
+					}
+				},
+				edit : {
+					name	: 'dashboard.projects.edit',
+					url 	: '/:projectId/edit',
+					views 	: {
+						'@' : {
+							controller 	 : 'ProjectsController',
+							templateUrl : COMPONENTS + 'dashboard/views/projects/edit.project.html'
+						}
+					}
+				}
+			},
 		reports : {
 			index : {
 				name : 'dashboard.reports'
@@ -720,6 +777,7 @@ angular.module('invoicesUnlimited')
 		login,
 		signup1,
 		dashboard.customers,
+        dashboard.projects,
 		[dashboard.sales.index],
 		dashboard.sales.invoices,
 		dashboard.sales.estimates,

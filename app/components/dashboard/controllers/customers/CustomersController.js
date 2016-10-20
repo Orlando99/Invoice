@@ -38,6 +38,11 @@ invoicesUnlimited.controller('CustomersController',
     $scope.nextClicked = function(){
         $('.tutorial').hide();
     }
+    
+    $scope.skipTutorial = function(){
+        fromTutorial = false;
+        $state.go('dashboard');
+    }
 
 	$scope.selectedCustomer;
 	$scope.selectedCustomerId;

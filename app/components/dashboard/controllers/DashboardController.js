@@ -57,6 +57,9 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 
 		if (c.includes('customers.'))
 			$('#customers').addClass('active');
+        
+        else if (c.includes('projects.'))
+            $('#projects').addClass('active');
 
 		else if (c.includes('sales.'))
 			$('#sales').addClass('active');

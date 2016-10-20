@@ -449,10 +449,12 @@ function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 	}).then(function (htmlDoc) {
 		var s1 = 'Connect.open("GET", "uppage.xml"';
 		var s2 = 'Connect.open("GET", ' + '"' + xmlUrl + '"';
+        s2 = s2.replace('http:', 'https:');
 		htmlDoc = htmlDoc.replace(s1,s2);
 
 		s1 = "background: url(icn-card.png) no-repeat";
 		s2 = "background: url(" + cardUrl + ") no-repeat";
+        s2 = s2.replace('http:', 'https:');
 		htmlDoc = htmlDoc.replace(s1,s2);
 
 		return $.ajax({
