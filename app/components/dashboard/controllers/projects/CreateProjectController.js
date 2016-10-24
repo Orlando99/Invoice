@@ -15,22 +15,32 @@ if(! userFactory.entity.length) {
 var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
-    /*
-prepareToCreateEstimate();
+    
+prepareToCreateProject();
 
 $('#addProjectForm').validate({
 	rules: {
 		customer : 'required',
-		estimateNumber : 'required',
-		estimateCreateDate : 'required'
+		projectName : 'required',
+		billingMethod : 'required',
+        projectBillingHours : 'required',
+        projectBillingAmount : 'required',
+        budgetType : 'required',
+        projectBudgetCost : 'required',
+        projectBudgetHours : 'required'
 	},
 	messages: {
 		customer : 'Please select a customer',
-		estimateNumber : 'Please enter estimate number',
-		estimateCreateDate : 'Please provide estimate Create date'
+		projectName : 'Please enter project name',
+		billingMethod : 'Please select a billing method',
+        projectBillingHours : 'Please enter Rate/Hour',
+        projectBillingAmount : 'Please enter Project Cost',
+        budgetType : 'Please select budget type',
+        projectBudgetCost : 'Please enter amount',
+        projectBudgetHours : 'Please enter hours'
 	}
 });
-
+/*
 $('#extrasForm').validate({
 	rules: {
 		discount : {
@@ -102,7 +112,8 @@ function setValidationRules() {
 
 }
 
-function prepareToCreateEstimate() {
+*/
+function prepareToCreateProject() {
 	showLoader();
 	var promises = [];
 	var p = null;
@@ -120,36 +131,16 @@ function prepareToCreateEstimate() {
 	});
 	promises.push(p);
 
-	p = $q.when(coreFactory.getAllItems({
-		organization : organization
-	})).then(function(items) {
-		$scope.actualItems = items.filter(function(item) {
-			return !item.entity.expanseId;
-		});
-		$scope.expenseItems = items.filter(function(item) {
-			return item.entity.expanseId;
-		});
-		$scope.items = $scope.actualItems;
-        $scope.items.push(createItemOpener);
-	});
-	promises.push(p);
-
-	p = $q.when(estimateService.getPreferences(user))
+    /*
+	p = $q.when(projectService.getPreferences(user))
 	.then(function(prefs) {
 		$scope.prefs = prefs;
 	});
 	promises.push(p);
-
+*/
 	p = $q.when(coreFactory.getUserRole(user))
 	.then(function(role) {
 		$scope.userRole = role;
-	});
-	promises.push(p);
-
-	// TODO: tax factory
-	p = taxService.getTaxes(user, function(taxes) {
-		$scope.taxes = taxes;
-        $scope.taxes.push(createTaxOpener);
 	});
 	promises.push(p);
 
@@ -172,63 +163,12 @@ function prepareToCreateEstimate() {
 }
 
 function prepareForm() {
-	if($scope.prefs.numAutoGen == 1) {
-		$scope.estimateNo = $scope.prefs.estimateNumber;
-		$scope.disableEstNo = true;
-	} else {
-		$scope.estimateNo = "";
-		$scope.disableEstNo = false;
-	}
-	$scope.notes = $scope.prefs.notes;
-	$scope.terms = $scope.prefs.terms;
 
 	$scope.todayDate = new Date();
-	$scope.subTotalStr = currencyFilter(0, '$', 2);
-
-	switch($scope.prefs.discountType) {
-		case 0:
-			$scope.itemLevelTax = false;
-			$scope.invoiceLevelTax = false;
-			break;
-
-		case 1:
-			$scope.itemLevelTax = true;
-			$scope.invoiceLevelTax = false;
-			break;
-
-		case 2:
-		case 3:
-			$scope.itemLevelTax = false;
-			$scope.invoiceLevelTax = true;
-			$scope.discountStr = currencyFilter(0, '$', 2);
-			break;
-	}
-
-	if ($scope.prefs.shipCharges) {
-		$scope.showShippingCharges = true;
-		$scope.shippingChargesStr = currencyFilter(0, '$', 2);
-	}
-
-	if ($scope.prefs.adjustments) {
-		$scope.showAdjustments = true;
-		$scope.adjustmentsStr = currencyFilter(0, '$', 2);
-	}
-
-	if ($scope.prefs.salesPerson)
-		$scope.showSalesPerson = true;
-
-	// put first item placeholder
-	$scope.estimateItems = [{
-		selectedItem : undefined,
-		selectedTax : undefined,
-		rate : 0,
-		quantity : 1,
-		discount : 0,
-		amount : 0
-	}];
-
+	//$scope.subTotalStr = currencyFilter(0, '$', 2);
+    $scope.hasBudget = 0;
 	var customerId = $state.params.customerId;
-	var expenseId = $state.params.expenseId;
+	//var expenseId = $state.params.expenseId;
 
 	if(customerId) {
 		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
@@ -236,169 +176,18 @@ function prepareForm() {
 		})[0];
 
         customerChanged();
-        
-		// there will be no expenseId,
-		// if we came back from Create New Customer
-		if(expenseId) {
-			$q.when(customerChangedHelper())
-			.then(function() {
-			//	console.log($scope.items);
-				$scope.addEstimateItem();
-				$scope.estimateItems[0].selectedItem = $scope.items.filter(function(item) {
-					return item.entity.expanseId == expenseId;
-				})[0];
-				$scope.estimateItems[0].selectedItem.create = true; // create new item everytime
-				$scope.itemChanged(0);
-			});
-		}
-
 	}
-
-	var customFields = [];
-	if($scope.prefs.customFields) {
-		$scope.prefs.customFields.forEach(function(field) {
-			if (field.isChecked == 'YES') {
-				customFields.push({
-					name : field.name,
-					value: ""
-				});
-			}
-		});
-	}
-	$scope.customFields = customFields;
 
 	hideLoader();
 }
-
+/*
 $scope.openDatePicker = function(n) {
 	switch (n) {
 		case 1: $scope.openPicker1 = true; break;
 	}
 }
-
-$scope.addEstimateItem = function() {
-	$scope.estimateItems.push({
-		selectedItem : undefined,
-		selectedTax : undefined,
-		rate : 0,
-		quantity : 1,
-		discount : 0,
-		taxValue : 0,
-		amount : 0
-	});
-}
-
-$scope.removeEstimateItem = function(index) {
-	if ($scope.estimateItems.length > 1) {
-		$scope.estimateItems.splice(index,1);
-		reCalculateSubTotal();
-
-	} else {
-		console.log("there should be atleast 1 item in an estimate");
-	}
-}
-
-$scope.reCalculateTotal = function() {
-	var subTotal = Number($scope.subTotal) || 0;
-	var discount = Number($scope.discount) || 0;
-	var shipCharges = Number($scope.shippingCharges) || 0;
-	var adjustments = Number($scope.adjustments) || 0;
-	var totalTax = Number($scope.totalTax) || 0;
-	var sum = subTotal + totalTax;
-	var discountRatio = (100 - discount) * 0.01;
-
-	if($scope.prefs.discountType == 2) // before tax
-		sum = (subTotal * discountRatio) + totalTax;
-	else if ($scope.prefs.discountType == 3) // after tax
-		sum = (subTotal + totalTax) * discountRatio;
-
-	discount = Math.abs(sum - subTotal - totalTax);
-	$scope.total = sum + shipCharges + adjustments;
-	$scope.discountStr = currencyFilter(discount, '$', 2);
-	$scope.shippingChargesStr = currencyFilter(shipCharges, '$', 2);
-	$scope.adjustmentsStr = currencyFilter(adjustments, '$', 2);
-	$scope.totalStr = currencyFilter($scope.total, '$', 2);
-}
-
-function reCalculateSubTotal() {
-	var items = $scope.estimateItems;
-	var subTotal = 0;
-	var totalTax = 0;
-	$scope.itemTaxes = [];
-
-	// no need to check discountType,
-	// itemInfo.discount is zero, so, expression will evaluate to 1.
-	items.forEach(function(item) {
-		subTotal += item.amount * ((100 - item.discount) * 0.01);
-		item.taxValue = calculateTax(item.amount, item.selectedTax);
-		totalTax += item.taxValue;
-		if (item.selectedTax) {
-			$scope.itemTaxes.push({
-				nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
-				amount: currencyFilter(item.taxValue, '$', 2)
-			});
-		}
-	});
-
-	$scope.totalTax = totalTax;
-	$scope.subTotal = subTotal;
-	$scope.subTotalStr = currencyFilter(subTotal, '$', 2);
-	$scope.reCalculateTotal();
-}
-
-$scope.reCalculateItemAmount = function(index) {
-	var itemInfo = $scope.estimateItems[index];
-	if (! itemInfo.selectedItem) return;
-
-	itemInfo.amount = itemInfo.rate * itemInfo.quantity;
-	reCalculateSubTotal();
-}
-
-$scope.prepareCreateItem = function() {
-		salesCommon.prepareCreateItem({
-			_scope : $scope
-		});
-	}
-
-$scope.createNewItem = function() {
-		salesCommon.createNewEstimateItem({
-			_scope : $scope,
-			user : user,
-			organization : organization
-		});
-	}
-
-$scope.itemChanged = function(index) {
-//	console.log('item changed');
-	var itemInfo = $scope.estimateItems[index];
-    
-    // if create item is pressed
-    if(itemInfo.selectedItem.dummy) {
-        itemInfo.selectedItem = null;
-        $('.new-item').addClass('show');
-        // save index to select newly created item
-        $scope.itemChangedIndex = index;
-        $scope.prepareCreateItem();
-        return;
-    }
-    
-	itemInfo.rate = Number(itemInfo.selectedItem.entity.rate);
-	var tax = itemInfo.selectedItem.tax;
-	if (!tax) {
-	//	console.log("no tax applied");
-		itemInfo.selectedTax = "";
-	} else {
-		var taxes = $scope.taxes;
-		for (var i = 0; i < taxes.length; ++i) {
-			if (tax.id == taxes[i].id) {
-				itemInfo.selectedTax = taxes[i];
-				break;
-			}
-		}
-	}
-	$scope.reCalculateItemAmount(index);
-}
-
+*/
+    /*
 function customerChangedHelper() {
 	return $q.when(expenseService.getCustomerExpenses({
 		organization : organization,
@@ -451,13 +240,13 @@ function customerChangedHelper() {
 		return $scope.items = newItems;
 	});
 }
-
+*/
     function customerChanged() {
 	if($scope.selectedCustomer.dummy) {
 		$state.go('dashboard.customers.new', {backLink : $state.current.name});
 		return;
 	}
-
+/*
 	showLoader();
 	$q.when(customerChangedHelper())
 	.then(function() {
@@ -474,54 +263,49 @@ function customerChangedHelper() {
 
 		hideLoader();
 	});
+    */
 }
     
 $scope.customerChanged = customerChanged;
 
-function saveEstimate() {
-	var estimate = {
+$scope.$watch('hasBudget', function(value) {
+       if(value == 0)
+           $scope.budgetType = "";
+ });
+    
+$scope.saveProject = saveProject;
+    
+function saveProject() {
+    
+    if(!$('#addProjectForm').valid())
+        return;
+    showLoader();
+    var isBudget = false;
+    if($scope.hasBudget == 1)
+        isBudget = true;
+	var project = {
 		userID : user,
 		organization : organization,
 		customer : $scope.selectedCustomer.entity,
-		estimateDate : $scope.todayDate,
-		estimateNumber : $scope.estimateNo,
-		status : "Draft",
-		discountType : $scope.prefs.discountType,
-		discounts : $scope.discount,
-		shippingCharges : $scope.shippingCharges,
-		adjustments : $scope.adjustments,
-		subTotal : Number($scope.subTotal),
-		totalAmount : Number($scope.total),
-		referenceNumber : $scope.refNumber,
-		salesPerson : $scope.salesPerson,
-		notes : $scope.notes,
-		termsConditions : $scope.terms
-
+		projectName : $scope.projectName,
+        projectDescription : $scope.projectDescription,
+        billingMethod : $scope.billingMethod,
+        hasBudget : isBudget,
+        projectBillingAmount : $scope.projectBillingAmount,
+        projectBillingHours : $scope.projectBillingHours,
+        budgetType : $scope.budgetType,
+        projectBudgetCost : $scope.projectBudgetCost,
+        projectBudgetHours : $scope.projectBudgetHours
 	};
-	if($scope.customFields.length) {
-		var fields = [];
-		$scope.customFields.forEach(function(field) {
-			if (field.value) {
-				var obj = {};
-				obj[field.name] = field.value;
-				fields.push(obj);
-			}
-		});
-		if (fields.length) {
-			estimate.customFields = fields;
-		}
-	}
-	var email = $scope.selectedCustomer.entity.email;
-	if(email) estimate.customerEmails = [email];
 
-	return estimateService.createNewEstimate
-		(estimate, $scope.estimateItems, $scope.userRole)
-    .then(function(estimate){
-        addNewComment('Estimate created for ' + currencyFilter(estimate.attributes.totalAmount, '$', 2) +' amount', true, estimate);
-        return estimate;
+	return projectService.createNewProject
+		(project, $scope.userRole)
+    .then(function(project){
+        hideLoader();
+		$state.go('dashboard.projects.all');
     });
 }
-
+/*
 function saveAndSendEstimate() {
     //return saveEstimate();
     
@@ -534,16 +318,16 @@ function saveAndSendEstimate() {
 	});
     
 }
-
+*/
 $scope.cancel = function() {
-	$state.go('dashboard.sales.estimates.all');
+	$state.go('dashboard.sales.projects.all');
 }
 
 function validateForms () {
 	setValidationRules();
-	var a = $('#addEstimateForm').valid();
-	var b = $('#itemInfoForm').valid();
-	var c = $('#extrasForm').valid();
+	var a = $('#addProjectForm').valid();
+	//var b = $('#itemInfoForm').valid();
+	//var c = $('#extrasForm').valid();
 	
 	if (a && b && c) return true;
 	else {
@@ -560,7 +344,7 @@ function validateForms () {
 		return false;
 	}
 }
-    
+    /*
 function addNewComment(body, isAuto, estimate) {
 	
 	var obj = {

@@ -29,7 +29,7 @@ return {
 			return projects;
 		});
 
-	}
+	},
     /*
 	getEstimateDetails : function(estimateId) {
 		var Estimate = Parse.Object.extend('Estimates');
@@ -125,87 +125,36 @@ return {
 		});
 
 	},
-	createNewEstimate : function(estimate, estimateItems, role) {
-		var items = [];
+    */
+	createNewProject : function(project, role) {
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
-
-		var promise =  Parse.Promise.as(undefined);//undefined;
-
-		var itemsToCreate = [];
-		var itemThatExist = [];
-		estimateItems.forEach(function(item) {
-			if (item.selectedItem.create) {
-				itemsToCreate.push(item);
-			} else {
-				itemThatExist.push(item);
-			}
-		});
+		
 		var params = {
-			user : estimate.userID,
-			organization : estimate.organization,
+			user : project.userID,
+			organization : project.organization,
 			acl : acl
 		};
-
-		return createNewItems(itemsToCreate, params)
-		.then(function(newItems) {
-			estimateItems = itemThatExist.concat(newItems);
-			return promise;		// just to make code structure clean.
-		})
-		.then(function(fileObj) {
-			var estItem = Parse.Object.extend("EstimateItem");
-			estimateItems.forEach(function(item) {
-				var obj = new estItem();
-				obj.setACL(acl);
-				obj.set("userID", estimate.userID);
-				obj.set("organization", estimate.organization);
-				obj.set("item", item.selectedItem.entity);
-				obj.set("quantity", Number(item.quantity));
-				obj.set("amount", Number(item.amount));
-				
-				var discount = Number(item.discount);
-				if (discount != 0)
-					obj.set('discount', discount);
-
-				if (item.selectedTax) {
-					obj.set("tax", Parse.Object.extend("Tax")
-						.createWithoutData(item.selectedTax.id));
-				}
-				items.push(obj);
-			});
-			
-			return Parse.Object.saveAll(items)
-			.then(function(list) {
-			//	console.log("items saved successfully");
-				var Estimate = Parse.Object.extend("Estimates");
-				var obj = new Estimate();
-				obj.setACL(acl);
-			//	obj.set("estimateFiles", fileObj);
-				estimate.estimateItems = list;
-				
-				return obj.save(estimate)
-				.then(function(estObj) {
-					return estObj.get('organization').fetch()
-					.then(function(org) {
-						var estNum = org.get('estimateNumber');
-						var arr = estNum.split('-');
-						var n = Number(arr[1]) + 1;
-						var newNum = arr[0] + '-' + formatInvoiceNumber(n, arr[1].length);
-						org.set('estimateNumber', newNum);
-						return org.save();
-					})
-					.then(function(orgAgain) {
-						console.log("estimate created successfully");
-						return estObj;
-					});
-
-				} );
-			});
-
-		});
-
-	},
+        /*
+        var Project = Parse.Object.extend("Projects");
+        var obj = new Project();
+        obj.setACL(acl);
+        */
+        var obj = new Parse.Object("Projects", project);
+        obj.setACL(acl);
+/*
+        obj.set("userID", project.userID);
+        obj.set("organization", project.organization);
+        obj.set("projectName", project.projectName);
+        */
+        return obj.save()
+        .then(function(projObj) {
+            console.log("project created successfully");
+            return projObj;
+        });
+	}
+    /*
 	updateEstimate : function(estimateObj, estimateItems, deletedItems, user, role) {
 		var estItems = [];
 		var itemsToDelete = [];

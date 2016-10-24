@@ -11,7 +11,7 @@
         <select class="col-75" name="customer" id="customer"
                 ng-model="selectedCustomer" ng-change="customerChanged()"
           ng-options="customer.entity.displayName for customer in customers">
-          <option value="null" disabled>Select customer</option>
+          <option value="" disabled>Select customer</option>
         </select>
       </div>
       <div class="input-container col-60 layout-margin-b">
@@ -24,14 +24,22 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Billing Method</label>
-        <select class="col-75" ng-model="billingMethod">
-            <option value="null" disabled selected>Select billing method</option>
+        <select class="col-75" name="billingMethod" ng-model="billingMethod">
+            <option value="" disabled selected>Select billing method</option>
             <option value="None">None</option>
             <option value="Fixed cost for project">Fixed cost for project</option>
             <option value="Based on project hours">Based on project hours</option>
             <option value="Based on task hours">Based on task hours</option>
             <option value="Based on staff hours">Based on staff hours</option>
         </select>
+      </div>
+    <div ng-show="billingMethod == 'Based on project hours'" class="input-container col-60 layout-margin-b">
+        <label class="layout-padding-t-sm">Rate/Hour</label>
+        <input class="col-75" name="projectBillingHours" ng-model="projectBillingHours" type="number">
+      </div>
+        <div ng-show="billingMethod == 'Fixed cost for project'" class="input-container col-60 layout-margin-b">
+        <label class="layout-padding-t-sm">Project Cost</label>
+        <input class="col-75" name="projectBillingAmount" ng-model="projectBillingAmount" type="number">
       </div>
       <div class="input-container input-radio-container col-60 layout-margin-b">
         <label>Budget</label>
@@ -44,18 +52,38 @@
         </label>
         <label class="layout-padding-t-sm col-10">
           <span class="layout-margin-r">
-            <input type="radio" name="budget" ng-model="hasBudget" value="0" checked="checked" >
+            <input type="radio" name="budget" ng-model="hasBudget" value="0" checked="true" checked>
             <span class="radio"></span>
           </span>
           No
         </label>
 
       </div>
+        <div ng-show="hasBudget == 1" class="input-container col-60 layout-margin-b">
+        <label class="layout-padding-t-sm">Budget Type</label>
+        <select class="col-75" name="budgetType" ng-model="budgetType">
+            <option value="" disabled selected>Select Budget Type</option>
+            <option value="None">None</option>
+            <option value="Total Project Cost">Total Project Cost</option>
+            <option value="Total project hours">Total project hours</option>
+            <option value="Hours per task">Hours per task</option>
+            <option value="Hours per staff">Hours per staff</option>
+        </select>
+      </div>
+        
+        <div ng-show="budgetType == 'Total Project Cost'" class="input-container col-60 layout-margin-b">
+        <label class="layout-padding-t-sm">Amount</label>
+        <input class="col-75" name="projectBudgetCost" ng-model="projectBudgetCost" type="number">
+      </div>
+        <div ng-show="budgetType == 'Total project hours'" class="input-container col-60 layout-margin-b">
+        <label class="layout-padding-t-sm">Hours</label>
+        <input class="col-75" name="projectBudgetHours" ng-model="projectBudgetHours" type="number">
+      </div>
 
       <div class="clearfix"></div>
     </form>
 
-    <button class="button layout-margin-r text-uppercase button-info" ng-click-"saveProject()">Save</button>
+    <button class="button layout-margin-r text-uppercase button-info" ng-click="saveProject()">Save</button>
     <button class="button layout-margin-r text-uppercase button-neutral" ng-click="cancel()">Cancel</button>
 
     <div class="clearfix spacer"></div>
