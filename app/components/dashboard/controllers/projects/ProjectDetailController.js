@@ -1,11 +1,11 @@
 'use strict';
 
-invoicesUnlimited.controller('EstimateDetailController',
+invoicesUnlimited.controller('ProjectDetailController',
 	['$q', '$scope', '$state', '$sce', '$controller', 'userFactory',
-		'estimateService', 'coreFactory', 'commentFactory', 'currencyFilter',
+		'projectService', 'coreFactory', 'commentFactory', 'currencyFilter',
 
 function($q, $scope, $state, $sce, $controller, userFactory,
-	estimateService, coreFactory, commentFactory, currencyFilter) {
+	projectService, coreFactory, commentFactory, currencyFilter) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -16,43 +16,25 @@ var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
-showEstimateDetail();
+showProjectDetail();
 
-function showEstimateDetail() {
-	var estimateId = $state.params.estimateId;
-	if (! estimateId) return;
+function showProjectDetail() {
+	var projectId = $state.params.projectId;
+	if (! projectId) return;
 
 	showLoader();
-	$q.when(estimateService.getEstimateDetails(estimateId))
-	.then(function(estimate) {
+	$q.when(projectService.getProjectDetails(projectId))
+	.then(function(project) {
 	//	console.log(estimate);
-		$scope.estimate = estimate;
-		$scope.estimateNo = estimate.entity.estimateNumber;
-		$scope.comments = estimate.comments;
-		var receipt = estimate.entity.estimateReceipt;
-
-		// create receipt if necessary,
-		if(! receipt) {
-			return estimateService.createEstimateReceipt(estimateId)
-			.then(function(obj) {
-				return obj.get('estimateReceipt');
-			});
-		} else {
-			return Promise.resolve(receipt);
-		}
-
-	})
-	.then(function(receipt) {
-		$scope.templateUrl = $sce.trustAsResourceUrl(receipt.url());
-		hideLoader();
-
-	}, function(error) {
-		hideLoader();
-		console.log(error.message);
+		$scope.project = project.entity;
+        $scope.customer = project.entity.get("customer");
+		//$scope.estimateNo = estimate.entity.estimateNumber;
+		//$scope.comments = estimate.comments;
+        hideLoader();
 	});
 
 }
-
+/*
 $scope.changeTemplate = function() {
 	showLoader();
 	$q.when(coreFactory.getInvoiceTemplates())
@@ -245,5 +227,5 @@ $scope.addComment = function() {
 	});
 
 }
-
+*/
 }]);
