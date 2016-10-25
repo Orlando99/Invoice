@@ -33,6 +33,7 @@ return {
 		var Project = Parse.Object.extend('Projects');
 		var query = new Parse.Query(Project);
 		query.include('customer');
+        query.include('tasks');
 
 		return query.get(projectId)
 		.then(function(projObj) {
@@ -46,6 +47,7 @@ return {
 		var Project = Parse.Object.extend('Projects');
 		var query = new Parse.Query(Project);
 		query.include('customer');
+        query.include('tasks');
 
 		return query.get(projectId)
 		.then(function(projObj) {
@@ -55,7 +57,7 @@ return {
 			return project;
 		});
 	},
-	createNewProject : function(project, role) {
+	createNewProject : function(project, role, tasks, users) {
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
@@ -68,14 +70,27 @@ return {
         
         var obj = new Parse.Object("Projects", project);
         obj.setACL(acl);
-
-        return obj.save()
-        .then(function(projObj) {
-            console.log("project created successfully");
-            return projObj;
+        
+        
+        return createTasks(tasks, params)
+        .then(function(objs){
+            obj.set("tasks", objs);
+            
+            return createStaffUsers(users, params)
+            .then(function(userObjs){
+                obj.set("users", userObjs);
+                return obj.save()
+                .then(function(projObj) {
+                    console.log("project created successfully");
+                    return projObj;
+                });
+            });
+            
         });
+        
+        
 	},
-	updateProject : function(projectObj, user, role) {
+	updateProject : function(projectObj, user, role, tasks) {
 		
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
@@ -87,36 +102,75 @@ return {
 			organization : user.get('organizations')[0],
 		};
 
-        return projectObj.entity.save()
-		.then(function(projObj) {
-			return projObj;
-		});
+        return createTasks(tasks, otherData)
+        .then(function(objs){
+            projectObj.entity.set("tasks", objs);
+            return projectObj.entity.save()
+            .then(function(projObj) {
+                return projObj;
+            });
+        });
+        
 	}
 };
 
-function createNewItems (items, params) {
-	params.items = [];
-	items.forEach(function (item) {
-		var obj = {
-			title : item.selectedItem.entity.title,
-			rate : item.selectedItem.entity.rate,
-			expenseId : item.selectedItem.entity.expanseId
-		};
-		if (item.selectedItem.tax)
-			obj.tax = item.selectedItem.tax;
-
-		params.items.push(obj);
+function createTasks (tasks, params) {
+	params.tasks = [];
+    var existingTasks = [];
+	tasks.forEach(function (task) {
+        if(task.entity){
+                existingTasks.push(task.entity);
+        }
+        else{
+            var obj = {
+                taskName : task.taskName,
+                taskDescription : task.taskDescription
+            };
+            params.tasks.push(obj);
+        }
 	});
+    
+    Parse.Promise.as([]);
 
-	return itemService.createItems(params)
-	.then(function(newItems) {
-		for (var i = 0; i < items.length; ++i) {
-			items[i].selectedItem = newItems[i];
-		}
-		return items;
-	});
+    var parseTasks = [];
+    var Task = Parse.Object.extend('Task');
+
+    params.tasks.forEach(function(task) {
+        var obj = new Task();
+        obj.set('userID', params.user);
+        obj.set('organization', params.organization);
+        obj.setACL(params.acl);
+        obj.set('taskName', task.taskName);
+        obj.set('taskDescription', task.taskDescription);
+
+        parseTasks.push(obj);
+    });
+
+    return Parse.Object.saveAll(parseTasks).then(function(tasks) {
+        return tasks.concat(existingTasks);
+    });
 }
+function createStaffUsers (users, params) {
+    
+    Parse.Promise.as([]);
 
+    var parseUsers = [];
+    var Staff = Parse.Object.extend('Staff');
+
+    users.forEach(function(user) {
+        var obj = new Staff();
+        obj.set('userID', params.user);
+        obj.set('organization', params.organization);
+        obj.setACL(params.acl);
+        obj.set('chosenUser', user);
+
+        parseUsers.push(obj);
+    });
+
+    return Parse.Object.saveAll(parseUsers).then(function(staffObjs) {
+        return staffObjs;
+    });
+}
 function getOrganization (user) {
 	var organizationArray = user.get("organizations");
 	if (!organizationArray) {

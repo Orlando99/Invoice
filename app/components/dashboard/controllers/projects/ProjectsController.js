@@ -14,7 +14,6 @@ if(! userFactory.entity.length) {
 var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
-    hideLoader();
 
 $('#editProjectForm').validate({
 	rules: {
@@ -57,7 +56,6 @@ showLoader();
 userFactory.getField('dateFormat')
 .then(function(obj) {
 	$scope.dateFormat = obj;
-    hideLoader();
 	CheckUseCase();
 });
 
@@ -147,7 +145,29 @@ function prepareEditForm() {
     
     $scope.projectBudgetHours = project.entity.get("projectBudgetHours") || 0;
 
+    $scope.tasks = project.tasks;
+    
 	hideLoader();
+}
+    
+$scope.removeTask = function(index){
+    $scope.tasks.splice(index, 1);
+}
+
+$scope.addTask = function(){
+    $(".new-task").addClass('show');
+}
+
+$scope.addNewTask = function() {
+    if(!$('#addTaskForm').valid())
+        return;
+	$scope.tasks.push({
+		taskName : $scope.newTaskName,
+		taskDescription : $scope.newTaskDescription
+	});
+    $(".new-task").removeClass('show');
+    $scope.newTaskName = "";
+    $scope.newTaskDescription = "";
 }
     
 function saveEditedProject() {
@@ -170,7 +190,7 @@ function saveEditedProject() {
     }
 
 	return projectService.updateProject
-		($scope.project, user, $scope.userRole)
+		($scope.project, user, $scope.userRole, $scope.tasks)
 
 	.then(function(obj) {
         return obj;

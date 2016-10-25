@@ -28,6 +28,7 @@ function showProjectDetail() {
 	//	console.log(estimate);
 		$scope.project = project.entity;
         $scope.customer = project.entity.get("customer");
+        $scope.tasks = project.tasks;
 		//$scope.estimateNo = estimate.entity.estimateNumber;
 		//$scope.comments = estimate.comments;
         hideLoader();

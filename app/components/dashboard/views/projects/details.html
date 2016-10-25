@@ -1,10 +1,9 @@
 <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
-
   <div class="container hidesm">
-    <a href="projects.html" class="button-icon float-left layout-margin-t">
+    <a ui-sref="dashboard.projects.all" class="button-icon float-left layout-margin-t">
       <img src="./assets/images/icon-back.png" alt="Kappa" class="layout-margin-r">
     </a>
-    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">{{project.attributes.projectName}}</h3>
+    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">{{project.projectName}}</h3>
     <div class="actions float-right layout-margin-tb" uib-dropdown>
       <a ui-sref="dashboard.projects.edit({projectId:project.id})" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <a href="" class="button button-small button-info text-uppercase layout-margin-r">Add to Invoice</a>
@@ -26,14 +25,12 @@
     <div class="col-60">
       <h3 class="layout-margin-tb text-uppercase text-weight-normalize">Project Details</h3>
       <div class="container">
-        <p class="layout-no-padding layout-no-margin col-40">Customer Name</p>
-        <p class="layout-no-padding layout-no-margin col-60">{{customer.attributes.displayName}}</p>
-
-        <p class="layout-no-padding layout-no-margin col-40">Description</p>
-        <p class="layout-no-padding layout-no-margin col-60">{{project.attributes.projectDescription}}</p>
-
-        <p class="layout-no-padding layout-no-margin col-40">Billing Method</p>
-        <p class="layout-no-padding layout-no-margin col-60">{{project.attributes.billingMethod}}</p>
+          <p class="layout-no-padding layout-no-margin col-40">Customer Name</p>
+          <p class="layout-no-padding layout-no-margin col-60">{{customer.attributes.displayName}}</p><br>
+          <p class="layout-no-padding layout-no-margin col-40">Description</p>
+          <p class="layout-no-padding layout-no-margin col-60">{{project.projectDescription}} <br></p>
+          <p class="layout-no-padding layout-no-margin col-40">Billing Method</p>
+          <p class="layout-no-padding layout-no-margin col-60">{{project.billingMethod}}</p>
       </div>
 
       <div class="clearfix"></div><br>
@@ -117,18 +114,11 @@
           <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hrs</p>
           <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">Rate</p>
         </div>
-        <div class="table-row row-border">
-          <p class="col-20 text-color-light text-weight-normalize">Lorem Ipsum</p>
+        <div class="table-row row-border" ng-repeat="task in tasks">
+          <p class="col-20 text-color-light text-weight-normalize">{{task.entity.taskName}}</p>
           <p class="col-20 text-color-light text-weight-normalize">01:55</p>
-          <p class="col-20 text-color-light text-weight-normalize">00:00</p>
+          <p class="col-20 text-color-light text-weight-normalize">{{task.entity.billedHours || "0"}}</p>
           <p class="col-20 text-color-light text-weight-normalize text-center">1.55</p>
-          <p class="col-20 text-color-light text-weight-normalize text-right">$15.00</p>
-        </div>
-        <div class="table-row row-border">
-          <p class="col-20 text-color-light text-weight-normalize">Lorem Ipsum</p>
-          <p class="col-20 text-color-light text-weight-normalize">00:25</p>
-          <p class="col-20 text-color-light text-weight-normalize">00:25</p>
-          <p class="col-20 text-color-light text-weight-normalize text-center">0.00</p>
           <p class="col-20 text-color-light text-weight-normalize text-right">$15.00</p>
         </div>
       </div>

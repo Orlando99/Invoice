@@ -142,6 +142,10 @@ select.can-create-customer option:last-child{
     border-bottom: 1px #fff solid !important;
 }
 
+.icons{
+    top: 0 !important;
+}
+
 .myoverlay {
 position: fixed;
 top: 0;

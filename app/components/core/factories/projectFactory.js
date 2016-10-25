@@ -1,8 +1,8 @@
 'use strict';
 
-invoicesUnlimited.factory('projectFactory', ['userFactory',
+invoicesUnlimited.factory('projectFactory', ['userFactory', 'taskFactory',
 
-function(userFactory) {
+function(userFactory, taskFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -32,62 +32,38 @@ function Project (parseObject, params) {
 		}
 
 	}
-    /*
+    
     else if (params.operation == "getProject") {
-		estimateFields = [
-			'customer', 'estimateDate', 'referenceNumber',
-			'estimateNumber', 'status', 'adjustments',
-			'discountType', 'discounts', 'shippingCharges',
-			'subTotal', 'totalAmount', 'notes', 'termsConditions',
-			'salesPerson', 'customFields'
+		projectFields = [
+			'customer', 'projectName', 'projectDescription',
+			'billingMethod', 'projectBillingAmount', 'hasBudget',
+			'budgetType', 'projectBudgetHours', 'projectBudgetCost'
 		];
-		var estimateItems = parseObject.get('estimateItems');
-		if (estimateItems) {
-			estimateItems = estimateItems.map(function(elem){
-				var item = new estimateItemFactory(elem);
-				return item;
+		var tasks = parseObject.get('tasks');
+		if (tasks) {
+			tasks = tasks.map(function(elem){
+				var task = new taskFactory(elem);
+				return task;
 			});
-			this.estimateItems = estimateItems;
-		}
-
-	} else if(params.operation == 'sendReceipt') {
-		estimateFields = [
-			'totalAmount' ,'estimateReceipt', 'customerEmails'
-		];
-		var customer = parseObject.get("customer");
-		if (customer) {
-			setObjectOperations({
-				object 		: customer,
-				fieldName	: undefined,
-				parent 		: undefined,
-				fields 		: ["displayName"]
-			});
-			this.customer = customer;
-		}
-		var orgObj = parseObject.get("organization");
-		if(orgObj) {
-			setObjectOperations({
-				object 		: orgObj,
-				fieldName	: undefined,
-				parent 		: undefined,
-				fields 		: ["name"]
-			});
-			this.organization = orgObj;
+			this.tasks = tasks;
 		}
 
 	} else if (params.operation == 'details') {
-		estimateFields = ['estimateNumber', 'estimateReceipt'];
+		projectFields = ['customer', 'projectName', 'projectDescription',
+			'billingMethod', 'projectBillingAmount', 'hasBudget',
+			'budgetType', 'projectBudgetHours', 'projectBudgetCost' ];
 
-		var comments = parseObject.get('comments');
-		if (comments) {
-			comments = comments.map(function(elem){
-				return new commentFactory(elem);
+		var tasks = parseObject.get('tasks');
+		if (tasks) {
+			tasks = tasks.map(function(elem){
+				var task = new taskFactory(elem);
+				return task;
 			});
-			this.comments = comments;
+			this.tasks = tasks;
 		}
 
 	}
-    */
+    
 	setObjectOperations({
 		object 		: parseObject,
 		fieldName	: undefined,
