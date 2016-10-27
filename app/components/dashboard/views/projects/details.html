@@ -82,24 +82,14 @@
           <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-center">Time</p>
           <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">Status</p>
         </div>
-        <div class="table-row row-border">
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">12/03/2014</p>
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">Lorem Ipsum</p>
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">John</p>
+        <div class="table-row row-border" ng-repeat="sheet in timesheets">
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">{{(sheet.attributes.date.getMonth()+1) + '/' + sheet.attributes.date.getDate() + '/' + sheet.attributes.date.getFullYear()}}</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">{{sheet.attributes.task.attributes.taskName}}</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">{{sheet.attributes.user.attributes.title}}</p>
           <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-center">01:55</p>
           <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-right text-danger">Unbilled</p>
           <p class="col-100 layout-margin-tb layout-padding-l">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat autem asperiores modi odio in perferendis obcaecati explicabo.
-          </p>
-        </div>
-        <div class="table-row row-border">
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">12/01/2014</p>
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">Lorem Ipsum</p>
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize">John</p>
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-center">00:25</p>
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-right text-positive">Billed</p>
-          <p class="col-100 layout-margin-tb layout-padding-l">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat autem asperiores modi odio in perferendis obcaecati explicabo.
+            {{sheet.attributes.notes}}
           </p>
         </div>
       </div>
@@ -127,19 +117,19 @@
       <div class="container-table">
         <div class="thead">
           <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Name</p>
-          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Email</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Email</p>
           <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Logged Hours</p>
           <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Billed Hours</p>
           <p class="col-16 text-uppercase text-color-normalize text-weight-normalize text-right">Unbill. Houurs</p>
-          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize text-right">Role</p>
+          <p class="col-10 text-uppercase text-color-normalize text-weight-normalize text-right">Role</p>
         </div>
-        <div class="table-row row-border">
-          <p class="col-16 text-color-light text-weight-normalize">John</p>
-          <p class="col-16 text-color-light text-weight-normalize">john@gmail.com</p>
+        <div class="table-row row-border" ng-repeat="user in staff">
+          <p class="col-16 text-color-light text-weight-normalize">{{user.user.attributes.title}}</p>
+          <p class="col-20 text-color-light text-weight-normalize">{{user.user.attributes.emailID}}</p>
           <p class="col-16 text-color-light text-weight-normalize">01:55</p>
           <p class="col-16 text-color-light text-weight-normalize">00:00</p>
           <p class="col-16 text-color-light text-weight-normalize text-right">$1.50</p>
-          <p class="col-16 text-color-light text-weight-normalize text-right">Admin</p>
+          <p class="col-10 text-color-light text-weight-normalize text-right">{{user.user.attributes.role}}</p>
         </div>
       </div>
     </div>

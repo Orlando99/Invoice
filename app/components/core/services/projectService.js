@@ -26,7 +26,6 @@ return {
 			});
 			return projects;
 		});
-
 	},
     
 	getProjectDetails : function(projectId) {
@@ -34,6 +33,9 @@ return {
 		var query = new Parse.Query(Project);
 		query.include('customer');
         query.include('tasks');
+        query.include('users.chosenUser');
+        query.include('timeSheets.task');
+        query.include('timeSheets.user');
 
 		return query.get(projectId)
 		.then(function(projObj) {
@@ -48,6 +50,10 @@ return {
 		var query = new Parse.Query(Project);
 		query.include('customer');
         query.include('tasks');
+        query.include('users.chosenUser');
+        query.include('timeSheets.task');
+        query.include('timeSheets.user');
+        query.include('timesheets');
 
 		return query.get(projectId)
 		.then(function(projObj) {
@@ -57,7 +63,7 @@ return {
 			return project;
 		});
 	},
-	createNewProject : function(project, role, tasks, users) {
+	createNewProject : function(project, role, users, timesheets) {
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
@@ -71,11 +77,9 @@ return {
         var obj = new Parse.Object("Projects", project);
         obj.setACL(acl);
         
-        
-        return createTasks(tasks, params)
-        .then(function(objs){
-            obj.set("tasks", objs);
-            
+        return createTimesheets(timesheets, params)
+        .then(function(sheetsObjs){
+            obj.set("timeSheets", sheetsObjs);
             return createStaffUsers(users, params)
             .then(function(userObjs){
                 obj.set("users", userObjs);
@@ -85,12 +89,10 @@ return {
                     return projObj;
                 });
             });
-            
         });
         
-        
 	},
-	updateProject : function(projectObj, user, role, tasks) {
+	updateProject : function(projectObj, user, role, timesheets, staffUsers) {
 		
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
@@ -102,18 +104,53 @@ return {
 			organization : user.get('organizations')[0],
 		};
 
-        return createTasks(tasks, otherData)
+        return createTimesheets(timesheets, otherData)
         .then(function(objs){
-            projectObj.entity.set("tasks", objs);
-            return projectObj.entity.save()
-            .then(function(projObj) {
-                return projObj;
+            projectObj.entity.set("timeSheets", objs);
+            return createStaffUsers(staffUsers, otherData)
+            .then(function(userObjs){
+                projectObj.entity.set("users", userObjs);
+                return projectObj.entity.save()
+                .then(function(projObj) {
+                    console.log("project created successfully");
+                    return projObj;
+                });
             });
         });
         
 	}
 };
 
+function createTimesheets (timesheets, params) {
+	params.timesheets = [];
+	
+    Parse.Promise.as([]);
+    var existing = [];
+    var parseTasks = [];
+    var Timesheet = Parse.Object.extend('Timesheets');
+
+    timesheets.forEach(function(timesheet) {
+        if(timesheet.attributes){
+            existing.push(timesheet);
+        } else {
+            var obj = new Timesheet();
+            obj.set('userID', params.user);
+            obj.set('organization', params.organization);
+            obj.setACL(params.acl);
+            obj.set('user', timesheet.user);
+            obj.set('task', timesheet.task);
+            obj.set('date', timesheet.sheetDate);
+            obj.set('notes', timesheet.notes);
+
+            parseTasks.push(obj);
+        }
+    });
+
+    return Parse.Object.saveAll(parseTasks).then(function(sheets) {
+        return sheets.concat(existing);
+    });
+}
+    
 function createTasks (tasks, params) {
 	params.tasks = [];
     var existingTasks = [];
@@ -155,20 +192,25 @@ function createStaffUsers (users, params) {
     Parse.Promise.as([]);
 
     var parseUsers = [];
+    var existingUsers = [];
     var Staff = Parse.Object.extend('Staff');
 
     users.forEach(function(user) {
-        var obj = new Staff();
-        obj.set('userID', params.user);
-        obj.set('organization', params.organization);
-        obj.setACL(params.acl);
-        obj.set('chosenUser', user);
+        if(user.attributes.chosenUser){
+            existingUsers.push(user);
+        } else {
+            var obj = new Staff();
+            obj.set('userID', params.user);
+            obj.set('organization', params.organization);
+            obj.setACL(params.acl);
+            obj.set('chosenUser', user);
 
-        parseUsers.push(obj);
+            parseUsers.push(obj);
+        }
     });
 
     return Parse.Object.saveAll(parseUsers).then(function(staffObjs) {
-        return staffObjs;
+        return staffObjs.concat(existingUsers);
     });
 }
 function getOrganization (user) {

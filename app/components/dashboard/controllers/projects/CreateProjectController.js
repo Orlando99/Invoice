@@ -3,9 +3,9 @@
 invoicesUnlimited.controller('CreateProjectController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
 	'projectService', 'coreFactory', 'taxService', 'commentFactory',
-	'currencyFilter', 'projectUserFactory', 'appFields',
+	'currencyFilter', 'projectUserFactory', 'appFields','$uibModal',
 function($scope, $state, $controller, $q, userFactory,
-	projectService,coreFactory,taxService,commentFactory,currencyFilter,projectUserFactory,appFields) {
+	projectService,coreFactory,taxService,commentFactory,currencyFilter,projectUserFactory,appFields,$uibModal,$uibModalInstance,$document,queryService,user,method,title) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -38,6 +38,22 @@ $('#addProjectForm').validate({
         budgetType : 'Please select budget type',
         projectBudgetCost : 'Please enter amount',
         projectBudgetHours : 'Please enter hours'
+	}
+});
+$('#addTimesheetForm').validate({
+	rules: {
+		timesheetDate : 'required',
+		timesheetHours : 'required',
+		timesheetMinutes : 'required',
+        timesheetUser : 'required',
+        timesheetTask : 'required'
+	},
+	messages: {
+		timesheetDate : 'Please select a date',
+		timesheetHours : 'Please enter hours',
+		timesheetMinutes : 'Please enter minutes',
+        timesheetUser : 'Please select user',
+        timesheetTask : 'Please select task'
 	}
 });
 $('#addTaskForm').validate({
@@ -122,7 +138,12 @@ function prepareToCreateProject() {
 function prepareForm() {
     $scope.projectUsers = [];
     $scope.tasks = [];
-	$scope.todayDate = new Date();
+    $scope.timesheetTasks = [];
+    $scope.timesheetTasks.push(createTaskOpener);
+    
+    $scope.timesheets = [];
+    
+	$scope.timesheetDate = new Date();
 	//$scope.subTotalStr = currencyFilter(0, '$', 2);
     $scope.hasBudget = 0;
 	var customerId = $state.params.customerId;
@@ -137,13 +158,17 @@ function prepareForm() {
 
 	hideLoader();
 }
-/*
+
 $scope.openDatePicker = function(n) {
 	switch (n) {
 		case 1: $scope.openPicker1 = true; break;
 	}
 }
-*/
+
+$scope.removeTimesheet = function(index){
+    $scope.timesheets.splice(index, 1);
+}
+
 function customerChanged() {
 	if($scope.selectedCustomer.dummy) {
 		$state.go('dashboard.customers.new', {backLink : $state.current.name});
@@ -155,14 +180,89 @@ $scope.customerChanged = customerChanged;
     
 function userChanged() {
 	if($scope.newUser.dummy) {
-		alert("new user clicked")
+		createUser();
         $scope.newUser = "";
 		return;
 	}
 }
+
+function createUser(){
+		var modalInstance = $uibModal.open({
+			animation 			: true,
+			templateUrl 		: 'modal-user',
+			controller 			: 'NewUserController',
+			backdrop 			: true,
+			appendTo 			: angular.element(document.querySelector('#view')),
+			windowTemplateUrl 	: 'modal-window',
+			resolve 			: {
+				user : function() {
+					var ctor = Parse.Object.extend(Parse.User);
+					var obj = new ctor();
+					setObjectOperations({
+						object 		: obj,
+						fields 		: appFields.user
+					});
+					return obj;
+				},
+				method 	: function(){
+					return 'create';
+				},
+				title 	: function() {
+					return 'Add User';
+				}
+			}
+		});
+
+		modalInstance.result.then(function(newUser){
+			setObjectOperations({
+				object 		: newUser,
+				fields 		: appFields.user
+			});
+			var prUser = projectUserFactory
+			.createNew({
+				emailID 	 : newUser.email,
+				role 		 : newUser.role,
+				userName	 : newUser.username,
+				country		 : newUser.country,
+				title		 : newUser.fullName,
+				organization : newUser.selectedOrganization,
+				companyName  : newUser.company,
+				userID 		 : userFactory.entity[0],//newUser,
+				status 		 : 'Activated'
+			}).then(function(res){
+				$scope.$apply(function(){
+                    $scope.users.pop();
+					$scope.users.push(res);
+                    $scope.users.push(createUserOpener);
+                    $scope.newUser = res;
+				});
+			},function(e){
+				console.log(e.message);
+			});
+		},function(){
+			console.log('Dismiss modal');
+		});
+	}
     
 $scope.userChanged = userChanged;  
 
+$scope.saveTimesheet = function(){
+    if(!$("#addTimesheetForm").valid())
+        return;
+    
+    $scope.timesheets.push({
+        user : $scope.timesheetUser,
+        task : $scope.timesheetTask,
+        date : $scope.timesheetDate,
+        notes : $scope.timesheetDescription
+    });
+    $scope.timesheetUser = "";
+    $scope.timesheetTask = "";
+    $scope.timesheetDate = new Date();
+    $scope.timesheetDescription = "";
+    $(".new-timesheet").removeClass("show");
+}
+    
 $scope.$watch('hasBudget', function(value) {
        if(value == 0)
            $scope.budgetType = "";
@@ -190,11 +290,12 @@ function saveProject() {
         projectBillingHours : $scope.projectBillingHours,
         budgetType : $scope.budgetType,
         projectBudgetCost : $scope.projectBudgetCost,
-        projectBudgetHours : $scope.projectBudgetHours
+        projectBudgetHours : $scope.projectBudgetHours,
+        tasks: $scope.tasks
 	};
 
 	return projectService.createNewProject
-		(project, $scope.userRole, $scope.tasks, $scope.projectUsers)
+		(project, $scope.userRole, $scope.projectUsers, $scope.timesheets)
     .then(function(project){
         hideLoader();
 		$state.go('dashboard.projects.all');
@@ -207,18 +308,54 @@ $scope.cancel = function() {
 
 $scope.addTask = function(){
     $(".new-task").addClass('show');
+    $scope.fromTimesheet = false;
 }
 
 $scope.addNewTask = function() {
     if(!$('#addTaskForm').valid())
         return;
-	$scope.tasks.push({
-		taskName : $scope.newTaskName,
-		taskDescription : $scope.newTaskDescription,
-	});
-    $(".new-task").removeClass('show');
-    $scope.newTaskName = "";
-    $scope.newTaskDescription = "";
+    
+    showLoader();
+    
+    var acl = new Parse.ACL();
+    acl.setRoleWriteAccess($scope.userRole.get("name"), true);
+    acl.setRoleReadAccess($scope.userRole.get("name"), true);
+    
+    var Task = Parse.Object.extend('Task');
+    
+    var obj = new Task();
+    obj.set('userID', user);
+    obj.set('organization', organization);
+    obj.setACL(acl);
+    obj.set('taskName', $scope.newTaskName);
+    obj.set('taskDescription', $scope.newTaskDescription);
+
+    return obj.save().then(function(task) {
+        $scope.tasks.push(task);
+        $scope.timesheetTasks.pop();
+        $scope.timesheetTasks.push(task);
+        $scope.timesheetTasks.push(createTaskOpener);
+        if($scope.fromTimesheet){
+            $scope.timesheetTask = task;        
+        }
+        $(".new-task").removeClass('show');
+        $scope.newTaskName = "";
+        $scope.newTaskDescription = "";
+        $scope.$apply();
+        hideLoader();
+    });
+}
+
+$scope.taskChanged = function(){
+    if($scope.timesheetTask.dummy){
+        $scope.fromTimesheet = true;
+        $scope.timesheetTask = ""; 
+        $(".new-task").addClass("show");
+    }
+}
+
+$scope.addTimesheet = function(){
+    $(".new-timesheet").addClass('show');
 }
 
 $scope.addNewUser = function(){
@@ -235,6 +372,9 @@ $scope.removeUser = function(index){
 
 $scope.removeTask = function(index){
     $scope.tasks.splice(index, 1);
+    $scope.timesheetTasks.splice(index, 1);
+    $scope.timesheetTask = "";
+    $scope.$apply();
 }
 
 $scope.addUser = function(){

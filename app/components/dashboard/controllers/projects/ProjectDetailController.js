@@ -29,70 +29,13 @@ function showProjectDetail() {
 		$scope.project = project.entity;
         $scope.customer = project.entity.get("customer");
         $scope.tasks = project.tasks;
-		//$scope.estimateNo = estimate.entity.estimateNumber;
-		//$scope.comments = estimate.comments;
+        $scope.staff = project.users;
+        $scope.timesheets = project.timesheets;
         hideLoader();
 	});
 
 }
 /*
-$scope.changeTemplate = function() {
-	showLoader();
-	$q.when(coreFactory.getInvoiceTemplates())
-	.then(function(templateObjs) {
-		var defaultTemplate = user.get('defaultTemplate');
-		
-		var templates = [];
-		templateObjs.forEach(function(t) {
-			var obj = {
-				entity : t,
-				name : t.get('name'),
-				url : t.get('templatePreview').url()
-			}
-			if (!defaultTemplate && obj.name == 'Template 1')
-				obj.isDefault = true;
-			else
-				obj.isDefault = (defaultTemplate.id == t.id ? true : false);
-
-			templates.push(obj);
-
-		});
-		$scope.templates = templates;
-		$('.change-template').addClass('show');
-		hideLoader();
-
-	}, function(error) {
-		console.log(error.message);
-		hideLoader();
-	});
-}
-
-$scope.setDefaultTemplate = function(index) {
-	showLoader();
-	$scope.templates.forEach(function(t) {
-		t.isDefault = false;
-	});
-	$scope.templates[index].isDefault = true;
-
-	$scope.estimate.entity.unset('estimateReceipt');
-	user.set('defaultTemplate', $scope.templates[index].entity);
-
-	var promises = [];
-	promises.push(user.save());
-	promises.push($scope.estimate.entity.save());
-
-	$q.all(promises).then(function() {
-		hideLoader();
-		$('.change-template').removeClass('show');
-		console.log('default template selected');
-		$state.reload();
-
-	}, function(error) {
-		hideLoader();
-		console.log(error,message);
-	});
-}
-
 $scope.emailReceipt = function() {
 	showLoader();
 	$q.when(estimateService.sendEstimateReceipt($scope.estimate.entity))

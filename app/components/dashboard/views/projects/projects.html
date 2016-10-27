@@ -2,7 +2,7 @@
   
   <div class="container hidesm">
 
-    <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Projects <i class="arrow-down-black"></i></h3>
+    <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Projects <!-- <i class="arrow-down-black"></i>--></h3>
     <a ui-sref="dashboard.projects.new" class="float-right button button-add text-uppercase">New</a>
     <form class="float-right layout-margin-t">
       <input type="text" class="search-bar" placeholder="Search">
@@ -12,13 +12,13 @@
 
     <table class="table-border-tb">
       <tr class="thead">
-        <td class="text-uppercase text-info layout-padding-tb-lg">
+        <td ng-click="sortByName()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
           Name
         </td>
-        <td class="text-uppercase text-info layout-padding-tb-lg">Customer Name <!--<img src="../../dist/images/dropdown-arrow-primary.png" alt="">--></td>
-        <td class="text-uppercase text-info layout-padding-tb-lg">Description</td>
-        <td class="text-uppercase text-info layout-padding-tb-lg">Billing Method</td>
-        <td class="text-uppercase text-info layout-padding-tb-lg">Rate</td>
+        <td ng-click="sortByCustomer()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Customer Name <!--<img src="../../dist/images/dropdown-arrow-primary.png" alt="">--></td>
+        <td ng-click="sortByDesc()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Description</td>
+        <td ng-click="sortByBilling()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Billing Method</td>
+        <td ng-click="sortByAmount()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Rate</td>
       </tr>
       <tr ng-repeat="project in projectList"
         ui-sref="dashboard.projects.details({projectId:project.entity.id})" style="cursor:pointer">

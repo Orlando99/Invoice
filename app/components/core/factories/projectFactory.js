@@ -1,8 +1,8 @@
 'use strict';
 
-invoicesUnlimited.factory('projectFactory', ['userFactory', 'taskFactory',
+invoicesUnlimited.factory('projectFactory', ['userFactory', 'taskFactory', 'staffFactory',
 
-function(userFactory, taskFactory) {
+function(userFactory, taskFactory, staffFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -47,6 +47,16 @@ function Project (parseObject, params) {
 			});
 			this.tasks = tasks;
 		}
+        
+        var users = parseObject.get('users');
+        if(users)
+        {
+            this.users = users;
+        }
+        var timesheets = parseObject.get('timeSheets');
+        if(timesheets){
+            this.timesheets = timesheets;
+        }
 
 	} else if (params.operation == 'details') {
 		projectFields = ['customer', 'projectName', 'projectDescription',
@@ -61,6 +71,19 @@ function Project (parseObject, params) {
 			});
 			this.tasks = tasks;
 		}
+        var users = parseObject.get('users');
+        if (users) {
+			users = users.map(function(elem){
+				var user = new staffFactory(elem);
+				return user;
+			});
+			this.users = users;
+		}
+        
+        var timesheets = parseObject.get('timeSheets');
+        if(timesheets){
+            this.timesheets = timesheets;
+        }
 
 	}
     
