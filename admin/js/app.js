@@ -18,7 +18,7 @@ Parse.initialize(
   "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
   "Xjf3GvwUO0SNsz0nCeM0NjlvQlDlmxGHOi6PqfzI"
 );
-Parse.serverURL = 'https://invoice101.herokuapp.com/parse';
+Parse.serverURL = 'https://sslsecuredfiles.com/parse';
 
 var clientAdminPortalApp = angular.module('clientAdminPortalApp', ['tagged.directives.infiniteScroll', 'ui.router', 'ui.bootstrap']);
 

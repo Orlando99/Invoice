@@ -25,7 +25,7 @@ var OurParse = {
 
 var OurParse = {
   appID : "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
-  serverURL : "https://cjpacific.com/parse",
+  serverURL : "https://sslsecuredfiles.com/parse",
     jsKey: "Xjf3GvwUO0SNsz0nCeM0NjlvQlDlmxGHOi6PqfzI"
 }
 
