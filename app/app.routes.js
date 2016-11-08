@@ -171,6 +171,15 @@ angular.module('invoicesUnlimited')
 		}
 	}
 
+    var activateAccount = {
+		index : {
+			name 	: 'activateAccount',
+			url 	: '/activateAccount',
+			controller : "AvtivateAccountController",
+			templateUrl : COMPONENTS + "activateAccountView.html"
+		}
+	}
+    
 	var login = {
 		index : {
 			name 	: 'login',
@@ -775,6 +784,7 @@ angular.module('invoicesUnlimited')
 
 	addStatesFrom([
 		login,
+        activateAccount,
 		signup1,
 		dashboard.customers,
         dashboard.projects,
