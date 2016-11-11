@@ -483,11 +483,27 @@ return {
 			data.invoiceObj = invoiceObj;	// save for later use
 			var user = invoiceObj.get("userID");
 			var template = user.get("defaultTemplate");
+            if(!template){
+                var Template = Parse.Object.extend('InvoiceTemplate');
+                var query = new Parse.Query(Template);
+                query.equalTo ('name', 'Template 1');
+                return query.first()
+                .then(function(t) {
+                    var xmlFile = t.get("templateData");
+                    data.htmlFile = t.get("templateHTML");	// save for later use
+                    data.cardUrl = t.get("linkedFile").url();// save for later use
+                    return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId);
+                });
+            }
+            else{
+                var xmlFile = template.get("templateData");
+                data.htmlFile = template.get("templateHTML");	// save for later use
+                data.cardUrl = template.get("linkedFile").url();// save for later use
+                return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId);
+            }
+            
 			// in case of edit, get them from invocieObj
-			var xmlFile = template.get("templateData");
-			data.htmlFile = template.get("templateHTML");	// save for later use
-			data.cardUrl = template.get("linkedFile").url();// save for later use
-			return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId);
+			
 		})
 		.then(function(newXml) {
 			var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");

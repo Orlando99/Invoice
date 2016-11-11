@@ -7,6 +7,8 @@ invoicesUnlimited.controller('MerchantAccountController',
 	var user1 = signUpFactory.getFactory('User');
 
 	if (!user1.entity.length) $state.go('signup');
+        
+    //signUpFactory.setObject('User', user1.entity);
 
 	$scope.goNext = function(){
 		if (signUpFactory.getFactory('User').entity.length)
@@ -75,16 +77,22 @@ invoicesUnlimited.controller('MerchantAccountController',
 	function saveBusinessInfo(){
 
 		showLoader();
+        signUpFactory.setDefaultValues();
 		for (var field in $scope.bsnsInfo){
 			signUpFactory.setField('BusinessInfo',{
 				field : field,
 				value : $scope.bsnsInfo[field]
 			});
 		}
-        
+        /*
         signUpFactory.setField('BusinessInfo',{
 				field : 'businessName',
 				value : signUpFactory.getField('User','company')
+			});
+        */
+        signUpFactory.setField('BusinessInfo',{
+				field : 'businessName',
+				value : user1.entity[0].get('company')
 			});
 		
 		var business = signUpFactory.create('BusinessInfo');

@@ -281,7 +281,10 @@ invoicesUnlimited.controller('AvtivateAccountController',
                     hideLoader();
                     $rootScope.fromPaymentSettings = false;
                     //$state.go('signup.accountActivated');
-                    saveBusinessInfo();
+                    //saveBusinessInfo();
+                    
+                    var url = $state.href('signup.accountActivated');
+                    window.open(url,'_blank');
                 },function(err){
                     if (!err.length) {
                         console.log(err.message);
@@ -290,29 +293,7 @@ invoicesUnlimited.controller('AvtivateAccountController',
                     err.forEach(function(er){console.log(er.message);});
                 });
 			});
-            /*
-			var saveCodeHash = function(res){
-				var codeString = res.match(/(Code:([0-9]|[a-f]){32}\;)/g);
-				if(codeString == null) {
-					handleError();
-
-				} else {
-					codeString = codeString[0];
-					var code = codeString.match(/[^\;\:]+/g);
-					if (!code) {
-						console.log('error while generating code, try again');
-						hideLoader();
-
-					} else {
-						code = code[1];
-						signUpFactory.setVerification.code(code);
-						hideLoader();
-						$state.go('signup.verification');
-					}
-				}
-
-			}
-            */
+            
 			var postParams = {};
             
             postParams.dest = 'email';
@@ -358,7 +339,9 @@ invoicesUnlimited.controller('AvtivateAccountController',
 		})
 		.then(function(){
 			hideLoader();
-			$state.go('signup.invoiceTemplateInfo');
+			//$state.go('signup.invoiceTemplateInfo');
+            var url = $state.href('signup.invoiceTemplateInfo');
+            window.open(url,'_blank');
 		},errorCallback);
 	}
 

@@ -31,13 +31,13 @@ invoicesUnlimited.controller('BusinessInfoController',
 		$state.go('signup');
 		return;
 	}
-
+        /*
 	if (!signUpFactory.getVerification.code() && ! $rootScope.fromPaymentSettings) {
 		userFactory.logout();
 		$state.go('signup');
 		return;
 	}
-        
+       */ 
         var user = signUpFactory.getFactory('User');
         
         var currentUser = undefined;
@@ -137,9 +137,10 @@ invoicesUnlimited.controller('BusinessInfoController',
 	});
 
 	$('input[name="federalTaxID"]').mask('00-0000000');
-
+userFactory.entity[0].get('company')
 	$scope.bsnsInfo = {
-		'businessName'  : signUpFactory.getField('User','company'),
+		'businessName'  : userFactory.entity[0].get('company'),
+		//'businessName'  : signUpFactory.getField('User','company'),
 		'streetName'	: '',
 		'city'			: '',
 		'state'			: '',
@@ -252,7 +253,9 @@ invoicesUnlimited.controller('BusinessInfoController',
     function saveData(){
 	
 		if (!$('#signUpForm').valid()) return;
-
+        
+        signUpFactory.setDefaultValues();
+        
 		showLoader();
 		for (var field in $scope.bsnsInfo){
 			signUpFactory.setField('BusinessInfo',{
