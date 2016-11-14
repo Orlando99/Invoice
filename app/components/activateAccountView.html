@@ -39,6 +39,8 @@
 			    					<div class="form-group">
 			                     <input  required Style="background-color : white ; -webkit-appearance: none;
                                 border-radius: 0; height: 15% ; font-size: 20px" type="text" id="username" placeholder="UserName" name="username" class="form-control input-sm">
+                                        <label id="username_error" style="color: red; display: none">Username already exists.</label>
+                                        <input type="hidden" id="username-exists" value="false"/>
 			    					</div>
                                     
 			    				</div>
@@ -46,7 +48,8 @@
 			    					<div class="form-group">
 			    						<input Style="background-color:#FFFFFF ; -webkit-appearance: none;
                                 border-radius: 0; height: 15% ; font-size: 20px" type="text" placeholder="Email" name="email" id="email" class="form-control input-sm" >
-                                       
+                                       <label id="email_error" style="color: red; display: none">Email already exists.</label>
+                                        <input type="hidden" id="email-exists" value="false"/>
 			    					</div>
 			    				</div>
                     

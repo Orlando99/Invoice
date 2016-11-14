@@ -133,13 +133,13 @@ invoicesUnlimited.controller('AvtivateAccountController',
 		},
 		messages: {
 			username: {
-				required : "Please specify your username !",
-				UserNameExists : "The username is already taken!"
+				required : "Please specify your username !"
+				//UserNameExists : "The username is already taken!"
 			},
 			email : {
 				required : "Please specify your email !",
-				email : "Please write valid email address",
-				EmailExists : "The email is already taken!"
+				email : "Please write valid email address"
+				//EmailExists : "The email is already taken!"
 			},
 			password: {
 				required : "Please specify your password !",
@@ -186,13 +186,18 @@ invoicesUnlimited.controller('AvtivateAccountController',
 	};
 
 	$scope.sendMessage = function(){
+        $scope.newWin = window.open('','_blank');
+        debugger;
 		showLoader();
 		var result = $scope.ValidateForm(function(validated){
 			if (!validated) {
+                $("#username_error").show();
+                $("#email_error").show();
 				hideLoader();
 				return;
 			}
-	
+            $("#username_error").hide();
+            $("#email_error").hide();
             $('#company').val($('#username').val());
             $('#country').val('United States of America');
             
@@ -284,7 +289,8 @@ invoicesUnlimited.controller('AvtivateAccountController',
                     //saveBusinessInfo();
                     
                     var url = $state.href('signup.accountActivated');
-                    window.open(url,'_blank');
+                    //window.open(url,'_blank');
+                    $scope.newWin.location = url;
                 },function(err){
                     if (!err.length) {
                         console.log(err.message);
@@ -342,6 +348,7 @@ invoicesUnlimited.controller('AvtivateAccountController',
 			//$state.go('signup.invoiceTemplateInfo');
             var url = $state.href('signup.invoiceTemplateInfo');
             window.open(url,'_blank');
+            
 		},errorCallback);
 	}
 

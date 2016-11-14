@@ -52,7 +52,7 @@ return {
 	getInvoiceDetails : function(invoiceId) {
 		var Invoice = Parse.Object.extend('Invoices');
 		var query = new Parse.Query(Invoice);
-		query.include('comments', 'payment');
+		query.include('comments', 'payment', 'invoiceInfo');
 
 		return query.get(invoiceId)
 		.then(function(invObj) {

@@ -50,6 +50,7 @@ function showInvoiceDetail() {
 		$scope.invoice = invoice;
 		$scope.invoiceNo = invoice.entity.invoiceNumber;
 		$scope.comments = invoice.comments;
+        $scope.invoiceInfo = invoice.entity.invoiceInfo;
         
         if(invoice.entity.balanceDue > 0){
             
@@ -393,17 +394,105 @@ $scope.showPaymentDetail = function(index) {
 	$scope.selectedPayment = $scope.payments[index];
 	var payment = $scope.selectedPayment.entity;
 	var mode = payment.mode;
-	var refunded = payment.deleted
+	var refunded = payment.deleted;
+    
+    if ( !refunded )
+		$scope.selectedPayment.disableRefund = false;
+	else
+		$scope.selectedPayment.disableRefund = true;
 
+    /*
 	if ( !refunded && (mode == 'Cash' || mode == 'Check') )
 		$scope.selectedPayment.disableRefund = false;
 	else
 		$scope.selectedPayment.disableRefund = true;
+        */
 }
 
 $scope.refundPayment = function() {
 	var mode = $scope.selectedPayment.entity.mode;
 	var refunded = $scope.selectedPayment.entity.deleted;
+    
+    if(refunded)
+        return;
+    
+    if(mode == 'Credit Card'){
+        var info = $scope.invoiceInfo;
+        var tansId = info.get('paymentStatus');
+        tansId = tansId.split(',');
+        tansId = tansId[tansId.length - 1];
+        tansId = tansId.replace(/\"/g, "");
+        
+        var account = user.get('EPNusername');
+        var restrictKey = user.get('EPNrestrictKey');
+        var am = $scope.selectedPayment.entity.get('amount');
+        
+        var url = "refund.php";
+        var data = {
+            'HTML'        : 'No',
+            'ePNAccount'  : account,
+            'RestrictKey' : restrictKey,
+            'TransID'     : tansId,
+            'TranType'    : 'Return',
+            'Total'       : am
+        };
+        
+        var data1 = Object.assign({},data,{
+                    
+                });
+        
+        showLoader();
+        $.ajax({
+            method:"GET",
+            url: url,
+            data: data1,
+            complete:function(data){
+                console.log("Reguest is done: " + data);
+            },
+            error: function(data){
+                alert("ERROR: " + data);
+            },
+            success:function(data){
+                debugger;
+                
+                var response = data.match(/[^,]+/g);
+                
+                //showLoader();
+                
+                if(response.length){
+                    var payment = $scope.selectedPayment.entity;
+                    payment.set('deleted', true);
+                    
+                    var info = $scope.invoiceInfo;
+                    info.set('paymentStatus', data);
+
+                    var invoiceObj = $scope.invoice.entity;
+                    invoiceObj.unset('invoiceReceipt');
+                    //invoiceObj.increment('paymentMade', -payment.amount);
+                    invoiceObj.increment('balanceDue', payment.amount);
+
+                    if (invoiceObj.paymentMade <= 0)
+                        invoiceObj.set('status', 'Refunded');
+                    else
+                        invoiceObj.set('status', 'Partial Refunded');
+
+                    var promises = [];
+                    promises.push(payment.save());
+                    promises.push(invoiceObj.save());
+                    promises.push(info.save());
+
+                    $q.all(promises)
+                    .then(function() {
+                        hideLoader();
+                        $state.reload();
+                    });
+                }
+                
+            }
+        });
+        
+    }
+    
 	if ( refunded || (mode != 'Cash' && mode != 'Check') ) return;
 
 	showLoader();
