@@ -456,6 +456,7 @@ function customerChangedHelper() {
 		}
 	//	console.log(newExpenseItems);
 		// remove unrelated estimate items
+        $scope.actualItems.pop();
 		var newItems = $scope.actualItems.concat(custExpenseItems,newExpenseItems);
 		$scope.estimateItems = $scope.estimateItems.filter(function(estItem) {
 			if(!estItem.selectedItem || estItem.selectedItem.create)
@@ -662,6 +663,8 @@ $scope.saveAndSend = function () {
 		}
 	})
 	.then(function(estimate) {
+        if($scope.selectedCustomer.entity.email)
+                addNewComment('Estimate emailed to ' + $scope.selectedCustomer.entity.email, true, estimate);
 		hideLoader();
 		$state.go('dashboard.sales.estimates.all');
 

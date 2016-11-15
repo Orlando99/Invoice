@@ -3,9 +3,9 @@
 invoicesUnlimited.controller('CreateCreditNoteController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
 	'creditNoteService', 'coreFactory', 'taxService', 'expenseService',
-	'currencyFilter',
+	'currencyFilter','commentFactory',
 function($scope, $state, $controller, $q, userFactory,
-	creditNoteService, coreFactory, taxService, expenseService, currencyFilter) {
+	creditNoteService, coreFactory, taxService, expenseService, currencyFilter,commentFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -228,6 +228,7 @@ function saveAndSendCreditNote() {
 	.then(function(creditNote) {
 		return creditNoteService.createCreditNoteReceipt(creditNote.id)
 		.then(function(creditNoteObj) {
+            addNewComment('Creditnote created for ' + currencyFilter(creditNoteObj.attributes.totalAmount, '$', 2) +' amount', true, creditNoteObj);
 			return creditNoteService.sendCreditNoteReceipt(creditNoteObj);
 		});
 	});
@@ -299,6 +300,8 @@ $scope.saveAndSend = function () {
 		}
 	})
 	.then(function(creditNote) {
+        if($scope.selectedCustomer.entity.email)
+                addNewComment('Creditnote emailed to ' + $scope.selectedCustomer.entity.email, true, creditNote);
 		hideLoader();
 		$state.go('dashboard.sales.creditnotes.all');
 
@@ -307,6 +310,48 @@ $scope.saveAndSend = function () {
 		console.log(error);
 	});
 
+}
+
+function addNewComment(commentbody, isAuto, creditNote){
+    var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : isAuto,
+		comment : commentbody
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
+
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var prevComments = creditNote.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		creditNote.set('comments', prevComments);
+		return creditNote.save();
+	})
+	.then(function() {
+		var comment = new commentFactory(data.commentObj);
+
+		if($scope.comments)
+			$scope.comments.push(comment);
+		else
+			$scope.comments = [comment];
+
+		console.log(comment);
+	});
 }
 
 $scope.cancel = function() {

@@ -553,6 +553,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		})
 		.then(function(invoice) {
             addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice);
+            if($scope.selectedCustomer.entity.email)
+                addNewComment('Invoice emailed to ' + $scope.selectedCustomer.entity.email, true, invoice);
 			hideLoader();
 			$state.go('dashboard.sales.invoices.all');
 

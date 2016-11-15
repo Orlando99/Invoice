@@ -33,8 +33,10 @@ invoicesUnlimited.factory('coreFactory',
 		.then(function(customers){
 			var result = [];
 			customers.forEach(function(elem){
-				var customer = new customerFactory(elem);
-				result.push(customer);
+                if(!elem.attributes.isDeleted){
+                    var customer = new customerFactory(elem);
+                    result.push(customer);
+                }
 			});
 			core.allCustomers = result;
 			return result;

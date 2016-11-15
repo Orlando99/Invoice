@@ -1,4 +1,4 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container hidesm">
     <h3 class="layout-margin-t section-title">Invoices</h3>
@@ -206,10 +206,10 @@
 
       <div class="input-container input-radio-container layout-margin-b"
         ng-repeat="field in customFields">
-        <input type="checkbox" style="box-sizing:initial;" ng-model="field.checked">
+        <input type="checkbox" style="box-sizing:initial; width: 14px; float: left; margin-right: 9px;" ng-model="field.checked">
         <label>Show in Invoice</label>
         <label class="col-25">Custom Field {{$index+1}}</label>
-        <input tri:fix-input-name name="name{{$index}}" class="col-45 check-name" type="text"
+        <input tri:fix-input-name name="name{{$index}}" style="width: 40% !important;" class="col-45 check-name" type="text"
           ng-model="field.name">
         <button class="button button-icon button-no-margin" ng-click="removeField($index)"><img src="./assets/images/icon-times-round.png" alt=""></button>
       </div>
