@@ -523,7 +523,14 @@ $scope.refundPayment = function() {
 $scope.addAttachment = function(obj) {
 	var file = obj.files[0];
 	if (!file) return;
-
+    
+    var n = file.name;
+    
+    if(!(n.endsWith('.pdf') || n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg'))){
+        $('#file-error').show();
+        return;
+    }
+    $('#file-error').hide();
 	showLoader();
 	var invoiceObj = $scope.invoice.entity;
 	var parseFile = new Parse.File(file.name, file);

@@ -568,6 +568,14 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 	$scope.addNewFile = function(obj) {
 		var file = obj.files[0];
+        
+        var n = file.name;
+        
+        if(!(n.endsWith('.pdf') || n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg'))){
+            $('#file-error').show();
+            return;
+        }
+        $('#file-error').hide();
 		file.fileName = file.name; // to avoid naming conflict
 		$scope.files.push(file);
 		$scope.$apply();

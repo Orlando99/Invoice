@@ -18,6 +18,15 @@ select {
 }
 */
 
+input{
+    color: black !important;
+}
+
+select{
+    color: black !important;
+    padding-right: 30px !important;
+}
+
 .button-next{
     margin: 20px 0 !important;
 }

@@ -1,4 +1,4 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
   <div class="container hidesm">
 
@@ -6,7 +6,8 @@
     <hr>
 
     <div class="col-50" ng-repeat="template in templates">
-      <img ng-src="{{template.url}}" alt="">
+      <img ng-src="{{template.url}}" ng-if="template.isDefault" style="border: 1px solid" alt="">
+        <img ng-src="{{template.url}}" ng-hide="template.isDefault" alt="">
       <p>{{template.name}}</p>
       <div class="text-center">
         <button class="button button-info text-uppercase" ng-disabled="template.isDefault"
