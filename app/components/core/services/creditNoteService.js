@@ -372,17 +372,24 @@ return {
 		var credit = new creditNoteFactory(creditNote, {
 			operation : 'sendReceipt'
 		});
-		var toEmail = credit.entity.customerEmails[0];
-		var customerName = credit.customer.displayName;
-		var amount = currencyFilter(credit.entity.remainingCredits, '$', 2);
-		var businessName = credit.organization.name;
-		var link = credit.entity.creditReceipt.url();
-		
-		var emailSubject = 'Credit Note From ' + businessName;
-		var emailBody = customerName + ',<br/>'
-			+ businessName + ' has sent you Credit Note of ' + amount
-			+ '. <a href="' + link + '">Click here to view.</a>';
+        
+        if(credit.entity.customerEmails)
+        {
+            var toEmail = credit.entity.customerEmails[0];
+            var customerName = credit.customer.displayName;
+            var amount = currencyFilter(credit.entity.remainingCredits, '$', 2);
+            var businessName = credit.organization.name;
+            var link = credit.entity.creditReceipt.url();
 
+            var emailSubject = 'Credit Note From ' + businessName;
+            var emailBody = customerName + ',<br/>'
+                + businessName + ' has sent you Credit Note of ' + amount
+                + '. <a href="' + link + '">Click here to view.</a>';
+        }
+        else{
+            return creditNote;
+        }
+        
 		return Parse.Cloud.run("sendMailgunHtml", {
 			toEmail: toEmail,
 			fromEmail: "no-reply@invoicesunlimited.com",

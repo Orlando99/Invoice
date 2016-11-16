@@ -554,6 +554,14 @@ $scope.addAttachment = function(obj) {
 }
 
 $scope.emailReceipt = function() {
+    
+    var cust = $scope.invoice.entity.get('customer')
+    var email = cust.get('email');
+    if(!email){
+        ShowMessage("Please Enter Email for Customer!","error");
+        return;
+    }
+    
 	showLoader();
 	$q.when(invoiceService.sendInvoiceReceipt($scope.invoice.entity))
 	.then(function(obj) {

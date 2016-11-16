@@ -111,6 +111,13 @@ $scope.setDefaultTemplate = function(index) {
 }
 
 $scope.emailReceipt = function() {
+    var cust = $scope.estimate.entity.get('customer')
+    var email = cust.get('email');
+    if(!email){
+        ShowMessage("Please Enter Email for Customer!","error");
+        return;
+    }
+    
 	showLoader();
 	$q.when(estimateService.sendEstimateReceipt($scope.estimate.entity))
 	.then(function(obj) {

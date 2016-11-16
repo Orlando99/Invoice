@@ -370,17 +370,25 @@ return {
 		var est = new estimateFactory(estimate, {
 			operation : 'sendReceipt'
 		});
-		var toEmail = est.entity.customerEmails[0];
-		var customerName = est.customer.displayName;
-		var amount = currencyFilter(est.entity.totalAmount, '$', 2);
-		var businessName = est.organization.name;
-		var link = est.entity.estimateReceipt.url();
-		
-		var emailSubject = 'Estimate From ' + businessName;
-		var emailBody = customerName + ',<br/>'
-			+ businessName + ' has sent you an estimate of ' + amount
-			+ '. Please confirm that the estimate is correct. <a href="'
-			+ link + '">Click here to view.</a>';
+        
+        
+        if(est.entity.customerEmails)
+        {
+            var toEmail = est.entity.customerEmails[0];
+            var customerName = est.customer.displayName;
+            var amount = currencyFilter(est.entity.totalAmount, '$', 2);
+            var businessName = est.organization.name;
+            var link = est.entity.estimateReceipt.url();
+
+            var emailSubject = 'Estimate From ' + businessName;
+            var emailBody = customerName + ',<br/>'
+                + businessName + ' has sent you an estimate of ' + amount
+                + '. Please confirm that the estimate is correct. <a href="'
+                + link + '">Click here to view.</a>';
+        }
+        else{
+            return estimate;
+        }
 
 		return Parse.Cloud.run("sendMailgunHtml", {
 			toEmail: toEmail,
