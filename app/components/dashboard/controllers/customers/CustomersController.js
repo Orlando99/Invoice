@@ -275,25 +275,17 @@ invoicesUnlimited.controller('CustomersController',
 			return;
 		}
 		showLoader();
-        /*
-        //$scope.selectedCustomer.entity.set('isDeleted', true);
-        var query = new Parse.Query('Customer');
-        query.equalTo('objectId', $scope.selectedCustomer.entity.id);
-		$q.when(query.first()).then(function(obj){
-            //obj.attributes.isDeleted = true;
-            obj.set('isDeleted', true);
-            obj.save()
-            .then(function(cust){
+        
+        $scope.selectedCustomer.entity.set('isDeleted', 1);
+        
+		$q.when($scope.selectedCustomer.entity.save()).then(function(){
                 $scope.selectedCustomer = null;
                 $scope.customers
                 .splice($scope.selectedCustomerId,1);
                 $scope.selectedCustomerId = null;
                 hideLoader();
                 $state.go('dashboard.customers.all');
-            });
-			
 		});
-        */
 	}
 
 	$scope.changeStatus = function(status) {
