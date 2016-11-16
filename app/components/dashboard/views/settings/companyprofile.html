@@ -7,11 +7,24 @@
     <form class="inputs-white col-60">
       <div class="input-container input-container-upload layout-margin-b">
         <label class="layout-padding-t-smm">Company Logo</label>
-        <img class="col-35" ng-show="org" ng-src="{{org.logo.url()}}"/>
-        <label class="upload-container col-75" ng-hide="org">
+        <img class="col-35" ng-show="tempLogo" style="height: 50px; width: 50px;" ng-src="{{tempLogo}}"/>
+          
+          <label ng-show="tempLogo" style="margin-left:20px !important; min-width: 0%; margin-top: 12px;">
+              <button class="button button-icon button-no-margin" ng-click="removeLogo()">
+              <img src="./assets/images/icon-times-round.png" alt=""></button>
+            </label>
+          
+        <label class="upload-container col-75" ng-hide="tempLogo">
             <span>Upload Your Logo</span>
-            <input type="file">
+            <input onchange="angular.element(this).scope().addNewLogo(this)" id="newLogo" type="file">
         </label>
+      </div>
+        <div ng-show="tempLogo" class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm"></label>
+        <label style=" min-width: 0%">
+              <input type="file" onchange="angular.element(this).scope().addNewLogo(this)" style="display: none;" accept=".png,.jpg,.jpeg">
+              <div class="layout-margin-t button button-no-bg" style="margin: 0px !important; margin-left: -10px !important; text-transform: none;">Change Logo</div>
+            </label>
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Name</label>

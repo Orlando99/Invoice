@@ -15,6 +15,23 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
        business = obj.entity[0]; 
         $scope.businessInfo = business;
     });
+    
+    var selectedorganization = user.entity[0].get("selectedOrganization");
+    var query = new Parse.Query('Organization');
+    query.get(selectedorganization.id, {
+          success: function(obj) {
+              var logo = obj.get('logo');
+              if(logo)
+                $scope.userLogo = logo._url;
+              else
+                  $scope.userLogo = './assets/images/user-icon.png';
+            
+          },
+          error: function(obj, error) {
+            // The object was not retrieved successfully.
+            // error is a Parse.Error with an error code and message.
+          }
+        });
 
 	if (!user.entity.length) {
 		hideLoader();
