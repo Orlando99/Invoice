@@ -8,15 +8,6 @@
 	white-space: nowrap;
 	overflow: hidden;
 }
-/*
-select.ellipsis {
-	background-image: none;
-}
-
-select {
-    background-image: none;
-}
-*/
 
 input{
     color: black !important;
@@ -164,3 +155,49 @@ width: 100%;
 height: 100%;
 z-index: 10;
 }
+
+@media(max-width : 800px)
+{ 
+    .sign-up
+    {
+        width: 90% !important;
+    }
+    .confirm
+    {
+        width: 90% !important;
+    }
+    .sign-up
+    {
+       width: 90% !important; 
+    }
+    
+    .confirm
+    {
+        width: 90% !important; 
+    }
+    .sticky-nav
+    {
+        width: 90% !important; 
+    }
+    .accepting
+    {
+         width: 90% !important; 
+    }
+    
+    .signature
+    {
+         width: 90% !important; 
+    }
+    #chk_box_para
+    {
+        font-size: 13px !important;
+        margin-top: 3%;
+        margin-bottom: 2%;
+    }
+    #img_div
+    {
+        display: none !important;
+    }
+    
+}
+

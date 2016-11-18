@@ -5,57 +5,13 @@
 
 <section class="sign-up text-center" >
 	<h2 class="text-uppercase">Sign Up</h2>
-
     <div class="validation-error" ng-show="form.error > 0">
         Please, fix errors in red:
         <ul class="inner-message"></ul>
     </div>
 
     <form id="signUpForm" name="signUpForm" novalidate style="position:relative">
-        <!--
-        <select class="custom-dd countries" ng-model="selectedCountry"
-                ng-change="selectedCountryChanged();" name="country">
-            <option value="Select Country" selected disabled>Select Country</option>
-            <option ng-repeat="item in usaAndCanada" value="{{item}}">{{item}}</option>
-            <option value="none" disabled>---------------------------------------------------------------------------</option>
-            <option ng-repeat="item in otherCountries" value="{{item}}">{{item}}</option>
-        </select>
-
-
-        <div class="extended-signup" style="display:none">
-            <div class="input-container">
-                <input type="text" placeholder="Company Name" id="company" name="company" />
-            </div>
-            <div class="input-container">
-                <input type="text" placeholder="Full Name" id="fullname" name="fullName" />
-            </div>
-            <div class="input-container">
-                <input type="text" id="email" placeholder="" name="email" />
-                <input type="hidden" id="email-exists" value="false"/>
-            </div>
-            <div class="input-container">
-                <input type="text" id="username" placeholder="Username" name="username" />
-                <input type="hidden" id="username-exists" value="false"/>
-            </div>
-            <div class="input-container">
-                <input type="password" placeholder="Password" id="password" name="password" />
-            </div>
-            <div class="input-container">
-                <input type="password" id="confirmpassword" placeholder="Confirm Password" name="confirmpassword" />
-            </div>
-            <div class="input-container">
-                <input type="text" id="phone" placeholder="" name="phonenumber" />
-            </div>
-
-        </div>
--->
-        
         <div class="extended-signup" >
-            <!--
-            <div class="input-container">
-                <input type="text" placeholder="Company Name" id="company" name="company" />
-            </div>
--->
             <input type="hidden" placeholder="Company Name" ng-bind="username" id="company" name="company" />
             <input type="hidden" id="country" name="country" value="United States of America" />
             <div class="input-container">
