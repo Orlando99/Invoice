@@ -12,7 +12,10 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
     
     $q.when(businessFactory.load())
     .then(function(obj){
-       business = obj.entity[0]; 
+        if(!obj){
+            $state.go('signup.invoiceTemplateInfo');
+        }
+        business = obj.entity[0]; 
         $scope.businessInfo = business;
     });
     
