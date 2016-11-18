@@ -11,13 +11,32 @@
             width: 100%;
             height: 270px;
             }
-
-                .input: focus {
-        outline: none !important;
-    border:1px solid red;
-    box-shadow: 0 0 10px #719ECE;
+            .wp-fields
+            {
+                background-color : white ; 
+                -webkit-appearance: none;
+                 border-radius: 0; 
+                height: 15% ; 
+                font-size: 20px;
+                min-height: 35px !important;
             }
         
+            @media(max-width :800px)
+            { 
+                .wp-fields
+                {
+                background-color : white ; 
+                -webkit-appearance: none;
+                 border-radius: 0; 
+                    height: 32px !important; 
+                font-size: 20px;
+                    min-height: 35px !important;
+                }
+                #main-heading{
+                    font-size: 20px !important;
+                }
+
+            }
         
         </style>
         
@@ -28,7 +47,7 @@
             <form id="signUpForm" name="signUpForm" novalidate>
                 
                 <div Style="float: center;" class="row">
-			    	<h1 Style="color: White ; text-align: center; font-family:'Source Sans Pro', sans-serif;
+			    	<h1 id="main-heading" Style="color: White ; text-align: center; font-family:'Source Sans Pro', sans-serif;
                         font-weight: 400; " > Activate Account</h1>			
                     
 			     </div>
@@ -37,8 +56,7 @@
                 <div Style="margin-top: 2% ; margin-left: 10% ; margin-right: 10%" class="row">
 			    				<div style="width: %" class="col-xs-12 col-sm-6 col-md-3">
 			    					<div class="form-group">
-			                     <input  required Style="background-color : white ; -webkit-appearance: none;
-                                border-radius: 0; height: 15% ; font-size: 20px" type="text" id="username" placeholder="UserName" name="username" class="form-control input-sm">
+			                     <input  required type="text" id="username" placeholder="UserName" name="username" class="form-control input-sm wp-fields">
                                         <label id="username_error" style="color: red; display: none">Username already exists.</label>
                                         <input type="hidden" id="username-exists" value="false"/>
 			    					</div>
@@ -46,8 +64,7 @@
 			    				</div>
 			    				<div style="width: %" class="col-xs-12 col-sm-6 col-md-3">
 			    					<div class="form-group">
-			    						<input Style="background-color:#FFFFFF ; -webkit-appearance: none;
-                                border-radius: 0; height: 15% ; font-size: 20px" type="text" placeholder="Email" name="email" id="email" class="form-control input-sm" >
+			    						<input type="text" placeholder="Email" name="email" id="email" class="form-control input-sm wp-fields" >
                                        <label id="email_error" style="color: red; display: none">Email already exists.</label>
                                         <input type="hidden" id="email-exists" value="false"/>
 			    					</div>
@@ -56,17 +73,16 @@
                     
                     <div style="width: %" class="col-xs-12 col-sm-6 col-md-3">
 			    					<div class="form-group">
-			    						<input Style="background-color:#FFFFFF ; -webkit-appearance: none;
-                                border-radius: 0; height: 15% ; font-size: 20px" type="Password" placeholder="Password" id="password" name="password" class="form-control input-sm" >
+			    						<input type="Password" placeholder="Password" id="password" name="password" class="form-control input-sm wp-fields" >
                                        
 			    					</div>
 			    				</div>
                     
                     
-                    <div style="width: %" class="col-xs-12 col-sm-6 col-md-2">
+                    <div style="width: %" class="col-xs-12 col-sm-6 col-md-3">
 			    					<div class="form-group">
-			    						 <input Style = "
-                                     border: 0; color: #ffffff; background-color: #2ECF31 ; height: 15% ; font-size: 20px" type="submit"; value="Activate" ng-click="sendMessage();" class="btn btn-info btn-block">
+			    						 <input id="active_btn_wrap" Style = "
+                                     border: 0; color: #ffffff !important; background-color: #2ECF31 ; height: 15% ; font-size: 20px" type="submit"; value="ACTIVATE ACCOUNT" ng-click="sendMessage();" class="btn btn-info btn-block">
                                     </div>
                                        
 			    					</div>

@@ -17,18 +17,23 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             currentUser = obj;
             var bs = obj.get('businessInfo');
             $scope.fullName = obj.get('fullName');
-            $q.when(bs.fetch())
-            .then(function(business){
-                currentBusiness = business;
-                $scope.bsnsInfo = business;
-                $scope.bsnsInfo.businessName = business.get('businessName');
-                $scope.bsnsInfo.streetName = business.get('streetName');
-                $scope.bsnsInfo.city = business.get('city');
-                $scope.bsnsInfo.state = business.get('state');
-                $scope.bsnsInfo.zipCode = business.get('zipCode');
-                $scope.bsnsInfo.phoneNumber = business.get('phoneNumber');
+            if(bs){
+                $q.when(bs.fetch())
+                .then(function(business){
+                    currentBusiness = business;
+                    $scope.bsnsInfo = business;
+                    $scope.bsnsInfo.businessName = business.get('businessName');
+                    $scope.bsnsInfo.streetName = business.get('streetName');
+                    $scope.bsnsInfo.city = business.get('city');
+                    $scope.bsnsInfo.state = business.get('state');
+                    $scope.bsnsInfo.zipCode = business.get('zipCode');
+                    $scope.bsnsInfo.phoneNumber = business.get('phoneNumber');
+                    hideLoader();
+                });
+            }
+            else{
                 hideLoader();
-            });
+            }
             
         });
         
@@ -78,12 +83,19 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
 		showLoader();
 		var b = $scope.bsnsInfo;
         
+        if(!currentBusiness){
+            var binfo = new Parse.Object.extend('BusinessInfo');
+            currentBusiness = new binfo();
+        }
+        
         currentBusiness.set('businessName', b.businessName);
         currentBusiness.set('streetName', b.streetName);
         currentBusiness.set('city', b.city);
         currentBusiness.set('state', b.state);
         currentBusiness.set('zipCode', b.zipCode);
         currentBusiness.set('phoneNumber', b.phoneNumber);
+        currentBusiness.set('userID', currentUser);
+        currentBusiness.set('organization', currentUser.get('selectedOrganization'));
         
         $q.when(currentBusiness.save())
         .then(function(obj){
@@ -91,6 +103,7 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             currentUser.set('fullName', $scope.fullName);
             currentUser.set('phonenumber', b.phoneNumber);
             currentUser.set('tutorial', 1);
+            currentUser.set('businessInfo', obj);
             $q.when(currentUser.save())
             .then(function(u){
                 fromTutorial = true;
