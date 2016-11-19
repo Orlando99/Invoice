@@ -156,6 +156,11 @@ height: 100%;
 z-index: 10;
 }
 
+#chk_box_para
+{
+    margin-left: -200px !important;
+}
+
 @media(max-width : 800px)
 { 
     .sign-up
@@ -174,10 +179,11 @@ z-index: 10;
     .confirm
     {
         width: 90% !important; 
+        margin-left: 3% !important;
     }
     .sticky-nav
     {
-        width: 90% !important; 
+        width: 100% !important; 
     }
     .accepting
     {
@@ -191,12 +197,58 @@ z-index: 10;
     #chk_box_para
     {
         font-size: 13px !important;
-        margin-top: 3%;
-        margin-bottom: 2%;
+        margin-bottom: 2% !important;
+        margin-left: -165px !important;
     }
     #img_div
     {
         display: none !important;
+    }
+    
+    .input-container label {
+	   min-width: 25%;
+	   display: inline-block;
+	   float: left;
+        margin-top: 13.5%;
+        margin-right : 80%;
+        font-size: 11px;
+    }
+    
+    .input-container {
+	 float: left;
+     margin-bottom: 7%;
+    }
+    
+    .layout-no-margin {
+    margin: 0!important;
+    height: 14% !important;
+    margin-bottom: 7% !important;
+    }
+    
+    label.error {
+    position: absolute;
+    padding: 4px 6px;
+    z-index: 5;
+    right: -5px;
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    max-width: 300px!important;
+    background-color: #a04444;
+    color: #fff;
+    line-height: 12px;
+    font-size: 14px;
+    text-align: left;
+    display: none;
+    margin-top: 13.5%;
+    margin-right : 80%;
+    font-size: 11px;
+    width: 270px !important;
+    
+    }
+    
+    .input_fields_Pinfo
+    {
+        margin-bottom: 9.5% !important;
     }
     
 }
