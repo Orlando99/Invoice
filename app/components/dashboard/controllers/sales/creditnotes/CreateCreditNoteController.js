@@ -268,7 +268,7 @@ $scope.save = function() {
 		} else {
 			showCreditNoteNumberError();
 			scrollToOffset();
-			return Promise.reject('CreditNote with this number already exists');
+			return Promise.reject('Credit Note with this number already exists');
 		}
 	})
 	.then(function(creditNote) {
@@ -296,7 +296,7 @@ $scope.saveAndSend = function () {
 		} else {
 			showCreditNoteNumberError();
 			scrollToOffset();
-			return Promise.reject('CreditNote with this number already exists');
+			return Promise.reject('Credit Note with this number already exists');
 		}
 	})
 	.then(function(creditNote) {
@@ -361,7 +361,7 @@ $scope.cancel = function() {
 function showCreditNoteNumberError () {
 	var validator = $( "#addCreditNoteForm" ).validate();
 	validator.showErrors({
-		"creditNumber": "CreditNote with this number already exists"
+		"creditNumber": "Credit Note with this number already exists"
 	});
 }
 

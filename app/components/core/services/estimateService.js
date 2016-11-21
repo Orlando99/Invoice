@@ -23,6 +23,7 @@ return {
 		var Estimate = Parse.Object.extend('Estimates');
 		var query = new Parse.Query(Estimate);
 		query.include('comments');
+        query.include('customer');
 
 		return query.get(estimateId)
 		.then(function(estObj) {

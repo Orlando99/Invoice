@@ -178,28 +178,66 @@ function prepareToEditExpense() {
 
 function prepareToCreateExpense() {
 	showLoader();
+    
+    var expenseId = $state.params.expenseId;
+    
 	$q.when(loadRequiredData()).then(function(msg) {
-		$scope.expenseType = {
+        if(expenseId)
+        {
+            $q.when(expenseService.getExpense(expenseId))
+            .then(function(expense) {
+                $scope.expense = expense;
+                
+                var n = (expense.entity.status == 'Billable') ? 1 : 0;
+                $scope.expenseType.selectedType = $scope.expenseType.types[n];
+                $scope.todayDate = expense.entity.expanseDate;
+                $scope.amount = expense.entity.amount;
+                $scope.refNumber = expense.entity.referenceNumber;
+                $scope.notes = expense.entity.notes;
+
+                $scope.selectedCategory = $scope.categories.filter(function(category) {
+                    return expense.entity.category == category.entity.name;
+                })[0];
+
+                var custObj = expense.entity.get('customer');
+                if (custObj) {
+                    $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                        return custObj.id == cust.entity.id;
+                    })[0];
+                }
+
+                if(expense.entity.tax) {
+                    $scope.selectedTax = $scope.taxes.filter(function(tax) {
+                        return expense.entity.tax.id == tax.id;
+                    })[0];
+                }
+                $scope.files = [];
+            });
+        }
+        else{
+            $scope.expenseType = {
 			types : [
-				{name: 'Non Billable', value: 'Non-Billable'},
-				{name: 'Billable', value: 'Billable'}
-			],
-			selectedType: {name:'Non Billable', value:'Non-Billable'}
-		}
+				        {name: 'Non Billable', value: 'Non-Billable'},
+				        {name: 'Billable', value: 'Billable'}
+			         ],
+			     selectedType: {name:'Non Billable', value:'Non-Billable'}
+            }
 
-		// coming back from Create New Customer
-		var customerId = $state.params.customerId;
-		if(customerId) {
-			$scope.expenseType.selectedType =
-				$scope.expenseType.types[1];
-			$scope.selectedCustomer = $scope.customers.filter(function(cust) {
-				return cust.entity.id == customerId;
-			})[0];
-		}
+            // coming back from Create New Customer
+            var customerId = $state.params.customerId;
+            if(customerId) {
+                $scope.expenseType.selectedType =
+                    $scope.expenseType.types[1];
+                $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                    return cust.entity.id == customerId;
+                })[0];
+            }
 
-		$scope.files = [];
-		$scope.todayDate = new Date();		
-		hideLoader();
+            $scope.files = [];
+            $scope.todayDate = new Date();		
+            hideLoader();
+        }
+		
 	});
 }
 

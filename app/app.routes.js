@@ -480,7 +480,8 @@ angular.module('invoicesUnlimited')
 				name : 'dashboard.expenses.new',
 				url : '/expenses/new',
 				params : {
-					customerId : null
+					customerId : null,
+                    expenceId  : null
 				},
 				views : {
 					'@' : {

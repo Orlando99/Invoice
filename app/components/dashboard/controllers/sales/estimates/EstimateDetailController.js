@@ -122,9 +122,9 @@ $scope.emailReceipt = function() {
 	$q.when(estimateService.sendEstimateReceipt($scope.estimate.entity))
 	.then(function(obj) {
 		console.log('Receipt sent successfully.');
+        addNewComment('Estimate sent by email', true);
 		hideLoader();
 	}, function(error) {
-        addNewComment('Estimate sent by email', true);
 		hideLoader();
 		console.log(error.message);
 	});

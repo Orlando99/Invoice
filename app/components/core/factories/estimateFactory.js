@@ -83,6 +83,18 @@ function Estimate (parseObject, params) {
 			});
 			this.comments = comments;
 		}
+        
+        var customer = parseObject.get("customer");
+		if (customer) {
+			var customerFields = ["displayName"];
+			setObjectOperations({
+				object 		: customer,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: customerFields
+			});
+			this.customer = customer;
+		}
 
 	}
 

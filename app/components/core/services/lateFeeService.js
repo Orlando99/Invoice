@@ -23,11 +23,15 @@ return {
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
 		lateFee.setACL(acl);
-
+        //lateFee.set('userID', params.userID);
+        console.log(params);
 		return lateFee.save(params)
 		.then(function(fee) {
 			return new lateFeeFactory(fee);
-		});
+		}, function(error) {
+		//hideLoader();
+		console.log(error.message);
+	   });
 	},
 	updateLateFee : function(obj) {
 		return obj.save()

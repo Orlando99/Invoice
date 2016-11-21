@@ -122,9 +122,9 @@ $scope.emailReceipt = function() {
 	$q.when(creditNoteService.sendCreditNoteReceipt($scope.creditNote.entity))
 	.then(function(obj) {
 		console.log('Receipt sent successfully.');
+        addNewComment('Credit Note sent by email', true);
 		hideLoader();
 	}, function(error) {
-        addNewComment('Credit Note sent by email', true);
 		hideLoader();
 		console.log(error.message);
 	});
