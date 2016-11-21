@@ -12,7 +12,6 @@
 input{
     color: black !important;
 }
-
 select{
     color: black !important;
     padding-right: 30px !important;
@@ -245,11 +244,26 @@ z-index: 10;
     width: 270px !important;
     
     }
-    
     .input_fields_Pinfo
     {
         margin-bottom: 9.5% !important;
     }
-    
 }
+    @-moz-document url-prefix() { 
+        
+   #label_show_invoices{
+        margin-top: 15px !important; 
+    }
+        
+    #next_show_invoices{
+        margin-top: 11px !important; 
+    }
+
+        #label_show_invoices{
+         margin-top: 12px !important;
+            
+    }
+        
+}
+    
 
