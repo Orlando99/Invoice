@@ -56,7 +56,7 @@ invoicesUnlimited.controller('NewCustomerController',
 		rules: {
 			displayName: 'required',
 			email : {
-				required : false,
+				required : true,
 				email : true
 			}
 		}

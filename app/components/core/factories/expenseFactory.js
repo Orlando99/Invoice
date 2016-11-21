@@ -4,10 +4,10 @@ invoicesUnlimited.factory('expenseFactory', ['userFactory', function(userFactory
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return Expense;
 }
 
-var Expense = function(parseObject, params) {
+function Expense (parseObject, params) {
 	if (!parseObject) return undefined;
 	var expenseFields;
 

@@ -12,12 +12,11 @@ if(!userFactory.entity.length) {
 
 var user = undefined;
 var organization = undefined;
-
+$controller('DashboardController',{$scope:$scope,$state:$state});
 $q.when(userFactory.entity[0].fetch())
 .then(function(obj) {
 	user = obj;
 	organization = user.get("organizations")[0];
-	$controller('DashboardController',{$scope:$scope,$state:$state});
 	loadCurrencies();
 });
 

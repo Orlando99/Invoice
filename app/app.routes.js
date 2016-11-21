@@ -481,7 +481,7 @@ angular.module('invoicesUnlimited')
 				url : '/expenses/new',
 				params : {
 					customerId : null,
-                    expenceId  : null
+                    expenseId  : null
 				},
 				views : {
 					'@' : {

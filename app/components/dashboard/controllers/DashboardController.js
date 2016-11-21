@@ -10,6 +10,12 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 	var user = userFactory;
 	var business = businessFactory;
     
+    if(!user.entity.length){
+        $state.go('login');
+        hideLoader();
+        return;
+    }
+    
     $q.when(businessFactory.load())
     .then(function(obj){
         if(!obj){

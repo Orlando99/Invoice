@@ -26,7 +26,7 @@ return {
 	getExpenseDetails : function(expenseId) {
 		var Expense = Parse.Object.extend('Expanses');
 		var query = new Parse.Query(Expense);
-
+        query.include('customer');
 		return query.get(expenseId)
 		.then(function(expObj) {
 			var expense = new expenseFactory(expObj, {
@@ -38,7 +38,7 @@ return {
 	getExpense : function(expenseId) {
 		var Expense = Parse.Object.extend('Expanses');
 		var query = new Parse.Query(Expense);
-
+        query.include('customer');
 		return query.get(expenseId)
 		.then(function(expObj) {
 			var expense = new expenseFactory(expObj, {

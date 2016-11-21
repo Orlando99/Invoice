@@ -417,6 +417,18 @@ invoicesUnlimited.controller('CustomersController',
 
 	}
 
+    $("#addContactForm").validate({
+		rules: {
+			firstname 		: 'required',
+			lastname	: 'required'
+		},
+		messages: {
+			firstname 	: 'Please specify your estimated montly credit card sales!',
+			lastname 		: 'Please specify your bank name!'
+			
+		}
+	});
+    
 	$scope.createContact = function(){
 		var modalInstance = $uibModal.open({
 			animation 		: true,

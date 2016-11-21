@@ -5,7 +5,7 @@ invoicesUnlimited.factory('invoiceFactory',function(userFactory, invoiceItemFact
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return Invoice;
 }
 
 function Invoice(parseObject, params) {

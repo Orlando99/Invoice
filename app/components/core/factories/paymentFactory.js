@@ -6,7 +6,7 @@ function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return Payment;
 }
 
 function Payment (parseObject) {

@@ -37,16 +37,16 @@ $('#addExpenseForm').validate({
 		amount : {
 			required : true,
 			min : 0.01
-		}//,
-		//customer : 'required'
+		},
+		customer : 'required'
 	},
 	messages: {
 		expCategory : 'Please select an expense category',
 		date : 'Please specify expense date',
 		amount : {
 			required : 'Please enter expense amount'
-		}//,
-		//customer : 'Please select a customer'
+		},
+		customer : 'Please select a customer'
 	}
 });
 
@@ -65,8 +65,8 @@ $('#editExpenseForm').validate({
 		date : 'Please specify expense date',
 		amount : {
 			required : 'Please enter expense amount'
-		}//,
-		//customer : 'Please select a customer'
+		},
+		customer : 'Please select a customer'
 	}
 });
 
@@ -175,6 +175,10 @@ function prepareToEditExpense() {
 		hideLoader();
 	});
 }
+    
+    $scope.cloneExpense = function(expenseId){
+        $state.go('dashboard.expenses.new', {'expenseId':expenseId });
+    }
 
 function prepareToCreateExpense() {
 	showLoader();
@@ -187,7 +191,13 @@ function prepareToCreateExpense() {
             $q.when(expenseService.getExpense(expenseId))
             .then(function(expense) {
                 $scope.expense = expense;
-                
+                $scope.expenseType = {
+                    types : [
+                                {name: 'Non Billable', value: 'Non-Billable'},
+                                {name: 'Billable', value: 'Billable'}
+                             ],
+                         selectedType: {name:'Non Billable', value:'Non-Billable'}
+                    }
                 var n = (expense.entity.status == 'Billable') ? 1 : 0;
                 $scope.expenseType.selectedType = $scope.expenseType.types[n];
                 $scope.todayDate = expense.entity.expanseDate;

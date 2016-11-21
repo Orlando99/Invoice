@@ -59,6 +59,23 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			return $scope.todayDate <= $scope.dueDate;
 		}
 	);
+        
+        $('#addTaxForm').validate({
+		rules: {
+			name: 'required',
+			rate : {
+				required : true,
+				number : true
+			}
+		},
+		messages: {
+			name : 'Please enter Tax name',
+			rate : {
+				required : 'tax rate is required',
+				number : 'please enter a valid rate(number)'
+			}
+		}
+	});
 
 	$('#addInvoiceForm').validate({
 		rules: {
@@ -898,6 +915,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	}
     
     $scope.saveNewTax = function() {
+        if(! $('#addTaxForm').valid()) return;
 		salesCommon.createNewTax({
 			_scope : $scope,
 			user : user

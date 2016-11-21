@@ -70,7 +70,7 @@ invoicesUnlimited.controller('CompanyProfileController',
         var n = obj.files[0].name;
         
         if(!(n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg'))){
-            $('#file-error').show();
+            ShowMessage("Invalid file format!","error");
             return;
         }
         
