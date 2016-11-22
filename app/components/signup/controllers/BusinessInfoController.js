@@ -289,7 +289,8 @@ userFactory.entity[0].get('company')
     $('.ownershipTypeInput').hide();
         
 	$scope.federalTaxIdClick = function() {
-		var checked = $('.federal-tax-id').prop('checked');
+		//var checked = $('.federal-tax-id').prop('checked');
+        var checked = $scope.x2;
 		$('.federal-tax-id-input').hide();
         $('.ownershipTypeInput').hide();
 		$scope.bsnsInfo.federalTaxID = '';

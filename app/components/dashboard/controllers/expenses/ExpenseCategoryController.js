@@ -26,6 +26,9 @@ function loadCategories () {
 		$scope.categories = categories.sort(function(a,b){
 			return alphabeticalSort(a.entity.name,b.entity.name)
 		});
+        $scope.shouldDelete = new Array($scope.categories.length);
+        for(var i = 0; i < $scope.categories.length; ++i)
+            $scope.shouldDelete[i] = false;
 		hideLoader();
 
 	}, function(error) {
@@ -40,6 +43,35 @@ function loadColors() {
 		colors.push(colorCodeToValue(i));
 	}
 	$scope.colors = colors;
+}
+    
+$scope.deleteCategories = function(){
+    var a = $scope.shouldDelete;
+    var cat = [];
+    
+    for(var i = 0; i < $scope.categories.length; ++i){
+        if($scope.shouldDelete[i])
+            cat.push($scope.categories[i].entity);
+    }
+    
+    if(cat.length > 0){
+        showLoader();
+        Parse.Object.destroyAll(cat)
+        .then(function(){
+            hideLoader();
+            window.location.reload();
+        });
+    }
+    else{
+        ShowMessage("No category selected!","error");
+        return;
+    }
+        
+}
+
+$scope.toggleCheck = function(){
+    for(var i = 0; i < $scope.categories.length; ++i)
+            $scope.shouldDelete[i] = $scope.selectAll;
 }
 
 // $scope.selectedColor is used in both add/edit

@@ -1,10 +1,10 @@
-﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
 
    <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">Expense Category <i class="arrow-down-black"></i></h3>
    <a href="" class="float-right button button-add text-uppercase modal-opener" data-toggle="new-category"
     ng-click="prepareAddCategory()">New</a>
-   <a href="" class="float-right button button-danger text-uppercase layout-margin-t">Delete</a>
+   <a href="" ng-click="deleteCategories()" class="float-right button button-danger text-uppercase layout-margin-t">Delete</a>
 
    <div class="clearfix"></div>
 
@@ -12,7 +12,7 @@
      <tr class="thead">
        <td class="text-uppercase text-info layout-padding-tb-lg">
          <label class="input-container input-checkbox-container layout-margin-tb">
-           <input type="checkbox" ng-model="selectAll">
+           <input type="checkbox" ng-change="toggleCheck()" ng-model="selectAll">
            <span class="checkbox float-left"></span>
          </label>
        </td>
@@ -22,7 +22,7 @@
      <tr class="trow show_hover" ng-repeat="category in categories">
        <td class="text-uppercase text-info layout-padding-tb-lg">
          <label class="input-container input-checkbox-container layout-margin-tb">
-           <input type="checkbox" ng-checked="selectAll">
+           <input type="checkbox" ng-model="shouldDelete[$index]" ng-checked="selectAll">
            <span class="checkbox float-left"></span>
          </label>
        </td>

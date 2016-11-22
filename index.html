@@ -73,19 +73,19 @@
 		          <option value="Ms." selected>Ms.</option>
 		          <option value="Mr.">Mr.</option>
 		        </select>
-		        <input class="col-20" type="text" placeholder="First Name" id="firstname" name="firstname" ng-model="contact.entity.firstname">
-		        <input class="col-20 pull-right" type="text" placeholder="Last Name" id="lastname" name="lastname" ng-model="contact.entity.lastname">
+		        <input class="col-20" type="text" placeholder="First Name" id="firstname" name="firstname" ng-model="contact.entity.firstname" required>
+		        <input class="col-20 pull-right" type="text" placeholder="Last Name" id="lastname" name="lastname" ng-model="contact.entity.lastname" required>
 	          </div>
 
 	          <div class="input-container layout-margin-b">
 	            <label class="layout-padding-t-sm">Phone Number</label>
-	            <input class="col-35 workPhone" type="text" name="phone" ng-model="contact.entity.phone" placeholder="Work">
-	            <input class="col-35 pull-right mobilePhone" name="mobile" type="text" ng-model="contact.entity.mobile" placeholder="Mobile">
+	            <input class="col-35 workPhone" type="text" name="phone" ng-model="contact.entity.phone" minlength="14" placeholder="Work" required>
+	            <input class="col-35 pull-right mobilePhone" name="mobile" type="text" minlength="14" ng-model="contact.entity.mobile" placeholder="Mobile" required>
 	          </div>
 
 	          <div class="input-container layout-margin-b">
 	            <label class="layout-padding-t-sm">Email Address</label>
-	            <input class="col-75" type="email" ng-model="contact.entity.email" placeholder="">
+	            <input class="col-75" type="email" ng-model="contact.entity.email" placeholder="" required>
 	          </div>
 	        </form>
 	      </div>

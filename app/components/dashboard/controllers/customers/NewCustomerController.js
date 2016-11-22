@@ -22,7 +22,7 @@ invoicesUnlimited.controller('NewCustomerController',
 
 	$('#workPhone').mask('(999) 999-9999');
 	$('#mobilePhone').mask('9 (999) 999-9999',mobileOptions);
-
+    //$('input[id="workPhone"]')[0].mask('(999) 999-9999');
 	var def = $q.defer();
 
 	var address = {

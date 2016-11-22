@@ -318,6 +318,19 @@ function listExpenses() {
 		console.log(error.message);
 	});	
 }
+    
+$scope.deleteExpense = function(){
+    if(!$scope.expense)
+        return;
+    
+    showLoader();
+    $scope.expense.entity.destroy()
+    .then(function(){
+        hideLoader();
+        $state.go('dashboard.expenses.all');
+    });
+    
+}
 
 $scope.saveNewExpense = function() {
 	if(! $('#addExpenseForm').valid()) {

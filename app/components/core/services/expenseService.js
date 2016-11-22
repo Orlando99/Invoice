@@ -71,7 +71,7 @@ return {
 
 		query.equalTo('organization', organization);
 		query.include('customer');
-		query.select('referenceNumber', 'expanseDate', 'category', 'amount', 'status', 'customer');
+		//query.select('referenceNumber', 'expanseDate', 'category', 'amount', 'status', 'customer');
 
 		return query.find().then(function(expenseObjs) {
 			var expenses = [];

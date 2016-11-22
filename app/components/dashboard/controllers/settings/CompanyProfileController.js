@@ -1,5 +1,23 @@
 'use strict';
 
+$(document).ready(function(){
+
+	$.validator.addMethod(
+		"ConfirmPasswordMatch",
+		function(value,element){
+			return value == $("input[name='newPassword']").val();
+		},''
+	);
+
+	$.validator.addMethod(
+		"UserNameExists",
+		function(value,element){
+			return !parseInt($('#username-exists').val());
+		},''
+	);
+
+});
+
 invoicesUnlimited.controller('CompanyProfileController',
 	['$scope','$state','$controller','userFactory','organizationFactory','businessFactory','$q',
 	function($scope,$state,$controller,userFactory,organizationFactory,businessFactory,$q){
@@ -8,32 +26,33 @@ invoicesUnlimited.controller('CompanyProfileController',
 		console.log('User not logged in');
 		return undefined;
 	}
-        if(!$scope.userLogo){
-            var selectedorganization = userFactory.entity[0].get("selectedOrganization");
-            var query = new Parse.Query('Organization');
-            query.get(selectedorganization.id, {
-                  success: function(obj) {
-                      $scope.org = obj;
-                      var logo = obj.get('logo');
-                      if(logo){
-                        $scope.userLogo = logo._url;
-                        $scope.tempLogo = logo._url;
-                      }
-                      else{
-                          $scope.userLogo = './assets/images/user-icon.png';
-                          $scope.tempLogo = undefined;
-                      }
-
-                  },
-                  error: function(obj, error) {
-                    // The object was not retrieved successfully.
-                    // error is a Parse.Error with an error code and message.
+    if(!$scope.userLogo){
+        var selectedorganization = userFactory.entity[0].get("selectedOrganization");
+        var query = new Parse.Query('Organization');
+        query.get(selectedorganization.id, {
+              success: function(obj) {
+                  $scope.org = obj;
+                  var logo = obj.get('logo');
+                  if(logo){
+                    $scope.userLogo = logo._url;
+                    $scope.tempLogo = logo._url;
                   }
-            });
-        }
-        else{
-            $scope.tempLogo = logo._url;
-        }
+                  else{
+                      $scope.userLogo = './assets/images/user-icon.png';
+                      $scope.tempLogo = undefined;
+                  }
+                  $scope.$apply();
+
+              },
+              error: function(obj, error) {
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and message.
+              }
+        });
+    }
+    else{
+        $scope.tempLogo = $scope.userLogo;
+    }
 	var user = userFactory.entity[0];
     var organization1 = user.get("organizations")[0];
 
@@ -131,6 +150,74 @@ invoicesUnlimited.controller('CompanyProfileController',
         else{
             window.location.reload();
         }
+    }
+    $("#changePasswordForm").validate({
+		onkeyup : false,
+		onfocusout : false,
+		rules: {
+			existingPassword : {
+				required : true,
+				minlength : 6
+			},
+			newPassword: {
+				required : true,
+				minlength : 6
+			}, //'required',
+			confirmPassword: {
+				required : true,
+				ConfirmPasswordMatch : true
+			}
+		},
+		messages: {
+			existingPassword: {
+				required : "Please enter existing password !",
+				minlength : "Password should contain atleast 6 characters"
+			},
+			newPassword: {
+				required : "Please enter new password !",
+				minlength : "Password should contain atleast 6 characters"
+			},
+			confirmPassword: {
+				required : "Please confirm password !",
+				ConfirmPasswordMatch : "Passwords do not match!"
+			}
+		}
+	});
+    
+    function resetPasswordForm(){
+        $scope.existingPassword = '';
+        $scope.newPassword = '';
+        $scope.confirmPassword = '';
+    }
+    
+    $scope.showModal = function(){
+        $('#changePasswordModal').show();
+    }
+    $scope.closeModal = function(){
+        $('#changePasswordModal').hide();
+        resetPasswordForm();
+    }
+    
+    $scope.updatePassword = function(){
+        if(!$("#changePasswordForm").valid()) return;
+        showLoader();
+        Parse.User.logIn(userFactory.entity[0].username, $scope.existingPassword,{
+				success: function(obj){
+					obj.set('password', $scope.newPassword)
+                    obj.save()
+                    .then(function(){
+                        $('#changePasswordModal').hide();
+                        resetPasswordForm();
+                        hideLoader();
+                    });
+				},
+				error: function(user,error){
+					console.log(error.message);
+                    hideLoader();
+					ShowMessage("Incorrect password!","error");
+				}
+			});
+        
     }
 
 	/*

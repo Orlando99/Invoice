@@ -5,7 +5,11 @@
   <section class="sign-up text-center">
 
     <h2 class="text-uppercase">Principle Info</h2>
-
+<style>
+            #federalTaxID-error{
+                margin-top: -50px !important;
+            }
+        </style>
     <form name="signUp" id="signUpForm">
         <input class="input_fields_Pinfo" type="text" placeholder="Full Name" name="fullName" ng-model="fullName" required>
         <div class="input-container input-info">
@@ -52,6 +56,7 @@
         <span class="checkbox"></span>
         </label>
       <input class="layout-margin-tb federal-tax federal-tax-id-input" type="text" placeholder="Federal Tax ID" ng-model="bsnsInfo.federalTaxID" name="federalTaxID"> 
+        
       
       <select class="custom-dd ownershipTypeInput input_fields_Pinfo" ng-show="x2" name="ownershipType"
               ng-init="bsnsInfo.ownershipType = 'ownershipTitle'"

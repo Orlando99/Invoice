@@ -5,21 +5,8 @@ invoicesUnlimited.controller('ModalContactController',function(
 
 	$scope.contact = contact;
 	$scope.title = title;
-
-    $("#addContactForm").validate({
-		rules: {
-			firstname 		: 'required',
-			lastname	: 'required'
-		},
-		messages: {
-			firstname 	: 'Please specify your estimated montly credit card sales!',
-			lastname 		: 'Please specify your bank name!'
-			
-		}
-	});
     
 	$scope.Save = function(){
-        var a = $('#addContactForm');
         if(! $('#addContactForm').valid()) 
             return;
 		showLoader();
