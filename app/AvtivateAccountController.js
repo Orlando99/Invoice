@@ -186,6 +186,10 @@ invoicesUnlimited.controller('AvtivateAccountController',
 	};
 
 	$scope.sendMessage = function(){
+        
+        if(!$("#signUpForm").valid())
+            return;
+        
         $scope.newWin = window.open('','_blank');
         debugger;
 		showLoader();
@@ -287,6 +291,10 @@ invoicesUnlimited.controller('AvtivateAccountController',
                     $rootScope.fromPaymentSettings = false;
                     //$state.go('signup.accountActivated');
                     //saveBusinessInfo();
+                    
+                    $('input[name=username]').val("");
+                    $('input[name=email]').val("");
+                    $('input[name=password]').val("");
                     
                     var url = $state.href('signup.accountActivated');
                     //window.open(url,'_blank');
