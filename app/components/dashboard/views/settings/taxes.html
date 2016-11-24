@@ -23,11 +23,11 @@
     <table class="table-border-tb show_table_hover">
       <tr class="thead">
         <td class="text-uppercase text-info layout-padding">Name</td>
-        <td class="text-uppercase text-info layout-padding">Rate %</td>
+        <td class="text-uppercase text-info layout-padding">Price %</td>
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr class="trow" ng-repeat="tax in taxes" ng-dblclick="editTax(tax)" >
+      <tr class="trow" ng-repeat="tax in taxes" ng-click="editTax(tax)" >
         <td class="text-color-light text-weight-normalize layout-padding">{{tax.name}}</td>
         <td class="text-color-light text-weight-normalize layout-padding">{{tax.rate}}</td>
         <td class="text-color-light text-weight-normalize layout-padding text-right">
@@ -53,9 +53,11 @@
             <input name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Rate %</label>
-            <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
-          </div>
+            <label class="layout-padding-t-sm">Price %</label>
+        
+     <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">      
+    
+            </div>
           <div class="col-25 spacer"></div>
           <label class="input-container input-checkbox-container col-75 pull-right">
             <input type="checkbox" ng-model="isCompound">
@@ -64,7 +66,7 @@
             <div class="tooltip-sec float-left">
               <i class="info-icon pull-top"></i>
               <p class="info-tooltip push-top">
-                Check if it is a compound tax
+                A Compound tax is calculated on top of the primary tax. Let's take an example where the price of an item is $100. After applying 10% primary tax, the value of the item sums up to $110. Now, adding a 10% compound tax will add 10% of $110 to the resultant value.
               </p>
             </div>
           </label>
@@ -92,9 +94,11 @@
             <input name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Rate %</label>
-            <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
-          </div>
+            <label class="layout-padding-t-sm">Price %</label>
+        
+          <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
+            
+            </div>
           <div class="col-25 spacer"></div>
           <label class="input-container input-checkbox-container col-75 pull-right">
             <input type="checkbox" ng-model="isCompound">
@@ -103,7 +107,7 @@
             <div class="tooltip-sec float-left">
               <i class="info-icon"></i>
               <p class="info-tooltip">
-                Check if it is a compound tax
+                A Compound tax is calculated on top of the primary tax. Let's take an example where the price of an item is $100. After applying 10% primary tax, the value of the item sums up to $110. Now, adding a 10% compound tax will add 10% of $110 to the resultant value.
               </p>
             </div>
           </label>

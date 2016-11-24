@@ -18,7 +18,7 @@
         <td ng-click="sortByCustomer()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Customer Name <!--<img src="../../dist/images/dropdown-arrow-primary.png" alt="">--></td>
         <td ng-click="sortByDesc()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Description</td>
         <td ng-click="sortByBilling()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Billing Method</td>
-        <td ng-click="sortByAmount()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Rate</td>
+        <td ng-click="sortByAmount()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Price</td>
       </tr>
       <tr ng-repeat="project in projectList"
         ui-sref="dashboard.projects.details({projectId:project.entity.id})" style="cursor:pointer">
