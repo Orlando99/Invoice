@@ -265,5 +265,8 @@ z-index: 10;
     }
         
 }
+td{
+    word-break: break-word !important;
+}
     
 

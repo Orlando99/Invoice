@@ -34,7 +34,7 @@ function Estimate (parseObject, params) {
 	} else if (params.operation == "getEstimate") {
 		estimateFields = [
 			'customer', 'estimateDate', 'referenceNumber',
-			'estimateNumber', 'status', 'adjustments',
+			'estimateNumber', 'status', 'adjustments', 'estimateFiles',
 			'discountType', 'discounts', 'shippingCharges',
 			'subTotal', 'totalAmount', 'notes', 'termsConditions',
 			'salesPerson', 'customFields'
@@ -94,6 +94,11 @@ function Estimate (parseObject, params) {
 				fields 		: customerFields
 			});
 			this.customer = customer;
+		}
+        
+        var attachments = parseObject.get('estimateFiles');
+		if (attachments) {
+			this.attachments = attachments;
 		}
 
 	}

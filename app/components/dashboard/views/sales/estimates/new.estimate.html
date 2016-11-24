@@ -154,7 +154,7 @@
 
         <form class="table-row col-60 layout-margin-tb">
           <div class="input-container layout-margin-b">
-            <label class="col-i-30">Customer Notes</label>
+            <label class="col-i-30">Notes</label>
             <textarea class="col-70" ng-model="notes"></textarea>
           </div>
           <div class="input-container">
@@ -178,6 +178,25 @@
           <p class="col-i-30">Template Used</p>
           <p class="col-70">'Standard Template' <a href="javascript:">Choose</a></p>
           -->
+            
+            <div class="input-container layout-margin-tb">
+            <label class="col-i-30">Attachments</label>
+            <div class="col-70 file_div" >
+            <div ng-repeat="file in files">
+              <label class="col-90">{{file.fileName}}</label>
+              <button class="button button-icon button-no-margin" ng-click="removeFile($index)">
+              <img src="./assets/images/icon-times-round.png" alt=""></button>
+              <div class="clearfix"></div>
+              <br/>
+            </div>
+            <label>
+              <input type="file" style="display: none;"
+                onchange="angular.element(this).scope().addNewFile(this)" accept=".pdf,.png,.jpg,.jpeg">
+              <div class="button button-no-bg" style="padding-left: 0px">+ Add</div>
+            </label>
+            </div>
+              <label id="file-error" class="" style="margin-top: 35px; font-size: 14px; color: red; display: none;">Invalid file: Supported files are PDF and images</label>
+          </div>
 
           <div class="clearfix spacer"></div>
           <button class="button layout-margin-r text-uppercase button-neutral" ng-click="save()">Save As Draft</button>

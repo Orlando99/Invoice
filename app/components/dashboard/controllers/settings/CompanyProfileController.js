@@ -144,6 +144,7 @@ invoicesUnlimited.controller('CompanyProfileController',
             $scope.org.unset('logo');
             $scope.org.save()
             .then(function(obj){
+                $scope.userLogo = undefined;
                 window.location.reload();
             });
         }
@@ -156,8 +157,7 @@ invoicesUnlimited.controller('CompanyProfileController',
 		onfocusout : false,
 		rules: {
 			existingPassword : {
-				required : true,
-				minlength : 6
+				required : true
 			},
 			newPassword: {
 				required : true,

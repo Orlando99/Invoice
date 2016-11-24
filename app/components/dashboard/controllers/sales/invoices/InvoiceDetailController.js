@@ -650,6 +650,8 @@ function addNewComment(commentbody, isAuto){
 			$scope.comments.push(comment);
 		else
 			$scope.comments = [comment];
+        
+        $scope.$apply();
 
 		console.log(comment);
 	});

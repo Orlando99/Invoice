@@ -21,7 +21,7 @@ $(document).ready(function(){
 invoicesUnlimited.controller('CustomersController',
 	function($scope,$rootScope,$state,$uibModal,userFactory,
 			 contactPersonFactory, customerFactory, coreFactory, expenseService, 
-			 invoicesFactory ,$controller,$q, appFields, currencyFilter){
+			 invoicesFactory ,$controller,$q, appFields, currencyFilter, currencyFactory){
 
 	var customerId = parseInt($state.params.customerId);
 	var user = userFactory;
@@ -123,6 +123,17 @@ invoicesUnlimited.controller('CustomersController',
 	    drawBarChart();
 	}
 
+    loadCurrencies();
+    
+    function loadCurrencies() {
+        $q.when(currencyFactory.loadAll({
+            organization : user.entity[0].get('selectedOrganization')
+        }))
+        .then(function(currencies) {
+            $scope.currencies = currencies;
+        });
+    }
+    
 	function drawBarChart() {
 		var promises = [];
 		promises.push ( $q.when(expenseService.getCustomerExpenses({

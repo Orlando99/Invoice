@@ -31,6 +31,17 @@ function showEstimateDetail() {
 		$scope.comments = estimate.comments;
 		var receipt = estimate.entity.estimateReceipt;
 
+        if(estimate.attachments) {
+			estimate.attachments.forEach(function(attach) {
+				attach.fileName = attach.name();
+				attach.fileUrl = attach.url();
+			});
+			$scope.attachments = estimate.attachments;
+		} else {
+			$scope.attachments = [];
+		}
+        
+        
 		// create receipt if necessary,
 		if(! receipt) {
 			return estimateService.createEstimateReceipt(estimateId)
@@ -151,6 +162,39 @@ $scope.deleteEstimate = function() {
 		$state.go('dashboard.sales.estimates.all');
 	});
 
+}
+
+$scope.addAttachment = function(obj) {
+	var file = obj.files[0];
+	if (!file) return;
+    
+    var n = file.name;
+    
+    if(!(n.endsWith('.pdf') || n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg'))){
+        $('#file-error').show();
+        return;
+    }
+    $('#file-error').hide();
+	showLoader();
+	var estimateObj = $scope.estimate.entity;
+	var parseFile = new Parse.File(file.name, file);
+
+	$q.when(parseFile.save())
+	.then(function(fileObj) {
+		var fileList = estimateObj.get('estimateFiles');
+		if(fileList)
+			fileList.push(fileObj)
+		else
+			fileList = [fileObj];
+
+		estimateObj.set('estimateFiles', fileList);
+		estimateObj.unset('estimateReceipt');
+		return estimateObj.save();
+	})
+	.then(function(invObj) {
+		$state.reload();
+		hideLoader();
+	});
 }
 
 function addNewComment(body, isAuto) {

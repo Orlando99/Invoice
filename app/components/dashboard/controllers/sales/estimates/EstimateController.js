@@ -255,6 +255,17 @@ function prepareEditForm() {
 
 		$scope.estimateItems.push(obj);
 	}
+    
+    var files = estimate.entity.estimateFiles;
+	if (files) {
+		files.forEach(function(file) {
+			file.fileName = file.name();
+			file.exist = true;
+		});
+		$scope.files = files;
+	} else {
+		$scope.files = [];
+	}
 
 	var customFields = [];
 	if($scope.prefs.customFields) {
@@ -283,6 +294,17 @@ function prepareEditForm() {
 
 	reCalculateSubTotal();
 	hideLoader();
+}
+    
+$scope.addNewFile = function(obj) {
+	var file = obj.files[0];
+	file.fileName = file.name; // to avoid naming conflict
+	$scope.files.push(file);
+	$scope.$apply();
+}
+
+$scope.removeFile = function(index) {
+	$scope.files.splice(index,1);
 }
 
 $scope.addEstimateItem = function() {
@@ -388,7 +410,7 @@ function saveEditedEstimate(params) {
 
 	return estimateService.updateEstimate
 		($scope.estimate, $scope.estimateItems, $scope.deletedItems,
-			user, $scope.userRole)
+			user, $scope.userRole, $scope.files)
 
 	.then(function(obj) {
         addNewComment('Estimate edited', true);

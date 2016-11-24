@@ -68,6 +68,18 @@ function prepareForm() {
 		};
 
 		$scope.files = [];
+        
+        var files = estimate.entity.estimateFiles;
+        if (files) {
+            files.forEach(function(file) {
+                file.fileName = file.name();
+                file.exist = true;
+            });
+            $scope.files = files;
+        } else {
+            $scope.files = [];
+        }
+        
 		switch($scope.prefs.discountType) {
 			case 0:
 				$scope.itemLevelTax = false;

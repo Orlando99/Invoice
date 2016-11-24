@@ -165,7 +165,7 @@
         </div>
         <form class="table-row col-60 layout-margin-tb">
           <div class="input-container layout-margin-b">
-            <label class="col-i-30">Customer Notes</label>
+            <label class="col-i-30">Notes</label>
             <textarea class="col-70" ng-model="notes"></textarea>
           </div>
           <div class="input-container">
@@ -179,7 +179,7 @@
             <input type="text" class="col-70" ng-model="field.value"></input>
           </div>
           <div class="input-container layout-margin-tb">
-            <label class="col-i-30">Attach Reference File</label>
+            <label class="col-i-30">Attachments</label>
             <div class="col-70 file_div" >
             <div ng-repeat="file in files">
               <label class="col-90">{{file.fileName}}</label>
@@ -191,7 +191,7 @@
             <label>
               <input type="file" style="display: none;"
                 onchange="angular.element(this).scope().addNewFile(this)">
-              <div class="div-button">Import file...</div>
+              <div class="button button-no-bg" style="padding-left: 0px">+ Add</div>
             </label>
             </div>
           </div>

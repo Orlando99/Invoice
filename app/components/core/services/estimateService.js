@@ -1,7 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('estimateService', ['estimateFactory', 'itemService', 'currencyFilter',
-function(estimateFactory, itemService, currencyFilter){
+invoicesUnlimited.factory('estimateService', ['$q', 'estimateFactory', 'itemService', 'currencyFilter',
+function($q, estimateFactory, itemService, currencyFilter){
 
 return {
 	test : function() {
@@ -136,13 +136,13 @@ return {
 		});
 
 	},
-	createNewEstimate : function(estimate, estimateItems, role) {
+	createNewEstimate : function(estimate, estimateItems, role, files) {
 		var items = [];
 		var acl = new Parse.ACL();
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
 
-		var promise =  Parse.Promise.as(undefined);//undefined;
+		//var promise =  Parse.Promise.as(undefined);//undefined;
 /*		if(file) {
 			var parseFile = new Parse.File(file.name, file);
 			promise = parseFile.save()
@@ -153,6 +153,34 @@ return {
 		} else
 			promise = Parse.Promise.as(undefined);
 */
+        
+        var promise = undefined;
+		var newFiles = undefined; // store already saved and newly created files
+		if(files.length) {
+			newFiles = [];
+			var promises = [];
+			files.forEach(function(file) {
+				if(file.exist) {
+					delete file.exist;
+					delete file.fileName;
+					newFiles.push(file);
+
+				} else {
+					var parseFile = new Parse.File(file.name, file);
+					promises.push(parseFile.save());
+				}
+			});
+
+			promise = $q.all(promises)
+			.then(function(fileObjs) {
+				if (fileObjs)
+					newFiles = newFiles.concat(fileObjs);
+				return newFiles;
+			});
+			
+		} else
+			promise = Parse.Promise.as(undefined);
+        
 		var itemsToCreate = [];
 		var itemThatExist = [];
 		estimateItems.forEach(function(item) {
@@ -201,7 +229,7 @@ return {
 				var Estimate = Parse.Object.extend("Estimates");
 				var obj = new Estimate();
 				obj.setACL(acl);
-			//	obj.set("estimateFiles", fileObj);
+				obj.set("estimateFiles", fileObj);
 				estimate.estimateItems = list;
 				
 				return obj.save(estimate)
@@ -226,7 +254,7 @@ return {
 		});
 
 	},
-	updateEstimate : function(estimateObj, estimateItems, deletedItems, user, role) {
+	updateEstimate : function(estimateObj, estimateItems, deletedItems, user, role, files) {
 		var estItems = [];
 		var itemsToDelete = [];
 		var itemsToCreate = [];
@@ -256,9 +284,38 @@ return {
 			organization : user.get('organizations')[0],
 			objectType : EstimateItem
 		};
+        
+        var promise = undefined;
+		var newFiles = undefined; // store already saved and newly created files
+		if(files.length) {
+			newFiles = [];
+			var promises = [];
+			files.forEach(function(file) {
+				if(file.exist) {
+					delete file.exist;
+					delete file.fileName;
+					newFiles.push(file);
 
-		// create new items
-		return createNewItems(itemsToCreate, otherData)
+				} else {
+					var parseFile = new Parse.File(file.name, file);
+					promises.push(parseFile.save());
+				}
+			});
+
+			promise = $q.all(promises);
+
+		} else
+			promise = Parse.Promise.as(undefined);
+
+		return promise.then(function(fileObjs) {
+			if (fileObjs)
+				newFiles = newFiles.concat(fileObjs);
+
+			estimateObj.entity.set('estimateFiles', newFiles);
+			
+			// create new items
+			return createNewItems(itemsToCreate, otherData)
+		})
 		.then(function (items) {
 		//	console.log('created items');
 		//	console.log(items);
@@ -552,8 +609,21 @@ function fillInXmlData(xmlUrl, user, estimate) {
 		if (! customFields.customField.length)
 			customFields.customField = undefined;
 
+        /*
 		var attachments = jsonObj.items.attachments;
 		attachments.attachment = undefined;
+        */
+        var attachments = jsonObj.items.attachments;
+		var files = estimate.get("estimateFiles");
+		if (files) {
+			attachments.attachment = [];
+			for (var i = 0; i < files.length; ++i) {
+				attachments.attachment.push(files[i].url());
+			}
+		}
+		else
+			attachments.attachment = undefined;
+        
 /*		var files = estimate.get("estimateFiles");
 		if (files) {
 			attachments.attachment = [];

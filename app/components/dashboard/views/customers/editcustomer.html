@@ -1,4 +1,4 @@
-﻿  <div class="container hidesm">
+  <div class="container hidesm">
     <h3 class="text-uppercase text-weight-normalize text-color-normalize layout-margin-t">Edit Customer</h3>
     <hr class="layout-margin-tb">
 
@@ -71,9 +71,7 @@
         <div class="input-container layout-margin-b">
           <label class="layout-padding-t">Currency</label>
           <select class="col-75 layout-margin-tb" ng-model="selectedCustomerEdit.currency">
-            <option value="USD - US Dollar">USD - US Dollar</option>
-            <option value="EUR - Euro">EUR - Euro</option>
-            <option value="DKK - Danish Krone">DKK - Danish Krone</option>
+            <option ng-repeat="currency in currencies" ng-selected="currency">{{currency.entity.title}}</option>
           </select>
         </div>
         <div class="input-container layout-margin-b">
