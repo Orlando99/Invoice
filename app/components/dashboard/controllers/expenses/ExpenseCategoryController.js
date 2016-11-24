@@ -16,7 +16,7 @@ $controller('DashboardController',{$scope:$scope,$state:$state});
 
 loadCategories();
 loadColors();
-
+$scope.catColors = [];
 function loadCategories () {
 	showLoader();
 	$q.when(coreFactory.getExpenseCategories({
@@ -26,9 +26,14 @@ function loadCategories () {
 		$scope.categories = categories.sort(function(a,b){
 			return alphabeticalSort(a.entity.name,b.entity.name)
 		});
+        colorCodeToValue
+        $scope
+        
         $scope.shouldDelete = new Array($scope.categories.length);
-        for(var i = 0; i < $scope.categories.length; ++i)
+        for(var i = 0; i < $scope.categories.length; ++i){
             $scope.shouldDelete[i] = false;
+            $scope.catColors.push(colorCodeToValue($scope.categories[i].entity.get('color')));
+        }
 		hideLoader();
 
 	}, function(error) {
@@ -139,6 +144,7 @@ $scope.createNewCategory = function() {
 	.then(function(obj) {
 		$scope.categories.unshift(obj);
 		$('.new-category').removeClass('show');
+        window.location.reload();
 		hideLoader();
 	});
 }

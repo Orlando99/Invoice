@@ -65,6 +65,48 @@
     </div>
 
     <div class="clearfix"></div>
+      
+      
+      <h3 class="layout-margin-t section-title text-uppercase text-color-normalize float-left">Attachments</h3>
+      
+    <label>
+      <input type="file" style="display: none;"
+        onchange="angular.element(this).scope().addAttachment(this)" accept=".pdf,.png,.jpg,.jpeg">
+      <div class="layout-margin-t button button-no-bg float-right">+ Add</div>
+    </label>
+      <label id="file-error" class="float-right" style="margin-top: 35px; font-size: 14px; color: red; display: none;">Invalid file: Supported files are PDF and images</label>
+    
+    <div class="clearfix"></div>
+
+    <table class="container table-border-tb layout-margin-tb-lg">
+      <tr class="text-uppercase text-color-normalize">
+        <td class="layout-padding-tb text-uppercase">Name</td>
+        <!--
+        <td class="layout-padding-tb text-uppercase">Date</td>
+        <td class="layout-padding-tb"></td>
+        -->
+      </tr>
+      <tr class="text-color-light" ng-repeat="attach in attachments">
+        <td class="layout-padding-tb-lg valign-top"><a ng-href="{{attach.fileUrl}}" target="_blank">{{attach.fileName}}</a></td>
+        <!--
+        <td class="layout-padding-tb-lg valign-top">12/03/2014</td>
+        <td class="layout-padding-tb-lg valign-top actions">
+          <a class="action-edit" href="#">re-upload</a>
+          <button class="button button-icon button-no-margin">
+          <img src="./assets/images/icon-times-round.png" alt=""></button>
+        </td>
+        -->
+      </tr>
+      <!--
+      <tr class="text-color-light">
+        <td class="layout-padding-tb-lg valign-top"><a href="#">documents.pdf</a></td>
+        <td class="layout-padding-tb-lg valign-top">12/05/2014</td>
+        <td class="layout-padding-tb-lg valign-top actions"><a class="action-edit" href="#">re-upload</a> <button class="button button-icon button-no-margin"><img src="./assets/images/icon-times-round.png" alt=""></button></td>
+      </tr>
+    -->
+    </table>
+      
+      
 <!--
     <h3 class="layout-margin-t section-title text-uppercase text-color-normalize float-left">Attachments</h3>
     <button class="layout-margin-t button button-no-bg float-right">+ Add</button>

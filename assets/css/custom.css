@@ -280,10 +280,8 @@ z-index: 10;
         
 }
 
-input
-{
-    
-    max-length : 5;
+td{
+    word-break: break-word !important;
 }
     
 

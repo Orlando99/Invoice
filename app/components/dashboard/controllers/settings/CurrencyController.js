@@ -299,6 +299,7 @@ $scope.prepareAddCurrency = function() {
 			exchangeRate : {
 				number : true,
 				min : 0,
+                required: true
 			}
 		}
 	});

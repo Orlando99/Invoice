@@ -187,6 +187,7 @@ function prepareForm() {
 	$scope.notes = $scope.prefs.notes;
 	$scope.terms = $scope.prefs.terms;
 
+    $scope.files = [];
 	$scope.todayDate = new Date();
 	$scope.subTotalStr = currencyFilter(0, '$', 2);
 
@@ -280,6 +281,26 @@ $scope.openDatePicker = function(n) {
 		case 1: $scope.openPicker1 = true; break;
 	}
 }
+
+$scope.addNewFile = function(obj) {
+		var file = obj.files[0];
+        
+        var n = file.name;
+        
+        if(!(n.endsWith('.pdf') || n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg'))){
+            $('#file-error').show();
+            return;
+        }
+        $('#file-error').hide();
+		file.fileName = file.name; // to avoid naming conflict
+		$scope.files.push(file);
+		$scope.$apply();
+	}
+
+	$scope.removeFile = function(index) {
+		$scope.files.splice(index,1);
+	}
+
 
 $scope.addEstimateItem = function() {
 	$scope.estimateItems.push({
@@ -534,7 +555,7 @@ function saveEstimate() {
 	if(email) estimate.customerEmails = [email];
 
 	return estimateService.createNewEstimate
-		(estimate, $scope.estimateItems, $scope.userRole)
+		(estimate, $scope.estimateItems, $scope.userRole, $scope.files)
     .then(function(estimate){
         addNewComment('Estimate created for ' + currencyFilter(estimate.attributes.totalAmount, '$', 2) +' amount', true, estimate);
         return estimate;
