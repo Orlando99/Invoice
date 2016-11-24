@@ -43,7 +43,7 @@ select{
 }
 
 .organization .submenu.show {
-	min-width: 100px;
+	min-width: 190px;
 }
 .navigation > li .link-sales-div{
   position: absolute;
@@ -160,6 +160,20 @@ z-index: 10;
     margin-left: -200px !important;
 }
 
+@media(max-width : 1142px)
+{
+    #img_div
+    {
+        display: none !important;
+    }
+    
+    .confirm
+    {
+        width: 90% !important;
+    }
+}
+
+
 @media(max-width : 800px)
 { 
     .sign-up
@@ -264,6 +278,10 @@ z-index: 10;
             
     }
         
+}
+
+td{
+    word-break: break-word !important;
 }
     
 

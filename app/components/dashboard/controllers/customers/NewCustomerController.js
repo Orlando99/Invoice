@@ -2,7 +2,7 @@
 
 invoicesUnlimited.controller('NewCustomerController',
 	function($scope,$rootScope,$state,userFactory,
-			 contactPersonFactory,customerFactory,$controller,$q,coreFactory){
+			 contactPersonFactory,customerFactory,$controller,$q,coreFactory,currencyFactory){
 
 	var user = userFactory;
 	
@@ -46,6 +46,17 @@ invoicesUnlimited.controller('NewCustomerController',
 	$scope.newCustomer.billingAddress = Object.create(address);
 
 	$scope.newCustomer.shippingAddress = Object.create(address);
+    
+    loadCurrencies();
+    
+    function loadCurrencies() {
+        $q.when(currencyFactory.loadAll({
+            organization : user.entity[0].get('selectedOrganization')
+        }))
+        .then(function(currencies) {
+            $scope.currencies = currencies;
+        });
+    }
 
 	$scope.shipping = {
 		setShippingTheSame  : false,

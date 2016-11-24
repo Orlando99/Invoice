@@ -78,6 +78,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	});
 
 	$('#addInvoiceForm').validate({
+        onkeyup: true,
 		rules: {
 			customer : 'required',
 			invoiceNumber : 'required',

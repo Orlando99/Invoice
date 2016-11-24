@@ -18,6 +18,7 @@
        </td>
        <td class="text-uppercase text-info layout-padding-tb-lg">Category Name</td>
        <td class="text-uppercase text-info layout-padding-tb-lg text-left">Description</td>
+        <td class="text-uppercase text-info layout-padding-tb-lg text-left">Color</td>
      </tr>
      <tr class="trow show_hover" ng-repeat="category in categories">
        <td class="text-uppercase text-info layout-padding-tb-lg">
@@ -29,7 +30,12 @@
        <td class="text-color-light text-weight-normalize layout-padding-tb-lg"
         ng-click="showCategoryDetail($index)">{{category.entity.name}}</td>
        <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left"
-        ng-click="showCategoryDetail($index)">{{category.entity.notes}}</td>
+        ng-click="showCategoryDetail($index)" style="width: 750px !important;">{{category.entity.notes}}</td>
+         <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left"
+        ng-click="showCategoryDetail($index)"><div style="height:40px;">
+      <div class="show_hover modal-close"
+        ng-style="{'height':'40px','width':'100px' ,'background-color':catColors[$index]}"></div>
+     </div></td>
      </tr>
    </table>
 
