@@ -148,6 +148,12 @@ function prepareForm() {
     $scope.hasBudget = 0;
 	var customerId = $state.params.customerId;
 
+    for(var i = 0; i < $scope.users.length; ++i){
+        var username = user.get('username');
+        if($scope.users[i].userName == username)
+            $scope.projectUsers.push($scope.users[i]);
+    }
+    
 	if(customerId) {
 		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
 			return cust.entity.id == customerId;
@@ -329,6 +335,7 @@ $scope.addNewTask = function() {
     obj.setACL(acl);
     obj.set('taskName', $scope.newTaskName);
     obj.set('taskDescription', $scope.newTaskDescription);
+    obj.set('taskCost', $scope.newTaskCost);
 
     return obj.save().then(function(task) {
         $scope.tasks.push(task);
@@ -341,6 +348,7 @@ $scope.addNewTask = function() {
         $(".new-task").removeClass('show');
         $scope.newTaskName = "";
         $scope.newTaskDescription = "";
+        $scope.newTaskCost = "";
         $scope.$apply();
         hideLoader();
     });

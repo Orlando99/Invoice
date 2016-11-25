@@ -566,8 +566,13 @@ $scope.emailReceipt = function() {
 	$q.when(invoiceService.sendInvoiceReceipt($scope.invoice.entity))
 	.then(function(obj) {
         addNewComment('Invoice sent by email', true);
+        hideLoader();
+        
+        $("#snackbar").addClass('show');
+        setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
+        
 		console.log('Receipt sent successfully.');
-		hideLoader();
+		
 	});
 }
 
