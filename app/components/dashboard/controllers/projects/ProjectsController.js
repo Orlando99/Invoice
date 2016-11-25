@@ -273,6 +273,7 @@ $scope.addNewTask = function() {
     obj.setACL(acl);
     obj.set('taskName', $scope.newTaskName);
     obj.set('taskDescription', $scope.newTaskDescription);
+    obj.set('taskCost', $scope.newTaskCost);
 
     return obj.save().then(function(task) {
         $scope.tasks.push(task);
@@ -285,6 +286,7 @@ $scope.addNewTask = function() {
         $(".new-task").removeClass('show');
         $scope.newTaskName = "";
         $scope.newTaskDescription = "";
+        $scope.newTaskCost = "";
         $scope.$apply();
         hideLoader();
     });

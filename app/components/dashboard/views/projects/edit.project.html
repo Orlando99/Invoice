@@ -88,9 +88,11 @@
         <div class="col-20 ">
           <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Task Name</h3>
         </div>
-        <div class="col-70 layout-padding-l">
+        <div class="col-50 layout-padding-l">
           <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Description</h3>
-
+        </div>
+          <div class="col-20 ">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Rate/Hour</h3>
         </div>
         <div class="col-5 layout-padding-l">
           <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize"></h3>
@@ -106,8 +108,11 @@
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
               <label>{{task.entity.taskName || task.attributes.taskName}}</label>
           </div>
-          <div class="col-70 layout-padding layout-padding-l">
+          <div class="col-50 layout-padding layout-padding-l">
             <label>{{task.entity.taskDescription || task.attributes.taskDescription}}</label>
+          </div>
+            <div class="col-20 layout-padding layout-padding-l">
+            <label>{{task.entity.taskCost || task.attributes.taskCost}}</label>
           </div>
           
           <div class="col-5 layout-padding layout-padding-l text-right">
@@ -321,6 +326,10 @@
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Description</label>
             <textarea ng-model="newTaskDescription" class="col-75"></textarea>
+          </div>
+        <div class="input-container layout-margin-b" ng-show="billingMethod == 'Based on task hours'">
+            <label class="layout-padding-t-sm">Rate/Hour</label>
+            <input class="col-75" name="newTaskCost" type="number" ng-model="newTaskCost" placeholder="Select or Type to add">
           </div>
 
         </form>

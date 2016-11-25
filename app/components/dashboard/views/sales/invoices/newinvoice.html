@@ -108,7 +108,7 @@
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
             <input tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number"
-              placeholder="10.00" ng-model="invItem.rate * currentCurrency.exchangeRate"
+              placeholder="10.00" ng-model="invItem.rate"
               ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right" ng-show="itemLevelTax">

@@ -52,7 +52,7 @@ return {
 	getInvoiceDetails : function(invoiceId) {
 		var Invoice = Parse.Object.extend('Invoices');
 		var query = new Parse.Query(Invoice);
-		query.include('comments', 'payment', 'invoiceInfo');
+		query.include('comments', 'payment', 'invoiceInfo', 'customer');
 
 		return query.get(invoiceId)
 		.then(function(invObj) {
@@ -456,8 +456,7 @@ return {
 
 		query.equalTo("organization", organization);
 		query.include("customer");
-		query.select("invoiceNumber", "invoiceDate", "dueDate",
-			"total", "balanceDue", "status", "customer", "poNumber");
+		//query.select("invoiceNumber", "invoiceDate", "dueDate", "total", "balanceDue", "status", "customer", "poNumber");
 
 		return query.find().then(function(invoiceObjs) {
 			var invoices = [];
@@ -530,7 +529,39 @@ return {
 		var inv = new invoiceFactory(invoice, {
 			operation : 'sendReceipt'
 		});
+        var link = inv.entity.invoiceReceipt.url();
+        return $.ajax({
+                type: "GET",
+                url: 'proxy.php',
+                dataType: "html",
+                data: {
+                address: link
+            }
+        }).then(function (htmlDoc) {
+            if(inv.entity.customerEmails)
+            {
+                var toEmail = inv.entity.customerEmails[0];
+                var customerName = inv.customer.displayName;
+                var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
+                var businessName = inv.organization.name;
+                var link = inv.entity.invoiceReceipt.url();
+
+                var emailSubject = 'Invoice From ' + businessName;
+                var emailBody = htmlDoc;
+            }
+
+            return Parse.Cloud.run("sendMailgunHtml", {
+                toEmail: toEmail,
+                fromEmail: "no-reply@invoicesunlimited.com",
+                subject : emailSubject,
+                html : emailBody
+            }).then(function(msg) {
+                console.log(msg);
+                return invoice;
+            });
+        });
         
+        /*
         if(inv.entity.customerEmails)
         {
             var toEmail = inv.entity.customerEmails[0];
@@ -555,6 +586,8 @@ return {
 			console.log(msg);
 			return invoice;
 		});
+        
+        */
         
 	}
 

@@ -59,8 +59,9 @@
       <form class="col-60 inputs-white" id="payment-details-form">
         <div class="input-container layout-margin-b">
           <label class="layout-padding-t">Currency</label>
-          <select class="col-75 layout-margin-tb" ng-model="newCustomer.entity.currency">
-            <option ng-repeat="currency in currencies" ng-selected="currency">{{currency.entity.title}}</option>
+          <select class="col-75 layout-margin-tb" ng-change="customerCurrencyChanged()" ng-model="newCustomer.entity.currency">
+            <option ng-repeat="currency in currencies">{{currency.entity.title}}</option>
+              <option value="dummy">+ Add New Currency</option>
           </select>
         </div>
         <div class="input-container layout-margin-b">
@@ -166,3 +167,52 @@
   </div>
 
   <div class="spacer hidesm"></div>
+
+<div class="popup-modal new-currency hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Currency</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="addCurrencyForm" class="layout-margin-tb col-100 inputs-white">
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Currency Code</label>
+            <select name="currencyCode" class="col-75" ng-options="currency for currency in availableCurrencies"
+              ng-model="currencyObj.title" ng-change="currencyChanged()">
+              <option value="" disabled selected>Select or Type to add</option>
+            </select>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Currency Symbol</label>
+            <input name="currencySymbol" type="text" class="col-75" placeholder="Type to add"
+              ng-model="currencyObj.currencySymbol">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Decimal Places</label>
+            <select class="col-75" ng-model="currencyObj.decimalPlace">
+              <option value="0">0</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Format</label>
+            <select class="col-75" ng-model="currencyObj.format">
+              <option value="#,###,####">1,234,5678</option>
+              <option value="###,###,###">123,456,789</option>
+              <option value="##,##,##,##">12,34,56,78</option>
+            </select>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-smm">Exchange Rate</label>
+            <input name="exchangeRate" ng-model="currencyObj.exchangeRate" type="text" class="col-75"
+              placeholder="Type to add">
+          </div>
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-info text-uppercase" ng-click="saveNewCurrency()">Save</button>
+    </div>
+  </div>

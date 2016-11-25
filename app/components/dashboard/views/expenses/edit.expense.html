@@ -1,4 +1,4 @@
-﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>  
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>  
   <div class="container hidesm">
 
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">Edit Expense</h3>
@@ -20,7 +20,7 @@
           ng-click="openDatePicker(1)" readonly>
       </div>
       <div class="input-container col-60 layout-margin-b">
-        <label class="col-30 layout-padding-t-sm">Amount</label>
+        <label id="edit_expanse_ammount" class="col-30 layout-padding-t-sm">Amount</label>
         <input name="amount" type="number" class="col-70" placeholder="USD" ng-model="amount">
       </div>
       <div class="input-container col-60 layout-margin-b">

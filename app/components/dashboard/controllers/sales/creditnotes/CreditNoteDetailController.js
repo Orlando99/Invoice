@@ -123,7 +123,12 @@ $scope.emailReceipt = function() {
 	.then(function(obj) {
 		console.log('Receipt sent successfully.');
         addNewComment('Credit Note sent by email', true);
+        
 		hideLoader();
+        
+        $("#snackbar").addClass('show');
+        setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
+        
 	}, function(error) {
 		hideLoader();
 		console.log(error.message);
