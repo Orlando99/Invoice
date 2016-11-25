@@ -12,8 +12,11 @@ return {
 	},
 	openDatePicker : function(params) {
 		var _scope = params._scope;
-		if (_scope.selectedDateRange != 'Custom') return;
-
+		if (_scope.selectedDateRange != 'Custom') 
+        {
+ 
+            return;
+        }
 		switch (params.n) {
 			case 1: _scope.openPicker1 = true; break;
 			case 2: _scope.openPicker2 = true; break;
@@ -26,7 +29,7 @@ return {
 		var month = d.getMonth(); // month(0-11)
 		var day = d.getDate(); // day(1-31)
 		var weekday = d.getDay(); // weekday(1-7)
-		
+	 
 		var fromDate = new Date(year, month, day);
 		var toDate = new Date();
 
@@ -83,8 +86,7 @@ return {
 				toDate = new Date(year-1, 11, 31);
 			}
 			break;
-		}
-
+		}       
 		_scope.fromDate = fromDate;
 		_scope.toDate = toDate;
 

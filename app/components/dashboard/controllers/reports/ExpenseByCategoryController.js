@@ -41,6 +41,15 @@ $scope.openDatePicker = function(n) {
 }
 
 $scope.generateReport = function() {
+
+    var selectedDate =  $scope.toDate
+    var todayDate =  new Date();
+    if(selectedDate>todayDate)
+    {
+        ShowMessage("Select a valid Date!","error");   
+        return false;
+    }
+
 	showLoader();
 	var params = {
 		fromDate : $scope.fromDate,

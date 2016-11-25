@@ -42,7 +42,13 @@ invoicesUnlimited.controller('AccountInfoController',
        
             $('#' + id).removeClass('error');
     });
-
+    
+    $("select").bind("change keyup", function(event){
+         var id = event.target.id;
+                $('#' + id + '-' + 'error').css('display', 'none');   
+                $('#' + id).removeClass('error');
+    });
+   
 	$.validator.addMethod(
 		"AvgSaleRequired",
 		function(value,element){
@@ -68,8 +74,8 @@ invoicesUnlimited.controller('AccountInfoController',
 	});
 
 	$("#signUpForm").validate({
-		onkeyup : false,
-		onfocusout : false,
+		onkeyup : true,
+		onfocusout : true,
 		rules: {
 			avgSale 		: {
 				required : true,

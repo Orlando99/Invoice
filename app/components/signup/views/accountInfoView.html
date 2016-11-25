@@ -28,7 +28,7 @@
         <input type="text" class="layout-no-margin" id="phoneNumber" placeholder="Phone Number" name="phoneNumber" ng-model="phoneNumber">
       </div>
       <div class="input-container layout-margin-b">
-      <select class="layout-no-margin" name="avgSale"
+      <select class="layout-no-margin" name="avgSale" id = "avgSale"
               ng-init="accountInfo.avgSale = 'avgSaleTitle'"
               ng-model="accountInfo.avgSale">
         <option value="avgSaleTitle" disabled>Average Sale Per Customer</option>
@@ -36,7 +36,7 @@
       </select>
       </div>
       <div class="input-container layout-margin-b">
-        <select class="layout-no-margin" name="monthlySales"
+        <select class="layout-no-margin" name="monthlySales" id="monthlySales"
               ng-init="accountInfo.monthlySales = 'monthlySalesTitle'"
               ng-model="accountInfo.monthlySales">
           <option value="monthlySalesTitle" disabled>Estimated Monthly Credit Card Sales</option>
