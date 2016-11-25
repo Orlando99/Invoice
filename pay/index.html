@@ -1024,7 +1024,7 @@ function getInvoiceInfo (invoiceInfoId){
             $('.phone').text(result.phone);
             $('.email').text(result.email);
             $('.due-date').text(Date.parse(result.dueDate).toString('MMMM dS, yyyy'));
-            $('.total-due').text('$' + result.totalDue.toFixed(2));
+            $('.total-due').text('$' + parseInt(result.totalDue).toFixed(2));
             $('#Total').val(result.totalDue);
             $('.invoice-date').text("Invoice Date: " + Date.parse(result.invoiceDate).toString('MMMM dS, yyyy'));
             $('.reference-number').text("Reference Number: " + result.referenceNumber);
