@@ -28,7 +28,7 @@
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Name</label>
-        <input class="col-75" type="text" ng-model="UserInfo.name">
+        <input maxlength="60" class="col-75" type="text" ng-model="UserInfo.name">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Email</label>
@@ -36,7 +36,7 @@
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Username</label>
-        <input class="col-75" type="text" ng-model="UserInfo.username">
+        <input maxlength="60" class="col-75" type="text" ng-model="UserInfo.username">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Change Password</label>
@@ -58,23 +58,23 @@
       
           <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Business Name</label>
-        <input class="col-75" type="text" ng-model="bsnsInfo.businessName" placeholder="Business Name">
+        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.businessName" placeholder="Business Name">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Street</label>
-        <input class="col-75" type="text" ng-model="bsnsInfo.streetName" placeholder="Street Name">
+        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.streetName" placeholder="Street Name">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">City</label>
-        <input class="col-75" type="text" ng-model="bsnsInfo.city" placeholder="City">
+        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.city" placeholder="City">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">State</label>
-        <input class="col-75" type="text" ng-model="bsnsInfo.state" placeholder="State">
+        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.state" placeholder="State">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Zip Code</label>
-        <input class="col-75" type="text" ng-model="bsnsInfo.zipCode" placeholder="Zip Code">
+        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.zipCode" placeholder="Zip Code">
       </div>
     
       </form>
@@ -116,15 +116,15 @@
         <form id="changePasswordForm" class="layout-margin-tb col-100 inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Existing Password</label>
-            <input name="existingPassword" type="password" class="col-75" ng-model="existingPassword">
+            <input maxlength="60" name="existingPassword" type="password" class="col-75" ng-model="existingPassword">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">New Password</label>
-            <input name="newPassword" type="password" class="col-75" ng-model="newPassword">
+            <input maxlength="60" name="newPassword" type="password" class="col-75" ng-model="newPassword">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Confirm Password</label>
-            <input name="confirmPassword" type="password" class="col-75" ng-model="confirmPassword">
+            <input maxlength="60" name="confirmPassword" type="password" class="col-75" ng-model="confirmPassword">
           </div>
           
         </form>

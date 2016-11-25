@@ -1,4 +1,4 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   
   <div class="container hidesm">
     <!--
@@ -17,7 +17,7 @@
         <button class="float-right layout-margin-tb button button-info text-uppercase">Invite User</button>
         <a ng-click="createUser();" class="float-right layout-margin-tb layout-margin-r button button-add text-uppercase modal-opener" data-toggle="invite-user">New</a>
         <form class="float-right layout-margin-tb">
-          <input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.title">
+          <input  maxlength="60"type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.title">
         </form>
 
         <div class="clearfix"></div>

@@ -16,16 +16,16 @@
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Invoice #</label>
         <!-- placeholder="INV-000001" -->
-        <input name="invoiceNumber" class="col-75" type="text" ng-model="invoiceNo"> <!--ng-disabled="disableInvNo"-->
+        <input maxlength="60" name="invoiceNumber" class="col-75" type="text" ng-model="invoiceNo"> <!--ng-disabled="disableInvNo"-->
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Order #</label>
-        <input class="col-75" type="text" ng-model="poNumber">
+        <input maxlength="60" class="col-75" type="text" ng-model="poNumber">
       </div>
       <!--datepicker-popup-template-url="template/datepickerPopUp/customPopUp.html"-->
       <div class="input-container col-60 layout-margin-b datepicker-noclear">
         <label class="layout-padding-t-sm">Invoice Date &amp; Terms</label>
-        <input name="invoiceCreateDate" class="col-35 form-control" type="text" uib-datepicker-popup="{{dateFormat}}"
+        <input maxlength="60" name="invoiceCreateDate" class="col-35 form-control" type="text" uib-datepicker-popup="{{dateFormat}}"
           placeholder="12/03/2014" ng-model="todayDate" is-open="openPicker1" 
           ng-click="openDatePicker(1)" ng-change="calculateDueDate()" readonly>
         
@@ -39,7 +39,7 @@
       </div>
       <div class="input-container col-60 layout-margin-b datepicker-noclear" ng-show="hasDueDate">
         <label class="layout-padding-t-sm">Due Date</label>
-        <input name="invoiceDueDate" id="end_date" class="col-75" type="text" ng-model="dueDate"
+        <input maxlength="60" name="invoiceDueDate" id="end_date" class="col-75" type="text" ng-model="dueDate"
           uib-datepicker-popup="{{dateFormat}}" is-open="openPicker2" ng-click="openDatePicker(2)" readonly>
       </div>
       <div class="input-container col-60 layout-margin-b">
@@ -51,7 +51,7 @@
       </div>
       <div class="input-container col-60 layout-margin-b" ng-show="showSalesPerson">
         <label class="layout-padding-t-sm">Sales Person</label>
-        <input class="col-75" type="text" ng-model="salesPerson">
+        <input maxlength="60" class="col-75" type="text" ng-model="salesPerson">
        <!-- <select class="col-75">
           <option value="null" disabled>Select or Type to Add</option>
           <option value="customer1">Customer 1</option>
@@ -103,23 +103,23 @@
             </select>
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
-            <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number"
+            <input maxlength="60" tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number"
               placeholder="1" ng-model="invItem.quantity" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
-            <input tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number"
+            <input maxlength="60" tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number"
               placeholder="10.00" ng-model="invItem.rate"
               ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right" ng-show="itemLevelTax">
-            <input tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number"
+            <input maxlength="60" tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number"
               placeholder="10.00" ng-model="invItem.discount"
               ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l">
             <!--<select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
               ng-change="reCalculateItemAmount($index)">-->
-              <select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
+              <select maxlength="60" class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
               ng-change="taxChanged($index)">
               <option value="">None</option>
              <!-- <option value="1">1</option>
@@ -151,19 +151,19 @@
           <form id="extrasForm" class="inputs-white">
             <div class="input-container layout-margin-tb" ng-show="invoiceLevelTax">
               <label class="layout-padding-t-smm">Discount (%)</label>
-              <input name="discount" type="number" class="col-30" ng-model="discount"
+              <input maxlength="60" name="discount" type="number" class="col-30" ng-model="discount"
                 ng-change="reCalculateTotal()">
               <label class="col-35 text-right layout-padding-t-smm">{{discountStr}}</label>
             </div>
             <div class="input-container layout-margin-tb" ng-show="showShippingCharges">
               <label class="layout-padding-t-smm">Shipping Charges</label>
-              <input name="shipCharges" type="number" class="col-30" ng-model="shippingCharges"
+              <input maxlength="60" name="shipCharges" type="number" class="col-30" ng-model="shippingCharges"
                 ng-change="reCalculateTotal()">
               <label class="col-35 text-right layout-padding-t-smm">{{shippingChargesStr}}</label>
             </div>
             <div class="input-container input-info layout-margin-tb" ng-show="showAdjustments">
               <label class="layout-padding-t-smm">Adjustment</label>
-              <input name="adjustment" type="number" class="col-30" ng-model="adjustments"
+              <input maxlength="60" name="adjustment" type="number" class="col-30" ng-model="adjustments"
                 ng-change="reCalculateTotal()">
               <span class="info-icon info-icon-gray estimates-custom-info-icon"></span>
               <p class="info-tooltip tooltip-dark info-left estimates-custom-tooltip">
@@ -197,7 +197,7 @@
           <br />
           <div class="input-container layout-margin-b" ng-repeat="field in customFields">
             <label class="col-i-30">{{field.name}}</label>
-            <input type="text" class="col-70" ng-model="field.value">
+            <input maxlength="60" type="text" class="col-70" ng-model="field.value">
           </div>
 
           <div class="input-container layout-margin-tb">

@@ -14,15 +14,15 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Credit Note#</label>
-        <input name="creditNumber" class="col-75" type="text" ng-model="creditNo"> <!--ng-disabled="disableCreditNo"-->
+        <input maxlength="60" name="creditNumber" class="col-75" type="text" ng-model="creditNo"> <!--ng-disabled="disableCreditNo"-->
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Reference #</label>
-        <input class="col-75" type="text" ng-model="refNumber">
+        <input maxlength="60" class="col-75" type="text" ng-model="refNumber">
       </div>
       <div class="input-container col-60 layout-margin-b datepicker-noclear">
         <label class="layout-padding-t-sm">Credit note Date</label>
-        <input name="creditCreateDate" class="col-75 form-control" type="text" uib-datepicker-popup="{{dateFormat}}"
+        <input maxlength="60" name="creditCreateDate" class="col-75 form-control" type="text" uib-datepicker-popup="{{dateFormat}}"
           ng-model="todayDate" is-open="openPicker1" ng-click="openDatePicker(1)" readonly>
       </div>
       <div class="clearfix"></div>
@@ -67,7 +67,7 @@
             </select>
           </div>
           <div class="col-15 layout-padding layout-padding-l text-right">
-            <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" placeholder="1"
+            <input  tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" placeholder="1"
               ng-model="creditItem.quantity" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-15 layout-padding layout-padding-l text-right">
@@ -157,11 +157,11 @@
         <form id="addItemForm" class="layout-margin-tb col-100 inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Name</label>
-            <input name="name" type="text" class="col-75" ng-model="newItem.name">
+            <input maxlength="60" name="name" type="text" class="col-75" ng-model="newItem.name">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Price</label>
-            <input name="rate" type="text" class="col-75" placeholder="USD" ng-model="newItem.rate">
+            <input maxlength="60" name="rate" type="text" class="col-75" placeholder="USD" ng-model="newItem.rate">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Description</label>
@@ -192,11 +192,11 @@
             <form id="addTaxForm" class="layout-margin-tb inputs-white">
               <div class="input-container layout-margin-b">
                 <label class="layout-padding-t-sm">Tax Name</label>
-                <input name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
+                <input maxlength="60" name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
               </div>
               <div class="input-container layout-margin-b">
                 <label class="layout-padding-t-sm">Price %</label>
-                <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
+                <input maxlength="60" name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
               </div>
               <div class="col-25 spacer"></div>
               <label class="input-container input-checkbox-container col-75 pull-right">

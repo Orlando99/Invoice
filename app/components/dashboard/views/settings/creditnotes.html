@@ -1,4 +1,4 @@
-﻿  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
 
     <h3 class="layout-margin-t section-title">Credit Notes</h3>
@@ -29,11 +29,11 @@
 
       <div class="input-container layout-margin-b" ng-show="creditAg == 'yes'">
         <label class="layout-padding-t-smm">Prefix</label>
-        <input name="prefix" type="text" class="col-75" value="CN-" ng-model="prefix">
+        <input maxlength="60" name="prefix" type="text" class="col-75" value="CN-" ng-model="prefix">
       </div>
       <div class="input-container layout-margin-b" ng-show="creditAg == 'yes'">
         <label class="layout-padding-t-smm">Next Number</label>
-        <input name="nextNumber" type="text" class="col-75" value="000002" ng-model="nxtNumber">
+        <input maxlength="60" name="nextNumber" type="text" class="col-75" value="000002" ng-model="nxtNumber">
       </div>
 
       <div class="clearfix"></div>

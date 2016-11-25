@@ -53,7 +53,7 @@
        <form id="addCategoryForm" action="" class="layout-margin-tb inputs-white">
          <div class="input-container layout-margin-b">
            <label class="layout-padding-t-sm">Category Name</label>
-           <input name="name" ng-model="newCategory.name" class="col-75" type="text" placeholder="Select or Type to add">
+           <input maxlength="60" name="name" ng-model="newCategory.name" class="col-75" type="text" placeholder="Select or Type to add">
          </div>
 
          <div class="input-container layout-margin-b">
@@ -84,7 +84,7 @@
        <form id="editCategoryForm" action="" class="layout-margin-tb inputs-white">
          <div class="input-container layout-margin-b">
            <label class="layout-padding-t-sm">Category Name</label>
-           <input name="name" ng-model="editCategory.name" class="col-75" type="text" placeholder="Select or Type to add">
+           <input maxlength="60" name="name" ng-model="editCategory.name" class="col-75" type="text" placeholder="Select or Type to add">
          </div>
 
          <div class="input-container layout-margin-b">

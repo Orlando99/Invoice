@@ -15,13 +15,13 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Date</label>
-        <input name="date" class="col-70" type="text" uib-datepicker-popup="MM-dd-yyyy"
+        <input maxlength="60" name="date" class="col-70" type="text" uib-datepicker-popup="MM-dd-yyyy"
           placeholder="Select or enter date" ng-model="todayDate" is-open="openPicker1"
           ng-click="openDatePicker(1)" readonly>
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label id="edit_expanse_ammount" class="col-30 layout-padding-t-sm">Amount</label>
-        <input name="amount" type="number" class="col-70" placeholder="USD" ng-model="amount">
+        <input maxlength="60" name="amount" type="number" class="col-70" placeholder="USD" ng-model="amount">
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Tax</label>
@@ -31,7 +31,7 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Reference#</label>
-        <input class="col-70" type="text" ng-model="refNumber">
+        <input maxlength="60" class="col-70" type="text" ng-model="refNumber">
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Notes</label>

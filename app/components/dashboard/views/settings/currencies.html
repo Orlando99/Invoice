@@ -101,7 +101,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Currency Symbol</label>
-            <input name="currencySymbol" type="text" class="col-75" placeholder="Type to add"
+            <input maxlength="60" name="currencySymbol" type="text" class="col-75" placeholder="Type to add"
               ng-model="currencyObj.currencySymbol">
           </div>
           <div class="input-container layout-margin-b">
@@ -122,7 +122,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Exchange Rate</label>
-            <input name="exchangeRate" type="text" class="col-75" placeholder="Type to add"
+            <input maxlength="60" name="exchangeRate" type="text" class="col-75" placeholder="Type to add"
               ng-model="currencyObj.exchangeRate">
           </div>
         </form>

@@ -46,11 +46,11 @@
 
       <div class="input-container layout-margin-b" ng-show="invoiceAg == 'yes'">
         <label class="layout-padding-t-smm">Prefix</label>
-        <input name="prefix" type="text" class="col-75" value="INV-" ng-model="prefix">
+        <input maxlength="60" name="prefix" type="text" class="col-75" value="INV-" ng-model="prefix">
       </div>
       <div class="input-container layout-margin-b" ng-show="invoiceAg == 'yes'">
         <label class="layout-padding-t-smm">Next Number</label>
-        <input name="nextNumber" type="text" class="col-75" value="000002" ng-model="nxtNumber">
+        <input maxlength="60" name="nextNumber" type="text" class="col-75" value="000002" ng-model="nxtNumber">
       </div>
 
       <div class="clearfix"></div>
@@ -256,7 +256,7 @@
         <form id="addLateFeeForm" class="layout-margin-tb col-100 inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Name</label>
-            <input name="name" type="text" class="col-75" ng-model="latefeeName">
+            <input maxlength="60" name="name" type="text" class="col-75" ng-model="latefeeName">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Type</label>
@@ -267,7 +267,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Amount</label>
-            <input name="amount" type="text" class="col-75" ng-model="latefeeAmount">
+            <input maxlength="60" name="amount" type="text" class="col-75" ng-model="latefeeAmount">
           </div>
         </form>
       </div>
@@ -288,7 +288,7 @@
         <form id="editLateFeeForm" class="layout-margin-tb col-100 inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Name</label>
-            <input name="name" type="text" class="col-75" ng-model="latefeeName">
+            <input maxlength="60" name="name" type="text" class="col-75" ng-model="latefeeName">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Type</label>
@@ -299,7 +299,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Amount</label>
-            <input name="amount" type="text" class="col-75" ng-model="latefeeAmount">
+            <input maxlength="60" name="amount" type="text" class="col-75" ng-model="latefeeAmount">
           </div>
         </form>
       </div>

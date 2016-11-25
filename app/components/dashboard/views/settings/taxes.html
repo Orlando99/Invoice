@@ -50,11 +50,11 @@
         <form id="addTaxForm" class="layout-margin-tb inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Tax Name</label>
-            <input name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
+            <input maxlength="60" name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
             <label min="0" class="layout-padding-t-sm">Price %</label>
-            <input name="rate" type="number" class="col-75" placeholder="Type to add" ng-model="taxRate">      
+            <input maxlength="60" name="rate" type="number" class="col-75" placeholder="Type to add" ng-model="taxRate">      
             </div>
           <div class="col-25 spacer"></div>
           <label class="input-container input-checkbox-container col-75 pull-right">
@@ -89,12 +89,12 @@
         <form id="editTaxForm" class="layout-margin-tb inputs-white">
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Tax Name</label>
-            <input name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
+            <input maxlength="60" name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Price %</label>
         
-          <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
+          <input maxlength="60" name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
             
             </div>
           <div class="col-25 spacer"></div>
