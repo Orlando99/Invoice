@@ -553,6 +553,29 @@ $scope.addAttachment = function(obj) {
 	});
 }
 
+$scope.textReceipt = function() {
+    
+    var cust = $scope.invoice.entity.get('customer')
+    var email = cust.get('mobile');
+    if(!email){
+        ShowMessage("Please Enter Mobile for Customer!","error");
+        return;
+    }
+    
+	showLoader();
+	$q.when(invoiceService.sendInvoiceText($scope.invoice.entity))
+	.then(function(obj) {
+        addNewComment('Invoice sent by text', true);
+        hideLoader();
+        
+        $("#snackbar").addClass('show');
+        setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
+        
+		console.log('Receipt sent successfully.');
+		
+	});
+}
+
 $scope.emailReceipt = function() {
     
     var cust = $scope.invoice.entity.get('customer')

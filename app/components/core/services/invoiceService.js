@@ -525,6 +525,38 @@ return {
 			return invObj;
 		});
 	},
+    sendInvoiceText : function(invoice) {
+		var inv = new invoiceFactory(invoice, {
+			operation : 'sendReceipt'
+		});
+        var mob = inv.entity.get('customer');
+        mob = mob.get('mobile');
+        if(mob)
+        {
+            var to = mob;
+            var customerName = inv.customer.displayName;
+            var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
+            var businessName = inv.organization.name;
+            var link = inv.entity.invoiceReceipt.url();
+            var msgBody = customerName + ', '
+                + businessName + ' has sent you an invoice of ' + amount
+                + '. ';
+        }
+        
+        return Parse.Cloud.run('createShortUrl', {
+            link: link
+        }).then(function(shortUrl){
+            return Parse.Cloud.run("sendSms", {
+			to: to,
+			body : msgBody + shortUrl.data.data.url
+		}).then(function(msg) {
+			console.log(msg);
+			return invoice;
+		});
+        });
+        
+		  
+	},
 	sendInvoiceReceipt : function(invoice) {
 		var inv = new invoiceFactory(invoice, {
 			operation : 'sendReceipt'
@@ -586,10 +618,7 @@ return {
 		}).then(function(msg) {
 			console.log(msg);
 			return invoice;
-		});
-        
-        
-        
+		});  
 	}
 
 };
