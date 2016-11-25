@@ -529,6 +529,7 @@ return {
 		var inv = new invoiceFactory(invoice, {
 			operation : 'sendReceipt'
 		});
+        /*
         var link = inv.entity.invoiceReceipt.url();
         return $.ajax({
                 type: "GET",
@@ -560,8 +561,8 @@ return {
                 return invoice;
             });
         });
+        */
         
-        /*
         if(inv.entity.customerEmails)
         {
             var toEmail = inv.entity.customerEmails[0];
@@ -587,7 +588,7 @@ return {
 			return invoice;
 		});
         
-        */
+        
         
 	}
 
