@@ -33,6 +33,9 @@ $('#addItemForm').validate({
 	}
 });
 
+    
+ $('#add_item_price').mask("#,##0.00", {reverse: true});
+    
 $('#editItemForm').validate({
 	rules: {
 		name : 'required',

@@ -1,13 +1,11 @@
 <div class="container">
       <a href="index.html" class="logo"><img src="./assets/images/01_IU-Web-Admin.png" alt="InvoicesUnlimited"></a>
-      <div class="organization">
-        <img src="{{userLogo}}" class="img-circle" style="height: 26px; width:26px; border-radius: 100% !important;" alt="">
+      <div  id="div_wrapp" onmouseout="mouse_out(this)" onmouseover="div_add_class(this)" class="organization">
+        <img   src="{{userLogo}}" class="img-circle" style="height: 26px; width:26px; border-radius: 100% !important;" alt="">
         <a style="cursor:pointer" class="company">{{businessInfo.businessName}}</a>
-        <img style="cursor:pointer" src="./assets/images/dropdown-arrow-primary.png" alt="">
+        <img id="img_hover" style="cursor:pointer" src="./assets/images/dropdown-arrow-primary.png" alt="">
         
-          
-          
-          <ul class="submenu user-submenu">
+          <ul Style="margin-top: 10px" id="ul_wrapp" onmouseover="ul_add_class(this)" onmouseout="mouse_out(this)" class="submenu user-submenu">
           <li><a ui-sref="dashboard.settings.company-profile">Company Profile</a></li>
           <li><a style="cursor:pointer" ng-click="logOut();">Logout</a></li>
         </ul>
@@ -19,9 +17,10 @@
       <li id="sales" class="nav-item">
         <a href="javascript:" id="link-sales">Sales</a>
         <div class="container-fluid link-sales-div">
-          <ul class="submenu">
-            <li><a ui-sref="dashboard.sales.estimates.all" ui-sref-opts="{reload:true}">Estimates</a></li>
-            <li><a ui-sref="dashboard.sales.invoices.all" ui-sref-opts="{reload:true}">Invoices</a></li>
+          <ul Style="" class="submenu">
+            
+            <li><a Style="margin-left: 290px !important" ui-sref="dashboard.sales.invoices.all" ui-sref-opts="{reload:true}">Invoices</a></li>
+              <li><a Style="margin-left: 70px !important" ui-sref="dashboard.sales.estimates.all" ui-sref-opts="{reload:true}">Estimates</a></li>
             <li><a ui-sref="dashboard.sales.creditnotes.all" ui-sref-opts="{reload:true}">Credit Notes</a></li>
           </ul>
         </div>
@@ -31,7 +30,7 @@
         <a href="javascript:" id="link-expense">Expenses</a>
         <div class="container-fluid link-expense-div">
           <ul class="submenu">
-            <li><a ui-sref="dashboard.expenses.all" ui-sref-opts="{reload:true}">Expenses</a></li>
+            <li><a Style="margin-left: 410px !important" ui-sref="dashboard.expenses.all" ui-sref-opts="{reload:true}">Expenses</a></li>
           <!-- <li><a href="#">Recurring Expenses</a></li> -->
             <li><a ui-sref="dashboard.expenses.category" ui-sref-opts="{reload:true}">Expense Category</a></li>
           </ul>
@@ -68,7 +67,7 @@
         <div class="container-fluid link-settings-div">
           <ul class="submenu">
             <li>
-              <a ui-sref="dashboard.settings.company-profile" ui-sref-opts="{reload:true}">Company Profile</a>
+              <a style="margin-left: 60px !important" ui-sref="dashboard.settings.company-profile" ui-sref-opts="{reload:true}">Company Profile</a>
             </li>
             <li>
               <a ui-sref="dashboard.settings.general-preferences" ui-sref-opts="{reload:true}">General</a>
@@ -85,9 +84,10 @@
               <a ui-sref="dashboard.settings.currencies" ui-sref-opts="{reload:true}">Currency</a>
             </li>
             <li>
-              <a ui-sref="dashboard.settings.app-preferences" ui-sref-opts="{reload:true}">App Preferences</a>
+              <a style="margin-right: 70px !important" ui-sref="dashboard.settings.app-preferences" ui-sref-opts="{reload:true}">App Preferences</a>
             </li>
           </ul>
         </div>
       </li>
     </ul>
+

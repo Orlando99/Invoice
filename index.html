@@ -114,19 +114,19 @@
 	    <form class="layout-margin-tb col-100 inputs-white">
 	      	<div class="input-container layout-margin-b">
 	        	<label class="layout-padding-t-smm">Username</label>
-	        	<input ng-model="user.username" placeholder="Click or Tap to enter" type="text" class="col-75" required></input>
+	        	<input ng-model="user.username" placeholder="Click or Tap to enter" type="text" class="col-75" required>
 	      	</div>
 	      	<div class="input-container layout-margin-b">
 		        <label class="layout-padding-t-smm">Name</label>
-		        <input ng-model="user.fullName" placeholder="Click or Tap to enter" type="text" class="col-75"></input>
+		        <input ng-model="user.fullName" placeholder="Click or Tap to enter" type="text" class="col-75">
 	    	</div>
 	      	<div class="input-container layout-margin-b">
 	        	<label class="layout-padding-t-smm">Email ID</label>
-	        	<input id="newUserId" ng-model="user.email" placeholder="Click or Tap to enter" type="email" class="col-75" required></input>
+	        	<input id="newUserId" ng-model="user.email" placeholder="Click or Tap to enter" type="email" class="col-75" required>
 	      	</div>
 	      	<div class="input-container layout-margin-b" ng-if="method == 'create'">
 	        	<label class="layout-padding-t-smm">Password</label>
-	        	<input ng-model="user.password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required></input>
+	        	<input ng-model="user.password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required>
 	      	</div>
 	      	<div class="input-container layout-margin-b input-checkbox-container">
 	        	<label class="layout-padding-t-smm">Role</label>
@@ -316,9 +316,36 @@
 	<script src="./app/components/dashboard/commonHelper/reportsCommon.js"></script>
 
     <script src="./assets/js/main.js"></script>
-        <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+    <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
 
 
+    <script>
+        $(document).ready(function(){
+        $('#edit_expanse_ammount').mask("#,##0.00", {reverse: true});
+        });
+        function div_add_class(x) {
+                    $("#div_wrapp").addClass("organization showing-menu");
+                    $("#div_wrapp").addClass("showing-menu");
+                    $("#ul_wrapp").addClass("submenu");
+                    $("#ul_wrapp").addClass("user-submenu");
+                    $("#ul_wrapp").addClass("show");
+        }
+        
+        function ul_add_class(x) {
+                    $("#div_wrapp").addClass("organization showing-menu");
+                    $("#div_wrapp").addClass("showing-menu");
+                    $("#ul_wrapp").addClass("submenu");
+                    $("#ul_wrapp").addClass("user-submenu");
+                    $("#ul_wrapp").addClass("show");
+        }
+        
+       function mouse_out(x) {
+                    $("#div_wrapp").removeClass("showing-menu");
+                    $("#ul_wrapp").removeClass("show");
+        }
+       
+    </script>
 
 
 	</body>
