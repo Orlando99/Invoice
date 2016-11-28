@@ -110,6 +110,29 @@ $scope.setDefaultTemplate = function(index) {
 	});
 }
 
+$scope.textReceipt = function() {
+    
+    var cust = $scope.creditNote.entity.get('customer')
+    var email = cust.get('mobile');
+    if(!email){
+        ShowMessage("Please Enter Mobile for Customer!","error");
+        return;
+    }
+    
+	showLoader();
+	$q.when(creditNoteService.sendCreditNoteText($scope.creditNote.entity))
+	.then(function(obj) {
+        addNewComment('Credit Note sent by text', true);
+        hideLoader();
+        
+        $("#snackbar").addClass('show');
+        setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
+        
+		console.log('Receipt sent successfully.');
+		
+	});
+}
+
 $scope.emailReceipt = function() {
     var cust = $scope.creditNote.entity.get('customer')
     var email = cust.get('email');

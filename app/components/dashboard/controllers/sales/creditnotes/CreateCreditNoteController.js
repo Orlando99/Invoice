@@ -536,12 +536,38 @@ function reCalculateSubTotal() {
 		subTotal += item.amount * ((100 - item.discount) * 0.01);
 		item.taxValue = calculateTax(item.amount, item.selectedTax);
 		totalTax += item.taxValue;
+        
+        if (item.selectedTax) {
+            var index = -1;
+            if($scope.itemTaxes.length){
+                index = $scope.itemTaxes.findIndex(function(obj){
+                    return obj.name == item.selectedTax.name;
+                });
+            }
+            if(index == -1){
+                $scope.itemTaxes.push({
+                    nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
+                    amount: currencyFilter(item.taxValue, '$', 2),
+                    count: 1,
+                    name: item.selectedTax.name,
+                    amountValue: item.taxValue
+                });
+            }
+            else{
+                $scope.itemTaxes[index].amountValue += item.taxValue;
+                $scope.itemTaxes[index].count++;
+                $scope.itemTaxes[index].amount = currencyFilter($scope.itemTaxes[index].amountValue, '$', 2);
+                $scope.itemTaxes[index].nameValue = item.selectedTax.name + ' (' + item.selectedTax.rate + '%)';
+            }
+        }
+        /*
 		if (item.selectedTax) {
 			$scope.itemTaxes.push({
 				nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
 				amount: currencyFilter(item.taxValue, '$', 2)
 			});
 		}
+        */
 	});
 
 	$scope.totalTax = totalTax;

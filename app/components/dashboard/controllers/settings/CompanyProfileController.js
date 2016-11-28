@@ -214,7 +214,7 @@ invoicesUnlimited.controller('CompanyProfileController',
 				error: function(user,error){
 					console.log(error.message);
                     hideLoader();
-					ShowMessage("Incorrect password!","error");
+					ShowMessage("Incorrect Existing Password!","error");
 				}
 			});
         

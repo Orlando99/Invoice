@@ -74,8 +74,8 @@ return {
 
 		query.equalTo("organization", organization);
 		query.include("customer");
-		query.select("creditNumber", "creditNoteDate", "reference",
-			"total", "status", "customer", "remainingCredits");
+		//query.select("creditNumber", "creditNoteDate", "reference",
+			//"total", "status", "customer", "remainingCredits");
 
 		return query.find().then(function(creditNoteObjs) {
 			var creditNotes = [];
@@ -367,6 +367,36 @@ return {
 		.then(function(creditObj) {
 			return creditObj;
 		});
+	},
+    sendCreditNoteText : function(creditNote) {
+		var credit = new creditNoteFactory(creditNote, {
+			operation : 'sendReceipt'
+		});
+        var mob = credit.entity.get('customer');
+        mob = mob.get('mobile');
+        if(mob)
+        {
+            var to = mob;
+            var customerName = credit.customer.displayName;
+            var amount = currencyFilter(credit.entity.remainingCredits, '$', 2);
+            var businessName = credit.organization.name;
+            var link = credit.entity.creditReceipt.url();
+            var msgBody = customerName + ', '
+                + businessName + ' has sent you Credit Note of ' + amount
+                + '. ';
+        }
+        
+        return Parse.Cloud.run('createShortUrl', {
+            link: link
+        }).then(function(shortUrl){
+            return Parse.Cloud.run("sendSms", {
+			to: to,
+			body : msgBody + shortUrl.data.data.url
+        }).then(function(msg) {
+            console.log(msg);
+            return creditNote;
+        });
+        }); 
 	},
 	sendCreditNoteReceipt : function(creditNote) {
 		var credit = new creditNoteFactory(creditNote, {

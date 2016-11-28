@@ -119,7 +119,7 @@
           <div class="col-12 layout-padding layout-padding-l">
             <!--<select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
               ng-change="reCalculateItemAmount($index)">-->
-              <select maxlength="60" class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
+              <select class="ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
               ng-change="taxChanged($index)">
               <option value="">None</option>
              <!-- <option value="1">1</option>

@@ -121,6 +121,29 @@ $scope.setDefaultTemplate = function(index) {
 	});
 }
 
+$scope.textReceipt = function() {
+    
+    var cust = $scope.estimate.entity.get('customer')
+    var email = cust.get('mobile');
+    if(!email){
+        ShowMessage("Please Enter Mobile for Customer!","error");
+        return;
+    }
+    
+	showLoader();
+	$q.when(estimateService.sendEstimateText($scope.estimate.entity))
+	.then(function(obj) {
+        addNewComment('Estimate sent by text', true);
+        hideLoader();
+        
+        $("#snackbar").addClass('show');
+        setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
+        
+		console.log('Receipt sent successfully.');
+		
+	});
+}
+
 $scope.emailReceipt = function() {
     var cust = $scope.estimate.entity.get('customer')
     var email = cust.get('email');

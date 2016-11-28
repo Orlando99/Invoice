@@ -55,8 +55,8 @@ return {
 
 		query.equalTo("organization", organization);
 		query.include("customer");
-		query.select("estimateNumber", "estimateDate",
-			"totalAmount", "referenceNumber", "status", "customer");
+		//query.select("estimateNumber", "estimateDate",
+		//	"totalAmount", "referenceNumber", "status", "customer");
 
 		return query.find().then(function(estimateObjs) {
 			var estimates = [];
@@ -423,6 +423,38 @@ return {
 		.then(function(estObj) {
 			return estObj;
 		});
+	},
+    sendEstimetText : function(estimate) {
+		var est = new estimateFactory(estimate, {
+			operation : 'sendReceipt'
+		});
+        var mob = est.entity.get('customer');
+        mob = mob.get('mobile');
+        if(mob)
+        {
+            var to = mob;
+            var customerName = est.customer.displayName;
+            var amount = currencyFilter(est.entity.totalAmount, '$', 2);
+            var businessName = est.organization.name;
+            var link = est.entity.estimateReceipt.url();
+            var msgBody = customerName + ', '
+                + businessName + ' has sent you an estimate of ' + amount
+                + '. ';
+        }
+        
+        return Parse.Cloud.run('createShortUrl', {
+            link: link
+        }).then(function(shortUrl){
+            return Parse.Cloud.run("sendSms", {
+			to: to,
+			body : msgBody + shortUrl.data.data.url
+		}).then(function(msg) {
+			console.log(msg);
+			return estimate;
+		});
+        });
+        
+		  
 	},
 	sendEstimateReceipt : function(estimate) {
 		var est = new estimateFactory(estimate, {

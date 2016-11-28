@@ -61,6 +61,7 @@ However, delay the fade out process for 2.5 seconds */
       </button>
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
         <li><a href="" ng-click="emailReceipt()">Email</a></li>
+          <li><a href="" ng-click="textReceipt()">Text</a></li>
         <li><a ng-href="{{templateUrl}}" ng-click="estimatePrinted()" target="_blank">Print</a></li>
         <li><a ui-sref="dashboard.sales.estimates.clone({estimateId:estimate.entity.id})" ng-click="estimateCloned()">Clone</a></li>
         <li><a href="" class="modal-opener" data-toggle="confirm-delete">Delete</a></li>
