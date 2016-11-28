@@ -21,8 +21,10 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Amount</label>
-        <input maxlength="60" name="amount" type="text" class="col-70" placeholder="USD" ng-model="amount">
-      </div>
+          
+        <input maxlength="60" name="amount" type="number" class="col-70" onkeypress="numberValidation(event)" placeholder="USD" ng-model="amount">
+      
+        </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="col-30 layout-padding-t-sm">Tax</label>
         <select class="col-70" ng-model="selectedTax" ng-options="tax.name for tax in taxes">

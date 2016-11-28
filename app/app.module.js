@@ -48,6 +48,15 @@ var GetTemplate = function(name,file) {
   return COMPONENTS + name + '/views/' + file;
 }
 
+function numberValidation(textValue)
+{
+    var k = textValue.which;
+    if(k == 101)
+    {
+      textValue.preventDefault();
+    }   
+}
+ 
 var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router','oc.lazyLoad','ui.bootstrap'])
 .config(function($locationProvider){
 	//$locationProvider.html5Mode(true).hashPrefix('');
@@ -308,6 +317,7 @@ function isEmpty(obj) {
   }
   return true;
 }
+
 
 function scrollToOffset(offset) {
   var offset = typeof offset !== 'undefined' ? offset : 0;

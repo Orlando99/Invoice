@@ -35,11 +35,11 @@
       </div>
     <div ng-show="billingMethod == 'Based on project hours'" class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Rate/Hour</label>
-        <input class="col-75" name="projectBillingHours" ng-model="projectBillingHours" type="number">
+        <input class="col-75" name="projectBillingHours" ng-model="projectBillingHours" type="number" onkeypress="numberValidation(event)" >
       </div>
         <div ng-show="billingMethod == 'Fixed cost for project'" class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Project Price</label>
-        <input class="col-75" name="projectBillingAmount" ng-model="projectBillingAmount" type="number">
+        <input class="col-75" name="projectBillingAmount" ng-model="projectBillingAmount" type="number" onkeypress="numberValidation(event)" >
       </div>
       <div class="input-container input-radio-container col-60 layout-margin-b">
         <label>Budget</label>
@@ -73,11 +73,11 @@
         
         <div ng-show="budgetType == 'Total Project Cost'" class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Amount</label>
-        <input class="col-75" name="projectBudgetCost" ng-model="projectBudgetCost" type="number">
+        <input class="col-75" name="projectBudgetCost" onkeypress="numberValidation(event)" ng-model="projectBudgetCost" type="number">
       </div>
         <div ng-show="budgetType == 'Total project hours'" class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Hours</label>
-        <input class="col-75" name="projectBudgetHours" ng-model="projectBudgetHours" type="number">
+        <input class="col-75" name="projectBudgetHours" ng-model="projectBudgetHours" type="number" onkeypress="numberValidation(event)" >
       </div>
 
       <div class="clearfix"></div>
@@ -332,7 +332,7 @@
             
         <div class="input-container layout-margin-b" ng-show="billingMethod == 'Based on task hours'">
             <label class="layout-padding-t-sm">Rate/Hour</label>
-            <input class="col-75" name="newTaskCost" type="number" ng-model="newTaskCost" placeholder="Select or Type to add">
+            <input class="col-75" onkeypress="numberValidation(event)" name="newTaskCost" type="number" ng-model="newTaskCost" placeholder="Select or Type to add">
           </div>
 
         </form>
