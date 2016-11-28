@@ -79,15 +79,15 @@
             </select>
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
-            <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" placeholder="1"
+            <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" placeholder="1" onkeypress="numberValidation(event)"
             ng-model="estItem.quantity" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
-            <input maxlength="60" tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number"
+            <input maxlength="60" tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number" onkeypress="numberValidation(event)"
               placeholder="10.00" ng-model="estItem.rate" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right" ng-show="itemLevelTax">
-            <input maxlength="60" tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number"
+            <input maxlength="60" tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number" onkeypress="numberValidation(event)"
               placeholder="10.00" ng-model="estItem.discount" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l">
@@ -118,19 +118,19 @@
           <form id="extrasForm" class="inputs-white">
             <div class="input-container layout-margin-tb" ng-show="invoiceLevelTax">
               <label class="layout-padding-t-smm">Discount (%)</label>
-              <input maxlength="60" name="discount" type="number" class="col-30" ng-model="discount"
+              <input maxlength="60" name="discount" type="number" class="col-30" ng-model="discount" onkeypress="numberValidation(event)"
                 ng-change="reCalculateTotal()">
               <label class="col-35 text-right layout-padding-t-smm">{{discountStr}}</label>
             </div>
             <div class="input-container layout-margin-tb" ng-show="showShippingCharges">
               <label class="layout-padding-t-smm">Shipping Charges</label>
-              <input maxlength="60" name="shipCharges" type="number" class="col-30" ng-model="shippingCharges"
+              <input maxlength="60" name="shipCharges" type="number" class="col-30" ng-model="shippingCharges" onkeypress="numberValidation(event)"
                 ng-change="reCalculateTotal()">
               <label class="col-35 text-right layout-padding-t-smm">{{shippingChargesStr}}</label>
             </div>
             <div class="input-container input-info layout-margin-tb" ng-show="showAdjustments">
               <label class="layout-padding-t-smm">Adjustment</label>
-              <input maxlength="60" name="adjustment" type="number" class="col-30" ng-model="adjustments"
+              <input maxlength="60" name="adjustment" type="number" class="col-30" ng-model="adjustments" onkeypress="numberValidation(event)"
                 ng-change="reCalculateTotal()">
               <span class="info-icon info-icon-gray estimates-custom-info-icon"></span>
               <p class="info-tooltip tooltip-dark info-left estimates-custom-tooltip">
@@ -225,7 +225,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Price</label>
-            <input maxlength="60" name="rate" type="text" class="col-75" placeholder="USD" ng-model="newItem.rate">
+            <input maxlength="60" name="rate" type="number" onkeypress="numberValidation(event)" class="col-75" placeholder="USD" ng-model="newItem.rate">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Description</label>
@@ -260,7 +260,7 @@
               </div>
               <div class="input-container layout-margin-b">
                 <label maxlength="60" class="layout-padding-t-sm">Price %</label>
-                <input name="rate" type="text" class="col-75" placeholder="Type to add" ng-model="taxRate">
+                <input name="rate" type="number" onkeypress="numberValidation(event)" class="col-75" placeholder="Type to add" ng-model="taxRate">
               </div>
               <div class="col-25 spacer"></div>
               <label class="input-container input-checkbox-container col-75 pull-right">

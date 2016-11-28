@@ -94,14 +94,14 @@
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
             <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number"
-              placeholder="1" ng-model="invItem.quantity" ng-change="reCalculateItemAmount($index)">
+              placeholder="1" onkeypress="numberValidation(event)" ng-model="invItem.quantity" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right">
             <input tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number"
-              placeholder="10.00" ng-model="invItem.rate" ng-change="reCalculateItemAmount($index)">
+              placeholder="10.00" onkeypress="numberValidation(event)"  ng-model="invItem.rate" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l text-right" ng-show="itemLevelTax">
-            <input tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number"
+            <input tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number" onkeypress="numberValidation(event)"
               placeholder="10.00" ng-model="invItem.discount" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-12 layout-padding layout-padding-l">
@@ -132,18 +132,18 @@
           <form id="extrasForm" class="inputs-white">
             <div class="input-container layout-margin-tb" ng-show="invoiceLevelTax">
               <label class="layout-padding-t-smm">Discount (%)</label>
-              <input name="discount" type="number" class="col-30" ng-model="discount" ng-change="reCalculateTotal()">
+              <input name="discount" type="number" onkeypress="numberValidation(event)" class="col-30" ng-model="discount" ng-change="reCalculateTotal()">
               <label class="col-35 text-right layout-padding-t-smm">{{discountStr}}</label>
             </div>
             <div class="input-container layout-margin-tb" ng-show="showShippingCharges">
               <label class="layout-padding-t-smm">Shipping Charges</label>
-              <input name="shipCharges" type="number" class="col-30" ng-model="shippingCharges"
+              <input name="shipCharges" type="number" onkeypress="numberValidation(event)" class="col-30" ng-model="shippingCharges"
                 ng-change="reCalculateTotal()">
               <label class="col-35 text-right layout-padding-t-smm">{{shippingChargesStr}}</label>
             </div>
             <div class="input-container input-info layout-margin-tb" ng-show="showAdjustments">
               <label class="layout-padding-t-smm">Adjustment</label>
-              <input name="adjustment" type="number" class="col-30" ng-model="adjustments"
+              <input name="adjustment" type="number"  onkeypress="numberValidation(event)" class="col-30" ng-model="adjustments"
                 ng-change="reCalculateTotal()">
               <span class="info-icon info-icon-gray estimates-custom-info-icon"></span>
               <p class="info-tooltip tooltip-dark info-left estimates-custom-tooltip">
@@ -231,7 +231,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Price</label>
-            <input name="rate" type="text" class="col-75" placeholder="USD" ng-model="newItem.rate">
+            <input name="rate" type="number" onkeypress="numberValidation(event)" class="col-75" placeholder="USD" ng-model="newItem.rate">
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Description</label>

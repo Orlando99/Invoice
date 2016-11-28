@@ -68,11 +68,11 @@
             </select>
           </div>
           <div class="col-15 layout-padding layout-padding-l text-right">
-            <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" placeholder="1"
+            <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" placeholder="1" onkeypress="numberValidation(event)"
               ng-model="creditItem.quantity" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-15 layout-padding layout-padding-l text-right">
-            <input tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number" placeholder="10.00"
+            <input tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number" placeholder="10.00" onkeypress="numberValidation(event)"
               ng-model="creditItem.rate" ng-change="reCalculateItemAmount($index)">
           </div>
           <div class="col-15 layout-padding layout-padding-l">

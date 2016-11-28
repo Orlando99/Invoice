@@ -283,7 +283,7 @@ However, delay the fade out process for 2.5 seconds */
           <br/>
           <label class="float-left" style="margin-top:10px">Amount to Credit</label>
           <form id="applyCreditForm" novalidate>
-            <input name="usedCredit" type="number" ng-model="creditUsed"
+            <input name="usedCredit" type="number" onkeypress="numberValidation(event)" ng-model="creditUsed"
               class="col-15 float-right" style="display: block;" placeholder="1.0" >
           </form>
         </div>
@@ -325,7 +325,7 @@ However, delay the fade out process for 2.5 seconds */
           </div>
           <div class="input-container layout-margin-b">
             <label>Amount</label>
-            <input name="paymentAmount" type="text" class="col-75" placeholder="Type to add"
+            <input name="paymentAmount" type="text" class="col-75"  onkeypress="numberValidation(event)" placeholder="Type to add"
               ng-model="paymentAmount">
           </div>
           <div class="input-container layout-margin-b">
