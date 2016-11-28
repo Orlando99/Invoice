@@ -28,11 +28,10 @@
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr class="trow" ng-repeat="tax in taxes" ng-click="editTax(tax)" >
-        <td class="text-color-light text-weight-normalize layout-padding">{{tax.name}}</td>
-        <td class="text-color-light text-weight-normalize layout-padding">{{tax.rate}}</td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right">
-          <img src="./assets/images/icon-times-round.png" alt="" ng-click="deleteTax(tax)"/></td>
+      <tr class="trow" ng-repeat="tax in taxes"  >
+        <td class="text-color-light text-weight-normalize layout-padding" ng-click="editTax(tax)">{{tax.name}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding" ng-click="editTax(tax)">{{tax.rate + ' %'}}</td>
+        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" ng-click="deleteTax(tax)"/></td>
       </tr>
     </table>
 
@@ -54,7 +53,7 @@
             <input maxlength="60" name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
-            <label min="0" class="layout-padding-t-sm">percentage</label>
+            <label min="0" class="layout-padding-t-sm">Percentage</label>
             <input maxlength="60" name="rate" id = "rateD" onkeypress="numberValidation(event)"  type="number" class="col-75" placeholder="%" ng-model="taxRate">      
             </div>
           <div class="col-25 spacer"></div>
@@ -93,7 +92,7 @@
             <input maxlength="60" name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxName">
           </div>
           <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">percentage</label>
+            <label class="layout-padding-t-sm">Percentage</label>
         
           <input maxlength="60" name="rate" type="text" id = "rateD" onkeypress="numberValidation(event)"  class="col-75" placeholder="%" ng-model="taxRate">
             
@@ -115,7 +114,7 @@
       <div class="clearfix"></div>
       <button class="button button-small button-info text-uppercase float-left"
         ng-click="saveEditedTax()">Save</button>
-      <button class="button button-small button-danger text-uppercase float-right">Delete</button>
+      <button class="button button-small button-danger text-uppercase float-right" ng-click="deleteTaxWithotConfirm()">Delete</button>
       <div class="clearfix"></div>
     </div>
   </div>
@@ -149,5 +148,27 @@
       <button class="button button-small button-info text-uppercase">Save</button>
     </div>
   </div>
+
+<div class="popup-modal delete-tax hidesm">
+    <div class="modal container" style="width: 650px !important;">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Delete Tax</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center" style="margin-bottom: 20px; margin-top: 20px; margin-left: -15px;">
+        <label>Are you sure want to delete this tax?</label>
+      </div>
+      <div class="clearfix"></div>
+        <hr class="layout-margin-tb">
+      <button class="button button-small button-default text-uppercase modal-close float-right"
+        ng-click="">Cancel</button>
+      <button style="margin-right: 15px;" class="button button-small button-danger text-uppercase float-right" ng-click="confirmDelete()">Delete</button>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
 
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

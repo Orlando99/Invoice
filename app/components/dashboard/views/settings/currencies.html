@@ -27,7 +27,7 @@
           class="text-color-light text-weight-normalize layout-padding"></td>
         <td ng-click="prepareEditCurrency($index)" 
           class="is-active no"><img src="./assets/images/icon-tick-circle.png" ng-show="defaultCurrencyIndex == $index" alt=""></td>
-        <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" /></td>
+        <td class="text-color-light text-weight-normalize layout-padding text-right" ng-click="deleteCurrencyClicked($index)"><img src="./assets/images/icon-times-round.png" alt="" /></td>
       </tr>
     </table>
 
@@ -157,4 +157,26 @@
       <button class="button button-info text-uppercase modal-close">OK</button>
     </div>
   </div>
+
+<div class="popup-modal delete-currency hidesm">
+    <div class="modal container" style="width: 650px !important;">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Delete Tax</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center" style="margin-bottom: 20px; margin-top: 20px; margin-left: -15px;">
+        <label>Are you sure want to delete this tax?</label>
+      </div>
+      <div class="clearfix"></div>
+        <hr class="layout-margin-tb">
+      <button class="button button-small button-default text-uppercase modal-close float-right"
+        ng-click="">Cancel</button>
+      <button style="margin-right: 15px;" class="button button-small button-danger text-uppercase float-right" ng-click="confirmDeleteCurrency()">Delete</button>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

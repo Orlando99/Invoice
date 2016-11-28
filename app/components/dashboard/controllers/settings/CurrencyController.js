@@ -411,6 +411,33 @@ $scope.deleteCurrency = function() {
 	});
 }
 
+$scope.deleteCurrencyClicked = function(index){
+    if(index == $scope.defaultCurrencyIndex) {
+		$('.cannot-delete').addClass('show');
+		return;
+	}
+    
+    $scope.selectedIndex = index;
+    
+    $('.delete-currency').addClass('show');
+}
+
+$scope.confirmDeleteCurrency = function(){
+    if($scope.selectedIndex == $scope.defaultCurrencyIndex) {
+		$('.cannot-delete').addClass('show');
+		return;
+	}
+
+	showLoader();
+	var curr = $scope.currencies.splice($scope.selectedIndex,1)[0]
+	$q.when(curr.entity.destroy())
+	.then(function() {
+		setDefaultCurrencyIndex();
+		$('.delete-currency').removeClass('show');
+		hideLoader();
+	});
+}
+
 $scope.currencyChanged = function() {
 	if($scope.currencyObj)
 		$scope.currencyObj.currencySymbol =

@@ -94,6 +94,8 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 	$scope.saveNewTax = function() {
 		if(! $('#addTaxForm').valid()) return;
 		
+        showLoader();
+        
 		var params = {
 			title: $scope.taxName,
 			value: Number($scope.taxRate),
@@ -103,6 +105,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 
 		taxService.saveNewTax(params, function(response){
 			console.log(response);
+            hideLoader();
             if(fromTutorial){
                 $state.go('dashboard.settings.items')
             }
@@ -150,6 +153,48 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 	
 	$scope.deleteTax = function(tax) {
 		console.log("delete Click Now");
+        $scope.taxToDelete = tax.id;
+        $('.delete-tax').addClass('show');
 	}
+    
+    $scope.confirmDelete = function(){
+        showLoader();
+        var tax = Parse.Object.extend("Tax");
+        var query = new Parse.Query(tax);
+        query.get($scope.taxToDelete, {
+          success: function(taxObj) {
+            // The object was retrieved successfully.
+            taxObj.destroy()
+            .then(function(){
+                hideLoader();
+                window.location.reload();
+            });
+          },
+          error: function(object, error) {
+            hideLoader();
+              console.log(error);
+          }
+        });
+    }
+    
+    $scope.deleteTaxWithotConfirm = function(){
+        showLoader();
+        var tax = Parse.Object.extend("Tax");
+        var query = new Parse.Query(tax);
+        query.get($scope.taxId, {
+          success: function(taxObj) {
+            // The object was retrieved successfully.
+            taxObj.destroy()
+            .then(function(){
+                hideLoader();
+                window.location.reload();
+            });
+          },
+          error: function(object, error) {
+            hideLoader();
+              console.log(error);
+          }
+        });
+    }
 
 }]);
