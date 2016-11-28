@@ -3,9 +3,9 @@
 invoicesUnlimited.controller('CreateCreditNoteController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
 	'creditNoteService', 'coreFactory', 'taxService', 'expenseService',
-	'currencyFilter','commentFactory',
+	'currencyFilter','commentFactory','salesCommon',
 function($scope, $state, $controller, $q, userFactory,
-	creditNoteService, coreFactory, taxService, expenseService, currencyFilter,commentFactory) {
+	creditNoteService, coreFactory, taxService, expenseService, currencyFilter,commentFactory,salesCommon) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');

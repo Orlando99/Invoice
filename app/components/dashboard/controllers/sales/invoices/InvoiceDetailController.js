@@ -306,11 +306,12 @@ $scope.applyCredit = function() {
 	.then(function() {
         
         var body = 'Credit Note applied for '+ currencyFilter($scope.creditUsed, '$', 2) +' amount';
-        addNewComment(body, true);
+        addCreditComment(body, true);
         
-		hideLoader();
-		console.log('Saved successfully');
-		$state.reload();
+		//hideLoader();
+		//console.log('Saved successfully');
+		//$state.reload();
+        //window.location.reload();
 	});
 }
 
@@ -671,7 +672,7 @@ function addNewComment(commentbody, isAuto){
 		invoice.set('comments', prevComments);
 		return invoice.save();
 	})
-	.then(function() {
+	.then(function(obj) {
 		var comment = new commentFactory(data.commentObj);
 
 		if($scope.comments)
@@ -680,7 +681,57 @@ function addNewComment(commentbody, isAuto){
 			$scope.comments = [comment];
         
         $scope.$apply();
+        
+        return obj;
+        
+		console.log(comment);
+	});
+}
+    
+function addCreditComment(commentbody, isAuto){
+    var obj = {
+		userID : user,
+		organization : organization,
+		name : user.get('username'),
+		date : new Date(),
+		isAutomaticallyGenerated : isAuto,
+		comment : commentbody
+	}
+    
+    if(!user.get('isTrackUsage') && isAuto) {
+        return;
+    }
 
+	var data = {};
+	$q.when(coreFactory.getUserRole(user))
+	.then(function(role) {
+		return commentFactory.createNewComment(obj, role);
+	})
+	.then(function(obj) {
+		data.commentObj = obj;
+		var invoice = $scope.invoice.entity;
+		var prevComments = invoice.get('comments');
+		if(prevComments)
+			prevComments.push(obj);
+		else
+			prevComments = [obj];
+
+		invoice.set('comments', prevComments);
+		return invoice.save();
+	})
+	.then(function(obj) {
+		var comment = new commentFactory(data.commentObj);
+
+		if($scope.comments)
+			$scope.comments.push(comment);
+		else
+			$scope.comments = [comment];
+        
+        //$scope.$apply();
+        hideLoader();
+        $state.reload();
+        return obj;
+        
 		console.log(comment);
 	});
 }
