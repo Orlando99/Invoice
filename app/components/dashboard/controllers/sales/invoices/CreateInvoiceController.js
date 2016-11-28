@@ -591,7 +591,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
         
         var n = file.name;
         
-        if(!(n.endsWith('.pdf') || n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg'))){
+        if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') || n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg'))){
             $('#file-error').show();
             return;
         }

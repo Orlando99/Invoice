@@ -59,14 +59,14 @@ However, delay the fade out process for 2.5 seconds */
       <button class="button button-small button-neutral text-uppercase" uib-dropdown-toggle>More <img src="./assets/images/dropdown-arrow-w.png" alt="">
       </button>
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
-        <li><a href="" ng-click="emailReceipt()">Email</a></li>
-          <li><a href="" ng-click="textReceipt()">Text</a></li>
+        <li><a href="" ng-click="emailReceipt()">Send as Email</a></li>
+          <li><a href="" ng-click="textReceipt()">Send as Text</a></li>
         <li><a ng-href="{{templateUrl}}" target="_blank" ng-click="creditNotePrinted()">Print</a></li>
       </ul>
     </div>
     <div class="clearfix"></div>
     <hr>
-<div id="snackbar">Email sent..</div>
+<div id="snackbar"></div>
     <div ng-repeat="comment in comments">
       <p class="log text-color-light text-weight-normalize">{{comment.date}} <span>
         {{comment.entity.comment}} - {{comment.entity.name}}</span></p>

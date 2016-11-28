@@ -526,7 +526,7 @@ $scope.addAttachment = function(obj) {
     
     var n = file.name;
     
-    if(!(n.endsWith('.pdf') || n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg'))){
+    if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') || n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg'))){
         $('#file-error').show();
         return;
     }
@@ -567,7 +567,7 @@ $scope.textReceipt = function() {
 	.then(function(obj) {
         addNewComment('Invoice sent by text', true);
         hideLoader();
-        
+        $("#snackbar").html('Text sent...');
         $("#snackbar").addClass('show');
         setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
         
@@ -590,7 +590,7 @@ $scope.emailReceipt = function() {
 	.then(function(obj) {
         addNewComment('Invoice sent by email', true);
         hideLoader();
-        
+        $("#snackbar").html('Email sent...');
         $("#snackbar").addClass('show');
         setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
         

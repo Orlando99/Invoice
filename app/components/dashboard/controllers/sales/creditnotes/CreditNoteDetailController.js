@@ -124,7 +124,7 @@ $scope.textReceipt = function() {
 	.then(function(obj) {
         addNewComment('Credit Note sent by text', true);
         hideLoader();
-        
+        $("#snackbar").html('Text sent...');
         $("#snackbar").addClass('show');
         setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
         
@@ -148,7 +148,7 @@ $scope.emailReceipt = function() {
         addNewComment('Credit Note sent by email', true);
         
 		hideLoader();
-        
+        $("#snackbar").html('Email sent...');
         $("#snackbar").addClass('show');
         setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
         

@@ -161,7 +161,7 @@
           <br />
           <div class="input-container layout-margin-b" ng-repeat="field in customFields">
             <label class="col-i-30">{{field.name}}</label>
-            <input type="text" class="col-70" ng-model="field.value"></input>
+            <input type="text" class="col-70" ng-model="field.value">
           </div>
           
           <div class="input-container layout-margin-tb">
@@ -180,6 +180,7 @@
               <div class="button button-no-bg" style="padding-left: 0px">+ Add</div>
             </label>
             </div>
+              <label id="file-error" class="" style="margin-top: 35px; font-size: 14px; color: red; display: none;">Invalid file: Supported files are PDF and images</label>
           </div>
           
 <!--

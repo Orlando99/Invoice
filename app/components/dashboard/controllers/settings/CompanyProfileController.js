@@ -88,7 +88,7 @@ invoicesUnlimited.controller('CompanyProfileController',
         
         var n = obj.files[0].name;
         
-        if(!(n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg'))){
+        if(!(n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg') || n.endsWith('.PNG') || n.endsWith('.JPG') || n.endsWith('.JPEG'))){
             ShowMessage("Invalid file format!","error");
             return;
         }

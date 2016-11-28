@@ -260,6 +260,21 @@ function initalizeModalClasses()
         t.target == this && $(".popup-modal").removeClass("show")
     });
 }
+/*
+var mobileOptions = {
+  onKeyPress : function(cep,e,field,options){
+    var masks = ['0 (000) 000-0000','(000) 000-0000','Z0 (000) 000-0000'];
+    var cond = cep.replace("(","");
+      
+      if(!cep.length){
+          $('.mobilePhone').mask(mask,options);
+      }
+      
+    var mask = (!cep.length||cep[0] == "1") ? masks[0] : masks[1];
+    $('.mobilePhone').mask(mask,options);
+  }
+}
+*/
 
 var mobileOptions = {
   onKeyPress : function(cep,e,field,options){
