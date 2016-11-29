@@ -57,7 +57,7 @@ function numberValidation(textValue)
     }   
 }
  
-var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router','oc.lazyLoad','ui.bootstrap'])
+var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router','oc.lazyLoad','ui.bootstrap','ngSanitize'])
 .config(function($locationProvider){
 	//$locationProvider.html5Mode(true).hashPrefix('');
 })

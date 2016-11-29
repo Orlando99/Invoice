@@ -16,7 +16,13 @@ var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
-showEstimateDetail();
+    var dateFormat = undefined;
+userFactory.getField('dateFormat')
+.then(function(obj) {
+	$scope.dateFormat = obj;
+    dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+	showEstimateDetail();
+});
 
 function showEstimateDetail() {
 	var estimateId = $state.params.estimateId;
@@ -28,6 +34,11 @@ function showEstimateDetail() {
 	//	console.log(estimate);
 		$scope.estimate = estimate;
 		$scope.estimateNo = estimate.entity.estimateNumber;
+        
+        estimate.comments.forEach(function(obj){
+            obj.date = formatDate(obj.entity.date, dateFormat);
+        });
+        
 		$scope.comments = estimate.comments;
 		var receipt = estimate.entity.estimateReceipt;
 
@@ -259,6 +270,8 @@ function addNewComment(body, isAuto) {
 	.then(function() {
 		var comment = new commentFactory(data.commentObj);
 
+        comment.date = formatDate(comment.entity.date, dateFormat);
+        
 		if($scope.comments)
 			$scope.comments.push(comment);
 		else
@@ -313,6 +326,8 @@ $scope.addComment = function() {
 	.then(function() {
 		var comment = new commentFactory(data.commentObj);
 
+        comment.date = formatDate(comment.entity.date, dateFormat);
+        
 		if($scope.comments)
 			$scope.comments.push(comment);
 		else

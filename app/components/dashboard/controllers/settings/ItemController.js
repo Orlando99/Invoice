@@ -102,7 +102,7 @@ $scope.showItemDetail = function(index) {
 
 	$scope.itemIndex = index;
 	$scope.itemName = item.entity.title;
-	$scope.itemRate = item.entity.rate;
+	$scope.itemRate = parseFloat(item.entity.rate);
 	$scope.itemDesc = item.entity.itemDescription;
 	$scope.itemTax = undefined;
 

@@ -6,12 +6,12 @@
     <div class="spacer"></div>
 
     <div class="paymentInfo" ng-show="incompleteProfile">
-      <p>{{infoMsg}}</p>
+      <p ng-bind-html-unsafe="infoMsg"></p>
       <a ng-click="continueProcess()" class="button button-primary button-next">Continue</a>
     </div>
     
     <div class="paymentInfo" ng-show="processingRequest">
-      <p>{{infoMsg}}</p>
+      <p ng-bind-html='infoMsg'></p>
       <label class="col-50">Phone Number</label>
       <label>{{phoneNumber}}</label>
       <br />

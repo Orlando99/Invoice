@@ -13,14 +13,37 @@ var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 signUpFactory.setDefaultValues();
+    
+    if(!$scope.userLogo){
+        var selectedorganization = userFactory.entity[0].get("selectedOrganization");
+        var query = new Parse.Query('Organization');
+        query.get(selectedorganization.id, {
+              success: function(obj) {
+                  $scope.org = obj;
+                  var logo = obj.get('logo');
+                  if(logo){
+                    $scope.userLogo = logo._url;
+                  }
+                  else{
+                      $scope.userLogo = './assets/images/user-icon.png';
+                  }
+                  $scope.$apply();
+
+              },
+              error: function(obj, error) {
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and message.
+              }
+        });
+    }
 
 
 var incompleteAccountMsg = 'You have not completed the merchant account application. \
 Please click continue below to resume where you left off.';
 
 var processingMsg = 'Your application has been submitted. \
-Please wait two business days for the approval process. \
-If you have not heard anything from us within two business days,\
+Please wait two business days for the approval process. <br/>\
+If you have not heard anything from us within two business days, \
 please call or email us at:';
 
 var approvedMsg = 'You have been approved to process credit cards.';

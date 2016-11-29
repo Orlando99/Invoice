@@ -31,10 +31,11 @@ if(! userFactory.entity.length) {
 var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
-
+var dateFormat = undefined;
 userFactory.getField('dateFormat')
 .then(function(obj) {
 	$scope.dateFormat = obj;
+    dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 	showInvoiceDetail();
 });
 
@@ -49,6 +50,11 @@ function showInvoiceDetail() {
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		$scope.invoice = invoice;
 		$scope.invoiceNo = invoice.entity.invoiceNumber;
+        
+        invoice.comments.forEach(function(obj){
+            obj.date = formatDate(obj.entity.date, dateFormat);
+        });
+        
 		$scope.comments = invoice.comments;
         $scope.invoiceInfo = invoice.entity.invoiceInfo;
         
@@ -675,6 +681,8 @@ function addNewComment(commentbody, isAuto){
 	.then(function(obj) {
 		var comment = new commentFactory(data.commentObj);
 
+        comment.date = formatDate(comment.entity.date, dateFormat);
+        
 		if($scope.comments)
 			$scope.comments.push(comment);
 		else
@@ -722,6 +730,8 @@ function addCreditComment(commentbody, isAuto){
 	.then(function(obj) {
 		var comment = new commentFactory(data.commentObj);
 
+        comment.date = formatDate(comment.entity.date, dateFormat);
+        
 		if($scope.comments)
 			$scope.comments.push(comment);
 		else
@@ -772,6 +782,8 @@ $scope.addComment = function() {
 	.then(function() {
 		var comment = new commentFactory(data.commentObj);
 
+        comment.date = formatDate(comment.entity.date, dateFormat);
+        
 		if($scope.comments)
 			$scope.comments.push(comment);
 		else

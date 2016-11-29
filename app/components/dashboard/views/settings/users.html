@@ -14,7 +14,7 @@
     <div>
       <div class="tab active" data-name="allusers">
         <h3 class="layout-margin-t section-title float-left">All Users</h3>
-        <button class="float-right layout-margin-tb button button-info text-uppercase">Invite User</button>
+        <button class="float-right layout-margin-tb button button-info text-uppercase" ng-click="inviteUser()">Invite User</button>
         <a ng-click="createUser();" class="float-right layout-margin-tb layout-margin-r button button-add text-uppercase modal-opener" data-toggle="invite-user">New</a>
         <form class="float-right layout-margin-tb">
           <input  maxlength="60"type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.title">

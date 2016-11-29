@@ -73,6 +73,30 @@ function showUserFields() {
 
 function dateFormatHelper (seperator) {
 	var dateLiterals = [
+		['dd','mm','yy'], ['mm','dd','yy'],
+		['yy','mm','dd'], ['dd','mm','yyyy'],
+		['mm','dd','yyyy'], ['yyyy','mm','dd'],
+	];
+
+	var fixedFormats = [
+		'dd mmm yyyy', 'eee, mmmm dd, yyyy',
+		'eeee, mmmm dd, yyyy', 'mmm dd, yyyy',
+		'mmmm dd, yyyy', 'yyyy mm dd'
+	];
+
+	var finalFormats = [];
+	dateLiterals.forEach(function(literal) {
+		finalFormats.push(literal.join(seperator));
+	});
+
+	finalFormats = finalFormats.concat(fixedFormats);
+	return finalFormats;
+}
+   
+    
+  /*  
+function dateFormatHelper (seperator) {
+	var dateLiterals = [
 		['dd','MM','yy'], ['MM','dd','yy'],
 		['yy','MM','dd'], ['dd','MM','yyyy'],
 		['MM','dd','yyyy'], ['yyyy','MM','dd'],
@@ -92,7 +116,7 @@ function dateFormatHelper (seperator) {
 	finalFormats = finalFormats.concat(fixedFormats);
 	return finalFormats;
 }
-
+*/
 function loadGeneralSettings() {
 	showLoader();
 	$scope.timeZones = {
@@ -135,12 +159,12 @@ function loadGeneralSettings() {
 	.then(function(prefs) {
 		var timeZone = prefs.get('timeZone');
 		var month = prefs.get('fiscalYearStart');
-		var format = prefs.get('dateFormat');
+		var format = prefs.get('dateFormat').toLowerCase();
 		var separator = prefs.get('fieldSeparator');
 
 		// ios version not saving date format,
 		// so did this to make web version work
-		format = format.replace(/[.,-//]/g, separator);
+		//format = format.replace(/[.,-//]/g, separator);
 
 		$scope.timeZones.selectedTimeZone =
 		$scope.timeZones.timeZones.filter(function(z) {
@@ -187,9 +211,13 @@ $scope.dateSeperatorChanged = function() {
 
 $scope.setDefaultPrefs = function() {
 	showLoader();
+    
+    var dateFormat = $scope.dateFormats.selectedFormat.split('m').join('M');
+    dateFormat = dateFormat.split('e').join('E');
+    
 	organization.set('timeZone', $scope.timeZones.selectedTimeZone);
 	organization.set('fiscalYearStart', $scope.months.selectedMonth);
-	organization.set('dateFormat', $scope.dateFormats.selectedFormat);
+	organization.set('dateFormat', dateFormat);
 	organization.set('fieldSeparator', $scope.fieldSeparators.selectedSeparator);
 
 	organization.save().then(function() {

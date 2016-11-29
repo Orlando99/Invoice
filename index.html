@@ -111,7 +111,7 @@
 	    <hr class="layout-margin-tb">
 
 	    <div class="col-80 text-left layout-center">
-	    <form class="layout-margin-tb col-100 inputs-white">
+	    <form autocomplete="off" class="layout-margin-tb col-100 inputs-white">
 	      	<div class="input-container layout-margin-b">
 	        	<label class="layout-padding-t-smm">Username</label>
 	        	<input ng-model="user.username" placeholder="Click or Tap to enter" type="text" class="col-75" required>
@@ -121,7 +121,7 @@
 		        <input ng-model="user.fullName" placeholder="Click or Tap to enter" type="text" class="col-75">
 	    	</div>
 	      	<div class="input-container layout-margin-b">
-	        	<label class="layout-padding-t-smm">Email ID</label>
+	        	<label class="layout-padding-t-smm">Email</label>
 	        	<input id="newUserId" ng-model="user.email" placeholder="Click or Tap to enter" type="email" class="col-75" required>
 	      	</div>
 	      	<div class="input-container layout-margin-b" ng-if="method == 'create'">
@@ -145,13 +145,14 @@
                 <p class="col-75 pull-right layout-no-padding" ng-if="user.role == 'Admin'">Unrestricted access to all modules</p>
 	        	<label class="layout-padding-t-smm" ng-if="user.role == 'Admin'"></label>
                 <label class="layout-padding-t-smm"></label>
-                <p style="margin-top: 10px">
+                <p style="margin-top: 10px" ng-hide='mustInvite'>
                     <label class="min-width-0 layout-margin-b" ng-if="method == 'create'">
                         <input type="checkbox" ng-model="user.sendInvite">
                         <span class="checkbox float-left"></span>
                     </label>
-
+                    
                     <span class="pull-right layout-no-padding" ng-if="method == 'create'"><strong>Send invitation</strong></span>
+                    
                 </p>
 
 	    	</div>
@@ -169,6 +170,8 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular-sanitize.js"></script>
+
 	<!--<script src="./assets/js/ui-bootstrap.min.js"></script>
 	<script src="./assets/js/ui-bootstrap-tpls.min.js"></script>-->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>

@@ -19,6 +19,11 @@ invoicesUnlimited.controller('NewUserController',
 
 	$scope.user = user;
 	$scope.user.status = user.status;
+    $scope.mustInvite = user.mustInvite;
+    
+    
+    
+    $scope.oldUserName = user.username;
 	setObjectOperations({
 		object : $scope.user,
 		fields : appFields.user
@@ -29,6 +34,9 @@ invoicesUnlimited.controller('NewUserController',
 	$scope.user.password = '';
 	$scope.user.sendInvite = false;
 
+    if($scope.mustInvite)
+        $scope.user.sendInvite = true;
+    
 	$scope.delete = function() {
 		showLoader();
 		Parse.Cloud.run('deleteUser',{
@@ -57,11 +65,11 @@ invoicesUnlimited.controller('NewUserController',
 				params 	: params
 			}
 		}).then(function(id){
-			var ptr = Parse.User.createWithoutData(id);
+			//var ptr = Parse.User.createWithoutData(id);
 			return queryService.ext.find({
 				className  	: 'ProjectUser',
-				field 		: 'userID',
-				value 		: ptr,
+				field 		: 'userName',
+				value 		: $scope.oldUserName,
 				methods 	: [{name:'include',param:'userID'}]
 			});
 		},errorHandler)

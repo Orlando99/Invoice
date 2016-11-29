@@ -40,8 +40,8 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 		messages: {
 			name : 'Please enter Tax name',
 			rate : {
-				required : 'tax rate is required',
-				number : 'please enter a valid rate(number)'
+				required : 'Tax percentage is required.',
+				number : 'Please enter a valid percentage.'
 			}
 		}
 	});
@@ -61,8 +61,8 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 		messages: {
 			name : 'Please enter Tax name',
 			rate : {
-				required : 'tax rate is required',
-				number : 'please enter a valid rate(number)'
+				required : 'Tax percentage is required.',
+				number : 'Please enter a valid percentage.'
 			}
 		}
 	});

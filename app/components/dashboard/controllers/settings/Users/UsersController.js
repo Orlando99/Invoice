@@ -54,7 +54,24 @@ invoicesUnlimited.controller('UsersController',
 			windowTemplateUrl 	: 'modal-window',
 			resolve 			: {
 				user : function() {
-					return $scope.users[id];
+                    var UserTable = Parse.Object.extend("User");
+                    var query = new Parse.Query(UserTable);
+                    query.equalTo("username", $scope.users[id].userName);
+                    return query.first({
+                      success: function(obj) {
+                            setObjectOperations({
+                                object 		: obj,
+                                fields 		: appFields.user
+                            });
+                          obj.status = $scope.users[id].status;
+                          return obj;
+                      },
+                      error: function(error) {
+                        alert("Error: " + error.code + " " + error.message);
+                      }
+                    });
+                    
+					//return $scope.users[id].get('userID');
 				},
 				method : function() {
 					return 'update';
@@ -133,6 +150,62 @@ invoicesUnlimited.controller('UsersController',
 			console.log('Dismiss modal');
 		});
 	}
+    
+    $scope.inviteUser = function(){
+        var modalInstance = $uibModal.open({
+			animation 			: true,
+			templateUrl 		: 'modal-user',
+			controller 			: 'NewUserController',
+			backdrop 			: true,
+			appendTo 			: angular.element(document.querySelector('#view')),
+			windowTemplateUrl 	: 'modal-window',
+			resolve 			: {
+				user : function() {
+					var ctor = Parse.Object.extend(Parse.User);
+					var obj = new ctor();
+					setObjectOperations({
+						object 		: obj,
+						fields 		: appFields.user
+					});
+                    obj.mustInvite = true;
+					return obj;
+				},
+				method 	: function(){
+					return 'create';
+				},
+				title 	: function() {
+					return 'Add User';
+				}
+			}
+		});
+
+		modalInstance.result.then(function(newUser){
+			setObjectOperations({
+				object 		: newUser,
+				fields 		: appFields.user
+			});
+			var prUser = projectUserFactory
+			.createNew({
+				emailID 	 : newUser.email,
+				role 		 : newUser.role,
+				userName	 : newUser.username,
+				country		 : newUser.country,
+				title		 : newUser.fullName,
+				organization : newUser.selectedOrganization,
+				companyName  : newUser.company,
+				userID 		 : userFactory.entity[0],//newUser,
+				status 		 : 'Activated'
+			}).then(function(res){
+				$scope.$apply(function(){
+					$scope.users.push(res);
+				});
+			},function(e){
+				console.log(e.message);
+			});
+		},function(){
+			console.log('Dismiss modal');
+		});
+    }
 
 	$q.when(projectUserFactory.getAll()).then(function(users,arg2){
 		$scope.users = users.map(function(el){

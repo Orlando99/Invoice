@@ -16,7 +16,13 @@ var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
-showCreditNoteDetail();
+    var dateFormat = undefined;
+userFactory.getField('dateFormat')
+.then(function(obj) {
+	$scope.dateFormat = obj;
+    dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+	showCreditNoteDetail();
+});
 
 function showCreditNoteDetail() {
 	var creditNoteId = $state.params.creditNoteId;
@@ -28,6 +34,11 @@ function showCreditNoteDetail() {
 		console.log(creditNote);
 		$scope.creditNote = creditNote;
 		$scope.creditNo = creditNote.entity.creditNumber;
+        
+        creditNote.comments.forEach(function(obj){
+            obj.date = formatDate(obj.entity.date, dateFormat);
+        });
+        
 		$scope.comments = creditNote.comments;
 		var receipt = creditNote.entity.creditReceipt;
 
@@ -196,6 +207,8 @@ function addNewComment(body, isAuto) {
 	.then(function() {
 		var comment = new commentFactory(data.commentObj);
 
+        comment.date = formatDate(comment.entity.date, dateFormat);
+        
 		if($scope.comments)
 			$scope.comments.push(comment);
 		else
@@ -242,6 +255,8 @@ $scope.addComment = function() {
 	.then(function() {
 		var comment = new commentFactory(data.commentObj);
 
+        comment.date = formatDate(comment.entity.date, dateFormat);
+        
 		if($scope.comments)
 			$scope.comments.push(comment);
 		else

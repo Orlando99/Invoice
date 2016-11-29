@@ -87,7 +87,8 @@ function setValidationRules() {
 			number : true,
 			messages : {
 				required : 'Please provide item rate',
-				min : 'rate should be >= 0'
+				min : 'rate should be >= 0',
+                number: 'Please enter a valid price'
 			}
 		});
 	});
