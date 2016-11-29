@@ -21,20 +21,65 @@ $('#addItemForm').validate({
 		name : 'required',
 		rate : {
 			required : true,
-			number : true
+			//number : true
 		}
 	},
 	messages: {
 		name : 'Please enter Item name',
 		rate : {
 			required : 'Item rate is required',
-			number : 'Please enter valid rate(number)'
+			//number : 'Please enter valid rate(number)'
 		}
 	}
 });
 
+
+function commaSeparateNumber(val){
+  
+  val = val.split(',').join('');
+  if(val.indexOf('.') !== -1)
+ {
+   
+   while (/(\d+)(\d{3})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+    }
+   var temp = val.length - val.indexOf('.');
+   //alert(temp);
+   if(temp == 3)
+     {
+       $("#add_item_price").attr('maxlength',val.length);
+     }
+  }
+  else
+    {
+      $("#add_item_price").attr('maxlength',50);
+      while (/(\d+)(\d{3})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+    }
+    }
+     return val;
+  }
     
- $('#add_item_price').mask("#,##0.00", {reverse: true});
+$('#add_item_price').keyup(function(){
+  
+  $(this).val(commaSeparateNumber($(this).val()));
+});
+    
+//$('#add_item_price').inputmask({'mask':["9{0,5}.9{0,2}", "999"]});
+    
+//$("#add_item_price").maskMoney({prefix:'$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
+    
+/*$('#add_item_price').mask("#,##0.ZZ",{
+		translation : {
+			'Z': {
+				pattern: /[0-9]/, optional: true
+			}
+		}
+	});
+    
+/*$.mask.definitions['~'] = '([0-9] )?';
+$.mask.definitions['-'] = '([.] )?';*/
+ //$('#add_item_price').mask("#,##0.##", {reverse: true});
     
 $('#editItemForm').validate({
 	rules: {
@@ -102,7 +147,7 @@ $scope.showItemDetail = function(index) {
 
 	$scope.itemIndex = index;
 	$scope.itemName = item.entity.title;
-	$scope.itemRate = parseFloat(item.entity.rate);
+	$scope.itemRate = item.entity.rate;
 	$scope.itemDesc = item.entity.itemDescription;
 	$scope.itemTax = undefined;
 
@@ -150,7 +195,7 @@ $scope.saveNewItem = function() {
 		organization : organization,
 		items : [{
 			title : $scope.itemName,
-			rate : $scope.itemRate,
+			rate : $scope.itemRate.split(',').join(""),
 			tax : $scope.itemTax,
 			desc : $scope.itemDesc
 		}]
