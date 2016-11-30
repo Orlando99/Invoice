@@ -448,8 +448,10 @@ function saveEditedInvoice(params) {
 	invoice.set('shippingCharges', $scope.shippingCharges);
 	invoice.set('adjustments', $scope.adjustments);
 	invoice.set('subTotal', Number($scope.subTotal));
+    invoice.set('balanceDue', Number($scope.total) - invoice.get('total') + invoice.get('balanceDue'));
 	invoice.set('total', Number($scope.total));
-	invoice.set('balanceDue', Number($scope.total));
+	//invoice.set('balanceDue', Number($scope.total));
+    
 	invoice.set('poNumber', $scope.poNumber);
 	invoice.set('salesPerson', $scope.salesPerson);
 	invoice.set('notes', $scope.notes);
@@ -901,6 +903,7 @@ function LoadRequiredData() {
 			obj.toStr = lateFeeNameHelper(obj);
 			return obj;
 		});
+        $scope.lateFeeList.push(createLateFeeOpener);
 	})
 	promises.push(p);
 
@@ -944,6 +947,66 @@ function ListInvoices() {
 		console.log(error.message);
 	});	
 }
+    
+    $scope.lateFeeChanged = function(){
+        if(!$scope.selectedLateFee)
+            return;
+        
+        if(!$scope.selectedLateFee.dummy)
+            return;
+        
+        $scope.selectedLateFee = "";
+        prepareAddFeeForm();
+        $('.add-latefee').addClass('show');
+    }
+    
+    function prepareAddFeeForm() {
+        $scope.latefeeName = '';
+        $scope.latefeeTypes = ['%', '$'];
+        $scope.selectedFeeType = $scope.latefeeTypes[0];
+        $scope.latefeeAmount = '';
+
+        $('#addLateFeeForm').validate({
+            rules: {
+                name : 'required',
+                type : 'required',
+                amount : {
+                    required : true,
+                    number : true,
+                    min : 0.01
+                }
+            }
+        });
+        $('#addLateFeeForm').validate().resetForm();
+    }
+        
+    $scope.addLateFee = function() {
+        if (! $('#addLateFeeForm').valid()) return;
+
+        showLoader();
+        var params = {
+            userID : user,
+            organization : organization,
+            name : $scope.latefeeName,
+            type : $scope.selectedFeeType,
+            price: Number($scope.latefeeAmount)
+        };
+
+        $q.when(coreFactory.getUserRole(user))
+        .then(function(role) {
+            return lateFeeService.createLateFee(params, role);
+        })
+        .then(function(obj) {
+            obj.toStr = lateFeeNameHelper(obj);
+            $scope.lateFeeList.pop();
+            $scope.lateFeeList.push(obj);
+            $scope.lateFeeList.push(createLateFeeOpener);
+            $scope.selectedLateFee = obj;
+            $('.add-latefee').removeClass('show');
+            hideLoader();
+        });
+
+    }
 
 $scope.prepareCreateItem = function() {
 	salesCommon.prepareCreateItem({

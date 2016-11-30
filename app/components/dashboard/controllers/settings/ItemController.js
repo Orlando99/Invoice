@@ -69,14 +69,14 @@ $('#editItemForm').validate({
 		name : 'required',
 		rate : {
 			required : true,
-			number : true
+			//number : true
 		}
 	},
 	messages: {
 		name : 'Please enter Item name',
 		rate : {
 			required : 'Item rate is required',
-			number : 'Please enter valid rate(number)'
+			//number : 'Please enter valid rate(number)'
 		}
 	}
 });
@@ -130,7 +130,7 @@ $scope.showItemDetail = function(index) {
 
 	$scope.itemIndex = index;
 	$scope.itemName = item.entity.title;
-	$scope.itemRate = item.entity.rate;
+	$scope.itemRate1 = item.entity.rate;
 	$scope.itemDesc = item.entity.itemDescription;
 	$scope.itemTax = undefined;
 
@@ -220,7 +220,7 @@ $scope.saveEditedItem = function() {
 	showLoader();
 	item = item.entity;
 	item.set('title', $scope.itemName);
-	item.set('rate', String($scope.itemRate));
+	item.set('rate', String($scope.itemRate1));
 	item.set('itemDescription', $scope.itemDesc);
 
 	if($scope.itemTax) {

@@ -287,7 +287,10 @@ $scope.applyCredit = function() {
 	}
 
 	invoiceObj.set('balanceDue', due);
-	invoiceObj.set('creditApplied', invoiceObj.creditApplied + credits);
+    if(invoiceObj.creditApplied)
+	   invoiceObj.set('creditApplied', invoiceObj.creditApplied + credits);
+    else
+        invoiceObj.set('creditApplied', credits);
 	invoiceObj.unset('invoiceReceipt');
 
 	var promises = [];
