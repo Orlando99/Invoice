@@ -20,20 +20,19 @@ $('#addItemForm').validate({
 	rules: {
 		name : 'required',
 		rate : {
-			required : true,
+			required : true
 			//number : true
 		}
 	},
 	messages: {
 		name : 'Please enter Item name',
 		rate : {
-			required : 'Item rate is required',
+			required : 'Item rate is required'
 			//number : 'Please enter valid rate(number)'
 		}
 	}
 });
-
-
+      
 function commaSeparateNumber(val){
   
   val = val.split(',').join('');
@@ -64,22 +63,6 @@ $('#add_item_price').keyup(function(){
   
   $(this).val(commaSeparateNumber($(this).val()));
 });
-    
-//$('#add_item_price').inputmask({'mask':["9{0,5}.9{0,2}", "999"]});
-    
-//$("#add_item_price").maskMoney({prefix:'$ ', allowNegative: true, thousands:'.', decimal:',', affixesStay: false});
-    
-/*$('#add_item_price').mask("#,##0.ZZ",{
-		translation : {
-			'Z': {
-				pattern: /[0-9]/, optional: true
-			}
-		}
-	});
-    
-/*$.mask.definitions['~'] = '([0-9] )?';
-$.mask.definitions['-'] = '([.] )?';*/
- //$('#add_item_price').mask("#,##0.##", {reverse: true});
     
 $('#editItemForm').validate({
 	rules: {
@@ -129,7 +112,7 @@ function loadItemsAndTaxes() {
 
 function initializeScopeVariables() {
 	$scope.itemName = '';
-	$scope.itemRate = '';
+	$scope.itemRate1 = '';
 	$scope.itemDesc = '';
 	$scope.itemTax = undefined;
 }
@@ -195,7 +178,7 @@ $scope.saveNewItem = function() {
 		organization : organization,
 		items : [{
 			title : $scope.itemName,
-			rate : $scope.itemRate.split(',').join(""),
+			rate : $scope.itemRate1.split(',').join(""),
 			tax : $scope.itemTax,
 			desc : $scope.itemDesc
 		}]

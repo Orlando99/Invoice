@@ -56,6 +56,15 @@ function numberValidation(textValue)
       textValue.preventDefault();
     }   
 }
+
+function numberValidationOnText(textValue)
+{
+    var k = textValue.which;
+    if((k < 48 || k > 57) && k != 46)
+    {
+      textValue.preventDefault();
+    }   
+}
  
 var invoicesUnlimited = angular.module('invoicesUnlimited', ['ui.router','oc.lazyLoad','ui.bootstrap','ngSanitize'])
 .config(function($locationProvider){
