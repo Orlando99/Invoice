@@ -16,23 +16,134 @@ initalizeModalClasses();
 
 loadItemsAndTaxes();
 
+$.validator.addMethod(
+		"CheckNumber",
+		function(value,element){
+            if(value.split('.').length > 2)
+                return false;
+            return true;
+		}
+	);
+    
 $('#addItemForm').validate({
 	rules: {
 		name : 'required',
 		rate : {
-			required : true
-			//number : true
+			required : true,
+			CheckNumber : true
 		}
 	},
 	messages: {
 		name : 'Please enter Item name',
 		rate : {
-			required : 'Item rate is required'
-			//number : 'Please enter valid rate(number)'
+			required : 'Item rate is required',
+			CheckNumber : 'Please enter a valid price.'
 		}
 	}
 });
+    
+$('#editItemForm').validate({
+	rules: {
+		name : 'required',
+		rate : {
+			required : true,
+			CheckNumber : true
+		}
+	},
+	messages: {
+		name : 'Please enter Item name',
+		rate : {
+			required : 'Item rate is required',
+			CheckNumber : 'Please enter a valid price.'
+		}
+	}
+});
+
+function commaSeparateNumber1(val){
+  
+  val = val.split(',').join('');
+  if(val.indexOf('.') !== -1)
+ {
+   
+   while (/(\d+)(\d{2})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{2})/, '$1'+','+'$2');
+    }
+   var temp = val.length - val.indexOf('.');
+   //alert(temp);
+   if(temp == 3)
+     {
+       $(".add_item_price").attr('maxlength',val.length);
+     }
+  }
+  else
+    {
+      $(".add_item_price").attr('maxlength',50);
+      while (/(\d+)(\d{2})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{2})/, '$1'+','+'$2');
+    }
+    }
+     return val;
+  }
+    
+    function commaSeparateNumber2(val){
+  
+  val = val.split(',').join('');
+ 
+  if(check == 1)
+    {
       
+      if(val.indexOf('.') !== -1){
+   
+     while (/(\d+)(\d{4})/.test(val.toString())){
+     val = val.toString().replace(/(\d+)(\d{4})/, '$1'+','+'$2');
+   }
+   var temp = val.length - val.indexOf('.');
+   //alert(temp);
+   if(temp == 3)
+     {
+       $(".add_item_price").attr('maxlength',val.length);
+     }
+  }
+  else
+    {
+      $(".add_item_price").attr('maxlength',50);
+      while (/(\d+)(\d{4})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{4})/, '$1'+','+'$2');
+        check = 2;
+    }
+    }
+    //alert(check);
+     return val;
+    }
+  else
+    {
+      if(val.indexOf('.') !== -1){
+   
+     while (/(\d+)(\d{3})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+   }
+   var temp1 = val.length - val.indexOf('.');
+   //alert(temp);
+   if(temp1 == 3)
+     {
+       $(".add_item_price").attr('maxlength',val.length);
+     }
+  }
+  else
+    {
+      $(".add_item_price").attr('maxlength',50);
+      while (/(\d+)(\d{3})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+        check = 2;
+    }
+    }
+    
+     return val;
+     
+    }
+  
+  }
+    
 function commaSeparateNumber(val){
   
   val = val.split(',').join('');
@@ -46,12 +157,12 @@ function commaSeparateNumber(val){
    //alert(temp);
    if(temp == 3)
      {
-       $("#add_item_price").attr('maxlength',val.length);
+       $(".add_item_price").attr('maxlength',val.length);
      }
   }
   else
     {
-      $("#add_item_price").attr('maxlength',50);
+      $(".add_item_price").attr('maxlength',50);
       while (/(\d+)(\d{3})/.test(val.toString())){
       val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
     }
@@ -59,27 +170,12 @@ function commaSeparateNumber(val){
      return val;
   }
     
-$('#add_item_price').keyup(function(){
+$('.add_item_price').keyup(function(){
   
   $(this).val(commaSeparateNumber($(this).val()));
 });
     
-$('#editItemForm').validate({
-	rules: {
-		name : 'required',
-		rate : {
-			required : true,
-			//number : true
-		}
-	},
-	messages: {
-		name : 'Please enter Item name',
-		rate : {
-			required : 'Item rate is required',
-			//number : 'Please enter valid rate(number)'
-		}
-	}
-});
+
 
 function loadItemsAndTaxes() {
 	showLoader();
@@ -220,7 +316,7 @@ $scope.saveEditedItem = function() {
 	showLoader();
 	item = item.entity;
 	item.set('title', $scope.itemName);
-	item.set('rate', String($scope.itemRate1));
+	item.set('rate', $scope.itemRate1.split(',').join(""));
 	item.set('itemDescription', $scope.itemDesc);
 
 	if($scope.itemTax) {

@@ -998,5 +998,36 @@ invoicesUnlimited.controller('CreateInvoiceController',
         });
 	}
     
+    function commaSeparateNumber(val){
+  
+  val = val.split(',').join('');
+  if(val.indexOf('.') !== -1)
+ {
+   
+   while (/(\d+)(\d{3})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+    }
+   var temp = val.length - val.indexOf('.');
+   //alert(temp);
+   if(temp == 3)
+     {
+       $(".add_item_price").attr('maxlength',val.length);
+     }
+  }
+  else
+    {
+      $(".add_item_price").attr('maxlength',50);
+      while (/(\d+)(\d{3})/.test(val.toString())){
+      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+    }
+    }
+     return val;
+  }
+    
+$('.add_item_price').keyup(function(){
+  
+  $(this).val(commaSeparateNumber($(this).val()));
+});
+    
 
 }]);

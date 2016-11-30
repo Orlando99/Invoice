@@ -14,19 +14,29 @@ return {
 			desc : '',
 			tax : undefined
 		}
+        
+        $.validator.addMethod(
+		"CheckNumber",
+		function(value,element){
+            if(value.split('.').length > 2)
+                return false;
+            return true;
+		}
+	   );
+        
 		$('#addItemForm').validate({
 			rules: {
 				name : 'required',
 				rate : {
 					required : true,
-					number : true
+					CheckNumber : true
 				}
 			},
 			messages: {
 				name : 'Please enter Item name',
 				rate : {
 					required : 'Item rate is required',
-					number : 'Please enter valid rate(number)'
+					CheckNumber : 'Please enter a valid price.'
 				}
 			}
 		});
@@ -42,7 +52,7 @@ return {
 			organization : params.organization,
 			items : [{
 				title : _scope.newItem.name,
-				rate : _scope.newItem.rate,
+				rate : _scope.newItem.rate.split(',').join(""),
 				tax : _scope.newItem.tax,
 				desc : _scope.newItem.desc
 			}]
