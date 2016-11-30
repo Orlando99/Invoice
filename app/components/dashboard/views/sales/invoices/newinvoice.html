@@ -25,10 +25,13 @@
       <!--datepicker-popup-template-url="template/datepickerPopUp/customPopUp.html"-->
       <div class="input-container col-60 layout-margin-b datepicker-noclear">
         <label class="layout-padding-t-sm">Invoice Date &amp; Terms</label>
-        <input maxlength="60" name="invoiceCreateDate" class="col-35 form-control" type="text" uib-datepicker-popup="{{dateFormat}}"
+       
+          <input maxlength="60" name="invoiceCreateDate" class="col-35 form-control" type="text" uib-datepicker-popup="{{dateFormat}}"
           placeholder="12/03/2014" ng-model="todayDate" is-open="openPicker1" 
-          ng-click="openDatePicker(1)" ng-change="calculateDueDate()" readonly>
+          ng-click="openDatePicker(1)" show-weeks="false" ng-change="calculateDueDate()" show-weeks="false" show-button-bar="false" readonly>
         
+          
+          
         <select class="col-35 pull-right" ng-change="paymentTermsChanged()"
           ng-options="term.name for term in paymentTerms.terms track by term.value"
           ng-model="paymentTerms.selectedTerm">
@@ -40,7 +43,7 @@
       <div class="input-container col-60 layout-margin-b datepicker-noclear" ng-show="hasDueDate">
         <label class="layout-padding-t-sm">Due Date</label>
         <input maxlength="60" name="invoiceDueDate" id="end_date" class="col-75" type="text" ng-model="dueDate"
-          uib-datepicker-popup="{{dateFormat}}" is-open="openPicker2" ng-click="openDatePicker(2)" readonly>
+          uib-datepicker-popup="{{dateFormat}}" is-open="openPicker2" show-weeks="false" ng-click="openDatePicker(2)" readonly>
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Late Fee</label>

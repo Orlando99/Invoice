@@ -1,4 +1,12 @@
-﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+<style>
+.uib-daypicker
+{
+    width: 300px !important;
+    margin-left: 5px;
+}
+</style>
+
   <div class="container hidesm">
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">Sales by Item</h3>
     <button class="button button-small button-neutral text-uppercase float-right layout-margin-t-sm">More <img src="./assets/images/dropdown-arrow-w.png" alt="">
@@ -20,16 +28,16 @@
       <div class="table-row row-border datepicker-noclear">
         <p class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           <select class="layout-no-padding layout-padding-l" ng-options="range for range in dateRanges"
-            ng-model="selectedDateRange" ng-change="dateRangeChanged()">
+            ng-model="selectedDateRange" show-weeks="false" ng-change="dateRangeChanged()">
           </select>
         </p>
         <p class="col-20 datepicker-reports-fix input-container layout-margin-tb text-color-light text-weight-normalize">
           <input type="text" uib-datepicker-popup="{{dateFormat}}"
-            ng-model="fromDate" is-open="openPicker1" ng-click="openDatePicker(1)" readonly>
+            ng-model="fromDate" show-weeks="false" is-open="openPicker1" ng-click="openDatePicker(1)" readonly>
         </p>
         <p class="col-20 datepicker-reports-fix layout-container layout-margin-tb text-color-light text-weight-normalize">
           <input type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="toDate"
-            is-open="openPicker2" ng-click="openDatePicker(2)" readonly>
+            is-open="openPicker2" show-weeks="false" ng-click="openDatePicker(2)" readonly>
         </p>
         <p class="col-20 layout-margin-tb text-color-light text-weight-normalize">
           <button class="button button-info text-uppercase" ng-click="generateReport()">Run Report</button>

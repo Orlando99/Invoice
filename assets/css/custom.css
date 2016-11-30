@@ -292,3 +292,44 @@ input[type="number"]::-webkit-inner-spin-button {
 }
     
 
+btn btn-sm btn-success pull-right uib-close ng-binding
+    {
+      background-color: white !important;
+        border:none;
+    }
+.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+ background-color: white;
+    border:none;
+}
+.uib-datepicker-popup.dropdown-menu
+{
+ background-color: white;
+    border:none;
+}
+.uib-datepicker .uib-title 
+{
+ background-color: white;
+    border:1px solid gray;
+}
+.uib-left, .uib-right { 
+    background-color: white;
+    border: none;
+}
+.uib-day button, .uib-month button, .uib-year button {
+   background-color: white;
+    border: 0.1px solid #e6e6e6;
+    margin-bottom: 5px;
+}
+ .ui-datepicker-Done button {
+     background-color: white;
+    border: none;
+}
+.uib-button-bar {
+    display: none !important;
+   
+}
+.uib-daypicker
+{
+   margin-left: 5px;  
+}
+ 
