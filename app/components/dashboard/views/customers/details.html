@@ -27,7 +27,10 @@
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
         <li><a href="">Email Contact</a></li>
         <!--<li><a href="">Clone</a></li> data-toggle="add-contact-person"-->
-        <li class="modal-opener" ><a href="" ng-click="createContact();">Add New Contact</a></li>
+      
+          
+          
+          <li class="modal-opener" ><a href="" ng-click="createContact();">Add New Contact</a></li>
         <li ng-if="!selectedCustomer.entity.status || selectedCustomer.entity.status == 'inactive'" ng-click="changeStatus('active');"><a href="">Activate</a></li>
         <li ng-if="selectedCustomer.entity.status == 'active'" ng-click="changeStatus('inactive');"><a href="">Deactivate</a></li>
         <li><a href="" ng-click="deleteSelectedCustomer();">Delete</a></li>
@@ -47,7 +50,7 @@
     </ul>
     <div class="tab container active" data-name="tab1">
       <div class="col-60 layout-margin-tb">
-        <h3 class="layout-margin-t text-info text-uppercase text-weight-normalize">Primary Contact Details</h3>
+        <h3 class="layout-margin-t text-info text-uppercase text-weight-normalize">Primary Contact1212 Details</h3>
 
         <table class="container table-no-border layout-margin-tb">
           <tr class="container text-color-light">

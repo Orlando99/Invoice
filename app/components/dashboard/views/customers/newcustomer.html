@@ -1,5 +1,5 @@
 <div class="container hidesm">
-    <h3 class="text-uppercase text-weight-normalize text-color-normalize layout-margin-t">New Customer</h3>
+    <h3 class="text-uppercase text-weight-normalize text-color-normalize layout-margin-t">New Customer  </h3>
     <hr class="layout-margin-tb">
 
     <form class="col-60 inputs-white" id="new-customer-form" novalidate>
@@ -11,8 +11,8 @@
           <option value="Ms.">Ms.</option>
           <option value="Mr.">Mr.</option>
         </select>
-        <input maxlength="60" class="col-20  layout-margin-r" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName"/>
-        <input maxlength="60" class="col-20" type="text" placeholder="Last Name" 
+        <input maxlength="60" class="col-20  layout-margin-r" name = "firstName" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName"/>
+        <input maxlength="60" class="col-20" type="text" name = "lastName" placeholder="Last Name" 
                ng-model="newCustomer.entity.lastName"/>
       </div>
 
@@ -32,7 +32,7 @@
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Phone Number</label>
-        <input type="text" placeholder="Work Phone" ng-model="newCustomer.entity.phone" class="col-35" id="workPhone"/>
+        <input type="text" placeholder="Work Phone" name = "phoneNumber"ng-model="newCustomer.entity.phone" class="col-35" id="workPhone"/>
         <input type="text" placeholder="Mobile" id="mobilePhone" ng-model="newCustomer.entity.mobile" class="col-35 pull-right">
       </div>
 

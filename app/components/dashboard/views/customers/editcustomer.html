@@ -2,8 +2,8 @@
     <h3 class="text-uppercase text-weight-normalize text-color-normalize layout-margin-t">Edit Customer</h3>
     <hr class="layout-margin-tb">
 
-    <form class="col-60 inputs-white layout-margin-t">
-
+    <form class="col-60 inputs-white layout-margin-t" id = "edit-customer-form" novalidate>
+  
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Primary Contact</label>
         <select class="layout-margin-t col-30 layout-margin-r" ng-model="selectedCustomerEdit.salutation">
@@ -12,8 +12,8 @@
           <option value="Ms." selected>Ms.</option>
           <option value="Mr.">Mr.</option>
         </select>
-        <input class="col-20  layout-margin-r" type="text" placeholder="First Name" ng-model="selectedCustomerEdit.firstName">
-        <input class="col-20" type="text" placeholder="Last Name" 
+        <input class="col-20  layout-margin-r" type="text" name = "firstName"placeholder="First Name" ng-model="selectedCustomerEdit.firstName">
+        <input class="col-20" type="text" name = "lastName" placeholder="Last Name" 
                ng-model="selectedCustomerEdit.lastName">
       </div>
 
