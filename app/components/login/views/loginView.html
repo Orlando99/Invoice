@@ -16,11 +16,12 @@
         <input type="password" class="layout-no-margin" placeholder="PASSWORD" ng-model="password">
       </div>
     </form>
-<p style="padding: 0px !important;">
-    <input style="width: 25px; display: inline;" type="checkbox"/><label>Keep Me Signed In</label>
-    <a style="margin-left: 100px;" class="text-right" ui-sref="resetPassword">FORGOT PASSWORD?</a>
-      </p>
-      
+    
+      <div style="margin-top: 5px">
+      <input style="float:left ; width: 25px;" id="sign_in_chkbox" type="checkbox"/>
+      <label id="keep_me_sign_in_label" style="float:left ; color: #8c8c8c">Keep Me Signed In</label>
+      <a id="keep_me_sign_in_ancor" style=" float:left ;margin-left: 100px;" class="text-right" ui-sref="resetPassword">FORGOT PASSWORD?</a>
+      </div>
       
     <a ng-click="signInAction();" class="button button-primary button-next">SIGN IN</a>
       

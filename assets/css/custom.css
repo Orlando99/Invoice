@@ -263,6 +263,9 @@ z-index: 10;
         margin-bottom: 9.5% !important;
     }
 }
+
+
+/*For FireFox*/
     @-moz-document url-prefix() { 
         
    #label_show_invoices{
@@ -276,6 +279,15 @@ z-index: 10;
         #label_show_invoices{
          margin-top: 12px !important;
             
+    }
+        
+    #keep_me_sign_in_label{
+    margin-top: 12px; 
+        margin-left: 3px;
+    }
+        
+    #keep_me_sign_in_ancor{
+    margin-top: 12px; 
     }
         
 }
@@ -332,5 +344,37 @@ btn btn-sm btn-success pull-right uib-close ng-binding
 {
    margin-left: 5px;  
 }
+
+#state-error
+{
+    
+    margin-right: 750px;
+    width: 300px;
+    
+    
+}
+#state-error:before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border-left: 5px #a04444 solid;
+    border-top: 5px transparent solid;
+    border-bottom: 5px transparent solid;
+    margin-left: 293px;
+}
+
+#state-error:after{
+    content: "";
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border-left: 5px #a04444 solid;
+    margin-left: 290px;
+}
+
+
 
  
