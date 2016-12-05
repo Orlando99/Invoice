@@ -301,7 +301,8 @@ $scope.save = function() {
 	.then(function(creditNote) {
 		hideLoader();
 		console.log(creditNote);
-		$state.go('dashboard.sales.creditnotes.all');
+        $state.go('dashboard.sales.creditnotes.details', {creditNoteId:creditNote.id});
+		//$state.go('dashboard.sales.creditnotes.all');
 
 	}, function(error) {
 		hideLoader();

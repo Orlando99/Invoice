@@ -215,6 +215,15 @@ invoicesUnlimited.controller('UsersController',
 			});
 			return el;
 		});
+        
+        var index = $scope.users.findIndex(function(el){
+            if(el.role == 'Main')
+                return true;
+            return false;
+        });
+        
+        if(index >= 0)
+            $scope.users.splice(index, 1);
 	});
 
 });

@@ -70,7 +70,19 @@ function showUserFields() {
 }
 
 //------ General Preferences Settings ------
-
+    
+var examples = [
+    ['23','10','16'], ['10','23','16'],
+    ['16','10','23'], ['23','10','2016'],
+    ['10','23','2016'], ['2016','10','23'],
+];
+    
+var fixedExamples = [
+    '10 Oct 2016', 'Mon, October 23, 2016',
+    'Monday, October 23, 2016', 'Oct 23, 2016',
+    'October 23, 2016', '2016 10 23'
+];
+    
 function dateFormatHelper (seperator) {
 	var dateLiterals = [
 		['dd','mm','yy'], ['mm','dd','yy'],
@@ -85,11 +97,26 @@ function dateFormatHelper (seperator) {
 	];
 
 	var finalFormats = [];
+    
+    for(var i = 0; i < dateLiterals.length; ++i){
+        finalFormats.push({
+            format: dateLiterals[i].join(seperator),
+            formatExample: dateLiterals[i].join(seperator) + ' (' + examples[i].join(seperator) + ')'
+        });
+    }
+    /*
 	dateLiterals.forEach(function(literal) {
 		finalFormats.push(literal.join(seperator));
 	});
+    */
+    for(var i = 0; i < fixedFormats.length; ++i){
+        finalFormats.push({
+            format: fixedFormats[i],
+            formatExample: fixedFormats[i] + ' (' + fixedExamples[i] + ')'
+        });
+    }
 
-	finalFormats = finalFormats.concat(fixedFormats);
+	//finalFormats = finalFormats.concat(fixedFormats);
 	return finalFormats;
 }
    
@@ -186,7 +213,7 @@ function loadGeneralSettings() {
 
 		$scope.dateFormats.selectedFormat =
 		$scope.dateFormats.formats.filter(function(f) {
-			return f == format;
+			return f.format == format;
 		})[0];
 
 		hideLoader();
@@ -212,7 +239,7 @@ $scope.dateSeperatorChanged = function() {
 $scope.setDefaultPrefs = function() {
 	showLoader();
     
-    var dateFormat = $scope.dateFormats.selectedFormat.split('m').join('M');
+    var dateFormat = $scope.dateFormats.selectedFormat.format.split('m').join('M');
     dateFormat = dateFormat.split('e').join('E');
     
 	organization.set('timeZone', $scope.timeZones.selectedTimeZone);

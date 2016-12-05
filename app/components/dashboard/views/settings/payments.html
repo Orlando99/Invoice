@@ -6,7 +6,7 @@
     <div class="spacer"></div>
 
     <div class="paymentInfo" ng-show="incompleteProfile">
-      <p ng-bind-html-unsafe="infoMsg"></p>
+      <p ng-bind-html="infoMsg"></p>
       <a ng-click="continueProcess()" class="button button-primary button-next">Continue</a>
     </div>
     

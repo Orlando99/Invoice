@@ -22,6 +22,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
             $state.go('signup.invoiceTemplateInfo');
         }
         business = obj.entity[0]; 
+        $scope.role = user.entity[0].get('role');
         $scope.businessInfo = business;
     });
     

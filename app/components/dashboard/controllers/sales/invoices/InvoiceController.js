@@ -602,7 +602,9 @@ $scope.save = function() {
 	.then(function(invoice) {
 		hideLoader();
 		console.log(invoice);
-		$state.go('dashboard.sales.invoices.all');
+		//$state.go('dashboard.sales.invoices.all');
+        $state.go('dashboard.sales.invoices.details', {invoiceId:invoice.id});
+        //dashboard.sales.invoices.edit({invoiceId:invoice.entity.id})
 
 	}, function(error) {
 		hideLoader();

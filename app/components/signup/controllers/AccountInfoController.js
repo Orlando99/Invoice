@@ -65,6 +65,7 @@ invoicesUnlimited.controller('AccountInfoController',
 
 	$('[name=routingNumber]').mask('000000000');
 	$('[name=accountNumber]').mask('0000000000');
+    /*
     $('#phoneNumber').mask("(Z00) 000-0000",{
 		translation : {
 			'Z': {
@@ -72,6 +73,8 @@ invoicesUnlimited.controller('AccountInfoController',
 			}
 		}
 	});
+    */
+    $('#phoneNumber').mask('9 (999) 999-9999',mobileOptions);
 
 	$("#signUpForm").validate({
 		onkeyup : true,

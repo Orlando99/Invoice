@@ -358,7 +358,7 @@ return {
                 var xmlFile = template.get("templateData");
                 data.htmlFile = template.get("templateHTML");	// save for later use
                 data.cardUrl = template.get("linkedFile").url();// save for later use
-                return fillInXmlData(xmlFile.url(), user, estimateObj);
+                return fillInXmlData(xmlFile.url(), user, creditNoteObj);
             }
             
 			// in case of edit, get them from creditNoteObj
