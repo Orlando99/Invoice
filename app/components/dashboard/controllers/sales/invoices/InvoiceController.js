@@ -77,7 +77,22 @@ $.validator.addMethod(
 		return $scope.todayDate <= $scope.dueDate;
 	}
 );
-
+  $('#addTaxForm').validate({
+		rules: {
+			name: 'required',
+			rate : {
+				required : true,
+				number : true
+			}
+		},
+		messages: {
+			name : 'Please enter Tax name',
+			rate : {
+				required : 'tax rate is required',
+				number : 'please enter a valid rate(number)'
+			}
+		}
+	});
 $('#editInvoiceForm').validate({
 	rules: {
 		customer : 'required',
@@ -497,9 +512,7 @@ function saveEditedInvoice(params) {
         var isAuto = true;
         
         addNewComment(commentbody, isAuto);
-        
-        
-        
+ 
         //----------------------------
 		if (params.generateReceipt) {
 			var info = obj.get('invoiceInfo');
@@ -735,13 +748,64 @@ function reCalculateSubTotal() {
 }
 
 $scope.reCalculateItemAmount = function(index) {
+    
+    
 	var itemInfo = $scope.invoiceItems[index];
 	if (! itemInfo.selectedItem) return;
 
 	itemInfo.amount = itemInfo.rate * itemInfo.quantity;
+   
 	reCalculateSubTotal();
 }
+//
 
+  $scope.taxChanged = function(index) {
+		console.log('tax changed');
+		
+        if(index == -1){
+            if($scope.newItem.tax.dummy){
+                $scope.currentItem = index;
+                $scope.newItem.tax = null;
+                
+                $scope.taxName = null;
+                $scope.taxRate = null;
+                
+                $('.new-tax').addClass('show');
+                return;
+            }
+        }
+        else{
+            var itemInfo = $scope.invoiceItems[index];
+            
+            if(!itemInfo.selectedTax){
+                reCalculateSubTotal();
+            }
+            else if(itemInfo.selectedTax.dummy){
+                $scope.currentItem = index;
+                $scope.taxName = null;
+                $scope.taxRate = null;
+                itemInfo.selectedTax = null;
+                $('.new-tax').addClass('show');
+
+                return;
+            }
+            /*
+            if(itemInfo.selectedTax.dummy) {
+                $scope.currentItem = index;
+                $scope.taxName = null;
+                $scope.taxRate = null;
+                itemInfo.selectedTax = null;
+                $('.new-tax').addClass('show');
+
+                return;
+            }
+            */
+        }
+        
+        reCalculateSubTotal();
+	}
+    
+//
 $scope.itemChanged = function(index) {
 	var itemInfo = $scope.invoiceItems[index];
 	
@@ -893,6 +957,7 @@ function LoadRequiredData() {
 
 	p = taxService.getTaxes(user, function(taxes) {
 		$scope.taxes = taxes;
+        $scope.taxes.push(createTaxOpener);
 	});
 	promises.push(p);
 
@@ -1021,5 +1086,16 @@ $scope.createNewItem = function() {
 		organization : organization
 	});
 }
-
+$scope.saveNewTax = function() {
+        if(! $('#addTaxForm').valid()) return;
+		salesCommon.createNewTax({
+			_scope : $scope,
+			user : user
+		}, function(){
+            reCalculateSubTotal();
+            $scope.$apply();
+            
+            
+        });
+	}
 }]);

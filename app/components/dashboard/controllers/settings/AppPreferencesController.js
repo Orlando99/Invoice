@@ -28,8 +28,12 @@ invoicesUnlimited.controller('AppPreferencesController',
 	$scope.selectedScreen = user.entity[0].get('firstScreen');
     if(user.entity[0].get('isTrackUsage')) $scope.trackUsage = true;
 
-	$scope.saveAppPreferences = function(){
-		showLoader();
+	$scope.showConfirmationPopUp = function(){
+         $('.confirmation-pop-up').addClass('show');
+	}
+     $scope.saveAppPreferences = function(){
+      
+        showLoader();
 		var color = $(".colors li.active").find('a').attr('class');
 		var colorToSave = "app" + color[0].toUpperCase() + color.slice(1) + "Color";
 		userFactory.save({colorTheme:colorToSave, firstScreen:$scope.selectedScreen, isTrackUsage:$scope.trackUsage?1:0}).then(function(){
@@ -42,8 +46,7 @@ invoicesUnlimited.controller('AppPreferencesController',
                 hideLoader();
             }
 		});
-	}
-    
+    }
     $scope.nextClicked = function(){
         $('.tutorial').hide();
     }

@@ -15,7 +15,7 @@
 
   <div class="container hidesm">
 
-    <h3 class="layout-margin-t section-title">App Preferences</h3>
+    <h3 class="layout-margin-t section-title">Preferences</h3>
     <hr>
 
     <form action="" class="inputs-white col-60">
@@ -63,10 +63,33 @@
 
       <div class="clearfix spacer"></div>
 
-      <span class="button button-info text-uppercase text-weight-normalize" ng-click="saveAppPreferences()">Save</span>
+      <span class="button button-info text-uppercase text-weight-normalize" ng-click="showConfirmationPopUp()">Save</span>
 
     </form>
 
   </div>
+
+<div class="popup-modal confirmation-pop-up hidesm">
+    <div class="modal container" style="width: 650px !important;">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Confirm</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center" style="margin-bottom: 20px; margin-top: 20px; margin-left: -15px;">
+        <label>Do you want to apply these changes?</label>
+      </div>
+      <div class="clearfix"></div>
+        <hr class="layout-margin-tb">
+      <button class="button button-small button-default text-uppercase modal-close float-right"
+        ng-click="">Cancel</button>
+      <button style="margin-right: 15px; background-color:#3183f5;"  class="button button-small button-danger text-uppercase float-right" ng-click="saveAppPreferences()">Save</button>
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+
 
   <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>
