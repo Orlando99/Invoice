@@ -1,4 +1,4 @@
-﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
 
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Credit Notes <i class="arrow-down-black"></i></h3>
@@ -15,7 +15,9 @@
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
         <td class="text-uppercase text-info text-center">Ref#.</td>
         <td class="text-uppercase text-info">Cust. Name</td>
-        <td class="text-uppercase text-info">Invoice#</td>
+        
+         
+          
         <td class="text-uppercase text-info">Status</td>
         <td class="text-uppercase text-info">Amount</td>
         <td class="text-uppercase text-info">Balance</td>
@@ -26,7 +28,7 @@
         <td class="text-color-light">{{creditNote.entity.creditNumber}}</td>
         <td class="text-color-light text-center">{{creditNote.entity.reference}}</td>
         <td class="text-color-light">{{creditNote.customer.displayName}}</td>
-        <td class="text-color-light">invoiceNum</td>
+     
         <td><span class="{{creditNote.statusClass}}">{{creditNote.entity.status}}</span></td>
         <td class="text-color-light">{{creditNote.total}}</td>
         <td class="text-color-light">{{creditNote.remainingCredits}}</td>

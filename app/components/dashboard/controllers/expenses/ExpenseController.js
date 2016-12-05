@@ -37,16 +37,15 @@ $('#addExpenseForm').validate({
 		amount : {
 			required : true,
 			min : 0.01
-		},
-		customer : 'required'
+		}
+		 
 	},
 	messages: {
 		expCategory : 'Please select an expense category',
 		date : 'Please specify expense date',
 		amount : {
 			required : 'Please enter expense amount'
-		},
-		customer : 'Please select a customer'
+		} 
 	}
 });
 

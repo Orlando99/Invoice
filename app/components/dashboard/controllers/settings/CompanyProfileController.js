@@ -63,12 +63,17 @@ invoicesUnlimited.controller('CompanyProfileController',
         
 	hideLoader();
 
-	$scope.UserInfo = {
-		name 		: user.get("fullName"),
-		email 		: user.get("email"),
-		username 	: user.get("username")
-	}
+        
+   $q.when(user.fetch()).then(function()
+   { 
 
+        $scope.UserInfo = {
+            name 		: user.get("fullName"),
+            email 		: user.get("email"),
+            username 	: user.get("username")
+        }
+    });
+        
 	$scope.removeLogo = function(){
         
         $scope.isDeleteLogo = true;
@@ -87,7 +92,6 @@ invoicesUnlimited.controller('CompanyProfileController',
     $scope.addNewLogo = function(obj){
         
         var n = obj.files[0].name;
-        
         if(!(n.endsWith('.png') || n.endsWith('.jpg') || n.endsWith('.jpeg') || n.endsWith('.PNG') || n.endsWith('.JPG') || n.endsWith('.JPEG'))){
             ShowMessage("Invalid file format!","error");
             return;
@@ -102,13 +106,21 @@ invoicesUnlimited.controller('CompanyProfileController',
             
             reader.readAsDataURL(obj.files[0]);
         $scope.newLogo = obj.files[0];
-        //$scope.tempLogo = obj.files[0];
-        
+        //$scope.tempLogo = obj.files[0];   
     }
-    
     $scope.saveBusiness = saveNow;
-    
-    function saveNow(){
+        
+     function saveNow(){
+     if($scope.UserInfo)
+     {    
+        user.set('fullName',$scope.UserInfo.name);
+        user.set( 'email',$scope.UserInfo.email);
+        user.set('username',$scope.UserInfo.username);
+         $q.when(user.save())
+            .then(function(){ 
+            });
+     }
+         
         if(!$scope.businessInfo){
             businessFactory.createNew({
                     businessName : $scope.bsnsInfo.businessName,
