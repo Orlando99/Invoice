@@ -351,10 +351,14 @@
        function resizeIframe(obj){
           
      obj.style.height = 0;
-     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-  }
+     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';}
         
-       
+        
+        function auto_grow(element) {
+        element.style.height = "auto";
+        element.style.overflow = "hidden";
+        element.style.height = (element.scrollHeight)+"px";}
+        
     </script>
 
 

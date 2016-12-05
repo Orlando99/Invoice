@@ -230,13 +230,13 @@
 
       <h3 class="text-uppercase text-weight-normalize layout-margin-tb">Notes &amp; Terms</h3><br>
 
-      <div class="input-container input-radio-container layout-margin-b">
+      <div id="test" class="input-container input-radio-container layout-margin-b">
         <label class="col-25">Invoice Notes</label>
-        <textarea class="col-75" maxlength="200" ng-model="notes"></textarea>
+        <textarea class="col-75" maxlength="200" ng-model="notes" onkeyup="auto_grow(this)"></textarea>
       </div>
       <div class="input-container input-radio-container layout-margin-b">
         <label class="col-25">Terms &amp; Conditions</label>
-        <textarea class="col-75" maxlength="1000" ng-model="terms"></textarea>
+        <textarea class="col-75" maxlength="1000" ng-model="terms" onkeyup="auto_grow(this)"></textarea>
       </div>
 
       <div class="clearfix spacer"></div>
