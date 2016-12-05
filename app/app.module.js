@@ -133,6 +133,11 @@ function hideLoader(){
     },500);
 }
 
+function sleepTime(ms) {
+    ms += new Date().getTime();
+    while (new Date() < ms){}
+} 
+
 function alphabeticalSort(a,b){
   var dispA = a;
   var dispB = b;
