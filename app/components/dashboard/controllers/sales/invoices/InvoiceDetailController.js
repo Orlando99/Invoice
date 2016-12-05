@@ -283,7 +283,13 @@ $scope.applyCredit = function() {
 	if(! due) {
 		invoiceObj.set('status', 'Paid');
 	} else {
-		invoiceObj.set('status', 'Partial Paid');
+        var due = invoiceObj.get('dueDate');
+        var today = new Date();
+        if(due > today)
+            invoiceObj.set('status', 'Partial Paid');
+        else
+            invoiceObj.set('status', 'Overdue');
+		
 	}
 
 	invoiceObj.set('balanceDue', due);
@@ -373,8 +379,14 @@ $scope.addPayment = function() {
 
 	if(invoiceObj.balanceDue <= 0)
 		invoiceObj.set('status', 'Paid');
-	else
-		invoiceObj.set('status', 'Partial Paid');
+	else{
+		var due = invoiceObj.get('dueDate');
+        var today = new Date();
+        if(due > today)
+            invoiceObj.set('status', 'Partial Paid');
+        else
+            invoiceObj.set('status', 'Overdue');
+    }
 
 	var promise = $q.when(coreFactory.getUserRole(user))
 	promise.then(function(role) {

@@ -46,7 +46,7 @@
       <li><a href="timesheets/timesheets.html">Timesheets</a></li>
       -->
 
-      <li id="reports" class="nav-item">
+      <li id="reports" class="nav-item" ng-hide="role == 'Staff'">
         <a  href="javascript:" id="link-reports">Reports</a>
         <div class="container-fluid link-reports-div">
           <ul class="submenu">
@@ -73,7 +73,7 @@
             <li>
               <a style="margin-left: 60px !important" ui-sref="dashboard.settings.company-profile" ui-sref-opts="{reload:true}">Company Profile</a>
             </li>
-            <li>
+            <li ng-hide="role == 'Staff'">
               <a ui-sref="dashboard.settings.general-preferences" ui-sref-opts="{reload:true}">General</a>
               <a ui-sref="dashboard.settings.invoices" ui-sref-opts="{reload:true}">Invoices</a>
               <a ui-sref="dashboard.settings.invoice-templates" ui-sref-opts="{reload:true}">Invoice Templates</a>
@@ -84,11 +84,11 @@
             <li>
               <a ui-sref="dashboard.settings.taxes" ui-sref-opts="{reload:true}">Taxes</a>
               <a ui-sref="dashboard.settings.items" ui-sref-opts="{reload:true}">Items</a>
-              <a ui-sref="dashboard.settings.users" ui-sref-opts="{reload:true}">Users</a>
+              <a ui-sref="dashboard.settings.users" ng-hide="role == 'Staff'" ui-sref-opts="{reload:true}">Users</a>
               <a ui-sref="dashboard.settings.currencies" ui-sref-opts="{reload:true}">Currency</a>
             </li>
             <li>
-              <a style="margin-right: 70px !important" ui-sref="dashboard.settings.app-preferences" ui-sref-opts="{reload:true}">App Preferences</a>
+              <a style="margin-right: 70px !important" ui-sref="dashboard.settings.app-preferences" ui-sref-opts="{reload:true}">Preferences</a>
             </li>
           </ul>
         </div>

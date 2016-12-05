@@ -508,7 +508,8 @@ $scope.save = function() {
 	.then(function(estimate) {
 		hideLoader();
 		console.log(estimate);
-		$state.go('dashboard.sales.estimates.all');
+        $state.go('dashboard.sales.estimates.details', {estimateId:estimate.id});
+		///$state.go('dashboard.sales.estimates.all');
 
 	}, function(error) {
 		hideLoader();

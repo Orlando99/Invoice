@@ -10,6 +10,10 @@ if(! userFactory.entity.length) {
 }
 
 var user = userFactory.entity[0];
+
+$scope.currency = user.get('currency');
+$scope.currencyFormat = $scope.currency.get('format');
+    
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 initalizeModalClasses();
@@ -84,64 +88,40 @@ function commaSeparateNumber1(val){
     }
      return val;
   }
-    
-    function commaSeparateNumber2(val){
-  
-  val = val.split(',').join('');
- 
-  if(check == 1)
-    {
-      
-      if(val.indexOf('.') !== -1){
    
-     while (/(\d+)(\d{4})/.test(val.toString())){
-     val = val.toString().replace(/(\d+)(\d{4})/, '$1'+','+'$2');
-   }
-   var temp = val.length - val.indexOf('.');
-   //alert(temp);
-   if(temp == 3)
-     {
-       $(".add_item_price").attr('maxlength',val.length);
-     }
-  }
-  else
-    {
-      $(".add_item_price").attr('maxlength',50);
-      while (/(\d+)(\d{4})/.test(val.toString())){
-      val = val.toString().replace(/(\d+)(\d{4})/, '$1'+','+'$2');
-        check = 2;
-    }
-    }
-    //alert(check);
-     return val;
-    }
-  else
-    {
-      if(val.indexOf('.') !== -1){
-   
-     while (/(\d+)(\d{3})/.test(val.toString())){
-      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
-   }
-   var temp1 = val.length - val.indexOf('.');
-   //alert(temp);
-   if(temp1 == 3)
-     {
-       $(".add_item_price").attr('maxlength',val.length);
-     }
-  }
-  else
-    {
-      $(".add_item_price").attr('maxlength',50);
-      while (/(\d+)(\d{3})/.test(val.toString())){
-      val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
-        check = 2;
-    }
-    }
+function commaSeparateNumber2(val){
+        
+        if(val.indexOf('.') != -1){
+            var temp = val.length - val.indexOf('.');
+           
+           if(temp == 3)
+             {
+               $(".add_item_price").attr('maxlength',val.length);
+             }
+            return val;
+        }
+            
+        
+        val = val.split(',').join('');
+        if(val.length > 4)
+        {
+            $(".add_item_price").attr('maxlength',50);
+            var right = val.substring(val.length - 4 , val.length);
+            var left = val.substring(0, val.length - 4);
+            return addthreecooma(left) + ',' + right;
+        }
     
-     return val;
-     
-    }
-  
+         return val;
+  }
+    
+  function addthreecooma(value)
+  {
+      value = value.split(',').join('');
+      while (/(\d+)(\d{3})/.test(value.toString())){
+      value = value.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
+      }
+      return value;
+    //alert(value);
   }
     
 function commaSeparateNumber(val){
@@ -171,8 +151,16 @@ function commaSeparateNumber(val){
   }
     
 $('.add_item_price').keyup(function(){
+    if($scope.currencyFormat == '#,###,####'){
+        $(this).val(commaSeparateNumber2($(this).val()));
+    }
+    else if($scope.currencyFormat == '##,##,##,##'){
+        $(this).val(commaSeparateNumber1($(this).val()));
+    }
+    else{
+        $(this).val(commaSeparateNumber($(this).val()));
+    }
   
-  $(this).val(commaSeparateNumber($(this).val()));
 });
     
 

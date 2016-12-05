@@ -22,9 +22,11 @@
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm text-info">Date Format</label>
-        <select class="col-75" ng-model="dateFormats.selectedFormat">
+        <select class="col-75" ng-model="dateFormats.selectedFormat" ng-options="format.formatExample for format in dateFormats.formats">
           <option value="" disabled>Select Date Format</option>
+            <!--
           <option ng-repeat="format in dateFormats.formats">{{format}}</option>
+-->
         </select>
       </div>
       <div class="input-container layout-margin-b">

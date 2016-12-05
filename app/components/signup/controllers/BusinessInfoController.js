@@ -286,17 +286,17 @@ userFactory.entity[0].get('company')
 	}
 
     $('.federal-tax-id-input').hide();
-    $('.ownershipTypeInput').hide();
+    $('.ownershipTypeInput').show();
         
 	$scope.federalTaxIdClick = function() {
 		//var checked = $('.federal-tax-id').prop('checked');
         var checked = $scope.x2;
 		$('.federal-tax-id-input').hide();
-        $('.ownershipTypeInput').hide();
+      //  $('.ownershipTypeInput').hide();
 		$scope.bsnsInfo.federalTaxID = '';
 		if(checked == true){
 			$('.federal-tax-id-input').show();
-            $('.ownershipTypeInput').show();
+        //    $('.ownershipTypeInput').show();
         }
 	}
     

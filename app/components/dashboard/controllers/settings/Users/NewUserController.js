@@ -105,6 +105,7 @@ invoicesUnlimited.controller('NewUserController',
 		$scope.user.set('isTrackUsage',1);
 		$scope.user.set('getInvoiceNotification',1);
 		$scope.user.set('subscription',false);
+        $scope.user.set('tutorial',1);
 
 		appFields.newCustomer
 		.forEach(function(field){

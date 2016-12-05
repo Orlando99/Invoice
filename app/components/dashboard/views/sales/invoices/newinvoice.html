@@ -100,11 +100,17 @@
 
           <div class="col-30 layout-padding">
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-            <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item" ng-model="invItem.selectedItem"
+            
+              
+              <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item" ng-model="invItem.selectedItem"
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
-              <option value="" disabled>Select or Type to add</option>
+        
+                  
+                  <option value="" disabled>Select or Type to add</option>
             </select>
-          </div>
+          
+            </div>
+            
           <div class="col-12 layout-padding layout-padding-l text-right">
             <input maxlength="60" tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" onkeypress="numberValidation(event)"
               placeholder="1" ng-model="invItem.quantity" ng-change="reCalculateItemAmount($index)">
@@ -122,12 +128,18 @@
           <div class="col-12 layout-padding layout-padding-l">
             <!--<select class="check-tax ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
               ng-change="reCalculateItemAmount($index)">-->
+           
+              
+              
               <select class="ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
               ng-change="taxChanged($index)">
               <option value="">None</option>
              <!-- <option value="1">1</option>
               <option value="2">2</option> -->
             </select>
+              
+              
+              
           </div>
           <div class="col-16 layout-padding layout-padding-l text-center">
             <p class="layout-no-margin">{{invItem.amount*currentCurrency.exchangeRate | currency:currentCurrency.currencySymbol:2}}</p>

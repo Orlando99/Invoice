@@ -57,8 +57,9 @@
         </label>
       <input class="layout-margin-tb federal-tax federal-tax-id-input" type="text" placeholder="Federal Tax ID" ng-model="bsnsInfo.federalTaxID" name="federalTaxID"> 
         
-      
-      <select class="custom-dd ownershipTypeInput input_fields_Pinfo" ng-show="x2" name="ownershipType"
+    </form>
+  
+      <select class="custom-dd ownershipTypeInput input_fields_Pinfo"  name="ownershipType"
               ng-init="bsnsInfo.ownershipType = 'ownershipTitle'"
               ng-model="bsnsInfo.ownershipType">
         <option value="ownershipTitle" disabled>Ownership Type</option>
@@ -66,9 +67,9 @@
         <option value="LLC">LLC</option>
         <option value="Corporation and Non Profit">Corporation and Non Profit</option>
       </select>
-
-    </form>
-
+      
+      
+      
     <a href="" ng-click="saveBusinessInfo();" class="button button-primary button-next">Next</a>
     <a href="" ng-click="saveAndLaterBusinessInfo();" style="margin-bottom: 25px !important;" class="button button-neutral-lg">SAVE &amp; CONTINUE LATER</a>
 
