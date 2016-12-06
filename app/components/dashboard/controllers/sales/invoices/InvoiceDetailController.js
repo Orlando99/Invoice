@@ -405,9 +405,12 @@ $scope.addPayment = function() {
 	})
 	.then(function() {
         var body = 'Payment made for '+ currencyFilter($scope.paymentAmount, '$', 2) +' amount';
-        addNewComment(body, true);
-		hideLoader();
-		$state.reload();
+        addNewComment(body, true)
+        .then(function(obj){
+            hideLoader();
+		  $state.reload();
+        });
+		
 	});
 
 }
@@ -515,7 +518,7 @@ $scope.refundPayment = function() {
         
     }
     
-	if ( refunded || (mode != 'Cash' && mode != 'Check') ) return;
+	if ( refunded || (mode != 'Cash' && mode != 'Check' && mode != 'Bank Transfer' && mode != 'Bank Remittance') ) return;
 
 	showLoader();
 	var payment = $scope.selectedPayment.entity;
@@ -677,7 +680,7 @@ function addNewComment(commentbody, isAuto){
     }
 
 	var data = {};
-	$q.when(coreFactory.getUserRole(user))
+	return $q.when(coreFactory.getUserRole(user))
 	.then(function(role) {
 		return commentFactory.createNewComment(obj, role);
 	})
@@ -703,8 +706,7 @@ function addNewComment(commentbody, isAuto){
 		else
 			$scope.comments = [comment];
         
-        $scope.$apply();
-        
+        //$scope.$apply();
         return obj;
         
 		console.log(comment);

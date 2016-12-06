@@ -11,7 +11,12 @@ invoicesUnlimited.controller('ConfirmController',
 	$scope.getStarted1 = goNext; 
         
     function goNext(){
-		if (signUpFactory.getFactory('User').entity.length)
-			$state.go('signup.invoiceTemplateInfo');
+		if (signUpFactory.getFactory('User').entity.length){
+            if(!signUpFactory.getFactory('User').entity[0].get('tutorial'))
+                $state.go('signup.invoiceTemplateInfo');
+            else
+                $state.go('dashboard');
+        }
+			
 	}
 }]);

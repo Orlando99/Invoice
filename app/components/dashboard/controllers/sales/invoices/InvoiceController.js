@@ -988,10 +988,13 @@ function ListInvoices() {
 				obj.statusClass = "text-color-normalize";
 				break;
 			case "Paid":
-				obj.statusClass = "text-positive";
+				obj.statusClass = "text-paid";
 				break;
 			case "Overdue":
-				obj.statusClass = "text-danger";
+				obj.statusClass = "text-overdue";
+				break;
+            case "Partial Paid":
+				obj.statusClass = "text-partialpaid";
 				break;
 			default:
 				obj.statusClass = "text-color-normalize";

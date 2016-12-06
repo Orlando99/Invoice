@@ -228,7 +228,7 @@ invoicesUnlimited.factory('signUpFactory',
 			return newUser[table][field];
 		},
 		create : function(table,params){
-			if (factories[table].entity.length) return;
+			if (factories[table].entity.length) return Promise.resolve('');
 			return factories[table]
 				   .createNew((params ? params : newUser[table]));
 		},

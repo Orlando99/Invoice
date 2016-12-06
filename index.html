@@ -54,46 +54,7 @@
 
 	</script>
 -->
-	<script type="text/ng-template" id="modal-contact">
-    
-	    <div class="modal-container">
-
-	      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">{{title}}</h3>
-	      <button ng-click="Cancel();" class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
-	      <div class="clearfix"></div>
-	      <hr class="layout-margin-tb">
-
-	      <div class="col-80 text-left layout-center">
-	        <form action="" id="addContactForm" class="layout-margin-tb inputs-white">
-	          <div class="input-container layout-margin-b">
-
-	          	<label class="layout-padding-t-sm">Primary Contact</label>
-		        <select class="col-30 layout-margin-r" ng-model="contact.entity.salutation">
-		          <option value="">None</option>
-		          <option value="Ms." selected>Ms.</option>
-		          <option value="Mr.">Mr.</option>
-		        </select>
-		        <input class="col-20" type="text" placeholder="First Name" id="firstname" name="firstname" ng-model="contact.entity.firstname" required>
-		        <input class="col-20 pull-right" type="text" placeholder="Last Name" id="lastname" name="lastname" ng-model="contact.entity.lastname" required>
-	          </div>
-
-	          <div class="input-container layout-margin-b">
-	            <label class="layout-padding-t-sm">Phone Number</label>
-	            <input class="col-35 workPhone" type="text" name="phone" ng-model="contact.entity.phone" minlength="14" placeholder="Work" required>
-	            <input class="col-35 pull-right mobilePhone" name="mobile" type="text" minlength="14" ng-model="contact.entity.mobile" placeholder="Mobile" required>
-	          </div>
-
-	          <div class="input-container layout-margin-b">
-	            <label class="layout-padding-t-sm">Email Address</label>
-	            <input class="col-75" type="email" ng-model="contact.entity.email" placeholder="" required>
-	          </div>
-	        </form>
-	      </div>
-	      <div class="clearfix"></div>
-	      <button ng-click="Save();" class="button button-small button-info text-uppercase">Save</button>
-	    </div>
-    
-  	</script>
+	
 
   	<script type="text/ng-template" id="modal-window">
   		<div id="modal" class="div-refuse center" modal-render="{{$isRendered}}" role="dialog" uib-modal-animation-class="fade" modal-in-class="in" ng-style="{'z-index': 1050 + (index && 1 || 0) + index*10,'position':'fixed','width':'100%','height':'100%'}">
@@ -322,6 +283,47 @@
     <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
 
+        <script type="text/ng-template" id="modal-contact">
+    
+	    <div class="modal-container">
+
+	      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">{{title}}</h3>
+	      <button ng-click="Cancel();" class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+	      <div class="clearfix"></div>
+	      <hr class="layout-margin-tb">
+
+	      <div class="col-80 text-left layout-center">
+	        <form id="addContactForm" class="layout-margin-tb inputs-white" novalidate>
+	          <div class="input-container layout-margin-b">
+
+	          	<label class="layout-padding-t-sm">Primary Contact</label>
+		        <select class="col-30 layout-margin-r" ng-model="contact.entity.salutation">
+		          <option value="">None</option>
+		          <option value="Ms." selected>Ms.</option>
+		          <option value="Mr.">Mr.</option>
+		        </select>
+		        <input class="col-20" type="text" placeholder="First Name" id="firstname" name="firstname" ng-model="contact.entity.firstname">
+		        <input class="col-20 pull-right" type="text" placeholder="Last Name" id="lastname" name="lastname" ng-model="contact.entity.lastname">
+	          </div>
+
+	          <div class="input-container layout-margin-b">
+	            <label class="layout-padding-t-sm">Phone Number</label>
+	            <input class="col-35 workPhone" type="text" name="phone" ng-model="contact.entity.phone" minlength="14" placeholder="Work">
+	            <input class="col-35 pull-right mobilePhone" name="mobile" type="text" minlength="14" ng-model="contact.entity.mobile" placeholder="Mobile">
+	          </div>
+
+	          <div class="input-container layout-margin-b">
+	            <label class="layout-padding-t-sm">Email Address</label>
+	            <input class="col-75" type="email" name="email" id="email" ng-model="contact.entity.email" placeholder="">
+	          </div>
+	        </form>
+	      </div>
+	      <div class="clearfix"></div>
+	      <button ng-click="Save();" class="button button-small button-info text-uppercase">Save</button>
+	    </div>
+    
+  	</script>
+        
 
     <script>
         $(document).ready(function(){

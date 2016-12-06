@@ -1,4 +1,4 @@
-﻿<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
 
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-t">All Invoices <i class="arrow-down-black"></i></h3>
@@ -10,23 +10,25 @@
 
     <table class="data-table invoices-data no-border show_table_hover">
       <tr class="thead">
+          <td class="text-uppercase text-info">Status</td>
         <td class="text-uppercase text-info">Date</td>
         <td class="text-uppercase text-info">Invoice#</td>
         <!-- put it inside td <img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
         <td class="text-uppercase text-info">Order#</td>
         <td class="text-uppercase text-info">Cust. Name</td>
-        <td class="text-uppercase text-info">Status</td>
+        
         <td class="text-uppercase text-info">Due Date</td>
         <td class="text-uppercase text-info">Amount</td>
         <td class="text-uppercase text-info">Balance</td>
       </tr>
       <tr class="trow" ng-repeat="invoice in invoiceList"
       ui-sref="dashboard.sales.invoices.details({invoiceId:invoice.entity.id})">
+          <td><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
         <td class="text-color-light">{{invoice.invoiceDate}}</td>
         <td class="text-color-light">{{invoice.entity.invoiceNumber}}</td>
         <td class="text-color-light">{{invoice.entity.poNumber}}</td>
         <td class="text-color-light">{{invoice.customer.displayName}}</td>
-        <td><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
+        
         <td class="text-color-light">{{invoice.dueDate}}</td>
         <td class="text-color-light">{{invoice.total}}</td>
         <td class="text-color-light">{{invoice.balanceDue}}</td>

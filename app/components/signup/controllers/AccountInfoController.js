@@ -158,17 +158,34 @@ invoicesUnlimited.controller('AccountInfoController',
 		
 		return account
 		.then(function(obj){
-			var save = signUpFactory.save('User',{
-				'accountInfo':obj,
-                'company':$scope.businessName,
-                'phonenumber':$scope.phoneNumber
-			})
-            .then(function(){
-                return signUpFactory.save('BusinessInfo',{
-				'businessName':$scope.businessName,
-                'phoneNumber':$scope.phoneNumber
-			     })
-            });
+            var save;
+            if(!obj.length){
+                save = signUpFactory.save('User',{
+                        'accountInfo':signUpFactory.getFactory('AccountInfo').entity[0],
+                        'company':$scope.businessName,
+                        'phonenumber':$scope.phoneNumber
+                    })
+                    .then(function(){
+                        return signUpFactory.save('BusinessInfo',{
+                        'businessName':$scope.businessName,
+                        'phoneNumber':$scope.phoneNumber
+                         })
+                    });
+            }
+            else{
+                save = signUpFactory.save('User',{
+                    'accountInfo':obj,
+                    'company':$scope.businessName,
+                    'phonenumber':$scope.phoneNumber
+                })
+                .then(function(){
+                    return signUpFactory.save('BusinessInfo',{
+                    'businessName':$scope.businessName,
+                    'phoneNumber':$scope.phoneNumber
+                     })
+                });
+            }
+			
 			if (save) return save;
 		//	window.reload();
 		});

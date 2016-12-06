@@ -69,7 +69,7 @@ invoicesUnlimited.controller('NewCustomerController',
 			displayName: 'required',
 			email : {
 				required : false,
-				email : false
+				email : true
 			}
 		}
 	});
@@ -194,7 +194,10 @@ invoicesUnlimited.controller('NewCustomerController',
 		.forEach(function(el){
 			contact.entity[el.toLowerCase()] 
 			= $scope.newCustomer.entity[el];
-		})
+		});
+        
+        if(!$scope.newCustomer.entity['firstname'])
+            contact.entity['firstname'] = $scope.newCustomer.entity['displayName'];
 		
 		contact.save()
 		.then(function() {

@@ -46,9 +46,14 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 		}
 	});
           
- 
-
-    
+ $('#addTaxGroupForm').validate({
+		rules: {
+			name: 'required'
+		},
+		messages: {
+			name : 'Please enter Tax Group name'
+		}
+	});
         
 	$('#editTaxForm').validate({
 		rules: {
@@ -89,6 +94,79 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 	$scope.clearAddItemFields = function() {
 		initializeScopeVariables();
 		$('#addTaxForm').validate().resetForm();
+	}
+    
+    $scope.clearAddTaxGroupFields = function() {
+		initializeGroupTaxVariables();
+		$('#addTaxGroupForm').validate().resetForm();
+	}
+    
+    function initializeGroupTaxVariables(){
+        $scope.taxGroupId = 0;
+		$scope.taxGroupName = '';
+        $scope.taxesForGroup = [];
+        $scope.shouldAdd = [];
+        
+        $scope.taxes.forEach(function(obj){
+            if(obj.type != 2){
+                $scope.taxesForGroup.push(obj);
+                $scope.shouldAdd.push(false);
+            }
+        });
+    }
+        
+    $scope.saveNewGroupTax = function() {
+		if(! $('#addTaxGroupForm').valid()) return;
+		
+        showLoader();
+        
+        var associatedTaxes = [];
+        var compundCount = 0;
+        var compundRate = 0;
+        var total = 0;
+        for(var i = 0; i < $scope.taxesForGroup.length; ++i){
+            if($scope.shouldAdd[i]){
+                associatedTaxes.push($scope.taxesForGroup[i].entity);
+                total += $scope.taxesForGroup[i].rate;
+                if($scope.taxesForGroup[i].isCompound){
+                    compund += $scope.taxesForGroup[i].rate;
+                    compundCount++;
+                }
+            }
+        }
+        
+        if(compundCount > 1){
+            ShowMessage('You can assign only one compund tax to a tax group.', 'error');
+            hideLoader();
+            return;
+        }
+        
+        if(associatedTaxes.length < 1){
+            ShowMessage('You must select at least 1 tax.', 'error');
+            hideLoader();
+            return;
+        }
+        
+		var params = {
+			title: $scope.taxGroupName,
+			value: total,
+			compound: compundRate,
+			user: user,
+            associatedTaxes: associatedTaxes
+		};
+        /*
+		taxService.saveNewTax(params, function(response){
+			console.log(response);
+            hideLoader();
+            if(fromTutorial){
+                $state.go('dashboard.settings.items')
+            }
+            else{
+                $(".new-tax").removeClass("show");
+                getTaxes();
+            }
+		});
+        */
 	}
 
 	$scope.saveNewTax = function() {

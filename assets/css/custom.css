@@ -85,7 +85,7 @@ div.paymentInfo > label {
 }
 
 div.paymentInfo > a {
-	top: 10px;
+	top: 30px;
 }
 
 select.can-create-item option:last-child{
@@ -300,6 +300,7 @@ td{
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
+    -moz-appearance: none;
     margin: 0;
 }
     
@@ -375,6 +376,18 @@ btn btn-sm btn-success pull-right uib-close ng-binding
     margin-left: 290px;
 }
 
+.text-partialpaid{
+    color: #9a36b3;
+}
 
+.text-sent{
+    color: #558cf4;
+}
 
- 
+.text-paid{
+    color: #61c045;
+}
+
+.text-overdue{
+    color: #d93936;
+}

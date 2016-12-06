@@ -86,7 +86,7 @@ $scope.continueProcess = function() {
 		$state.go('signup.business-info');
 
 	} else if(! pInfo) {
-		$state.go('signup.principal-info');
+		$state.go('signup.business-info');
 
 	} else if(! aInfo) {
 		$state.go('signup.account-info');

@@ -24,8 +24,8 @@
 
       <div class="input-container input-info input-select-info layout-margin-b">
         <label class="layout-padding-t-sm">Display Name</label>
-        <input class="col-75 pull-right " type="text" placeholder="Display Name"
-               ng-model="selectedCustomerEdit.displayName">
+        <input class="col-75 pull-right " type="text" name="displayName" id="displayName" placeholder="Display Name"
+               ng-model="selectedCustomerEdit.displayName" required>
         <span class="info-icon info-icon-gray"></span>
         <p class="info-tooltip tooltip-dark">
           This is the name that will display for this contact for invoices, estimates, &amp; projects.
@@ -40,7 +40,7 @@
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Email Address</label>
-        <input type="email" ng-model="selectedCustomerEdit.email" class="col-75">
+        <input type="email" name="email" id="email" ng-model="selectedCustomerEdit.email" class="col-75">
       </div>
 
       <!--<div class="input-container layout-margin-b">

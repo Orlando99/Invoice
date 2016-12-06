@@ -50,20 +50,21 @@ invoicesUnlimited.controller('BusinessInfoController',
 	// User object in signUpFactory doesn't have data.
 	if($rootScope.fromPaymentSettings) {
 		var user1 = userFactory.entity[0];
-        /*
-		signUpFactory.setField('PrincipalInfo', 'userID', user);
+        
+		signUpFactory.setField('PrincipalInfo', 'userID', user1);
 		signUpFactory.setField('PrincipalInfo', 'organization',
-			user.get('selectedOrganization'));
-/*
+			user1.get('selectedOrganization'));
+
 		showLoader();
 		var p = undefined;
 		var promises = [];
-		p = $q.when(user.get('businessInfo').fetch())
+		p = $q.when(user1.get('businessInfo').fetch())
 		.then(function(bInfo) {
 			for(var i=0; i < fields.length; ++i) {
 				signUpFactory.setField('BusinessInfo', fields[i],
 					bInfo.get(fields[i]));
 			}
+            $scope.bsnsInfo = bInfo;
 			$scope.toggleHomeInfo();
 		});
 		promises.push(p);
@@ -78,13 +79,14 @@ invoicesUnlimited.controller('BusinessInfoController',
 			hideLoader();
 			console.log(error.message);
 		});
-        */
         
         
+        /*
 		signUpFactory.setField('User','company', user1.get('company'));
 		//signUpFactory.setField('User','phonenumber', user.get('phonenumber'));
 		signUpFactory.setField('BusinessInfo', 'organization',
 			user1.get('selectedOrganization'));
+            */
 	}
         
         $("input").keyup(function(event){
@@ -265,12 +267,17 @@ userFactory.entity[0].get('company')
 		}
 		
 		var business = signUpFactory.create('BusinessInfo');
-
+        
 		business
 		.then(function(busObj){
-			return signUpFactory.save('User',{
-				'businessInfo' : busObj,
-			});
+            if(!busObj.length)
+                return signUpFactory.save('User',{
+				    'businessInfo' : signUpFactory.getFactory('BusinessInfo').entity[0],
+			     });
+            else
+                return signUpFactory.save('User',{
+                    'businessInfo' : busObj,
+                });
 		},
 		function(err){
 			if (!err.length) console.log(err.message);
@@ -374,9 +381,16 @@ userFactory.entity[0].get('company')
 
             return principal
             .then(function(obj){
-                var save = signUpFactory.save('User',{
-                    'principalInfo' : obj
-                });
+                var save;
+                if(!obj.length)
+                    save = signUpFactory.save('User',{
+                        'principalInfo' : signUpFactory.getFactory('PrincipalInfo').entity[0],
+                     });
+                else
+                    save = signUpFactory.save('User',{
+                        'principalInfo' : obj,
+                    });
+                
                 if (save) return save;
             //	window.reload();
             });

@@ -7,6 +7,32 @@ invoicesUnlimited.controller('ModalContactController',function(
 	$scope.title = title;
     
 	$scope.Save = function(){
+        $('#addContactForm').validate({
+		rules: {
+            firstname: 'required',
+            lastname: 'required',
+            mobile: {
+                required: true,
+                minlength: 14
+            },
+			email : {
+				required : true,
+				email : true
+			}
+		},
+        messages: {
+            firstname: 'Please enter first name',
+            lastname: 'Please enter last name',
+            mobile: {
+                required: 'Please enter mobile number',
+                minlength: 'Please enter a valid phone number'
+            },
+			email : {
+				required : "Please enter email address",
+				email : "Please enter a valid email address"
+			}
+        }
+	});
         if(! $('#addContactForm').valid()) 
             return;
 		showLoader();

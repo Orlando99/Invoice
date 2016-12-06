@@ -31,6 +31,12 @@ invoicesUnlimited.controller('CustomersController',
 		$state.go('login');
 		return;
 	}
+    
+    userFactory.getField('dateFormat')
+.then(function(obj) {
+	$scope.dateFormat = obj;
+});
+    
 	$('.tutorial').hide();
 	var def = $q.defer();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
@@ -43,6 +49,16 @@ invoicesUnlimited.controller('CustomersController',
         fromTutorial = false;
         $state.go('dashboard');
     }
+    
+    $('#edit-customer-form').validate({
+		rules: {
+			displayName: 'required',
+			email : {
+				required : false,
+				email : true
+			}
+		}
+	});
 
 	$scope.selectedCustomer;
 	$scope.selectedCustomerId;
@@ -109,6 +125,15 @@ invoicesUnlimited.controller('CustomersController',
     
 	var selectCustomer = function(item){
 		$scope.selectedCustomer = item;
+        var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+        $scope.selectedCustomer.invoices.forEach(function(obj){
+            obj.invoiceDate = formatDate(obj.entity.invoiceDate, dateFormat);
+        });
+        
+        $scope.selectedCustomer.comments.forEach(function(obj){
+            obj.date = formatDate(obj.entity.date, dateFormat);
+        });
+        
 		var obj = $scope.selectedCustomer.entity;
 		if (!obj.billingAddress) return;
 		
@@ -120,7 +145,9 @@ invoicesUnlimited.controller('CustomersController',
 	    $scope.selectedCustomer.billingAddress = formBillingAddress(billingAddress);
 	    $scope.selectedCustomer.billingAddressJSON = billingAddress;
 	    $scope.selectedCustomer.shippingAddressJSON = shippingAddress;
-	    drawBarChart();
+        
+        drawBarChart();
+        
 	}
 
     loadCurrencies();
@@ -310,6 +337,13 @@ invoicesUnlimited.controller('CustomersController',
 		if ($scope.selectedCustomer && $scope.shipping.setShippingTheSame) {
 			$scope.shippingAddressEdit = 
 				$.extend(true,{},$scope.billingAddressEdit);
+		}
+        
+        if (! $('#edit-customer-form').valid()) {
+			var v = $('#edit-customer-form').validate();
+			var offset = $(v.errorList[0].element).offset().top - 30;
+			scrollToOffset(offset);
+			return;
 		}
 
 		var selected = $scope.selectedCustomer;

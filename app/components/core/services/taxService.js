@@ -31,7 +31,8 @@ invoicesUnlimited.factory('taxService', function($q){
 							rate: obj.get("value"),
 							type: obj.get("type"),
 							isCompound: Boolean(obj.get("compound")),
-							compound: obj.get("compound")
+							compound: obj.get("compound"),
+                             entity: obj
 						 });
 					}
 					hideLoader();
@@ -41,6 +42,44 @@ invoicesUnlimited.factory('taxService', function($q){
 					hideLoader();
 					callback([]);
 				});
+		},
+        saveNewGroupTax : function(params, callback) {
+			// find organization of current user
+			var organization = getOrganization(params.user);
+			if (! organization)	return;
+			
+			// find role of current user
+			var query = new Parse.Query(Parse.Role);
+			query.equalTo('users', params.user);
+			query.first().then(function(role){
+
+				// set key,values to insert
+				params.userID = params.user;
+				delete params.user;
+				params.organization = organization;
+				params.type = 2;	// 1 = tax, 2 = tax group
+				
+				var acl = new Parse.ACL();
+				acl.setRoleWriteAccess(role.get("name"), true);
+				acl.setRoleReadAccess(role.get("name"), true);
+                
+				var Tax = Parse.Object.extend("Tax");
+				var tax = new Tax();
+				tax.setACL(acl);
+				tax.save(params,{
+					success: function(object){
+                        callback(object);
+						//callback("New Tax created with objectId: " + object.id);
+					},
+					error: function(object, error){
+						callback("Failed to create new Tax, error code:" + error.message);
+					}
+				});
+
+			}, function(error){
+				return console.log("user:" + user.id + " do not have a role");
+			});
+
 		},
 		saveNewTax : function(params, callback) {
 			// find organization of current user
