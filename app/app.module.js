@@ -338,9 +338,14 @@ function calculateTax(amount, tax) {
   if (tax.type == 1)
     res = amount * tax.rate * 0.01;
   else if (tax.type == 2) {
+      res = amount * (tax.rate - tax.compound) * 0.01;
+    if (tax.compound)
+      res += (res + amount) * tax.compound * 0.01;
+      /*
     res = amount * tax.rate * 0.01;
     if (tax.compound)
       res = res * tax.compound * 0.01;
+      */
   }
 
   return res;
