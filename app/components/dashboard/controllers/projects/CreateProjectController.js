@@ -52,7 +52,7 @@ $('#addTimesheetForm').validate({
 		timesheetDate : 'Please select a date',
 		timesheetHours : 'Please enter hours',
 		timesheetMinutes : 'Please enter minutes',
-        timesheetUser : 'Please select user222',
+        timesheetUser : 'Please select user',
         timesheetTask : 'Please select task'
 	}
 });

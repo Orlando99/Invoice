@@ -1035,9 +1035,9 @@ function calculateTax(item, tax) {
 	if (taxType == 1)
 		res = amount * taxRate * 0.01;
 	else if (taxType == 2) {
-		res = amount * (taxRate - compound) * 0.01;
-        if (compound)
-          res += (res + amount) * compound * 0.01;
+		res = amount * taxRate * 0.01;
+		if (compound)
+			res = res * compound * 0.01;
 	}
 
 	return res;

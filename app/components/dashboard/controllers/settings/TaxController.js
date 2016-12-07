@@ -129,7 +129,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
                 associatedTaxes.push($scope.taxesForGroup[i].entity);
                 total += $scope.taxesForGroup[i].rate;
                 if($scope.taxesForGroup[i].isCompound){
-                    compundRate += $scope.taxesForGroup[i].rate;
+                    compund += $scope.taxesForGroup[i].rate;
                     compundCount++;
                 }
             }
@@ -154,19 +154,19 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 			user: user,
             associatedTaxes: associatedTaxes
 		};
-        
-		taxService.saveNewGroupTax(params, function(response){
+        /*
+		taxService.saveNewTax(params, function(response){
 			console.log(response);
             hideLoader();
             if(fromTutorial){
                 $state.go('dashboard.settings.items')
             }
             else{
-                $(".new-tax-group").removeClass("show");
+                $(".new-tax").removeClass("show");
                 getTaxes();
             }
 		});
-        
+        */
 	}
 
 	$scope.saveNewTax = function() {
