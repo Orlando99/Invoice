@@ -95,12 +95,15 @@
         <br/>
 
         <h3 class="layout-margin-tb text-info text-uppercase text-weight-normalize">Receivables</h3>
-        <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{'$'+selectedCustomer.entity.outstanding}}</h2>
+        <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{'$' + receivables}}</h2>
+          <!--
+          <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{'$'+ (selectedCustomer.entity.outstanding || '0.00')}}</h2>
+-->
         <p class="layout-no-margin col-no-padding ext-color-light">Outstanding</p>
       </div>
       <div class="col-40 layout-margin-tb">
         <h3 class="layout-margin-t text-info text-uppercase text-weight-normalize">Income &amp; Expense</h3>
-        <canvas id="barchart" height="300px" width="400px"></canvas>
+        <canvas id="barchart" height="300px" width="400px" style="width: 400px !important; height: 300px !important;"></canvas>
         <h3 class="col-40 layout-no-margin text-positive text-weight-normalize text-uppercase">Total Income</h3>
         <h3 class="col-40 layout-no-margin text-danger text-weight-normalize text-uppercase">Total Expense</h3>
         <h4 class="col-40 layout-no-margin text-normalize text-weight-normalize text-uppercase">{{totalIncome}}</h4>
@@ -162,7 +165,7 @@
           <td class="layout-padding-tb-lg" 
               ng-repeat="title in ['Date','Invoice #','Ref. #','AMT.','Balance','Status']">{{title}}</td>
         </tr>
-        <tr class="text-color-light" ng-repeat="invoice in selectedCustomer.invoices">
+        <tr class="text-color-light" ng-repeat="invoice in selectedCustomer.invoices" ng-if="invoice.entity.status=='Paid' || invoice.entity.status=='Partial Paid' || invoice.entity.status=='Partial Refunded' || invoice.entity.status=='Refunded'">
           <td class="layout-padding-tb-xl text-uppercase">{{invoice.invoiceDate}}</td>
           <td class="layout-padding-tb-xl text-uppercase">{{invoice.entity.invoiceNumber}}</td>
           <td class="layout-padding-tb-xl text-uppercase"></td>

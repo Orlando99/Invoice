@@ -12,10 +12,12 @@
         <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
           <li><a href="">Clone</a></li>
           <li class="modal-opener" data-toggle="new-timesheet"><a onclick="return false;" href="">Add Timesheet</a></li>
-          <li class="modal-opener" data-toggle="new-task"><a onclick="return false;">Add Tasks</a></li>
+          <li class="modal-opener" data-toggle="new-task"><a ng-click="prepareToAddTask()" href="javascript:">Add Tasks</a></li>
           <li class="modal-opener" data-toggle="new-user"><a onclick="return false;">Add User</a></li>
-          <li><a href="">Delete</a></li>
+          <li><a href="javascript:" ng-click="deleteProject()">Delete</a></li>
+            <!--
           <li class="modal-opener" data-toggle="view-more"><a onclick="return false;" href="">View More</a></li>
+-->
         </ul>
       
     </div>
@@ -28,7 +30,7 @@
           <p class="layout-no-padding layout-no-margin col-40">Customer Name</p>
           <p class="layout-no-padding layout-no-margin col-60">{{customer.attributes.displayName}}</p><br>
           <p class="layout-no-padding layout-no-margin col-40">Description</p>
-          <p class="layout-no-padding layout-no-margin col-60">{{project.projectDescription}} <br></p>
+          <p class="layout-no-padding layout-no-margin col-60" style="word-break: break-word;">{{project.projectDescription}} <br></p>
           <p class="layout-no-padding layout-no-margin col-40">Billing Method</p>
           <p class="layout-no-padding layout-no-margin col-60">{{project.billingMethod}}</p>
       </div>
@@ -86,7 +88,7 @@
           <p class="col-20 layout-margin-t text-color-light text-weight-normalize">{{(sheet.attributes.date.getMonth()+1) + '/' + sheet.attributes.date.getDate() + '/' + sheet.attributes.date.getFullYear()}}</p>
           <p class="col-20 layout-margin-t text-color-light text-weight-normalize">{{sheet.attributes.task.attributes.taskName}}</p>
           <p class="col-20 layout-margin-t text-color-light text-weight-normalize">{{sheet.attributes.user.attributes.title}}</p>
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-center">01:55</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-center">{{sheet.time}}</p>
           <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-right text-danger">Unbilled</p>
           <p class="col-100 layout-margin-tb layout-padding-l">
             {{sheet.attributes.notes}}
@@ -109,7 +111,7 @@
           <p class="col-20 text-color-light text-weight-normalize">01:55</p>
           <p class="col-20 text-color-light text-weight-normalize">{{task.entity.billedHours || "0"}}</p>
           <p class="col-20 text-color-light text-weight-normalize text-center">1.55</p>
-          <p class="col-20 text-color-light text-weight-normalize text-right">$15.00</p>
+          <p class="col-20 text-color-light text-weight-normalize text-right">{{'$' + (task.entity.taskCost.toFixed(2) || '0.00')}}</p>
         </div>
       </div>
     </div>
@@ -117,18 +119,18 @@
       <div class="container-table">
         <div class="thead">
           <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Name</p>
-          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Email</p>
-          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Logged Hours</p>
-          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Billed Hours</p>
-          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize text-right">Unbill. Houurs</p>
+          <p class="col-25 text-uppercase text-color-normalize text-weight-normalize">Email</p>
+          <p class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Logged Hours</p>
+          <p class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Billed Hours</p>
+          <p class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hours</p>
           <p class="col-10 text-uppercase text-color-normalize text-weight-normalize text-right">Role</p>
         </div>
         <div class="table-row row-border" ng-repeat="user in staff">
           <p class="col-16 text-color-light text-weight-normalize">{{user.user.attributes.title}}</p>
-          <p class="col-20 text-color-light text-weight-normalize">{{user.user.attributes.emailID}}</p>
-          <p class="col-16 text-color-light text-weight-normalize">01:55</p>
-          <p class="col-16 text-color-light text-weight-normalize">00:00</p>
-          <p class="col-16 text-color-light text-weight-normalize text-right">$1.50</p>
+          <p class="col-25 text-color-light text-weight-normalize" style="word-break: break-all;">{{user.user.attributes.emailID}}</p>
+          <p class="col-15 text-color-light text-weight-normalize text-center">01:55</p>
+          <p class="col-15 text-color-light text-weight-normalize text-center">00:00</p>
+          <p class="col-15 text-color-light text-weight-normalize text-center">01:50</p>
           <p class="col-10 text-color-light text-weight-normalize text-right">{{user.user.attributes.role}}</p>
         </div>
       </div>
@@ -302,42 +304,27 @@
       <hr class="layout-margin-tb">
 
       <div class="col-80 text-left layout-center">
-        <form action="" class="layout-margin-tb inputs-white">
+        <form id="addTaskForm" class="layout-margin-tb inputs-white">
 
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Task Name</label>
-            <input class="col-75" placeholder="Select or Type to add">
+            <input class="col-75" name="newTaskName" ng-model="newTaskName" placeholder="Type to add">
           </div>
 
           <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Logged Hours</label>
-            <input class="col-75" type="text" placeholder="HH:MM">
+            <label class="layout-padding-t-sm">Description</label>
+            <textarea ng-model="newTaskDescription" style="resize: none;" class="col-75"></textarea>
           </div>
-
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Billed Hours</label>
-            <input class="col-75" type="text" placeholder="HH:MM">
-          </div>
-
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Unbilled Hours</label>
-            <input class="col-75" type="text" placeholder="HH:MM">
-          </div>
-
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Price</label>
-            <input class="col-75" type="text" placeholder="Type to add">
-          </div>
-
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-sm">Notes</label>
-            <textarea class="col-75"></textarea>
+            
+        <div class="input-container layout-margin-b" ng-show="project.billingMethod == 'Based on task hours'">
+            <label class="layout-padding-t-sm">Rate/Hour</label>
+            <input class="col-75" onkeypress="numberValidation(event)" name="newTaskCost" type="number" ng-model="newTaskCost" placeholder="Select or Type to add">
           </div>
 
         </form>
       </div>
       <div class="clearfix"></div>
-      <button class="button button-small button-info text-uppercase layout-margin-r">Save</button>
+      <button class="button button-small button-info text-uppercase layout-margin-r" ng-click="addNewTask()">Save</button>
     </div>
   </div>
 

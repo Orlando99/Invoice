@@ -5,7 +5,7 @@
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Projects <!-- <i class="arrow-down-black"></i>--></h3>
     <a ui-sref="dashboard.projects.new" class="float-right button button-add text-uppercase">New</a>
     <form class="float-right layout-margin-t">
-      <input type="text" class="search-bar" placeholder="Search">
+      <input type="text" class="search-bar" placeholder="Search" ng-model="search.entity.projectName">
     </form>
 
     <div class="clearfix"></div>
@@ -20,11 +20,11 @@
         <td ng-click="sortByBilling()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Billing Method</td>
         <td ng-click="sortByAmount()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Price</td>
       </tr>
-      <tr ng-repeat="project in projectList"
+      <tr ng-repeat="project in projectList | filter:search"
         ui-sref="dashboard.projects.details({projectId:project.entity.id})" style="cursor:pointer">
         <td class="text-color-light layout-padding-tb-lg">{{project.entity.projectName}}</td>
         <td class="text-color-light layout-padding-tb-lg">{{project.customer.displayName}}</td>
-        <td class="text-color-light layout-padding-tb-lg">{{project.entity.projectDescription}}</td>
+        <td class="text-color-light layout-padding-tb-lg" style="width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 300px;">{{project.entity.projectDescription}}</td>
         <td class="text-color-light layout-padding-tb-lg">{{project.entity.billingMethod}}</td>
         <td class="text-color-light layout-padding-tb-lg">{{project.entity.projectBillingAmount}}</td>
       </tr>

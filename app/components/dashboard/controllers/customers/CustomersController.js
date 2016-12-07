@@ -150,6 +150,14 @@ invoicesUnlimited.controller('CustomersController',
 	    $scope.selectedCustomer.billingAddressJSON = billingAddress;
 	    $scope.selectedCustomer.shippingAddressJSON = shippingAddress;
         
+        $scope.receivables = 0;
+        var total = 0;
+        
+        $scope.selectedCustomer.invoices
+			.forEach(function(inv) {
+                $scope.receivables += inv.entity.balanceDue;
+			});
+        $scope.receivables = $scope.receivables.toFixed(2);
         drawBarChart();
         
 	}
@@ -293,7 +301,7 @@ invoicesUnlimited.controller('CustomersController',
 						}],
 						yAxes: [{
 							gridLines: {
-								display : false
+								display : true
 							},
 							ticks: {
 								beginAtZero:true

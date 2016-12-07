@@ -364,7 +364,8 @@ $scope.saveProject = function() {
 	.then(function(project) {
 		hideLoader();
 		console.log(project);
-		$state.go('dashboard.projects.all');
+		//$state.go('dashboard.projects.all');
+        $state.go('dashboard.projects.details', {projectId:project.id});
 
 	}, function(error) {
 		hideLoader();

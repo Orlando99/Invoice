@@ -2,23 +2,27 @@
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Customers</h3>
     <a ui-sref="dashboard.customers.new" class="float-right button button-add text-transform" >New</a> <!--data-toggle="add-contact-person"-->
     <form class="float-right layout-margin-t">
-      <input type="text" class="search-bar" placeholder="Search">
+      <input type="text" class="search-bar" placeholder="Search" ng-model="search.entity.displayName">
     </form>
 
     <div class="clearfix"></div>
-
+<style>
+    .deactive{
+        color: #cccccc !important;
+    }
+      </style>
     <table class="customers-data no-border">
       <tr class="thead">
         <td class="layout-padding text-uppercase text-info"
             ng-repeat="title in ['Name','Co. Name','Email','Work Phone','Receivables','Credits']">{{title}}</td>
       </tr>
-      <tr ng-repeat="customer in customers track by $index" ui-sref="dashboard.customers.details({customerId:$index})" style="cursor:pointer">
-        <td class="layout-padding text-color-light">{{customer.entity.displayName}}</td>
-        <td class="layout-padding text-color-light">{{customer.entity.companyName}}</td>
-        <td class="layout-padding text-color-light ellipsis">{{customer.entity.email}}</td>
-        <td class="layout-padding text-color-light">{{customer.entity.phone}}</td>
-        <td class="layout-padding text-color-light">{{customer.entity.outstanding}}</td>
-        <td class="layout-padding text-color-light">{{customer.entity.unusedCredits}}</td>
+      <tr ng-repeat="customer in customers | filter:search track by $index" ui-sref="dashboard.customers.details({customerId:$index})" style="cursor:pointer">
+        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.displayName}}</td>
+        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.companyName}}</td>
+        <td class="layout-padding text-color-light ellipsis" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.email}}</td>
+        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.phone}}</td>
+        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.outstanding}}</td>
+        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.unusedCredits}}</td>
       </tr>      
     </table>
 

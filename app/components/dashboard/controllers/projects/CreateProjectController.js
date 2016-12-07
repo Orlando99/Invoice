@@ -46,14 +46,14 @@ $('#addTimesheetForm').validate({
 		timesheetHours : 'required',
 		timesheetMinutes : 'required',
         timesheetUser : 'required',
-        timesheetTask : 'required'
+        timeSheetTask : 'required'
 	},
 	messages: {
 		timesheetDate : 'Please select a date',
 		timesheetHours : 'Please enter hours',
 		timesheetMinutes : 'Please enter minutes',
         timesheetUser : 'Please select user',
-        timesheetTask : 'Please select task'
+        timeSheetTask : 'Please select task'
 	}
 });
 $('#addTaskForm').validate({
@@ -150,8 +150,10 @@ function prepareForm() {
 
     for(var i = 0; i < $scope.users.length; ++i){
         var username = user.get('username');
-        if($scope.users[i].userName == username)
+        if($scope.users[i].userName == username){
             $scope.projectUsers.push($scope.users[i]);
+            $scope.users.splice(i, 1);
+        }
     }
     
 	if(customerId) {
@@ -264,11 +266,18 @@ $scope.saveTimesheet = function(){
     if(!$("#addTimesheetForm").valid())
         return;
     
+    var d = new Date();
+    d.subtractHours($scope.timesheetHours);
+    d.subtractMinutes($scope.timesheetMinutes);
+    
     $scope.timesheets.push({
         user : $scope.timesheetUser,
         task : $scope.timesheetTask,
         date : $scope.timesheetDate,
-        notes : $scope.timesheetDescription
+        notes : $scope.timesheetDescription,
+        timeSpent : d,
+        hours : $scope.timesheetHours < 10 ? '0' + $scope.timesheetHours : '' + $scope.timesheetHours,
+        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes
     });
     $scope.timesheetUser = "";
     $scope.timesheetTask = "";
@@ -383,11 +392,17 @@ $scope.addNewUser = function(){
     if(!$('#addUserForm').valid())
         return;
     $scope.projectUsers.push($scope.newUser);
+    $scope.users = $scope.users.filter(function(el) {
+        return el !== $scope.newUser;
+    });
     $(".add-user").removeClass('show');
     //$scope.newUser = "";
 }
 
 $scope.removeUser = function(index){
+    $scope.users.pop();
+    $scope.users.push($scope.projectUsers[index]);
+    $scope.users.push(createUserOpener);
     $scope.projectUsers.splice(index, 1);
 }
 

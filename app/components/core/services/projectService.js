@@ -139,8 +139,9 @@ function createTimesheets (timesheets, params) {
             obj.setACL(params.acl);
             obj.set('user', timesheet.user);
             obj.set('task', timesheet.task);
-            obj.set('date', timesheet.sheetDate);
+            obj.set('date', timesheet.date);
             obj.set('notes', timesheet.notes);
+            obj.set('timeSpent', timesheet.timeSpent);
 
             parseTasks.push(obj);
         }
