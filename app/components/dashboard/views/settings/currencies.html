@@ -4,7 +4,7 @@
     <a href="" class="float-right layout-margin-tb button button-add text-transform modal-opener"
       data-toggle="new-currency" ng-click="prepareAddCurrency()">New</a>
     <form class="float-right layout-margin-tb">
-      <input type="text" class="search-bar layout-margin-r" placeholder="Search">
+<input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.entity.title">
     </form>
 
     <table class="table-border-tb show_table_hover">
@@ -16,7 +16,7 @@
         <td class="is-active-head"></td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr class="trow" ng-repeat="currency in currencies">
+      <tr class="trow" ng-repeat="currency in currencies | filter:search">
         <td ng-click="prepareEditCurrency($index)"
           class="text-color-light text-weight-normalize layout-padding">{{currency.entity.title}}</td>
         <td ng-click="prepareEditCurrency($index)"

@@ -4,7 +4,7 @@
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Estimates <i class="arrow-down-black"></i></h3>
     <a ui-sref="dashboard.sales.estimates.new" class="float-right button button-add text-transform">New</a>
     <form class="float-right layout-margin-t">
-      <input type="text" class="search-bar" placeholder="Search">
+      <input type="text" class="search-bar" placeholder="Search" ng-model="search.entity.estimateNumber">
     </form>
     <div class="clearfix"></div>
 
@@ -18,7 +18,7 @@
         <td class="layout-padding text-uppercase text-info">Status</td>
         <td class="layout-padding text-uppercase text-info">Amount</td>
       </tr>
-      <tr class="trow" ng-repeat="estimate in estimateList"
+      <tr class="trow" ng-repeat="estimate in estimateList | filter:search"
         ui-sref="dashboard.sales.estimates.details({estimateId:estimate.entity.id})">
         <td class="layout-padding text-color-light">{{estimate.estimateDate}}</td>
         <td class="layout-padding text-color-light">{{estimate.entity.estimateNumber}}</td>

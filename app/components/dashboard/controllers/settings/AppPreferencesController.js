@@ -21,7 +21,7 @@ invoicesUnlimited.controller('AppPreferencesController',
             $('.tutorial').hide();
         }
         
-	$scope.openingScreens = ['Overview', 'Customer List',
+	$scope.openingScreens = ['Dashboard', 'Customer List',
 		'Invoices List', 'Expense List', 'Estimate List', 'Credit Notes List',
 		'Reports', 'Settings'];
 

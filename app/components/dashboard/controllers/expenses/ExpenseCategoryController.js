@@ -144,6 +144,7 @@ $scope.createNewCategory = function() {
 	.then(function(obj) {
 		$scope.categories.unshift(obj);
 		$('.new-category').removeClass('show');
+      
         window.location.reload();
 		hideLoader();
 	});
@@ -163,6 +164,8 @@ $scope.saveEditedCategory = function() {
 	.then(function(obj) {
 		$scope.categories[$scope.editCategoryIndex] = obj;
 		$('.edit-category').removeClass('show');
+        
+        window.location.reload();
 		hideLoader();
 	});
 }

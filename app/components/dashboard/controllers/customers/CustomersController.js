@@ -49,7 +49,7 @@ invoicesUnlimited.controller('CustomersController',
         fromTutorial = false;
         $state.go('dashboard');
     }
-    
+   
     $('#edit-customer-form').validate({
 		rules: {
 			displayName: 'required',
@@ -68,7 +68,7 @@ invoicesUnlimited.controller('CustomersController',
 		setShippingTheSame  : false,
 		tempShippingAddress : {}
 	}
-
+  
 	var formBillingAddress = function(obj){
 		var result = "";
 		
@@ -88,6 +88,10 @@ invoicesUnlimited.controller('CustomersController',
 		else return false;
 	}
 
+     
+   
+    
+    
 	var doSelectCustomerIfValidId = function(id){
 		if (isCustomerIdValid(id)) {
 			selectCustomer($scope.customers[id]);
@@ -374,9 +378,12 @@ invoicesUnlimited.controller('CustomersController',
 		});
 	};
 
-	$scope.deleteSelectedCustomer = function(){
+ 
+	$scope.deleteSelectedCustomer = function()
+    {
 		if ($scope.selectedCustomer.invoices &&
 			$scope.selectedCustomer.invoices.length) {
+             
 			ShowMessage("Customers with invoices involved cannot be deleted!","error");
 			return;
 		}
@@ -393,7 +400,35 @@ invoicesUnlimited.controller('CustomersController',
                 $state.go('dashboard.customers.all');
 		});
 	}
-
+    
+    $scope.deleteCustomer = function(confirmed, index) {
+	if(confirmed) 
+    {
+		 if ($scope.selectedCustomer.invoices &&
+			$scope.selectedCustomer.invoices.length) {
+             $(".confirm-delete").removeClass("show");
+			ShowMessage("Customers with invoices involved cannot be deleted!","error");
+			return;
+		}
+		showLoader();
+        
+        $scope.selectedCustomer.entity.set('isDeleted', 1);
+        
+		$q.when($scope.selectedCustomer.entity.save()).then(function(){
+                $scope.selectedCustomer = null;
+                $scope.customers
+                .splice($scope.selectedCustomerId,1);
+                $scope.selectedCustomerId = null;
+                hideLoader();
+                $state.go('dashboard.customers.all');
+		});   
+	} else {
+		$(".confirm-delete").removeClass("show");
+	}    
+}   
+    $scope.confirmDelete = function() {
+	$(".confirm-delete").addClass("show");
+}
 	$scope.changeStatus = function(status) {
 		showLoader();
 		$scope.selectedCustomer.entity.set('status',status);

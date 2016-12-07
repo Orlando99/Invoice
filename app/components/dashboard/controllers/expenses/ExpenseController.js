@@ -48,7 +48,43 @@ $('#addExpenseForm').validate({
 		} 
 	}
 });
+//... 
+   var cc = userFactory.entity[0].currency.attributes;
+    if(cc.exchangeRate){
+        $scope.currentCurrency = cc;
+    }
+    else{
+        var temp = {
+            'currencySymbol': '$',
+            'exchangeRate'  : 1
+        };
+        $scope.currentCurrency = temp;
 
+        cc = temp;
+    }
+userFactory.getField('dateFormat')
+.then(function(obj) {
+	$scope.dateFormat = obj;
+    $q.when(userFactory.entity[0].currency.fetch())
+    .then(function(obj){
+        cc = obj.attributes;
+        if(cc.exchangeRate){
+            $scope.currentCurrency = cc;
+        }
+        else{
+            var temp = {
+                'currencySymbol': '$',
+                'exchangeRate'  : 1
+            };
+            $scope.currentCurrency = temp;
+
+            cc = temp;
+        }
+        CheckUseCase();
+    });
+	//CheckUseCase();
+});
+    ///...
 $('#editExpenseForm').validate({
 	rules: {
 		expCategory: 'required',
@@ -289,9 +325,12 @@ function loadRequiredData() {
 }
 
 function listExpenses() {
+    //..
 	showLoader();
 	$q.when(expenseService.listExpenses(user))
 	.then(function(res) {
+        var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+        
 		res.forEach(function(obj) {
 			switch (obj.entity.status) {
 			case "Non-Billable":
@@ -303,9 +342,9 @@ function listExpenses() {
 			default:
 				obj.statusClass = "text-danger";
 			}
-
+ 
 			obj.expenseDate = formatDate(
-				obj.entity.expanseDate, "MM/DD/YYYY");
+				obj.entity.expanseDate, dateFormat);
 			obj.amount = currencyFilter(obj.entity.amount, '$', 2);
 		});
 
@@ -316,6 +355,8 @@ function listExpenses() {
 		hideLoader();
 		console.log(error.message);
 	});	
+   
+    //...
 }
     
 $scope.deleteExpense = function(){

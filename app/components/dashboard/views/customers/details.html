@@ -33,10 +33,12 @@
           <li class="modal-opener" ><a href="" ng-click="createContact();">Add New Contact</a></li>
         <li ng-if="!selectedCustomer.entity.status || selectedCustomer.entity.status == 'inactive'" ng-click="changeStatus('active');"><a href="">Activate</a></li>
         <li ng-if="selectedCustomer.entity.status == 'active'" ng-click="changeStatus('inactive');"><a href="">Deactivate</a></li>
-        <li><a href="" ng-click="deleteSelectedCustomer();">Delete</a></li>
+        <li><a href="" ng-click="confirmDelete();">Delete</a></li>
       </ul>
     </div>
     </div>
+      
+    
 
 <div class="clearfix"></div>
 
@@ -132,6 +134,28 @@
       </table>
     </div>
 
+      
+      
+     
+  <div class="popup-modal confirm-delete hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
+        float-left">DO YOU REALLY WANT TO DELETE Customer '{{selectedCustomer.entity.displayName}}' ?</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <button class="button button-info text-uppercase" ng-click="deleteCustomer(true)">Yes</button>
+      <button class="button button-info text-uppercase" ng-click="deleteCustomer(false)">No</button>
+    </div>
+  </div> 
+      
+      
+      
+      
+      
+      
     <div class="tab layout-padding" data-name="tab2">
       <table class="container table-border-b">
         <tr class="text-uppercase text-info">

@@ -73,7 +73,7 @@ $scope.generateReport = function() {
 			var payments = invoice.payments;
 			payments.forEach(function(payment) {
 				info.push({
-					displayName : invoice.customer.displayName,
+					displayName : invoice.customer.get("displayName"),
 					date : formatDate(invoice.entity.invoiceDate, dateFormat),
 					amount : currencyFilter(payment.entity.amount, '$', 2)
 				});

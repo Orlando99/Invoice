@@ -26,45 +26,87 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 		$state.go('signup');
 	}
 
-	$scope.signInAction = function(){
+	$scope.signInAction = function()
+    {
 		if(! ($scope.username && $scope.password)) {
 			showError('Please provide both username and password.');
 			return;
 		}
-
 		showLoader();
-		//userFullFactory.login({
-		user.login({
-			username : $scope.username,
-			password : $scope.password
-		},function(){
-			$('.errorMessage').html('').hide();
+		 //
+            user.login({
+                        username : $scope.username,
+                        password : $scope.password
+                        },function()
+                        {
+                            $('.errorMessage').html('').hide();
+                            var firstScreen = user.entity[0].get('firstScreen');
+                            var tutorial = user.entity[0].get('tutorial');
+                            var userObjectId = user.entity[0].id;
+                    ///
+                            var projectUser = Parse.Object.extend('ProjectUser');
+                            var query = new Parse.Query(projectUser);
+                            query.equalTo('userName', $scope.username);
+                            query.first()
+                            .then(function(obj) {
+                            if(obj)
+                             {
+                                if(obj.get("status") == "Deactivated")
+                                {
+                                    
+                                    user.logout()
+                                    .then(function(){
+                                        hideLoader();
+                                       $('.errorMessage').html("Your Account is not Activated!").show();
+                                    });
+                                    //$('.errorMessage').html("Your Account is not Activated!").show();
+                                }
+                                else
+                                {      
+                                 if(!tutorial)
+                                     $state.go('signup.invoiceTemplateInfo');
+                                  else
+                                    {
+                                        switch(firstScreen) 
+                                        {
+                                            case 'Overview': 		  $state.go('dashboard'); break;
+                                            case 'Customer List': 	  $state.go('dashboard.customers.all'); break;
+                                            case 'Invoices List': 	  $state.go('dashboard.sales.invoices.all'); break;
+                                            case 'Expense List': 	  $state.go('dashboard.expenses.all'); break;
+                                            case 'Estimate List': 	  $state.go('dashboard.sales.estimates.all'); break;
+                                            case 'Credit Notes List': $state.go('dashboard.sales.creditnotes.all'); break;
+                                            case 'Reports': 		  $state.go('dashboard.reports'); break;
+                                            case 'Settings': 		  $state.go('dashboard.settings.company-profile'); break;
+                                            default: 				  $state.go('dashboard'); break;
+                                        }
+                                    }//end of else
+                                }//end of else
+                              }//eend of if 
+                              else
+                              {
+                                         hideLoader();
+                                          $('.errorMessage').html("Invalid username/password.").show();
 
-			var firstScreen = user.entity[0].get('firstScreen');
-            var tutorial = user.entity[0].get('tutorial');
-            if(!tutorial)
-                $state.go('signup.invoiceTemplateInfo');
-            else{
-                switch(firstScreen) {
-                case 'Overview': 		  $state.go('dashboard'); break;
-                case 'Customer List': 	  $state.go('dashboard.customers.all'); break;
-                case 'Invoices List': 	  $state.go('dashboard.sales.invoices.all'); break;
-                case 'Expense List': 	  $state.go('dashboard.expenses.all'); break;
-                case 'Estimate List': 	  $state.go('dashboard.sales.estimates.all'); break;
-                case 'Credit Notes List': $state.go('dashboard.sales.creditnotes.all'); break;
-                case 'Reports': 		  $state.go('dashboard.reports'); break;
-                case 'Settings': 		  $state.go('dashboard.settings.company-profile'); break;
-                default: 				  $state.go('dashboard'); break;
-                }
-            }
-		},function(error){
-			hideLoader();
-			$('.errorMessage').html(error.message.capitilize()).show();
-			$('.input-container').css({'border':'1px solid red'});
-			//$('.input-container input').val('');
-		});
-	}
+                                      }
 
+                                        });
+                    
+                    ///
+         
+                            },function(error){
+                                hideLoader();
+                                $('.errorMessage').html(error.message.capitilize()).show();
+                                $('.input-container').css({'border':'1px solid red'});
+                                //$('.input-container input').val('');
+                            });
+        //
+        
+        
+		//
+     
+
+    }//end of scope.sign in
+ 
 	$scope.sendPasswordResetLink = function() {
 		if(! $scope.email) {
 			showError('Please enter email address.');
@@ -81,6 +123,7 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 			hideLoader();
 		});
 	}
+    
 
 	function showError(msg) {
 		$('.successMessage').html('').hide();

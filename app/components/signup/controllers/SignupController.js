@@ -221,7 +221,7 @@ invoicesUnlimited.controller('SignupController',
 			},
 			password: {
 				required : "Please specify your password !",
-				minlength : "Password should contain atleast 6 characters"
+				minlength : "Password should contain at least 6 characters"
 			}
 		}
 	});

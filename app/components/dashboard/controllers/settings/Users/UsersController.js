@@ -39,8 +39,11 @@ invoicesUnlimited.controller('UsersController',
 			});
 			hideLoader();
 		},function(e){
-			console.log(e.message);
-			hideLoader();
+            if(e)
+            {
+                console.log(e.message);
+            }
+            hideLoader();
 		});
 	}
 

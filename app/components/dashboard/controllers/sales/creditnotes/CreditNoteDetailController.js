@@ -34,11 +34,12 @@ function showCreditNoteDetail() {
 		console.log(creditNote);
 		$scope.creditNote = creditNote;
 		$scope.creditNo = creditNote.entity.creditNumber;
-        
-        creditNote.comments.forEach(function(obj){
-            obj.date = formatDate(obj.entity.date, dateFormat);
-        });
-        
+       if(creditNote.comments)
+       {
+            creditNote.comments.forEach(function(obj){
+                obj.date = formatDate(obj.entity.date, dateFormat);
+            });
+       }
 		$scope.comments = creditNote.comments;
 		var receipt = creditNote.entity.creditReceipt;
 

@@ -12,7 +12,7 @@
           <option value="Ms." selected>Ms.</option>
           <option value="Mr.">Mr.</option>
         </select>
-        <input class="col-20  layout-margin-r" type="text" name = "firstName"placeholder="First Name" ng-model="selectedCustomerEdit.firstName">
+        <input class="col-20  layout-margin-r" type="text" name = "firstName" placeholder="First Name" ng-model="selectedCustomerEdit.firstName">
         <input class="col-20" type="text" name = "lastName" placeholder="Last Name" 
                ng-model="selectedCustomerEdit.lastName">
       </div>
@@ -24,8 +24,13 @@
 
       <div class="input-container input-info input-select-info layout-margin-b">
         <label class="layout-padding-t-sm">Display Name</label>
-        <input class="col-75 pull-right " type="text" name="displayName" id="displayName" placeholder="Display Name"
-               ng-model="selectedCustomerEdit.displayName" required>
+       
+          <input class="col-75 pull-right " type="text" name="displayName" id="displayName" placeholder="Display Name" ng-click="displayNameClicked = true;"
+               ng-model="selectedCustomerEdit.displayName" />
+          
+          
+         
+          
         <span class="info-icon info-icon-gray"></span>
         <p class="info-tooltip tooltip-dark">
           This is the name that will display for this contact for invoices, estimates, &amp; projects.

@@ -82,12 +82,14 @@ $scope.generateReport = function() {
 	};
 
 	$q.when(reportsService.salesByCustomer(params))
-	.then(function(invoices) {
+	.then(function(invoices) 
+     {
 		var ids = [];
 		var info = {};
 		var totalSales = 0;
 		var totalInvoices = 0;
-		invoices.forEach(function(invoice) {
+		invoices.forEach(function(invoice) 
+        {
 			var customerId = invoice.customer.id;
 			var subAmount = invoice.entity.total;
 			if(info[customerId]){

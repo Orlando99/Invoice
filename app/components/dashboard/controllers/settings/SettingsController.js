@@ -262,7 +262,8 @@ $scope.setDefaultPrefs = function() {
 function loadInvoiceTemplates() {
 	showLoader();
 	$q.when(coreFactory.getInvoiceTemplates())
-	.then(function(templateObjs) {
+	.then(function(templateObjs) 
+          {
 		var defaultTemplate = user.get('defaultTemplate');
 		
 		var templates = [];
@@ -275,8 +276,16 @@ function loadInvoiceTemplates() {
 			if (!defaultTemplate && obj.name == 'Template 1')
 				obj.isDefault = true;
 			else
-				obj.isDefault = (defaultTemplate.id == t.id ? true : false);
-
+            {     
+                if(defaultTemplate) 
+                {
+                    obj.isDefault = (defaultTemplate.id == t.id ? true : false);        
+                }
+                else
+                {
+                  obj.isDefault = false;      
+                }	
+             }
 			templates.push(obj);
 
 		});

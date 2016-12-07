@@ -4,7 +4,7 @@
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Credit Notes <i class="arrow-down-black"></i></h3>
     <a ui-sref="dashboard.sales.creditnotes.new" class="float-right button button-add text-transform">New</a>
     <form class="float-right layout-margin-t">
-      <input type="text" class="search-bar" placeholder="Search">
+      <input type="text" class="search-bar" placeholder="Search" ng-model = "search.entity.creditNumber">
     </form>
     <div class="clearfix"></div>
 
@@ -22,7 +22,7 @@
         <td class="text-uppercase text-info">Amount</td>
         <td class="text-uppercase text-info">Balance</td>
       </tr>
-      <tr class="trow" ng-repeat="creditNote in creditNoteList"
+      <tr class="trow" ng-repeat="creditNote in creditNoteList | filter:search"
         ui-sref="dashboard.sales.creditnotes.details({creditNoteId:creditNote.entity.id})">
         <td class="text-color-light">{{creditNote.creditNoteDate}}</td>
         <td class="text-color-light">{{creditNote.entity.creditNumber}}</td>
