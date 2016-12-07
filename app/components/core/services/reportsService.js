@@ -54,7 +54,7 @@ return {
 		query.containedIn('status', ['Unpaid', 'Paid', 'Overdue']);
 		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
 		query.lessThanOrEqualTo('invoiceDate', params.toData);
-		query.select('invoiceNumber', 'customer', 'balanceDue');
+		//query.select('invoiceNumber', 'customer', 'balanceDue');
 		query.include('customer');
 
 		return query.find()
@@ -98,7 +98,7 @@ return {
 		query.exists('payment');
 		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
 		query.lessThanOrEqualTo('invoiceDate', params.toData);
-		query.select('invoiceNumber', 'invoiceDate', 'customer', 'payment');
+		//query.select('invoiceNumber', 'invoiceDate', 'customer', 'payment');
 		query.include('customer', 'payment');
 
 		return query.find()

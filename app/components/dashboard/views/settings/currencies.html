@@ -11,8 +11,8 @@
       <tr class="thead">
         <td class="text-uppercase text-info layout-padding">Name</td>
         <td class="text-uppercase text-info layout-padding">Symbol</td>
-        <td class="text-uppercase text-info layout-padding">Exchange Rate <img src="./assets/images/dropdown-arrow-primary.png" alt=""></td>
-        <td class="text-uppercase text-info layout-padding">Date</td>
+        <td class="text-uppercase text-info layout-padding">Exchange Rate</td>
+        
         <td class="is-active-head"></td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
@@ -23,8 +23,7 @@
           class="text-color-light text-weight-normalize layout-padding">{{currency.entity.currencySymbol}}</td>
         <td ng-click="prepareEditCurrency($index)"
           class="text-color-light text-weight-normalize layout-padding">{{currency.entity.exchangeRate}}</td>
-        <td ng-click="prepareEditCurrency($index)"
-          class="text-color-light text-weight-normalize layout-padding"></td>
+       
         <td ng-click="prepareEditCurrency($index)" 
           class="is-active no"><img src="./assets/images/icon-tick-circle.png" ng-show="defaultCurrencyIndex == $index" alt=""></td>
         <td class="text-color-light text-weight-normalize layout-padding text-right" ng-click="deleteCurrencyClicked($index)"><img src="./assets/images/icon-times-round.png" alt="" /></td>

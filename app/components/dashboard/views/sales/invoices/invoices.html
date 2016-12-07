@@ -18,8 +18,8 @@
         <td class="text-uppercase text-info">Cust. Name</td>
         
         <td class="text-uppercase text-info">Due Date</td>
-        <td class="text-uppercase text-info">Amount</td>
-        <td class="text-uppercase text-info">Balance</td>
+        <td class="text-uppercase text-info text-center">Amount</td>
+        <td Style="min-width: 90px ; max-width: 133px;" class="text-uppercase text-info text-center">Balance</td>
       </tr>
       <tr class="trow" ng-repeat="invoice in invoiceList"
       ui-sref="dashboard.sales.invoices.details({invoiceId:invoice.entity.id})">
@@ -30,10 +30,11 @@
         <td class="text-color-light">{{invoice.customer.displayName}}</td>
         
         <td class="text-color-light">{{invoice.dueDate}}</td>
-        <td class="text-color-light">{{invoice.total}}</td>
-        <td class="text-color-light">{{invoice.balanceDue}}</td>
+        <td  class="text-color-light text-center">{{invoice.total}}</td>
+        <td Style="min-width: 90px ; max-width: 133px;"  class="text-color-light text-center">{{invoice.balanceDue}}</td>
       </tr>
     </table>
 
+    
   </div>
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

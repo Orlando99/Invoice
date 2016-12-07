@@ -237,6 +237,17 @@ $scope.confirmDelete = function(index) {
 	$(".confirm-delete").addClass("show");
 }
 
+$scope.deleteIteminModal = function(confirmed, index) {
+		showLoader();
+		$scope.items[$scope.itemIndex].entity.set('isDeleted', 1);
+		$scope.items[$scope.itemIndex].entity.save()
+		.then(function() {
+			$(".confirm-delete").removeClass("show");
+			hideLoader();
+			$state.reload();
+		});
+}
+
 $scope.deleteItem = function(confirmed, index) {
 	if(confirmed) {
 		showLoader();

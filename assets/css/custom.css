@@ -391,3 +391,37 @@ btn btn-sm btn-success pull-right uib-close ng-binding
 .text-overdue{
     color: #d93936;
 }
+
+.vertical-separator-right {
+    border: none;
+    border-RIGHT: 0.5px #8c8c8c solid;
+}
+
+
+
+body hr {
+    display: inline-block;
+    width: 100%;
+    height: 1px;
+    background-color: #c8c8c8 !important;
+    margin: 15px 0;
+}
+
+.sales-list li .dotted-separator {
+    display: inline-block;
+    height: 1px;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px #8c8c8c dotted;
+}
+
+.same_height
+{
+    height: 42px !important;
+}
+
+.balance-row
+{
+    min-width: 133px;
+    max-width: 140px;
+}

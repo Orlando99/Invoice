@@ -29,13 +29,13 @@
       </div>
       <div class="table-row row-border datepicker-noclear">
         <p class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
-          <select class="layout-no-padding layout-padding-l" ng-options="range for range in dateRanges"
+          <select class="layout-no-padding layout-padding-l same_height" ng-options="range for range in dateRanges"
             ng-model="selectedDateRange" show-weeks="false" ng-change="dateRangeChanged()">
           </select>
         </p>
-        <p class="col-20 datepicker-reports-fix input-container layout-margin-tb text-color-light text-weight-normalize">
+         <p class="col-20 datepicker-reports-fix input-container layout-margin-tb text-color-light text-weight-normalize">
           <input type="text" uib-datepicker-popup="{{dateFormat}}"
-            ng-model="fromDate" is-open="openPicker1" show-weeks="false" ng-click="openDatePicker(1)" readonly>
+            ng-model="fromDate" is-open="openPicker1"show-weeks="false" ng-click="openDatePicker(1)" readonly>
         </p>
         <p class="col-20 datepicker-reports-fix layout-container layout-margin-tb text-color-light text-weight-normalize">
           <input type="text" uib-datepicker-popup="{{dateFormat}}" ng-model="toDate"

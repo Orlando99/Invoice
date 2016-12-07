@@ -31,7 +31,7 @@
       </div>
       <div class="table-row row-border datepicker-noclear">
         <p class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
-          <select class="layout-no-padding layout-padding-l" ng-options="range for range in dateRanges"
+          <select class="layout-no-padding layout-padding-l same_height" ng-options="range for range in dateRanges"
             ng-model="selectedDateRange" ng-change="dateRangeChanged()">
           </select>
         </p>
@@ -54,7 +54,7 @@
     <div class="container text-center">
       <h3 class="layout-margin-tb text-color-normalize text-weight-normalize">Merchant Account Solutions</h3>
       <p class="layout-no-margin text-color-light text-weight-normalize">Customer Balances</p>
-      <p class="layout-no-margin text-color-light text-weight-normalize">As on {{toDateStr}}</p>
+      <p class="layout-no-margin text-color-light text-weight-normalize">From {{fromDateStr}} To {{toDateStr}}</p>
     </div>
     <br>
 

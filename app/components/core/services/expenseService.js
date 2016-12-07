@@ -128,7 +128,7 @@ return {
 		}
 
 		var promise = undefined;
-		var newFiles = undefined; // store already saved and newly created files
+		var newFiles = []; // store already saved and newly created files
 		if(files.length) {
 			newFiles = [];
 			var promises = [];
