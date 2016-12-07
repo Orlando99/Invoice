@@ -59,7 +59,7 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
 		messages: {
 			streetName	: 'Please specify your business street name!',
 			city 		: 'Please specify your business city!',
-			state 		: 'Please specify your business business state!',
+			state 		: 'Please specify your business state!',
             fullName	: 'Please specify your Full Name!',
 			zipCode 	: 'Please specify your business zip code!',
             company     : 'Please specify your business name',

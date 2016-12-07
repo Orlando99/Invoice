@@ -52,7 +52,7 @@ $('#addTimesheetForm').validate({
 		timesheetDate : 'Please select a date',
 		timesheetHours : 'Please enter hours',
 		timesheetMinutes : 'Please enter minutes',
-        timesheetUser : 'Please select user',
+        timesheetUser : 'Please select user222',
         timesheetTask : 'Please select task'
 	}
 });
@@ -183,6 +183,14 @@ function customerChanged() {
 }
     
 $scope.customerChanged = customerChanged;
+    
+$scope.timeSheetUserChanged = function(){
+    if($scope.timesheetUser.dummy) {
+		createUser();
+        $scope.timesheetUser = "";
+		return;
+	}
+}
     
 function userChanged() {
 	if($scope.newUser.dummy) {
@@ -353,14 +361,19 @@ $scope.addNewTask = function() {
         hideLoader();
     });
 }
-
 $scope.taskChanged = function(){
-    if($scope.timesheetTask.dummy){
+    if($scope.timesheetTask.dummy)
+    {
         $scope.fromTimesheet = true;
         $scope.timesheetTask = ""; 
         $(".new-task").addClass("show");
     }
 }
+
+
+
+
+
 
 $scope.addTimesheet = function(){
     $(".new-timesheet").addClass('show');

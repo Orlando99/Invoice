@@ -38,7 +38,7 @@
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Email Address</label>
-        <input  name="email" type="text" placeholder="Email" ng-model="newCustomer.entity.email" class="col-75"/>
+        <input  name="email" type="text" maxlength="50" placeholder="Email" ng-model="newCustomer.entity.email" class="col-75"/>
       </div>
 
     </form>
@@ -155,7 +155,7 @@
 
       <form class="col-40 inputs-white" id="notes-form">
         <div class="input-container">
-          <textarea ng-model="newCustomer.entity.notes"></textarea>
+          <textarea ng-model="newCustomer.entity.notes" maxlength="1000"></textarea>
         </div>
       </form>
     </div>
