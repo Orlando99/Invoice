@@ -59,6 +59,7 @@ return {
 		case 'Yesterday':
 			// works if yesterday is in previous month
 			fromDate = new Date(year, month, day-1);
+            toDate = new Date(year, month, day-1);
 			break;
 
 		case 'Previous Week':

@@ -18,6 +18,8 @@ function loadSetData() {
 	$scope.dateRanges = reportsCommon.getDateRanges();
 	$scope.selectedDateRange = $scope.dateRanges[1];
 	$scope.fromDate = new Date();
+     $scope.fromDate.setHours(0);
+    $scope.fromDate.setMinutes(0);
 	$scope.toDate = new Date();
 
 	userFactory.getField('dateFormat')
@@ -27,6 +29,13 @@ function loadSetData() {
 	});
 }
 
+    
+   /* $("#reports-ul-btn").click(function(event){
+   $("#reports_ul").toggle();
+   $(this).toggleClass("active");
+   event.preventDefault();
+});*/
+    
     
 $scope.dateRangeChanged = function() {
 	reportsCommon.dateRangeChanged({

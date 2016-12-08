@@ -10,8 +10,8 @@ return {
 		query.equalTo('organization', params.organization);
 		query.exists('payment');
 		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
-		query.lessThanOrEqualTo('invoiceDate', params.toData);
-		query.select('invoiceNumber', 'customer', 'total');
+		query.lessThanOrEqualTo('invoiceDate', params.toDate);
+		//query.select('invoiceNumber', 'customer', 'total');
 		query.include('customer');
 
 		return query.find()
@@ -33,7 +33,7 @@ return {
 		query.exists('payment');
 		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
 		query.lessThanOrEqualTo('invoiceDate', params.toData);
-		query.select('invoiceNumber', 'invoiceItems');
+		//query.select('invoiceNumber', 'invoiceItems');
 		query.include('invoiceItems');
 
 		return query.find()
@@ -76,7 +76,7 @@ return {
 		query.containedIn('status', ['Unpaid', 'Partial Paid', 'Overdue']);
 		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
 		query.lessThanOrEqualTo('invoiceDate', params.toData);
-		query.select('invoiceNumber', 'customer', 'balanceDue', 'invoiceDate');
+		//query.select('invoiceNumber', 'customer', 'balanceDue', 'invoiceDate');
 		query.include('customer');
 
 		return query.find()

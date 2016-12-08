@@ -318,6 +318,8 @@ btn btn-sm btn-success pull-right uib-close ng-binding
 {
  background-color: white;
     border:none;
+    -webkit-transition: none;
+	transition: none;
 }
 .uib-datepicker .uib-title 
 {
@@ -397,7 +399,11 @@ btn btn-sm btn-success pull-right uib-close ng-binding
     border-RIGHT: 0.5px #8c8c8c solid;
 }
 
-
+.top-exp-left-border
+{
+    border-left: 0.5px  #8c8c8c solid;
+    
+}
 
 body hr {
     display: inline-block;
@@ -424,4 +430,20 @@ body hr {
 {
     min-width: 133px;
     max-width: 140px;
+}
+
+.darktooltip:before{
+    top: 45%;
+    width: 0;
+    height: 0 !important;
+    left: -30px !important;
+    background: 0 0;
+    background: 0 0;
+    border-right: 10px #666 solid;
+    border-top: 10px transparent solid;
+    border-bottom: 10px transparent solid;
+    background-image: none !important;
+    z-index: 1000 !important;
+    font-size: 11px !important;
+    
 }

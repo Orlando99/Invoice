@@ -18,6 +18,8 @@ function loadSetData() {
 	$scope.dateRanges = reportsCommon.getDateRanges();
 	$scope.selectedDateRange = $scope.dateRanges[1];
 	$scope.fromDate = new Date();
+     $scope.fromDate.setHours(0);
+    $scope.fromDate.setMinutes(0);
 	$scope.toDate = new Date();
 
 //	var promises = [];
@@ -75,8 +77,8 @@ $scope.generateReport = function() {
     }
 	showLoader();
 	var params = {
-		fromDate : $scope.fromDate,
-		toDate : $scope.toDate,
+		 fromDate : $scope.fromDate,
+		 toDate : $scope.toDate,
 		organization : organization
 	//	customers : $scope.customers
 	};
