@@ -72,10 +72,15 @@
 	    <hr class="layout-margin-tb">
 
 	    <div class="col-80 text-left layout-center">
+            
 	    <form autocomplete="off" class="layout-margin-tb col-100 inputs-white">
+            <div class="input-container layout-margin-b">
+	        	<label class="layout-padding-t-smm"></label>
+                <label class="col-75" style="color: red;" id="userError"></label>
+	      	</div>
 	      	<div class="input-container layout-margin-b">
 	        	<label class="layout-padding-t-smm">Username</label>
-	        	<input ng-model="user.username" placeholder="Click or Tap to enter" type="text" class="col-75" required>
+	        	<input ng-model="user.username" id="newusername" placeholder="Click or Tap to enter" type="text" class="col-75" required>
 	      	</div>
 	      	<div class="input-container layout-margin-b">
 		        <label class="layout-padding-t-smm">Name</label>

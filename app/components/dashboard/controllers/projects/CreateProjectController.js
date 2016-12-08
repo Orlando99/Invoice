@@ -270,6 +270,14 @@ $scope.saveTimesheet = function(){
     d.subtractHours($scope.timesheetHours);
     d.subtractMinutes($scope.timesheetMinutes);
     
+    var temp = $scope.get('taskHours') || 0;
+    
+    $scope.timesheetTask.set('taskHours', $scope.timesheetHours + $scope.timesheetMinutes/60 + temp);
+    $scope.timesheetTask.save()
+    .then(function(obj){
+        
+    });
+    
     $scope.timesheets.push({
         user : $scope.timesheetUser,
         task : $scope.timesheetTask,

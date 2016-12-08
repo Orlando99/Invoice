@@ -93,7 +93,7 @@ invoicesUnlimited.controller('NewUserController',
 	$scope.save = function(){
 		if (prevEmail != $scope.user.email) {
 			prevEmail = $scope.user.email;
-			$('input[id="newUserId"]')[0].setCustomValidity('');
+			//$('input[id="newusername"]')[0].setCustomValidity('');
 		}
 
 		var form = document.querySelector('.modal-content form');
@@ -125,12 +125,13 @@ invoicesUnlimited.controller('NewUserController',
 		.then(function(user){
 			return roleFactory.addUser(user);
 		},function(error) {
-			if(error.code == 203) {
+			
+                $('#userError').html(error.message);
 				// email already taken
-				var elem = $('input[id="newUserId"]')[0];
-				elem.setCustomValidity(error.message);
-				$('button[id="newUserSubmit"]').click();
-			}
+				//var elem = $('input[id="newusername"]')[0];
+				//elem.setCustomValidity(error.message);
+				$('button[id="newUserSubmit"]')[0].click();
+			
 			hideLoader();
 		})
 		.then(function(role){

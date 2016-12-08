@@ -53,6 +53,22 @@ $('#addTimesheetForm').validate({
         timesheetTask : 'Please select task'
 	}
 });
+$('#editTimesheetForm').validate({
+	rules: {
+		editTimesheetDate : 'required',
+		editTimesheetHours : 'required',
+		editTimesheetMinutes : 'required',
+        editTimesheetUser : 'required',
+        editTimesheetTask : 'required'
+	},
+	messages: {
+		editTimesheetDate : 'Please select a date',
+		editTimesheetHours : 'Please enter hours',
+		editTimesheetMinutes : 'Please enter minutes',
+        editTimesheetUser : 'Please select user',
+        editTimesheetTask : 'Please select task'
+	}
+});
     
 $('#addTaskForm').validate({
 	rules: {
@@ -60,6 +76,15 @@ $('#addTaskForm').validate({
 	},
 	messages: {
 		newTaskName : 'Please enter task name'
+	}
+});
+    
+$('#editTaskForm').validate({
+	rules: {
+		editTaskName : 'required'
+	},
+	messages: {
+		editTaskName : 'Please enter task name'
 	}
 });
     
@@ -189,6 +214,26 @@ function prepareEditForm() {
         obj.attributes.date, dateFormat);
         $scope.timesheets.push(obj);
         
+        var t = obj.get('timeSpent');
+            if(t){
+                var d = obj.get('date');
+                var msec = d - t;
+                var hh = Math.floor(msec / 1000 / 60 / 60);
+                msec -= hh * 1000 * 60 * 60;
+                var mm = Math.floor(msec / 1000 / 60);
+                msec -= mm * 1000 * 60;
+                hh = hh < 10 ? '0' + hh : '' + hh
+                mm = mm < 10 ? '0' + mm : '' + mm
+                obj.hours = hh;
+                obj.minutes = mm;
+                //obj.time = hh + ':' + mm;
+            }
+            else{
+                obj.time = "00:00";
+                obj.hours = "00";
+                obj.minutes = "00";
+            }
+        
     });
     $scope.timesheetTasks = [];
     project.tasks.forEach(function(task){
@@ -200,6 +245,71 @@ function prepareEditForm() {
 	hideLoader();
 }
     
+$scope.editTask = function(index){
+    $scope.selectedTaskIndex = index;
+    
+    if($scope.tasks[index].entity){
+        $scope.editTaskName = $scope.tasks[index].entity.taskName;
+        $scope.editTaskDescription = $scope.tasks[index].entity.taskDescription;
+        $scope.editTaskCost = $scope.tasks[index].entity.taskCost;
+    }
+    else{
+        $scope.editTaskName = $scope.tasks[index].attributes.taskName;
+        $scope.editTaskDescription = $scope.tasks[index].attributes.taskDescription;
+        $scope.editTaskCost = $scope.tasks[index].attributes.taskCost;
+    }
+    
+    $(".edit-task").addClass('show');
+}
+
+$scope.updateTask = function(){
+    if(!$('#editTaskForm').valid())
+        return;
+    var index = $scope.selectedTaskIndex;
+    
+    
+    showLoader();
+    
+    if($scope.tasks[index].entity){
+        $scope.tasks[index].entity.taskName = $scope.editTaskName;
+        $scope.tasks[index].entity.taskDescription = $scope.editTaskDescription;
+        $scope.tasks[index].entity.taskCost = $scope.editTaskCost;
+        $scope.tasks[index].entity.save()
+        .then(function(obj){
+            $(".edit-task").removeClass('show');
+            hideLoader();
+        });
+    }
+    else{
+        $scope.tasks[index].attributes.taskName = $scope.editTaskName;
+        $scope.tasks[index].attributes.taskDescription = $scope.editTaskDescription;
+        $scope.tasks[index].attributes.taskCost = $scope.editTaskCost;
+        $scope.tasks[index].save()
+        .then(function(obj){
+            $(".edit-task").removeClass('show');
+            hideLoader();
+        });
+    }
+}
+/*
+$scope.editTimesheet = function(index){
+    $scope.selectedTimesheetIndex = index;
+    
+    $scope.timesheets[index];
+    
+    
+    
+    $scope.editTimesheetUser = $scope.timesheets[index].attributes.user;
+    $scope.editTimesheetTask = $scope.timesheets[index].attributes.task;
+    $scope.editTimesheetDate = $scope.timesheets[index].date;
+    $scope.editTimesheetDescription = $scope.timesheets[index].attributes.notes;
+    $scope.editTimesheetHours = parseInt($scope.timesheets[index].hours);
+    $scope.editTimesheetMinutes = parseInt($scope.timesheets[index].minutes);
+    
+    $('.edit-timesheet').addClass('show');
+    
+}
+    */
 $scope.addTimesheet = function(){
     $(".new-timesheet").addClass('show');
 }
@@ -217,13 +327,20 @@ $scope.saveTimesheet = function(){
     else
         tsk = $scope.timesheetTask;
     
+    var d = new Date();
+    d.subtractHours($scope.timesheetHours);
+    d.subtractMinutes($scope.timesheetMinutes);
+    
     $scope.timesheets.push({
-        user : $scope.timesheetUser,
+        user : $scope.timesheetUser.attributes.chosenUser || $scope.timesheetUser,
         task : tsk,
         date : formatDate(
         $scope.timesheetDate, dateFormat),
         sheetDate : $scope.timesheetDate,
-        notes : $scope.timesheetDescription
+        notes : $scope.timesheetDescription,
+        timeSpent : d,
+        hours : $scope.timesheetHours < 10 ? '0' + $scope.timesheetHours : '' + $scope.timesheetHours,
+        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes
     });
     $scope.timesheetUser = "";
     $scope.timesheetTask = "";

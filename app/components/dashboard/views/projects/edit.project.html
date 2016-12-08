@@ -70,11 +70,11 @@
         </select>
       </div>
         
-        <div ng-show="budgetType == 'Total Project Cost'" class="input-container col-60 layout-margin-b">
+        <div ng-show="budgetType == 'Total Project Cost' && hasBudget == 1" class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Amount</label>
         <input class="col-75" name="projectBudgetCost" ng-model="projectBudgetCost" type="number">
       </div>
-        <div ng-show="budgetType == 'Total project hours'" class="input-container col-60 layout-margin-b">
+        <div ng-show="budgetType == 'Total project hours' && hasBudget == 1" class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Hours</label>
         <input class="col-75" name="projectBudgetHours" ng-model="projectBudgetHours" type="number">
       </div>
@@ -91,7 +91,7 @@
         <div class="col-50 layout-padding-l">
           <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Description</h3>
         </div>
-          <div class="col-20 ">
+          <div class="col-20 " ng-show="billingMethod == 'Based on task hours'">
           <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Rate/Hour</h3>
         </div>
         <div class="col-5 layout-padding-l">
@@ -102,19 +102,19 @@
       <div class="tbody no-border inputs-white">
 
       <form id="itemInfoForm" novalidate>
-        <div class="table-row" ng-repeat="task in tasks track by $index">
-
-          <div class="col-20 layout-padding">
-            <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-              <label>{{task.entity.taskName || task.attributes.taskName}}</label>
+        <div class="table-row"  ng-repeat="task in tasks track by $index" >
+            <div style="cursor: pointer;" ng-click="editTask($index)">
+              <div class="col-20 layout-padding">
+                <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
+                  <label>{{task.entity.taskName || task.attributes.taskName}}</label>
+              </div>
+              <div class="col-50 layout-padding layout-padding-l">
+                <label>{{task.entity.taskDescription || task.attributes.taskDescription}}</label>
+              </div>
+                <div class="col-20 layout-padding layout-padding-l" ng-show="billingMethod == 'Based on task hours'">
+                <label>{{task.entity.taskCost || task.attributes.taskCost}}</label>
+              </div>
           </div>
-          <div class="col-50 layout-padding layout-padding-l">
-            <label>{{task.entity.taskDescription || task.attributes.taskDescription}}</label>
-          </div>
-            <div class="col-20 layout-padding layout-padding-l">
-            <label>{{task.entity.taskCost || task.attributes.taskCost}}</label>
-          </div>
-          
           <div class="col-5 layout-padding layout-padding-l text-right">
             <button class="button button-icon button-no-margin" ng-click="removeTask($index)"><img src="./assets/images/icon-times-round.png" alt=""></button>
           </div>
@@ -210,21 +210,21 @@
 
       <form id="itemInfoForm" novalidate>
           <div class="table-row" ng-repeat="timesheet in timesheets track by $index">
-
-          <div class="col-20 layout-padding">
-            <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-              <label>{{timesheet.date}}</label>
-          </div>
-            <div class="col-25 layout-padding layout-padding-l">
-            <label>{{timesheet.date}}</label>
-          </div>
-            <div class="col-35 layout-padding layout-padding-l">
-            <label>{{timesheet.attributes.user.attributes.title || timesheet.user.attributes.title}}</label>
-          </div>
-          <div class="col-10 layout-padding layout-padding-l">
-            <label>{{timesheet.attributes.task.attributes.taskName || timesheet.task.attributes.taskName || timesheet.task.entity.taskName}}</label>
-          </div>
-          
+              <div style="cursor: pointer;" ng-click="editTimesheet($index)">
+                  <div class="col-20 layout-padding">
+                    <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
+                      <label>{{timesheet.date}}</label>
+                  </div>
+                    <div class="col-25 layout-padding layout-padding-l">
+                    <label>{{timesheet.hours + ":" + timesheet.minutes}}</label>
+                  </div>
+                    <div class="col-35 layout-padding layout-padding-l">
+                    <label>{{timesheet.attributes.user.attributes.title || timesheet.user.attributes.title}}</label>
+                  </div>
+                  <div class="col-10 layout-padding layout-padding-l">
+                    <label>{{timesheet.attributes.task.attributes.taskName || timesheet.task.attributes.taskName || timesheet.task.entity.taskName}}</label>
+                  </div>
+              </div>
           <div class="col-5 layout-padding layout-padding-l text-right">
             <button class="button button-icon button-no-margin" ng-click="removeTimesheet($index)"><img src="./assets/images/icon-times-round.png" alt=""></button>
           </div>
@@ -279,7 +279,7 @@
 
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">User</label>
-            <select class="col-75" name="timesheetUser" ng-change="timesheetUserChanged()" ng-model="timesheetUser" placeholder="Select User" ng-options="user.userName for user in users">
+            <select class="col-75" name="timesheetUser" ng-change="timesheetUserChanged()" ng-model="timesheetUser" placeholder="Select User" ng-options="user.userName || user.attributes.chosenUser.attributes.userName for user in staffUsers">
                   <option value="" disabled>Select User</option>
               </select>
           </div>
@@ -301,6 +301,61 @@
       </div>
       <div class="clearfix"></div>
       <button class="button button-small button-info text-uppercase layout-margin-r" ng-click="saveTimesheet()">Save</button>
+        <!--
+      <button class="button button-small button-neutral text-uppercase">Start Timer</button>
+        -->
+    </div>
+  </div>
+
+<div class="popup-modal edit-timesheet hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit Timesheet</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form action="" name="editTimesheetForm" id="editTimesheetForm" class="layout-margin-tb inputs-white" novalidate>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Date</label>
+              <input class="col-75" type="text" readonly
+          uib-datepicker-popup="{{dateFormat}}" name="editTimesheetDate" ng-model="editTimesheetDate" is-open="openPicker1" show-weeks="false" ng-click="openDatePicker(1)"/>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Time Spent</label>
+            <input class="col-35" type="Number" min="0" max="23" placeholder="HH" name="editTimesheetHours" ng-model="editTimesheetHours">
+            <input class="col-35 pull-right" type="Number" placeholder="MM" name="editTimesheetMinutes" ng-model="editTimesheetMinutes" min="0" max="59">
+              <!--
+            <span class="col-75 pull-right layout-margin-tb"><a href="#">Switch to Time Duration</a></span>
+            -->
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">User</label>
+            <select class="col-75" name="editTimesheetUser" ng-change="timesheetUserChanged()" ng-model="editTimesheetUser" placeholder="Select User" ng-options="user.userName for user in users">
+                  <option value="" disabled>Select User</option>
+              </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Task</label>
+            <select class="col-75" name="editTimeSheetTask" ng-change="taskChanged()" ng-model="editTimeSheetTask" ng-options="task.entity.taskName || task.attributes.taskName for task in timesheetTasks">
+              <option value="" disabled>Select task</option>
+            </select>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Description</label>
+            <textarea class="col-75" ng-model="editTimesheetDescription"></textarea>
+          </div>
+
+
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase layout-margin-r" ng-click="updateTimesheet()">Save</button>
         <!--
       <button class="button button-small button-neutral text-uppercase">Start Timer</button>
         -->
@@ -338,6 +393,39 @@
       <button class="button button-small button-info text-uppercase layout-margin-r" ng-click="addNewTask()">Save</button>
     </div>
   </div>
+
+<div class="popup-modal edit-task hidesm">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit Task</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="editTaskForm" class="layout-margin-tb inputs-white">
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Task Name</label>
+            <input class="col-75" name="editTaskName" ng-model="editTaskName" placeholder="Select or Type to add">
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Description</label>
+            <textarea ng-model="editTaskDescription" class="col-75"></textarea>
+          </div>
+        <div class="input-container layout-margin-b" ng-show="billingMethod == 'Based on task hours'">
+            <label class="layout-padding-t-sm">Rate/Hour</label>
+            <input class="col-75" name="editTaskCost" type="number" ng-model="editTaskCost" placeholder="Select or Type to add">
+          </div>
+
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase layout-margin-r" ng-click="updateTask()">Save</button>
+    </div>
+  </div>
+
 <div class="popup-modal add-user hidesm">
     <div class="modal container">
 

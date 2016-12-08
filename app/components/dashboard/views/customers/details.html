@@ -1,4 +1,9 @@
-  <div class="container hidesm">
+<style>
+.deactive{
+        opacity: 0.7 !important;
+    }  
+    </style>
+<div class="container hidesm" ng-class="{'deactive': selectedCustomer.entity.status == 'inactive'}">
     <a ui-sref="dashboard.customers.all" class="button-icon float-left">
       <img src="./assets/images/icon-back.png" alt="Kappa">
     </a>
@@ -180,7 +185,7 @@
         <tr class="text-color-light" ng-repeat="invoice in selectedCustomer.invoices" ng-if="invoice.entity.status=='Paid' || invoice.entity.status=='Partial Paid' || invoice.entity.status=='Partial Refunded' || invoice.entity.status=='Refunded'">
           <td class="layout-padding-tb-xl text-uppercase">{{invoice.invoiceDate}}</td>
           <td class="layout-padding-tb-xl text-uppercase">{{invoice.entity.invoiceNumber}}</td>
-          <td class="layout-padding-tb-xl text-uppercase"></td>
+          <td class="layout-padding-tb-xl text-uppercase">{{invoice.entity.poNumber}}</td>
           <td class="layout-padding-tb-xl text-uppercase">{{invoice.entity.total}}</td>
           <td class="layout-padding-tb-xl text-uppercase">{{invoice.entity.balanceDue}}</td>
           <td class="layout-padding-tb-xl text-weight-normalize" ng-class="{'text-danger':invoice.entity.status=='Overdue','text-positive':invoice.entity.status=='Paid','text-color-normalize':invoice.entity.status!='Overdue'||invoice.entity.status!='Paid'}">{{invoice.entity.status}}</td>
