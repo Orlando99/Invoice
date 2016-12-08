@@ -22,6 +22,27 @@ invoicesUnlimited.controller('NewCustomerController',
 
 	$('#workPhone').mask('(999) 999-9999');
 	$('#mobilePhone').mask('9 (999) 999-9999',mobileOptions);
+    
+    $('.alphaNumericField').keypress(function (e) 
+    {
+      validateTextInputFunc(e);
+    });
+     
+    function validateTextInputFunc(e)
+    {
+       if(e.which==32)
+       {
+            return true;  
+       }
+        var regex = new RegExp("[a-zA-Z0-9-]+$");
+        var str = String.fromCharCode(!e.charCode ? e.which : e.charCode);
+        if (regex.test(str)) {
+            return true;
+        }
+        e.preventDefault();
+        return false; 
+    }
+    
     //$('input[id="workPhone"]')[0].mask('(999) 999-9999');
 	var def = $q.defer();
 
@@ -233,6 +254,7 @@ invoicesUnlimited.controller('NewCustomerController',
 	}
 
 	var changeDispName = function(newV,oldV) {
+       
 		if (!$scope.displayNameClicked) {
 			var c = $scope.newCustomer.entity;
 			if (!c.firstName && !c.lastName) {
@@ -247,9 +269,8 @@ invoicesUnlimited.controller('NewCustomerController',
 	}
 
 	$scope.$watch("newCustomer.entity.firstName",changeDispName);
-
 	$scope.$watch("newCustomer.entity.lastName",changeDispName);
-
+ 
 	$scope.cancelSaveCustomer = function(){
 		$state.go('dashboard.customers.all');
 	}

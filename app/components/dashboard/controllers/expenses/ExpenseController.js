@@ -306,6 +306,10 @@ function loadRequiredData() {
 
 	p = $q.when(coreFactory.getAllCustomers())
 	.then(function(res) {
+        res = res.filter(function(cust) {
+				return cust.entity.status == 'active';
+			});
+        
 		$scope.customers = res.sort(function(a,b){
 			return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 		});

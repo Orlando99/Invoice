@@ -52,11 +52,11 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
     var cc = user.entity[0].currency;
     /*
     $q.when(userFactory.entity[0].fetch())
-.then(function(obj) {
-	
-      cc = obj.get('currency').attributes;
-	
-});
+    .then(function(obj) {
+
+          cc = obj.get('currency').attributes;
+
+    });
     */
     //var cc = user.entity[0].currency.attributes;
     //var cc = user.entity[0].get('currency').attributes;
@@ -366,16 +366,21 @@ function drawPieChart() {
 		var expenseColorList = [];
 
 		var uniqueExpenses = {};
-		for(var i=0; i < objs.length; ++i) {
+		for(var i=0; i < objs.length; ++i) 
+        {
 			var expense = objs[i];
 			var name = expense.entity.category;
 			var value = expense.entity.amount;
-
-			if(uniqueExpenses[name]) {
+            var flag = false;
+			if(uniqueExpenses[name]) 
+            {
 				uniqueExpenses[name] += value;
-			} else {
+                flag = true;
+			
+            } else {
 				uniqueExpenses[name] = value;
 				expenseNameList.push(name);
+                flag = false;
 			}
 
 			var expObj = {
@@ -384,8 +389,22 @@ function drawPieChart() {
 			};
 			if (expense.customer)
 				expObj.customer = expense.customer.displayName;
-
-			expenseList.push(expObj);
+            if(!flag)
+            {
+              expenseList.push(expObj);
+            }
+            else
+            {
+              var expObj =  expenseList.pop();  
+              var expObj2 = 
+              {
+                   name: name,
+                   value : uniqueExpenses[name]
+               };
+                if (expense.customer)
+                    expObj2.customer = expense.customer.displayName;
+                expenseList.push(expObj2);
+            }
 		}
 		expenseList.sort(function(a,b) {
 			return b.value - a.value;

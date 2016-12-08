@@ -11,19 +11,22 @@
           <option value="Ms.">Ms.</option>
           <option value="Mr.">Mr.</option>
         </select>
-        <input maxlength="60" class="col-20  layout-margin-r" name = "firstName" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName"/>
-        <input maxlength="60" class="col-20" type="text" name = "lastName" placeholder="Last Name" 
+        
+          
+          <input maxlength="60" class="col-20  layout-margin-r alphaNumericField"  id = "firstNameD" name = "firstName" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName"/>
+       
+          <input maxlength="60" class="col-20 alphaNumericField" type="text" id = "lastNameD" name = "lastName" placeholder="Last Name" 
                ng-model="newCustomer.entity.lastName"/>
       </div>
 
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Company Name</label>
-        <input maxlength="60" class="col-75 pull-right" type="text" placeholder="Company Name" ng-model="newCustomer.entity.companyName"/>
+        <input maxlength="60" class="col-75 pull-right alphaNumericField" type="text" placeholder="Company Name" ng-model="newCustomer.entity.companyName"/>
       </div>
 
       <div class="input-container input-info input-select-info layout-margin-b">
         <label class="layout-padding-t-sm">Display Name</label>
-        <input maxlength="60" class="col-75 pull-right" ng-click="displayNameClicked = true;" type="text" placeholder="Display Name" ng-model="newCustomer.entity.displayName" name="displayName"/>
+        <input maxlength="60" class="col-75 pull-right alphaNumericField" ng-click="displayNameClicked = true;" type="text" placeholder="Display Name" ng-model="newCustomer.entity.displayName" name="displayName"/>
         <span class="info-icon info-icon-gray"></span>
         <p class="info-tooltip tooltip-dark">
           This is the name that will display for this contact for invoices, estimates, &amp; projects.
@@ -91,23 +94,23 @@
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">City</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.billingAddress.City">
+          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress.City">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">State</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.billingAddress['State\/Province']">
+          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress['State\/Province']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">Zip Code</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.billingAddress['Zip\/Postal Code']">
+          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress['Zip\/Postal Code']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t-sm">Country</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.billingAddress.Country">
+          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress.Country">
         </div>
         <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t-sm">Fax</label>
-          <input maxlength="60" id="billFax"type="text" class="col-75" ng-model="newCustomer.billingAddress.Fax">
+          <label class="layout-padding-t-sm alphaNumericField">Fax</label>
+          <input maxlength="60" id="billFax"type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress.Fax">
         </div>
         <div class="clearfix"></div><br>
         <label class="input-container input-checkbox-container layout-margin-tb">
@@ -125,23 +128,23 @@
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">City</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.shippingAddress.City">
+          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress.City">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">State</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.shippingAddress['State\/Province']">
+          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress['State\/Province']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Zip Code</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.shippingAddress['Zip\/Postal Code']">
+          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress['Zip\/Postal Code']">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Country</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.shippingAddress.Country">
+          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress.Country">
         </div>
         <div class="input-container layout-margin-t-sm">
           <label class="layout-padding-t">Fax</label>
-          <input maxlength="60" id="shipFax" type="text" class="col-75" ng-model="newCustomer.shippingAddress.Fax">
+          <input maxlength="60" id="shipFax" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress.Fax">
         </div>
       </div>
       </form>

@@ -18,6 +18,7 @@ $(document).ready(function(){
 	})
 });
 
+
 invoicesUnlimited.controller('CustomersController',
 	function($scope,$rootScope,$state,$uibModal,userFactory,
 			 contactPersonFactory, customerFactory, coreFactory, expenseService, 
@@ -36,7 +37,8 @@ invoicesUnlimited.controller('CustomersController',
 .then(function(obj) {
 	$scope.dateFormat = obj;
 });
-    
+   $scope.displayNameClicked = false;
+ 
 	$('.tutorial').hide();
 	var def = $q.defer();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
@@ -69,16 +71,28 @@ invoicesUnlimited.controller('CustomersController',
 		tempShippingAddress : {}
 	}
   
-	var formBillingAddress = function(obj){
-		var result = "";
-		
+	var formBillingAddress = function(obj)
+    {
+		var result = "";	
 		var addIfExist = function(w) { return w ? w : "";}
-
 		result += addIfExist(obj.Street) + "\n"
 		+ addIfExist(obj.City) + "\n"
 		+ addIfExist(obj["State\/Province"]) + "\n"
         + addIfExist(obj["Zip\/Postal Code"]) + "\n"
-        + addIfExist(obj.Country);
+        + addIfExist(obj.Country)+ "\n"
+        + "Fax: "+addIfExist(obj.Fax);
+        return result;
+    }
+    var formShippingAddress = function(obj)
+    {
+		var result = "";	
+		var addIfExist = function(w) { return w ? w : "";}
+		result += addIfExist(obj.Street) + "\n"
+		+ addIfExist(obj.City) + "\n"
+		+ addIfExist(obj["State\/Province"]) + "\n"
+        + addIfExist(obj["Zip\/Postal Code"]) + "\n"
+        + addIfExist(obj.Country)+ "\n"
+        + "Fax: "+addIfExist(obj.Fax);
         return result;
 	}
 
@@ -87,11 +101,6 @@ invoicesUnlimited.controller('CustomersController',
 		if (id >= 0 && id < $scope.customers.length) return true;
 		else return false;
 	}
-
-     
-   
-    
-    
 	var doSelectCustomerIfValidId = function(id){
 		if (isCustomerIdValid(id)) {
 			selectCustomer($scope.customers[id]);
@@ -140,6 +149,10 @@ invoicesUnlimited.controller('CustomersController',
         
 		var obj = $scope.selectedCustomer.entity;
 		if (!obj.billingAddress) return;
+        
+        if(obj.notes){
+            $scope.selectedCustomer.notes = obj.notes;
+        }
 		
 		var billingAddress = JSON.parse(obj.billingAddress);
 		var shippingAddress = {};
@@ -148,6 +161,9 @@ invoicesUnlimited.controller('CustomersController',
 
 	    $scope.selectedCustomer.billingAddress = formBillingAddress(billingAddress);
 	    $scope.selectedCustomer.billingAddressJSON = billingAddress;
+        
+        $scope.selectedCustomer.shippingAddress = formShippingAddress(shippingAddress);
+	    
 	    $scope.selectedCustomer.shippingAddressJSON = shippingAddress;
         
         $scope.receivables = 0;
@@ -381,7 +397,7 @@ invoicesUnlimited.controller('CustomersController',
 			selected.billingAddress = formBillingAddress(selected.entity.billingAddress);
 			$scope.selectedCustomerEdit = null;
 			$scope.billingAddressEdit = null;
-			$scope.shippingAddressEdit = null;
+            $scope.shippingAddressEdit = formShippingAddress(selected.entity.shippingAddress);
 			$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
 		});
 	};
@@ -648,7 +664,27 @@ invoicesUnlimited.controller('CustomersController',
 	});
 
 	LoadCustomers();
-    
+
+    	var changeDispName = function(newV,oldV) {        
+		if (!$scope.displayNameClicked) {
+			var c = $scope.selectedCustomerEdit;
+            if(c)
+            {
+              if (!c.firstName && !c.lastName) {
+				 c.displayName = "";
+				 return;
+			   }
+                c.displayName = "";
+                c.displayName += c.firstName ? c.firstName : "";
+                c.displayName += " ";
+                c.displayName += c.lastName ? c.lastName : "";
+            }
+		}
+	}
+
+	$scope.$watch("selectedCustomerEdit.firstName",changeDispName);
+	$scope.$watch("selectedCustomerEdit.lastName",changeDispName);
+ 
     $scope.availableCurrencies = ['ADP - Andorran Peseta',
 'AED - United Arab Emirates Dirham',
 'AFN - Afghan Afghani',

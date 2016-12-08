@@ -44,6 +44,10 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             $('#' + id).removeClass('error');
     });
 
+        
+        
+       
+        
 	$("#signUpForm").validate({
 		onkeyup : false,
 		onfocusout : false,
@@ -54,7 +58,12 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
 			city 				: 'required',
 			state 				: 'required',
 			zipCode 			: 'required',
-            phoneNumber         : 'required'
+            //  phoneNumber       : 'required'
+             phoneNumber : {
+                    minlength : 10,
+                    required: true
+                }
+            
 		},
 		messages: {
 			streetName	: 'Please specify your business street name!',
@@ -63,7 +72,11 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             fullName	: 'Please specify your Full Name!',
 			zipCode 	: 'Please specify your business zip code!',
             company     : 'Please specify your business name',
-            phoneNumber : 'Please specify your phone number'
+            phoneNumber : 
+            {  
+                minlength:'Please enter a valid phone number!',
+                required: 'Please specify your phone number!'
+             }
 		}
 	});
 
