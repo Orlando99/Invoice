@@ -256,7 +256,17 @@ function prepareToCreateExpense() {
                         return expense.entity.tax.id == tax.id;
                     })[0];
                 }
-                $scope.files = [];
+                
+                var files = expense.entity.expenseFiles;
+                if (files) {
+                    files.forEach(function(file) {
+                        file.fileName = file.name();
+                        file.exist = true;
+                    });
+                    $scope.files = files;
+                } else {
+                    $scope.files = [];
+                }
             });
         }
         else{

@@ -103,7 +103,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		rules: {
 			discount : {
 				number : true,
-				min : 0
+				min : 0,
+                max : 100
 			},
 			shipCharges : {
 				number : true,
@@ -112,7 +113,14 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			adjustment : {
 				number : true
 			}
-		}
+		},
+        messages : {
+            discount : {
+				number : "Must be a number",
+				min : "Discount can not be less than 0",
+                max : "Discount can not be greater than 100"
+			}
+        }
 	});
 
 	$('#itemInfoForm').validate();

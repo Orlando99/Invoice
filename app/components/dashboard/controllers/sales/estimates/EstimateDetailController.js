@@ -35,10 +35,11 @@ function showEstimateDetail() {
 		$scope.estimate = estimate;
 		$scope.estimateNo = estimate.entity.estimateNumber;
         
-        estimate.comments.forEach(function(obj){
-            obj.date = formatDate(obj.entity.date, dateFormat);
-        });
-        
+        if(estimate.comments){
+            estimate.comments.forEach(function(obj){
+                obj.date = formatDate(obj.entity.date, dateFormat);
+            });
+        }
 		$scope.comments = estimate.comments;
 		var receipt = estimate.entity.estimateReceipt;
 

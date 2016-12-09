@@ -82,6 +82,27 @@ invoicesUnlimited.factory('userFactory',function(appFields){
 						fields 		: appFields.user});
 					User.entity.pop();
 					User.entity.push(user);
+                    
+                    var ProjectUser = Parse.Object.extend("ProjectUser");
+                    var projectUser = new ProjectUser();
+
+                    projectUser.set("userID", user);
+                    projectUser.set("companyName", user.get('company'));
+                    projectUser.set("status", "Activated");
+                    projectUser.set("role", "Main");
+                    projectUser.set("userName", user.get('username'));
+                    projectUser.set("emailID", user.get('email'));
+                    projectUser.set("title", user.get('fullName'));
+                   
+                    return projectUser.save(null, {
+                      success: function(pUser) {
+                          console.log(pUser.className + ' created');
+                      },
+                      error: function(pUser, error) {
+                          console.log(error.message);
+                      }
+                    });
+                    
 					console.log(user.className + ' created');
 				},
 				error : function(user,error){

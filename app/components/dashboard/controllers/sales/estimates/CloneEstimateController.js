@@ -186,6 +186,25 @@ function LoadRequiredData() {
 	return $q.all(promises);
 }
 
+$scope.addNewFile = function(obj) {
+		var file = obj.files[0];
+        
+        var n = file.name;
+        
+        if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') || n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg'))){
+            $('#file-error').show();
+            return;
+        }
+        $('#file-error').hide();
+		file.fileName = file.name; // to avoid naming conflict
+		$scope.files.push(file);
+		$scope.$apply();
+	}
+
+	$scope.removeFile = function(index) {
+		$scope.files.splice(index,1);
+	}
+    
 function prepareEditForm() {
 	var estimate = $scope.estimate;
 
@@ -240,6 +259,17 @@ function prepareEditForm() {
 	if(estimate.entity.status != 'Draft') {
 		$scope.previouslySent = true;
 	}
+    
+    var files = estimate.entity.estimateFiles;
+		if (files) {
+			files.forEach(function(file) {
+				file.fileName = file.name();
+				file.exist = true;
+			});
+			$scope.files = files;
+		} else {
+			$scope.files = [];
+		}
 
 	for (var i = 0; i < estimate.estimateItems.length; ++i) {
 		var estItem = estimate.estimateItems[i].entity;
@@ -513,7 +543,7 @@ function saveEstimate() {
 	if(email) estimate.customerEmails = [email];
 
 	return estimateService.createNewEstimate
-		(estimate, $scope.estimateItems, $scope.userRole);
+		(estimate, $scope.estimateItems, $scope.userRole, $scope.files);
 }
 
 function saveAndSendEstimate() {

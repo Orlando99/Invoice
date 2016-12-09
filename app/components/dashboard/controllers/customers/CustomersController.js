@@ -169,10 +169,26 @@ invoicesUnlimited.controller('CustomersController',
         $scope.receivables = 0;
         var total = 0;
         
+        $scope.payments = [];
+        
         $scope.selectedCustomer.invoices
 			.forEach(function(inv) {
+                if(inv.payments){
+                    inv.payments.forEach(function(obj){
+                        var temp = obj;
+                        var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+                        
+                        obj.date = formatDate(obj.entity.date, dateFormat);
+                        
+                        temp.invoiceNumber = inv.entity.invoiceNumber;
+                        $scope.payments.push(temp);
+                    });
+                }
                 $scope.receivables += inv.entity.balanceDue;
 			});
+        
+        
+        
         $scope.receivables = $scope.receivables.toFixed(2);
         drawBarChart();
         

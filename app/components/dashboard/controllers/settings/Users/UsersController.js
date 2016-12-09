@@ -14,6 +14,29 @@ invoicesUnlimited.controller('UsersController',
 
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
+    if(!$scope.userLogo){
+        var selectedorganization = userFactory.entity[0].get("selectedOrganization");
+        var query = new Parse.Query('Organization');
+        query.get(selectedorganization.id, {
+              success: function(obj) {
+                  $scope.org = obj;
+                  var logo = obj.get('logo');
+                  if(logo){
+                    $scope.userLogo = logo._url;
+                  }
+                  else{
+                      $scope.userLogo = './assets/images/user-icon.png';
+                  }
+                  $scope.$apply();
+
+              },
+              error: function(obj, error) {
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and message.
+              }
+        });
+    }
+    
 	$scope.users = [];
 
 	hideLoader();
@@ -23,28 +46,40 @@ invoicesUnlimited.controller('UsersController',
 		var userObj = $scope.users[$index].get('userID');
 
 		if (!userObj) return;
+        
+        var UserTable = Parse.Object.extend("User");
+        var query = new Parse.Query(UserTable);
+        query.equalTo("username", $scope.users[$index].userName);
+        return query.first({
+          success: function(obj) {
+                Parse.Cloud.run('deleteUser',{
+                    identificator : obj.id
+                })
+                .then(function(res){
+                    return $scope.users[$index].destroy();
+                },function(e){
+                    console.log(e.message);
+                    hideLoader();
+                })
+                .then(function(res){
+                    $scope.$apply(function() {
+                        $scope.users.splice($index,1);
+                    });
+                    hideLoader();
+                },function(e){
+                    if(e)
+                    {
+                        console.log(e.message);
+                    }
+                    hideLoader();
+                });
+          },
+          error: function(error) {
+            alert("Error: " + error.code + " " + error.message);
+          }
+        });	
 
-		Parse.Cloud.run('deleteUser',{
-			identificator : userObj.id
-		})
-		.then(function(res){
-			return $scope.users[$index].destroy();
-		},function(e){
-			console.log(e.message);
-			hideLoader();
-		})
-		.then(function(res){
-			$scope.$apply(function() {
-				$scope.users.splice($index,1);
-			});
-			hideLoader();
-		},function(e){
-            if(e)
-            {
-                console.log(e.message);
-            }
-            hideLoader();
-		});
+		
 	}
 
 	$scope.editUser = function(id) {
@@ -67,6 +102,7 @@ invoicesUnlimited.controller('UsersController',
                                 fields 		: appFields.user
                             });
                           obj.status = $scope.users[id].status;
+                          obj.projectUser = $scope.users[id];
                           return obj;
                       },
                       error: function(error) {

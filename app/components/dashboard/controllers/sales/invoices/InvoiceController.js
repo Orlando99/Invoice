@@ -309,12 +309,12 @@ function prepareEditForm() {
 	$scope.notes = invoice.entity.notes;
 	$scope.terms = invoice.entity.terms;
 	
-	if ($scope.prefs.shipCharges) {
+	if ($scope.prefs.shipCharges || invoice.entity.shippingCharges) {
 		$scope.shippingCharges = invoice.entity.shippingCharges;
 		$scope.showShippingCharges = true;
 	}
 
-	if ($scope.prefs.adjustments) {
+	if ($scope.prefs.adjustments || invoice.entity.adjustments) {
 		$scope.adjustments = invoice.entity.adjustments;
 		$scope.showAdjustments = true;
 	}

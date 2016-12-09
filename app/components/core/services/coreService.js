@@ -48,6 +48,7 @@ invoicesUnlimited.factory('coreFactory',
 		if (!params.method) query.equalTo(params.name,params.val1);
 		else query[params.method](params.name,params.val1,params.val2,params.val3);
 		query.include('comments');
+        query.include('payment');
 		return query.find().then(function(res){
 			var invoices = [];
 			res.forEach(function(elem){

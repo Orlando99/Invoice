@@ -73,30 +73,30 @@
 
 	    <div class="col-80 text-left layout-center">
             
-	    <form autocomplete="off" class="layout-margin-tb col-100 inputs-white">
+	    <form autocomplete="off" id="userForm" class="layout-margin-tb col-100 inputs-white" novalidate>
             <div class="input-container layout-margin-b">
 	        	<label class="layout-padding-t-smm"></label>
                 <label class="col-75" style="color: red;" id="userError"></label>
 	      	</div>
 	      	<div class="input-container layout-margin-b">
 	        	<label class="layout-padding-t-smm">Username</label>
-	        	<input ng-model="user.username" id="newusername" placeholder="Click or Tap to enter" type="text" class="col-75" required>
+	        	<input ng-model="user.username" id="newusername" name="newusername" placeholder="Click or Tap to enter" type="text" class="col-75">
 	      	</div>
 	      	<div class="input-container layout-margin-b">
 		        <label class="layout-padding-t-smm">Name</label>
-		        <input ng-model="user.fullName" placeholder="Click or Tap to enter" type="text" class="col-75">
+		        <input ng-model="user.fullName" placeholder="Click or Tap to enter" name="fullName" type="text" class="col-75">
 	    	</div>
 	      	<div class="input-container layout-margin-b">
 	        	<label class="layout-padding-t-smm">Email</label>
-	        	<input id="newUserId" ng-model="user.email" placeholder="Click or Tap to enter" type="email" class="col-75" required>
+	        	<input id="newUserId" ng-model="user.email" name="newemail" placeholder="Click or Tap to enter" type="email" class="col-75" required>
 	      	</div>
 	      	<div class="input-container layout-margin-b" ng-if="method == 'create'">
 	        	<label class="layout-padding-t-smm">Password</label>
-	        	<input ng-model="user.password" min="6" placeholder="Click or Tap to enter" type="password" class="col-75" required>
+	        	<input ng-model="user.password" min="6" placeholder="Click or Tap to enter" name="password" type="password" class="col-75" required>
 	      	</div>
 	      	<div class="input-container layout-margin-b input-checkbox-container">
 	        	<label class="layout-padding-t-smm">Role</label>
-	        	<select ng-model="user.role" pattern="Staff|Admin|Main" required class="col-75 layout-margin-b">
+	        	<select ng-model="user.role" pattern="Staff|Admin|Main" name="role" required class="col-75 layout-margin-b">
 	          		<option value="" disabled selected>Select the Role</option>
 	        		<option value="Admin">Admin</option>
 	        		<option value="Staff">Staff</option>

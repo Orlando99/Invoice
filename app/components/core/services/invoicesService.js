@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('invoicesFactory',function(userFactory,commentFactory){
+invoicesUnlimited.factory('invoicesFactory',function(userFactory,commentFactory,paymentFactory){
 
 	var user = userFactory;
 	if (!user) return undefined;
@@ -21,6 +21,14 @@ invoicesUnlimited.factory('invoicesFactory',function(userFactory,commentFactory)
 			});
 			this.comments = comments;
 		}
+        
+        var payments = parseObject.get("payment");
+        if(payments){
+            payments = payments.map(function(elem){
+				return new paymentFactory(elem);
+			});
+            this.payments = payments;
+        }
 
 		this.invoiceDate = parseObject.invoiceDate.toISOString()
 			.slice(0,10)
@@ -38,7 +46,8 @@ invoicesUnlimited.factory('invoicesFactory',function(userFactory,commentFactory)
 		"invoiceDate",
 		"dueDate",
 		"balanceDue",
-		"customer"
+		"customer",
+        "payment"
 	];
 	
 	return Invoice;

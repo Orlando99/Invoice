@@ -9,6 +9,23 @@ invoicesUnlimited.controller('NewUserController',
 		$state.go('login');
 		return;
 	}
+    
+    $('#userForm').validate({
+		rules: {
+			newusername: 'required'//,
+			//rate : {
+				//required : true,
+				//number : true
+			//}
+		},
+		messages: {
+			newusername : 'Please enter username'//,
+			//rate : {
+				//required : 'Tax percentage is required.',
+				//number : 'Please enter a valid percentage.'
+			//}
+		}
+	});
 
 	var errorHandler = function(er){
 		if (!er) return;
@@ -20,7 +37,7 @@ invoicesUnlimited.controller('NewUserController',
 	$scope.user = user;
 	$scope.user.status = user.status;
     $scope.mustInvite = user.mustInvite;
-    
+    $scope.projectUser = user.projectUser;
     
     
     $scope.oldUserName = user.username;
@@ -43,7 +60,7 @@ invoicesUnlimited.controller('NewUserController',
 			identificator : $scope.user.id
 		})
 		.then(function(res){
-			return user.destroy();	
+            return $scope.projectUser.destroy();
 		},errorHandler)
 		.then(function(user){
 			hideLoader();
@@ -91,6 +108,36 @@ invoicesUnlimited.controller('NewUserController',
 
 	var prevEmail = '';
 	$scope.save = function(){
+        $('#userForm').validate({
+            rules: {
+                newusername: 'required',
+                fullName: 'required',
+                newemail: {
+                    required: true,
+                    email: true
+                },
+                password : {
+                    required : true,
+                    minlength : 6
+                },
+                role: 'required'
+            },
+            messages: {
+                newusername: 'Please enter username',
+                fullName: 'Please enter full name',
+                newemail: {
+                    required: "Please enter email",
+                    email: "Please enter valid email"
+                },
+                password : {
+                    required : "Please enter password",
+                    minlength : "Password must be at least 6 characters long"
+                },
+                role: 'Please select role'
+            }
+        });
+        if(!$('#userForm').valid())
+            return;
 		if (prevEmail != $scope.user.email) {
 			prevEmail = $scope.user.email;
 			//$('input[id="newusername"]')[0].setCustomValidity('');
