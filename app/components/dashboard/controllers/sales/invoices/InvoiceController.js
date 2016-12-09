@@ -525,7 +525,7 @@ function saveEditedInvoice(params) {
 	});
 }
     
-    function addNewComment(commentbody, isAuto){
+function addNewComment(commentbody, isAuto){
     var obj = {
 		userID : user,
 		organization : organization,
@@ -629,18 +629,27 @@ $scope.saveAndSend = function () {
 	});
 }
 
-$scope.addNewFile = function(obj) {
+ $scope.addNewFile = function(obj) {
 	var file = obj.files[0];
-    
     var n = file.name;
-        
+    if(n.toLowerCase().indexOf("^") >= 0)
+    {
+        n =  n.replace("^", "");
+    }    
     if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') || n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg'))){
         $('#file-error').show();
         return;
     }
     $('#file-error').hide();
-    
-	file.fileName = file.name; // to avoid naming conflict
+    var fileSizeinBytes = obj.files[0].size;
+    if(fileSizeinBytes > 5242880 )
+    {
+        $('#file-size-error').show();    
+        return;
+    }
+    $('#file-size-error').hide();
+        
+    file.fileName = n; // to avoid naming conflict
 	$scope.files.push(file);
 	$scope.$apply();
 }
@@ -1016,8 +1025,12 @@ function ListInvoices() {
 		hideLoader();
 		console.log(error.message);
 	});	
-}
-    
+}  
+    $scope.sortByInvoiveNumber= function()
+    {
+          $scope.invoiceList.sort(function(a,b){ 
+          return a.entity.invoiceNumber.localeCompare(b.entity.invoiceNumber)});
+    }
     $scope.lateFeeChanged = function(){
         if(!$scope.selectedLateFee)
             return;

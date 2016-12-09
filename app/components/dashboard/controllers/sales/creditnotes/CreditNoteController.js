@@ -637,5 +637,10 @@ function listCreditNotes() {
 		console.log(error.message);
 	});	
 }
-
+  $scope.sortByCreditNote= function()
+  {
+      $scope.creditNoteList.sort(function(a,b){ 
+      return a.entity.creditNumber.localeCompare(b.entity.creditNumber)});
+  }  
+ 
 }]);

@@ -72,7 +72,7 @@
       <form id="itemInfoForm" novalidate>
         <div class="table-row" ng-repeat="estItem in estimateItems">
           <div class="col-30 layout-padding">
-            <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
+            <i Style="margin-top: 7px" class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
             <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis" ng-model="estItem.selectedItem"
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
               <option value="" disabled>Select or Type to add</option>
@@ -180,7 +180,8 @@
               <div class="button button-no-bg" style="padding-left: 0px">+ Add</div>
             </label>
             </div>
-              <label id="file-error" class="" style="margin-top: 35px; font-size: 14px; color: red; display: none;">Invalid file: Supported files are PDF and images</label>
+              <label id="file-error" class="" style="margin-top: 35px; font-size: 14px; color: red; display: none;">Invalid file: Supported files are PDF,PNG,JPG and JPEG</label>
+               <label id="file-size-error" class="" style="margin-top: 35px; font-size: 14px; color: red; display: none;">Error : File size exceeds maximum limit 5 MB!</label>
           </div>
           
 <!--

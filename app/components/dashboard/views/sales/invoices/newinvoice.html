@@ -20,7 +20,7 @@
       </div>
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Order #</label>
-        <input maxlength="60" class="col-75" type="text" ng-model="poNumber">
+        <input maxlength="20" class="col-75" type="text" ng-model="poNumber">
       </div>
       <!--datepicker-popup-template-url="template/datepickerPopUp/customPopUp.html"-->
       <div  class="input-container col-60 layout-margin-b datepicker-noclear">
@@ -30,9 +30,7 @@
           placeholder="12/03/2014" ng-model="todayDate" is-open="openPicker1" 
           ng-click="openDatePicker(1)" show-weeks="false" ng-change="calculateDueDate()" show-weeks="false" show-button-bar="false" readonly>
         
-          
-          
-        <select class="col-35 pull-right" ng-change="paymentTermsChanged()"
+        <select class="col-35 pull-right same_height" ng-change="paymentTermsChanged()"
           ng-options="term.name for term in paymentTerms.terms track by term.value"
           ng-model="paymentTerms.selectedTerm">
 
@@ -98,11 +96,11 @@
       <form id="itemInfoForm" novalidate>
         <div class="table-row" ng-repeat="invItem in invoiceItems">
 
-          <div class="col-30 layout-padding">
-            <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
+          <div  class="col-30 layout-padding">
+            <i Style="margin-top: 10px" class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
             
               
-              <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item" ng-model="invItem.selectedItem"
+              <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item same_height" ng-model="invItem.selectedItem"
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
         
                   
@@ -131,7 +129,7 @@
            
               
               
-              <select class="ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
+              <select class="ellipsis same_height" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
               ng-change="taxChanged($index)">
               <option value="">None</option>
              <!-- <option value="1">1</option>
@@ -232,6 +230,9 @@
             </label>
             </div>
               <label id="file-error" class="" style="margin-top: 35px; font-size: 14px; color: red; display: none;">Invalid file: Supported files are PDF,PNG,JPG and JPEG.</label>
+              
+               <label id="file-size-error" class="" style="margin-top: 35px; font-size: 14px; color: red; display: none;">Error : File size exceeds maximum limit 5 MB!</label>
+              
           </div>
 
 
@@ -281,7 +282,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Tax</label>
-            <select class="col-75" ng-model="newItem.tax" ng-options="tax.name for tax in taxes" ng-change="taxChanged(-1)">
+            <select class="col-75 same_height" ng-model="newItem.tax" ng-options="tax.name for tax in taxes" ng-change="taxChanged(-1)">
               <option value="" selected>None</option>
             </select>
           </div>
@@ -346,7 +347,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Type</label>
-            <select name="type" class="col-75" ng-model="selectedFeeType"
+            <select name="type" class="col-75 same_height" ng-model="selectedFeeType"
               ng-options="type for type in latefeeTypes">
               <option value="" disabled>Choose Type</option>
             </select>

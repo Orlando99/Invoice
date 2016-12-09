@@ -14,7 +14,7 @@
     <div>
       <div class="tab active" data-name="allusers">
         <h3 class="layout-margin-t section-title float-left">All Users</h3>
-        <button class="float-right layout-margin-tb button button-info text-uppercase" ng-click="inviteUser()">Invite User</button>
+          <!--<button class="float-right layout-margin-tb button button-info text-uppercase" ng-click="inviteUser()">Invite User</button>-->
         <a ng-click="createUser();" class="float-right layout-margin-tb layout-margin-r button button-add text-uppercase modal-opener" data-toggle="invite-user">New</a>
         <form class="float-right layout-margin-tb">
           <input  maxlength="60"type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.title">
@@ -24,10 +24,10 @@
 
         <table class="table-border-tb">
           <tr class="thead">
-            <td class="text-uppercase text-info layout-padding">User Name</td>
-            <td class="text-uppercase text-info layout-padding">Email</td>
-            <td class="text-uppercase text-info layout-padding">Role</td>
-            <td class="text-uppercase text-info layout-padding">Status</td>
+            <td ng-click="sortByUserName()" class="text-uppercase text-info layout-padding"  >User Name</td>
+            <td class="text-uppercase text-info layout-padding"  >Email</td>
+            <td class="text-uppercase text-info layout-padding" >Role</td>
+            <td class="text-uppercase text-info layout-padding" >Status</td>
             <td class="text-uppercase text-info layout-padding text-right actions"></td>
           </tr>
           <tr ng-repeat="user in users | filter:search track by $index" class="user-row">
@@ -58,9 +58,6 @@
           </tr>
         </table>
       </div>-->
-
     </div>
-
   </div>
-
   <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

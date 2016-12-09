@@ -372,7 +372,12 @@ function listExpenses() {
    
     //...
 }
-    
+
+$scope.sortByCatName= function()
+{
+  $scope.expenseList.sort(function(a,b){ 
+  return a.entity.category.localeCompare(b.entity.category)});
+ }     
 $scope.deleteExpense = function(){
     if(!$scope.expense)
         return;

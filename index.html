@@ -28,12 +28,12 @@
 		<img class="loader" src="./assets/images/loader-new.gif"/>
 	</div>
 
-	<div class="overlay message" style="display:none">
+	<div id="close_error_div" class="overlay message" style="display:none">
 		<div class="message-window">
 			<div class="message-type"></div>
 			<div class="message-content">
 				<p class="message-text"></p>
-				<div class="close-btn">Close</div>
+				<div id="close_btn" onclick="close_mess(this)" class="close-btn">Close</div>
 			</div>
 		</div>
 	</div>
@@ -365,6 +365,12 @@
         element.style.height = "auto";
         element.style.overflow = "hidden";
         element.style.height = (element.scrollHeight)+"px";}
+        
+          function close_mess(obj){
+               $("#close_error_div").hide();
+             //alert("Hello");
+         }
+        
         
     </script>
 

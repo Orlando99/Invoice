@@ -645,15 +645,27 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 	$scope.addNewFile = function(obj) {
 		var file = obj.files[0];
-        
         var n = file.name;
-        
-        if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') || n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg'))){
+        if(n.toLowerCase().indexOf("^") >= 0)
+        {
+            n =  n.replace("^", "");
+        }
+        if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') ||          n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg')))
+        {
             $('#file-error').show();
             return;
         }
-        $('#file-error').hide();
-		file.fileName = file.name; // to avoid naming conflict
+        $('#file-error').hide();  
+        
+        var fileSizeinBytes = obj.files[0].size;
+        if(fileSizeinBytes > 5242880 )
+        {
+            $('#file-size-error').show();    
+            return;
+        }
+        $('#file-size-error').hide();
+        
+        file.fileName = n; // to avoid naming conflict
 		$scope.files.push(file);
 		$scope.$apply();
 	}
