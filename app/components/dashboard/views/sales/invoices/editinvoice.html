@@ -25,7 +25,7 @@
         <label class="layout-padding-t-sm">Invoice Date &amp; Terms</label>
         <input name="invoiceCreateDate" class="col-35" type="text" uib-datepicker-popup="{{dateFormat}}"
           ng-model="todayDate" is-open="openPicker1" show-weeks="false" ng-click="openDatePicker(1)" ng-change="calculateDueDate()" readonly>
-        <select class="col-35 pull-right" ng-change="paymentTermsChanged()"
+        <select class="col-35 pull-right same_height" ng-change="paymentTermsChanged()"
           ng-options="term.name for term in paymentTerms.terms track by term.value"
           ng-model="paymentTerms.selectedTerm">
         </select>
@@ -85,7 +85,7 @@
         <div class="table-row" ng-repeat="invItem in invoiceItems">
 
           <div class="col-30 layout-padding">
-            <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
+            <i Style="margin-top: 9px" class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
             <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item" ng-model="invItem.selectedItem"
               ng-options="item.entity.title for item in items"
               ng-change="itemChanged($index)">
@@ -106,7 +106,7 @@
           </div>
 
              <div class="col-12 layout-padding layout-padding-l">
-              <select class="ellipsis" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
+              <select class="ellipsis same_height" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
               ng-change="taxChanged($index)">
               <option value="">None</option>
             </select>

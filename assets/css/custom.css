@@ -443,7 +443,7 @@ body hr {
     border-top: 10px transparent solid;
     border-bottom: 10px transparent solid;
     background-image: none !important;
-    z-index: 1000 !important;
+    z-index: 10000px !important;
     font-size: 11px !important;
     
 }

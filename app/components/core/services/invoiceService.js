@@ -809,7 +809,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 		labels['past-due'] = formatDate(invoice.get("dueDate"), "MMM D, YYYY");
 
 		labels['purchaseOrderNumber'] = invoice.get("poNumber") ?
-			"P.O.Number:" + invoice.get("poNumber") : "";
+			"Order # " + invoice.get("poNumber") : "";
 
 		/* this will be used as EST# and CREDIT# as well */
 		labels['refid'] = invoice.get("invoiceNumber");

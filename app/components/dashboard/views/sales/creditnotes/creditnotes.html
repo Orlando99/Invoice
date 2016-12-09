@@ -11,7 +11,7 @@
     <table class="data-table creditnotes-data no-border show_table_hover">
       <tr class="thead">
         <td class="text-uppercase text-info">Date</td>
-        <td class="text-uppercase text-info">Credit Note</td>
+        <td Style="padding-left: 12px !important" class="text-uppercase text-info">Credit Note</td>
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
         <td class="text-uppercase text-info text-center">Ref#.</td>
         <td class="text-uppercase text-info">Cust. Name</td>
@@ -25,7 +25,7 @@
       <tr class="trow" ng-repeat="creditNote in creditNoteList | filter:search"
         ui-sref="dashboard.sales.creditnotes.details({creditNoteId:creditNote.entity.id})">
         <td class="text-color-light">{{creditNote.creditNoteDate}}</td>
-        <td class="text-color-light">{{creditNote.entity.creditNumber}}</td>
+        <td Style="padding-left: 12px !important"  class="text-color-light">{{creditNote.entity.creditNumber}}</td>
         <td class="text-color-light text-center">{{creditNote.entity.reference}}</td>
         <td class="text-color-light">{{creditNote.customer.displayName}}</td>
      

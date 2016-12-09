@@ -51,9 +51,11 @@ function showInvoiceDetail() {
 		$scope.invoice = invoice;
 		$scope.invoiceNo = invoice.entity.invoiceNumber;
         
-        invoice.comments.forEach(function(obj){
-            obj.date = formatDate(obj.entity.date, dateFormat);
-        });
+        if(invoice.comments){
+            invoice.comments.forEach(function(obj){
+                obj.date = formatDate(obj.entity.date, dateFormat);
+            });
+        }
         
 		$scope.comments = invoice.comments;
         $scope.invoiceInfo = invoice.entity.invoiceInfo;
