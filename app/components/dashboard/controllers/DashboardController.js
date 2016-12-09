@@ -366,7 +366,16 @@ function drawPieChart() {
 		var expenseColorList = [];
 
 		var uniqueExpenses = {};
-		for(var i=0; i < objs.length; ++i) 
+        var size = 0;
+        if(objs.length<5)
+        {
+            size = objs.length;   
+        }
+        else
+        {
+           size =5;      
+        }
+		for(var i=0; i < size; ++i) 
         {
 			var expense = objs[i];
 			var name = expense.entity.category;
@@ -387,8 +396,16 @@ function drawPieChart() {
 				name: name,
 				value : value
 			};
-			if (expense.customer)
+		/*	if (expense.customer)
+            {
 				expObj.customer = expense.customer.displayName;
+            }
+            
+            else
+            {
+               expObj.customer = "None";     
+            }
+            */
             if(!flag)
             {
               expenseList.push(expObj);
@@ -401,8 +418,16 @@ function drawPieChart() {
                    name: name,
                    value : uniqueExpenses[name]
                };
-                if (expense.customer)
+              /*  if (expense.customer)
+                {
                     expObj2.customer = expense.customer.displayName;
+                }
+                else
+                {
+                   expObj2.customer = "None";     
+                }
+                */
+            
                 expenseList.push(expObj2);
             }
 		}

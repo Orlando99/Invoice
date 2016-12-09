@@ -84,7 +84,13 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 			$scope.taxes = taxContent;
 		});
 	}
-	
+ //
+   $scope.sortByTaxName= function(){
+    $scope.taxes.sort(function(a,b){
+        return a.name.localeCompare(b.name)});
+    }
+        
+//        
 	$scope.print_values = function() {
 		console.log("tax name: " + $scope.taxName);
 		console.log("tax rate: " + $scope.taxRate);

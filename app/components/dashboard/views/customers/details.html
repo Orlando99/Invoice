@@ -112,7 +112,7 @@
         <br/>
 
         <h3 class="layout-margin-tb text-info text-uppercase text-weight-normalize">Receivables</h3>
-        <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{'$' + receivables}}</h2>
+        <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{ receivables}}</h2>
           <!--
           <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{'$'+ (selectedCustomer.entity.outstanding || '0.00')}}</h2>
 -->
@@ -160,7 +160,7 @@
   <div class="popup-modal confirm-delete hidesm">
     <div class="modal container">
       <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
-        float-left">DO YOU REALLY WANT TO DELETE Customer '{{selectedCustomer.entity.displayName}}' ?</h3>
+        float-left">Are you sure you want to delete '{{selectedCustomer.entity.displayName}}' ?</h3>
       <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
       </button>
       <div class="clearfix"></div>
