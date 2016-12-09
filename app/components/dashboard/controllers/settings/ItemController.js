@@ -193,7 +193,10 @@ function loadItemsAndTaxes() {
 	});
 
 }
-
+   $scope.sortByItemName= function(){
+    $scope.items.sort(function(a,b){
+        return a.entity.title.localeCompare(b.entity.title)});
+    }    
 function initializeScopeVariables() {
 	$scope.itemName = '';
 	$scope.itemRate1 = '';

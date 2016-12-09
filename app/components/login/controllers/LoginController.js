@@ -33,7 +33,6 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 			return;
 		}
 		showLoader();
-		 //
             user.login({
                         username : $scope.username,
                         password : $scope.password
@@ -43,7 +42,6 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
                             var firstScreen = user.entity[0].get('firstScreen');
                             var tutorial = user.entity[0].get('tutorial');
                             var userObjectId = user.entity[0].id;
-                    ///
                             var projectUser = Parse.Object.extend('ProjectUser');
                             var query = new Parse.Query(projectUser);
                             query.equalTo('userName', $scope.username);
@@ -59,7 +57,6 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
                                         hideLoader();
                                        $('.errorMessage').html("Your Account is not Activated!").show();
                                     });
-                                    //$('.errorMessage').html("Your Account is not Activated!").show();
                                 }
                                 else
                                 {      
@@ -69,7 +66,7 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
                                     {
                                         switch(firstScreen) 
                                         {
-                                            case 'Overview': 		  $state.go('dashboard'); break;
+                                            case 'Dashboard': 		  $state.go('dashboard'); break;
                                             case 'Customer List': 	  $state.go('dashboard.customers.all'); break;
                                             case 'Invoices List': 	  $state.go('dashboard.sales.invoices.all'); break;
                                             case 'Expense List': 	  $state.go('dashboard.expenses.all'); break;
@@ -90,20 +87,11 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
                                       }
 
                                         });
-                    
-                    ///
-         
                             },function(error){
                                 hideLoader();
                                 $('.errorMessage').html(error.message.capitilize()).show();
                                 $('.input-container').css({'border':'1px solid red'});
-                                //$('.input-container input').val('');
                             });
-        //
-        
-        
-		//
-     
 
     }//end of scope.sign in
  

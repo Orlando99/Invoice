@@ -1,4 +1,12 @@
 <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+
+<style>
+   .textAreaD
+    {
+        resize: none;
+    }
+</style>
+
   <div class="container hidesm">
 
    <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">Expense Category <i class="arrow-down-black"></i></h3>
@@ -29,8 +37,7 @@
        </td>
        <td class="text-color-light text-weight-normalize layout-padding-tb-lg"
         ng-click="showCategoryDetail($index)">{{category.entity.name}}</td>
-       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left"
-        ng-click="showCategoryDetail($index)" style="width: 750px !important;">{{category.entity.notes}}</td>
+       <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left"   ng-click="showCategoryDetail($index)" style="width: 750px !important;">{{category.entity.notes}}</td>
          <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left"
         ng-click="showCategoryDetail($index)"><div style="height:40px;">
       <div class="show_hover modal-close"
@@ -57,8 +64,8 @@
          </div>
 
          <div class="input-container layout-margin-b">
-           <label class="layout-padding-t-sm">Description</label>
-           <textarea ng-model="newCategory.desc" class="col-75"></textarea>
+           <label class="layout-padding-t-sm">Description2323</label>
+           <textarea ng-model="newCategory.desc" class="col-75 textAreaD"></textarea>
          </div>
          <div class="input-container layout-margin-b">
            <label class="layout-padding-t-sm">Color</label>
@@ -89,7 +96,7 @@
 
          <div class="input-container layout-margin-b">
            <label class="layout-padding-t-sm">Description</label>
-           <textarea ng-model="editCategory.desc" class="col-75"></textarea>
+           <textarea ng-model="editCategory.desc" id = "textAreaD" class="col-75 textAreaD"></textarea>
          </div>
          <div class="input-container layout-margin-b">
            <label class="layout-padding-t-sm">Color</label>

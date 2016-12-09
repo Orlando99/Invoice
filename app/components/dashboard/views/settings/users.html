@@ -24,10 +24,10 @@
 
         <table class="table-border-tb">
           <tr class="thead">
-            <td class="text-uppercase text-info layout-padding">User Name</td>
-            <td class="text-uppercase text-info layout-padding">Email</td>
-            <td class="text-uppercase text-info layout-padding">Role</td>
-            <td class="text-uppercase text-info layout-padding">Status</td>
+            <td ng-click="sortByUserName()" class="text-uppercase text-info layout-padding"  >User Name</td>
+            <td class="text-uppercase text-info layout-padding"  >Email</td>
+            <td class="text-uppercase text-info layout-padding" >Role</td>
+            <td class="text-uppercase text-info layout-padding" >Status</td>
             <td class="text-uppercase text-info layout-padding text-right actions"></td>
           </tr>
           <tr ng-repeat="user in users | filter:search track by $index" class="user-row">
@@ -58,9 +58,6 @@
           </tr>
         </table>
       </div>-->
-
     </div>
-
   </div>
-
   <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

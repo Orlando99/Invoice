@@ -228,5 +228,9 @@ invoicesUnlimited.controller('UsersController',
         if(index >= 0)
             $scope.users.splice(index, 1);
 	});
-
+    
+    $scope.sortByUserName= function(){
+    $scope.users.sort(function(a,b){
+        return a.userName.localeCompare(b.userName)});
+    }
 });

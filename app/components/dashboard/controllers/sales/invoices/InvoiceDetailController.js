@@ -546,11 +546,10 @@ $scope.refundPayment = function() {
 		$state.reload();
 	});
 }
-
+ 
 $scope.addAttachment = function(obj) {
 	var file = obj.files[0];
 	if (!file) return;
-    
     var n = file.name;
     
     if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') || n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg'))){
@@ -558,9 +557,24 @@ $scope.addAttachment = function(obj) {
         return;
     }
     $('#file-error').hide();
-	showLoader();
+
+    if(n.toLowerCase().indexOf("^") >= 0)
+    {
+        n =  n.replace("^", "");
+        
+    } 
+     var fileSizeinBytes = obj.files[0].size;
+     if(fileSizeinBytes > 5242880 )
+     {
+        $('#file-size-error').show();    
+        return;
+     }
+     $('#file-size-error').hide();
+        
+    showLoader();
+    
 	var invoiceObj = $scope.invoice.entity;
-	var parseFile = new Parse.File(file.name, file);
+	var parseFile = new Parse.File(n, file);
 
 	$q.when(parseFile.save())
 	.then(function(fileObj) {
@@ -579,6 +593,7 @@ $scope.addAttachment = function(obj) {
 		hideLoader();
 	});
 }
+ 
 
 $scope.textReceipt = function() {
     

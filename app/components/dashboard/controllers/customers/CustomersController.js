@@ -161,21 +161,17 @@ invoicesUnlimited.controller('CustomersController',
 
 	    $scope.selectedCustomer.billingAddress = formBillingAddress(billingAddress);
 	    $scope.selectedCustomer.billingAddressJSON = billingAddress;
-        
         $scope.selectedCustomer.shippingAddress = formShippingAddress(shippingAddress);
-	    
 	    $scope.selectedCustomer.shippingAddressJSON = shippingAddress;
-        
         $scope.receivables = 0;
         var total = 0;
-        
         $scope.selectedCustomer.invoices
 			.forEach(function(inv) {
                 $scope.receivables += inv.entity.balanceDue;
 			});
         $scope.receivables = $scope.receivables.toFixed(2);
+        $scope.receivables = currencyFilter($scope.receivables , "$", 2);
         drawBarChart();
-        
 	}
 
     loadCurrencies();
@@ -512,7 +508,13 @@ invoicesUnlimited.controller('CustomersController',
 
 		});
 	};
-
+ 
+    $scope.sortByCustomerName= function(){
+    $scope.customers.sort(function(a,b){
+        return a.entity.displayName.localeCompare(b.entity.displayName)});
+    }
+    
+    
 	$scope.deleteContact = function(index){
 		showLoader();
 		$scope.selectedCustomer.contactPersons[index]

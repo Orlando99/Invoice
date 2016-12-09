@@ -13,8 +13,13 @@
       </style>
     <table class="customers-data no-border">
       <tr class="thead">
-        <td class="layout-padding text-uppercase text-info"
-            ng-repeat="title in ['Name','Co. Name','Email','Work Phone','Receivables','Credits']">{{title}}</td>
+        <td ng-click = "sortByCustomerName()"class="layout-padding text-uppercase text-info">Name</td>
+        <td class="layout-padding text-uppercase text-info">Co. Name</td>
+        <td class="layout-padding text-uppercase text-info">Email</td>
+        <td class="layout-padding text-uppercase text-info">Work Phone</td>
+        <td class="layout-padding text-uppercase text-info">Receivables</td>
+        <td class="layout-padding text-uppercase text-info">Credits</td>
+  
       </tr>
       <tr ng-repeat="customer in customers | filter:search track by $index" ui-sref="dashboard.customers.details({customerId:$index})" style="cursor:pointer">
         <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.displayName}}</td>
@@ -56,7 +61,7 @@
 
           <div class="input-container layout-margin-b">
             <label  class="layout-padding-t-sm">Email Address</label>
-            <input  class="col-75" type="email" placeholder="">
+            <input  class="col-75" maxlength = "100" type="email" placeholder="">
           </div>
         </form>
       </div>

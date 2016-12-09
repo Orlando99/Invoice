@@ -283,7 +283,11 @@ function setDefaultCurrencyIndex() {
 		return currency.entity.id == curr.id;
 	});
 }
-
+    
+//
+  
+//
+    
 $scope.prepareAddCurrency = function() {
 	$scope.currencyObj = {
 		title : undefined,
@@ -437,7 +441,11 @@ $scope.confirmDeleteCurrency = function(){
 		hideLoader();
 	});
 }
-
+  $scope.sortByCurencyName= function(){
+    
+      $scope.currencies.sort(function(a,b){
+        return a.entity.title.localeCompare(b.entity.title)});
+    }  
 $scope.currencyChanged = function() {
 	if($scope.currencyObj)
 		$scope.currencyObj.currencySymbol =
