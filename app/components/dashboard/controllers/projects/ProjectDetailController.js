@@ -39,7 +39,6 @@ coreFactory.getUserRole(user)
         showProjectDetail();
 	});
     
-
     
 $('#addTaskForm').validate({
 	rules: {
@@ -130,6 +129,7 @@ function showProjectDetail() {
         $scope.unbilledHours = hours + ":" + minutes;
         
         $scope.timesheets = project.timesheets;
+ 
         hideLoader();
 	});
 
@@ -288,8 +288,6 @@ $scope.openDatePicker = function(n) {
 	}
 }
 
-
-    
 $scope.saveTimesheet = function(){
     if(!$("#addTimesheetForm").valid())
         return;

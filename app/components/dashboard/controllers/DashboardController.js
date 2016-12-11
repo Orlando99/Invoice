@@ -366,71 +366,48 @@ function drawPieChart() {
 		var expenseColorList = [];
 
 		var uniqueExpenses = {};
-        var size = 0;
-        if(objs.length<5)
+       
+		for(var i=0; i < objs.length; ++i) 
         {
-            size = objs.length;   
-        }
-        else
-        {
-           size =5;      
-        }
-		for(var i=0; i < size; ++i) 
-        {
-			var expense = objs[i];
-			var name = expense.entity.category;
-			var value = expense.entity.amount;
-            var flag = false;
-			if(uniqueExpenses[name]) 
-            {
-				uniqueExpenses[name] += value;
-                flag = true;
-			
-            } else {
-				uniqueExpenses[name] = value;
-				expenseNameList.push(name);
-                flag = false;
-			}
-
-			var expObj = {
-				name: name,
-				value : value
-			};
-		/*	if (expense.customer)
-            {
-				expObj.customer = expense.customer.displayName;
-            }
-            
-            else
-            {
-               expObj.customer = "None";     
-            }
-            */
-            if(!flag)
-            {
-              expenseList.push(expObj);
-            }
-            else
-            {
-              var expObj =  expenseList.pop();  
-              var expObj2 = 
-              {
-                   name: name,
-                   value : uniqueExpenses[name]
-               };
-              /*  if (expense.customer)
+               var expense = objs[i];
+               var name = expense.entity.category;
+               var value = expense.entity.amount;
+               var flag = false;
+               if(uniqueExpenses[name]) 
+               {
+                  uniqueExpenses[name] += value;
+                  flag = true;
+                } else 
                 {
-                    expObj2.customer = expense.customer.displayName;
+                    uniqueExpenses[name] = value;
+                    expenseNameList.push(name);
+                    flag = false;
+                }
+                var expObj = {
+                    name: name,
+                    value : value
+                };
+                if(!flag)
+                {
+                  expenseList.push(expObj);
                 }
                 else
                 {
-                   expObj2.customer = "None";     
+                  var expObj =  expenseList.pop();  
+                  var expObj2 = 
+                  {
+                       name: name,
+                       value : uniqueExpenses[name]
+                  };
+                 expenseList.push(expObj2);
                 }
-                */
             
-                expenseList.push(expObj2);
+            var listSize = expenseList.length;
+            if(listSize==5)
+            {
+                break;    
             }
-		}
+            }//end of for
 		expenseList.sort(function(a,b) {
 			return b.value - a.value;
 		});
