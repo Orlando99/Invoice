@@ -116,7 +116,10 @@
           <!--
           <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{'$'+ (selectedCustomer.entity.outstanding || '0.00')}}</h2>
 -->
-        <p class="layout-no-margin col-no-padding ext-color-light">Outstanding</p>
+        <p class="layout-no-margin col-no-padding ext-color-light">Outstanding<br><br></p>
+          
+          
+          
       </div>
       <div class="col-40 layout-margin-tb">
         <h3 class="layout-margin-t text-info text-uppercase text-weight-normalize">Income &amp; Expense</h3>
@@ -137,26 +140,27 @@
           <td class="layout-padding-tb"></td>
         </tr>
         <tr class="text-color-light" ng-repeat="person in selectedCustomer.contactPersons track by $index">
-          <td class="layout-padding-tb-lg valign-top">{{person.entity.firstname+' '+person.entity.lastname}}
-           <div ng-show="person.entity.defaultPerson">
-           <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
-         </div>
-          </td>
-          <td class="layout-padding-tb-lg valign-top">
-          <span ng-show="person.entity.mobile">{{'M: '+person.entity.mobile}}<br/></span>
-          <span ng-show="person.entity.phone">{{'W: '+person.entity.phone}}</td>
-          <td class="layout-padding-tb-lg valign-top">{{person.entity.email}}</td>
-          <td class="layout-padding-tb-lg valign-top actions">
-            <a ng-click="editContact(this.person, $index);" class="action-edit">Edit</a>
-            <button class="button button-icon" ng-click="deleteContact($index);"><img src="./assets/images/icon-times-round.png" alt=""></button>
-          </td>
+              <td class="layout-padding-tb-lg valign-top"style = "position: relative;
+               left: 18px;" >{{person.entity.firstname+' '+person.entity.lastname}}
+               <div ng-show="person.entity.defaultPerson">
+               <span class="glyphicon glyphicon-ok-sign" style =  "position: relative;left: -19px;top: -17px;" aria-hidden="true" > </span>
+             </div>
+              </td>
+              <td class="layout-padding-tb-lg valign-top">
+              <span ng-show="person.entity.mobile">{{'M: '+person.entity.mobile}}<br/></span>
+              <span ng-show="person.entity.phone">{{'W: '+person.entity.phone}}</td>
+              <td class="layout-padding-tb-lg valign-top">{{person.entity.email}}</td>
+              <td class="layout-padding-tb-lg valign-top actions">
+                <a ng-click="editContact(this.person, $index);" class="action-edit" style = "position: relative;top: -18px;">Edit</a>
+                <button class="button button-icon" ng-click="deleteContact($index);"style = "position: relative;left: 21px;top: -17px;"
+                        ><img src="./assets/images/icon-times-round.png" alt=""></button>
+              </td>
+        </tr>
+        <tr style = "height: 50px !important;background-color: #FFFFFF;">
+         <td colspan="3"></td>
         </tr>
       </table>
     </div>
-
-      
-      
-     
   <div class="popup-modal confirm-delete hidesm">
     <div class="modal container">
       <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize
@@ -176,13 +180,17 @@
       <table class="container table-border-b">
         <tr class="text-uppercase text-info">
           <td class="layout-padding-tb-lg" 
-              ng-repeat="title in ['Date','Invoice #','Ref. #','AMTOUNT']">{{title}}</td>
+              ng-repeat="title in ['Date','Invoice #','Ref. #','AMTOUNT','Payment Method']">{{title}}</td>
         </tr>
         <tr class="text-color-light" ng-repeat="payment in payments">
           <td class="layout-padding-tb-xl text-uppercase">{{payment.date}}</td>
           <td class="layout-padding-tb-xl text-uppercase">{{payment.invoiceNumber}}</td>
           <td class="layout-padding-tb-xl text-uppercase">{{payment.entity.reference}}</td>
-          <td class="layout-padding-tb-xl text-uppercase">{{payment.entity.amount}}</td>
+          <td class="layout-padding-tb-xl text-uppercase">{{"$"+ payment.entity.amount}}</td>
+          <td class="layout-padding-tb-xl text-uppercase">{{payment.entity.mode}}</td>
+            
+            
+            
         </tr>
       </table>
     </div>

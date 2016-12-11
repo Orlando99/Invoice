@@ -367,27 +367,7 @@ function drawPieChart() {
         var expensePercentageList = [];
 
 		var uniqueExpenses = {};
-        var size = 0;
-        if(objs.length<5)
-        {
-            size = objs.length;   
-        }
-        else
-        {
-           size =5;      
-        }
-        
-       /* for(var i=0; i < objs.length; ++i) {
-			var value = uniqueExpenses[name];
-			totalExpense += value;
-		}
-        var percentageslist = []; 
-            for(var i=0 ; i < objs.length; i++ ){
-                var expense1 = objs[i];
-                var value1 = expense1.entity.amount;
-                var percentage =((value / totalExpense) * 100).toFixed(1);
-               return percentageslist.push(percentage);
-            }*/
+       
         var texp =0;
         for(var i = 0 ; i < size ; i++){
             var expense = objs[i];
@@ -403,44 +383,49 @@ function drawPieChart() {
         }
              var originalname= [];
         
-		for(var i=0; i < size; ++i) 
+		for(var i=0; i < objs.length; ++i) 
         {
-			var expense = objs[i];
-			var name = expense.entity.category + "  " + pr[i] + "%" ;
-			var value = expense.entity.amount;
-            var flag = false;
-			if(uniqueExpenses[name]) 
-            {
-				uniqueExpenses[name] += value;
-                flag = true;
-			
-            } else {
-                originalname.push(expense.entity.category);
-				uniqueExpenses[name] = value;
-				expenseNameList.push(name);
-                flag = false;
-			}
+               var expense = objs[i];
+               var name = expense.entity.category + "  " + pr[i] + "%" ;
+               var value = expense.entity.amount;
+               var flag = false;
+               if(uniqueExpenses[name]) 
+               {
+                  uniqueExpenses[name] += value;
+                  flag = true;
+                } else 
+                {
+                    originalname.push(expense.entity.category);
+                    uniqueExpenses[name] = value;
+                    expenseNameList.push(name);
+                    flag = false;
+                }
+                var expObj = {
+                    name: name,
+                    value : value
+                };
+                if(!flag)
+                {
+                  expenseList.push(expObj);
+                }
+                else
+                {
+                  var expObj =  expenseList.pop();  
+                  var expObj2 = 
+                  {
+                       name: name,
+                       value : uniqueExpenses[name]
+                  };
+                 expenseList.push(expObj2);
+                }
 
-			var expObj = {
-				name: name,
-				value : value
-			};
-            if(!flag)
-            {
-              expenseList.push(expObj);
-            }
-            else
-            {
-              var expObj =  expenseList.pop();  
-              var expObj2 = 
-              {
-                   name: name,
-                   value : uniqueExpenses[name]
-               };
             
-                expenseList.push(expObj2);
+            var listSize = expenseList.length;
+            if(listSize==5)
+            {
+                break;    
             }
-		}
+            }//end of for
 		expenseList.sort(function(a,b) {
 			return b.value - a.value;
 		});

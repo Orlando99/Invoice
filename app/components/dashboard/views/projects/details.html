@@ -32,6 +32,14 @@
           <p class="layout-no-padding layout-no-margin col-40">Description</p>
           <p class="layout-no-padding layout-no-margin col-60" style="word-break: break-word;">{{project.projectDescription}} <br></p>
           <p class="layout-no-padding layout-no-margin col-40">Billing Method</p>
+  
+          
+          
+          
+          
+          
+          
+          
           <p class="layout-no-padding layout-no-margin col-60">{{project.billingMethod}}</p>
       </div>
 
@@ -104,14 +112,22 @@
           <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Logged Hrs</p>
           <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Billed Hrs</p>
           <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hrs</p>
+          <div ng-show="project.billingMethod == 'Based on task hours'" class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">            
           <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">Price</p>
+          </div>
         </div>
         <div class="table-row row-border" ng-repeat="task in tasks">
           <p class="col-20 text-color-light text-weight-normalize">{{task.entity.taskName}}</p>
-          <p class="col-20 text-color-light text-weight-normalize">{{task.entity.taskHours.toFixed(2) || "0.00"}}</p>
+        
+        
+          <p class="col-20 text-color-light text-weight-normalize">{{task.entity.taskHours || "0.00"}}</p>
           <p class="col-20 text-color-light text-weight-normalize">{{task.entity.billedHours || "0"}}</p>
-          <p class="col-20 text-color-light text-weight-normalize text-center">{{task.entity.taskHours.toFixed(2) - task.entity.billedHours || "0.00"}}</p>
+          <p class="col-20 text-color-light text-weight-normalize text-center">{{task.entity.taskHours  - task.entity.billedHours || "0.00"}}</p>
+        
+            
+            <div ng-show="project.billingMethod == 'Based on task hours'" class="col-20 text-color-light text-weight-normalize text-right">
           <p class="col-20 text-color-light text-weight-normalize text-right">{{'$' + (task.entity.taskCost.toFixed(2) || '0.00')}}</p>
+        </div>
         </div>
       </div>
     </div>
@@ -135,7 +151,6 @@
         </div>
       </div>
     </div>
-
   </div>
 
   <div class="clearfix spacer hidesm"></div>
