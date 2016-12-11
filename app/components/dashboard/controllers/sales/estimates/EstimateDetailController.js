@@ -46,6 +46,7 @@ function showEstimateDetail() {
         if(estimate.attachments) {
 			estimate.attachments.forEach(function(attach) {
 				attach.fileName = attach.name();
+                 attach.fileName1 = attach.fileName.substring(attach.fileName.indexOf("_") + 1 , attach.fileName.length);
 				attach.fileUrl = attach.url();
 			});
 			$scope.attachments = estimate.attachments;
