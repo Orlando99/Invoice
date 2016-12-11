@@ -136,7 +136,7 @@ function CheckUseCase(stateName) {
 	}
 }
     
-    function listProjects() {
+function listProjects() {
 	showLoader();
 	$q.when(projectService.listProjects(user))
 	.then(function(res) {
@@ -267,7 +267,6 @@ $scope.updateTask = function(){
         return;
     var index = $scope.selectedTaskIndex;
     
-    
     showLoader();
     
     if($scope.tasks[index].entity){
@@ -291,29 +290,67 @@ $scope.updateTask = function(){
         });
     }
 }
-/*
+ 
 $scope.editTimesheet = function(index){
+   
     $scope.selectedTimesheetIndex = index;
     
-    $scope.timesheets[index];
-    
-    
-    
-    $scope.editTimesheetUser = $scope.timesheets[index].attributes.user;
+    $scope.selectedTimesheetList = $scope.timesheets[index];
+   
     $scope.editTimesheetTask = $scope.timesheets[index].attributes.task;
-    $scope.editTimesheetDate = $scope.timesheets[index].date;
+    $scope.editTimesheetUser = $scope.timesheets[index].attributes.user;
+    var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+    
+    $scope.editTimesheetDate = formatDate($scope.timesheets[index].date,dateFormat) ;
+    
     $scope.editTimesheetDescription = $scope.timesheets[index].attributes.notes;
     $scope.editTimesheetHours = parseInt($scope.timesheets[index].hours);
     $scope.editTimesheetMinutes = parseInt($scope.timesheets[index].minutes);
     
-    $('.edit-timesheet').addClass('show');
+    $('.edit-timesheet').addClass('show');  
+}   
+$scope.updateTimesheet= function()
+{
     
+    var index = $scope.selectedTimesheetIndex ;  
+    showLoader();
+     
+    $scope.timesheets[index].set("date",$scope.timesheetDate );
+    $scope.timesheets[index].set("task",$scope.editTimesheetTask.entity);
+    $scope.timesheets[index].set("user",$scope.timesheetUser) ;
+   
+    var d = new Date();
+     d.subtractHours($scope.editTimesheetHours);
+     d.subtractMinutes($scope.editTimesheetMinutes);
+    
+    var timeSpent  =  d;
+    
+    var hours = $scope.editTimesheetHours < 10 ? '0' + $scope.editTimesheetHours : '' + $scope.editTimesheetHours;
+    var minutes  =  $scope.editTimesheetMinutes < 10 ? '0' + $scope.editTimesheetMinutes : '' + $scope.editTimesheetMinutes;
+
+    $scope.timesheets[index].set("timeSpent",timeSpent );
+     
+    $scope.timesheets[index].hours = hours ;
+    $scope.timesheets[index].minutes = minutes;
+
+    ///
+    
+    $scope.timesheets[index].set("notes",$scope.timesheetDescription);
+       
+    $scope.timesheets[index].save()
+        .then(function(obj){
+            $(".edit-timesheet").removeClass('show');
+            hideLoader();
+        });
+   
+   //hideLoader();
 }
-    */
+    //
+    
+ 
 $scope.addTimesheet = function(){
     $(".new-timesheet").addClass('show');
 }
-
 $scope.saveTimesheet = function(){
     if(!$("#addTimesheetForm").valid())
         return;
@@ -342,6 +379,8 @@ $scope.saveTimesheet = function(){
         hours : $scope.timesheetHours < 10 ? '0' + $scope.timesheetHours : '' + $scope.timesheetHours,
         minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes
     });
+    
+    
     $scope.timesheetUser = "";
     $scope.timesheetTask = "";
     $scope.timesheetDate = new Date();
@@ -428,6 +467,7 @@ $scope.addUser = function(){
 $scope.openDatePicker = function(n) {
 	switch (n) {
 		case 1: $scope.openPicker1 = true; break;
+            case 2: $scope.openPicker2 = true; break;
 	}
 }
     
@@ -498,7 +538,7 @@ function customerChangedHelper() {
 	
 }
     
-    function customerChanged() {
+function customerChanged() {
 	   //showLoader();
 		//hideLoader();
 	}

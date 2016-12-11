@@ -350,10 +350,8 @@ btn btn-sm btn-success pull-right uib-close ng-binding
 
 #state-error
 {
-    
     margin-right: 750px;
     width: 300px;
-    
     
 }
 #state-error:before{
@@ -397,12 +395,6 @@ btn btn-sm btn-success pull-right uib-close ng-binding
 .vertical-separator-right {
     border: none;
     border-RIGHT: 0.5px #8c8c8c solid;
-}
-
-.top-exp-left-border
-{
-    border-left: 0.5px  #8c8c8c solid;
-    
 }
 
 body hr {

@@ -39,7 +39,6 @@ coreFactory.getUserRole(user)
         showProjectDetail();
 	});
     
-
     
 $('#addTaskForm').validate({
 	rules: {
@@ -185,6 +184,7 @@ function showProjectDetail() {
         $scope.billedHours = billedHours + ":" + billedMinutes;
         
         $scope.timesheets = project.timesheets;
+ 
         hideLoader();
 	});
 
@@ -344,6 +344,7 @@ $scope.openDatePicker = function(n) {
 	}
 }
 
+
 $scope.addToInvoice = function(){
     $scope.invoiceDate = new Date();
     $scope.dataOnInvoice = '1';
@@ -361,6 +362,7 @@ $scope.SavetoInvoice = function(){
     $state.go('dashboard.sales.invoices.new', {'projectId':obj });
 }
     
+
 $scope.saveTimesheet = function(){
     if(!$("#addTimesheetForm").valid())
         return;

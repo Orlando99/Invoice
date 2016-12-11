@@ -364,73 +364,68 @@ function drawPieChart() {
 		var expenseNameList = [];
 		var expenseValueList = [];
 		var expenseColorList = [];
+        var expensePercentageList = [];
 
 		var uniqueExpenses = {};
-        var size = 0;
-        if(objs.length<5)
-        {
-            size = objs.length;   
+       var size = objs.length;
+        var texp =0;
+        for(var i = 0 ; i < size ; i++){
+            var expense = objs[i];
+            var value = expense.entity.amount; 
+            texp = value + texp;
         }
-        else
-        {
-           size =5;      
+        var pr= [];
+        for(var i = 0 ; i < size ; i++){
+            var expense = objs[i];
+            var value = expense.entity.amount; 
+            var percentage = ((value/ texp) * 100).toFixed(1);
+            pr.push(percentage);
         }
-		for(var i=0; i < size; ++i) 
+             var originalname= [];
+        
+		for(var i=0; i < objs.length; ++i) 
         {
-			var expense = objs[i];
-			var name = expense.entity.category;
-			var value = expense.entity.amount;
-            var flag = false;
-			if(uniqueExpenses[name]) 
-            {
-				uniqueExpenses[name] += value;
-                flag = true;
-			
-            } else {
-				uniqueExpenses[name] = value;
-				expenseNameList.push(name);
-                flag = false;
-			}
-
-			var expObj = {
-				name: name,
-				value : value
-			};
-		/*	if (expense.customer)
-            {
-				expObj.customer = expense.customer.displayName;
-            }
-            
-            else
-            {
-               expObj.customer = "None";     
-            }
-            */
-            if(!flag)
-            {
-              expenseList.push(expObj);
-            }
-            else
-            {
-              var expObj =  expenseList.pop();  
-              var expObj2 = 
-              {
-                   name: name,
-                   value : uniqueExpenses[name]
-               };
-              /*  if (expense.customer)
+               var expense = objs[i];
+               var name = expense.entity.category + "  " + pr[i] + "%" ;
+               var value = expense.entity.amount;
+               var flag = false;
+               if(uniqueExpenses[name]) 
+               {
+                  uniqueExpenses[name] += value;
+                  flag = true;
+                } else 
                 {
-                    expObj2.customer = expense.customer.displayName;
+                    originalname.push(expense.entity.category);
+                    uniqueExpenses[name] = value;
+                    expenseNameList.push(name);
+                    flag = false;
+                }
+                var expObj = {
+                    name: name,
+                    value : value
+                };
+                if(!flag)
+                {
+                  expenseList.push(expObj);
                 }
                 else
                 {
-                   expObj2.customer = "None";     
+                  var expObj =  expenseList.pop();  
+                  var expObj2 = 
+                  {
+                       name: name,
+                       value : uniqueExpenses[name]
+                  };
+                 expenseList.push(expObj2);
                 }
-                */
+
             
-                expenseList.push(expObj2);
+            var listSize = expenseList.length;
+            if(listSize==5)
+            {
+                break;    
             }
-		}
+            }//end of for
 		expenseList.sort(function(a,b) {
 			return b.value - a.value;
 		});
@@ -442,10 +437,11 @@ function drawPieChart() {
 		for(var i=0; i < expenseNameList.length; ++i) {
 			var name = expenseNameList[i];
 			var value = uniqueExpenses[name];
-
+           
 			totalExpense += value;
 			expenseValueList.push(value);
-			expenseColorList.push(getColor(name));
+			expenseColorList.push(getColor(originalname[i]));
+          
 		}
 		$scope.totalExpenseAmount = currencyFilter(totalExpense*cc.exchangeRate, cc.currencySymbol, 2);
 
@@ -457,26 +453,32 @@ function drawPieChart() {
 				datasets: [{
 					data: expenseValueList,
 					backgroundColor: expenseColorList
+                    
 				}]
 			},
+            
 			options: {
 				events : false,
-				showAllTooltips: true,
+				showAllTooltips: false,
 				responsive: false,
 				rotation: 0,
 				legend: {
-					display: true
+					display: true,
 				},
-				tooltips: {
+				tooltips:
+                            {
 					callbacks: {
-						label: function(item,data) {
+						label:
+                        function(item,data) {
 							var value = data.datasets[item.datasetIndex].data[item.index];
 							var label = data.labels[item.index];
 							var percentage =
 								((value / totalExpense) * 100).toFixed(1);
 							return [percentage + ' %']; // [,label]
 						}
+                        
 					}
+                    
 				}
 			}
 		});
@@ -489,7 +491,6 @@ function addToRelevantRange(creatDate, expireDate, amount) {
 	if (! expireDate) {
 		console.log('expire date not available');
 		return;
-
 	//	expireDate = new Date(creatDate.getTime());
 	//	expireDate.setHours(expireDate.getHours() + 1);
 	}

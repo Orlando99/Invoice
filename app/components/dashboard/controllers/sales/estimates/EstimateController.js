@@ -261,6 +261,7 @@ function prepareEditForm() {
 	if (files) {
 		files.forEach(function(file) {
 			file.fileName = file.name();
+            file.fileName1 = file.fileName.substring(file.fileName.indexOf("_") + 1 , file.fileName.length);
 			file.exist = true;
 		});
 		$scope.files = files;

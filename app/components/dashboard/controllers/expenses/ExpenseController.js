@@ -138,6 +138,7 @@ function showExpenseDetails () {
 			$scope.attachments = expenseObj.attachments;
 			$scope.attachments.forEach(function(attach) {
 				attach.fileName = attach.name();
+                attach.fileName1 = attach.fileName.substring(attach.fileName.indexOf("_") + 1 , attach.fileName.length);
 				attach.fileUrl = attach.url();
 			});
 			
@@ -200,6 +201,7 @@ function prepareToEditExpense() {
 		if (files) {
 			files.forEach(function(file) {
 				file.fileName = file.name();
+                file.fileName1 = file.fileName.substring(file.fileName.indexOf("_") + 1 , file.fileName.length);
 				file.exist = true;
 			});
 			$scope.files = files;
