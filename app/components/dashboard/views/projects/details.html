@@ -6,7 +6,7 @@
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">{{project.projectName}}</h3>
     <div class="actions float-right layout-margin-tb" uib-dropdown>
       <a ui-sref="dashboard.projects.edit({projectId:project.id})" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
-      <a href="" class="button button-small button-info text-uppercase layout-margin-r" ng-show="false">Add to Invoice</a>
+      <a href="javascript:" ng-click="addToInvoice()" ng-hide="project.billingMethod == 'None'" class="button button-small button-info text-uppercase layout-margin-r">Add to Invoice</a>
       <button class="button button-small button-neutral text-uppercase" uib-dropdown-toggle>More <img src="./assets/images/dropdown-arrow-w.png" alt="">
           </button>
         <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
@@ -40,7 +40,7 @@
       <h3 class="layout-margin-tb text-uppercase text-weight-normalize">Logged Hours</h3>
       <div class="container">
         <p class="layout-no-padding layout-no-margin col-40">Hours worked</p>
-        <p class="layout-no-padding layout-no-margin col-60">{{unbilledHours}}</p>
+        <p class="layout-no-padding layout-no-margin col-60">{{billableHours}}</p>
       </div>
 
       <div class="clearfix"></div><br>
@@ -48,10 +48,10 @@
       <h3 class="layout-margin-tb text-uppercase text-weight-normalize">Total</h3>
       <div class="container">
         <p class="layout-no-padding layout-no-margin col-40">Billable Hours</p>
-        <p class="layout-no-padding layout-no-margin col-60 text-info">00:00</p>
+        <p class="layout-no-padding layout-no-margin col-60 text-info">{{billableHours}}</p>
 
         <p class="layout-no-padding layout-no-margin col-40">Billed Hours</p>
-        <p class="layout-no-padding layout-no-margin col-60 text-positive">00:00</p>
+        <p class="layout-no-padding layout-no-margin col-60 text-positive">{{billedHours}}</p>
 
         <p class="layout-no-padding layout-no-margin col-40">Unbilled Hours</p>
         <p class="layout-no-padding layout-no-margin col-60 text-danger">{{unbilledHours}}</p>
@@ -89,7 +89,8 @@
           <p class="col-20 layout-margin-t text-color-light text-weight-normalize">{{sheet.attributes.task.attributes.taskName}}</p>
           <p class="col-20 layout-margin-t text-color-light text-weight-normalize">{{sheet.attributes.user.attributes.title}}</p>
           <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-center">{{sheet.time}}</p>
-          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-right text-danger">Unbilled</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-right text-danger" ng-hide="sheet.attributes.isBilled">Unbilled</p>
+          <p class="col-20 layout-margin-t text-color-light text-weight-normalize text-right text-positive" ng-show="sheet.attributes.isBilled">Billed</p>
           <p class="col-100 layout-margin-tb layout-padding-l">
             {{sheet.attributes.notes}}
           </p>
@@ -109,8 +110,8 @@
         <div class="table-row row-border" ng-repeat="task in tasks">
           <p class="col-20 text-color-light text-weight-normalize">{{task.entity.taskName}}</p>
           <p class="col-20 text-color-light text-weight-normalize">{{task.entity.taskHours.toFixed(2) || "0.00"}}</p>
-          <p class="col-20 text-color-light text-weight-normalize">{{task.entity.billedHours || "0"}}</p>
-          <p class="col-20 text-color-light text-weight-normalize text-center">{{task.entity.taskHours.toFixed(2) - task.entity.billedHours || "0.00"}}</p>
+          <p class="col-20 text-color-light text-weight-normalize">{{task.entity.billedHours.toFixed(2) || "0"}}</p>
+          <p class="col-20 text-color-light text-weight-normalize text-center">{{task.entity.taskHours.toFixed(2) - task.entity.billedHours.toFixed(2) || "0.00"}}</p>
           <p class="col-20 text-color-light text-weight-normalize text-right">{{'$' + (task.entity.taskCost.toFixed(2) || '0.00')}}</p>
         </div>
       </div>
@@ -120,18 +121,22 @@
         <div class="thead">
           <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Name</p>
           <p class="col-25 text-uppercase text-color-normalize text-weight-normalize">Email</p>
-          <p class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Logged Hours</p>
+          <p class="col-25 text-uppercase text-color-normalize text-weight-normalize text-center">Logged Hours</p>
+            <!--
           <p class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Billed Hours</p>
           <p class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hours</p>
-          <p class="col-10 text-uppercase text-color-normalize text-weight-normalize text-right">Role</p>
+-->
+          <p class="col-25 text-uppercase text-color-normalize text-weight-normalize text-right">Role</p>
         </div>
         <div class="table-row row-border" ng-repeat="user in staff">
           <p class="col-16 text-color-light text-weight-normalize">{{user.user.attributes.title}}</p>
           <p class="col-25 text-color-light text-weight-normalize" style="word-break: break-all;">{{user.user.attributes.emailID}}</p>
+          <p class="col-25 text-color-light text-weight-normalize text-center"></p>
+            <!--
           <p class="col-15 text-color-light text-weight-normalize text-center"></p>
           <p class="col-15 text-color-light text-weight-normalize text-center"></p>
-          <p class="col-15 text-color-light text-weight-normalize text-center"></p>
-          <p class="col-10 text-color-light text-weight-normalize text-right">{{user.user.attributes.role}}</p>
+-->
+          <p class="col-25 text-color-light text-weight-normalize text-right">{{user.user.attributes.role}}</p>
         </div>
       </div>
     </div>
@@ -250,8 +255,8 @@
 
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Time Spent</label>
-            <input class="col-35" type="Number" min="0" max="23" placeholder="HH" name="timesheetHours" ng-model="timesheetHours">
-            <input class="col-35 pull-right" type="Number" placeholder="MM" name="timesheetMinutes" ng-model="timesheetMinutes" min="0" max="59">
+            <input class="col-35" type="Number" placeholder="HH" name="timesheetHours" ng-model="timesheetHours">
+            <input class="col-35 pull-right" type="Number" placeholder="MM" name="timesheetMinutes" ng-model="timesheetMinutes">
               <!--
             <span class="col-75 pull-right layout-margin-tb"><a href="#">Switch to Time Duration</a></span>
             -->
@@ -288,6 +293,53 @@
       </div>
       <div class="clearfix"></div>
       <button class="button button-small button-info text-uppercase layout-margin-r" ng-click="saveTimesheet()">Save</button>
+        <!--
+      <button class="button button-small button-neutral text-uppercase">Start Timer</button>
+        -->
+    </div>
+  </div>
+
+<div class="popup-modal convert-invoice hidesm">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Project Invoice Info</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form action="" name="InvoiceInfo" id="InvoiceInfo" class="layout-margin-tb inputs-white" novalidate>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Bill Up To</label>
+              <input class="col-75" type="text" readonly
+          uib-datepicker-popup="{{dateFormat}}" name="invoiceDate" ng-model="invoiceDate" is-open="openPicker2" show-weeks="false" ng-click="openDatePicker(2)"/>
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">How to sort data on invoice</label>
+              
+              
+            <select class="col-75" name="timesheetUser" ng-model="dataOnInvoice">
+                  <option value="1">Single line for Project</option>
+              </select>
+<!--
+            <select class="col-75" name="timesheetUser" ng-change="timeSheetUserChanged()" ng-model="timesheetUser" placeholder="Select User" ng-options="user.userName for user in users">
+                  <option value="" disabled>Select User</option>
+              </select>
+-->
+          </div>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Show in Item Name</label>
+            <select class="col-75" name="itemName" ng-model="itemName" >
+              <option value="1">Project Name</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase layout-margin-r" ng-click="SavetoInvoice()">Save</button>
         <!--
       <button class="button button-small button-neutral text-uppercase">Start Timer</button>
         -->

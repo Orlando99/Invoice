@@ -191,6 +191,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			fee.price + ' (' +
 			fee.type + ')';
 	}
+        
+        $scope.projectId = $state.params.projectId;
 
 	function prepareToCreateInvoice() {
 		showLoader();
@@ -345,7 +347,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 		var customerId = $state.params.customerId;
 		var expenseId = $state.params.expenseId;
-
+        var projectId = $state.params.projectId;
+        
 		if(customerId) {
 			$scope.selectedCustomer = $scope.customers.filter(function(cust) {
 				return cust.entity.id == customerId;
@@ -369,6 +372,48 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			}
 
 		}
+        
+        if(projectId){
+            $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+				return cust.entity.id == projectId.project.entity.customer.id;
+			})[0];
+
+            customerChanged();
+            $scope.invoiceItems = [{
+                selectedItem : undefined,
+                selectedTax : undefined,
+                rate : 0,
+                quantity : 1,
+                discount : 0,
+                amount : 0
+            }];
+
+            $q.when(customerChangedHelper())
+                .then(function() {
+                    var t = {
+                        create : true,
+                        entity : {
+                            rate : projectId.project.entity.projectBillingAmount,
+                            title : projectId.project.entity.projectName
+                        }
+                    }
+                    
+                    $scope.items.pop();
+                    $scope.items.push(t);
+                    $scope.items.push(createItemOpener);
+                    
+                    $scope.addInvoiceItem();
+                    $scope.invoiceItems[0] = {
+                        selectedItem : t,
+                        selectedTax : undefined,
+                        rate : projectId.project.entity.projectBillingAmount,
+                        quantity : 1,
+                        discount : 0,
+                        amount : 0
+                    };
+                    $scope.itemChanged(0);
+                });
+            }
 
 		var customFields = [];
 		if($scope.prefs.customFields) {
@@ -428,7 +473,18 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 		var email = $scope.selectedCustomer.entity.email;
 		if(email) invoice.customerEmails = [email];
+        
+        if($scope.projectId){
+            $scope.projectId.project.timesheets.forEach(function(obj){
+                obj.set('isBilled', 1);
+                var task = obj.get('task');
+                task.set('billedHours', task.get('taskHours'));
+                obj.set('task', task);
+            });
 
+            Parse.Object.saveAll($scope.projectId.project.timesheets);
+        }
+        
 		return invoiceService.createNewInvoice(invoice, $scope.invoiceItems, $scope.userRole, $scope.files);
 	}
 

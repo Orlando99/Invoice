@@ -62,15 +62,35 @@ $('#addUserForm').validate({
 $('#addTimesheetForm').validate({
 	rules: {
 		timesheetDate : 'required',
-		timesheetHours : 'required',
-		timesheetMinutes : 'required',
+		timesheetHours : {
+            required : true,
+            number : true,
+            min : 0,
+            max : 23
+        },
+		timesheetMinutes : {
+            required : true,
+            number : true,
+            min : 0,
+            max : 59
+        },
         timesheetUser : 'required',
         timeSheetTask : 'required'
 	},
 	messages: {
 		timesheetDate : 'Please select a date',
-		timesheetHours : 'Please enter hours',
-		timesheetMinutes : 'Please enter minutes',
+		timesheetHours : {
+            required : "Please enter hours",
+            number : "Enter valid hours",
+            min : "Please enter valid hours",
+            max : "Please enter valid hours"
+        },
+		timesheetMinutes : {
+            required : "Please enter minutes",
+            number : "Enter valid minutes",
+            min : "Please enter valid minutes",
+            max : "Please enter valid minutes"
+        },
         timesheetUser : 'Please select user',
         timeSheetTask : 'Please select task'
 	}
@@ -88,6 +108,7 @@ function showProjectDetail() {
         $scope.customer = project.entity.get("customer");
         $scope.tasks = project.tasks;
         $scope.staff = project.users;
+        $scope.actualProject = project;
         
         $scope.staff.forEach(function(obj){
             for(var i = 0; i < $scope.users.length; ++i){
@@ -99,9 +120,17 @@ function showProjectDetail() {
         });
         
         $scope.unbilledHours = 0;
+        $scope.billedHours = 0;
+        $scope.billableHours = 0;
+        
+        var totalHours = 0;
+        var totalMinutes = 0;
         
         var hours = 0;
         var minutes = 0;
+        
+        var billedHours = 0;
+        var billedMinutes = 0;
         
         project.timesheets.forEach(function(obj){
             var t = obj.get('timeSpent');
@@ -112,15 +141,34 @@ function showProjectDetail() {
                 msec -= hh * 1000 * 60 * 60;
                 var mm = Math.floor(msec / 1000 / 60);
                 msec -= mm * 1000 * 60;
-                hours += hh;
-                minutes += mm;
+                
+                if(obj.get('isBilled')){
+                    billedHours += hh;
+                    billedMinutes += mm;
+                }
+                else{
+                    hours += hh;
+                    minutes += mm;
+                }
+                
                 hh = hh < 10 ? '0' + hh : '' + hh
                 mm = mm < 10 ? '0' + mm : '' + mm
                 obj.time = hh + ':' + mm;
+                
             }
             else
                 obj.time = "00:00";
         });
+        
+        totalHours = hours + billedHours;
+        totalMinutes = minutes + billedMinutes;
+        
+        totalHours += (totalMinutes/60);
+        totalMinutes = totalMinutes % 60;
+        
+        totalHours = totalHours < 10 ? "0" + totalHours.toFixed(0) : totalHours.toFixed(0);
+        totalMinutes = totalMinutes < 10 ? "0" + totalMinutes.toFixed(0) : totalMinutes.toFixed(0);
+        $scope.billableHours = totalHours + ":" + totalMinutes;
         
         hours += (minutes/60);
         minutes = minutes % 60;
@@ -128,6 +176,13 @@ function showProjectDetail() {
         hours = hours < 10 ? "0" + hours.toFixed(0) : hours.toFixed(0);
         minutes = minutes < 10 ? "0" + minutes.toFixed(0) : minutes.toFixed(0);
         $scope.unbilledHours = hours + ":" + minutes;
+        
+        billedHours += (billedMinutes/60);
+        billedMinutes = billedMinutes % 60;
+        
+        billedHours = billedHours < 10 ? "0" + billedHours.toFixed(0) : billedHours.toFixed(0);
+        billedMinutes = billedMinutes < 10 ? "0" + billedMinutes.toFixed(0) : billedMinutes.toFixed(0);
+        $scope.billedHours = billedHours + ":" + billedMinutes;
         
         $scope.timesheets = project.timesheets;
         hideLoader();
@@ -285,10 +340,26 @@ function createStaffUsers (users, params) {
 $scope.openDatePicker = function(n) {
 	switch (n) {
 		case 1: $scope.openPicker1 = true; break;
+        case 2: $scope.openPicker2 = true; break;
 	}
 }
 
+$scope.addToInvoice = function(){
+    $scope.invoiceDate = new Date();
+    $scope.dataOnInvoice = '1';
+    $scope.itemName = '1';
+    $('.convert-invoice').addClass('show');
+}
 
+$scope.SavetoInvoice = function(){
+    var obj = {
+        invoiceDueDate : $scope.invoiceDate,
+        dataOnInvoice : $scope.dataOnInvoice,
+        itemNameToShow : $scope.itemName,
+        project : $scope.actualProject
+    };
+    $state.go('dashboard.sales.invoices.new', {'projectId':obj });
+}
     
 $scope.saveTimesheet = function(){
     if(!$("#addTimesheetForm").valid())

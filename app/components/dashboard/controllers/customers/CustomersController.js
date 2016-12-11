@@ -144,7 +144,8 @@ invoicesUnlimited.controller('CustomersController',
         });
         
         $scope.selectedCustomer.comments.forEach(function(obj){
-            obj.date = formatDate(obj.entity.date, dateFormat);
+            if(obj)
+                obj.date = formatDate(obj.entity.date, dateFormat);
         });
         
 		var obj = $scope.selectedCustomer.entity;

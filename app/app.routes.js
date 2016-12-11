@@ -283,7 +283,8 @@ angular.module('invoicesUnlimited')
 					url : '/sales/invoices/new',
 					params : {
 						expenseId : null,
-						customerId : null
+						customerId : null,
+                        projectId : null
 					},
 					views : {
 						'@' : {

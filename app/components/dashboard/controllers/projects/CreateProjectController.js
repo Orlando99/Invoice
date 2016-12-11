@@ -43,15 +43,35 @@ $('#addProjectForm').validate({
 $('#addTimesheetForm').validate({
 	rules: {
 		timesheetDate : 'required',
-		timesheetHours : 'required',
-		timesheetMinutes : 'required',
+		timesheetHours : {
+            required : true,
+            number : true,
+            min : 0,
+            max : 23
+        },
+		timesheetMinutes : {
+            required : true,
+            number : true,
+            min : 0,
+            max : 59
+        },
         timesheetUser : 'required',
         timeSheetTask : 'required'
 	},
 	messages: {
 		timesheetDate : 'Please select a date',
-		timesheetHours : 'Please enter hours',
-		timesheetMinutes : 'Please enter minutes',
+		timesheetHours : {
+            required : "Please enter hours",
+            number : "Enter valid hours",
+            min : "Please enter valid hours",
+            max : "Please enter valid hours"
+        },
+		timesheetMinutes : {
+            required : "Please enter minutes",
+            number : "Enter valid minutes",
+            min : "Please enter valid minutes",
+            max : "Please enter valid minutes"
+        },
         timesheetUser : 'Please select user',
         timeSheetTask : 'Please select task'
 	}
@@ -270,7 +290,7 @@ $scope.saveTimesheet = function(){
     d.subtractHours($scope.timesheetHours);
     d.subtractMinutes($scope.timesheetMinutes);
     
-    var temp = $scope.get('taskHours') || 0;
+    var temp = $scope.timesheetTask.get('taskHours') || 0;
     
     $scope.timesheetTask.set('taskHours', $scope.timesheetHours + $scope.timesheetMinutes/60 + temp);
     $scope.timesheetTask.save()
