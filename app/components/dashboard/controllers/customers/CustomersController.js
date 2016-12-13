@@ -511,7 +511,10 @@ invoicesUnlimited.controller('CustomersController',
 				});
 				cust.comments = 
 				cust.invoices.reduce(function(res,cur){
-					return res.concat(cur.comments);
+                    if(cur.comments)
+					   return res.concat(cur.comments);
+                    else
+                        return res.concat([]);
 				},[]);
 			});
 

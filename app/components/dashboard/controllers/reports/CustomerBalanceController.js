@@ -18,7 +18,7 @@ function loadSetData() {
 	$scope.dateRanges = reportsCommon.getDateRanges();
 	$scope.selectedDateRange = $scope.dateRanges[1];
 	$scope.fromDate = new Date();
-     $scope.fromDate.setHours(0);
+    $scope.fromDate.setHours(0);
     $scope.fromDate.setMinutes(0);
 	$scope.toDate = new Date();
 
@@ -52,7 +52,7 @@ $scope.openDatePicker = function(n) {
 
 $scope.generateReport = function() {
     
-    var selectedDate =  $scope.toDate
+    var selectedDate =  $scope.toDate;
     var todayDate =  new Date();
     var fromDate1 =  $scope.fromDate
     var toDate1 =  $scope.toDate
@@ -65,7 +65,7 @@ $scope.generateReport = function() {
     }
     else if(fromDate1>toDate1)
     {
-        ShowMessage("FromDate can't be greator then ToDate!","error");   
+        ShowMessage("From Date can't be greater then To Date!","error");   
         return false;
     }
 	showLoader();

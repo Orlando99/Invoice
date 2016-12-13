@@ -25,7 +25,7 @@ return {
 		var query = new Parse.Query(CreditNote);
 		query.select('remainingCredits', 'creditsUsed', 'creditNumber');
 		query.equalTo('customer', customer);
-		query.equalTo('status', 'Open');
+		query.notEqualTo('status', 'Closed');
 
 		return query.find()
 		.then(function(objs) {
