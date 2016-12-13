@@ -71,7 +71,7 @@ $scope.generateReport = function() {
     }
     else if(fromDate1>toDate1)
     {
-        ShowMessage("FromDate can't be greator then ToDate!","error");   
+        ShowMessage("From Date can't be greater then To Date!","error");
         return false;
     }
 	showLoader();

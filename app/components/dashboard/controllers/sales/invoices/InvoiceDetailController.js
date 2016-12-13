@@ -181,7 +181,8 @@ $scope.cloneInvoice = function() {
     
 }
 
-$scope.showAvailableCredits = function() {
+$scope.showAvailableCredits = function() 
+{
 	showLoader();
 	$q.when(creditNoteService.getCustomerCreditNotes(
 		$scope.invoice.entity.get('customer')))
@@ -217,9 +218,7 @@ $scope.showAvailableCredits = function() {
 		});
 		$('#applyCreditForm').validate().resetForm();
 		$('.apply-credit').addClass('show');
-	//	console.log($('[name="usedCredit"]').rules());
-
-		hideLoader();
+ 		hideLoader();
 	});
 
 }

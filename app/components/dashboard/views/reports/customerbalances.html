@@ -68,6 +68,11 @@
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Invoice Balance (FCY)</h3>
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits (FCY) <img src="./assets/images/dropdown-arrow-primary.png" alt=""></h3> -->
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Balance </h3>
+          
+         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits </h3>
+          
+         
+          
       </div>
 
       <div class="table-row row-border" ng-repeat="id in ids">
@@ -84,8 +89,13 @@
         <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
           {{info[id].balanceDueStr}}
         </div>
+          
+        <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
+          {{availableCredits}}
+        </div>
+          
       </div>
-
+ 
       <div class="table-row row-border">
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           Total
@@ -100,6 +110,7 @@
           {{totalBalanceStr}}
         </div>
       </div>
+ 
     </div>
   </div>
 
