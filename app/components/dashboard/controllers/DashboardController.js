@@ -437,12 +437,30 @@ function drawPieChart() {
 		for(var i=0; i < expenseNameList.length; ++i) {
 			var name = expenseNameList[i];
 			var value = uniqueExpenses[name];
-           
 			totalExpense += value;
 			expenseValueList.push(value);
 			expenseColorList.push(getColor(originalname[i]));
-          
 		}
+        
+        
+        for( var i = 0; i <expenseValueList.length; i++){
+            for(var j = i ; j < expenseValueList.length ; j++ ){
+                if(expenseValueList[i] < expenseValueList[j]){
+                    var temp = expenseValueList[i];
+                    expenseValueList[i] = expenseValueList[j];
+                    expenseValueList[j] = temp;
+                    
+                    temp = expenseNameList[i];
+                    expenseNameList[i] = expenseNameList[j];
+                    expenseNameList[j] = temp;
+                    
+                    temp = expenseColorList[i];
+                    expenseColorList[i] = expenseColorList[j];
+                    expenseColorList[j] = temp;
+                }
+            }
+        }
+        
 		$scope.totalExpenseAmount = currencyFilter(totalExpense*cc.exchangeRate, cc.currencySymbol, 2);
 
 		var ctx = document.getElementById("piechart");
