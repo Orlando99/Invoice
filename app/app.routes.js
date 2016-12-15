@@ -15,8 +15,9 @@ angular.module('invoicesUnlimited')
 		
 		if (!args.childrenViews) args.childrenViews = {};
 
-		for (var childName in args.childrenViews) {
-			
+		for (var childName in args.childrenViews) 
+        {
+
 			var child = args.childrenViews[childName];
 			
 			routes[childName] = {

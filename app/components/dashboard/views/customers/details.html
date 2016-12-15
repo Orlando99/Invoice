@@ -174,9 +174,7 @@
       <button class="button button-info text-uppercase" ng-click="deleteCustomer(false)">No</button>
     </div>
   </div> 
-      
-      
-      <div class="tab layout-padding" data-name="tab2">
+   <div class="tab layout-padding" data-name="tab2">
       <table class="container table-border-b">
         <tr class="text-uppercase text-info">
           <td class="layout-padding-tb-lg" 
@@ -188,14 +186,9 @@
           <td class="layout-padding-tb-xl text-uppercase">{{payment.entity.reference}}</td>
           <td class="layout-padding-tb-xl text-uppercase">{{"$"+ payment.entity.amount}}</td>
           <td class="layout-padding-tb-xl text-uppercase">{{payment.entity.mode}}</td>
-            
-            
-            
         </tr>
       </table>
     </div>
-      
-      
       <!--
     <div class="tab layout-padding" data-name="tab2">
       <table class="container table-border-b">
@@ -217,19 +210,16 @@
     <div class="tab layout-padding" data-name="tab3">
       <table class="container table-border-b">
         <tr class="text-uppercase text-info">
-          <td class="layout-padding-tb-lg">Date</td>
+          <td class="layout-padding-tb-lg" ng-click = "sortByDate()">Date</td>
           <td class="layout-padding-tb-lg">Details</td>
-          <td class="layout-padding-tb-lg">Users <img src="./assets/images/dropdown-arrow-primary.png" alt=""></td>
+          <td class="layout-padding-tb-lg" ng-click = "sortByUser()">Users <img src="./assets/images/dropdown-arrow-primary.png" alt=""></td>
         </tr>
-        <tr class="text-color-light" ng-repeat="comment in selectedCustomer.comments">
+        <tr class="text-color-light" ng-repeat="comment in selectedCustomer.comments | filter:search">
           <td class="layout-padding-tb-xl">{{comment.date}}</td>
           <td class="layout-padding-tb-xl">{{comment.entity.comment}}</td>
           <td class="layout-padding-tb-xl">{{comment.entity.name}}</td>
         </tr>
-        </tr>
       </table>
     </div>
-
   </div>
-
   <!--<div class="popup-modal"></div>-->

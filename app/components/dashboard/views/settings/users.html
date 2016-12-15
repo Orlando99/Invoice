@@ -22,7 +22,7 @@
 
         <div class="clearfix"></div>
 
-        <table class="table-border-tb">
+        <table class="table-border-tb" style = "margin-bottom: 20px;">
           <tr class="thead">
             <td ng-click="sortByUserName()" class="text-uppercase text-info layout-padding"  >User Name</td>
             <td class="text-uppercase text-info layout-padding"  >Email</td>
@@ -37,7 +37,6 @@
             <td ng-click="editUser($index);" ng-class="user.status=='Activated' ? 'text-positive' : 'text-danger'" class="text-color-light text-weight-normalize layout-padding">{{user.status}}</td>
             <td class="text-color-light text-weight-normalize layout-padding text-right actions" ng-click="deleteUser($index);"><img src="./assets/images/icon-times-round.png" alt="" /></td>
           </tr>
-
         </table>
       </div>
 
