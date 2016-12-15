@@ -334,12 +334,29 @@ function drawBarChart() {
                             if (!tooltip) {
                                 return;
                             }
+                            
+                            tooltip.title = [];
+                        },
+                    callbacks: {
+                        label:
+                        function(item,data) {
+							var value = data.datasets[item.datasetIndex].data[item.index];
+							var label = data.labels[item.index];
+							
+							return [item.xLabel + ': ' + $scope.currentCurrency.currencySymbol + numberWithCommas(parseFloat(value).toFixed(2))];
+						}
+                    }
+                }
 			}
 		});
 	});
 
 }
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+    
 function drawPieChart() {
 	var promiseList = [];
 	var promise = undefined;
