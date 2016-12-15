@@ -91,18 +91,20 @@ return {
 		});
 
 	},
-	invoiceAging : function(params) {
+	  invoiceAging : function(params) {
 		var Invoices = Parse.Object.extend('Invoices');
 		var query = new Parse.Query(Invoices);
 		query.equalTo('organization', params.organization);
-		query.containedIn('status', ['Unpaid', 'Partial Paid', 'Overdue']);
-		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
-		query.lessThanOrEqualTo('invoiceDate', params.toData);
+		//query.containedIn('status', ['Unpaid', 'Partial Paid', 'Overdue']);
+		query.notEqualTo('status', 'Paid');
+		//query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
+		//query.lessThanOrEqualTo('invoiceDate', params.toData);
 		//query.select('invoiceNumber', 'customer', 'balanceDue', 'invoiceDate');
 		query.include('customer');
 
 		return query.find()
 		.then(function(objs) {
+          
 			var invoices = [];
 			objs.forEach(function(obj) {
 				invoices.push(new invoiceFactory(obj, {

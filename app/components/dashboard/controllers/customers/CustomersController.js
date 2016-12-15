@@ -531,11 +531,21 @@ invoicesUnlimited.controller('CustomersController',
 	};
  
     $scope.sortByCustomerName= function(){
-    $scope.customers.sort(function(a,b){
-        return a.entity.displayName.localeCompare(b.entity.displayName)});
+        $scope.customers.sort(function(a,b){
+            return a.entity.displayName.localeCompare(b.entity.displayName)
+        });
     }
-    
-    
+    $scope.sortByDate= function(){
+        $scope.comments.sort(function(a,b){
+            return a.entity.date.localeCompare(b.entity.date)
+        });
+    }
+     $scope.sortByUser= function(){
+       
+        $scope.comments.sort(function(a,b){
+            return a.entity.name.localeCompare(b.entity.name)
+        });
+    }
 	$scope.deleteContact = function(index){
 		showLoader();
 		$scope.selectedCustomer.contactPersons[index]

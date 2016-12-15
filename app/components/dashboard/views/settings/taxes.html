@@ -23,7 +23,7 @@
       <input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.name" >
     </form>
 
-    <table class="table-border-tb show_table_hover">
+    <table class="table-border-tb show_table_hover" style = "margin-bottom: 20px;">
       <tr class="thead">
         <td ng-click = "sortByTaxName()"class="text-uppercase text-info layout-padding">Name</td>
         <td class="text-uppercase text-info layout-padding">Percentage</td>
@@ -77,7 +77,7 @@
     </div>
   </div>
 
-<div class="popup-modal new-tax-group hidesm">
+  <div class="popup-modal new-tax-group hidesm">
     <div style="max-height: calc(100vh - 210px); overflow-y: auto;" class="modal container">
 
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Tax Group</h3>
@@ -194,10 +194,8 @@
       <button class="button button-small button-info text-uppercase">Save</button>
     </div>
   </div>
-
-
-
-<div class="popup-modal delete-tax hidesm">
+ 
+  <div class="popup-modal delete-tax hidesm">
     <div class="modal container" style="width: 650px !important;">
 
       <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Delete Tax</h3>
@@ -217,8 +215,5 @@
       <div class="clearfix"></div>
     </div>
   </div>
-
-
-
-
-<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>
+ 
+  <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

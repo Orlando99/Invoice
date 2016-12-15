@@ -45,21 +45,23 @@ $scope.openDatePicker = function(n) {
 $scope.generateReport = function() {
     var selectedDate =  $scope.toDate
     var todayDate =  new Date();
-    var fromDate1 =  $scope.fromDate
+    //var fromDate1 =  $scope.fromDate
     var toDate1 =  $scope.toDate
-    if(selectedDate>todayDate)
-    {
-        ShowMessage("Select a valid Date!","error");   
-        return false;
-    }
-    else if(fromDate1>toDate1)
-    {
-        ShowMessage("FromDate can't be greator then ToDate!","error");   
-        return false;
-    }
+       /*
+        if(selectedDate>todayDate)
+        {
+            ShowMessage("Select a valid Date!","error");   
+            return false;
+        }
+        else if(fromDate1>toDate1)
+        {
+            ShowMessage("FromDate can't be greator then ToDate!","error");   
+            return false;
+        }
+        */
 	showLoader();
 	var params = {
-		fromDate : $scope.fromDate,
+		//fromDate : $scope.fromDate,
 		toDate : $scope.toDate,
 		organization : organization
 	};
@@ -72,7 +74,7 @@ $scope.generateReport = function() {
 		var totalOverDueDays = 0;
 		var oneDay = 86400000; // in milliseconds
 		var d2 = $scope.toDate.getTime();
-
+      
 		invoices.forEach(function(invoice) {
 			var customerId = invoice.customer.id;
 			var subAmount = invoice.entity.balanceDue;
@@ -90,10 +92,13 @@ $scope.generateReport = function() {
 				ids.push(customerId);
 			}
 			var d1 = invoice.entity.invoiceDate.getTime();
-			var d = Math.ceil( Math.abs(d2 - d1) / oneDay );
-
-			info[customerId].overDueDays += d;
-			totalOverDueDays = +d;
+            
+           
+			var d = Math.round( Math.ceil( Math.abs(d2 - d1) / oneDay ));
+                               
+    
+			info[customerId].overDueDays += d-1;
+			totalOverDueDays += d-1;
 			totalBlanceDue += subAmount;
 		});
 
@@ -107,7 +112,7 @@ $scope.generateReport = function() {
 		$scope.totalBalanceStr = currencyFilter(totalBlanceDue, '$', 2);
 		
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
-		$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
+		//$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
 		$scope.toDateStr = formatDate($scope.toDate, dateFormat);
 
 		hideLoader();

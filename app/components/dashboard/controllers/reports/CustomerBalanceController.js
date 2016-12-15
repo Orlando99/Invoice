@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.controller('CustomerBalanceController',
-	['$scope', '$state', '$controller', '$q', 'userFactory', 'reportsService', 'reportsCommon', 'currencyFilter',
-function($scope, $state, $controller, $q, userFactory, reportsService, reportsCommon, currencyFilter) {
+	['$scope', '$state', '$controller', '$q', 'userFactory', 'reportsService', 'reportsCommon', 'currencyFilter','creditNoteService',
+function($scope, $state, $controller, $q, userFactory, reportsService, reportsCommon, currencyFilter,creditNoteService) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -56,8 +56,6 @@ $scope.generateReport = function() {
     var todayDate =  new Date();
     var fromDate1 =  $scope.fromDate
     var toDate1 =  $scope.toDate
-     
-     
     if(selectedDate>todayDate)
     {
         ShowMessage("Select a valid Date!","error");   
@@ -146,23 +144,39 @@ $scope.generateReport = function() {
 		var ids = [];
 		var info = {};
 		var totalBlanceDue = 0;
-		invoices.forEach(function(invoice) {
+		invoices.forEach(function(invoice) 
+        {
 			var customerId = invoice.customer.id;
 			var subAmount = invoice.entity.balanceDue;
 			if(info[customerId]){
 				info[customerId].balanceDue += subAmount;
 				info[customerId].count += 1;
 			} else {
-				info[customerId] = {
-					name : invoice.customer.displayName,
-					balanceDue : subAmount,
-					count : 1
-				};
-				ids.push(customerId);
+                    info[customerId] = {
+                        name : invoice.customer.displayName,
+                        balanceDue : subAmount,
+                        count : 1
+                    };
+                    ids.push(customerId);
 			}
 			totalBlanceDue += subAmount;
-		});
-
+              //
+                  /*  $q.when( creditNoteService.getCustomerCreditNotes( invoice.customer) )
+                    .then(function(objs) 
+                    {
+                    $scope.creditNotes = objs;
+                    var total = 0;
+                    objs.forEach(function(obj) 
+                    {
+                        var c = obj.entity.
+                        total += obj.entity.remainingCredits;
+                    });
+                    $scope.availableCredits = total;   
+                    });
+             
+        //
+		//});
+               
 		ids.forEach(function(id) {
 			info[id].balanceDueStr = currencyFilter(info[id].balanceDue, '$', 2);
 		});
@@ -175,6 +189,10 @@ $scope.generateReport = function() {
 		$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
 		$scope.toDateStr = formatDate($scope.toDate, dateFormat);
 
+       
+        
+        
+        
 		hideLoader();
 	});
     */
