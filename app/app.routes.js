@@ -549,6 +549,19 @@ angular.module('invoicesUnlimited')
 						}
 					}
 				},
+                cloneProject : {
+					name : 'dashboard.projects.clone',
+					url : '/clone',
+					params : {
+						projectId : null
+					},
+					views : {
+						'@' : {
+							controller : 'CloneProjectController',
+							templateUrl : COMPONENTS + 'dashboard/views/projects/clone.project.html'
+						}
+					}
+				},
 				details : {
 					name : 'dashboard.projects.details',
 					url : '/:projectId',

@@ -326,7 +326,14 @@ function drawBarChart() {
 							beginAtZero:true
 						}
 					}]
-				}
+				},
+                tooltips: {
+                    mode: 'single',
+                        custom: function(tooltip) {
+                            // tooltip will be false if tooltip is not visible or should be hidden
+                            if (!tooltip) {
+                                return;
+                            }
 			}
 		});
 	});

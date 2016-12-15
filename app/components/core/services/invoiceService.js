@@ -580,7 +580,7 @@ return {
                 var link = inv.entity.invoiceReceipt.url();
 
                 var emailSubject = 'Invoice From ' + businessName;
-                //var emailBody = htmlDoc;
+                var emailBody = htmlDoc;
             }
             htmlDoc = htmlDoc.replace('<!DOCTYPE html>', '');
             htmlDoc = htmlDoc.trim();
@@ -593,6 +593,7 @@ return {
             fr.contentWindow.document.open();
             fr.contentWindow.document.write(htmlDoc);
             fr.contentWindow.document.close();
+            /*
             fr.onload = function() {
                //var div=iframe.contentWindow.document.getElementById('mydiv');
                 abc = 0;
@@ -606,7 +607,7 @@ return {
                     return invoice;
                 });
             };
-            
+            */
             
             //sleepTime(10000);
             
@@ -617,7 +618,7 @@ return {
             
             //for()
 
-            return Promise.resolve('');
+            //return Promise.resolve('');
             
             return Parse.Cloud.run("sendMailgunHtml", {
                 toEmail: toEmail,

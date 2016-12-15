@@ -1,7 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('reportsService', ['$q', 'invoiceFactory',
-function($q, invoiceFactory) {
+invoicesUnlimited.factory('reportsService', ['$q', 'invoiceFactory','creditNoteFactory',
+function($q, invoiceFactory, creditNoteFactory) {
 
 return {
 	salesByCustomer : function(params) {
@@ -46,6 +46,28 @@ return {
 			});
 			return invoices;
 		});
+	},
+    customerCredit : function(params) {
+		var CrediteNotes = Parse.Object.extend('CreditNotes');
+		var query = new Parse.Query(CrediteNotes);
+		query.equalTo('organization', params.organization);
+		query.notEqualTo('status', 'Closed');
+		query.greaterThanOrEqualTo('creditNoteDate', params.fromDate);
+		query.lessThanOrEqualTo('creditNoteDate', params.toData);
+		//query.select('invoiceNumber', 'customer', 'balanceDue');
+		query.include('customer');
+
+		return query.find()
+		.then(function(objs) {
+			var notes = [];
+			objs.forEach(function(obj) {
+				notes.push(new creditNoteFactory(obj, {
+					operation : 'customerCredit'
+				}));
+			});
+			return notes;
+		});
+
 	},
 	customerBalance : function(params) {
 		var Invoices = Parse.Object.extend('Invoices');

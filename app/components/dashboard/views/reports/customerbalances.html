@@ -64,20 +64,22 @@
     <div class="container-table layout-margin-t inputs-white filter">
       <div class="thead">
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Customer Name</h3>
+        
+        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits</h3>
         <!--
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Invoice Balance (FCY)</h3>
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits (FCY) <img src="./assets/images/dropdown-arrow-primary.png" alt=""></h3> -->
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Balance </h3>
+        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Invoice Balance (FCY) <img src="./assets/images/dropdown-arrow-primary.png" alt=""></h3> -->
+        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Invoice Balance</h3>
       </div>
 
       <div class="table-row row-border" ng-repeat="id in ids">
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           {{info[id].name}}
         </div>
-        <!--
+        
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
-          02
+          {{info[id].availableCreditStr}}
         </div>
+          <!--
         <div class="col-25 layout-container layout-margin-tb text-color-light text-weight-normalize">
           <a>$12.20</a>
         </div> -->
@@ -90,9 +92,11 @@
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           Total
         </div>
-        <!--
+        
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
+            {{totalCreditStr}}
         </div>
+          <!--
         <div class="col-25 layout-container layout-margin-tb text-color-light text-weight-normalize">
           $25.45
         </div> -->

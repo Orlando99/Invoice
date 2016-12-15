@@ -75,6 +75,72 @@ $scope.generateReport = function() {
 		organization : organization
 	};
 
+    var promises = [];
+	promises.push(reportsService.customerBalance(params));
+    promises.push(reportsService.customerCredit(params));
+    
+    $q.all(promises)
+	.then(function(results) {
+        var invoices = results[0];
+        var credits = results[1];
+		var ids = [];
+		var info = {};
+		var totalBlanceDue = 0;
+		invoices.forEach(function(invoice) {
+			var customerId = invoice.customer.id;
+			var subAmount = invoice.entity.balanceDue;
+			if(info[customerId]){
+				info[customerId].balanceDue += subAmount;
+				info[customerId].count += 1;
+			} else {
+				info[customerId] = {
+					name : invoice.customer.displayName,
+					balanceDue : subAmount,
+					count : 1,
+                    availableCredit : 0
+				};
+				ids.push(customerId);
+			}
+			totalBlanceDue += subAmount;
+		});
+        
+        var totalCredit = 0;
+        
+        credits.forEach(function(credit) {
+			var customerId = credit.customer.id;
+			var subAmount = credit.entity.remainingCredits;
+			if(info[customerId]){
+				info[customerId].availableCredit += subAmount;
+				//info[customerId].count += 1;
+			} else {
+				info[customerId] = {
+					name : invoice.customer.displayName,
+					availableCredit : subAmount,
+					count : 1
+				};
+				ids.push(customerId);
+			}
+			totalCredit += subAmount;
+		});
+
+		ids.forEach(function(id) {
+			info[id].balanceDueStr = currencyFilter(info[id].balanceDue, '$', 2);
+            info[id].availableCreditStr = currencyFilter(info[id].availableCredit, '$', 2);
+		});
+
+		$scope.info = info;
+		$scope.ids = ids;
+		$scope.totalBalanceStr = currencyFilter(totalBlanceDue, '$', 2);
+		$scope.totalCreditStr = currencyFilter(totalCredit, '$', 2);
+        
+		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+		$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
+		$scope.toDateStr = formatDate($scope.toDate, dateFormat);
+
+		hideLoader();
+	});
+    
+    /*
 	$q.when(reportsService.customerBalance(params))
 	.then(function(invoices) {
 		var ids = [];
@@ -111,5 +177,6 @@ $scope.generateReport = function() {
 
 		hideLoader();
 	});
+    */
 }
 }]);

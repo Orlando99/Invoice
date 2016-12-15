@@ -83,6 +83,20 @@ function CreditNote (parseObject, params) {
 	} else if (params.operation == 'apply2Invoice') {
 		creditNoteFields = ['remainingCredits', 'creditsUsed', 'creditNumber'];
 	}
+    else if (params.operation == 'customerCredit') {
+		creditNoteFields = ['creditNumber', 'remainingCredits'];
+		var customer = parseObject.get('customer');
+		if (customer) {
+			setObjectOperations({
+				object 		: customer,
+				fieldName	: undefined,
+				parent 		: undefined,
+				fields 		: ['displayName']
+			});
+			this.customer = customer;
+		}
+
+	}
 
 	setObjectOperations({
 		object 		: parseObject,
