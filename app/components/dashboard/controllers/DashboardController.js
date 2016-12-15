@@ -205,7 +205,8 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
             drawPieChart();
         });
     }
-
+    
+  
 function drawBarChart() {
 	var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY',
 		'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -298,34 +299,63 @@ function drawBarChart() {
 		monthlySales.rotate(count);
 		monthlyIncome.rotate(count);
 		monthlyExpense.rotate(count);
-
+        
+        for(var i = 0; i < monthlySales.length; i++){
+               monthlySales[i] =   monthlySales[i].toFixed(2);
+        } 
+        for(var i = 0; i < monthlyIncome.length; i++){
+           
+               monthlyIncome[i] = monthlyIncome[i].toFixed(2);
+        } 
+        for(var i = 0; i < monthlyExpense.length; i++){
+               monthlyExpense[i] =monthlyExpense[i].toFixed(2);
+        } 
+ 
 		var ctx = $("#barchart");
 		var myChart = new Chart(ctx, {
 			type: 'bar',
 			data: {
 				labels: months,
 				datasets: [{
+                    label:"Sale",
 					backgroundColor: colors[0],
 					data: monthlySales
 				}, {
+                     label:"Income",
 					backgroundColor: colors[1],
 					data: monthlyIncome
 				}, {
+                     label:"Expense",
 					backgroundColor: colors[2],
 					data: monthlyExpense
 				}]
 			},
 			options: {
 				responsive: false,
+                tooltipTemplate: "<%if (labels){%><%=labels%>:: <%}%><%= value %>",
+                tooltips: {
+              mode: 'label',
+                    callbacks: {
+						label:
+                        function(item,data) {
+							var value = data.datasets[item.datasetIndex].data[item.index];
+							var label = data.labels[item.index];
+							return [ "$ "+numberWithCommas(value)]; // [,label]
+						}
+					}
+          },
 				legend: {
 					display: false
 				},
 				scales: {
-					yAxes: [{
+					yAxes:
+                    [{
 						ticks: {
 							beginAtZero:true
 						}
 					}]
+                    
+                   
 				}
 			}
 		});
@@ -333,6 +363,10 @@ function drawBarChart() {
 
 }
 
+    function numberWithCommas(x) {
+            return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    
 function drawPieChart() {
 	var promiseList = [];
 	var promise = undefined;
@@ -463,28 +497,70 @@ function drawPieChart() {
         
 		$scope.totalExpenseAmount = currencyFilter(totalExpense*cc.exchangeRate, cc.currencySymbol, 2);
 
+        
+        
 		var ctx = document.getElementById("piechart");
-		var myChart = new Chart(ctx, {
+        /*
+        var myChart = new Chart(ctx, {
 			type: 'pie',
+            
 			data: {
 				labels: expenseNameList,
 				datasets: [{
 					data: expenseValueList,
 					backgroundColor: expenseColorList
                     
-				}]
+				}],
 			},
+            options: {
+				responsive: false
+			},
+            tooltips:
+                    {
+                callbacks: {
+                    label:
+                    function(item,data) {
+                        var value = data.datasets[item.datasetIndex].data[item.index];
+                        var label = data.labels[item.index];
+                        var percentage =
+                            ((value / totalExpense) * 100).toFixed(1);
+                        return [percentage + ' %']; // [,label]
+                    }
+
+                }
+
+            }
+		});
+        */
+        
+		var myChart = new Chart(ctx, {
+			type: 'pie',
             
+			data: {
+				labels: expenseNameList,
+				datasets: [{
+					data: expenseValueList,
+					backgroundColor: expenseColorList
+                    
+				}],
+			},
 			options: {
-				events : false,
-				showAllTooltips: false,
+				showTooltips: true,
+                showAllTooltips: false,
 				responsive: false,
 				rotation: 0,
+                hover: {
+                    intersect: true,
+                    animationDuration: 400,
+                    enabled: true
+            },
+                 
 				legend: {
 					display: true,
 				},
 				tooltips:
                             {
+                                enabled: true,
 					callbacks: {
 						label:
                         function(item,data) {
@@ -492,16 +568,16 @@ function drawPieChart() {
 							var label = data.labels[item.index];
 							var percentage =
 								((value / totalExpense) * 100).toFixed(1);
-							return [percentage + ' %']; // [,label]
+							return [ "$ "+numberWithCommas(value.toFixed(2)), label]; // [,label]
 						}
-                        
+
 					}
                     
 				}
 			}
 		});
+        
 	});
-
 }
 
 function addToRelevantRange(creatDate, expireDate, amount) {
