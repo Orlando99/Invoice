@@ -376,8 +376,7 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-    
-function drawPieChart() {
+  function drawPieChart() {
 	var promiseList = [];
 	var promise = undefined;
 
@@ -485,8 +484,6 @@ function drawPieChart() {
 			expenseValueList.push(value);
 			expenseColorList.push(getColor(originalname[i]));
 		}
-        
-        
         for( var i = 0; i <expenseValueList.length; i++){
             for(var j = i ; j < expenseValueList.length ; j++ ){
                 if(expenseValueList[i] < expenseValueList[j]){
@@ -508,53 +505,32 @@ function drawPieChart() {
 		$scope.totalExpenseAmount = currencyFilter(totalExpense*cc.exchangeRate, cc.currencySymbol, 2);
 
         
+//,,,.,.,.,.....................................
         
 		var ctx = document.getElementById("piechart");
-        /*
-        var myChart = new Chart(ctx, {
-			type: 'pie',
-            
-			data: {
-				labels: expenseNameList,
-				datasets: [{
-					data: expenseValueList,
-					backgroundColor: expenseColorList
-                    
-				}],
-			},
-            options: {
-				responsive: false
-			},
-            tooltips:
-                    {
-                callbacks: {
-                    label:
-                    function(item,data) {
-                        var value = data.datasets[item.datasetIndex].data[item.index];
-                        var label = data.labels[item.index];
-                        var percentage =
-                            ((value / totalExpense) * 100).toFixed(1);
-                        return [percentage + ' %']; // [,label]
-                    }
-
-                }
-
-            }
-		});
-        */
-        
+        //console.log(Chart.defaults );
 		var myChart = new Chart(ctx, {
 			type: 'pie',
-            
 			data: {
 				labels: expenseNameList,
 				datasets: [{
 					data: expenseValueList,
 					backgroundColor: expenseColorList
-                    
 				}],
 			},
 			options: {
+                
+                legend: {
+                    display  : true,
+                     position : 'bottom',
+                    fullWidth: false,     
+                    labels: {
+                           boxWidth:	20,	 
+                           fontSize: 12
+                           //fontColor: 'rgb(255, 99, 132)'
+                        //padding:5
+                   }
+                }, 
 				showTooltips: true,
                 showAllTooltips: false,
 				responsive: false,
@@ -564,13 +540,9 @@ function drawPieChart() {
                     animationDuration: 400,
                     enabled: true
             },
-                 
-				legend: {
-					display: true,
-				},
-				tooltips:
-                            {
-                                enabled: true,
+            tooltips:
+            {
+                    enabled: true,
 					callbacks: {
 						label:
                         function(item,data) {
@@ -578,7 +550,7 @@ function drawPieChart() {
 							var label = data.labels[item.index];
 							var percentage =
 								((value / totalExpense) * 100).toFixed(1);
-							return [ "$ "+numberWithCommas(value.toFixed(2)), label]; // [,label]
+							return [ "$ "+numberWithCommas(value.toFixed(2)), label];
 						}
 
 					}
@@ -586,10 +558,8 @@ function drawPieChart() {
 				}
 			}
 		});
-        
-	});
-}
-
+     });  
+  }   
 function addToRelevantRange(creatDate, expireDate, amount) {
 	// if there is no expire date, then invoice can not be in Overdue state.
 	if (! expireDate) {
