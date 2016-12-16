@@ -62,13 +62,10 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
     //var cc = user.entity[0].get('currency').attributes;
     
     $scope.currentCurrency = cc;
-    
-
 	loadColorTheme(user);
 	$scope.businessInfo = businessFactory.entity.length ?
 						  businessFactory.entity[0] :
 						  {};
-
 	$scope.logOut = function(errorMsg){
 		return user.logout()
 		.then(function(){
@@ -204,9 +201,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
             drawBarChart();
             drawPieChart();
         });
-    }
-    
-  
+    }  
 function drawBarChart() {
 	var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY',
 		'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
@@ -370,13 +365,10 @@ function drawBarChart() {
 	});
 
 }
-
-
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
-  function drawPieChart() {
+function drawPieChart() {
 	var promiseList = [];
 	var promise = undefined;
 
@@ -586,7 +578,6 @@ function addToRelevantRange(creatDate, expireDate, amount) {
 		$scope.overDueFromOver45 += amount;
 
 }
-
 function getColor(name) {
 	var category =
 	$scope.categories.find(function(obj) {
