@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.factory('businessFactory',
-	['userFactory','roleFactory','$rootScope',
-	function(userFactory,roleFactory,$rootScope){
+	['userFactory','roleFactory','$rootScope','$state',
+	function(userFactory,roleFactory,$rootScope,$state){
 	
 	var user = userFactory;
 
@@ -40,7 +40,16 @@ invoicesUnlimited.factory('businessFactory',
 			businessInfo.entity.push(object);
 			return businessInfo;
 		},function(error){
-			console.log(error.message);
+		console.log(error.message);
+             user.logout()
+            .then(function(){
+                  hideLoader();
+                  resetColorTheme();
+                $state.go('login');
+            }, function(error){
+                 $state.go('login');
+             });
+            
 		});
 	}
 
