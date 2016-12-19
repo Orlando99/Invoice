@@ -4,12 +4,9 @@ invoicesUnlimited.controller('DashboardController',['$scope','$state','userFacto
 	'invoiceService', 'expenseService', 'coreFactory', 'currencyFilter', 'cleanDataService',
 function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseService,
 	coreFactory,currencyFilter,cleanDataService){
-
 	showLoader();
-
 	var user = userFactory;
 	var business = businessFactory;
-    
     if(!user.entity.length){
         $state.go('login');
         hideLoader();
@@ -137,13 +134,10 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		});
 */
 	}
-
-	var organization = undefined;
-    
+	var organization = undefined;  
     /*
 	var promises = [];
 	promises.push(businessFactory.load());
-
 	$q.all(promises)
 	.then(function(obj){
 		if (obj.length && obj[0]) {
@@ -162,17 +156,13 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
                 drawBarChart();
                 drawPieChart();
             });
-            
-			
 		} else {
 			$scope.logOut('Your account is not setup correctly.');
 		}
-
 	}, function(error){
 		$scope.logOut('Your account is not setup correctly.');
 	});
 */
-    
     if (! $state.current.name.endsWith('dashboard')){
         return;
     }
@@ -368,7 +358,8 @@ function drawBarChart() {
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-function drawPieChart() {
+function drawPieChart() 
+    {
 	var promiseList = [];
 	var promise = undefined;
 
@@ -393,9 +384,12 @@ function drawPieChart() {
 			return objs;
 		});
 	})
-	.then(function(objs) {
+	.then(function(objs) 
+        {
 		var totalExpense = 0;
 		var expenseList = [];
+        var expenseList2 = [];
+        
 		var expenseNameList = [];
 		var expenseValueList = [];
 		var expenseColorList = [];
@@ -404,40 +398,20 @@ function drawPieChart() {
 		var uniqueExpenses = {};
         var size = objs.length;
         var texp =0;
-        
-        ////
-        
         var listNew = [];
         for(var i=0;i< objs.length;i++)
         {
            listNew[i] = objs[i].entity;    
         }
-         listNew.sort(function(a,b) {
-             
-        //     alert(a.category);
-             
-			return b.category- a.category;
+          listNew.sort(function(a,b) {        
+			return b.amount- a.amount;
 		});
-        
-    ///  alert(listNew);
-        
-        
-         for(var i=0;i< objs.length;i++)
-        {
-           console.log(listNew[i].category);   
-        }
-        
-        
-        /////
-       
-        
         for(var i = 0 ; i < size ; i++)
         {
             var expense = objs[i];
             var value = expense.entity.amount; 
             texp = value + texp;
         }
-        
         var pr= [];
         for(var i = 0 ; i < size ; i++)
         {
@@ -447,19 +421,16 @@ function drawPieChart() {
             pr.push(percentage);
         }
         var originalname= [];
-        
 		for(var i=0; i < objs.length; i++) 
         {
                var expense = objs[i];
-             //  var name = expense.entity.category + "  " + pr[i] + "%" ;
+             //var name = expense.entity.category + "  " + pr[i] + "%" ;
                var name = expense.entity.category;// + "  " + pr[i] + "%" ;
                var value = expense.entity.amount;
                var flag = false;
-            
                if(uniqueExpenses[name]) 
                {
                   uniqueExpenses[name] += value;
-             //      alert("uniqueExpenses[name]1="+uniqueExpenses[name]);
                   flag = true;
                } 
                else 
@@ -471,7 +442,8 @@ function drawPieChart() {
                }
                var expObj = {
                     name: name+ "  " + pr[i] + "%" ,
-                    value : value
+                    value : value,
+                    oName : name
                 };
                if(!flag)
                 {
@@ -479,25 +451,16 @@ function drawPieChart() {
                 }
                 else
                 {
-                  var expObj =  expenseList.pop();                
-                  var expObj2 = 
-                  {
-                        
+                   var index = expenseList.findIndex(function(ex){
+                       return expObj.oName == ex.oName;
+                   });
+                    expenseList[index] = {
                        name: name+ "  " + pr[i] + "%",
-                       value : uniqueExpenses[name]
-                     
-                  };
-                 expenseList.push(expObj2);
+                       value : uniqueExpenses[name],
+                       oName : name
+                  }
                 }
-
-            
-            var listSize = expenseList.length;
-            if(listSize==5)
-            {
-                break;    
-            }
       }//end of for
-          
 		expenseList.sort(function(a,b) {
 			return b.value - a.value;
 		});
@@ -505,7 +468,6 @@ function drawPieChart() {
 			exp.value = currencyFilter(exp.value*cc.exchangeRate, cc.currencySymbol, 2);
 		});
 		$scope.expenseList = expenseList;
-
 		for(var i=0; i < expenseNameList.length; i++) {
 			var name = expenseNameList[i];
 			var value = uniqueExpenses[name];
@@ -532,13 +494,7 @@ function drawPieChart() {
                 }
             }
         }
-       // alert("totalExpense:"+totalExpense);
-        
-		$scope.totalExpenseAmount = currencyFilter(totalExpense*cc.exchangeRate, cc.currencySymbol, 2);
-  //   alert("$scope.totalExpenseAmount:"+$scope.totalExpenseAmount);
-       
-    
-        
+		$scope.totalExpenseAmount = currencyFilter(totalExpense*cc.exchangeRate, cc.currencySymbol, 2);  
 //,,,.,.,.,.....................................
         
 		var ctx = document.getElementById("piechart");
@@ -577,20 +533,6 @@ function drawPieChart() {
             tooltips:
             {
                     enabled: true,
-                    custom: function(tooltip) {
-                            // tooltip will be false if tooltip is not visible or should be hidden
-                            if (!tooltip) {
-                                return;
-                            }
-                            //tooltip.afterBody = ["hello"];
-                        if(tooltip.body){
-                            tooltip.title = [tooltip.body[0].lines[0]];
-                            tooltip.body[0].lines = [tooltip.body[0].lines[1]];
-                            tooltip.titleFontSize = 20;
-                            tooltip.bodyFontSize = 14;
-                        }
-                            //tooltip.title = [];
-                        },
 					callbacks: {
 						label:
                         function(item,data) {

@@ -105,7 +105,7 @@
             <div class="clearfix"></div>
           </li>
 
-          <li ng-repeat="exp in expenseList">
+          <li ng-repeat="exp in expenseList | limitTo:5">
             <h4 class="float-left text-color-normalize text-weight-normalize">{{exp.name}}</h4>
             <h4 class="float-right text-color-normalize text-weight-normalize">{{exp.value}}</h4>
             <div class="clearfix"></div>

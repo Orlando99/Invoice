@@ -75,24 +75,57 @@ invoicesUnlimited.controller('CustomersController',
     {
 		var result = "";	
 		var addIfExist = function(w) { return w ? w : "";}
-		result += addIfExist(obj.Street) + "\n"
+    if(obj.Street || obj.City ||obj["State\/Province"] ||obj["Zip\/Postal Code"] ||obj.Country || obj.Fax )
+      {
+        if(obj.Fax)
+        {
+             		result += addIfExist(obj.Street) + "\n"
 		+ addIfExist(obj.City) + "\n"
 		+ addIfExist(obj["State\/Province"]) + "\n"
         + addIfExist(obj["Zip\/Postal Code"]) + "\n"
         + addIfExist(obj.Country)+ "\n"
         + "Fax: "+addIfExist(obj.Fax);
+           
+        }
+        else
+        {
+        result += addIfExist(obj.Street) + "\n"
+		+ addIfExist(obj.City) + "\n"
+		+ addIfExist(obj["State\/Province"]) + "\n"
+        + addIfExist(obj["Zip\/Postal Code"]) + "\n"
+        + addIfExist(obj.Country)+ "\n"
+        + addIfExist(obj.Fax);
+         
+        }
+      }
         return result;
     }
     var formShippingAddress = function(obj)
     {
 		var result = "";	
 		var addIfExist = function(w) { return w ? w : "";}
-		result += addIfExist(obj.Street) + "\n"
-		+ addIfExist(obj.City) + "\n"
-		+ addIfExist(obj["State\/Province"]) + "\n"
-        + addIfExist(obj["Zip\/Postal Code"]) + "\n"
-        + addIfExist(obj.Country)+ "\n"
-        + "Fax: "+addIfExist(obj.Fax);
+      if(obj.Street || obj.City ||obj["State\/Province"] ||obj["Zip\/Postal Code"] ||obj.Country || obj.Fax )
+      {
+        if(obj.Fax)
+        {
+            result += addIfExist(obj.Street) + "\n"
+            + addIfExist(obj.City) + "\n"
+            + addIfExist(obj["State\/Province"]) + "\n"
+            + addIfExist(obj["Zip\/Postal Code"]) + "\n"
+            + addIfExist(obj.Country)+ "\n"
+            + "Fax: "+addIfExist(obj.Fax);
+        }
+        else
+        {
+                 result += addIfExist(obj.Street) + "\n"
+            + addIfExist(obj.City) + "\n"
+            + addIfExist(obj["State\/Province"]) + "\n"
+            + addIfExist(obj["Zip\/Postal Code"]) + "\n"
+            + addIfExist(obj.Country)+ "\n"
+            +addIfExist(obj.Fax);
+        }
+      }
+        
         return result;
 	}
 
