@@ -60,19 +60,19 @@
         <h3 class="layout-margin-t text-info text-uppercase text-weight-normalize">Primary Contact Details</h3>
 
         <table class="container table-no-border layout-margin-tb">
-          <tr class="container text-color-light">
+          <tr class="container text-color-light" ng-show = "selectedCustomer.entity.companyName">
             <td class="col-50 layout-padding-tb">Company Name</td>
             <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.companyName}}</td>
           </tr><div class="clearfix"></div>
-          <tr class="container text-color-light">
+          <tr class="container text-color-light" ng-show = "selectedCustomer.entity.firstName">
             <td class="col-50 layout-padding-tb">Name</td>
             <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.firstName + ' ' + selectedCustomer.entity.lastName}}</td>
           </tr><div class="clearfix"></div>
-          <tr class="container text-color-light">
+          <tr class="container text-color-light" ng-show = "selectedCustomer.entity.phone">
             <td class="col-50 layout-padding-tb">Mobile</td>
             <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.phone}}</td>
           </tr><div class="clearfix"></div>
-          <tr class="container text-color-light">
+          <tr class="container text-color-light" ng-show = "selectedCustomer.entity.email">
             <td class="col-50 layout-padding-tb">Email Address</td>
             <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.email}}</td>
           </tr><div class="clearfix"></div>
@@ -83,25 +83,25 @@
         <h3 class="layout-margin-t text-info text-uppercase text-weight-normalize">Other Details</h3>
 
         <table class="container table-no-border layout-margin-tb">
-          <tr class="container text-color-light">
+         
+    <tr class="container text-color-light" ng-show = "selectedCustomer.entity.currency" >
             <td class="col-50 layout-padding-tb">Currency Code</td>
-            <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.currency}}</td>
+            <td class="col-50 layout-padding-tb" >{{selectedCustomer.entity.currency}}</td>
           </tr><div class="clearfix"></div>
-          <tr class="container text-color-light">
+    <tr class="container text-color-light"ng-show = "selectedCustomer.entity.paymentTerms">
             <td class="col-50 layout-padding-tb">Payment Terms</td>
             <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.paymentTerms}}</td>
           </tr><div class="clearfix"></div>
             
-          <tr class="container text-color-light">
+    <tr class="container text-color-light" ng-show ="selectedCustomer.billingAddress">
             <td class="col-50 layout-padding-tb">Billing Address</td>
             <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.billingAddress}}</td>
           </tr> <div class="clearfix"></div>
-             <tr class="container text-color-light">
+   <tr class="container text-color-light" ng-show ="selectedCustomer.shippingAddress">
             <td class="col-50 layout-padding-tb">Shipping Address</td>
             <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.shippingAddress}}</td>
           </tr><div class="clearfix"></div>
-         
-             <tr class="container text-color-light">
+  <tr class="container text-color-light" ng-show ="selectedCustomer.notes">
             <td class="col-50 layout-padding-tb">Notes</td>
             <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.notes}}</td>
           </tr><div class="clearfix"></div>
@@ -111,8 +111,8 @@
 
         <br/>
 
-        <h3 class="layout-margin-tb text-info text-uppercase text-weight-normalize">Receivables</h3>
-        <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{ receivables}}</h2>
+<h3 class="layout-margin-tb text-info text-uppercase text-weight-normalize" ng-show = "receivables">Receivables</h3>
+        <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase" ng-show = "receivables">{{ receivables}}</h2>
           <!--
           <h2 class="layout-no-margin text-positive text-weight-normalize text-uppercase">{{'$'+ (selectedCustomer.entity.outstanding || '0.00')}}</h2>
 -->
@@ -123,7 +123,7 @@
       </div>
       <div class="col-40 layout-margin-tb">
         <h3 class="layout-margin-t text-info text-uppercase text-weight-normalize">Income &amp; Expense</h3>
-        <canvas id="barchart" height="300px" width="400px" style="width: 400px !important; height: 300px !important;"></canvas>
+        <canvas id="barchart" height="300px !important" width="400px !important" style="width: 400px !important; height: 300px !important;"></canvas>
         <h3 class="col-40 layout-no-margin text-positive text-weight-normalize text-uppercase">Total Income</h3>
         <h3 class="col-40 layout-no-margin text-danger text-weight-normalize text-uppercase">Total Expense</h3>
         <h4 class="col-40 layout-no-margin text-normalize text-weight-normalize text-uppercase">{{totalIncome}}</h4>

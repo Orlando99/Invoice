@@ -109,20 +109,20 @@
     <div class="tab" data-name="tasks">
       <div class="container-table">
         <div class="thead">
-          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Name</p>
-          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Logged Hrs</p>
-          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Billed Hrs</p>
-          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hrs</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize tasks-detail">Name</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize tasks-detail">Logged Hrs</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize tasks-detail">Billed Hrs</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-center tasks-detail">Unbilled Hrs</p>
           <div ng-show="project.billingMethod == 'Based on task hours'" class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">            
           <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">Price</p>
           </div>
         </div>
         <div class="table-row row-border" ng-repeat="task in tasks">
-          <p class="col-20 text-color-light text-weight-normalize">{{task.entity.taskName}}</p>
+          <p class="col-20 text-color-light text-weight-normalize tasks-detail">{{task.entity.taskName}}</p>
 
-          <p class="col-20 text-color-light text-weight-normalize">{{task.entity.taskHours.toFixed(2) || "0.00"}}</p>
-          <p class="col-20 text-color-light text-weight-normalize">{{task.entity.billedHours.toFixed(2) || "0"}}</p>
-          <p class="col-20 text-color-light text-weight-normalize text-center">{{task.entity.taskHours.toFixed(2) - task.entity.billedHours.toFixed(2) || "0.00"}}</p>
+          <p class="col-20 text-color-light text-weight-normalize tasks-detail">{{task.entity.taskHours.toFixed(2) || "0.00"}}</p>
+          <p class="col-20 text-color-light text-weight-normalize tasks-detail">{{task.entity.billedHours.toFixed(2) || "0"}}</p>
+          <p class="col-20 text-color-light text-weight-normalize text-center tasks-detail">{{task.entity.taskHours.toFixed(2) - task.entity.billedHours.toFixed(2) || "0.00"}}</p>
             
             <div ng-show="project.billingMethod == 'Based on task hours'" class="col-20 text-color-light text-weight-normalize text-right">
 

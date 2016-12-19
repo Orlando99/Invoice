@@ -1,10 +1,11 @@
 'use strict';
 
 $(document).ready(function(){
-	$.validator.addMethod(
+	$.validator.addMethod
+    (
 		"OwhershipTypeNotSelected",
 		function(value,element){
-			return value != "ownershipTitle";
+			return value != "Ownership Type";
 		}
 	);
 	$.validator.addMethod(

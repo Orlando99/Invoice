@@ -630,6 +630,7 @@ function listCreditNotes() {
 		});
 
 		$scope.creditNoteList = res;
+        $scope.allcreditNoteList = res;
 		hideLoader();
 
 	}, function(error) {
@@ -642,5 +643,55 @@ function listCreditNotes() {
       $scope.creditNoteList.sort(function(a,b){ 
       return a.entity.creditNumber.localeCompare(b.entity.creditNumber)});
   }  
- 
+  
+  $scope.showMenu = function(){
+    if($('.filtermenu').hasClass('show'))
+        $('.filtermenu').removeClass('show');
+    else
+        $('.filtermenu').addClass('show');
+}
+
+$scope.currentCreditNotes = "All Cerdit Notes";
+    $scope.allCreditNotes = function(){
+    $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
+        return true;
+    });
+    $scope.currentCreditNotes = "All Cerdit Notes"
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.openCreditNotes = function(){
+    $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
+        return obj.entity.status == 'Open';
+    });
+    
+     $scope.currentCreditNotes = "Open Cerdit Notes"
+    
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.closedCreditNotes = function(){
+    $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
+        return obj.entity.status == 'Closed';
+    });
+    $scope.currentCreditNotes = "Closed Estimates"
+    $('.filtermenu').removeClass('show');
+}
+$scope.voidCreditNotes = function(){
+    $scope.estimateList = $scope.allcreditNoteList.filter(function(obj){
+        return obj.entity.status == 'Void';
+    });
+    
+      $scope.currentCreditNotes = "Void Estimates"
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.sentCreditNotes = function(){
+     $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
+        return obj.entity.status == 'Sent';
+    });
+    $scope.currentCreditNotes = "Sent Estimates"
+    
+    $('.filtermenu').removeClass('show');
+}
 }]);

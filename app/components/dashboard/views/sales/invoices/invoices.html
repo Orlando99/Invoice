@@ -1,7 +1,19 @@
 <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
 
-    <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-t">All Invoices <i class="arrow-down-black"></i></h3>
+      <div class="" style="position: relative !important; top: 0px !important; cursor: pointer;">
+    <h3 ng-click="showMenu()" class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">{{currentInvoice}} <i class="arrow-down-black"></i>
+      </h3>
+    <ul id="ul_wrapp" class="filtermenu">
+          <li><a ng-click="showAllInvoices()">All Invoices</a></li>
+          <li><a ng-click="sentInvoices()">Sent Invoices</a></li>
+        <li><a ng-click="overdueInvoices()">Overdue Expenses</a></li>
+          <li><a ng-click="unpaidInvoices()">Unpaid Invoices</a></li>
+        <li><a ng-click="paidInvoices()">Paid Invoices</a></li>
+        <li><a ng-click="partialPaidInvoices()">Partial Paid Invoices</a></li>
+        <li><a ng-click="refundedInvoices()">Refunded Invoices</a></li>
+        </ul>
+      </div>
     <a ui-sref="dashboard.sales.invoices.new" class="float-right button button-add text-transform">New</a>
     <form class="float-right layout-margin-t">
       <input type="text" class="search-bar" placeholder="Search" ng-model="search.entity.invoiceNumber">

@@ -524,3 +524,11 @@ However, delay the fade out process for 2.5 seconds */
     to {bottom: 0; opacity: 0;}
 }
 
+.creditnotes-data td {
+    min-width: 158px;
+    max-width: 158px;
+}
+.tasks-detail{
+    width: 25% !important;
+    max-width: 25% !important;  
+}
