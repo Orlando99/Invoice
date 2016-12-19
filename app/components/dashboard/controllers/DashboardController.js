@@ -402,54 +402,90 @@ function drawPieChart() {
         var expensePercentageList = [];
 
 		var uniqueExpenses = {};
-       var size = objs.length;
+        var size = objs.length;
         var texp =0;
-        for(var i = 0 ; i < size ; i++){
+        
+        ////
+        
+        var listNew = [];
+        for(var i=0;i< objs.length;i++)
+        {
+           listNew[i] = objs[i].entity;    
+        }
+         listNew.sort(function(a,b) {
+             
+        //     alert(a.category);
+             
+			return b.category- a.category;
+		});
+        
+    ///  alert(listNew);
+        
+        
+         for(var i=0;i< objs.length;i++)
+        {
+           console.log(listNew[i].category);   
+        }
+        
+        
+        /////
+       
+        
+        for(var i = 0 ; i < size ; i++)
+        {
             var expense = objs[i];
             var value = expense.entity.amount; 
             texp = value + texp;
         }
+        
         var pr= [];
-        for(var i = 0 ; i < size ; i++){
+        for(var i = 0 ; i < size ; i++)
+        {
             var expense = objs[i];
             var value = expense.entity.amount; 
             var percentage = ((value/ texp) * 100).toFixed(1);
             pr.push(percentage);
         }
-             var originalname= [];
+        var originalname= [];
         
-		for(var i=0; i < objs.length; ++i) 
+		for(var i=0; i < objs.length; i++) 
         {
                var expense = objs[i];
-               var name = expense.entity.category + "  " + pr[i] + "%" ;
+             //  var name = expense.entity.category + "  " + pr[i] + "%" ;
+               var name = expense.entity.category;// + "  " + pr[i] + "%" ;
                var value = expense.entity.amount;
                var flag = false;
+            
                if(uniqueExpenses[name]) 
                {
                   uniqueExpenses[name] += value;
+             //      alert("uniqueExpenses[name]1="+uniqueExpenses[name]);
                   flag = true;
-                } else 
-                {
+               } 
+               else 
+               {
                     originalname.push(expense.entity.category);
                     uniqueExpenses[name] = value;
                     expenseNameList.push(name);
                     flag = false;
-                }
-                var expObj = {
-                    name: name,
+               }
+               var expObj = {
+                    name: name+ "  " + pr[i] + "%" ,
                     value : value
                 };
-                if(!flag)
+               if(!flag)
                 {
                   expenseList.push(expObj);
                 }
                 else
                 {
-                  var expObj =  expenseList.pop();  
+                  var expObj =  expenseList.pop();                
                   var expObj2 = 
                   {
-                       name: name,
+                        
+                       name: name+ "  " + pr[i] + "%",
                        value : uniqueExpenses[name]
+                     
                   };
                  expenseList.push(expObj2);
                 }
@@ -460,7 +496,8 @@ function drawPieChart() {
             {
                 break;    
             }
-            }//end of for
+      }//end of for
+          
 		expenseList.sort(function(a,b) {
 			return b.value - a.value;
 		});
@@ -469,15 +506,17 @@ function drawPieChart() {
 		});
 		$scope.expenseList = expenseList;
 
-		for(var i=0; i < expenseNameList.length; ++i) {
+		for(var i=0; i < expenseNameList.length; i++) {
 			var name = expenseNameList[i];
 			var value = uniqueExpenses[name];
 			totalExpense += value;
 			expenseValueList.push(value);
 			expenseColorList.push(getColor(originalname[i]));
 		}
-        for( var i = 0; i <expenseValueList.length; i++){
-            for(var j = i ; j < expenseValueList.length ; j++ ){
+        for( var i = 0; i <expenseValueList.length; i++)
+        {
+            for(var j = i ; j < expenseValueList.length ; j++ )
+            {
                 if(expenseValueList[i] < expenseValueList[j]){
                     var temp = expenseValueList[i];
                     expenseValueList[i] = expenseValueList[j];
@@ -493,9 +532,12 @@ function drawPieChart() {
                 }
             }
         }
+       // alert("totalExpense:"+totalExpense);
         
 		$scope.totalExpenseAmount = currencyFilter(totalExpense*cc.exchangeRate, cc.currencySymbol, 2);
-
+  //   alert("$scope.totalExpenseAmount:"+$scope.totalExpenseAmount);
+       
+    
         
 //,,,.,.,.,.....................................
         
