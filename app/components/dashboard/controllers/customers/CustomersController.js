@@ -339,6 +339,8 @@ invoicesUnlimited.controller('CustomersController',
 			$scope.totalExpense = currencyFilter(expTotal, '$', 2);
 
 			var ctx = $("#barchart");
+            //ctx.canvas.width = 400 + "px";
+            //ctx.canvas.height = 300 + "px";
 			var myChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
@@ -352,7 +354,7 @@ invoicesUnlimited.controller('CustomersController',
 					}]
 				},
 				options: {
-					responsive: false,
+					responsive: true,
 					legend: {
 						display: false
 					},

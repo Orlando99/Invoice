@@ -1021,6 +1021,7 @@ function ListInvoices() {
 
 		res = res.reverse();
 		$scope.invoiceList = res;
+        $scope.allInvoices = res;
 		hideLoader();
 
 	}, function(error) {
@@ -1118,4 +1119,81 @@ $scope.saveNewTax = function() {
             
         });
 	}
+$scope.showMenu = function(){
+    if($('.filtermenu').hasClass('show'))
+        $('.filtermenu').removeClass('show');
+    else
+        $('.filtermenu').addClass('show');
+}
+
+$scope.currentInvoice = "All Invoices";
+
+$scope.showAllInvoices = function(){
+    $scope.invoiceList = $scope.allInvoices.filter(function(obj){
+        return true;
+    });
+    $scope.currentInvoice = "All Expenses"
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.sentInvoices = function(){
+    $scope.invoiceList = $scope.allInvoices.filter(function(obj){
+        return obj.entity.status == 'Sent';
+    });
+    
+     $scope.currentInvoice = "Sent Invoices"
+    
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.overdueInvoices = function(){
+    $scope.invoiceList = $scope.allInvoices.filter(function(obj){
+        return obj.entity.status == 'Overdue';
+    });
+    
+   
+    $scope.currentInvoice = "Overdue Invoices"
+    
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.unpaidInvoices = function(){
+    $scope.invoiceList = $scope.allInvoices.filter(function(obj){
+        return obj.entity.status == 'Unpaid';
+    });
+    
+   
+      $scope.currentInvoice = "Unpaid Invoices"
+    
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.paidInvoices = function(){
+     $scope.invoiceList = $scope.allInvoices.filter(function(obj){
+        return obj.entity.status == 'Paid';
+    });
+    $scope.currentInvoice = "Paid Invoices"
+    
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.partialPaidInvoices = function(){
+     $scope.invoiceList = $scope.allInvoices.filter(function(obj){
+        return obj.entity.status == 'Partial Paid';
+    });
+    
+   
+     $scope.currentInvoice = "Partial Paid Invoices"
+    $('.filtermenu').removeClass('show');
+}
+$scope.refundedInvoices = function(){
+    $scope.invoiceList = $scope.allInvoices.filter(function(obj){
+        return obj.entity.status == 'Refunded';
+    });
+    
+    $scope.currentInvoice = "Refunded Invoices"
+    $('.filtermenu').removeClass('show');
+    
+}
+
 }]);

@@ -1,7 +1,17 @@
 <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
 
-    <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Credit Notes <i class="arrow-down-black"></i></h3>
+      <div class="" style="position: relative !important; top: 0px !important; cursor: pointer;">
+    <h3 ng-click="showMenu()" class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">{{currentCreditNotes}} <i class="arrow-down-black"></i>
+      </h3>
+    <ul id="ul_wrapp" class="filtermenu">
+          <li><a ng-click="allCreditNotes()">All Credit Notes</a></li>
+          <li><a ng-click="openCreditNotes()">Open Credit Notes</a></li>
+        <li><a ng-click="closedCreditNotes()">Closed Credit Notes</a></li>
+          <li><a ng-click="voidCreditNotes()">Void Credit Notes</a></li>
+        <li><a ng-click="sentCreditNotes()">Sent Credit Notes</a></li>
+        </ul>
+      </div>
     <a ui-sref="dashboard.sales.creditnotes.new" class="float-right button button-add text-transform">New</a>
     <form class="float-right layout-margin-t">
       <input type="text" class="search-bar" placeholder="Search" ng-model = "search.entity.creditNumber">

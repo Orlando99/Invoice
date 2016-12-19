@@ -478,3 +478,12 @@ body hr {
     background-color: #3183f5
 }
 
+.creditnotes-data td {
+    min-width: 158px;
+    max-width: 158px;
+}
+.tasks-detail{
+    width: 25% !important;
+    max-width: 25% !important;  
+}
+

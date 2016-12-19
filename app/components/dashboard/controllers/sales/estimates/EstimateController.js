@@ -807,6 +807,7 @@ function listEstimates() {
 
 	//	res = res.reverse();
 		$scope.estimateList = res;
+        $scope.allestimateList = res;
 		hideLoader();
 
 	}, function(error) {
@@ -821,6 +822,62 @@ $scope.sortByEstimateNumber= function()
       $scope.estimateList.sort(function(a,b){ 
       return a.entity.estimateNumber.localeCompare(b.entity.estimateNumber)});
 }  
+
+$scope.showMenu = function(){
+    if($('.filtermenu').hasClass('show'))
+        $('.filtermenu').removeClass('show');
+    else
+        $('.filtermenu').addClass('show');
+}
+
+$scope.currentEstimates = "All Estimates";
+    $scope.allEstimates = function(){
+    $scope.estimateList = $scope.allestimateList.filter(function(obj){
+        return true;
+    });
+    $scope.currentEstimates = "All Estimates"
+    $('.filtermenu').removeClass('show');
     
+}
+$scope.draftEstimates = function(){
+    $scope.estimateList = $scope.allestimateList.filter(function(obj){
+        return obj.entity.status == 'Draft';
+    });
     
+     $scope.currentEstimates = "Draft Estimate"
+    
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.sentEstimates = function(){
+    $scope.estimateList = $scope.allestimateList.filter(function(obj){
+        return obj.entity.status == 'Sent';
+    });
+    $scope.currentEstimates = "Sent Estimates"
+    $('.filtermenu').removeClass('show');
+}
+$scope.invoicedEstimates = function(){
+    $scope.estimateList = $scope.allestimateList.filter(function(obj){
+        return obj.entity.status == 'Invoiced';
+    });
+    
+      $scope.currentEstimates = "Invoiced Estimates"
+    $('.filtermenu').removeClass('show');
+    
+}
+$scope.acceptedEstimates = function(){
+     $scope.estimateList = $scope.allestimateList.filter(function(obj){
+        return obj.entity.status == 'Accepted';
+    });
+    $scope.currentEstimates = "Accepted Estimates"
+    
+    $('.filtermenu').removeClass('show');
+}
+$scope.declinedEstimates = function(){
+     $scope.estimateList = $scope.allestimateList.filter(function(obj){
+        return obj.entity.status == 'Declined';
+    });
+     $scope.currentEstimates = "Declined Estimates"
+    $('.filtermenu').removeClass('show');
+}
 }]);
