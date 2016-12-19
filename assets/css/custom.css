@@ -437,5 +437,10 @@ body hr {
     background-image: none !important;
     z-index: 10000px !important;
     font-size: 11px !important;
-    
 }
+
+#discount-error{
+    margin-right: 51px;
+    margin-top: 8px;
+}
+

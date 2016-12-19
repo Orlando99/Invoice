@@ -118,7 +118,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
             discount : {
 				number : "Must be a number",
 				min : "Discount can not be less than 0",
-                max : "Discount can not be greater than 100"
+                max : "Discount should be less than 100%"
 			}
         }
 	});
