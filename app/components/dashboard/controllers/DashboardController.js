@@ -577,6 +577,20 @@ function drawPieChart() {
             tooltips:
             {
                     enabled: true,
+                    custom: function(tooltip) {
+                            // tooltip will be false if tooltip is not visible or should be hidden
+                            if (!tooltip) {
+                                return;
+                            }
+                            //tooltip.afterBody = ["hello"];
+                        if(tooltip.body){
+                            tooltip.title = [tooltip.body[0].lines[0]];
+                            tooltip.body[0].lines = [tooltip.body[0].lines[1]];
+                            tooltip.titleFontSize = 20;
+                            tooltip.bodyFontSize = 14;
+                        }
+                            //tooltip.title = [];
+                        },
 					callbacks: {
 						label:
                         function(item,data) {

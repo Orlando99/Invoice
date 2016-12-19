@@ -95,6 +95,70 @@ invoicesUnlimited.controller('BusinessInfoController',
        
             $('#' + id).removeClass('error');
     });
+        
+    //$('#dob').mask("00/00/0000");
+        $('#dob').keyup(function(){
+            var v = $('#dob').val();
+            if(v.length){
+                if(v.length == 1){
+                    var temp = parseInt(v.charAt(0));
+                    if(temp == 1){
+                        $('#dob').unmask();
+                        $('#dob').mask('AY/S0/0000', {'translation': {
+                                        A: {pattern: /[0-1]/},
+                                        Y: {pattern: /[0-2]/},
+                                        S: {pattern: /[0-3]/}
+                                      }
+                                });
+                    }
+                    else{
+                        $('#dob').unmask();
+                        $('#dob').mask('AY/S0/0000', {'translation': {
+                                        A: {pattern: /[0-1]/},
+                                        Y: {pattern: /[0-9]/},
+                                        S: {pattern: /[0-3]/}
+                                      }
+                                });
+                    }
+                }
+                else if(v.length == 4){
+                    var temp = parseInt(v.charAt(3));
+                    if(temp == 3){
+                        $('#dob').unmask();
+                        $('#dob').mask('A0/SY/0000', {'translation': {
+                                        A: {pattern: /[0-1]/},
+                                        Y: {pattern: /[0-1]/},
+                                        S: {pattern: /[0-3]/}
+                                      }
+                                });
+                    }
+                    else{
+                        $('#dob').unmask();
+                        $('#dob').mask('A0/SY/0000', {'translation': {
+                                        A: {pattern: /[0-1]/},
+                                        Y: {pattern: /[0-9]/},
+                                        S: {pattern: /[0-3]/}
+                                      }
+                                });
+                    }
+                }
+                else{
+                    $('#dob').unmask();
+                    $('#dob').mask('AY/S0/0000', {'translation': {
+                                        A: {pattern: /[0-1]/},
+                                        Y: {pattern: /[0-9]/},
+                                        S: {pattern: /[0-3]/}
+                                      }
+                                });
+                }
+            }
+        });
+        $('#dob').mask('AY/S0/0000', {'translation': {
+                                        A: {pattern: /[0-1]/},
+                                        Y: {pattern: /[0-2]/},
+                                        S: {pattern: /[0-3]/}
+                                      }
+                                });
 
 	$("#signUpForm").validate({
 		onkeyup : false,
