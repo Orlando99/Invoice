@@ -250,6 +250,7 @@ $scope.setDefaultPrefs = function() {
 	organization.save().then(function() {
 		userFactory.commonData = {};
 		hideLoader();
+        showSnackbar("Settings saved");
 		console.log('general preferences are saved.')
 
 	}, function(error) {
@@ -308,6 +309,7 @@ $scope.setDefaultTemplate = function(index) {
 	user.set('defaultTemplate', $scope.templates[index].entity);
 	user.save().then(function() {
 		hideLoader();
+        showSnackbar("Template saved");
 	//	console.log('default template selected');
 
 	}, function(error) {

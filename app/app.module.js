@@ -133,6 +133,12 @@ function hideLoader(){
     },500);
 }
 
+function showSnackbar(msg){
+    $("#snackbar").html(msg);
+    $("#snackbar").addClass('show');
+    setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
+}
+
 function sleepTime(ms) {
     ms += new Date().getTime();
     while (new Date() < ms){}

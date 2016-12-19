@@ -71,6 +71,7 @@ $scope.save = function() {
 
 	$q.when(creditNoteService.setPreferences(user, prefs))
 	.then(function() {
+        showSnackbar('Settings saved.');
 		console.log('creditNote prefs updated.');
 		$state.reload();
 		hideLoader();

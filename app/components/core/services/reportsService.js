@@ -32,7 +32,7 @@ return {
 		query.equalTo('organization', params.organization);
 		query.exists('payment');
 		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
-		query.lessThanOrEqualTo('invoiceDate', params.toData);
+		query.lessThanOrEqualTo('invoiceDate', params.toDate);
 		//query.select('invoiceNumber', 'invoiceItems');
 		query.include('invoiceItems');
 
@@ -53,7 +53,7 @@ return {
 		query.equalTo('organization', params.organization);
 		query.notEqualTo('status', 'Closed');
 		query.greaterThanOrEqualTo('creditNoteDate', params.fromDate);
-		query.lessThanOrEqualTo('creditNoteDate', params.toData);
+		query.lessThanOrEqualTo('creditNoteDate', params.toDate);
 		//query.select('invoiceNumber', 'customer', 'balanceDue');
 		query.include('customer');
 
@@ -75,7 +75,7 @@ return {
 		query.equalTo('organization', params.organization);
 		query.containedIn('status', ['Unpaid', 'Paid', 'Overdue']);
 		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
-		query.lessThanOrEqualTo('invoiceDate', params.toData);
+		query.lessThanOrEqualTo('invoiceDate', params.toDate);
 		//query.select('invoiceNumber', 'customer', 'balanceDue');
 		query.include('customer');
 
@@ -121,7 +121,7 @@ return {
 		query.equalTo('organization', params.organization);
 		query.exists('payment');
 		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
-		query.lessThanOrEqualTo('invoiceDate', params.toData);
+		query.lessThanOrEqualTo('invoiceDate', params.toDate);
 		//query.select('invoiceNumber', 'invoiceDate', 'customer', 'payment');
 		query.include('customer', 'payment');
 
@@ -141,7 +141,7 @@ return {
 		var query = new Parse.Query(Expenses);
 		query.equalTo('organization', params.organization);
 		query.greaterThanOrEqualTo('expanseDate', params.fromDate);
-		query.lessThanOrEqualTo('expanseDate', params.toData);
+		query.lessThanOrEqualTo('expanseDate', params.toDate);
 		query.select('category', 'amount');
 
 		return query.find();

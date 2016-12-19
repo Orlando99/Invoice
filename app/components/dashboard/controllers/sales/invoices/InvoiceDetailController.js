@@ -498,7 +498,7 @@ $scope.refundPayment = function() {
                     //invoiceObj.increment('paymentMade', -payment.amount);
                     invoiceObj.increment('balanceDue', payment.amount);
 
-                    if (invoiceObj.paymentMade <= 0)
+                    if (invoiceObj.get('paymentMade') <= 0)
                         invoiceObj.set('status', 'Refunded');
                     else
                         invoiceObj.set('status', 'Partial Refunded');
@@ -531,7 +531,7 @@ $scope.refundPayment = function() {
 	invoiceObj.increment('paymentMade', -payment.amount);
 	invoiceObj.increment('balanceDue', payment.amount);
 
-	if (invoiceObj.paymentMade <= 0)
+	if (invoiceObj.get('paymentMade') <= 0)
 		invoiceObj.set('status', 'Refunded');
 	else
 		invoiceObj.set('status', 'Partial Refunded');
@@ -540,6 +540,9 @@ $scope.refundPayment = function() {
 	promises.push(payment.save());
 	promises.push(invoiceObj.save());
 
+    var body = 'Refund made for '+ currencyFilter(payment.amount, '$', 2) +' amount';
+    promises.push(addNewComment(body, true));
+        
 	$q.all(promises)
 	.then(function() {
 		hideLoader();

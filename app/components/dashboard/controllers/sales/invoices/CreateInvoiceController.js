@@ -496,7 +496,9 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				return invoiceService.createInvoiceReceipt(invoice.id, invoiceInfo.id);
 			})
 			.then(function(invoiceObj) {
-				return invoiceService.sendInvoiceReceipt(invoiceObj);
+                invoiceService.sendInvoiceReceipt(invoiceObj);
+				return invoiceObj;
+                
 			});
 		});
         

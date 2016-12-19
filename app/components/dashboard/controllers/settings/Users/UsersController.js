@@ -41,9 +41,15 @@ invoicesUnlimited.controller('UsersController',
 
 	hideLoader();
 
+    $scope.deleteUserConfirm = function($index){
+        $scope.currenDeleteIndex = $index;
+        $('.confirmation-pop-up').addClass('show');
+    }
+    
 	$scope.deleteUser = function($index) {
 		showLoader();
 		var userObj = $scope.users[$index].get('userID');
+        $('.confirmation-pop-up').removeClass('show');
 
 		if (!userObj) return;
         

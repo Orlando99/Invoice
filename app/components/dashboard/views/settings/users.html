@@ -36,7 +36,7 @@
             <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.emailID}}</td>
             <td ng-click="editUser($index);" class="text-color-light text-weight-normalize layout-padding">{{user.role}}</td>
             <td ng-click="editUser($index);" ng-class="user.status=='Activated' ? 'text-positive' : 'text-danger'" class="text-color-light text-weight-normalize layout-padding">{{user.status}}</td>
-            <td class="text-color-light text-weight-normalize layout-padding text-right actions" ng-click="deleteUser($index);"><img src="./assets/images/icon-times-round.png" alt="" /></td>
+            <td class="text-color-light text-weight-normalize layout-padding text-right actions" ng-click="deleteUserConfirm($index);"><img src="./assets/images/icon-times-round.png" alt="" /></td>
           </tr>
         </table>
       </div>
@@ -58,6 +58,26 @@
           </tr>
         </table>
       </div>-->
+    </div>
+  </div>
+
+<div class="popup-modal confirmation-pop-up hidesm">
+    <div class="modal container" style="width: 650px !important;">
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Confirm</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center" style="margin-bottom: 20px; margin-top: 20px; margin-left: -15px;">
+        <label>Are you sure you want to delete {{users[currenDeleteIndex].userName}}?</label>
+      </div>
+      <div class="clearfix"></div>
+        <hr class="layout-margin-tb">
+      <button class="button button-small button-default text-uppercase modal-close float-right"
+        ng-click="">Cancel</button>
+      <button style="margin-right: 15px;margin-bottom: 20px;" class="button button-danger text-uppercase float-right" ng-click="deleteUser(currenDeleteIndex)">Delete</button>
+      <div class="clearfix"></div>
     </div>
   </div>
   <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

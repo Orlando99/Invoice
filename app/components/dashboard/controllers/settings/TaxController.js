@@ -160,7 +160,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 			user: user,
             associatedTaxes: associatedTaxes
 		};
-        /*
+        
 		taxService.saveNewTax(params, function(response){
 			console.log(response);
             hideLoader();
@@ -168,11 +168,11 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
                 $state.go('dashboard.settings.items')
             }
             else{
-                $(".new-tax").removeClass("show");
+                $(".new-tax-group").removeClass("show");
                 getTaxes();
             }
 		});
-        */
+        
 	}
 
 	$scope.saveNewTax = function() {

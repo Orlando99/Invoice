@@ -236,7 +236,7 @@
           </div>
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-smm">Tax</label>
-            <select maxlength="60" class="col-75" ng-model="newItem.tax" ng-options="tax.name for tax in taxes" ng-change="taxChanged(-1)">
+            <select class="col-75" ng-model="newItem.tax" ng-options="tax.name for tax in taxes" ng-change="taxChanged(-1)">
               <option value="" selected>None</option>
             </select>
           </div>

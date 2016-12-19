@@ -176,8 +176,8 @@ invoicesUnlimited.controller('CustomersController',
                         var temp = obj;
                         var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
                         
-                        obj.date = formatDate(obj.entity.date, dateFormat);
-                        
+                        temp.date = formatDate(obj.entity.date, dateFormat);
+                        temp.amount = currencyFilter(obj.entity.amount , "$", 2);
                         temp.invoiceNumber = inv.entity.invoiceNumber;
                         $scope.payments.push(temp);
                     });
