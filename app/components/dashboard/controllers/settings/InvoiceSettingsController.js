@@ -268,7 +268,7 @@ $scope.save = function() {
 	$q.when(invoiceService.setPreferences(user, prefs))
 	.then(function() {
 		console.log('invoice prefs updated.');
-        showSnackbar("Settings saved");
+        showSnackbar("Save Successful");
 		$state.reload();
         
 		hideLoader();

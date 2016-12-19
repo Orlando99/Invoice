@@ -114,7 +114,7 @@ $scope.save = function() {
 
 	$q.when(estimateService.setPreferences(user, prefs))
 	.then(function() {
-        showSnackbar('Settings saved.');
+        showSnackbar('Save Successful');
 		console.log('estimate prefs updated.');
 		$state.reload();
 		hideLoader();

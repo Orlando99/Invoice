@@ -340,7 +340,7 @@ $scope.openDatePicker = function(n) {
 
 $scope.prepareAddPayment = function() {
 	$scope.paymentDate = new Date();
-	$scope.paymentAmount = $scope.invoice.entity.balanceDue;
+	$scope.paymentAmount = $scope.invoice.entity.balanceDue.toFixed(2);
 	$scope.paymentRef = '' + Math.random().toString(10).substr(2,6);
 	$scope.paymentModes = ['Check', 'Cash', 'Bank Transfer', 'Bank Remittance'];
 	$scope.selectedPaymentMode = 'Cash';

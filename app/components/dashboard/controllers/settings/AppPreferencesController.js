@@ -65,7 +65,7 @@ invoicesUnlimited.controller('AppPreferencesController',
                 $state.go('dashboard.settings.taxes');
             }
             else{
-                showSnackbar("Preferences Saved Successfully")
+                showSnackbar("Save Successful")
                 window.location.reload();
                 hideLoader();
             }
