@@ -131,6 +131,9 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
         $scope.nextClicked = function(){
             $('.tutorial').hide();
         }
+        $(document).click(function() {
+            $('.tutorial').hide();
+});
     
     $('#phoneNumber').mask("(Z00) 000-0000",{
 		translation : {
