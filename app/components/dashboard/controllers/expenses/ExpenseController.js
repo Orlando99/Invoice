@@ -365,6 +365,8 @@ function listExpenses() {
 		});
 
 		$scope.expenseList = res;
+        $scope.allExpenses = res;
+        $scope.currentExpenses = "All Expenses";
 		hideLoader();
 
 	}, function(error) {
@@ -391,6 +393,53 @@ $scope.deleteExpense = function(){
         $state.go('dashboard.expenses.all');
     });
     
+}
+
+$scope.showMenu = function(){
+    if($('.filtermenu').hasClass('show'))
+        $('.filtermenu').removeClass('show');
+    else
+        $('.filtermenu').addClass('show');
+}
+
+$scope.billableExpenses = function(){
+    $scope.expenseList = $scope.allExpenses.filter(function(obj){
+        return obj.entity.status == 'Billable';
+    });
+    
+    $scope.currentExpenses = "Billable Expenses"
+    
+    $('.filtermenu').removeClass('show');
+}
+
+$scope.nonBillableExpenses = function(){
+    $scope.expenseList = $scope.allExpenses.filter(function(obj){
+        return obj.entity.status == 'Non-Billable';
+    });
+    
+    $scope.currentExpenses = "Non-Billable Expenses"
+    
+    $('.filtermenu').removeClass('show');
+}
+
+$scope.invoicedExpenses = function(){
+    $scope.expenseList = $scope.allExpenses.filter(function(obj){
+        return obj.entity.status == 'Invoiced';
+    });
+    
+    $scope.currentExpenses = "Invoiced Expenses"
+    
+    $('.filtermenu').removeClass('show');
+}
+
+$scope.showAllExpenses = function(){
+    $scope.expenseList = $scope.allExpenses.filter(function(obj){
+        return true;
+    });
+    
+    $scope.currentExpenses = "All Expenses"
+    
+    $('.filtermenu').removeClass('show');
 }
 
 $scope.saveNewExpense = function() {

@@ -439,3 +439,36 @@ body hr {
     font-size: 11px !important;
     
 }
+
+.filtermenu{
+    list-style: none;
+    background-color: #fff;
+    position: absolute;
+    top: 20px;
+    padding: 0;
+    width: 100%;
+    z-index: 3;
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,.15);
+    display: none;
+    left: 0px;
+    width: inherit;
+    margin-top: 20px;
+}
+
+.filtermenu li a {
+    display: block;
+    border: 0;
+    padding: 10px 10px 5px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.filtermenu.show{
+    display: inline-block;
+}
+
+.filtermenu li a:hover {
+    color: #fff;
+    background-color: #3183f5
+}
