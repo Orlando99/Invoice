@@ -1022,6 +1022,7 @@ function ListInvoices() {
 		res = res.reverse();
 		$scope.invoiceList = res;
         $scope.allInvoices = res;
+        $scope.displayedInvoices = res;
 		hideLoader();
 
 	}, function(error) {
@@ -1132,6 +1133,7 @@ $scope.showAllInvoices = function(){
     $scope.invoiceList = $scope.allInvoices.filter(function(obj){
         return true;
     });
+    $scope.displayedInvoices = $scope.allInvoices;
     $scope.currentInvoice = "All Expenses"
     $('.filtermenu').removeClass('show');
     
@@ -1140,7 +1142,7 @@ $scope.sentInvoices = function(){
     $scope.invoiceList = $scope.allInvoices.filter(function(obj){
         return obj.entity.status == 'Sent';
     });
-    
+    $scope.displayedInvoices = $scope.invoiceList;
      $scope.currentInvoice = "Sent Invoices"
     
     $('.filtermenu').removeClass('show');
@@ -1151,7 +1153,7 @@ $scope.overdueInvoices = function(){
         return obj.entity.status == 'Overdue';
     });
     
-   
+   $scope.displayedInvoices = $scope.invoiceList;
     $scope.currentInvoice = "Overdue Invoices"
     
     $('.filtermenu').removeClass('show');
@@ -1162,7 +1164,7 @@ $scope.unpaidInvoices = function(){
         return obj.entity.status == 'Unpaid';
     });
     
-   
+   $scope.displayedInvoices = $scope.invoiceList;
       $scope.currentInvoice = "Unpaid Invoices"
     
     $('.filtermenu').removeClass('show');
@@ -1173,7 +1175,7 @@ $scope.paidInvoices = function(){
         return obj.entity.status == 'Paid';
     });
     $scope.currentInvoice = "Paid Invoices"
-    
+    $scope.displayedInvoices = $scope.invoiceList;
     $('.filtermenu').removeClass('show');
     
 }
@@ -1182,7 +1184,7 @@ $scope.partialPaidInvoices = function(){
         return obj.entity.status == 'Partial Paid';
     });
     
-   
+   $scope.displayedInvoices = $scope.invoiceList;
      $scope.currentInvoice = "Partial Paid Invoices"
     $('.filtermenu').removeClass('show');
 }
@@ -1190,10 +1192,31 @@ $scope.refundedInvoices = function(){
     $scope.invoiceList = $scope.allInvoices.filter(function(obj){
         return obj.entity.status == 'Refunded';
     });
-    
+    $scope.displayedInvoices = $scope.invoiceList;
     $scope.currentInvoice = "Refunded Invoices"
     $('.filtermenu').removeClass('show');
     
 }
 
+$scope.search = function(){
+    if($scope.searchText.length){
+        $scope.invoiceList = $scope.displayedInvoices.filter(function(obj){
+            return obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase()) || obj.invoiceDate.includes($scope.searchText);
+        });
+    } else {
+        $scope.invoiceList = $scope.displayedInvoices;
+    }
+}
+
 }]);
+/*
+<td><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
+        <td class="text-color-light">{{invoice.invoiceDate}}</td>
+        <td class="text-color-light">{{invoice.entity.invoiceNumber}}</td>
+        <td class="text-color-light">{{invoice.entity.poNumber}}</td>
+        <td class="text-color-light">{{invoice.customer.displayName}}</td>
+        
+        <td class="text-color-light">{{invoice.dueDate}}</td>
+        <td  class="text-color-light text-center">{{invoice.total}}</td>
+        <td Style="min-width: 90px ; max-width: 133px;"  class="text-color-light text-center">{{invoice.balanceDue}}</td>
+        */
