@@ -17,8 +17,7 @@ $(document).ready(function(){
         
 	})
 });
-
-
+ 
 invoicesUnlimited.controller('CustomersController',
 	function($scope,$rootScope,$state,$uibModal,userFactory,
 			 contactPersonFactory, customerFactory, coreFactory, expenseService, 
@@ -169,7 +168,8 @@ invoicesUnlimited.controller('CustomersController',
         $state.go('dashboard.sales.estimates.new', {customerId:$scope.selectedCustomer.entity.id});
     }
     
-	var selectCustomer = function(item){
+	var selectCustomer = function(item)
+    {
 		$scope.selectedCustomer = item;
         var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
         $scope.selectedCustomer.invoices.forEach(function(obj){
@@ -528,6 +528,8 @@ invoicesUnlimited.controller('CustomersController',
 			$scope.customers = res.sort(function(a,b){
 				return alphabeticalSort(a.entity.displayName,b.entity.displayName);
 			});
+            $scope.displayedCustomers = $scope.customers;
+            
 			return $q.when(coreFactory.getAllInvoices({
 				method 	: 'containedIn',
 				name 	: 'customer',
@@ -564,18 +566,214 @@ invoicesUnlimited.controller('CustomersController',
 
 		});
 	};
- 
-    $scope.sortByCustomerName= function(){
-        $scope.customers.sort(function(a,b){
+  //nameD,custNameD,emailD,workphoneD,receivableD,creditsD,
+    $scope.sortByCustomerName= function()
+    {
+        $scope.customers.sort(function(a,b)
+        {
+            if(!a.entity.displayName)
+            {
+              a.entity.displayName = "";  
+            }
+            if(!b.entity.displayName)
+            {
+              b.entity.displayName = "";  
+            }
             return a.entity.displayName.localeCompare(b.entity.displayName)
         });
+          $('#nameD').css({
+            'display': 'inline-table'
+        });
+          $('#custNameD').css({
+            'display': 'none'
+        });
+              $('#emailD').css({
+            'display': 'none'
+        });
+          $('#workphoneD').css({
+            'display': 'none'
+        });
+              $('#receivableD').css({
+            'display': 'none'
+        });
+         $('#creditsD').css({
+            'display': 'none'
+        });
+        
+    }
+     $scope.sortByCompanyName= function()
+     {
+         $scope.customers.sort(function(a,b){
+             if(!a.entity.companyName)
+             {
+                 a.entity.companyName = "";
+             }
+             if(!b.entity.companyName)
+             {
+                 b.entity.companyName = "";
+             }
+          return a.entity.companyName.localeCompare(b.entity.companyName)
+        });
+         $('#nameD').css({
+            'display': 'none'
+        });
+          $('#custNameD').css({
+            'display': 'inline-table'
+        });
+              $('#emailD').css({
+            'display': 'none'
+        });
+          $('#workphoneD').css({
+            'display': 'none'
+        });
+              $('#receivableD').css({
+            'display': 'none'
+        });
+         $('#creditsD').css({
+            'display': 'none'
+        });
+    }
+    $scope.sortByEmail= function(){
+        $scope.customers.sort(function(a,b){
+            if(!a.entity.email)
+            {
+                a.entity.email = "";
+            }
+            if(!b.entity.email)
+            {
+                b.entity.email = "";
+            }
+            return a.entity.email.localeCompare(b.entity.email)
+        });
+         $('#nameD').css({
+            'display': 'none'
+        });
+          $('#custNameD').css({
+            'display': 'none'
+        });
+              $('#emailD').css({
+            'display': 'inline-table'
+        });
+          $('#workphoneD').css({
+            'display': 'none'
+        });
+              $('#receivableD').css({
+            'display': 'none'
+        });
+         $('#creditsD').css({
+            'display': 'none'
+        });
+    }
+    $scope.sortByPhone= function(){
+        $scope.customers.sort(function(a,b){
+            if(!a.entity.phone)
+            {
+                a.entity.phone = "";
+            }
+            if(!b.entity.phone)
+            {
+                b.entity.phone = "";
+            }
+            return a.entity.phone.localeCompare(b.entity.phone)
+        });
+         $('#nameD').css({
+            'display': 'none'
+        });
+          $('#custNameD').css({
+            'display': 'none'
+        });
+              $('#emailD').css({
+            'display': 'none'
+        });
+          $('#workphoneD').css({
+            'display': 'inline-table'
+        });
+              $('#receivableD').css({
+            'display': 'none'
+        });
+         $('#creditsD').css({
+            'display': 'none'
+        });
+    }
+    $scope.sortByReceivable= function(){
+       
+        $scope.customers.sort(function(a,b){
+            if(!a.entity.outstanding)
+            {
+                a.entity.outstanding = "";
+            }
+            if(!b.entity.outstanding)
+            {
+                b.entity.outstanding = "";
+            }
+            return a.entity.outstanding.localeCompare(b.entity.outstanding)
+        });
+        $('#nameD').css({
+            'display': 'none'
+        });
+          $('#custNameD').css({
+            'display': 'none'
+        });
+              $('#emailD').css({
+            'display': 'none'
+        });
+          $('#workphoneD').css({
+            'display': 'none'
+        });
+              $('#receivableD').css({
+            'display': 'inline-table'
+        });
+         $('#creditsD').css({
+            'display': 'none'
+        });
+    }
+    $scope.sortByCredits= function()
+    {
+        $scope.customers.sort(function(a,b){
+            if(!a.entity.unusedCredits)
+            {
+                a.entity.unusedCredits = "";
+            }
+            if(!b.entity.unusedCredits)
+            {
+                b.entity.unusedCredits = "";
+            }
+            return a.entity.unusedCredits.localeCompare(b.entity.unusedCredits)
+        });
+         $('#nameD').css({
+            'display': 'none'
+        });
+          $('#custNameD').css({
+            'display': 'none'
+        });
+              $('#emailD').css({
+            'display': 'none'
+        });
+          $('#workphoneD').css({
+            'display': 'none'
+        });
+              $('#receivableD').css({
+            'display': 'none'
+        });
+         $('#creditsD').css({
+            'display': 'inline-table'
+        }); 
     }
     $scope.sortByDate= function(){
+       
         $scope.comments.sort(function(a,b){
+            if(!a.entity.date)
+            {
+                a.entity.date = "";
+            }
+            if(!b.entity.date)
+            {
+                b.entity.date = "";
+            }
             return a.entity.date.localeCompare(b.entity.date)
         });
     }
-     $scope.sortByUser= function(){
+    $scope.sortByUser= function(){
        
         $scope.comments.sort(function(a,b){
             return a.entity.name.localeCompare(b.entity.name)
@@ -595,11 +793,8 @@ invoicesUnlimited.controller('CustomersController',
 	}
 
 	$scope.editContact = function(contactPerson,index){
-
 		var selectedContact = contactPerson;
-
 		$scope.selectedCustomer.contactPersons[index] = angular.copy(selectedContact);
-
 		var modalInstance = $uibModal.open({
 			animation 		: true,
 			templateUrl 	: 'modal-contact',
@@ -647,9 +842,7 @@ invoicesUnlimited.controller('CustomersController',
 		$('#mobilePhone').mask('Z (Y00) 000-0000', obj);
 		$('#billFax').mask('Z (Y00) 000-0000', obj);
 		$('#shipFax').mask('Z (Y00) 000-0000', obj);
-
 	}
-
     $("#addContactForm").validate({
 		rules: {
 			firstname 		: 'required',
@@ -661,7 +854,6 @@ invoicesUnlimited.controller('CustomersController',
 			
 		}
 	});
-    
 	$scope.createContact = function(){
 		var modalInstance = $uibModal.open({
 			animation 		: true,
@@ -749,10 +941,50 @@ invoicesUnlimited.controller('CustomersController',
             }
 		}
 	}
-
+        
+    $scope.searchObject = {};
+    $scope.search = function()
+    {
+         if($scope.searchObject.searchText.length)
+         {
+           $scope.customers = $scope.displayedCustomers.filter(function(obj)
+           {
+                if(!obj.entity.displayName)
+                {
+                   obj.entity.displayName ="";
+                }
+                if(!obj.entity.companyName)
+                {
+                   obj.entity.companyName ="";
+                }if(!obj.entity.email)
+                {
+                   obj.entity.email ="";
+                }if(!obj.entity.phone)
+                {
+                   obj.entity.phone ="";
+                }if(!obj.entity.outstanding)
+                {
+                    obj.entity.outstanding ="";
+                }
+                if(!obj.entity.unusedCredits)
+                {
+                   obj.entity.unusedCredits ="";
+                }               
+                return obj.entity.displayName .toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+                obj.entity.companyName.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+                obj.entity.email.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+                obj.entity.phone.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+                obj.entity.outstanding.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+                obj.entity.unusedCredits.toLowerCase().includes($scope.searchObject.searchText.toLowerCase());
+                       });  
+         }
+         else
+         {
+             $scope.customers = $scope.displayedCustomers;
+         }
+    }  
 	$scope.$watch("selectedCustomerEdit.firstName",changeDispName);
 	$scope.$watch("selectedCustomerEdit.lastName",changeDispName);
- 
     $scope.availableCurrencies = ['ADP - Andorran Peseta',
 'AED - United Arab Emirates Dirham',
 'AFN - Afghan Afghani',

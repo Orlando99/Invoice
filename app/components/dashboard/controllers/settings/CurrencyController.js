@@ -19,7 +19,7 @@ $q.when(userFactory.entity[0].fetch())
 	organization = user.get("organizations")[0];
 	loadCurrencies();
 });
-
+ 
 $scope.availableCurrencies = ['ADP - Andorran Peseta',
 'AED - United Arab Emirates Dirham',
 'AFN - Afghan Afghani',
@@ -273,6 +273,8 @@ function loadCurrencies() {
 		$scope.currencies = currencies;
 		setDefaultCurrencyIndex();
 		hideLoader();
+        $scope.displayedCurrencies = currencies;
+        
 	});
 }
 
@@ -283,11 +285,6 @@ function setDefaultCurrencyIndex() {
 		return currency.entity.id == curr.id;
 	});
 }
-    
-//
-  
-//
-    
 $scope.prepareAddCurrency = function() {
 	$scope.currencyObj = {
 		title : undefined,
@@ -452,5 +449,32 @@ $scope.currencyChanged = function() {
 			$scope.currencyObj.title.split(' ')[0];
 
 }
-
+  $scope.search = function()
+  {
+        if($scope.searchText.length)
+        {   
+            $scope.currencies = $scope.displayedCurrencies.filter(function(obj)
+            {      
+                if(!obj.entity.title)
+                {
+                    obj.entity.title = "";
+                }
+                if(!obj.entity.currencySymbol)
+                {
+                   obj.entity.currencySymbol = "";
+                }
+                if(!obj.entity.exchangeRate)
+                {
+                   obj.entity.exchangeRate = "";
+                }
+                return obj.entity.title.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.entity.currencySymbol.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.entity.exchangeRate.toString().toLowerCase().includes($scope.searchText.toLowerCase()) 
+            });
+        }
+        else
+        { 
+           $scope.currencies =$scope.displayedCurrencies;
+        }
+   }    
 }]);

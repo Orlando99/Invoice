@@ -138,6 +138,15 @@ $scope.generateReport = function() {
 		hideLoader();
 	});
     
+    ////
+    $scope.sortByName= function()
+    {
+        alert("test");
+       $scope.info.sort(function(a,b){
+        return a.name.localeCompare(b.name)});
+    }  
+
+    ////
     /*
 	$q.when(reportsService.customerBalance(params))
 	.then(function(invoices) {
@@ -188,11 +197,6 @@ $scope.generateReport = function() {
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
 		$scope.toDateStr = formatDate($scope.toDate, dateFormat);
-
-       
-        
-        
-        
 		hideLoader();
 	});
     */

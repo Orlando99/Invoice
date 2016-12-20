@@ -82,6 +82,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 	function getTaxes() {
 		taxService.getTaxes(user,function(taxContent){
 			$scope.taxes = taxContent;
+            $scope.displayedTaxes = $scope.taxes;
 		});
 	}
  //
@@ -280,5 +281,29 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
           }
         });
     }
-
+    $scope.search = function()
+    {
+        if($scope.searchText.length)
+        {
+          $scope.taxes = $scope.displayedTaxes.filter(function(obj)
+          {
+             if(!obj.name)
+             {
+               obj.name = "";  
+             }
+             if(!obj.rate)
+             {
+               obj.rate = "";  
+             } 
+              
+            return obj.name.toLowerCase().includes($scope.searchText.toLowerCase())||
+            obj.rate.toString().toLowerCase().includes($scope.searchText.toLowerCase());
+               
+          });
+        }
+        else
+        {
+            $scope.taxes = $scope.displayedTaxes;
+        }
+    }
 }]);

@@ -19,7 +19,7 @@
     <h3 class="layout-margin-t section-title float-left">Items <!--<i class="arrow-down-black"></i>--></h3>
     <a href="javascript:" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="new-item" ng-click="clearAddItemFields()">New</a>
     <form class="float-right layout-margin-tb">
-      <input maxlength="60" type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.entity.title">
+      <input maxlength="60" type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="searchText" ng-change = "search()">
     </form>
 
     <table class="table-border-tb show_table_hover"style = "margin-bottom: 20px;">
@@ -29,7 +29,7 @@
         <td class="text-uppercase text-info layout-padding" >Description</td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr class="trow" ng-repeat="item in items | filter:search">
+      <tr class="trow" ng-repeat="item in items">
         <td ng-click="showItemDetail($index)" class="text-color-light text-weight-normalize layout-padding">{{item.entity.title}}</td> 
           <td ng-click="showItemDetail($index)" class="text-color-light text-weight-normalize layout-padding">{{item.entity.rate | currency:$:2}}</td>
            <td ng-click="showItemDetail($index)" style="max-width: 300px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;" class="text-color-light text-weight-normalize layout-padding">{{item.entity.itemDescription}}</td>

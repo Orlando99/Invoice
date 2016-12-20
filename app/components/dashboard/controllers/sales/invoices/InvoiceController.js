@@ -1199,9 +1199,49 @@ $scope.refundedInvoices = function(){
 }
 
 $scope.search = function(){
-    if($scope.searchText.length){
-        $scope.invoiceList = $scope.displayedInvoices.filter(function(obj){
-            return obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase()) || obj.invoiceDate.includes($scope.searchText);
+    if($scope.searchText.length)
+    {
+        $scope.invoiceList = $scope.displayedInvoices.filter(function(obj)
+        {
+            if(!obj.entity.status)
+            {
+                obj.entity.status = "";
+            }
+            if(!obj.invoiceDate)
+            {
+                obj.invoiceDate = "";
+            }
+            if(!obj.entity.invoiceNumber)
+            {
+                obj.entity.invoiceNumber = "";
+            }
+            if(!obj.entity.poNumber)
+            {
+                obj.entity.poNumber = "";
+            }
+            if(!obj.customer.displayName)
+            {
+                obj.customer.displayName = "";
+            }
+            if(!obj.dueDate)
+            {
+               obj.dueDate = "";
+            }
+            if(!obj.total)
+            {
+                obj.total = "";
+            }
+            if(!obj.balanceDue)
+            {
+               obj.balanceDue = "";
+            }
+        return obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase()) || obj.invoiceDate.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+            obj.entity.invoiceNumber.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.entity.poNumber.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.dueDate.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.total.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.balanceDue.toLowerCase().includes($scope.searchText.toLowerCase());
         });
     } else {
         $scope.invoiceList = $scope.displayedInvoices;
@@ -1209,14 +1249,4 @@ $scope.search = function(){
 }
 
 }]);
-/*
-<td><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
-        <td class="text-color-light">{{invoice.invoiceDate}}</td>
-        <td class="text-color-light">{{invoice.entity.invoiceNumber}}</td>
-        <td class="text-color-light">{{invoice.entity.poNumber}}</td>
-        <td class="text-color-light">{{invoice.customer.displayName}}</td>
-        
-        <td class="text-color-light">{{invoice.dueDate}}</td>
-        <td  class="text-color-light text-center">{{invoice.total}}</td>
-        <td Style="min-width: 90px ; max-width: 133px;"  class="text-color-light text-center">{{invoice.balanceDue}}</td>
-        */
+ 

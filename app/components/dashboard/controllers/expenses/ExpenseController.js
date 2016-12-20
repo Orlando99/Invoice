@@ -366,6 +366,7 @@ function listExpenses() {
 
 		$scope.expenseList = res;
         $scope.allExpenses = res;
+        $scope.displayedExpenses = res;
         $scope.currentExpenses = "All Expenses";
 		hideLoader();
 
@@ -406,7 +407,7 @@ $scope.billableExpenses = function(){
     $scope.expenseList = $scope.allExpenses.filter(function(obj){
         return obj.entity.status == 'Billable';
     });
-    
+    $scope.displayedExpenses = $scope.expenseList;
     $scope.currentExpenses = "Billable Expenses"
     
     $('.filtermenu').removeClass('show');
@@ -416,7 +417,7 @@ $scope.nonBillableExpenses = function(){
     $scope.expenseList = $scope.allExpenses.filter(function(obj){
         return obj.entity.status == 'Non-Billable';
     });
-    
+    $scope.displayedExpenses = $scope.expenseList;
     $scope.currentExpenses = "Non-Billable Expenses"
     
     $('.filtermenu').removeClass('show');
@@ -426,7 +427,7 @@ $scope.invoicedExpenses = function(){
     $scope.expenseList = $scope.allExpenses.filter(function(obj){
         return obj.entity.status == 'Invoiced';
     });
-    
+    $scope.displayedExpenses = $scope.expenseList;
     $scope.currentExpenses = "Invoiced Expenses"
     
     $('.filtermenu').removeClass('show');
@@ -436,7 +437,7 @@ $scope.showAllExpenses = function(){
     $scope.expenseList = $scope.allExpenses.filter(function(obj){
         return true;
     });
-    
+    $scope.displayedExpenses = $scope.expenseList;
     $scope.currentExpenses = "All Expenses"
     
     $('.filtermenu').removeClass('show');
@@ -577,5 +578,51 @@ $scope.addAttachment = function(obj) {
 		hideLoader();
 	});
 }
-
+$scope.search = function()
+{
+    if($scope.searchText.length)
+    {
+      $scope.expenseList = $scope.displayedExpenses.filter(function(obj)
+      {
+          if(!obj.entity.referenceNumber)
+          {
+              obj.entity.referenceNumber = "";
+          }
+          if(!obj.expenseDate)
+          { 
+            obj.expenseDate = "";
+          }
+          if(!obj.entity.category)
+          {      
+              obj.entity.category = "";
+          }
+          if(!obj.entity.referenceNumber)
+          {   
+              obj.entity.referenceNumber = "";
+          }
+          if(!obj.customer.displayName)
+          {  
+              obj.customer.displayName = "";
+          }
+          if(!obj.entity.status)
+          {     
+              obj.entity.status = "";
+          }
+          if(!obj.amount)
+          { 
+              obj.amount = "";
+          }   
+          return obj.expenseDate.toLowerCase().includes($scope.searchText.toLowerCase())||
+          obj.entity.category.toLowerCase().includes($scope.searchText.toLowerCase())||
+     obj.entity.referenceNumber.toString().toLowerCase().includes($scope.searchText.toLowerCase())||
+          obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase())||
+          obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase())||
+          obj.amount.toLowerCase().includes($scope.searchText.toLowerCase());
+     });
+    }
+    else
+    {
+      $scope.expenseList = $scope.displayedExpenses;
+    }
+}
 }]);

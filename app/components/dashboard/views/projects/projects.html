@@ -5,22 +5,29 @@
     <h3 class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">All Projects <!-- <i class="arrow-down-black"></i>--></h3>
     <a ui-sref="dashboard.projects.new" class="float-right button button-add text-uppercase">New</a>
     <form class="float-right layout-margin-t">
-      <input type="text" class="search-bar" placeholder="Search" ng-model="search.entity.projectName">
+      <input type="text" class="search-bar" placeholder="Search" ng-model="searchText" ng-change = "search()">
     </form>
 
+      
+  
+      
     <div class="clearfix"></div>
-
+ 
     <table class="table-border-tb" style = "margin-bottom: 20px;">
       <tr class="thead">
         <td ng-click="sortByName()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
-          Name
+          Name <span><img id="nameD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span>
         </td>
-        <td ng-click="sortByCustomer()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Customer Name <!--<img src="../../dist/images/dropdown-arrow-primary.png" alt="">--></td>
-        <td ng-click="sortByDesc()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Description</td>
-        <td ng-click="sortByBilling()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Billing Method</td>
-        <td ng-click="sortByAmount()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">Price</td>
+        <td ng-click="sortByCustomer()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
+            Customer Name <span><img id="custNameD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click="sortByDesc()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
+            Description <span><img id="descD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click="sortByBilling()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
+            Billing Method <span><img id="billMD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click="sortByAmount()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
+            Price <span><img id="priceD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
       </tr>
-      <tr ng-repeat="project in projectList | filter:search"
+      <tr ng-repeat="project in projectList"
         ui-sref="dashboard.projects.details({projectId:project.entity.id})" style="cursor:pointer">
         <td class="text-color-light layout-padding-tb-lg">{{project.entity.projectName}}</td>
         <td class="text-color-light layout-padding-tb-lg">{{project.customer.displayName}}</td>
