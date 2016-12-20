@@ -140,9 +140,9 @@ function listProjects() {
 	showLoader();
 	$q.when(projectService.listProjects(user))
 	.then(function(res) {
-
 	//	res = res.reverse();
 		$scope.projectList = res;
+        $scope.displayedProject = res;
 		hideLoader();
 
 	}, function(error) {
@@ -346,8 +346,6 @@ $scope.updateTimesheet= function()
    //hideLoader();
 }
     //
-    
- 
 $scope.addTimesheet = function(){
     $(".new-timesheet").addClass('show');
 }
@@ -551,8 +549,47 @@ function userChanged() {
         $scope.newUser = "";
 		return;
 	}
-}  
+} 
+  $scope.sortByName = function(){
+    $scope.projectList.sort(function(a,b){
+        return a.entity.projectName.localeCompare(b.entity.projectName)});
+       $('#nameD').css({
+            'display': 'inline-table'
+        });
+          $('#custNameD').css({
+            'display': 'none'
+        });
+              $('#descD').css({
+            'display': 'none'
+        });
+          $('#billMD').css({
+            'display': 'none'
+        });
+              $('#priceD').css({
+            'display': 'none'
+        });
+}
+  $scope.sortByCustomer = function(){
+    $scope.projectList.sort(function(a,b){
+    return a.customer.displayName.localeCompare(b.customer.displayName)});
+      
+        $('#nameD').css({
+            'display': 'none'
+        });
+          $('#custNameD').css({
+            'display': 'inline-table'
+        });
+              $('#descD').css({
+            'display': 'none'
+        });
+          $('#billMD').css({
+            'display': 'none'
+        });
+              $('#priceD').css({
+            'display': 'none'
+        });
 
+}  
 $scope.timesheetUserChanged = function(){
     if($scope.timesheetUser.dummy) {
         $scope.fromTimesheet = true;
@@ -561,17 +598,6 @@ $scope.timesheetUserChanged = function(){
 		return;
 	}
 }
-
-$scope.sortByName = function(){
-    $scope.projectList.sort(function(a,b){
-        return a.entity.projectName.localeCompare(b.entity.projectName)});
-}
-
-$scope.sortByCustomer = function(){
-    $scope.projectList.sort(function(a,b){
-        return a.customer.displayName.localeCompare(b.customer.displayName)});
-}
-
 $scope.sortByDesc = function(){
     $scope.projectList.sort(function(a,b){
         if(!a.entity.projectDescription)
@@ -579,8 +605,23 @@ $scope.sortByDesc = function(){
         if(!b.entity.projectDescription)
             return 1;
         return a.entity.projectDescription.localeCompare(b.entity.projectDescription)});
+    
+     $('#nameD').css({
+            'display': 'none'
+        });
+          $('#custNameD').css({
+            'display': 'none'
+        });
+              $('#descD').css({
+            'display': 'inline-table'
+        });
+          $('#billMD').css({
+            'display': 'none'
+        });
+              $('#priceD').css({
+            'display': 'none'
+        });
 }
-
 $scope.sortByBilling = function(){
     $scope.projectList.sort(function(a,b){
         if(!a.entity.billingMethod)
@@ -588,8 +629,22 @@ $scope.sortByBilling = function(){
         if(!b.entity.billingMethod)
             return 1;
         return a.entity.billingMethod.localeCompare(b.entity.billingMethod)});
+        $('#nameD').css({
+            'display': 'none'
+        });
+          $('#custNameD').css({
+            'display': 'none'
+        });
+              $('#descD').css({
+            'display': 'none'
+        });
+          $('#billMD').css({
+            'display': 'inline-table'
+        });
+              $('#priceD').css({
+            'display': 'none'
+        });
 }
-
 $scope.sortByAmount = function(){
     $scope.projectList.sort(function(a,b){
         if(!a.entity.projectBillingAmount && !b.entity.projectBillingAmount)
@@ -600,10 +655,31 @@ $scope.sortByAmount = function(){
             return 1;
         return a.entity.projectBillingAmount-b.entity.projectBillingAmount;
     });
+     $('#nameD').css({
+            'display': 'none'
+        });
+          $('#custNameD').css({
+            'display': 'none'
+        });
+              $('#descD').css({
+            'display': 'none'
+        });
+          $('#billMD').css({
+            'display': 'none'
+        });
+              $('#priceD').css({
+            'display': 'inline-table'
+        });
 }
 
-$scope.customerChanged = customerChanged;
 
+
+
+
+
+
+
+$scope.customerChanged = customerChanged;
 function createUser(){
 		var modalInstance = $uibModal.open({
 			animation 			: true,
@@ -667,7 +743,6 @@ function createUser(){
 			console.log('Dismiss modal');
 		});
 	}    
-    
 function LoadRequiredData() {
 	var promises = [];
 	var p = null;
@@ -702,7 +777,43 @@ function LoadRequiredData() {
 
 	return $q.all(promises);
 }
-
-
-
+   
+$scope.search = function()
+{
+    if($scope.searchText.length)
+    {   
+        $scope.projectList = $scope.displayedProject.filter(function(obj)
+        {      
+            if(!obj.entity.projectName)
+            {
+               obj.entity.projectName = ""; 
+            }
+            if(!obj.customer.displayName)
+            {
+              obj.customer.displayName = ""; 
+            }
+            if(!obj.entity.projectDescription)
+            {
+               obj.entity.projectDescription = ""; 
+            }
+            if(!obj.entity.billingMethod)
+            {
+               obj.entity.billingMethod = ""; 
+            }
+            if(!obj.entity.projectBillingAmount)
+            {
+               obj.entity.projectBillingAmount = ""; 
+            }
+             
+          return obj.entity.projectName.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.entity.projectDescription.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.entity.billingMethod.toLowerCase().includes($scope.searchText.toLowerCase())|| obj.entity.projectBillingAmount.toString().toLowerCase().includes($scope.searchText.toLowerCase()); 
+        });
+    }
+    else
+    { 
+        $scope.projectList =$scope.displayedProject;
+    }
+}
 }]);

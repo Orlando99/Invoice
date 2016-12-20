@@ -808,6 +808,7 @@ function listEstimates() {
 	//	res = res.reverse();
 		$scope.estimateList = res;
         $scope.allestimateList = res;
+         $scope.displayInvoice = res;
 		hideLoader();
 
 	}, function(error) {
@@ -815,8 +816,6 @@ function listEstimates() {
 		console.log(error.message);
 	});	
 }
-
-    
 $scope.sortByEstimateNumber= function()
 {
       $scope.estimateList.sort(function(a,b){
@@ -984,7 +983,7 @@ $scope.sortByAmount= function()
 
 $scope.showMenu = function(){
     if($('.filtermenu').hasClass('show'))
-        $('.filtermenu').removeClass('show');
+     $('.filtermenu').removeClass('show');
     else
         $('.filtermenu').addClass('show');
 }
@@ -994,6 +993,7 @@ $scope.currentEstimates = "All Estimates";
     $scope.estimateList = $scope.allestimateList.filter(function(obj){
         return true;
     });
+    $scope.displayInvoice = $scope.estimateList;
     $scope.currentEstimates = "All Estimates"
     $('.filtermenu').removeClass('show');
     
@@ -1002,16 +1002,16 @@ $scope.draftEstimates = function(){
     $scope.estimateList = $scope.allestimateList.filter(function(obj){
         return obj.entity.status == 'Draft';
     });
-    
+     $scope.displayInvoice = $scope.estimateList;
      $scope.currentEstimates = "Draft Estimate"
     
     $('.filtermenu').removeClass('show');
-    
 }
 $scope.sentEstimates = function(){
     $scope.estimateList = $scope.allestimateList.filter(function(obj){
         return obj.entity.status == 'Sent';
     });
+    $scope.displayInvoice = $scope.estimateList;
     $scope.currentEstimates = "Sent Estimates"
     $('.filtermenu').removeClass('show');
 }
@@ -1020,14 +1020,16 @@ $scope.invoicedEstimates = function(){
         return obj.entity.status == 'Invoiced';
     });
     
-      $scope.currentEstimates = "Invoiced Estimates"
+    $scope.displayInvoice = $scope.estimateList;
+    $scope.currentEstimates = "Invoiced Estimates"
     $('.filtermenu').removeClass('show');
-    
 }
 $scope.acceptedEstimates = function(){
      $scope.estimateList = $scope.allestimateList.filter(function(obj){
         return obj.entity.status == 'Accepted';
     });
+    
+    $scope.displayInvoice = $scope.estimateList;
     $scope.currentEstimates = "Accepted Estimates"
     
     $('.filtermenu').removeClass('show');
@@ -1036,7 +1038,56 @@ $scope.declinedEstimates = function(){
      $scope.estimateList = $scope.allestimateList.filter(function(obj){
         return obj.entity.status == 'Declined';
     });
-     $scope.currentEstimates = "Declined Estimates"
+    $scope.displayInvoice = $scope.estimateList;
+    $scope.currentEstimates = "Declined Estimates"
     $('.filtermenu').removeClass('show');
+}
+$scope.search = function()
+{
+    if($scope.searchText.length)
+    {
+        $scope.estimateList = $scope.displayInvoice.filter(function (obj)
+        {
+            if(!obj.estimateDate)
+            {
+              obj.estimateDate = "";      
+            }
+            if(!obj.entity.estimateNumber)
+            {
+              obj.entity.estimateNumber = "";      
+            }
+            if(!obj.entity.referenceNumber)
+            {
+              obj.entity.referenceNumber = "";      
+            }
+            if(!obj.customer.displayName)
+            {
+              obj.customer.displayName = "";      
+            }
+            if(!obj.statusClass)
+            {
+              obj.statusClass = "";      
+            }
+             if(!obj.entity.status)
+            {
+               obj.entity.status = "";      
+            }
+            if(!obj.totalAmount)
+            {
+              obj.totalAmount = "";      
+            }
+           return obj.estimateDate.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+           obj.entity.estimateNumber.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+           obj.entity.referenceNumber.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+           obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+           obj.statusClass.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+           obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+           obj.totalAmount.toLowerCase().includes($scope.searchText.toLowerCase());              
+        });
+    }
+    else
+    {
+        $scope.estimateList = $scope.displayInvoice;
+    }
 }
 }]);

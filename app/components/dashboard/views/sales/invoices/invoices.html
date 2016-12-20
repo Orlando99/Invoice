@@ -15,16 +15,22 @@
         </ul>
       </div>
     <a ui-sref="dashboard.sales.invoices.new" class="float-right button button-add text-transform">New</a>
+   
     <form class="float-right layout-margin-t">
-      <input type="text" class="search-bar" placeholder="Search" ng-model="search.entity.invoiceNumber">
-    </form>
+      
+        <input type="text" class="search-bar" placeholder="Search" ng-model="searchText" ng-change="search()">
+    
+     </form>
+    
     <div class="clearfix"></div>
 
     <table class="data-table invoices-data no-border show_table_hover" style = "margin-bottom: 20px;" >
+
       <tr style="cursor: pointer" class="thead">
           <td ng-click = "sortByStatus()" class="text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click = "sortByDate()" class="text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click = "sortByInvoiveNumber()"class="text-uppercase text-info">Invoice#<span><img id="invoiceno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span> </td>
+
         <!-- put it inside td <img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
         <td ng-click="sortByOrderNumber()" class="text-uppercase text-info">Order#<span><img id="orderno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click="sortByCustomerName()" class="text-uppercase text-info">Cust. Name<span><img id="custname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
@@ -33,7 +39,8 @@
         <td ng-click="sortByAmount()"  class="text-uppercase text-info text-center">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click="sortByBalance()" style="min-width: 90px ; max-width: 133px;"  class="text-uppercase text-info text-center">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
       </tr>
-      <tr class="trow" ng-repeat="invoice in invoiceList | filter:search"
+    
+    <tr class="trow" ng-repeat="invoice in invoiceList"
       ui-sref="dashboard.sales.invoices.details({invoiceId:invoice.entity.id})">
           
           <td><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
@@ -46,6 +53,7 @@
         <td  class="text-color-light text-center">{{invoice.total}}</td>
         <td Style="min-width: 90px ; max-width: 133px;"  class="text-color-light text-center">{{invoice.balanceDue}}</td>
       </tr>
+    
     </table>
 
     

@@ -631,6 +631,8 @@ function listCreditNotes() {
 
 		$scope.creditNoteList = res;
         $scope.allcreditNoteList = res;
+        $scope.displayedCreditNotes =res;
+        
 		hideLoader();
 
 	}, function(error) {
@@ -845,6 +847,7 @@ $scope.currentCreditNotes = "All Cerdit Notes";
     $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
         return true;
     });
+    $scope.displayedCreditNotes = $scope.creditNoteList;
     $scope.currentCreditNotes = "All Cerdit Notes"
     $('.filtermenu').removeClass('show');
     
@@ -853,8 +856,8 @@ $scope.openCreditNotes = function(){
     $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
         return obj.entity.status == 'Open';
     });
-    
-     $scope.currentCreditNotes = "Open Cerdit Notes"
+    $scope.displayedCreditNotes = $scope.creditNoteList;
+    $scope.currentCreditNotes = "Open Cerdit Notes"
     
     $('.filtermenu').removeClass('show');
     
@@ -863,6 +866,7 @@ $scope.closedCreditNotes = function(){
     $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
         return obj.entity.status == 'Closed';
     });
+    $scope.displayedCreditNotes = $scope.creditNoteList;
     $scope.currentCreditNotes = "Closed Estimates"
     $('.filtermenu').removeClass('show');
 }
@@ -870,8 +874,8 @@ $scope.voidCreditNotes = function(){
     $scope.estimateList = $scope.allcreditNoteList.filter(function(obj){
         return obj.entity.status == 'Void';
     });
-    
-      $scope.currentCreditNotes = "Void Estimates"
+    $scope.displayedCreditNotes =  $scope.estimateList;
+    $scope.currentCreditNotes = "Void Estimates"
     $('.filtermenu').removeClass('show');
     
 }
@@ -879,8 +883,58 @@ $scope.sentCreditNotes = function(){
      $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
         return obj.entity.status == 'Sent';
     });
+    $scope.displayedCreditNotes = $scope.creditNoteList;
     $scope.currentCreditNotes = "Sent Estimates"
     
     $('.filtermenu').removeClass('show');
+}
+
+$scope.search = function()
+{
+    if($scope.searchText.length)
+    {
+        $scope.creditNoteList = $scope.displayedCreditNotes.filter(function(obj)
+        {
+            if(!obj.creditNoteDate)
+            {
+                obj.creditNoteDate = "";
+            }
+            if(!obj.entity.creditNumber)
+            {
+                obj.entity.creditNumber = "";
+            }
+            if(!obj.entity.reference)
+            {
+               obj.entity.reference = "";
+            }
+            if(!obj.customer.displayName)
+            {
+                obj.customer.displayName = "";
+            }
+            if(!obj.entity.status)
+            {
+                obj.entity.status = "";
+            }
+            if(!obj.total)
+            {
+                 obj.total= "";
+            }
+            if(!obj.remainingCredits)
+            {
+                obj.remainingCredits = "";
+            }
+           return obj.creditNoteDate.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.entity.creditNumber.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.entity.reference.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.total.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.remainingCredits.toLowerCase().includes($scope.searchText.toLowerCase());
+        });
+    }
+    else
+    {  
+        $scope.creditNoteList = $scope.displayedCreditNotes;
+    }
 }
 }]);

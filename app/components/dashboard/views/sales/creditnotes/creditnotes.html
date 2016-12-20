@@ -14,7 +14,7 @@
       </div>
     <a ui-sref="dashboard.sales.creditnotes.new" class="float-right button button-add text-transform">New</a>
     <form class="float-right layout-margin-t">
-      <input type="text" class="search-bar" placeholder="Search" ng-model = "search.entity.creditNumber">
+      <input type="text" class="search-bar" placeholder="Search" ng-model="searchText" ng-change = "search()">
     </form>
     <div class="clearfix"></div>
 
@@ -23,13 +23,15 @@
         <td ng-click = "sortByDate()" class="text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td Style="padding-left: 12px !important"  ng-click = "sortByCreditNote()" class="text-uppercase text-info">Credit Note<span><img id="creditnote" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
+
         <td ng-click = "sortByRefNum()" class="text-uppercase text-info text-center">Ref#.<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click = "sortByCusName()" class="text-uppercase text-info">Cust. Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click = "sortByStatus()" class="text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click = "sortByAmount()" class="text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click = "sortByBalance()" class="text-uppercase text-info">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+
       </tr>
-      <tr class="trow" ng-repeat="creditNote in creditNoteList | filter:search"
+      <tr class="trow" ng-repeat="creditNote in creditNoteList"
         ui-sref="dashboard.sales.creditnotes.details({creditNoteId:creditNote.entity.id})">
         <td class="text-color-light">{{creditNote.creditNoteDate}}</td>
         <td Style="padding-left: 12px !important"  class="text-color-light">{{creditNote.entity.creditNumber}}</td>

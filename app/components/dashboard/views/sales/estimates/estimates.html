@@ -14,8 +14,9 @@
         </ul>
       </div>
     <a ui-sref="dashboard.sales.estimates.new" class="float-right button button-add text-transform">New</a>
+    
     <form class="float-right layout-margin-t">
-      <input type="text" class="search-bar" placeholder="Search" ng-model="search.entity.estimateNumber">
+      <input type="text" class="search-bar" placeholder="Search" ng-model="searchText" ng-change = "search()" >
     </form>
     <div class="clearfix"></div>
 
@@ -29,7 +30,7 @@
         <td ng-click = "sortByStatus()" class="layout-padding text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click = "sortByAmount()" class="layout-padding text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
       </tr>
-      <tr class="trow" ng-repeat="estimate in estimateList | filter:search"
+      <tr class="trow" ng-repeat="estimate in estimateList"
         ui-sref="dashboard.sales.estimates.details({estimateId:estimate.entity.id})">
         <td class="layout-padding text-color-light">{{estimate.estimateDate}}</td>
         <td class="layout-padding text-color-light">{{estimate.entity.estimateNumber}}</td>

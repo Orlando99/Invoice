@@ -269,6 +269,10 @@ invoicesUnlimited.controller('UsersController',
         
         if(index >= 0)
             $scope.users.splice(index, 1);
+        
+        $scope.dispalyedUsers = $scope.users;
+        
+        
 	});
     
     $scope.sortByUserName= function(){
@@ -338,8 +342,39 @@ invoicesUnlimited.controller('UsersController',
             'display': 'inline-table'
         });
     }
-    
-    
-    
-    
+ 
+    $scope.search = function()
+    {
+        if($scope.searchText.length)
+        {   
+            $scope.users = $scope.dispalyedUsers.filter(function(obj)
+            {
+                if(!obj.userName)
+                {
+                    obj.userName = "";
+                }
+                if(!obj.emailID)
+                {
+                    obj.emailID = "";
+                }
+                if(!obj.role)
+                {
+                   obj.role = "";
+                }
+                if(!obj.status)
+                {
+                   obj.status = "";
+                }
+                return obj.userName.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.emailID.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.role.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.status.toLowerCase().includes($scope.searchText.toLowerCase());
+            });
+        }
+        else
+        { 
+            $scope.users =$scope.dispalyedUsers;
+        }
+    }
+
 });

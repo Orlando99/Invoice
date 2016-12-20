@@ -20,7 +20,7 @@
       <a href="javascript:" class="float-right layout-margin-tb button button-add text-transform modal-opener" data-toggle="new-tax-group" ng-click="clearAddTaxGroupFields()">New Tax Group</a>
       
     <form class="float-right layout-margin-tb">
-      <input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.name" >
+    <input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="searchText" ng-change = "search()" >
     </form>
 
     <table class="table-border-tb show_table_hover" style = "margin-bottom: 20px;">
@@ -30,7 +30,7 @@
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr class="trow" ng-repeat="tax in taxes | filter:search"  >
+      <tr class="trow" ng-repeat="tax in taxes">
         <td class="text-color-light text-weight-normalize layout-padding" ng-click="editTax(tax)">{{tax.name}}</td>
         <td class="text-color-light text-weight-normalize layout-padding" ng-click="editTax(tax)">{{tax.rate + ' %'}}</td>
         <td class="text-color-light text-weight-normalize layout-padding text-right"><img src="./assets/images/icon-times-round.png" alt="" ng-click="deleteTax(tax)"/></td>

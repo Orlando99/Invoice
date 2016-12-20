@@ -1022,6 +1022,7 @@ function ListInvoices() {
 		res = res.reverse();
 		$scope.invoiceList = res;
         $scope.allInvoices = res;
+        $scope.displayedInvoices = res;
 		hideLoader();
 
 	}, function(error) {
@@ -1369,6 +1370,7 @@ $scope.showAllInvoices = function(){
     $scope.invoiceList = $scope.allInvoices.filter(function(obj){
         return true;
     });
+    $scope.displayedInvoices = $scope.allInvoices;
     $scope.currentInvoice = "All Expenses"
     $('.filtermenu').removeClass('show');
     
@@ -1377,7 +1379,7 @@ $scope.sentInvoices = function(){
     $scope.invoiceList = $scope.allInvoices.filter(function(obj){
         return obj.entity.status == 'Sent';
     });
-    
+    $scope.displayedInvoices = $scope.invoiceList;
      $scope.currentInvoice = "Sent Invoices"
     
     $('.filtermenu').removeClass('show');
@@ -1388,7 +1390,7 @@ $scope.overdueInvoices = function(){
         return obj.entity.status == 'Overdue';
     });
     
-   
+   $scope.displayedInvoices = $scope.invoiceList;
     $scope.currentInvoice = "Overdue Invoices"
     
     $('.filtermenu').removeClass('show');
@@ -1399,7 +1401,7 @@ $scope.unpaidInvoices = function(){
         return obj.entity.status == 'Unpaid';
     });
     
-   
+   $scope.displayedInvoices = $scope.invoiceList;
       $scope.currentInvoice = "Unpaid Invoices"
     
     $('.filtermenu').removeClass('show');
@@ -1410,7 +1412,7 @@ $scope.paidInvoices = function(){
         return obj.entity.status == 'Paid';
     });
     $scope.currentInvoice = "Paid Invoices"
-    
+    $scope.displayedInvoices = $scope.invoiceList;
     $('.filtermenu').removeClass('show');
     
 }
@@ -1419,7 +1421,7 @@ $scope.partialPaidInvoices = function(){
         return obj.entity.status == 'Partial Paid';
     });
     
-   
+   $scope.displayedInvoices = $scope.invoiceList;
      $scope.currentInvoice = "Partial Paid Invoices"
     $('.filtermenu').removeClass('show');
 }
@@ -1427,10 +1429,61 @@ $scope.refundedInvoices = function(){
     $scope.invoiceList = $scope.allInvoices.filter(function(obj){
         return obj.entity.status == 'Refunded';
     });
-    
+    $scope.displayedInvoices = $scope.invoiceList;
     $scope.currentInvoice = "Refunded Invoices"
     $('.filtermenu').removeClass('show');
     
 }
 
+$scope.search = function(){
+    if($scope.searchText.length)
+    {
+        $scope.invoiceList = $scope.displayedInvoices.filter(function(obj)
+        {
+            if(!obj.entity.status)
+            {
+                obj.entity.status = "";
+            }
+            if(!obj.invoiceDate)
+            {
+                obj.invoiceDate = "";
+            }
+            if(!obj.entity.invoiceNumber)
+            {
+                obj.entity.invoiceNumber = "";
+            }
+            if(!obj.entity.poNumber)
+            {
+                obj.entity.poNumber = "";
+            }
+            if(!obj.customer.displayName)
+            {
+                obj.customer.displayName = "";
+            }
+            if(!obj.dueDate)
+            {
+               obj.dueDate = "";
+            }
+            if(!obj.total)
+            {
+                obj.total = "";
+            }
+            if(!obj.balanceDue)
+            {
+               obj.balanceDue = "";
+            }
+        return obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase()) || obj.invoiceDate.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+            obj.entity.invoiceNumber.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.entity.poNumber.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.dueDate.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.total.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.balanceDue.toLowerCase().includes($scope.searchText.toLowerCase());
+        });
+    } else {
+        $scope.invoiceList = $scope.displayedInvoices;
+    }
+}
+
 }]);
+ 

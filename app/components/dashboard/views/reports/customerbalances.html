@@ -1,16 +1,11 @@
 <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
-
 <style>
-
 .uib-daypicker
 {
     width: 300px !important;
     margin-left: 5px;
 }
-    
 </style>
-
-
   <div class="container hidesm">
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">Customer Balances</h3>
         <div class="actions float-right layout-margin-tb" uib-dropdown>
@@ -21,10 +16,7 @@
             <li><a>Print</a></li>
       </ul>
       </div>
-     
-
     <div class="clearfix"></div>
-
     <div class="container-table layout-margin-t inputs-white filter">
       <div class="thead">
         <p class="layout-margin-tb col-25 text-uppercase text-color-normalize text-weight-normalize">Date Range</p>
@@ -51,20 +43,16 @@
         </p>
       </div>
     </div>
-
     <div class="clearfix"></div><br>
-
     <div class="container text-center">
       <h3 class="layout-margin-tb text-color-normalize text-weight-normalize">Merchant Account Solutions</h3>
       <p class="layout-no-margin text-color-light text-weight-normalize">Customer Balances</p>
       <p class="layout-no-margin text-color-light text-weight-normalize">From {{fromDateStr}} To {{toDateStr}}</p>
     </div>
     <br>
-
     <div class="container-table layout-margin-t inputs-white filter">
       <div class="thead">
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Customer Name</h3>
-        
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits</h3>
         <!--
 
@@ -72,14 +60,11 @@
         
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits (FCY) <img src="./assets/images/dropdown-arrow-primary.png" alt=""></h3> -->
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Balance </h3>
-          
       </div>
-
       <div class="table-row row-border" ng-repeat="id in ids">
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           {{info[id].name}}
         </div>
-        
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           {{info[id].availableCreditStr}}
         </div>
@@ -90,16 +75,12 @@
         <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
           {{info[id].balanceDueStr}}
         </div>
-          
-        
-          
       </div>
  
       <div class="table-row row-border">
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           Total
         </div>
-        
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
             {{totalCreditStr}}
         </div>
