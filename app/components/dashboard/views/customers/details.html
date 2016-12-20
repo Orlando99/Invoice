@@ -93,14 +93,20 @@
             <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.paymentTerms}}</td>
           </tr><div class="clearfix"></div>
             
-    <tr class="container text-color-light" ng-show ="selectedCustomer.billingAddress">
-            <td class="col-50 layout-padding-tb">Billing Address</td>
-            <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.billingAddress}}</td>
-          </tr> <div class="clearfix"></div>
-   <tr class="container text-color-light" ng-show ="selectedCustomer.shippingAddress">
-            <td class="col-50 layout-padding-tb">Shipping Address</td>
-            <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.shippingAddress}}</td>
-          </tr><div class="clearfix"></div>
+                <tr class="container text-color-light" ng-show ="selectedCustomer.billingAddress && !selectedCustomer.entity.isSameAddress">
+                        <td class="col-50 layout-padding-tb">Billing Address</td>
+                        <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.billingAddress}}</td>
+                      </tr> <div class="clearfix"></div>
+               <tr class="container text-color-light" ng-show ="selectedCustomer.shippingAddress  && !selectedCustomer.entity.isSameAddress">
+                        <td class="col-50 layout-padding-tb">Shipping Address</td>
+                        <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.shippingAddress}}</td>
+                      </tr><div class="clearfix"></div>
+            
+                <tr class="container text-color-light" ng-show="selectedCustomer.entity.isSameAddress">
+                        <td class="col-50 layout-padding-tb">Billing &amp; Shipping Address</td>
+                        <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.billingAddress}}</td>
+                      </tr> <div class="clearfix"></div>
+            
   <tr class="container text-color-light" ng-show ="selectedCustomer.notes">
             <td class="col-50 layout-padding-tb">Notes</td>
             <td class="col-50 layout-padding-tb" style="white-space:pre-line">{{selectedCustomer.notes}}</td>

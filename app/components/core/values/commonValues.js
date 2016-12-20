@@ -34,7 +34,8 @@ app.value('appFields',{
 		"billingAddress",
 		"shippingAddress",
 		"notes",
-		"salutation"
+		"salutation",
+        "isSameAddress"
 	],
 	newCustomer : [
 		'businessInfo',

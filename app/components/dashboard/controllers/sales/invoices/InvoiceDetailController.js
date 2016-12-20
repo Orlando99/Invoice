@@ -612,9 +612,7 @@ $scope.textReceipt = function() {
 	.then(function(obj) {
         addNewComment('Invoice sent by text', true);
         hideLoader();
-        $("#snackbar").html('Text sent...');
-        $("#snackbar").addClass('show');
-        setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
+        showSnackbar('Text sent...');
         
 		console.log('Receipt sent successfully.');
 		
@@ -633,11 +631,13 @@ $scope.emailReceipt = function() {
 	showLoader();
 	$q.when(invoiceService.sendInvoiceReceipt($scope.invoice.entity))
 	.then(function(obj) {
+        if($scope.invoice.entity.get('status') == 'Draft'){
+            $scope.invoice.entity.set('status', 'Sent');
+            $scope.invoice.entity.save();
+        }
         addNewComment('Invoice sent by email', true);
         hideLoader();
-        $("#snackbar").html('Email sent...');
-        $("#snackbar").addClass('show');
-        setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
+        showSnackbar('Email sent...');
         
 		console.log('Receipt sent successfully.');
 		

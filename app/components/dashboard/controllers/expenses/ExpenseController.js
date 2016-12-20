@@ -358,7 +358,10 @@ function listExpenses() {
 			default:
 				obj.statusClass = "text-danger";
 			}
- 
+            
+            if(obj.entity.get('expenseFiles'))
+                obj.attachments = 1;
+            
 			obj.expenseDate = formatDate(
 				obj.entity.expanseDate, dateFormat);
 			obj.amount = currencyFilter(obj.entity.amount, '$', 2);

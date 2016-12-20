@@ -21,20 +21,22 @@
       <tr class="thead">
         <td class="text-uppercase text-info">Date</td>
         <td ng-click = "sortByCatName()" class="text-uppercase text-info">Category Name</td>
-        <td class="text-uppercase text-info">Ref.#</td>
+        <td style="min-width: 120px !important;" class="text-uppercase text-info">Ref.#</td>
         <td class="text-uppercase text-info">Customer Name</td>
         <td class="text-uppercase text-info">Status</td>
-        <td class="text-uppercase text-info">Amount</td>
+        <td style="text-align: center !important;" class="text-uppercase text-info">Amount</td>
+          <td></td>
       </tr>
       <!-- ui-sref="dashboard.expenses.edit({expenseId:expense.entity.id})" -->
       <tr class="trow" ng-repeat="expense in expenseList | filter:search"
         ui-sref="dashboard.expenses.details({expenseId:expense.entity.id})">
         <td class="text-color-light">{{expense.expenseDate}}</td>
         <td class="text-color-light">{{expense.entity.category}}</td>
-        <td class="text-color-light">{{expense.entity.referenceNumber}}</td>
+        <td style="min-width: 120px !important;" class="text-color-light">{{expense.entity.referenceNumber}}</td>
         <td class="text-color-light">{{expense.customer.displayName}}</td>
         <td><span class="{{expense.statusClass}}">{{expense.entity.status}}</span></td>
-        <td class="text-color-light">{{expense.amount}}</td>
+        <td style="text-align: center !important;" class="text-color-light">{{expense.amount}}</td>
+          <td ng-show="expense.attachments"><span><img style="width: 20px;" src="./assets/images/pin_icon.png"></span></td>
       </tr>
     </table>
 

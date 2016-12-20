@@ -354,7 +354,7 @@ function saveProject() {
 }
 
 $scope.cancel = function() {
-	$state.go('dashboard.sales.projects.all');
+	$state.go('dashboard.projects.all');
 }
 
 $scope.addTask = function(){

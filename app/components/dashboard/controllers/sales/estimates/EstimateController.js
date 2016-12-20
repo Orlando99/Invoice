@@ -800,6 +800,9 @@ function listEstimates() {
 				obj.statusClass = "text-color-normalize";
 			}
 
+            if(obj.entity.get('estimateFiles'))
+                obj.attachments = 1;
+            
 			obj.estimateDate = formatDate(
 				obj.entity.estimateDate, dateFormat);
 			obj.totalAmount = currencyFilter(obj.entity.totalAmount, '$', 2);

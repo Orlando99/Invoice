@@ -119,9 +119,20 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             currentUser.set('businessInfo', obj);
             $q.when(currentUser.save())
             .then(function(u){
-                fromTutorial = true;
-                hideLoader();
-                $state.go('dashboard.settings.app-preferences');
+                var query = new Parse.Query('ProjectUser');
+                query.equalTo('userName', u.get('username'));
+
+                $q.when(query.first()).then(function(projectUser) {
+                    projectUser.set('title', $scope.fullName);
+                    $q.when(projectUser.save())
+                    .then(function(pUser){
+                        fromTutorial = true;
+                        hideLoader();
+                        $state.go('dashboard.settings.app-preferences');
+                    });
+                    
+                });
+                
                 
             });
         });

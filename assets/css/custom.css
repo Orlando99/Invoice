@@ -513,7 +513,7 @@ However, delay the fade out process for 2.5 seconds */
     from {top: 0; opacity: 0;}
     to {top: 50px; opacity: 1;}
 }
-
+/*
 @-webkit-keyframes fadeout {
     from {top: 50px; opacity: 1;} 
     to {top: 0; opacity: 0;}
@@ -523,7 +523,7 @@ However, delay the fade out process for 2.5 seconds */
     from {top: 50px; opacity: 1;}
     to {top: 0; opacity: 0;}
 }
-
+*/
 .creditnotes-data td {
     min-width: 158px;
     max-width: 158px;

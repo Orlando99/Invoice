@@ -151,6 +151,8 @@ invoicesUnlimited.controller('CustomersController',
 
 		$scope.shippingAddressEdit = 
 			$.extend(true,{},$scope.selectedCustomer.shippingAddressJSON);
+        
+        $scope.shipping.setShippingTheSame = $scope.selectedCustomer.entity.get('isSameAddress');
 	}
 
     $scope.NewExpense = function(){
@@ -423,6 +425,15 @@ invoicesUnlimited.controller('CustomersController',
 			return;
 		}
 
+        if($scope.shipping.setShippingTheSame){
+            $scope.selectedCustomer.entity.set('isSameAddress', true);
+            //$scope.selectedCustomerEdit.entity.set('isSameAddress', true);
+        }
+        else{
+            $scope.selectedCustomer.entity.isSameAddress = false;
+            //$scope.selectedCustomerEdit.entity.isSameAddress = false;
+        }
+        
 		var selected = $scope.selectedCustomer;
 
 		selected.billingAddressJSON = $scope.billingAddressEdit;
@@ -442,6 +453,15 @@ invoicesUnlimited.controller('CustomersController',
 	  			$scope.selectedCustomerEdit[property];
 		}
 
+        if($scope.shipping.setShippingTheSame){
+            selected.entity.set('isSameAddress', true);
+            //$scope.selectedCustomerEdit.entity.set('isSameAddress', true);
+        }
+        else{
+            selected.entity.set('isSameAddress', false);
+            //$scope.selectedCustomerEdit.entity.isSameAddress = false;
+        }
+        
 		selected.save().then(function(){
 			selected.billingAddress = formBillingAddress(selected.entity.billingAddress);
 			$scope.selectedCustomerEdit = null;

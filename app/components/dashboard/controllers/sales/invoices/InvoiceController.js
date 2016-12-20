@@ -257,12 +257,24 @@ function prepareEditForm() {
 			{name: "Off", 			 value : 0}
 		],
 	};
+    
+    $scope.paymentTerms = {
+			terms : [
+				{name: "Off", value : 0},
+				{name: "Due on Receipt", value : 1},
+                {name: "Net 7", value : 7},
+				{name: "Net 10", value : 10},
+                {name: "Net 30", value : 30},
+				{name: "Net 60", value : 60},
+                {name: "Net 90", value : 90}
+			],
+		};
 
 	$scope.hasDueDate = (invoice.entity.dueDate) ? true : false;
 	if ($scope.hasDueDate) {
-		$scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms[0];
-	} else {
 		$scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms[1];
+	} else {
+		$scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms[0];
 	}
 
 	var lateFee = invoice.entity.lateFee;
@@ -493,7 +505,7 @@ function saveEditedInvoice(params) {
 		invoice.set('lateFee', $scope.selectedLateFee.entity);
 	else	invoice.unset('lateFee');
 
-	if($scope.paymentTerms.selectedTerm.value == 1)
+	if($scope.paymentTerms.selectedTerm.value > 0)
 		invoice.set('dueDate', $scope.dueDate);
 	else	invoice.unset('dueDate');
 
@@ -665,26 +677,40 @@ $scope.cancel = function() {
 	$state.go('dashboard.sales.invoices.all');
 }
 
-$scope.calculateDueDate = function() {	
-	var d = new Date($scope.todayDate);
-	d.setHours(d.getHours() + 12);
-	$scope.dueDate = d; //$.format.date(d, "MM/dd/yyyy");
+$scope.calculateDueDate = function() {		
+		var d = new Date($scope.todayDate);
+		d.setHours(d.getHours() + 12);
+        
+        if($scope.paymentTerms.selectedTerm.value != 1){
+            d = d.addDays($scope.paymentTerms.selectedTerm.value);
+        }
+        
+		$scope.dueDate = d; //$.format.date(d, "MM/dd/yyyy");
 }
 
 $scope.paymentTermsChanged = function() {
-	$scope.hasDueDate =
-		$scope.paymentTerms.selectedTerm.value == 1 ? true : false;
+        if($scope.paymentTerms.selectedTerm.value == 0)
+            $scope.hasDueDate = false;
+        else
+            $scope.hasDueDate = true;
+        
+		//$scope.hasDueDate =
+			//$scope.paymentTerms.selectedTerm.value == 1 ? true : false;
 
-	if($scope.hasDueDate)
-		$scope.calculateDueDate();
+		if($scope.hasDueDate)
+			$scope.calculateDueDate();
 }
 
 $scope.openDatePicker = function(n) {
-	switch (n) {
-		case 1: $scope.openPicker1 = true; break;
-		case 2: $scope.openPicker2 = true; break;
-	}
-}
+        if(n == 2){
+            if($scope.paymentTerms.selectedTerm.value > 1)
+                return;
+        }
+		switch (n) {
+			//case 1: $scope.openPicker1 = true; break;
+			case 2: $scope.openPicker2 = true; break;
+		}
+  	}
 
 $scope.reCalculateTotal = function() {
 	var subTotal = Number($scope.subTotal) || 0;
@@ -1010,6 +1036,10 @@ function ListInvoices() {
 			default:
 				obj.statusClass = "text-color-normalize";
 			}
+            
+            if(obj.entity.get('invoiceFiles'))
+                obj.attachments = 1;
+            
 
 			obj.invoiceDate = formatDate(
 				obj.entity.invoiceDate, dateFormat); // "MM/DD/YYYY"

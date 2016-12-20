@@ -205,6 +205,13 @@ invoicesUnlimited.controller('NewCustomerController',
 
 		$scope.newCustomer.entity.shippingAddress = JSON.stringify(
 			$scope.newCustomer.shippingAddress);
+        
+        if($scope.shipping.setShippingTheSame){
+            $scope.newCustomer.entity.set('isSameAddress', true);
+        }
+        else{
+            $scope.newCustomer.entity.set('isSameAddress', false);
+        }
 
 		var ContactPerson = Parse.Object.extend('ContactPerson');
 		var contact = new contactPersonFactory(new ContactPerson());

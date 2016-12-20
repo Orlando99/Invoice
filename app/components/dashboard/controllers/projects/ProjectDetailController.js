@@ -185,9 +185,16 @@ function showProjectDetail() {
         
         $scope.timesheets = project.timesheets;
  
+        if($scope.project.billingMethod != 'Based on task hours')
+            $('.task').addClass('tasks-detail');
+        
         hideLoader();
 	});
 
+}
+    
+$scope.deleteProjectClicked = function(){
+    $('.confirmation-pop-up').addClass('show');
 }
     
 $scope.deleteProject = function(){

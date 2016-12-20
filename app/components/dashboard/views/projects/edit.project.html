@@ -286,7 +286,7 @@
 
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Task</label>
-            <select class="col-75" name="timeSheetTask" ng-change="taskChanged()" ng-model="timesheetTask" ng-op tions="task.entity.taskName || task.attributes.taskName for task in timesheetTasks">
+            <select class="col-75" name="timeSheetTask" ng-change="taskChanged()" ng-model="timesheetTask" ng-options="task.entity.taskName || task.attributes.taskName for task in timesheetTasks">
               <option value="" disabled>Select task</option>
             </select>
           </div>

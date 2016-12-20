@@ -638,7 +638,8 @@ function fillInXmlData(xmlUrl, user, creditNote) {
 			labels['clientmailto'] = "mailto:" + mail;
 			labels['clientname'] = custmr.get("displayName");
 			labels['clientnr'] = custmr.get("phone");
-			labels['body-currency'] = custmr.get("currency").split(" ")[0];
+            if(custmr.get("currency"))
+			     labels['body-currency'] = custmr.get("currency").split(" ")[0];
 		}
 
 		/* tax is only on item level */

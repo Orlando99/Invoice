@@ -161,7 +161,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
             associatedTaxes: associatedTaxes
 		};
         
-		taxService.saveNewTax(params, function(response){
+		taxService.saveNewGroupTax(params, function(response){
 			console.log(response);
             hideLoader();
             if(fromTutorial){

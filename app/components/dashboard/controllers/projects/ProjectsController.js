@@ -43,14 +43,14 @@ $('#addTimesheetForm').validate({
 		timesheetHours : 'required',
 		timesheetMinutes : 'required',
         timesheetUser : 'required',
-        timesheetTask : 'required'
+        timeSheetTask : 'required'
 	},
 	messages: {
 		timesheetDate : 'Please select a date',
 		timesheetHours : 'Please enter hours',
 		timesheetMinutes : 'Please enter minutes',
         timesheetUser : 'Please select user',
-        timesheetTask : 'Please select task'
+        timeSheetTask : 'Please select task'
 	}
 });
 $('#editTimesheetForm').validate({
@@ -204,9 +204,19 @@ function prepareEditForm() {
     $scope.projectBudgetCost = project.entity.get("projectBudgetCost") || 0;
     
     $scope.projectBudgetHours = project.entity.get("projectBudgetHours") || 0;
-
+    $scope.projectUsers = [];
     $scope.tasks = project.tasks;
     $scope.staffUsers = project.users;
+    
+    for(var i = 0; i < $scope.users.length; ++i){
+        for(var j = 0; j < $scope.staffUsers.length; ++j){
+            if($scope.users[i].userName == $scope.staffUsers[j].get('chosenUser').get('userName')){
+                //$scope.projectUsers.push($scope.users[i]);
+                $scope.users.splice(i, 1);
+            }
+        }
+    }
+    
     $scope.timesheets = [];
     project.timesheets.forEach(function(obj){
         var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
@@ -280,9 +290,15 @@ $scope.updateTask = function(){
         });
     }
     else{
+        $scope.tasks[index].set('taskName', $scope.editTaskName);
+        $scope.tasks[index].set('taskDescription', $scope.editTaskDescription)
+        $scope.tasks[index].set('taskCost', $scope.editTaskCost);
+        
+        /*
         $scope.tasks[index].attributes.taskName = $scope.editTaskName;
         $scope.tasks[index].attributes.taskDescription = $scope.editTaskDescription;
         $scope.tasks[index].attributes.taskCost = $scope.editTaskCost;
+        */
         $scope.tasks[index].save()
         .then(function(obj){
             $(".edit-task").removeClass('show');
