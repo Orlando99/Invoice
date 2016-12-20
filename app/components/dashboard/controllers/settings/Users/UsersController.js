@@ -269,10 +269,112 @@ invoicesUnlimited.controller('UsersController',
         
         if(index >= 0)
             $scope.users.splice(index, 1);
+        
+        $scope.dispalyedUsers = $scope.users;
+        
+        
 	});
     
     $scope.sortByUserName= function(){
     $scope.users.sort(function(a,b){
         return a.userName.localeCompare(b.userName)});
+         $('#name').css({
+            'display': 'inline-table'
+        });
+            $('#email').css({
+            'display': 'none'
+        });
+       $('#role').css({
+            'display': 'none'
+        });
+         $('#status').css({
+            'display': 'none'
+        });
     }
+    
+    $scope.sortByemail= function(){
+    $scope.users.sort(function(a,b){
+        return a.emailID.localeCompare(b.emailID)});
+        $('#name').css({
+            'display': 'none'
+        });
+            $('#email').css({
+            'display': 'inline-table'
+        });
+       $('#role').css({
+            'display': 'none'
+        });
+         $('#status').css({
+            'display': 'none'
+        });
+    }
+    
+    $scope.sortByRole= function(){
+    $scope.users.sort(function(a,b){
+        return a.role.localeCompare(b.role)});
+         $('#name').css({
+            'display': 'none'
+        });
+            $('#email').css({
+            'display': 'none'
+        });
+       $('#role').css({
+            'display': 'inline-table'
+        });
+         $('#status').css({
+            'display': 'none'
+        });
+    }
+    
+    $scope.sortByStatus= function(){
+    $scope.users.sort(function(a,b){
+        return a.status.localeCompare(b.status)});
+         $('#name').css({
+            'display': 'none'
+        });
+            $('#email').css({
+            'display': 'none'
+        });
+       $('#role').css({
+            'display': 'none'
+        });
+         $('#status').css({
+            'display': 'inline-table'
+        });
+    }
+ 
+    $scope.search = function()
+    {
+        if($scope.searchText.length)
+        {   
+            $scope.users = $scope.dispalyedUsers.filter(function(obj)
+            {
+                if(!obj.userName)
+                {
+                    obj.userName = "";
+                }
+                if(!obj.emailID)
+                {
+                    obj.emailID = "";
+                }
+                if(!obj.role)
+                {
+                   obj.role = "";
+                }
+                if(!obj.status)
+                {
+                   obj.status = "";
+                }
+                return obj.userName.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.emailID.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.role.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.status.toLowerCase().includes($scope.searchText.toLowerCase());
+            });
+        }
+        else
+        { 
+            $scope.users =$scope.dispalyedUsers;
+        }
+    }
+
 });

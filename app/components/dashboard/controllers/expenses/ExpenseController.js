@@ -369,6 +369,7 @@ function listExpenses() {
 
 		$scope.expenseList = res;
         $scope.allExpenses = res;
+        $scope.displayedExpenses = res;
         $scope.currentExpenses = "All Expenses";
 		hideLoader();
 
@@ -376,26 +377,163 @@ function listExpenses() {
 		hideLoader();
 		console.log(error.message);
 	});	
-   
-    //...
 }
 
 $scope.sortByCatName= function()
 {
   $scope.expenseList.sort(function(a,b){ 
-  return a.entity.category.localeCompare(b.entity.category)});
- }     
+      return a.entity.category.localeCompare(b.entity.category)});
+     $('#date').css({
+            'display': 'none'
+        });
+              $('#catname').css({
+            'display': 'inline-table'
+        });
+              $('#refno').css({
+            'display': 'none'
+        });
+               $('#cusname').css({
+            'display': 'none'
+        });
+              $('#status').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+ } 
+
+$scope.sortByDate= function()
+{
+  $scope.expenseList.sort(function(a,b){
+  return a.expenseDate.localeCompare(b.expenseDate)});
+    $('#date').css({
+            'display': 'inline-table'
+        });
+              $('#catname').css({
+            'display': 'none'
+        });
+              $('#refno').css({
+            'display': 'none'
+        });
+               $('#cusname').css({
+            'display': 'none'
+        });
+              $('#status').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+ }
+
+$scope.sortByReferenceNumber= function()
+{
+  $scope.expenseList.sort(function(a,b){
+      
+  return a.entity.referenceNumber.localeCompare(b.entity.referenceNumber)});
+     $('#date').css({
+            'display': 'none'
+        });
+              $('#catname').css({
+            'display': 'none'
+        });
+              $('#refno').css({
+            'display': 'inline-table'
+        });
+               $('#cusname').css({
+            'display': 'none'
+        });
+              $('#status').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+ }
+
+$scope.sortByCustomerName= function()
+{
+  $scope.expenseList.sort(function(a,b){ 
+      $('#date').css({
+            'display': 'none'
+        });
+              $('#catname').css({
+            'display': 'none'
+        });
+              $('#refno').css({
+            'display': 'none'
+        });
+               $('#cusname').css({
+            'display': 'inline-table'
+        });
+              $('#status').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+    return a.customer.displayName.localeCompare(b.customer.displayName)});
+    
+ }
+
+$scope.sortByStatus= function()
+{
+  $scope.expenseList.sort(function(a,b){
+  return a.entity.status.localeCompare(b.entity.status)});
+     $('#date').css({
+            'display': 'none'
+        });
+              $('#catname').css({
+            'display': 'none'
+        });
+              $('#refno').css({
+            'display': 'none'
+        });
+               $('#cusname').css({
+            'display': 'none'
+        });
+              $('#status').css({
+            'display': 'inline-table'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+ }
+
+$scope.sortByAmount= function()
+{
+  $scope.expenseList.sort(function(a,b){ 
+  return b.entity.get('amount')-a.entity.get('amount')});
+     $('#date').css({
+            'display': 'none'
+        });
+              $('#catname').css({
+            'display': 'none'
+        });
+              $('#refno').css({
+            'display': 'none'
+        });
+               $('#cusname').css({
+            'display': 'none'
+        });
+              $('#status').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'inline-table'
+        });
+ }
+
 $scope.deleteExpense = function(){
     if(!$scope.expense)
         return;
-    
     showLoader();
     $scope.expense.entity.destroy()
     .then(function(){
         hideLoader();
         $state.go('dashboard.expenses.all');
     });
-    
 }
 
 $scope.showMenu = function(){
@@ -409,7 +547,7 @@ $scope.billableExpenses = function(){
     $scope.expenseList = $scope.allExpenses.filter(function(obj){
         return obj.entity.status == 'Billable';
     });
-    
+    $scope.displayedExpenses = $scope.expenseList;
     $scope.currentExpenses = "Billable Expenses"
     
     $('.filtermenu').removeClass('show');
@@ -419,7 +557,7 @@ $scope.nonBillableExpenses = function(){
     $scope.expenseList = $scope.allExpenses.filter(function(obj){
         return obj.entity.status == 'Non-Billable';
     });
-    
+    $scope.displayedExpenses = $scope.expenseList;
     $scope.currentExpenses = "Non-Billable Expenses"
     
     $('.filtermenu').removeClass('show');
@@ -429,7 +567,7 @@ $scope.invoicedExpenses = function(){
     $scope.expenseList = $scope.allExpenses.filter(function(obj){
         return obj.entity.status == 'Invoiced';
     });
-    
+    $scope.displayedExpenses = $scope.expenseList;
     $scope.currentExpenses = "Invoiced Expenses"
     
     $('.filtermenu').removeClass('show');
@@ -439,7 +577,7 @@ $scope.showAllExpenses = function(){
     $scope.expenseList = $scope.allExpenses.filter(function(obj){
         return true;
     });
-    
+    $scope.displayedExpenses = $scope.expenseList;
     $scope.currentExpenses = "All Expenses"
     
     $('.filtermenu').removeClass('show');
@@ -580,5 +718,51 @@ $scope.addAttachment = function(obj) {
 		hideLoader();
 	});
 }
-
+$scope.search = function()
+{
+    if($scope.searchText.length)
+    {
+      $scope.expenseList = $scope.displayedExpenses.filter(function(obj)
+      {
+          if(!obj.entity.referenceNumber)
+          {
+              obj.entity.referenceNumber = "";
+          }
+          if(!obj.expenseDate)
+          { 
+            obj.expenseDate = "";
+          }
+          if(!obj.entity.category)
+          {      
+              obj.entity.category = "";
+          }
+          if(!obj.entity.referenceNumber)
+          {   
+              obj.entity.referenceNumber = "";
+          }
+          if(!obj.customer.displayName)
+          {  
+              obj.customer.displayName = "";
+          }
+          if(!obj.entity.status)
+          {     
+              obj.entity.status = "";
+          }
+          if(!obj.amount)
+          { 
+              obj.amount = "";
+          }   
+          return obj.expenseDate.toLowerCase().includes($scope.searchText.toLowerCase())||
+          obj.entity.category.toLowerCase().includes($scope.searchText.toLowerCase())||
+     obj.entity.referenceNumber.toString().toLowerCase().includes($scope.searchText.toLowerCase())||
+          obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase())||
+          obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase())||
+          obj.amount.toLowerCase().includes($scope.searchText.toLowerCase());
+     });
+    }
+    else
+    {
+      $scope.expenseList = $scope.displayedExpenses;
+    }
+}
 }]);

@@ -175,6 +175,7 @@ function loadItemsAndTaxes() {
 	}))
 	.then(function(items) {
 		$scope.items = items;
+        $scope.displayedItems = items;
 	});
 	promises.push(p);
 
@@ -196,7 +197,45 @@ function loadItemsAndTaxes() {
    $scope.sortByItemName= function(){
     $scope.items.sort(function(a,b){
         return a.entity.title.localeCompare(b.entity.title)});
-    }    
+       $('#name').css({
+            'display': 'inline-table'
+        });
+            $('#price').css({
+            'display': 'none'
+        });
+       $('#description').css({
+            'display': 'none'
+        });
+    }  
+   
+   $scope.sortByPrice= function(){
+    $scope.items.sort(function(a,b){
+        return   b.entity.rate - a.entity.rate});
+        $('#name').css({
+            'display': 'none'
+        });
+            $('#price').css({
+            'display': 'inline-table'
+        });
+       $('#description').css({
+            'display': 'none'
+        });
+    }  
+   
+   $scope.sortByDescription= function(){
+    $scope.items.sort(function(a,b){
+        return a.entity.itemDescription.localeCompare(b.entity.itemDescription)});
+       $('#name').css({
+            'display': 'none'
+        });
+            $('#price').css({
+            'display': 'none'
+        });
+       $('#description').css({
+            'display': 'inline-table'
+        });
+    }  
+   
 function initializeScopeVariables() {
 	$scope.itemName = '';
 	$scope.itemRate1 = '';
@@ -356,21 +395,32 @@ if(fromTutorial){
     else{
         $('.tutorial').hide();
     }
-
-//----
-/*
-	if (user.get('colorTheme')) {
-		var color = user.get('colorTheme');
-		if (color) color = color.replace(/app|Color/g,"").toLowerCase();
-		if (color) $('.colors li a.'+color).parent().addClass("active");
-	}
-
-	$scope.saveAppPreferences = function(){
-		var color = $(".colors li.active").find('a').attr('class');
-		var colorToSave = "app" + color[0].toUpperCase() + color.slice(1) + "Color";
-		userFullFactory.save({colorTheme:colorToSave}).then(function(){
-			window.location.reload();
-		});
-	}
-*/	
+ $scope.search = function()
+ {
+    if($scope.searchText.length)
+    {   
+       $scope.items = $scope.displayedItems.filter(function(obj)
+       {   
+            if(!obj.entity.title)
+            {
+                obj.entity.title = "";
+            }
+            if(! obj.entity.rate)
+            {
+                 obj.entity.rate = "";
+            }
+           if(!obj.entity.itemDescription)
+            {
+               obj.entity.itemDescription = "";
+            }
+           return obj.entity.title.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.entity.rate.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+           obj.entity.itemDescription.toLowerCase().includes($scope.searchText.toLowerCase());
+        });
+    }
+    else
+    { 
+         $scope.items= $scope.displayedItems
+    }
+   }
 }]);

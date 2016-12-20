@@ -321,38 +321,29 @@ btn btn-sm btn-success pull-right uib-close ng-binding
     -webkit-transition: none;
 	transition: none;
 }
-.uib-datepicker .uib-title 
-{
- background-color: white;
-    border:1px solid gray;
-}
-.uib-left, .uib-right { 
-    background-color: white;
-    border: none;
-}
 .uib-day button, .uib-month button, .uib-year button {
    background-color: white;
-    border: 0.1px solid #e6e6e6;
+    /*border: 0.1px solid #e6e6e6;*/
+    border: none !important;
     margin-bottom: 5px;
 }
+
  .ui-datepicker-Done button {
      background-color: white;
     border: none;
 }
+
 .uib-button-bar {
     display: none !important;
-   
 }
 .uib-daypicker
 {
-   margin-left: 5px;  
+   margin-left: 5px;
 }
-
 #state-error
 {
     margin-right: 750px;
     width: 300px;
-    
 }
 #state-error:before{
     content: "";

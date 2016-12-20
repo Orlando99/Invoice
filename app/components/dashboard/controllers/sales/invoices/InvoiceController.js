@@ -1060,11 +1060,248 @@ function ListInvoices() {
 		console.log(error.message);
 	});	
 }  
-    $scope.sortByInvoiveNumber= function()
+    
+    $scope.sortByStatus= function()
     {
           $scope.invoiceList.sort(function(a,b){ 
-          return a.entity.invoiceNumber.localeCompare(b.entity.invoiceNumber)});
+          return a.entity.status.localeCompare(b.entity.status)});
+        $('#status').css({
+            'display': 'inline-table'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
     }
+    
+    $scope.sortByInvoiveNumber= function()
+    {
+          $scope.invoiceList.sort(function(a,b){
+          return a.entity.invoiceNumber.localeCompare(b.entity.invoiceNumber)});
+         $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'inline-table'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+    
+    $scope.sortByOrderNumber= function()
+    {
+          $scope.invoiceList.sort(function(a,b){ 
+             
+          return a.entity.poNumber.localeCompare(b.entity.poNumber)});
+          $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'inline-table'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+    
+    $scope.sortByAmount= function()
+    {
+          $scope.invoiceList.sort(function(a,b){
+              
+          return a.entity.total < (b.entity.total)});
+        $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'inline-table'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+    $scope.sortByCustomerName= function()
+    {
+          $scope.invoiceList.sort(function(a,b){ 
+             
+          return a.customer.displayName.localeCompare(b.customer.displayName)});
+         $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'inline-table'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+     $scope.sortByDate= function()
+    {
+          $scope.invoiceList.sort(function(a,b){
+        return b.invoiceDate.localeCompare(a.invoiceDate)});
+          $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'inline-table'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+     $scope.sortByDueDate= function()
+    {
+          $scope.invoiceList.sort(function(a,b){
+             
+          return b.dueDate.localeCompare(a.dueDate)});
+          $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'inline-table'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+     $scope.sortByBalance= function()
+    {
+          $scope.invoiceList.sort(function(a,b){ 
+             
+          return a.entity.balanceDue < (b.entity.balanceDue)});
+          $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'inline-table'
+        });
+    }
+    
     $scope.lateFeeChanged = function(){
         if(!$scope.selectedLateFee)
             return;
@@ -1229,9 +1466,49 @@ $scope.refundedInvoices = function(){
 }
 
 $scope.search = function(){
-    if($scope.searchText.length){
-        $scope.invoiceList = $scope.displayedInvoices.filter(function(obj){
-            return obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase()) || obj.invoiceDate.includes($scope.searchText);
+    if($scope.searchText.length)
+    {
+        $scope.invoiceList = $scope.displayedInvoices.filter(function(obj)
+        {
+            if(!obj.entity.status)
+            {
+                obj.entity.status = "";
+            }
+            if(!obj.invoiceDate)
+            {
+                obj.invoiceDate = "";
+            }
+            if(!obj.entity.invoiceNumber)
+            {
+                obj.entity.invoiceNumber = "";
+            }
+            if(!obj.entity.poNumber)
+            {
+                obj.entity.poNumber = "";
+            }
+            if(!obj.customer.displayName)
+            {
+                obj.customer.displayName = "";
+            }
+            if(!obj.dueDate)
+            {
+               obj.dueDate = "";
+            }
+            if(!obj.total)
+            {
+                obj.total = "";
+            }
+            if(!obj.balanceDue)
+            {
+               obj.balanceDue = "";
+            }
+        return obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase()) || obj.invoiceDate.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+            obj.entity.invoiceNumber.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.entity.poNumber.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.dueDate.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.total.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+            obj.balanceDue.toLowerCase().includes($scope.searchText.toLowerCase());
         });
     } else {
         $scope.invoiceList = $scope.displayedInvoices;
@@ -1239,14 +1516,4 @@ $scope.search = function(){
 }
 
 }]);
-/*
-<td><span class="{{invoice.statusClass}}">{{invoice.entity.status}}</span></td>
-        <td class="text-color-light">{{invoice.invoiceDate}}</td>
-        <td class="text-color-light">{{invoice.entity.invoiceNumber}}</td>
-        <td class="text-color-light">{{invoice.entity.poNumber}}</td>
-        <td class="text-color-light">{{invoice.customer.displayName}}</td>
-        
-        <td class="text-color-light">{{invoice.dueDate}}</td>
-        <td  class="text-color-light text-center">{{invoice.total}}</td>
-        <td Style="min-width: 90px ; max-width: 133px;"  class="text-color-light text-center">{{invoice.balanceDue}}</td>
-        */
+ 

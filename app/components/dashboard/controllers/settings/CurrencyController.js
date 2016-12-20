@@ -19,7 +19,7 @@ $q.when(userFactory.entity[0].fetch())
 	organization = user.get("organizations")[0];
 	loadCurrencies();
 });
-
+ 
 $scope.availableCurrencies = ['ADP - Andorran Peseta',
 'AED - United Arab Emirates Dirham',
 'AFN - Afghan Afghani',
@@ -273,6 +273,8 @@ function loadCurrencies() {
 		$scope.currencies = currencies;
 		setDefaultCurrencyIndex();
 		hideLoader();
+        $scope.displayedCurrencies = currencies;
+        
 	});
 }
 
@@ -283,11 +285,6 @@ function setDefaultCurrencyIndex() {
 		return currency.entity.id == curr.id;
 	});
 }
-    
-//
-  
-//
-    
 $scope.prepareAddCurrency = function() {
 	$scope.currencyObj = {
 		title : undefined,
@@ -442,15 +439,77 @@ $scope.confirmDeleteCurrency = function(){
 	});
 }
   $scope.sortByCurencyName= function(){
-    
       $scope.currencies.sort(function(a,b){
         return a.entity.title.localeCompare(b.entity.title)});
-    }  
+      $('#name').css({
+            'display': 'inline-table'
+        });
+            $('#symbol').css({
+            'display': 'none'
+        });
+       $('#exrate').css({
+            'display': 'none'
+        });
+    } 
+
+  $scope.sortBySymbol= function(){
+      $scope.currencies.sort(function(a,b){
+        return a.entity.currencySymbol.localeCompare(b.currencySymbol.title)});
+       $('#name').css({
+            'display': 'none'
+        });
+            $('#symbol').css({
+            'display': 'inline-table'
+        });
+       $('#exrate').css({
+            'display': 'none'
+        });
+    } 
+  $scope.sortByExchangeRate= function(){
+      $scope.currencies.sort(function(a,b){
+        return a.entity.exchangeRate < b.entity.exchangeRate});
+       $('#name').css({
+            'display': 'none'
+        });
+            $('#symbol').css({
+            'display': 'none'
+        });
+       $('#exrate').css({
+            'display': 'inline-table'
+        });
+    } 
 $scope.currencyChanged = function() {
 	if($scope.currencyObj)
 		$scope.currencyObj.currencySymbol =
 			$scope.currencyObj.title.split(' ')[0];
 
 }
-
+  $scope.search = function()
+  {
+        if($scope.searchText.length)
+        {   
+            $scope.currencies = $scope.displayedCurrencies.filter(function(obj)
+            {      
+                if(!obj.entity.title)
+                {
+                    obj.entity.title = "";
+                }
+                if(!obj.entity.currencySymbol)
+                {
+                   obj.entity.currencySymbol = "";
+                }
+                if(!obj.entity.exchangeRate)
+                {
+                   obj.entity.exchangeRate = "";
+                }
+                return obj.entity.title.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.entity.currencySymbol.toLowerCase().includes($scope.searchText.toLowerCase()) || 
+                obj.entity.exchangeRate.toString().toLowerCase().includes($scope.searchText.toLowerCase()) 
+            });
+        }
+        else
+        { 
+           $scope.currencies =$scope.displayedCurrencies;
+        }
+   }    
 }]);

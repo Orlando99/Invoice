@@ -6,8 +6,6 @@
     margin-left: 5px;
 }
 </style>
-
-
   <div class="container hidesm">
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">Sales by Customer</h3>
     <div class="actions float-right layout-margin-tb" uib-dropdown>
@@ -59,11 +57,11 @@
 
     <div class="container-table layout-margin-t inputs-white filter">
       <div class="thead">
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Name</h3>
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Invoice Count</h3>
+        <h3 ng-click="sortByName()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Name</h3>
+        <h3 ng-click="sortByInvoiceCount()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Invoice Count</h3>
         <!--
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Sales <img src="./assets/images/dropdown-arrow-primary.png" alt=""></h3> -->
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Sales with Tax</h3>
+        <h3 ng-click="sortByTax()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Sales with Tax</h3>
       </div>
 
       <div class="table-row row-border" ng-repeat="id in ids">

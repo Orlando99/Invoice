@@ -12,23 +12,25 @@
       </div>
     <a ui-sref="dashboard.expenses.new" class="float-right button button-add text-transform modal-opener" data-toggle="add-contact-person">New</a>
     <form class="float-right layout-margin-t">
-      <input type="text" class="search-bar" placeholder="Search" ng-model="search.entity.category">
+      <input type="text" class="search-bar" placeholder="Search" ng-model="searchText" ng-change = "search()">
     </form>
 
     <div class="clearfix"></div>
 
     <table class="data-table customers-data no-border show_table_hover" style = "margin-bottom: 20px;">
-      <tr class="thead">
-        <td class="text-uppercase text-info">Date</td>
-        <td ng-click = "sortByCatName()" class="text-uppercase text-info">Category Name</td>
-        <td style="min-width: 120px !important;" class="text-uppercase text-info">Ref.#</td>
-        <td class="text-uppercase text-info">Customer Name</td>
-        <td class="text-uppercase text-info">Status</td>
-        <td style="text-align: center !important;" class="text-uppercase text-info">Amount</td>
+
+      <tr style="cursor: pointer" class="thead">
+        <td ng-click = "sortByDate()" class="text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByCatName()" class="text-uppercase text-info">Category Name<span><img id="catname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByReferenceNumber()" class="text-uppercase text-info">Ref.#<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByCustomerName()" class="text-uppercase text-info">Customer Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByStatus()" class="text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByAmount()" class="text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
           <td></td>
+
       </tr>
       <!-- ui-sref="dashboard.expenses.edit({expenseId:expense.entity.id})" -->
-      <tr class="trow" ng-repeat="expense in expenseList | filter:search"
+      <tr class="trow" ng-repeat="expense in expenseList"
         ui-sref="dashboard.expenses.details({expenseId:expense.entity.id})">
         <td class="text-color-light">{{expense.expenseDate}}</td>
         <td class="text-color-light">{{expense.entity.category}}</td>

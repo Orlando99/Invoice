@@ -4,19 +4,19 @@
     <a href="" class="float-right layout-margin-tb button button-add text-transform modal-opener"
       data-toggle="new-currency" ng-click="prepareAddCurrency()">New</a>
     <form class="float-right layout-margin-tb">
-<input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="search.entity.title">
+<input type="text" class="search-bar layout-margin-r" placeholder="Search" ng-model="searchText" ng-change = "search()">
     </form>
 
     <table class="table-border-tb show_table_hover" style = "margin-bottom: 20px;">
-      <tr class="thead">
-        <td ng-click = "sortByCurencyName()"class="text-uppercase text-info layout-padding">Name</td>
-        <td class="text-uppercase text-info layout-padding">Symbol</td>
-        <td class="text-uppercase text-info layout-padding">Exchange Rate</td>
+      <tr style="cursor : pointer" class="thead">
+        <td ng-click = "sortByCurencyName()"class="text-uppercase text-info layout-padding">Name<span><img id="name" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortBySymbol()" class="text-uppercase text-info layout-padding">Symbol<span><img id="symbol" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByExchangeRate()" class="text-uppercase text-info layout-padding">Exchange Rate<span><img id="exrate" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         
         <td class="is-active-head"></td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
-      <tr class="trow" ng-repeat="currency in currencies | filter:search">
+      <tr class="trow" ng-repeat="currency in currencies">
         <td ng-click="prepareEditCurrency($index)"
           class="text-color-light text-weight-normalize layout-padding">{{currency.entity.title}}</td>
         <td ng-click="prepareEditCurrency($index)"
