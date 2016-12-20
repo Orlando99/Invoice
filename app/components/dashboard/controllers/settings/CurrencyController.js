@@ -442,10 +442,45 @@ $scope.confirmDeleteCurrency = function(){
 	});
 }
   $scope.sortByCurencyName= function(){
-    
       $scope.currencies.sort(function(a,b){
         return a.entity.title.localeCompare(b.entity.title)});
-    }  
+      $('#name').css({
+            'display': 'inline-table'
+        });
+            $('#symbol').css({
+            'display': 'none'
+        });
+       $('#exrate').css({
+            'display': 'none'
+        });
+    } 
+
+  $scope.sortBySymbol= function(){
+      $scope.currencies.sort(function(a,b){
+        return a.entity.currencySymbol.localeCompare(b.currencySymbol.title)});
+       $('#name').css({
+            'display': 'none'
+        });
+            $('#symbol').css({
+            'display': 'inline-table'
+        });
+       $('#exrate').css({
+            'display': 'none'
+        });
+    } 
+  $scope.sortByExchangeRate= function(){
+      $scope.currencies.sort(function(a,b){
+        return a.entity.exchangeRate < b.entity.exchangeRate});
+       $('#name').css({
+            'display': 'none'
+        });
+            $('#symbol').css({
+            'display': 'none'
+        });
+       $('#exrate').css({
+            'display': 'inline-table'
+        });
+    } 
 $scope.currencyChanged = function() {
 	if($scope.currencyObj)
 		$scope.currencyObj.currencySymbol =

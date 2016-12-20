@@ -1029,11 +1029,248 @@ function ListInvoices() {
 		console.log(error.message);
 	});	
 }  
-    $scope.sortByInvoiveNumber= function()
+    
+    $scope.sortByStatus= function()
     {
           $scope.invoiceList.sort(function(a,b){ 
-          return a.entity.invoiceNumber.localeCompare(b.entity.invoiceNumber)});
+          return a.entity.status.localeCompare(b.entity.status)});
+        $('#status').css({
+            'display': 'inline-table'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
     }
+    
+    $scope.sortByInvoiveNumber= function()
+    {
+          $scope.invoiceList.sort(function(a,b){
+          return a.entity.invoiceNumber.localeCompare(b.entity.invoiceNumber)});
+         $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'inline-table'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+    
+    $scope.sortByOrderNumber= function()
+    {
+          $scope.invoiceList.sort(function(a,b){ 
+             
+          return a.entity.poNumber.localeCompare(b.entity.poNumber)});
+          $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'inline-table'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+    
+    $scope.sortByAmount= function()
+    {
+          $scope.invoiceList.sort(function(a,b){
+              
+          return a.entity.total < (b.entity.total)});
+        $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'inline-table'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+    $scope.sortByCustomerName= function()
+    {
+          $scope.invoiceList.sort(function(a,b){ 
+             
+          return a.customer.displayName.localeCompare(b.customer.displayName)});
+         $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'inline-table'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+     $scope.sortByDate= function()
+    {
+          $scope.invoiceList.sort(function(a,b){
+        return b.invoiceDate.localeCompare(a.invoiceDate)});
+          $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'inline-table'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+     $scope.sortByDueDate= function()
+    {
+          $scope.invoiceList.sort(function(a,b){
+             
+          return b.dueDate.localeCompare(a.dueDate)});
+          $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'inline-table'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'none'
+        });
+    }
+     $scope.sortByBalance= function()
+    {
+          $scope.invoiceList.sort(function(a,b){ 
+             
+          return a.entity.balanceDue < (b.entity.balanceDue)});
+          $('#status').css({
+            'display': 'none'
+        });
+              $('#date').css({
+            'display': 'none'
+        });
+              $('#invoiceno').css({
+            'display': 'none'
+        });
+               $('#orderno').css({
+            'display': 'none'
+        });
+              $('#custname').css({
+            'display': 'none'
+        });
+              $('#duedate').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+               $('#balance').css({
+            'display': 'inline-table'
+        });
+    }
+    
     $scope.lateFeeChanged = function(){
         if(!$scope.selectedLateFee)
             return;

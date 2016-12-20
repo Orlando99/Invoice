@@ -196,7 +196,45 @@ function loadItemsAndTaxes() {
    $scope.sortByItemName= function(){
     $scope.items.sort(function(a,b){
         return a.entity.title.localeCompare(b.entity.title)});
-    }    
+       $('#name').css({
+            'display': 'inline-table'
+        });
+            $('#price').css({
+            'display': 'none'
+        });
+       $('#description').css({
+            'display': 'none'
+        });
+    }  
+   
+   $scope.sortByPrice= function(){
+    $scope.items.sort(function(a,b){
+        return   b.entity.rate - a.entity.rate});
+        $('#name').css({
+            'display': 'none'
+        });
+            $('#price').css({
+            'display': 'inline-table'
+        });
+       $('#description').css({
+            'display': 'none'
+        });
+    }  
+   
+   $scope.sortByDescription= function(){
+    $scope.items.sort(function(a,b){
+        return a.entity.itemDescription.localeCompare(b.entity.itemDescription)});
+       $('#name').css({
+            'display': 'none'
+        });
+            $('#price').css({
+            'display': 'none'
+        });
+       $('#description').css({
+            'display': 'inline-table'
+        });
+    }  
+   
 function initializeScopeVariables() {
 	$scope.itemName = '';
 	$scope.itemRate1 = '';

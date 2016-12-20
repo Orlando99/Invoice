@@ -24,9 +24,9 @@
     </form>
 
     <table class="table-border-tb show_table_hover" style = "margin-bottom: 20px;">
-      <tr class="thead">
-        <td ng-click = "sortByTaxName()"class="text-uppercase text-info layout-padding">Name</td>
-        <td class="text-uppercase text-info layout-padding">Percentage</td>
+      <tr style="cursor: pointer" class="thead">
+        <td ng-click = "sortByTaxName()"class="text-uppercase text-info layout-padding">Name<span><img id="name" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByPercentage()" class="text-uppercase text-info layout-padding">Percentage<span><img id="percentage" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>

@@ -133,7 +133,7 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
         }
         $(document).click(function() {
             $('.tutorial').hide();
-});
+        });
     
     $('#phoneNumber').mask("(Z00) 000-0000",{
 		translation : {

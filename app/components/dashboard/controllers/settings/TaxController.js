@@ -88,6 +88,23 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
    $scope.sortByTaxName= function(){
     $scope.taxes.sort(function(a,b){
         return a.name.localeCompare(b.name)});
+       $('#name').css({
+            'display': 'inline-table'
+        });
+            $('#percentage').css({
+            'display': 'none'
+        });
+    }
+   
+   $scope.sortByPercentage= function(){
+    $scope.taxes.sort(function(a,b){
+        return a.rate < (b.rate)});
+       $('#name').css({
+            'display': 'none'
+        });
+            $('#percentage').css({
+            'display': 'inline-table'
+        });
     }
         
 //        

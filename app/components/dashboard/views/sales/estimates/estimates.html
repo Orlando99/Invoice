@@ -20,14 +20,14 @@
     <div class="clearfix"></div>
 
     <table class="invoices-data no-border show_table_hover" style = "margin-bottom: 20px;">
-      <tr class="thead">
-        <td class="layout-padding text-uppercase text-info">Date</td>
-        <td ng-click = "sortByEstimateNumber()"class="layout-padding text-uppercase text-info">Estimate#</td>
+      <tr style="cursor : pointer" class="thead">
+        <td ng-click = "sortByDate()" class="layout-padding text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByEstimateNumber()" class="layout-padding text-uppercase text-info">Estimate#<span><img id="estimate" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
-        <td class="layout-padding text-uppercase text-info">Reference#</td>
-        <td class="layout-padding text-uppercase text-info">Customer Name</td>
-        <td class="layout-padding text-uppercase text-info">Status</td>
-        <td class="layout-padding text-uppercase text-info">Amount</td>
+        <td ng-click = "sortByRefNo()" class="layout-padding text-uppercase text-info">Reference#<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByCustomerName()" class="layout-padding text-uppercase text-info">Customer Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByStatus()" class="layout-padding text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByAmount()" class="layout-padding text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
       </tr>
       <tr class="trow" ng-repeat="estimate in estimateList | filter:search"
         ui-sref="dashboard.sales.estimates.details({estimateId:estimate.entity.id})">

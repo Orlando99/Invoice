@@ -19,20 +19,15 @@
     <div class="clearfix"></div>
 
     <table class="data-table creditnotes-data no-border show_table_hover" style = "margin-bottom: 20px;">
-      <tr class="thead">
-        <td class="text-uppercase text-info">Date</td>
-
-        <td Style="padding-left: 12px !important"  ng-click = "sortByCreditNote()" class="text-uppercase text-info">Credit Note</td>
-
+      <tr style="cursor: pointer" class="thead">
+        <td ng-click = "sortByDate()" class="text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td Style="padding-left: 12px !important"  ng-click = "sortByCreditNote()" class="text-uppercase text-info">Credit Note<span><img id="creditnote" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
-        <td class="text-uppercase text-info text-center">Ref#.</td>
-        <td class="text-uppercase text-info">Cust. Name</td>
-        
-         
-          
-        <td class="text-uppercase text-info">Status</td>
-        <td class="text-uppercase text-info">Amount</td>
-        <td class="text-uppercase text-info">Balance</td>
+        <td ng-click = "sortByRefNum()" class="text-uppercase text-info text-center">Ref#.<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByCusName()" class="text-uppercase text-info">Cust. Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByStatus()" class="text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByAmount()" class="text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByBalance()" class="text-uppercase text-info">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
       </tr>
       <tr class="trow" ng-repeat="creditNote in creditNoteList | filter:search"
         ui-sref="dashboard.sales.creditnotes.details({creditNoteId:creditNote.entity.id})">

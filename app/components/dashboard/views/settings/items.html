@@ -23,10 +23,10 @@
     </form>
 
     <table class="table-border-tb show_table_hover"style = "margin-bottom: 20px;">
-      <tr class="thead">
-        <td ng-click = "sortByItemName()" class="text-uppercase text-info layout-padding">Name</td>  
-        <td class="text-uppercase text-info layout-padding">Price</td>
-        <td class="text-uppercase text-info layout-padding" >Description</td>
+      <tr style="cursor: pointer" class="thead">
+        <td ng-click = "sortByItemName()" class="text-uppercase text-info layout-padding">Name<span><img id="name" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>  
+        <td ng-click = "sortByPrice()" class="text-uppercase text-info layout-padding">Price<span><img id="price" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByDescription()" class="text-uppercase text-info layout-padding" >Description<span><img id="description" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td class="text-uppercase text-info layout-padding text-right"></td>
       </tr>
       <tr class="trow" ng-repeat="item in items | filter:search">

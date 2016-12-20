@@ -161,9 +161,25 @@ function loadColorTheme(user){
   if (color) color = color.replace(/app|Color/g,"").toLowerCase();
   if (color && color != 'blue' && color != 'undefined') {
     $('#appStyle').attr('href',CSS_DIR + 'main.' + color + '.css');
+      $('#appStyle1').attr('href',CSS_DIR + 'DynamicView.' + color + '.css');
   } else if (color == 'blue' || color == 'undefined') {
     $('#appStyle').attr('href',"");
   }
+    
+    /*
+    if(color = "appBlueColor")
+    {
+        
+        $('.btn.btn-default.btn-sm.btn-info.active').css({
+            'background-color': '#219FCE !important',
+            'color': '#ffffff !important'
+        });
+        alert("The Blue Color");
+    }
+    
+    else if(color = "appGreenColor"){
+        alert("The Green Color");
+    }*/
 }
 
 function resetColorTheme(){

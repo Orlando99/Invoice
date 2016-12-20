@@ -1,0 +1,32 @@
+.btn.btn-default.btn-sm.btn-info.active{
+    background-color: #7f5cbf;
+    color: white;
+}
+
+.uib-datepicker .uib-title 
+{
+ background-color: #7f5cbf;
+    color: white;
+   border: 2px solid #7f5cbf;
+     margin-left: -4.5px;
+}
+.uib-left { 
+    background-color: #7f5cbf;
+    border: 2px solid #7f5cbf;
+    color: white;
+    margin-left: -4.5px;
+}
+
+.uib-right { 
+    background-color: #7f5cbf;
+    border: 2px solid #7f5cbf;
+    color: white;
+    margin-left: -4.5px;
+}
+
+.text-info {
+   color: black;
+}
+.ng-binding.text-muted{
+    color:darkgray;
+}
