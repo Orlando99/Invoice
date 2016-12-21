@@ -333,9 +333,9 @@
               
             <select class="col-75" name="timesheetUser" ng-model="dataOnInvoice">
                   <option value="1">Single line for Project</option>
-                  <option value="1">Line for each task</option>
-                  <option value="1">Line for each timesheet</option>
-                  <option value="1">Line for each user</option>
+                  <!--<option value="2">Line for each task</option>-->
+                  <option ng-show="project.billingMethod == 'Based on project hours'" value="3">Line for each timesheet</option>
+                  <!--<option value="4">Line for each user</option>-->
               </select>
           </div>
 

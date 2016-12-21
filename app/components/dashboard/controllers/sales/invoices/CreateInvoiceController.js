@@ -146,12 +146,12 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			$(this).rules ('remove');
 			$(this).rules('add', {
 				required : true,
-				min : 1,
-				digits : true,
+				min : 0.01,
+				number : true,
 				messages : {
 					required : 'Please provide item quantity',
-					min : 'quantity should be >= 1',
-					digits : 'quantity must be integer'
+					min : 'Quantity should be > 0',
+					number : 'Quantity must be number'
 				}
 			});
 		});
@@ -385,46 +385,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		}
         
         if(projectId){
-            $scope.selectedCustomer = $scope.customers.filter(function(cust) {
-				return cust.entity.id == projectId.project.entity.customer.id;
-			})[0];
-
-            customerChanged();
-            $scope.invoiceItems = [{
-                selectedItem : undefined,
-                selectedTax : undefined,
-                rate : 0,
-                quantity : 1,
-                discount : 0,
-                amount : 0
-            }];
-
-            $q.when(customerChangedHelper())
-                .then(function() {
-                    var t = {
-                        create : true,
-                        entity : {
-                            rate : projectId.project.entity.projectBillingAmount,
-                            title : projectId.project.entity.projectName
-                        }
-                    }
-                    
-                    $scope.items.pop();
-                    $scope.items.push(t);
-                    $scope.items.push(createItemOpener);
-                    
-                    $scope.addInvoiceItem();
-                    $scope.invoiceItems[0] = {
-                        selectedItem : t,
-                        selectedTax : undefined,
-                        rate : projectId.project.entity.projectBillingAmount,
-                        quantity : 1,
-                        discount : 0,
-                        amount : 0
-                    };
-                    $scope.itemChanged(0);
-                });
-            }
+            convertProject(projectId);
+        }
 
 		var customFields = [];
 		if($scope.prefs.customFields) {
@@ -441,6 +403,165 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 		hideLoader();
 	}
+        
+    function convertProject(projectId){
+        $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+				return cust.entity.id == projectId.project.entity.customer.id;
+			})[0];
+
+        customerChanged();
+        $scope.invoiceItems = [{
+            selectedItem : undefined,
+            selectedTax : undefined,
+            rate : 0,
+            quantity : 1,
+            discount : 0,
+            amount : 0
+        }];
+
+        $q.when(customerChangedHelper())
+            .then(function() {
+                if(projectId.dataOnInvoice == 1){
+                    var rate = 0;
+                    var quantity = 0;
+                    
+                    if(projectId.project.entity.get('billingMethod') == 'Based on project hours'){
+                        rate = projectId.project.entity.get('projectBillingHours');
+                        var sheets = projectId.project.timesheets;
+
+                        for(var i = 0; i < sheets.length; ++i){
+                            if(sheets[i].get('isBilled'))
+                                continue;
+                            
+                            var time = sheets[i].time;
+                            var hours = parseInt(time.split(':')[0]);
+                            var min = parseInt(time.split(':')[1]);
+                            hours += min/60;
+                            hours = parseFloat(hours.toFixed(2));
+
+                            quantity += hours;
+                        }
+                    }
+                    else if(projectId.project.entity.get('billingMethod') == 'Fixed cost for project'){
+                        rate = projectId.project.entity.projectBillingAmount;
+                        quantity = 1;
+                    }
+                    
+                    var t = {
+                        create : true,
+                        entity : {
+                            rate : rate,
+                            title : projectId.project.entity.projectName
+                        }
+                    }
+
+                    $scope.items.pop();
+                    $scope.items.push(t);
+                    $scope.items.push(createItemOpener);
+
+                    $scope.addInvoiceItem();
+                    $scope.invoiceItems[0] = {
+                        selectedItem : t,
+                        selectedTax : undefined,
+                        rate : rate,
+                        quantity : quantity,
+                        discount : 0,
+                        amount : 0
+                    };
+                    $scope.itemChanged(0);
+                }
+            /*
+                else if(projectId.dataOnInvoice == 2) {
+                    if(projectId.project.timesheets){
+                        $scope.items.pop();
+
+                        var projectAmount = 0;
+
+                        if(projectId.project.entity.get('billingMethod') == 'Based on project hours')
+                            projectAmount = projectId.project.entity.get('projectBillingHours');
+
+                        var sheets = projectId.project.timesheets;
+
+                        for(var i = 0; i < sheets.length; ++i){
+                            if(sheets[i].get('isBilled'))
+                                continue;
+                            var time = sheets[i].time;
+                            var hours = parseInt(time.split(':')[0]);
+                            var min = parseInt(time.split(':')[1]);
+                            hours += min/60;
+                            hours = parseFloat(hours.toFixed(2));
+                            var t = {
+                                create : true,
+                                entity : {
+                                    rate : projectAmount,
+                                    title : projectId.project.entity.projectName
+                                }
+                            }
+
+                            $scope.items.push(t);
+
+                            $scope.addInvoiceItem();
+                            $scope.invoiceItems[i] = {
+                                selectedItem : t,
+                                selectedTax : undefined,
+                                rate : projectAmount,
+                                quantity : hours,
+                                discount : 0,
+                                amount : 0
+                            };
+                            $scope.itemChanged(i);
+                        }
+
+                        $scope.items.push(createItemOpener);
+                    }
+                }
+                */
+                else if(projectId.dataOnInvoice == 3) {
+                    if(projectId.project.timesheets){
+                        $scope.items.pop();
+
+                        var projectAmount = 0;
+
+                        if(projectId.project.entity.get('billingMethod') == 'Based on project hours')
+                            projectAmount = projectId.project.entity.get('projectBillingHours');
+
+                        var sheets = projectId.project.timesheets;
+
+                        for(var i = 0; i < sheets.length; ++i){
+                            if(sheets[i].get('isBilled'))
+                                continue;
+                            var time = sheets[i].time;
+                            var hours = parseInt(time.split(':')[0]);
+                            var min = parseInt(time.split(':')[1]);
+                            hours += min/60;
+                            hours = parseFloat(hours.toFixed(2));
+                            var t = {
+                                create : true,
+                                entity : {
+                                    rate : projectAmount,
+                                    title : projectId.project.entity.projectName
+                                }
+                            }
+
+                            $scope.items.push(t);
+
+                            $scope.addInvoiceItem();
+                            $scope.invoiceItems[i] = {
+                                selectedItem : t,
+                                selectedTax : undefined,
+                                rate : projectAmount,
+                                quantity : hours,
+                                discount : 0,
+                                amount : 0
+                            };
+                            $scope.itemChanged(i);
+                        }
+
+                        $scope.items.push(createItemOpener);
+                    }
+                }
+            });
+    }
 
 	function saveInvoice() {
 		var invoice = {

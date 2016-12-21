@@ -437,12 +437,20 @@ function createTimesheets (timesheets, params) {
         else
             $scope.project.set('timeSheets', sheets);
         
-        $scope.project.save()
-        .then(function(proj){
-            $(".new-timesheet").removeClass("show");
-            hideLoader();
-            $state.reload();
+        var temp = timesheets.task.get('taskHours') || 0;
+    
+        timesheets.task.set('taskHours', $scope.timesheetHours + $scope.timesheetMinutes/60 + temp);
+        timesheets.task.save()
+        .then(function(obj){
+            $scope.project.save()
+            .then(function(proj){
+                $(".new-timesheet").removeClass("show");
+                hideLoader();
+                $state.reload();
+            });
         });
+        
+        
     });
 }
     
