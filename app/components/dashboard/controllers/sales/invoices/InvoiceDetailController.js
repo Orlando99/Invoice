@@ -520,6 +520,11 @@ $scope.refundPayment = function() {
         
     }
     
+    if(mode == 'Credit Note'){
+        refundCredit();
+        return;
+    }
+    
 	if ( refunded || (mode != 'Cash' && mode != 'Check' && mode != 'Bank Transfer' && mode != 'Bank Remittance') ) return;
 
 	showLoader();
@@ -548,6 +553,11 @@ $scope.refundPayment = function() {
 		hideLoader();
 		$state.reload();
 	});
+}
+
+function refundCredit(){
+    
+	
 }
  
 $scope.addAttachment = function(obj) {

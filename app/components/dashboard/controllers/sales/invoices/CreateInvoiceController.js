@@ -485,6 +485,16 @@ invoicesUnlimited.controller('CreateInvoiceController',
             Parse.Object.saveAll($scope.projectId.project.timesheets);
         }
         
+        if($state.params.expenseId){
+            var query = new Parse.Query('Expanses');
+            query.equalTo('objectId', $state.params.expenseId);
+            query.first()
+            .then(function(exp){
+                exp.set('status', 'Invoiced');
+                exp.save();
+            })
+        }
+        
 		return invoiceService.createNewInvoice(invoice, $scope.invoiceItems, $scope.userRole, $scope.files);
 	}
 
