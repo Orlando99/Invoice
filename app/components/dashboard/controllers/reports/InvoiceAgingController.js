@@ -123,10 +123,32 @@ $scope.generateReport = function() {
 	});
 }
 
+
+$scope.sortByInvoiceNo= function()
+    {
+          $scope.invoices1.sort(function(a,b){ 
+          return a.entity.invoiceNumber.localeCompare(b.entity.invoiceNumber)});
+        $('#name').css({
+            'display': 'none'
+        });
+              $('#days').css({
+            'display': 'none'
+        });
+              $('#balance').css({
+            'display': 'none'
+        });
+    $('#invoiceno').css({
+            'display': 'inline-table'
+        });
+    
+    }
+
+
+
 $scope.sortByName= function()
     {
-          $scope.ids.sort(function(a,b){ 
-          return $scope.info[a].name.localeCompare($scope.info[b].name)});
+          $scope.invoices1.sort(function(a,b){ 
+          return a.customer.displayName.localeCompare(b.customer.displayName)});
         $('#name').css({
             'display': 'inline-table'
         });
@@ -136,11 +158,15 @@ $scope.sortByName= function()
               $('#balance').css({
             'display': 'none'
         });
+     $('#invoiceno').css({
+            'display': 'none'
+        });
+    
     }
 $scope.sortByDays= function()
     {
-          $scope.ids.sort(function(a,b){ 
-          return  $scope.info[b].overDueDays - $scope.info[a].overDueDays});
+          $scope.invoices1.sort(function(a,b){ 
+          return  b.overDueDays1 - a.overDueDays1});
         $('#name').css({
             'display': 'none'
         });
@@ -150,11 +176,15 @@ $scope.sortByDays= function()
               $('#balance').css({
             'display': 'none'
         });
+    $('#invoiceno').css({
+            'display': 'none'
+        });
+    
     }
 $scope.sortByBalance= function()
     {
-          $scope.ids.sort(function(a,b){ 
-          return  $scope.info[b].balanceDue - $scope.info[a].balanceDue});
+          $scope.invoices1.sort(function(a,b){ 
+          return  b.balanceDue - a.balanceDue});
         $('#name').css({
             'display': 'none'
         });
@@ -164,6 +194,10 @@ $scope.sortByBalance= function()
               $('#balance').css({
             'display': 'inline-table'
         });
+    $('#invoiceno').css({
+            'display': 'none'
+        });
+    
     }
 
 }]);
