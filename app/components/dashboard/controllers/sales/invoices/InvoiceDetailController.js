@@ -631,14 +631,24 @@ $scope.emailReceipt = function() {
 	showLoader();
 	$q.when(invoiceService.sendInvoiceReceipt($scope.invoice.entity))
 	.then(function(obj) {
-        if($scope.invoice.entity.get('status') == 'Draft'){
-            $scope.invoice.entity.set('status', 'Sent');
-            $scope.invoice.entity.save();
+        if($scope.invoice.entity.get('status') == 'Draft')
+        {  
+            //  $scope.invoice.entity.set('status', 'Sent');
+            var dueDate = $scope.invoice.entity.get('dueDate');
+            var toDate = new Date();
+            if(dueDate<toDate)
+            {
+               $scope.invoice.entity.set('status', 'Overdue');
+            }
+            else
+            {
+               $scope.invoice.entity.set('status', 'Sent');              
+            }
+             $scope.invoice.entity.save();   
         }
         addNewComment('Invoice sent by email', true);
         hideLoader();
         showSnackbar('Email sent...');
-        
 		console.log('Receipt sent successfully.');
 		
 	});

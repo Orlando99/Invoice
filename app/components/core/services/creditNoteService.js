@@ -444,7 +444,7 @@ return {
 			html : emailBody
 		}).then(function(msg) {
 			console.log(msg);
-			creditNote.set('status', 'Sent');
+			//creditNote.set('status', 'Sent');
 			return creditNote.save();
 		})
 		.then(function(creditObj) {

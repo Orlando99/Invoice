@@ -279,7 +279,10 @@ invoicesUnlimited.controller('NewCustomerController',
 	$scope.$watch("newCustomer.entity.lastName",changeDispName);
  
 	$scope.cancelSaveCustomer = function(){
-		$state.go('dashboard.customers.all');
+		//$state.go('dashboard.customers.all');
+        window.history.go(-1);
+        
+        
 	}
     
     $scope.nextClicked = function(){
