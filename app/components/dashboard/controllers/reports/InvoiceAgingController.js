@@ -18,7 +18,7 @@ function loadSetData() {
 	$scope.dateRanges = reportsCommon.getDateRanges();
 	$scope.selectedDateRange = $scope.dateRanges[1];
 	$scope.fromDate = new Date();
-     $scope.fromDate.setHours(0);
+    $scope.fromDate.setHours(0);
     $scope.fromDate.setMinutes(0);
 	$scope.toDate = new Date();
 
@@ -92,11 +92,8 @@ $scope.generateReport = function() {
 				ids.push(customerId);
 			}
 			var d1 = invoice.entity.invoiceDate.getTime();
-            
-           
 			var d = Math.round( Math.ceil( Math.abs(d2 - d1) / oneDay ));
-                               
-    
+                    
 			info[customerId].overDueDays += d-1;
 			totalOverDueDays += d-1;
 			totalBlanceDue += subAmount;

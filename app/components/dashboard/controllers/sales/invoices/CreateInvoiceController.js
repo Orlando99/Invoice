@@ -368,6 +368,17 @@ invoicesUnlimited.controller('CreateInvoiceController',
 					})[0];
 					$scope.invoiceItems[0].selectedItem.create = true; // create new item everytime
 					$scope.itemChanged(0);
+                    //
+                    var query = new Parse.Query('Expanses');
+                    query.equalTo('objectId', $state.params.expenseId);
+                    query.first()
+                    .then(function(exp)
+                    {  
+                        $scope.notes =  exp.get('notes');       
+                        $scope.dueDate =  exp.get('expanseDate');
+                        $scope.todayDate =  exp.get('expanseDate');    
+                        $scope.$apply();
+                    });
 				});
 			}
 
