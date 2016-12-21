@@ -898,7 +898,14 @@ function saveInvoice(params) {
 	if(email) invoice.customerEmails = [email];
 
 	return invoiceService.createNewInvoice
-		(invoice, _scope.invoiceItems, _scope.userRole, _scope.files);
+		(invoice, _scope.invoiceItems, _scope.userRole, _scope.files)
+        .then(function(inv){
+            _scope.estimate.entity.set('status', 'Invoiced');
+            return _scope.estimate.entity.save()
+            .then(function(est){
+                    return inv;
+            });
+        });
 }
 
 function saveAndSendInvoice(params) {

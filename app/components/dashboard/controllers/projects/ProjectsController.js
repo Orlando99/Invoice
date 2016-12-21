@@ -208,47 +208,50 @@ function prepareEditForm() {
     $scope.tasks = project.tasks;
     $scope.staffUsers = project.users;
     
-    for(var i = 0; i < $scope.users.length; ++i){
-        for(var j = 0; j < $scope.staffUsers.length; ++j){
-            if($scope.users[i].userName == $scope.staffUsers[j].get('chosenUser').get('userName')){
-                //$scope.projectUsers.push($scope.users[i]);
-                $scope.users.splice(i, 1);
+    if($scope.staffUsers)
+        for(var i = 0; i < $scope.users.length; ++i){
+            for(var j = 0; j < $scope.staffUsers.length; ++j){
+                if($scope.users[i].userName == $scope.staffUsers[j].get('chosenUser').get('userName')){
+                    //$scope.projectUsers.push($scope.users[i]);
+                    $scope.users.splice(i, 1);
+                }
             }
         }
-    }
     
     $scope.timesheets = [];
-    project.timesheets.forEach(function(obj){
-        var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
-        obj.date = formatDate(
-        obj.attributes.date, dateFormat);
-        $scope.timesheets.push(obj);
-        
-        var t = obj.get('timeSpent');
-            if(t){
-                var d = obj.get('date');
-                var msec = d - t;
-                var hh = Math.floor(msec / 1000 / 60 / 60);
-                msec -= hh * 1000 * 60 * 60;
-                var mm = Math.floor(msec / 1000 / 60);
-                msec -= mm * 1000 * 60;
-                hh = hh < 10 ? '0' + hh : '' + hh
-                mm = mm < 10 ? '0' + mm : '' + mm
-                obj.hours = hh;
-                obj.minutes = mm;
-                //obj.time = hh + ':' + mm;
-            }
-            else{
-                obj.time = "00:00";
-                obj.hours = "00";
-                obj.minutes = "00";
-            }
-        
-    });
+        if(project.timesheets)
+        project.timesheets.forEach(function(obj){
+            var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+            obj.date = formatDate(
+            obj.attributes.date, dateFormat);
+            $scope.timesheets.push(obj);
+
+            var t = obj.get('timeSpent');
+                if(t){
+                    var d = obj.get('date');
+                    var msec = d - t;
+                    var hh = Math.floor(msec / 1000 / 60 / 60);
+                    msec -= hh * 1000 * 60 * 60;
+                    var mm = Math.floor(msec / 1000 / 60);
+                    msec -= mm * 1000 * 60;
+                    hh = hh < 10 ? '0' + hh : '' + hh
+                    mm = mm < 10 ? '0' + mm : '' + mm
+                    obj.hours = hh;
+                    obj.minutes = mm;
+                    //obj.time = hh + ':' + mm;
+                }
+                else{
+                    obj.time = "00:00";
+                    obj.hours = "00";
+                    obj.minutes = "00";
+                }
+
+        });
     $scope.timesheetTasks = [];
-    project.tasks.forEach(function(task){
-        $scope.timesheetTasks.push(task);
-    });
+    if(project.tasks)
+        project.tasks.forEach(function(task){
+            $scope.timesheetTasks.push(task);
+        });
     $scope.timesheetTasks.push(createTaskOpener);
     $scope.timesheetDate = new Date();
     

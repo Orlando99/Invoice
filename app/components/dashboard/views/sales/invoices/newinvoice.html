@@ -26,7 +26,6 @@
       <!--datepicker-popup-template-url="template/datepickerPopUp/customPopUp.html"-->
       <div  class="input-container col-60 layout-margin-b datepicker-noclear">
         <label class="layout-padding-t-sm">Due Date &amp; Terms</label>
-          
        <input maxlength="60" name="invoiceDueDate" id="end_date" class="col-35 form-control"  type="text" ng-model="dueDate"
           uib-datepicker-popup="{{dateFormat}}" is-open="openPicker2" show-weeks="false" ng-click="openDatePicker(2)" readonly>
         
@@ -100,17 +99,11 @@
 
           <div  class="col-30 layout-padding">
             <i Style="margin-top: 10px" class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-            
-              
               <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item same_height" ng-model="invItem.selectedItem"
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
-        
-                  
                   <option value="" disabled>Select or Type to add</option>
             </select>
-          
             </div>
-            
           <div class="col-12 layout-padding layout-padding-l text-right">
             <input maxlength="60" tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" onkeypress="numberValidation(event)"
               placeholder="1" ng-model="invItem.quantity" ng-change="reCalculateItemAmount($index)">

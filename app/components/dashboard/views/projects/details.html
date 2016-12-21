@@ -331,15 +331,12 @@
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">How to sort data on invoice</label>
               
-              
             <select class="col-75" name="timesheetUser" ng-model="dataOnInvoice">
                   <option value="1">Single line for Project</option>
+                  <option value="1">Line for each task</option>
+                  <option value="1">Line for each timesheet</option>
+                  <option value="1">Line for each user</option>
               </select>
-<!--
-            <select class="col-75" name="timesheetUser" ng-change="timeSheetUserChanged()" ng-model="timesheetUser" placeholder="Select User" ng-options="user.userName for user in users">
-                  <option value="" disabled>Select User</option>
-              </select>
--->
           </div>
 
           <div class="input-container layout-margin-b">

@@ -520,6 +520,11 @@ $scope.refundPayment = function() {
         
     }
     
+    if(mode == 'Credit Note'){
+        refundCredit();
+        return;
+    }
+    
 	if ( refunded || (mode != 'Cash' && mode != 'Check' && mode != 'Bank Transfer' && mode != 'Bank Remittance') ) return;
 
 	showLoader();
@@ -548,6 +553,55 @@ $scope.refundPayment = function() {
 		hideLoader();
 		$state.reload();
 	});
+}
+
+function refundCredit(){
+    showLoader();
+    
+	var payment = $scope.selectedPayment.entity;
+    var note = payment.get('creditNote');
+    
+    $q.when(note.fetch())
+    .then(function(obj){
+        var used = note.get('creditsUsed');
+        var remaining = note.get('remainingCredits');
+
+        note.set('creditsUsed', used - payment.amount);
+        note.set('remainingCredits', remaining + payment.amount);
+
+        if(note.get('status') == 'Closed'){
+            note.set('status', 'Open');
+        }
+        
+        payment.set('deleted', true);
+
+        var invoiceObj = $scope.invoice.entity;
+        invoiceObj.unset('invoiceReceipt');
+        invoiceObj.increment('paymentMade', -payment.amount);
+        invoiceObj.increment('balanceDue', payment.amount);
+
+        if (invoiceObj.get('paymentMade') <= 0)
+            invoiceObj.set('status', 'Refunded');
+        else
+            invoiceObj.set('status', 'Partial Refunded');
+
+        var promises = [];
+        promises.push(payment.save());
+        promises.push(note.save());
+        promises.push(invoiceObj.save());
+
+        var body = 'Refund made for '+ currencyFilter(payment.amount, '$', 2) +' amount';
+        promises.push(addNewComment(body, true));
+
+        $q.all(promises)
+        .then(function() {
+            hideLoader();
+            $state.reload();
+        });
+        
+    });
+    
+    
 }
  
 $scope.addAttachment = function(obj) {
@@ -631,14 +685,24 @@ $scope.emailReceipt = function() {
 	showLoader();
 	$q.when(invoiceService.sendInvoiceReceipt($scope.invoice.entity))
 	.then(function(obj) {
-        if($scope.invoice.entity.get('status') == 'Draft'){
-            $scope.invoice.entity.set('status', 'Sent');
-            $scope.invoice.entity.save();
+        if($scope.invoice.entity.get('status') == 'Draft')
+        {  
+            //  $scope.invoice.entity.set('status', 'Sent');
+            var dueDate = $scope.invoice.entity.get('dueDate');
+            var toDate = new Date();
+            if(dueDate<toDate)
+            {
+               $scope.invoice.entity.set('status', 'Overdue');
+            }
+            else
+            {
+               $scope.invoice.entity.set('status', 'Sent');              
+            }
+             $scope.invoice.entity.save();   
         }
         addNewComment('Invoice sent by email', true);
         hideLoader();
         showSnackbar('Email sent...');
-        
 		console.log('Receipt sent successfully.');
 		
 	});

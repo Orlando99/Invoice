@@ -221,7 +221,10 @@ function saveCreditNote() {
 	if(email) creditNote.customerEmails = [email];
 
 	return creditNoteService.createNewCreditNote
-		(creditNote, $scope.creditItems, $scope.userRole);
+		(creditNote, $scope.creditItems, $scope.userRole)
+    .then(function(obj){
+        return addNewComment('Creditnote created for ' + currencyFilter(obj.attributes.total, '$', 2) +' amount', true, obj);
+    });
 }
 
 function saveAndSendCreditNote() {
@@ -229,7 +232,7 @@ function saveAndSendCreditNote() {
 	.then(function(creditNote) {
 		return creditNoteService.createCreditNoteReceipt(creditNote.id)
 		.then(function(creditNoteObj) {
-            addNewComment('Creditnote created for ' + currencyFilter(creditNoteObj.attributes.totalAmount, '$', 2) +' amount', true, creditNoteObj);
+            //addNewComment('Creditnote created for ' + currencyFilter(creditNoteObj.attributes.total, '$', 2) +' amount', true, creditNoteObj);
 			return creditNoteService.sendCreditNoteReceipt(creditNoteObj);
 		});
 	});
@@ -328,7 +331,7 @@ function addNewComment(commentbody, isAuto, creditNote){
     }
 
 	var data = {};
-	$q.when(coreFactory.getUserRole(user))
+	return $q.when(coreFactory.getUserRole(user))
 	.then(function(role) {
 		return commentFactory.createNewComment(obj, role);
 	})
@@ -342,16 +345,6 @@ function addNewComment(commentbody, isAuto, creditNote){
 
 		creditNote.set('comments', prevComments);
 		return creditNote.save();
-	})
-	.then(function() {
-		var comment = new commentFactory(data.commentObj);
-
-		if($scope.comments)
-			$scope.comments.push(comment);
-		else
-			$scope.comments = [comment];
-
-		console.log(comment);
 	});
 }
 

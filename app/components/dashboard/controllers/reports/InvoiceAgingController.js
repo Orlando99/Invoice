@@ -18,7 +18,7 @@ function loadSetData() {
 	$scope.dateRanges = reportsCommon.getDateRanges();
 	$scope.selectedDateRange = $scope.dateRanges[1];
 	$scope.fromDate = new Date();
-     $scope.fromDate.setHours(0);
+    $scope.fromDate.setHours(0);
     $scope.fromDate.setMinutes(0);
 	$scope.toDate = new Date();
 
@@ -70,13 +70,17 @@ $scope.generateReport = function() {
 	.then(function(invoices) {
 		var ids = [];
 		var info = {};
+        var invoices1 = {};
+        
 		var totalBlanceDue = 0;
 		var totalOverDueDays = 0;
 		var oneDay = 86400000; // in milliseconds
 		var d2 = $scope.toDate.getTime();
-      
-		invoices.forEach(function(invoice) {
-			var customerId = invoice.customer.id;
+        var i=0;
+        
+		invoices.forEach(function(invoice) 
+        {
+            var customerId = invoice.customer.id;
 			var subAmount = invoice.entity.balanceDue;
 			var subAmount = invoice.entity.balanceDue;
 			if(info[customerId]){
@@ -92,20 +96,20 @@ $scope.generateReport = function() {
 				ids.push(customerId);
 			}
 			var d1 = invoice.entity.invoiceDate.getTime();
-            
-           
 			var d = Math.round( Math.ceil( Math.abs(d2 - d1) / oneDay ));
-                               
-    
+                    
 			info[customerId].overDueDays += d-1;
 			totalOverDueDays += d-1;
 			totalBlanceDue += subAmount;
+        //   console.log("i="+i  +"Amount:"+subAmount);
+            invoices[i].overDueDays1 = d-1; 
+            i++;
 		});
 
 		ids.forEach(function(id) {
 			info[id].balanceDueStr = currencyFilter(info[id].balanceDue, '$', 2);
 		});
-
+        $scope.invoices1 = invoices;
 		$scope.info = info;
 		$scope.ids = ids;
 		$scope.totalOverDueDays = totalOverDueDays;

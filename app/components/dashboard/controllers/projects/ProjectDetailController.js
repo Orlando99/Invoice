@@ -109,14 +109,15 @@ function showProjectDetail() {
         $scope.staff = project.users;
         $scope.actualProject = project;
         
-        $scope.staff.forEach(function(obj){
-            for(var i = 0; i < $scope.users.length; ++i){
-                if($scope.users[i].id == obj.user.id){
-                    $scope.users.splice(i, 1);
-                    break;
+        if($scope.staff)
+            $scope.staff.forEach(function(obj){
+                for(var i = 0; i < $scope.users.length; ++i){
+                    if($scope.users[i].id == obj.user.id){
+                        $scope.users.splice(i, 1);
+                        break;
+                    }
                 }
-            }
-        });
+            });
         
         $scope.unbilledHours = 0;
         $scope.billedHours = 0;
@@ -131,33 +132,34 @@ function showProjectDetail() {
         var billedHours = 0;
         var billedMinutes = 0;
         
-        project.timesheets.forEach(function(obj){
-            var t = obj.get('timeSpent');
-            if(t){
-                var d = obj.get('date');
-                var msec = d - t;
-                var hh = Math.floor(msec / 1000 / 60 / 60);
-                msec -= hh * 1000 * 60 * 60;
-                var mm = Math.floor(msec / 1000 / 60);
-                msec -= mm * 1000 * 60;
-                
-                if(obj.get('isBilled')){
-                    billedHours += hh;
-                    billedMinutes += mm;
+        if(project.timesheets)
+            project.timesheets.forEach(function(obj){
+                var t = obj.get('timeSpent');
+                if(t){
+                    var d = obj.get('date');
+                    var msec = d - t;
+                    var hh = Math.floor(msec / 1000 / 60 / 60);
+                    msec -= hh * 1000 * 60 * 60;
+                    var mm = Math.floor(msec / 1000 / 60);
+                    msec -= mm * 1000 * 60;
+
+                    if(obj.get('isBilled')){
+                        billedHours += hh;
+                        billedMinutes += mm;
+                    }
+                    else{
+                        hours += hh;
+                        minutes += mm;
+                    }
+
+                    hh = hh < 10 ? '0' + hh : '' + hh
+                    mm = mm < 10 ? '0' + mm : '' + mm
+                    obj.time = hh + ':' + mm;
+
                 }
-                else{
-                    hours += hh;
-                    minutes += mm;
-                }
-                
-                hh = hh < 10 ? '0' + hh : '' + hh
-                mm = mm < 10 ? '0' + mm : '' + mm
-                obj.time = hh + ':' + mm;
-                
-            }
-            else
-                obj.time = "00:00";
-        });
+                else
+                    obj.time = "00:00";
+            });
         
         totalHours = hours + billedHours;
         totalMinutes = minutes + billedMinutes;

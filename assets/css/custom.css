@@ -9,7 +9,7 @@
 	overflow: hidden;
 }
 
-input{
+input, textarea{
     color: black !important;
 }
 select{

@@ -160,10 +160,8 @@ $scope.emailReceipt = function() {
         addNewComment('Credit Note sent by email', true);
         
 		hideLoader();
-        $("#snackbar").html('Email sent...');
-        $("#snackbar").addClass('show');
-        setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
-        
+        showSnackbar('Email sent...');
+    
 	}, function(error) {
 		hideLoader();
 		console.log(error.message);
