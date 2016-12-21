@@ -360,7 +360,7 @@ function listExpenses() {
 			}
             
             if(obj.entity.get('expenseFiles'))
-                obj.attachments = 1;
+                obj.attachments = obj.entity.get('expenseFiles').length;
             
 			obj.expenseDate = formatDate(
 				obj.entity.expanseDate, dateFormat);
@@ -667,6 +667,7 @@ $scope.cancel = function() {
 $scope.addNewFile = function(obj) {
 	var file = obj.files[0];
 	file.fileName = file.name; // to avoid naming conflict
+    file.fileName1 = file.fileName.substring(file.fileName.indexOf("_") + 1 , file.fileName.length);
 	$scope.files.push(file);
 	$scope.$apply();
 }

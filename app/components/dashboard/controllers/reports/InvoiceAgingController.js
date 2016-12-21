@@ -119,4 +119,47 @@ $scope.generateReport = function() {
 	});
 }
 
+$scope.sortByName= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return $scope.info[a].name.localeCompare($scope.info[b].name)});
+        $('#name').css({
+            'display': 'inline-table'
+        });
+              $('#days').css({
+            'display': 'none'
+        });
+              $('#balance').css({
+            'display': 'none'
+        });
+    }
+$scope.sortByDays= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return  $scope.info[b].overDueDays - $scope.info[a].overDueDays});
+        $('#name').css({
+            'display': 'none'
+        });
+              $('#days').css({
+            'display': 'inline-table'
+        });
+              $('#balance').css({
+            'display': 'none'
+        });
+    }
+$scope.sortByBalance= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return  $scope.info[b].balanceDue - $scope.info[a].balanceDue});
+        $('#name').css({
+            'display': 'none'
+        });
+              $('#days').css({
+            'display': 'none'
+        });
+              $('#balance').css({
+            'display': 'inline-table'
+        });
+    }
+
 }]);

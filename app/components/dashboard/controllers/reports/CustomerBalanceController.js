@@ -139,13 +139,6 @@ $scope.generateReport = function() {
 	});
     
     ////
-    $scope.sortByName= function()
-    {
-        alert("test");
-       $scope.info.sort(function(a,b){
-        return a.name.localeCompare(b.name)});
-    }  
-
     ////
     /*
 	$q.when(reportsService.customerBalance(params))
@@ -201,4 +194,47 @@ $scope.generateReport = function() {
 	});
     */
 }
+$scope.sortByName= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return $scope.info[a].name.localeCompare($scope.info[b].name)});
+        $('#name').css({
+            'display': 'inline-table'
+        });
+              $('#credit').css({
+            'display': 'none'
+        });
+              $('#balance').css({
+            'display': 'none'
+        });
+    }
+$scope.sortByCredit= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return  $scope.info[b].availableCredit > $scope.info[a].availableCredit});
+        $('#name').css({
+            'display': 'none'
+        });
+              $('#credit').css({
+            'display': 'inline-table'
+        });
+              $('#balance').css({
+            'display': 'none'
+        });
+    }
+$scope.sortByBalance= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return  $scope.info[b].balanceDue - $scope.info[a].balanceDue});
+        $('#name').css({
+            'display': 'none'
+        });
+              $('#credit').css({
+            'display': 'none'
+        });
+              $('#balance').css({
+            'display': 'inline-table'
+        });
+    }
+
 }]);

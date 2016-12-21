@@ -1123,10 +1123,7 @@ function ListInvoices() {
     
     $scope.sortByOrderNumber= function()
     {
-          $scope.invoiceList.sort(function(a,b){ 
-             
-          return a.entity.poNumber.localeCompare(b.entity.poNumber)});
-          $('#status').css({
+        $('#status').css({
             'display': 'none'
         });
               $('#date').css({
@@ -1150,13 +1147,16 @@ function ListInvoices() {
                $('#balance').css({
             'display': 'none'
         });
+          $scope.invoiceList.sort(function(a,b){ 
+          return a.entity.poNumber.localeCompare(b.entity.poNumber)});
+          
     }
     
     $scope.sortByAmount= function()
     {
           $scope.invoiceList.sort(function(a,b){
               
-          return a.entity.total < (b.entity.total)});
+          return  b.entity.total - a.entity.total });
         $('#status').css({
             'display': 'none'
         });
@@ -1275,7 +1275,7 @@ function ListInvoices() {
     {
           $scope.invoiceList.sort(function(a,b){ 
              
-          return a.entity.balanceDue < (b.entity.balanceDue)});
+          return  b.entity.balanceDue - a.entity.balanceDue });
           $('#status').css({
             'display': 'none'
         });
@@ -1432,7 +1432,7 @@ $scope.unpaidInvoices = function(){
     });
     
    $scope.displayedInvoices = $scope.invoiceList;
-      $scope.currentInvoice = "Unpaid Invoices"
+      $scope.currentInvoice = "Draft Invoices"
     
     $('.filtermenu').removeClass('show');
     

@@ -59,10 +59,10 @@
     <br>
 
     <div class="container-table layout-margin-t inputs-white filter">
-      <div class="thead">
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Customer Name</h3>
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Overdue days</h3>
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Balance</h3>
+      <div style="cursor: pointer" class="thead">
+        <h3 ng-click="sortByName()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Customer Name<span><img id="name" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></h3>
+        <h3 ng-click="sortByDays()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Overdue days<span><img id="days" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></h3>
+        <h3 ng-click="sortByBalance()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></h3>
       </div>
       <!--
       <div class="thead">

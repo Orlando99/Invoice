@@ -121,9 +121,50 @@ $scope.generateReport = function() {
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
 		$scope.toDateStr = formatDate($scope.toDate, dateFormat);
-
 		hideLoader();
 	});
 }
 
+$scope.sortByName= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return $scope.infoObj[a].name.localeCompare($scope.infoObj[b].name)});
+        $('#name').css({
+            'display': 'inline-table'
+        });
+              $('#count').css({
+            'display': 'none'
+        });
+              $('#tax').css({
+            'display': 'none'
+        });
+    }
+$scope.sortByInvoiceCount= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return  $scope.infoObj[b].count - $scope.infoObj[a].count});
+        $('#name').css({
+            'display': 'none'
+        });
+              $('#count').css({
+            'display': 'inline-table'
+        });
+              $('#tax').css({
+            'display': 'none'
+        });
+    }
+$scope.sortByTax= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return  $scope.infoObj[b].amount - $scope.infoObj[a].amount});
+        $('#name').css({
+            'display': 'none'
+        });
+              $('#count').css({
+            'display': 'none'
+        });
+              $('#tax').css({
+            'display': 'inline-table'
+        });
+    }
 }]);

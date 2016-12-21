@@ -932,7 +932,6 @@ $scope.sortByCustomerName= function()
 $scope.sortByStatus= function()
 {
       $scope.estimateList.sort(function(a,b){ 
-          
       return a.entity.status.localeCompare(b.entity.status)});
     $('#date').css({
             'display': 'none'
@@ -959,8 +958,7 @@ $scope.sortByStatus= function()
 $scope.sortByAmount= function()
 {
       $scope.estimateList.sort(function(a,b){
-           
-      return a.totalAmount >  (b.totalAmount)});
+      return a.totalAmount > (b.totalAmount)});
     $('#date').css({
             'display': 'none'
         });
@@ -983,7 +981,6 @@ $scope.sortByAmount= function()
             'display': 'inline-table'
         });
 } 
-
 $scope.showMenu = function(){
     if($('.filtermenu').hasClass('show'))
      $('.filtermenu').removeClass('show');
@@ -1027,24 +1024,7 @@ $scope.invoicedEstimates = function(){
     $scope.currentEstimates = "Invoiced Estimates"
     $('.filtermenu').removeClass('show');
 }
-$scope.acceptedEstimates = function(){
-     $scope.estimateList = $scope.allestimateList.filter(function(obj){
-        return obj.entity.status == 'Accepted';
-    });
-    
-    $scope.displayInvoice = $scope.estimateList;
-    $scope.currentEstimates = "Accepted Estimates"
-    
-    $('.filtermenu').removeClass('show');
-}
-$scope.declinedEstimates = function(){
-     $scope.estimateList = $scope.allestimateList.filter(function(obj){
-        return obj.entity.status == 'Declined';
-    });
-    $scope.displayInvoice = $scope.estimateList;
-    $scope.currentEstimates = "Declined Estimates"
-    $('.filtermenu').removeClass('show');
-}
+
 $scope.search = function()
 {
     if($scope.searchText.length)

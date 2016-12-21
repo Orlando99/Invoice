@@ -130,13 +130,9 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
                         hideLoader();
                         $state.go('dashboard.settings.app-preferences');
                     });
-                    
                 });
-                
-                
             });
         });
-        
 	}
         
         $scope.nextClicked = function(){
@@ -145,7 +141,6 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
         $(document).click(function() {
             $('.tutorial').hide();
         });
-    
     $('#phoneNumber').mask("(Z00) 000-0000",{
 		translation : {
 			'Z': {
@@ -153,5 +148,4 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
 			}
 		}
 	});
-
 }]);

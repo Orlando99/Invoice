@@ -8,7 +8,7 @@
           <li><a ng-click="showAllInvoices()">All Invoices</a></li>
           <li><a ng-click="sentInvoices()">Sent Invoices</a></li>
         <li><a ng-click="overdueInvoices()">Overdue Expenses</a></li>
-          <li><a ng-click="unpaidInvoices()">Unpaid Invoices</a></li>
+          <li><a ng-click="unpaidInvoices()">Draft Invoices</a></li>
         <li><a ng-click="paidInvoices()">Paid Invoices</a></li>
         <li><a ng-click="partialPaidInvoices()">Partial Paid Invoices</a></li>
         <li><a ng-click="refundedInvoices()">Refunded Invoices</a></li>
@@ -37,7 +37,7 @@
         
         <td ng-click = "sortByDueDate()" class="text-uppercase text-info">Due Date<span><img id="duedate" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
         <td ng-click="sortByAmount()"  class="text-uppercase text-info text-center">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click="sortByBalance()" style="min-width: 90px ; max-width: 133px;"  class="text-uppercase text-info text-center">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click="sortByBalance()" style="min-width: 97px ; max-width: 133px;"  class="text-uppercase text-info text-center">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
       </tr>
     
     <tr class="trow" ng-repeat="invoice in invoiceList"
@@ -48,10 +48,9 @@
         <td class="text-color-light"><span style="vertical-align: inherit;">{{invoice.entity.invoiceNumber}}</span><span ng-show="invoice.attachments"><img style="width: 20px; margin-left:5px" src="./assets/images/pin_icon.png"></span></td>
         <td class="text-color-light">{{invoice.entity.poNumber}}</td>
         <td class="text-color-light">{{invoice.customer.displayName}}</td>
-        
         <td class="text-color-light">{{invoice.dueDate}}</td>
         <td  class="text-color-light text-center">{{invoice.total}}</td>
-        <td Style="min-width: 90px ; max-width: 133px;"  class="text-color-light text-center">{{invoice.balanceDue}}</td>
+        <td Style="min-width: 97px ; max-width: 133px;"  class="text-color-light text-center">{{invoice.balanceDue}}</td>
       </tr>
     
     </table>

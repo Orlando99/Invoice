@@ -105,4 +105,49 @@ $scope.generateReport = function() {
 	});
 }
 
+$scope.sortByName= function()
+    {
+          $scope.categories.sort(function(a,b){ 
+          return a.localeCompare(b)});
+        $('#name').css({
+            'display': 'inline-table'
+        });
+              $('#count').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+    }
+$scope.sortByCount= function()
+    {
+          $scope.categories.sort(function(a,b){ 
+          return  $scope.info[b].count - $scope.info[a].count});
+        $('#name').css({
+            'display': 'none'
+        });
+              $('#count').css({
+            'display': 'inline-table'
+        });
+              $('#amount').css({
+            'display': 'none'
+        });
+    }
+$scope.sortByAmount= function()
+    {
+          $scope.categories.sort(function(a,b){
+          return  $scope.info[b].amount - $scope.info[a].amount});
+        $('#name').css({
+            'display': 'none'
+        });
+              $('#count').css({
+            'display': 'none'
+        });
+              $('#amount').css({
+            'display': 'inline-table'
+        });
+    }
+
+
+
 }]);

@@ -643,7 +643,6 @@ function listCreditNotes() {
   $scope.sortByCreditNote= function()
   {
       $scope.creditNoteList.sort(function(a,b){
-           
       return a.entity.creditNumber.localeCompare(b.entity.creditNumber)});
       $('#date').css({
             'display': 'none'
@@ -671,7 +670,6 @@ function listCreditNotes() {
   $scope.sortByDate = function()
   {
       $scope.creditNoteList.sort(function(a,b){
-          
       return a.creditNoteDate.localeCompare(b.creditNoteDate)});
       $('#date').css({
             'display': 'inline-table'
@@ -699,7 +697,6 @@ function listCreditNotes() {
   $scope.sortByRefNum = function()
   {
       $scope.creditNoteList.sort(function(a,b){ 
-           
       return a.entity.reference.localeCompare(b.entity.reference)});
       $('#date').css({
             'display': 'none'
@@ -727,8 +724,6 @@ function listCreditNotes() {
    $scope.sortByCusName = function()
   {
       $scope.creditNoteList.sort(function(a,b){
-          
-         
       return a.customer.displayName.localeCompare(b.customer.displayName)});
         $('#date').css({
             'display': 'none'
@@ -755,7 +750,6 @@ function listCreditNotes() {
     $scope.sortByStatus = function()
   {
       $scope.creditNoteList.sort(function(a,b){
-          
       return a.entity.status.localeCompare(b.entity.status)});
         $('#date').css({
             'display': 'none'
@@ -782,8 +776,7 @@ function listCreditNotes() {
      $scope.sortByAmount = function()
   {
       $scope.creditNoteList.sort(function(a,b){
-          
-      return a.entity.total < (b.entity.total)});
+      return  b.entity.total - a.entity.total });
          $('#date').css({
             'display': 'none'
         });
@@ -809,8 +802,7 @@ function listCreditNotes() {
       $scope.sortByBalance = function()
   {
       $scope.creditNoteList.sort(function(a,b){
-           
-      return a.entity.remainingCredits < (b.entity.remainingCredits)});
+      return  b.entity.remainingCredits - a.entity.remainingCredits});
           $('#date').css({
             'display': 'none'
         });
@@ -834,7 +826,6 @@ function listCreditNotes() {
         });
   } 
   
-  
   $scope.showMenu = function(){
     if($('.filtermenu').hasClass('show'))
         $('.filtermenu').removeClass('show');
@@ -842,13 +833,13 @@ function listCreditNotes() {
         $('.filtermenu').addClass('show');
 }
 
-$scope.currentCreditNotes = "All Cerdit Notes";
+$scope.currentCreditNotes = "All Credit Notes";
     $scope.allCreditNotes = function(){
     $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
         return true;
     });
     $scope.displayedCreditNotes = $scope.creditNoteList;
-    $scope.currentCreditNotes = "All Cerdit Notes"
+    $scope.currentCreditNotes = "All Credit Notes"
     $('.filtermenu').removeClass('show');
     
 }
@@ -857,7 +848,7 @@ $scope.openCreditNotes = function(){
         return obj.entity.status == 'Open';
     });
     $scope.displayedCreditNotes = $scope.creditNoteList;
-    $scope.currentCreditNotes = "Open Cerdit Notes"
+    $scope.currentCreditNotes = "Open Credit Notes"
     
     $('.filtermenu').removeClass('show');
     
@@ -867,7 +858,7 @@ $scope.closedCreditNotes = function(){
         return obj.entity.status == 'Closed';
     });
     $scope.displayedCreditNotes = $scope.creditNoteList;
-    $scope.currentCreditNotes = "Closed Estimates"
+    $scope.currentCreditNotes = "Closed Credit Notes"
     $('.filtermenu').removeClass('show');
 }
 $scope.voidCreditNotes = function(){
@@ -875,18 +866,9 @@ $scope.voidCreditNotes = function(){
         return obj.entity.status == 'Void';
     });
     $scope.displayedCreditNotes =  $scope.estimateList;
-    $scope.currentCreditNotes = "Void Estimates"
+    $scope.currentCreditNotes = "Void Credit Notes"
     $('.filtermenu').removeClass('show');
     
-}
-$scope.sentCreditNotes = function(){
-     $scope.creditNoteList = $scope.allcreditNoteList.filter(function(obj){
-        return obj.entity.status == 'Sent';
-    });
-    $scope.displayedCreditNotes = $scope.creditNoteList;
-    $scope.currentCreditNotes = "Sent Estimates"
-    
-    $('.filtermenu').removeClass('show');
 }
 
 $scope.search = function()

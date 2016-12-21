@@ -58,14 +58,14 @@
     <br>
 
     <div class="container-table layout-margin-t inputs-white filter">
-      <div class="thead">
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Category Name</h3>
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Expense Count</h3>
-        <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Amount</h3>
+      <div style="cursor: pointer" class="thead">
+        <h3 ng-click="sortByName()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Category Name<span><img id="name" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></h3>
+        <h3 ng-click="sortByCount()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Expense Count<span><img id="count" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></h3>
+        <h3 ng-click="sortByAmount()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></h3>
         <!--
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Amount with Tax <img src="./assets/images/dropdown-arrow-primary.png" alt=""></h3> -->
       </div>
-
+        
       <div class="table-row row-border no-results text-center" ng-repeat="category in categories">
         <p class="col-25 layout-no-padding text-left">{{category}}</p>
         <p class="col-25 layout-no-padding text-left">{{info[category].count}}</p>
