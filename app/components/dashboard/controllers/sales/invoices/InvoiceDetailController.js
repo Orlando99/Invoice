@@ -556,8 +556,52 @@ $scope.refundPayment = function() {
 }
 
 function refundCredit(){
+    showLoader();
     
-	
+	var payment = $scope.selectedPayment.entity;
+    var note = payment.get('creditNote');
+    
+    $q.when(note.fetch())
+    .then(function(obj){
+        var used = note.get('creditsUsed');
+        var remaining = note.get('remainingCredits');
+
+        note.set('creditsUsed', used - payment.amount);
+        note.set('remainingCredits', remaining + payment.amount);
+
+        if(note.get('status') == 'Closed'){
+            note.set('status', 'Open');
+        }
+        
+        payment.set('deleted', true);
+
+        var invoiceObj = $scope.invoice.entity;
+        invoiceObj.unset('invoiceReceipt');
+        invoiceObj.increment('paymentMade', -payment.amount);
+        invoiceObj.increment('balanceDue', payment.amount);
+
+        if (invoiceObj.get('paymentMade') <= 0)
+            invoiceObj.set('status', 'Refunded');
+        else
+            invoiceObj.set('status', 'Partial Refunded');
+
+        var promises = [];
+        promises.push(payment.save());
+        promises.push(note.save());
+        promises.push(invoiceObj.save());
+
+        var body = 'Refund made for '+ currencyFilter(payment.amount, '$', 2) +' amount';
+        promises.push(addNewComment(body, true));
+
+        $q.all(promises)
+        .then(function() {
+            hideLoader();
+            $state.reload();
+        });
+        
+    });
+    
+    
 }
  
 $scope.addAttachment = function(obj) {

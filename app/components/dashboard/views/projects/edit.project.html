@@ -270,7 +270,7 @@
 
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Time Spent</label>
-            <input class="col-35" type="Number" min="0" max="23" placeholder="HH" name="timesheetHours" ng-model="timesheetHours">
+            <input class="col-35" type="Number" min="0" placeholder="HH" name="timesheetHours" ng-model="timesheetHours">
             <input class="col-35 pull-right" type="Number" placeholder="MM" name="timesheetMinutes" ng-model="timesheetMinutes" min="0" max="59">
               <!--
             <span class="col-75 pull-right layout-margin-tb"><a href="#">Switch to Time Duration</a></span>
@@ -295,7 +295,6 @@
             <label class="layout-padding-t-sm">Description</label>
             <textarea class="col-75" ng-model="timesheetDescription"></textarea>
           </div>
-
 
         </form>
       </div>
@@ -330,7 +329,7 @@
              
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">Time Spent</label>
-            <input class="col-35" type="Number"name="editTimesheetHours" ng-model="editTimesheetHours" min="0" max="23" placeholder="HH" >
+            <input class="col-35" type="Number"name="editTimesheetHours" ng-model="editTimesheetHours" min="0" placeholder="HH" >
             
               
             <input class="col-35 pull-right" type="Number" placeholder="MM" name="editTimesheetMinutes" ng-model="editTimesheetMinutes" min="0" max="59">
@@ -340,7 +339,7 @@
           <div class="input-container layout-margin-b">
             <label class="layout-padding-t-sm">User</label>
   
-            <select class="col-75" name="timesheetUser" ng-change="timeSheetUserChanged()" ng-model="timesheetUser" placeholder="Select User" ng-options="user.userName for user in users">
+            <select class="col-75" name="timesheetUser" ng-change="timeSheetUserChanged()" ng-model="timesheetUser" placeholder="Select User" ng-options="user.userName || user.attributes.chosenUser.attributes.userName for user in staffUsers">
             <option value="" disabled>Select User</option>
               </select>
           </div>
@@ -386,7 +385,7 @@
           <div class="input-container layout-margin-b">
 
 <label class="layout-padding-t-sm">Time Spent</label>
-            <input class="col-35" type="Number" min="0" max="23" placeholder="HH" name="editTimesheetHours" ng-model="editTimesheetHours">
+            <input class="col-35" type="Number" min="0" placeholder="HH" name="editTimesheetHours" ng-model="editTimesheetHours">
 
             <input class="col-35 pull-right" type="Number" placeholder="MM" name="editTimesheetMinutes" ng-model="editTimesheetMinutes" min="0" max="59">
               <!--
