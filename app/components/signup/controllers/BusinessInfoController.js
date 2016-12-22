@@ -99,31 +99,60 @@ invoicesUnlimited.controller('BusinessInfoController',
         
     //$('#dob').mask("00/00/0000");
         $('#dob').keyup(function(){
-            var v = $('#dob').val();
+            var v = $('#dob').val(); 
             if(v.length){
                 if(v.length == 1){
-                    var temp = parseInt(v.charAt(0));
-                    if(temp == 1){
+                    if(v>1 && v<10)
+                    {
+                        $('#dob').unmask();
+                        var num = '0';
+                        num +=v ;
+                       $('#dob').val(num);    
+                    }
+                    
+                     var temp = parseInt(v.charAt(0));
+                      if(temp == 1){
                         $('#dob').unmask();
                         $('#dob').mask('AY/S0/0000', {'translation': {
                                         A: {pattern: /[0-1]/},
                                         Y: {pattern: /[0-2]/},
-                                        S: {pattern: /[0-3]/}
+                                        S: {pattern: /[0-9]/}
                                       }
                                 });
+                          
                     }
                     else{
                         $('#dob').unmask();
                         $('#dob').mask('AY/S0/0000', {'translation': {
                                         A: {pattern: /[0-1]/},
                                         Y: {pattern: /[0-9]/},
-                                        S: {pattern: /[0-3]/}
+                                        S: {pattern: /[0-9]/}
                                       }
                                 });
+                         
                     }
+                }
+                else if(v.length == 2 || v.length == 3){
+                    $('#dob').unmask();
+                        $('#dob').mask('A0/SY/0000', {'translation': {
+                                        A: {pattern: /[0-1]/},
+                                        Y: {pattern: /[0-9]/},
+                                        S: {pattern: /[0-9]/}
+                                      }
+                                });
                 }
                 else if(v.length == 4){
                     var temp = parseInt(v.charAt(3));
+                    if(temp>3&&temp<10)
+                    {
+                        
+                        var kk = $('#dob').val().split('/');  
+                        var newValue = '0';
+                         newValue  +=temp ;
+                        var answer = kk[0]+'/'+newValue ;
+                       $('#dob').val(answer);     
+                    }
+                    
                     if(temp == 3){
                         $('#dob').unmask();
                         $('#dob').mask('A0/SY/0000', {'translation': {
@@ -138,7 +167,7 @@ invoicesUnlimited.controller('BusinessInfoController',
                         $('#dob').mask('A0/SY/0000', {'translation': {
                                         A: {pattern: /[0-1]/},
                                         Y: {pattern: /[0-9]/},
-                                        S: {pattern: /[0-3]/}
+                                        S: {pattern: /[0-9]/}
                                       }
                                 });
                     }
@@ -153,11 +182,21 @@ invoicesUnlimited.controller('BusinessInfoController',
                                 });
                 }
             }
+            else{
+                $('#dob').unmask();
+                $('#dob').mask('AY/S0/0000', {'translation': {
+                                        A: {pattern: /[0-9]/},
+                                        Y: {pattern: /[0-9]/},
+                                        S: {pattern: /[0-9]/}
+                                      }
+                                });
+            }
         });
+        
         $('#dob').mask('AY/S0/0000', {'translation': {
-                                        A: {pattern: /[0-1]/},
-                                        Y: {pattern: /[0-2]/},
-                                        S: {pattern: /[0-3]/}
+                                        A: {pattern: /[0-9]/},
+                                        Y: {pattern: /[0-9]/},
+                                        S: {pattern: /[0-9]/}
                                       }
                                 });
 

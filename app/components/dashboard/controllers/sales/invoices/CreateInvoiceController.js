@@ -177,8 +177,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				max : 100,
 				number : true,
 				messages : {
-					min : 'discount should be >= 0',
-					max : 'discount should be <= 100'
+					min : 'Discount should be greater than 0',
+					max : 'Discount should be less than 100%'
 				}
 			});
 		});

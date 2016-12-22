@@ -113,9 +113,9 @@ function commaSeparateNumber2(val){
     
          return val;
   }
-    
-  function addthreecooma(value)
-  {
+
+function addthreecooma(value)
+{
       value = value.split(',').join('');
       while (/(\d+)(\d{3})/.test(value.toString())){
       value = value.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
@@ -162,21 +162,24 @@ $('.add_item_price').keyup(function(){
     }
   
 });
-    
-
-
+ 
 function loadItemsAndTaxes() {
 	showLoader();
 	var p = undefined;
 	var promises = [];
+    var items2 = [];
 
 	p = $q.when(coreFactory.getAllItems({
 		organization : organization
 	}))
-	.then(function(items) {
-		$scope.items = items;
-        $scope.displayedItems = items;
-	});
+	.then(function(items) 
+      {
+        $scope.items = items.filter(function(obj)
+        {
+            return !obj.entity.expanseId;
+        });
+        $scope.displayedItems = $scope.items;
+       });
 	promises.push(p);
 
 	p = taxService.getTaxes(user, function(taxes) {
@@ -194,9 +197,12 @@ function loadItemsAndTaxes() {
 	});
 
 }
-   $scope.sortByItemName= function(){
-    $scope.items.sort(function(a,b){
-        return a.entity.title.localeCompare(b.entity.title)});
+$scope.sortByItemName= function(){
+   
+    $scope.items.sort(function(a,b)
+    {
+        return a.entity.title.localeCompare(b.entity.title)
+    });
        $('#name').css({
             'display': 'inline-table'
         });
@@ -208,7 +214,7 @@ function loadItemsAndTaxes() {
         });
     }  
    
-   $scope.sortByPrice= function(){
+$scope.sortByPrice= function(){
     $scope.items.sort(function(a,b){
         return   b.entity.rate - a.entity.rate});
         $('#name').css({
@@ -222,7 +228,7 @@ function loadItemsAndTaxes() {
         });
     }  
    
-   $scope.sortByDescription= function(){
+$scope.sortByDescription= function(){
     $scope.items.sort(function(a,b){
         return a.entity.itemDescription.localeCompare(b.entity.itemDescription)});
        $('#name').css({
@@ -350,7 +356,6 @@ $scope.saveNewItem = function() {
 
 $scope.saveEditedItem = function() {
 	if(! $('#editItemForm').valid()) return;
-
 	var item = $scope.items[$scope.itemIndex];
 	if (! item) return;
 

@@ -112,7 +112,7 @@ $scope.generateReport = function() {
 				//info[customerId].count += 1;
 			} else {
 				info[customerId] = {
-					name : invoice.customer.displayName,
+					name : credit.customer.displayName,
 					availableCredit : subAmount,
 					count : 1
 				};

@@ -157,8 +157,8 @@ function setValidationRules() {
 			digits : true,
 			messages : {
 				required : 'Please provide item quantity',
-				min : 'quantity should be >= 1',
-				digits : 'quantity must be integer'
+				min : 'Quantity should be greater than 1',
+				digits : 'Quantity must be integer'
 			}
 		});
 	});
@@ -178,14 +178,15 @@ function setValidationRules() {
 	});
 
 	$('.check-discount').each(function() {
+       
 		$(this).rules ('remove');
 		$(this).rules('add', {
 			min : 0,
 			max : 100,
 			number : true,
 			messages : {
-				min : 'discount should be >= 0',
-				max : 'discount should be <= 100'
+				min : 'Discount should be greater than 0',
+				max : 'Discount should be less than 100%'
 			}
 		});
 	});

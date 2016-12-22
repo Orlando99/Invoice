@@ -101,8 +101,10 @@ $scope.generateReport = function() {
 			info[customerId].overDueDays += d-1;
 			totalOverDueDays += d-1;
 			totalBlanceDue += subAmount;
-        //   console.log("i="+i  +"Amount:"+subAmount);
+       
             invoices[i].overDueDays1 = d-1; 
+            invoices[i].entity.balanceDue    = currencyFilter(invoices[i].entity.balanceDue, '$', 2);
+            
             i++;
 		});
 
