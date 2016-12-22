@@ -223,7 +223,7 @@ function saveCreditNote() {
 	return creditNoteService.createNewCreditNote
 		(creditNote, $scope.creditItems, $scope.userRole)
     .then(function(obj){
-        return addNewComment('Creditnote created for ' + currencyFilter(obj.attributes.total, '$', 2) +' amount', true, obj);
+        return addNewComment('Credit Note created for ' + currencyFilter(obj.attributes.total, '$', 2) +' amount', true, obj);
     });
 }
 
@@ -305,7 +305,7 @@ $scope.saveAndSend = function () {
 	})
 	.then(function(creditNote) {
         if($scope.selectedCustomer.entity.email)
-                addNewComment('Creditnote emailed to ' + $scope.selectedCustomer.entity.email, true, creditNote);
+                addNewComment('Credit Note emailed to ' + $scope.selectedCustomer.entity.email, true, creditNote);
 		hideLoader();
 		$state.go('dashboard.sales.creditnotes.all');
 
@@ -398,6 +398,7 @@ function customerChangedHelper() {
 		}
 	//	console.log(newExpenseItems);
 		// remove unrelated credit items
+        $scope.actualItems.pop();
 		var newItems = $scope.actualItems.concat(custExpenseItems,newExpenseItems);
 		$scope.creditItems = $scope.creditItems.filter(function(creditItem) {
 			if(!creditItem.selectedItem || creditItem.selectedItem.create)
@@ -406,6 +407,8 @@ function customerChangedHelper() {
 				return item.entity.id == creditItem.selectedItem.entity.id;
 			});
 		});
+        
+        newItems.push(createItemOpener);
 	//	console.log($scope.creditItems);
 		return $scope.items = newItems;
 	});

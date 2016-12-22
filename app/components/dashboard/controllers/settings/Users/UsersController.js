@@ -47,6 +47,8 @@ invoicesUnlimited.controller('UsersController',
     }
     
 	$scope.deleteUser = function($index) {
+        debugger;
+        
 		showLoader();
 		var userObj = $scope.users[$index].get('userID');
         $('.confirmation-pop-up').removeClass('show');
@@ -68,6 +70,7 @@ invoicesUnlimited.controller('UsersController',
                     hideLoader();
                 })
                 .then(function(res){
+                    window.location.reload();;
                     $scope.$apply(function() {
                         $scope.users.splice($index,1);
                     });
@@ -89,6 +92,7 @@ invoicesUnlimited.controller('UsersController',
 	}
 
 	$scope.editUser = function(id) {
+        $scope.currenDeleteIndex = id;
 		var modalInstance = $uibModal.open({
 			animation 			: true,
 			templateUrl 		: 'modal-user',

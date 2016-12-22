@@ -7,6 +7,18 @@ return {
 	test : function() {
 		console.log("working");
 	},
+    checkProjectNameAvailable : function(params) {
+		var projectTable = Parse.Object.extend('Projects');
+		var query = new Parse.Query(projectTable);
+		query.equalTo('organization', params.organization);
+		query.equalTo('projectName', params.projectName);
+		query.select('projectName');
+
+		return query.first()
+		.then(function(obj) {
+			return obj ? false : true;
+		});
+	},
     listProjects : function(user) {
 		var organization = getOrganization(user);
 		if (! organization)	return;

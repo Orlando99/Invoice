@@ -109,10 +109,10 @@
     <div class="tab" data-name="tasks">
       <div class="container-table">
         <div class="thead">
-          <p class="col-20 task text-uppercase text-color-normalize text-weight-normalize ">Name</p>
-          <p class="col-20 task text-uppercase text-color-normalize text-weight-normalize">Logged Hrs</p>
-          <p class="col-20 task text-uppercase text-color-normalize text-weight-normalize">Billed Hrs</p>
-          <p class="col-20 task text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hrs</p>
+          <p class="col-20 task text-uppercase text-color-normalize text-weight-normalize">Name</p>
+          <p class="col-20 task text-uppercase text-color-normalize text-weight-normalize text-center">Logged Hours</p>
+          <p class="col-20 task text-uppercase text-color-normalize text-weight-normalize text-center">Billed Hours</p>
+          <p class="col-20 task text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hours</p>
                      
           <p ng-show="project.billingMethod == 'Based on task hours'" class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">Price</p>
           
@@ -120,8 +120,8 @@
         <div class="table-row row-border" ng-repeat="task in tasks">
           <p class="col-20 task text-color-light text-weight-normalize" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.taskName}}</p>
 
-          <p class="col-20 task text-color-light text-weight-normalize" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.taskHours.toFixed(2) || "0.00"}}</p>
-          <p class="col-20 task text-color-light text-weight-normalize" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.billedHours.toFixed(2) || "0"}}</p>
+          <p class="col-20 task text-color-light text-weight-normalize text-center" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.taskHours.toFixed(2) || "0.00"}}</p>
+          <p class="col-20 task text-color-light text-weight-normalize text-center" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.billedHours.toFixed(2) || "0"}}</p>
           <p class="col-20 task text-color-light text-weight-normalize text-center" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.taskHours.toFixed(2) - task.entity.billedHours.toFixed(2) || "0.00"}}</p>
 
           <p ng-show="project.billingMethod == 'Based on task hours'" class="col-20 text-color-light text-weight-normalize text-right">{{'$' + (task.entity.taskCost.toFixed(2) || '0.00')}}</p>
@@ -333,8 +333,8 @@
               
             <select class="col-75" name="timesheetUser" ng-model="dataOnInvoice">
                   <option value="1">Single line for Project</option>
-                  <!--<option value="2">Line for each task</option>-->
-                  <option ng-show="project.billingMethod == 'Based on project hours'" value="3">Line for each timesheet</option>
+                  <option ng-hide="project.billingMethod == 'Fixed cost for project'" value="2">Line for each task</option>
+                  <option ng-hide="project.billingMethod == 'Fixed cost for project'" value="3">Line for each timesheet</option>
                   <!--<option value="4">Line for each user</option>-->
               </select>
           </div>

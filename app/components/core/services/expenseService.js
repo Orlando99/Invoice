@@ -89,18 +89,37 @@ return {
 		acl.setRoleReadAccess(role.get("name"), true);
 
 		var promise = undefined;
+        var newFiles = undefined;
 		if(files.length) {
 			var promises = [];
+            newFiles = [];
 			files.forEach(function(file) {
+                /*
 				delete file.fileName;
 				var parseFile = new Parse.File(file.name, file);
 				promises.push(parseFile.save());
+                */
+                if(file.exist) {
+					delete file.exist;
+					delete file.fileName;
+                    delete file.fileName1;
+					newFiles.push(file);
+
+				} else {
+					var parseFile = new Parse.File(file.name, file);
+					promises.push(parseFile.save());
+				}
 			});
 
 			promise = $q.all(promises)
 			.then(function(savedFiles) {
+                /*
 				console.log(savedFiles);
 				return savedFiles;
+                */
+                if (savedFiles)
+					newFiles = newFiles.concat(savedFiles);
+				return newFiles;
 			});
 
 		} else

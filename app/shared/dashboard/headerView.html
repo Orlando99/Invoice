@@ -1,5 +1,5 @@
 <div style="height: 20px ; background-color: #B8B8B8; text-align: center ; margin-bottom: 10px; margin-top: -12px;">
-    <label style="font-size: 12px; color: #000">InvoicesUnlimited: Version 2.10 (21/12/2016 8:05 PM)</label>
+    <label style="font-size: 12px; color: #000">InvoicesUnlimited: Version 2.11 (22/12/2016 8:53 PM)</label>
 </div>
 <div class="container">
     
@@ -10,7 +10,7 @@
         <img id="img_hover" style="cursor:pointer" src="./assets/images/dropdown-arrow-primary.png" alt="">
         
           <ul Style="margin-top: 10px" id="ul_wrapp" onmouseover="ul_add_class(this)" onmouseout="mouse_out(this)" class="submenu user-submenu">
-          <li><a ui-sref="dashboard.settings.company-profile">Company Profile</a></li>
+          <li ng-hide="role == 'Staff'"><a ui-sref="dashboard.settings.company-profile">Company Profile</a></li>
           <li><a style="cursor:pointer" ng-click="logOut();">Logout</a></li>
         </ul>
       </div>
@@ -70,7 +70,7 @@
         <a href="javascript:" id="link-settings">Settings</a>
         <div class="container-fluid link-settings-div">
           <ul class="submenu">
-            <li>
+            <li ng-hide="role == 'Staff'">
               <a style="margin-left: 60px !important" ui-sref="dashboard.settings.company-profile" ui-sref-opts="{reload:true}">Company Profile</a>
             </li>
             <li ng-hide="role == 'Staff'">

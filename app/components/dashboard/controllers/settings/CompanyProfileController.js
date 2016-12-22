@@ -111,16 +111,12 @@ invoicesUnlimited.controller('CompanyProfileController',
     $scope.saveBusiness = saveNow;
         
      function saveNow(){
-     if($scope.UserInfo)
-     {    
+            showLoader();
         user.set('fullName',$scope.UserInfo.name);
         user.set( 'email',$scope.UserInfo.email);
         user.set('username',$scope.UserInfo.username);
-         $q.when(user.save())
-            .then(function(){ 
-            });
-     }
          
+         /*
         if(!$scope.businessInfo){
             businessFactory.createNew({
                     businessName : $scope.bsnsInfo.businessName,
@@ -138,7 +134,42 @@ invoicesUnlimited.controller('CompanyProfileController',
                 });
             });
         }
-        
+        */
+         
+         var promises = [];
+         
+         promises.push(user.save());
+         
+         if($scope.newLogo){
+            
+            var parseFile = new Parse.File($scope.newLogo.name, $scope.newLogo);
+             
+             promises.push(parseFile.save()
+                .then(function(obj){
+                    $scope.org.set('logo', obj);
+                    $scope.org.save()
+                    .then(function(obj){
+                        var logo = obj.get('logo');
+                        $scope.userLogo = logo._url;
+                        $scope.tempLogo = logo._url;
+                        return Promise.Resolve('');
+                    });
+            }));
+            
+        }
+        else if($scope.isDeleteLogo){
+            $scope.org.unset('logo');
+            promises.push($scope.org.save());
+        }
+         
+         $q.all(promises)
+         .then(function(){
+             hideLoader();
+             showSnackbar("Save Successful");
+             window.location.reload();
+         });
+         
+         /*
         if($scope.newLogo){
             showLoader();
             var parseFile = new Parse.File($scope.newLogo.name, $scope.newLogo);
@@ -163,6 +194,7 @@ invoicesUnlimited.controller('CompanyProfileController',
         else{
             window.location.reload();
         }
+         */
     }
     $("#changePasswordForm").validate({
 		onkeyup : false,

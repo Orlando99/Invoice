@@ -320,36 +320,58 @@ $scope.$watch('hasBudget', function(value) {
  });
     
 $scope.saveProject = saveProject;
+
+function showProjectNameError () {
+		var validator = $( "#addProjectForm" ).validate();
+		validator.showErrors({
+			"projectName": "Project with this name already exists"
+		});
+	}
     
 function saveProject() {
     
     if(!$('#addProjectForm').valid())
         return;
     showLoader();
-    var isBudget = false;
-    if($scope.hasBudget == 1)
-        isBudget = true;
-	var project = {
-		userID : user,
-		organization : organization,
-		customer : $scope.selectedCustomer.entity,
-		projectName : $scope.projectName,
-        projectDescription : $scope.projectDescription,
-        billingMethod : $scope.billingMethod,
-        hasBudget : isBudget,
-        projectBillingAmount : $scope.projectBillingAmount,
-        projectBillingHours : $scope.projectBillingHours,
-        budgetType : $scope.budgetType,
-        projectBudgetCost : $scope.projectBudgetCost,
-        projectBudgetHours : $scope.projectBudgetHours,
-        tasks: $scope.tasks
-	};
+    
+    $q.when(projectService.checkProjectNameAvailable({
+			projectName : $scope.projectName,
+			organization : organization
+		}))
+		.then(function(avilable) {
+            if(!avilable){
+                hideLoader();
+                showProjectNameError();
+				scrollToOffset();
+				return Promise.reject('Project with this name already exists');
+            }
+            else{
+                var isBudget = false;
+                if($scope.hasBudget == 1)
+                    isBudget = true;
+                var project = {
+                    userID : user,
+                    organization : organization,
+                    customer : $scope.selectedCustomer.entity,
+                    projectName : $scope.projectName,
+                    projectDescription : $scope.projectDescription,
+                    billingMethod : $scope.billingMethod,
+                    hasBudget : isBudget,
+                    projectBillingAmount : $scope.projectBillingAmount,
+                    projectBillingHours : $scope.projectBillingHours,
+                    budgetType : $scope.budgetType,
+                    projectBudgetCost : $scope.projectBudgetCost,
+                    projectBudgetHours : $scope.projectBudgetHours,
+                    tasks: $scope.tasks
+                };
 
-	return projectService.createNewProject
-		(project, $scope.userRole, $scope.projectUsers, $scope.timesheets)
-    .then(function(project){
-        hideLoader();
-		$state.go('dashboard.projects.all');
+                return projectService.createNewProject
+                    (project, $scope.userRole, $scope.projectUsers, $scope.timesheets)
+                .then(function(project){
+                    hideLoader();
+                    $state.go('dashboard.projects.all');
+                });
+            }
     });
 }
 
@@ -380,7 +402,8 @@ $scope.addNewTask = function() {
     obj.setACL(acl);
     obj.set('taskName', $scope.newTaskName);
     obj.set('taskDescription', $scope.newTaskDescription);
-    obj.set('taskCost', $scope.newTaskCost);
+    if($scope.newTaskCost)
+        obj.set('taskCost', $scope.newTaskCost);
 
     return obj.save().then(function(task) {
         $scope.tasks.push(task);
@@ -396,6 +419,8 @@ $scope.addNewTask = function() {
         $scope.newTaskCost = "";
         $scope.$apply();
         hideLoader();
+    }, function(error){
+        console.log(error);
     });
 }
 $scope.taskChanged = function(){
@@ -406,11 +431,6 @@ $scope.taskChanged = function(){
         $(".new-task").addClass("show");
     }
 }
-
-
-
-
-
 
 $scope.addTimesheet = function(){
     $(".new-timesheet").addClass('show');

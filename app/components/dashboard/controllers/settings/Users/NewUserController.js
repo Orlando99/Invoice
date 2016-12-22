@@ -55,6 +55,10 @@ invoicesUnlimited.controller('NewUserController',
         $scope.user.sendInvite = true;
     
 	$scope.delete = function() {
+        debugger;
+        $('.confirmation-pop-up').addClass('show');
+        return;
+        
 		showLoader();
 		Parse.Cloud.run('deleteUser',{
 			identificator : $scope.user.id

@@ -420,6 +420,55 @@ return {
 			operation : 'sendReceipt'
 		});
         
+        var link = credit.entity.creditReceipt.url();
+        return $.ajax({
+                type: "GET",
+                url: 'proxy.php',
+                dataType: "html",
+                data: {
+                address: link
+            }
+        }).then(function (htmlDoc) {
+            if(credit.entity.customerEmails)
+            {
+                var toEmail = credit.entity.customerEmails[0];
+                //var customerName = inv.customer.displayName;
+                //var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
+                var businessName = credit.organization.name;
+
+                var emailSubject = 'Credit Note From ' + businessName;
+                var emailBody = htmlDoc;
+            }
+            htmlDoc = htmlDoc.replace('<!DOCTYPE html>', '');
+            htmlDoc = htmlDoc.trim();
+            var abc = 1;
+            //var fr = document.getElementById('targetframe1');
+            var fr = document.createElement('iframe');
+            document.body.appendChild(fr);
+            fr.style.display = 'none';
+            fr.setAttribute("id", "myFrame");
+            fr.contentWindow.document.open();
+            fr.contentWindow.document.write(htmlDoc);
+            fr.contentWindow.document.close();
+            
+            fr.onload = function() {
+               //var div=iframe.contentWindow.document.getElementById('mydiv');
+                abc = 0;
+                return Parse.Cloud.run("sendMailgunHtml", {
+                toEmail: toEmail,
+                fromEmail: "no-reply@invoicesunlimited.com",
+                subject : emailSubject,
+                html : '<html>' + $('#myFrame').contents().find('html').html() + '</html>'
+                }).then(function(msg) {
+                    console.log(msg);
+                    return creditNote;
+                });
+            };
+
+            return creditNote;
+        });
+        
+        /*
         if(credit.entity.customerEmails)
         {
             var toEmail = credit.entity.customerEmails[0];
@@ -450,6 +499,7 @@ return {
 		.then(function(creditObj) {
 			return creditObj;
 		});
+        */
 	}
 };
 

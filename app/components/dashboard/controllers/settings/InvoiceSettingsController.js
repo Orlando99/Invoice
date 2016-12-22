@@ -270,7 +270,6 @@ $scope.save = function() {
 		console.log('invoice prefs updated.');
         showSnackbar("Save Successful");
 		$state.reload();
-        
 		hideLoader();
 
 	}, function(error) {

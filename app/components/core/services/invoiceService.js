@@ -612,28 +612,8 @@ return {
                     return invoice;
                 });
             };
-            
-            
-            //sleepTime(10000);
-            
-            $('#targetframe1').load(function(){
-                var a = $('#targetframe1').contents();
-                var b = 0;
-            });
-            
-            //for()
 
             return Promise.resolve('');
-            
-            return Parse.Cloud.run("sendMailgunHtml", {
-                toEmail: toEmail,
-                fromEmail: "no-reply@invoicesunlimited.com",
-                subject : emailSubject,
-                html : emailBody
-            }).then(function(msg) {
-                console.log(msg);
-                return invoice;
-            });
         });
         
         

@@ -470,7 +470,6 @@ invoicesUnlimited.controller('CreateInvoiceController',
                     };
                     $scope.itemChanged(0);
                 }
-            /*
                 else if(projectId.dataOnInvoice == 2) {
                     if(projectId.project.timesheets){
                         $scope.items.pop();
@@ -482,6 +481,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
                         var sheets = projectId.project.timesheets;
 
+                        var tasks = [];
+                        
                         for(var i = 0; i < sheets.length; ++i){
                             if(sheets[i].get('isBilled'))
                                 continue;
@@ -490,32 +491,72 @@ invoicesUnlimited.controller('CreateInvoiceController',
                             var min = parseInt(time.split(':')[1]);
                             hours += min/60;
                             hours = parseFloat(hours.toFixed(2));
+                            
+                            var tsk = sheets[i].get('task');
+                            
+                            var index = tasks.findIndex(function(obj){
+                                return obj.id == tsk.id;
+                            });
+                            
+                            if(index >= 0){
+                                tasks[index].quantity += hours;
+                            }
+                            else {
+                                if(projectId.project.entity.get('billingMethod') == 'Based on project hours'){
+                                    tasks.push({
+                                        taskName : tsk.get('taskName'),
+                                        quantity : hours,
+                                        taskRate : projectAmount,
+                                        id       : tsk.id
+                                    });
+                                }
+                                else if(projectId.project.entity.get('billingMethod') == 'Based on task hours'){
+                                    tasks.push({
+                                        taskName : tsk.get('taskName'),
+                                        quantity : hours,
+                                        taskRate : tsk.get('taskCost'),
+                                        id       : tsk.id
+                                    });
+                                }
+                            }
+                        }
+                        
+                        var count = 0;
+                        tasks.forEach(function(obj){
+                            
+                            var itemName = undefined;
+                            
+                            if(projectId.itemNameToShow == 1){
+                                itemName = projectId.project.entity.projectName;
+                            }
+                            
                             var t = {
                                 create : true,
                                 entity : {
-                                    rate : projectAmount,
-                                    title : projectId.project.entity.projectName
+                                    rate : obj.taskRate,
+                                    title : itemName
                                 }
                             }
 
                             $scope.items.push(t);
 
                             $scope.addInvoiceItem();
-                            $scope.invoiceItems[i] = {
+                            $scope.invoiceItems[count] = {
                                 selectedItem : t,
                                 selectedTax : undefined,
-                                rate : projectAmount,
-                                quantity : hours,
+                                rate : obj.taskRate,
+                                quantity : obj.quantity,
                                 discount : 0,
                                 amount : 0
                             };
-                            $scope.itemChanged(i);
-                        }
+                            $scope.itemChanged(count);
+                            
+                            count++;
+                        });
 
                         $scope.items.push(createItemOpener);
                     }
                 }
-                */
                 else if(projectId.dataOnInvoice == 3) {
                     if(projectId.project.timesheets){
                         $scope.items.pop();
@@ -1131,16 +1172,20 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			// filter current customer's expenses from all expenses
 			var custExpenseItems = [];
 			for (var i = 0; i < custExpenses.length; ++i) {
-				for (var j = 0; j < $scope.expenseItems.length; ++j) {
-					if (custExpenses[i].entity.id == $scope.expenseItems[j].entity.expanseId) {
-						custExpenseItems.push($scope.expenseItems[j]);
-					}
-				}
+                if(custExpenses[i].entity.get('billable') == 'Yes'){
+                    for (var j = 0; j < $scope.expenseItems.length; ++j) {
+                        if (custExpenses[i].entity.id == $scope.expenseItems[j].entity.expanseId) {
+                            custExpenseItems.push($scope.expenseItems[j]);
+                        }
+                    }
+                }
 			}
 		//	console.log(custExpenseItems);
 			// check is any expense has updated
 			var newExpenseItems = [];
 			for(var i = 0; i < custExpenses.length; ++i) {
+                if(custExpenses[i].entity.get('billable') == 'No')
+                    continue;
 				var exp = custExpenses[i].entity;
 				var itemExist = custExpenseItems.some(function(item) {
 					return (exp.category == item.entity.title &&
