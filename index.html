@@ -329,13 +329,30 @@
 	      <div class="clearfix"></div>
 	      <button ng-click="Save();" class="button button-small button-info text-uppercase">Save</button>
 	    </div>
-    
   	</script>
         
 
     <script>
         $(document).ready(function(){
         $('#edit_expanse_ammount').mask("#,##0.00", {reverse: true});
+            
+            $(document).click(function(event) { 
+        if(!$(event.target).closest('#menu_head').length) {
+        if($(".filtermenu").hasClass('show')) {
+            $(".filtermenu").removeClass('show');
+        }else{
+        }
+        }   
+         if(!$(event.target).closest('#ul_wrapp').length) {
+        }
+       else{
+                $(".filtermenu").removeClass('show');
+        }
+        });
+        });
+        
+         $("#ul_wrapp").click(function(event) { 
+             $("#ul_wrapp").removeClass('show');
         });
         function div_add_class(x) {
                     $("#div_wrapp").addClass("organization showing-menu");
@@ -375,10 +392,6 @@
          }
         
 //});
-        
-        
-        
-        
     </script>
 
 

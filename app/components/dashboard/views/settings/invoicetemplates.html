@@ -6,15 +6,23 @@
     <hr>
 
     <div class="col-50" ng-repeat="template in templates">
-      <img ng-src="{{template.url}}" ng-if="template.isDefault" style="border: 1px solid" alt="">
+      
+        <img ng-src="{{template.url}}" ng-if="template.isDefault" style="border: 1px solid" alt="">
         <img ng-src="{{template.url}}" ng-hide="template.isDefault" alt="">
       <p>{{template.name}}</p>
-      <div class="text-center">
+     
+        
+        
+        
+        <div class="text-center">
         <button class="button button-info text-uppercase" ng-disabled="template.isDefault"
-          ng-click="setDefaultTemplate($index)" style = "margin-bottom: 20px;">Set as Default</button>
+          ng-click="setDefaultTemplate($index)" style = "margin-bottom: 20px;">
+            {{template.btnName}}   </button>
       </div>
+        
     </div>
 <!--
+Set as Default
     <div class="col-50 text-right">
       <img src="./assets/images/template2.png" class="pull-right" alt="">
       <p class="text-left">Template 2</p>

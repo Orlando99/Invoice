@@ -274,21 +274,27 @@ function loadInvoiceTemplates() {
 				name : t.get('name'),
 				url : t.get('templatePreview').url()
 			}
+            obj.btnName  = "Set as Default";
 			if (!defaultTemplate && obj.name == 'Template 1')
-				obj.isDefault = true;
+			{
+                obj.isDefault = true;
+            }
 			else
             {     
                 if(defaultTemplate) 
-                {
-                    obj.isDefault = (defaultTemplate.id == t.id ? true : false);        
+                {   
+                  obj.isDefault = (defaultTemplate.id == t.id ? true : false);
+                  if(obj.isDefault)
+                  {
+                    obj.btnName = "Default";        
+                  }
+                  else
+                  {
+                    obj.btnName = "Set as Default";           
+                  }   
                 }
-                else
-                {
-                  obj.isDefault = false;      
-                }	
              }
 			templates.push(obj);
-
 		});
 		$scope.templates = templates;
 		hideLoader();
@@ -303,15 +309,16 @@ $scope.setDefaultTemplate = function(index) {
 	showLoader();
 	$scope.templates.forEach(function(t) {
 		t.isDefault = false;
+        t.btnName = "Set as Default";
 	});
 	$scope.templates[index].isDefault = true;
-
+     $scope.templates[index].btnName = "Default";
+      
 	user.set('defaultTemplate', $scope.templates[index].entity);
 	user.save().then(function() {
 		hideLoader();
         showSnackbar("Save Successful");
 	//	console.log('default template selected');
-
 	}, function(error) {
 		hideLoader();
 		console.log(error,message);

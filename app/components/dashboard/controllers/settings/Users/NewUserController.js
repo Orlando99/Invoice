@@ -71,7 +71,6 @@ invoicesUnlimited.controller('NewUserController',
 			$uibModalInstance.dismiss({deleted : true});
 		});
 	}
-
 	$scope.update = function(){
 		var params = {}; 
 		['username','fullName','email','role']

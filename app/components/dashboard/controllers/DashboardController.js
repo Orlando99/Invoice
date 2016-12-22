@@ -21,6 +21,10 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         business = obj.entity[0]; 
         $scope.role = user.entity[0].get('role');
         $scope.businessInfo = business;
+        $scope.userName =  user.entity[0].get('username');
+        
+        
+        
     });
     
     var selectedorganization = user.entity[0].get("selectedOrganization");

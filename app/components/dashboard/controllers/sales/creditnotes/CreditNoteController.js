@@ -642,13 +642,31 @@ function listCreditNotes() {
 }
   $scope.sortByCreditNote= function()
   {
-      $scope.creditNoteList.sort(function(a,b){
+     
+      if($("#creditnote").css('display') === "none"){
+             $scope.creditNoteList.sort(function(a,b){
       return a.entity.creditNumber.localeCompare(b.entity.creditNumber)});
+            $('#creditnote').css({
+                'display': 'inline-table'
+            });
+            $('#creditnoteUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+               $scope.creditNoteList.sort(function(a,b){
+      return b.entity.creditNumber.localeCompare(a.entity.creditNumber)});
+            $('#creditnoteUp').css({
+                'display': 'inline-table'
+            });
+            $('#creditnote').css({
+                'display': 'none'
+            });
+        }
+      
+      
       $('#date').css({
             'display': 'none'
-        });
-              $('#creditnote').css({
-            'display': 'inline-table'
         });
               $('#refno').css({
             'display': 'none'
@@ -663,17 +681,56 @@ function listCreditNotes() {
             'display': 'none'
         });
               $('#balance').css({
+            'display': 'none'
+        });
+      
+      
+      $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+              $('#balanceUp').css({
             'display': 'none'
         });
   }  
   
   $scope.sortByDate = function()
   {
-      $scope.creditNoteList.sort(function(a,b){
+      
+      
+      if($("#date").css('display') === "none"){
+             $scope.creditNoteList.sort(function(a,b){
       return a.creditNoteDate.localeCompare(b.creditNoteDate)});
-      $('#date').css({
-            'display': 'inline-table'
-        });
+            $('#date').css({
+                'display': 'inline-table'
+            });
+            $('#dateUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.creditNoteList.sort(function(a,b){
+      return b.creditNoteDate.localeCompare(a.creditNoteDate)});
+            $('#dateUp').css({
+                'display': 'inline-table'
+            });
+            $('#date').css({
+                'display': 'none'
+            });
+        }
+      
+      
               $('#creditnote').css({
             'display': 'none'
         });
@@ -690,23 +747,60 @@ function listCreditNotes() {
             'display': 'none'
         });
               $('#balance').css({
+            'display': 'none'
+        });
+      
+       $('#creditnoteUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+              $('#balanceUp').css({
             'display': 'none'
         });
   }  
   
   $scope.sortByRefNum = function()
   {
-      $scope.creditNoteList.sort(function(a,b){ 
+      
+      if($("#refno").css('display') === "none"){
+            $scope.creditNoteList.sort(function(a,b){ 
       return a.entity.reference.localeCompare(b.entity.reference)});
+            $('#refno').css({
+                'display': 'inline-table'
+            });
+            $('#refnoUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.creditNoteList.sort(function(a,b){ 
+      return b.entity.reference.localeCompare(a.entity.reference)});
+            $('#refnoUp').css({
+                'display': 'inline-table'
+            });
+            $('#refno').css({
+                'display': 'none'
+            });
+        }
+      
+      
       $('#date').css({
             'display': 'none'
         });
               $('#creditnote').css({
             'display': 'none'
         });
-              $('#refno').css({
-            'display': 'inline-table'
-        });
                $('#cusname').css({
             'display': 'none'
         });
@@ -719,12 +813,55 @@ function listCreditNotes() {
               $('#balance').css({
             'display': 'none'
         });
+      
+      $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#creditnoteUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+              $('#balanceUp').css({
+            'display': 'none'
+        });
+      
   } 
   
    $scope.sortByCusName = function()
   {
       $scope.creditNoteList.sort(function(a,b){
       return a.customer.displayName.localeCompare(b.customer.displayName)});
+       
+       if($("#cusname").css('display') === "none"){
+            $scope.creditNoteList.sort(function(a,b){
+      return a.customer.displayName.localeCompare(b.customer.displayName)});
+            $('#cusname').css({
+                'display': 'inline-table'
+            });
+            $('#cusnameUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.creditNoteList.sort(function(a,b){
+      return b.customer.displayName.localeCompare(a.customer.displayName)});
+            $('#cusnameUp').css({
+                'display': 'inline-table'
+            });
+            $('#cusname').css({
+                'display': 'none'
+            });
+        }
+       
+       
         $('#date').css({
             'display': 'none'
         });
@@ -733,9 +870,6 @@ function listCreditNotes() {
         });
               $('#refno').css({
             'display': 'none'
-        });
-               $('#cusname').css({
-            'display': 'inline-table'
         });
               $('#status').css({
             'display': 'none'
@@ -746,11 +880,51 @@ function listCreditNotes() {
               $('#balance').css({
             'display': 'none'
         });
+       
+       $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#creditnoteUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+              $('#balanceUp').css({
+            'display': 'none'
+        });
+       
   } 
     $scope.sortByStatus = function()
   {
-      $scope.creditNoteList.sort(function(a,b){
+     
+         if($("#status").css('display') === "none"){
+             $scope.creditNoteList.sort(function(a,b){
       return a.entity.status.localeCompare(b.entity.status)});
+            $('#status').css({
+                'display': 'inline-table'
+            });
+            $('#statusUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.creditNoteList.sort(function(a,b){
+      return b.entity.status.localeCompare(a.entity.status)});
+            $('#statusUp').css({
+                'display': 'inline-table'
+            });
+            $('#status').css({
+                'display': 'none'
+            });
+        }
+        
         $('#date').css({
             'display': 'none'
         });
@@ -763,13 +937,30 @@ function listCreditNotes() {
                $('#cusname').css({
             'display': 'none'
         });
-              $('#status').css({
-            'display': 'inline-table'
-        });
               $('#amount').css({
             'display': 'none'
         });
               $('#balance').css({
+            'display': 'none'
+        });
+        
+        
+         $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#creditnoteUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+              $('#balanceUp').css({
             'display': 'none'
         });
   } 
@@ -777,6 +968,28 @@ function listCreditNotes() {
   {
       $scope.creditNoteList.sort(function(a,b){
       return  b.entity.total - a.entity.total });
+         
+          if($("#amount").css('display') === "none"){
+            $scope.creditNoteList.sort(function(a,b){
+      return  b.entity.total - a.entity.total });
+            $('#amount').css({
+                'display': 'inline-table'
+            });
+            $('#amountUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.creditNoteList.sort(function(a,b){
+      return  a.entity.total - b.entity.total });
+            $('#amountUp').css({
+                'display': 'inline-table'
+            });
+            $('#amount').css({
+                'display': 'none'
+            });
+        }
+         
          $('#date').css({
             'display': 'none'
         });
@@ -792,10 +1005,28 @@ function listCreditNotes() {
               $('#status').css({
             'display': 'none'
         });
-              $('#amount').css({
-            'display': 'inline-table'
-        });
               $('#balance').css({
+            'display': 'none'
+        });
+         
+         
+         
+          $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#creditnoteUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#balanceUp').css({
             'display': 'none'
         });
   } 
@@ -803,6 +1034,29 @@ function listCreditNotes() {
   {
       $scope.creditNoteList.sort(function(a,b){
       return  b.entity.remainingCredits - a.entity.remainingCredits});
+          
+          if($("#balance").css('display') === "none"){
+            $scope.creditNoteList.sort(function(a,b){
+      return  b.entity.total - a.entity.total });
+            $('#balance').css({
+                'display': 'inline-table'
+            });
+            $('#balanceUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.creditNoteList.sort(function(a,b){
+      return  a.entity.total - b.entity.total });
+            $('#balanceUp').css({
+                'display': 'inline-table'
+            });
+            $('#balance').css({
+                'display': 'none'
+            });
+        }
+          
+          
           $('#date').css({
             'display': 'none'
         });
@@ -821,9 +1075,27 @@ function listCreditNotes() {
               $('#amount').css({
             'display': 'none'
         });
-              $('#balance').css({
-            'display': 'inline-table'
+          
+          
+           $('#dateUp').css({
+            'display': 'none'
         });
+              $('#creditnoteUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+             
   } 
   
   $scope.showMenu = function(){

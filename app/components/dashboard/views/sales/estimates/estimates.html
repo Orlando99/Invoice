@@ -2,7 +2,7 @@
   <div class="container hidesm">
 
       <div class="" style="position: relative !important; top: 0px !important; cursor: pointer;">
-    <h3 ng-click="showMenu()" class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">{{currentEstimates}} <i class="arrow-down-black"></i>
+    <h3 id="menu_head" ng-click="showMenu()" class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">{{currentEstimates}} <i class="arrow-down-black"></i>
       </h3>
     <ul id="ul_wrapp" class="filtermenu">
           <li><a ng-click="allEstimates()">All Estimates</a></li>
@@ -20,13 +20,13 @@
 
     <table class="invoices-data no-border show_table_hover" style = "margin-bottom: 20px;">
       <tr style="cursor : pointer" class="thead">
-        <td ng-click = "sortByDate()" class="layout-padding text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByEstimateNumber()" class="layout-padding text-uppercase text-info">Estimate#<span><img id="estimate" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByDate()" class="layout-padding text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="dateUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+        <td ng-click = "sortByEstimateNumber()" class="layout-padding text-uppercase text-info">Estimate#<span><img id="estimate" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="estimateUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
-        <td ng-click = "sortByRefNo()" class="layout-padding text-uppercase text-info">Reference#<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByCustomerName()" class="layout-padding text-uppercase text-info">Customer Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByStatus()" class="layout-padding text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByAmount()" class="layout-padding text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByRefNo()" class="layout-padding text-uppercase text-info">Reference#<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="refnoUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+        <td ng-click = "sortByCustomerName()" class="layout-padding text-uppercase text-info">Customer Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="cusnameUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+        <td ng-click = "sortByStatus()" class="layout-padding text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="statusUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+        <td ng-click = "sortByAmount()" class="layout-padding text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="amountUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
       </tr>
       <tr class="trow" ng-repeat="estimate in estimateList"
         ui-sref="dashboard.sales.estimates.details({estimateId:estimate.entity.id})">

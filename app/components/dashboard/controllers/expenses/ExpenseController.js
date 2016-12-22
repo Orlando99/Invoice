@@ -382,14 +382,35 @@ function listExpenses() {
 
 $scope.sortByCatName= function()
 {
-  $scope.expenseList.sort(function(a,b){ 
+    $scope.expenseList.sort(function(a,b){ 
       return a.entity.category.localeCompare(b.entity.category)});
+    
+    if($("#catname").css('display') === "none"){
+             $scope.expenseList.sort(function(a,b){ 
+      return a.entity.category.localeCompare(b.entity.category)});
+            $('#catname').css({
+                'display': 'inline-table'
+            });
+            $('#catnameUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+               $scope.expenseList.sort(function(a,b){ 
+      return b.entity.category.localeCompare(a.entity.category)});
+            $('#catnameUp').css({
+                'display': 'inline-table'
+            });
+            $('#catname').css({
+                'display': 'none'
+            });
+        }
+    
+    
      $('#date').css({
             'display': 'none'
         });
-              $('#catname').css({
-            'display': 'inline-table'
-        });
+              
               $('#refno').css({
             'display': 'none'
         });
@@ -400,17 +421,53 @@ $scope.sortByCatName= function()
             'display': 'none'
         });
               $('#amount').css({
+            'display': 'none'
+        });
+    
+    
+    $('#dateUp').css({
+            'display': 'none'
+        });
+              
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
             'display': 'none'
         });
  } 
 
 $scope.sortByDate= function()
 {
-  $scope.expenseList.sort(function(a,b){
+  
+    
+    if($("#date").css('display') === "none"){
+             $scope.expenseList.sort(function(a,b){
   return a.expenseDate.localeCompare(b.expenseDate)});
-    $('#date').css({
-            'display': 'inline-table'
-        });
+            $('#date').css({
+                'display': 'inline-table'
+            });
+            $('#dateUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+               $scope.expenseList.sort(function(a,b){
+  return b.expenseDate.localeCompare(a.expenseDate)});
+            $('#dateUp').css({
+                'display': 'inline-table'
+            });
+            $('#date').css({
+                'display': 'none'
+            });
+        }
+    
               $('#catname').css({
             'display': 'none'
         });
@@ -426,22 +483,57 @@ $scope.sortByDate= function()
               $('#amount').css({
             'display': 'none'
         });
+    
+     $('#catnameUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+    
  }
 
 $scope.sortByReferenceNumber= function()
 {
-  $scope.expenseList.sort(function(a,b){
-      
+ 
+    
+    if($("#refno").css('display') === "none"){
+             $scope.expenseList.sort(function(a,b){
   return a.entity.referenceNumber.localeCompare(b.entity.referenceNumber)});
+            $('#refno').css({
+                'display': 'inline-table'
+            });
+            $('#refnoUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.expenseList.sort(function(a,b){
+  return b.entity.referenceNumber.localeCompare(a.entity.referenceNumber)});
+            $('#refnoUp').css({
+                'display': 'inline-table'
+            });
+            $('#refno').css({
+                'display': 'none'
+            });
+        }
+    
+    
      $('#date').css({
             'display': 'none'
         });
               $('#catname').css({
             'display': 'none'
         });
-              $('#refno').css({
-            'display': 'inline-table'
-        });
                $('#cusname').css({
             'display': 'none'
         });
@@ -451,30 +543,85 @@ $scope.sortByReferenceNumber= function()
               $('#amount').css({
             'display': 'none'
         });
+    
+     $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#catnameUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+    
  }
 
 $scope.sortByCustomerName= function()
 {
-  $scope.expenseList.sort(function(a,b){ 
-      $('#date').css({
+    
+    if($("#cusname").css('display') === "none"){
+             $scope.expenseList.sort(function(a,b){ 
+    return a.customer.displayName.localeCompare(b.customer.displayName)});
+            $('#cusname').css({
+                'display': 'inline-table'
+            });
+            $('#cusnameUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.expenseList.sort(function(a,b){ 
+    return b.customer.displayName.localeCompare(a.customer.displayName)});
+            $('#cusnameUp').css({
+                'display': 'inline-table'
+            });
+            $('#cusname').css({
+                'display': 'none'
+            });
+        }
+    
+    $('#date').css({
             'display': 'none'
         });
-              $('#catname').css({
+    $('#catname').css({
             'display': 'none'
         });
               $('#refno').css({
             'display': 'none'
         });
-               $('#cusname').css({
-            'display': 'inline-table'
-        });
+               
               $('#status').css({
             'display': 'none'
         });
               $('#amount').css({
             'display': 'none'
         });
-    return a.customer.displayName.localeCompare(b.customer.displayName)});
+    
+    
+    $('#dateUp').css({
+            'display': 'none'
+        });
+    $('#catnameUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+    
+    
     
  }
 
@@ -482,6 +629,28 @@ $scope.sortByStatus= function()
 {
   $scope.expenseList.sort(function(a,b){
   return a.entity.status.localeCompare(b.entity.status)});
+    
+    if($("#status").css('display') === "none"){
+            $scope.expenseList.sort(function(a,b){
+  return a.entity.status.localeCompare(b.entity.status)});
+            $('#status').css({
+                'display': 'inline-table'
+            });
+            $('#statusUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.expenseList.sort(function(a,b){
+  return b.entity.status.localeCompare(a.entity.status)});
+            $('#statusUp').css({
+                'display': 'inline-table'
+            });
+            $('#status').css({
+                'display': 'none'
+            });
+        }
+    
      $('#date').css({
             'display': 'none'
         });
@@ -494,18 +663,55 @@ $scope.sortByStatus= function()
                $('#cusname').css({
             'display': 'none'
         });
-              $('#status').css({
-            'display': 'inline-table'
-        });
               $('#amount').css({
             'display': 'none'
         });
+    
+    $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#catnameUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+    
  }
 
 $scope.sortByAmount= function()
 {
   $scope.expenseList.sort(function(a,b){ 
   return b.entity.get('amount')-a.entity.get('amount')});
+    
+    if($("#amount").css('display') === "none"){
+            $scope.expenseList.sort(function(a,b){ 
+  return b.entity.get('amount')-a.entity.get('amount')});
+            $('#amount').css({
+                'display': 'inline-table'
+            });
+            $('#amountUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+            $scope.expenseList.sort(function(a,b){ 
+  return a.entity.get('amount')-b.entity.get('amount')});
+            $('#amountUp').css({
+                'display': 'inline-table'
+            });
+            $('#amount').css({
+                'display': 'none'
+            });
+        }
+    
+    
      $('#date').css({
             'display': 'none'
         });
@@ -521,9 +727,24 @@ $scope.sortByAmount= function()
               $('#status').css({
             'display': 'none'
         });
-              $('#amount').css({
-            'display': 'inline-table'
+    
+     $('#dateUp').css({
+            'display': 'none'
         });
+              $('#catnameUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+    
+             
  }
 
 $scope.deleteExpense = function(){

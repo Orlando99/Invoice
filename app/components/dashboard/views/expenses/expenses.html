@@ -1,7 +1,7 @@
 <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
   <div class="container hidesm">
 <div class="" style="position: relative !important; top: 0px !important; cursor: pointer;">
-    <h3 ng-click="showMenu()" class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">{{currentExpenses}} <i class="arrow-down-black"></i>
+    <h3 id="menu_head" ng-click="showMenu()" class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">{{currentExpenses}} <i class="arrow-down-black"></i>
       </h3>
     <ul id="ul_wrapp" class="filtermenu">
           <li><a ng-click="showAllExpenses()">All Expenses</a></li>
@@ -20,12 +20,17 @@
     <table class="data-table customers-data no-border show_table_hover" style = "margin-bottom: 20px;">
 
       <tr style="cursor: pointer" class="thead">
-        <td ng-click = "sortByDate()" class="text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByCatName()" class="text-uppercase text-info">Category Name<span><img id="catname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByReferenceNumber()" style="min-width: 120px !important;" class="text-uppercase text-info">Ref.#<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByCustomerName()" class="text-uppercase text-info">Customer Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByStatus()" class="text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByAmount()" style="text-align: center !important;" class="text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByDate()" class="text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="dateUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+          
+        <td ng-click = "sortByCatName()" class="text-uppercase text-info">Category Name<span><img id="catname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="catnameUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+          
+        <td ng-click = "sortByReferenceNumber()" style="min-width: 120px !important;" class="text-uppercase text-info">Ref.#<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="refnoUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+          
+        <td ng-click = "sortByCustomerName()" class="text-uppercase text-info">Customer Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="cusnameUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+          
+        <td ng-click = "sortByStatus()" class="text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="statusUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+          
+        <td ng-click = "sortByAmount()" style="text-align: center !important;" class="text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="amountUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
           <td></td>
 
       </tr>

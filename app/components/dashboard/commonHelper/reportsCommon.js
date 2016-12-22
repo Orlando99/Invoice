@@ -5,19 +5,20 @@ function(){
 
 return {
 	getDateRanges : function() {
-		return ['Custom', 'Today', 'This Week', 'This Month',
-			'This Year', 'This Quarter', 'Yesterday', 'Previous Week',
+		return ['Custom', 'Today','Yesterday', 'This Week', 'This Month',
+			'This Year', 'This Quarter','Previous Week',
 			'Previous Month', 'Previous Year', 'Previous Quarter'
 		];
 	},
 	openDatePicker : function(params) {
 		var _scope = params._scope;
-		if (_scope.selectedDateRange != 'Custom') 
+		/*if (_scope.selectedDateRange != 'Custom') 
         {
- 
             return;
         }
-		switch (params.n) {
+        */
+         _scope.selectedDateRange = 'Custom';
+		 switch (params.n) {
 			case 1: _scope.openPicker1 = true; break;
 			case 2: _scope.openPicker2 = true; break;
 		}
