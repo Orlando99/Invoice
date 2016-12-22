@@ -107,45 +107,124 @@ $scope.generateReport = function() {
 
 $scope.sortByName= function()
     {
-          $scope.categories.sort(function(a,b){ 
+        
+    if($("#name").css('display') === "none"){
+         $scope.categories.sort(function(a,b){ 
           return a.localeCompare(b)});
-        $('#name').css({
-            'display': 'inline-table'
-        });
+            $('#name').css({
+                'display': 'inline-table'
+            });
+            $('#nameUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+         $scope.categories.sort(function(a,b){ 
+          return b.localeCompare(a)});
+            $('#nameUp').css({
+                'display': 'inline-table'
+            });
+            $('#name').css({
+                'display': 'none'
+            });
+        }
+    
               $('#count').css({
             'display': 'none'
         });
               $('#amount').css({
+            'display': 'none'
+        });
+    
+    $('#countUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
             'display': 'none'
         });
     }
 $scope.sortByCount= function()
     {
-          $scope.categories.sort(function(a,b){ 
+          
+    
+    if($("#count").css('display') === "none"){
+        $scope.categories.sort(function(a,b){ 
           return  $scope.info[b].count - $scope.info[a].count});
+            $('#count').css({
+                'display': 'inline-table'
+            });
+            $('#countUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+         $scope.categories.sort(function(a,b){ 
+          return  $scope.info[a].count - $scope.info[b].count});
+            $('#countUp').css({
+                'display': 'inline-table'
+            });
+            $('#count').css({
+                'display': 'none'
+            });
+        }
+    
+    
         $('#name').css({
             'display': 'none'
         });
-              $('#count').css({
-            'display': 'inline-table'
-        });
+             
               $('#amount').css({
+            'display': 'none'
+        });
+    
+    $('#nameUp').css({
+            'display': 'none'
+        });
+             
+              $('#amountUp').css({
             'display': 'none'
         });
     }
 $scope.sortByAmount= function()
     {
-          $scope.categories.sort(function(a,b){
+          
+    
+    if($("#amount").css('display') === "none"){
+       $scope.categories.sort(function(a,b){
           return  $scope.info[b].amount - $scope.info[a].amount});
+            $('#amount').css({
+                'display': 'inline-table'
+            });
+            $('#amountUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+         $scope.categories.sort(function(a,b){
+          return  $scope.info[a].amount - $scope.info[b].amount});
+            $('#amountUp').css({
+                'display': 'inline-table'
+            });
+            $('#amount').css({
+                'display': 'none'
+            });
+        }
+    
+    
         $('#name').css({
             'display': 'none'
         });
               $('#count').css({
             'display': 'none'
         });
-              $('#amount').css({
-            'display': 'inline-table'
+    
+     $('#nameUp').css({
+            'display': 'none'
         });
+              $('#countUp').css({
+            'display': 'none'
+        });
+             
     }
 
 

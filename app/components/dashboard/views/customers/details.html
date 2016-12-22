@@ -1,13 +1,10 @@
 <style>
-.deactive{
-        opacity: 0.7 !important;
-    }  
     </style>
 <div class="container hidesm" ng-class="{'deactive': selectedCustomer.entity.status == 'inactive'}">
     <a ui-sref="dashboard.customers.all" class="button-icon float-left">
       <img src="./assets/images/icon-back.png" alt="Kappa">
     </a>
-    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{selectedCustomer.entity.displayName}}</h3>
+    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{selectedCustomer.entity.displayName}}<span style="padding-left: 5px !important" ng-show="selectedCustomer.entity.status == 'inactive'"> (Deactivated)</span></h3>
     <div class="actions float-right layout-margin-tb">
       <a ui-sref="dashboard.customers.edit({customerId:selectedCustomerId})" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <button class="button button-small button-info text-uppercase layout-margin-r menu">New <img src="./assets/images/dropdown-arrow-w.png" alt="">

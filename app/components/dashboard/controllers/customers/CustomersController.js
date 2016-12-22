@@ -589,7 +589,8 @@ invoicesUnlimited.controller('CustomersController',
   //nameD,custNameD,emailD,workphoneD,receivableD,creditsD,
     $scope.sortByCustomerName= function()
     {
-        $scope.customers.sort(function(a,b)
+        if($("#nameD").css('display') === "none"){
+             $scope.customers.sort(function(a,b)
         {
             if(!a.entity.displayName)
             {
@@ -601,9 +602,35 @@ invoicesUnlimited.controller('CustomersController',
             }
             return a.entity.displayName.localeCompare(b.entity.displayName)
         });
-          $('#nameD').css({
-            'display': 'inline-table'
+            $('#nameD').css({
+                'display': 'inline-table'
+            });
+            $('#nameDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+               $scope.customers.sort(function(a,b)
+        {
+            if(!a.entity.displayName)
+            {
+              a.entity.displayName = "";  
+            }
+            if(!b.entity.displayName)
+            {
+              b.entity.displayName = "";  
+            }
+            return b.entity.displayName.localeCompare(a.entity.displayName)
         });
+            $('#nameDUp').css({
+                'display': 'inline-table'
+            });
+            $('#nameD').css({
+                'display': 'none'
+            });
+        }
+        
+         
           $('#custNameD').css({
             'display': 'none'
         });
@@ -617,6 +644,23 @@ invoicesUnlimited.controller('CustomersController',
             'display': 'none'
         });
          $('#creditsD').css({
+            'display': 'none'
+        });
+        
+        
+         $('#custNameDUp').css({
+            'display': 'none'
+        });
+              $('#emailDUp').css({
+            'display': 'none'
+        });
+          $('#workphoneDUp').css({
+            'display': 'none'
+        });
+              $('#receivableDUp').css({
+            'display': 'none'
+        });
+         $('#creditsDUp').css({
             'display': 'none'
         });
         
@@ -634,12 +678,50 @@ invoicesUnlimited.controller('CustomersController',
              }
           return a.entity.companyName.localeCompare(b.entity.companyName)
         });
+         
+         if($("#custNameD").css('display') === "none"){
+            $scope.customers.sort(function(a,b){
+             if(!a.entity.companyName)
+             {
+                 a.entity.companyName = "";
+             }
+             if(!b.entity.companyName)
+             {
+                 b.entity.companyName = "";
+             }
+          return a.entity.companyName.localeCompare(b.entity.companyName)
+        });
+            $('#custNameD').css({
+                'display': 'inline-table'
+            });
+            $('#custNameDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+               $scope.customers.sort(function(a,b){
+             if(!a.entity.companyName)
+             {
+                 a.entity.companyName = "";
+             }
+             if(!b.entity.companyName)
+             {
+                 b.entity.companyName = "";
+             }
+          return b.entity.companyName.localeCompare(a.entity.companyName)
+        });
+            $('#custNameDUp').css({
+                'display': 'inline-table'
+            });
+            $('#custNameD').css({
+                'display': 'none'
+            });
+        }
+         
          $('#nameD').css({
             'display': 'none'
         });
-          $('#custNameD').css({
-            'display': 'inline-table'
-        });
+         
               $('#emailD').css({
             'display': 'none'
         });
@@ -652,9 +734,31 @@ invoicesUnlimited.controller('CustomersController',
          $('#creditsD').css({
             'display': 'none'
         });
+         
+         
+         $('#nameDUp').css({
+            'display': 'none'
+        });
+         
+              $('#emailDUp').css({
+            'display': 'none'
+        });
+          $('#workphoneDUp').css({
+            'display': 'none'
+        });
+              $('#receivableDUp').css({
+            'display': 'none'
+        });
+         $('#creditsDUp').css({
+            'display': 'none'
+        });
+         
     }
     $scope.sortByEmail= function(){
-        $scope.customers.sort(function(a,b){
+        
+        
+        if($("#emailD").css('display') === "none"){
+             $scope.customers.sort(function(a,b){
             if(!a.entity.email)
             {
                 a.entity.email = "";
@@ -665,14 +769,38 @@ invoicesUnlimited.controller('CustomersController',
             }
             return a.entity.email.localeCompare(b.entity.email)
         });
+            $('#emailD').css({
+                'display': 'inline-table'
+            });
+            $('#emailDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+               $scope.customers.sort(function(a,b){
+            if(!a.entity.email)
+            {
+                a.entity.email = "";
+            }
+            if(!b.entity.email)
+            {
+                b.entity.email = "";
+            }
+            return b.entity.email.localeCompare(a.entity.email)
+        });
+            $('#emailDUp').css({
+                'display': 'inline-table'
+            });
+            $('#emailD').css({
+                'display': 'none'
+            });
+        }
+        
          $('#nameD').css({
             'display': 'none'
         });
           $('#custNameD').css({
             'display': 'none'
-        });
-              $('#emailD').css({
-            'display': 'inline-table'
         });
           $('#workphoneD').css({
             'display': 'none'
@@ -683,6 +811,23 @@ invoicesUnlimited.controller('CustomersController',
          $('#creditsD').css({
             'display': 'none'
         });
+        
+         $('#nameDUp').css({
+            'display': 'none'
+        });
+          $('#custNameDUp').css({
+            'display': 'none'
+        });
+          $('#workphoneDUp').css({
+            'display': 'none'
+        });
+              $('#receivableDUp').css({
+            'display': 'none'
+        });
+         $('#creditsDUp').css({
+            'display': 'none'
+        });
+        
     }
     $scope.sortByPhone= function(){
         $scope.customers.sort(function(a,b){
@@ -696,6 +841,44 @@ invoicesUnlimited.controller('CustomersController',
             }
             return a.entity.phone.localeCompare(b.entity.phone)
         });
+        
+        if($("#workphoneD").css('display') === "none"){
+             $scope.customers.sort(function(a,b){
+            if(!a.entity.phone)
+            {
+                a.entity.phone = "";
+            }
+            if(!b.entity.phone)
+            {
+                b.entity.phone = "";
+            }
+            return a.entity.phone.localeCompare(b.entity.phone)
+        });
+            $('#workphoneD').css({
+                'display': 'inline-table'
+            });
+            $('#workphoneDUp').css({
+                'display': 'none'
+            });
+        }
+        else{$scope.customers.sort(function(a,b){
+            if(!a.entity.phone)
+            {
+                a.entity.phone = "";
+            }
+            if(!b.entity.phone)
+            {
+                b.entity.phone = "";
+            }
+            return b.entity.phone.localeCompare(a.entity.phone)
+        });
+            $('#workphoneDUp').css({
+                'display': 'inline-table'
+            });
+            $('#workphoneD').css({
+                'display': 'none'
+            });
+        }
          $('#nameD').css({
             'display': 'none'
         });
@@ -705,19 +888,35 @@ invoicesUnlimited.controller('CustomersController',
               $('#emailD').css({
             'display': 'none'
         });
-          $('#workphoneD').css({
-            'display': 'inline-table'
-        });
               $('#receivableD').css({
             'display': 'none'
         });
          $('#creditsD').css({
             'display': 'none'
         });
+        
+        
+        $('#nameDUp').css({
+            'display': 'none'
+        });
+          $('#custNameDUp').css({
+            'display': 'none'
+        });
+              $('#emailDUp').css({
+            'display': 'none'
+        });
+              $('#receivableDUp').css({
+            'display': 'none'
+        });
+         $('#creditsDUp').css({
+            'display': 'none'
+        });
+        
     }
     $scope.sortByReceivable= function(){
        
-        $scope.customers.sort(function(a,b){
+        if($("#receivableD").css('display') === "none"){
+            $scope.customers.sort(function(a,b){
             if(!a.entity.outstanding)
             {
                 a.entity.outstanding = "";
@@ -728,6 +927,33 @@ invoicesUnlimited.controller('CustomersController',
             }
             return a.entity.outstanding.localeCompare(b.entity.outstanding)
         });
+            $('#receivableD').css({
+                'display': 'inline-table'
+            });
+            $('#receivableDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+               $scope.customers.sort(function(a,b){
+            if(!a.entity.outstanding)
+            {
+                a.entity.outstanding = "";
+            }
+            if(!b.entity.outstanding)
+            {
+                b.entity.outstanding = "";
+            }
+            return b.entity.outstanding.localeCompare(a.entity.outstanding)
+        });
+            $('#receivableDUp').css({
+                'display': 'inline-table'
+            });
+            $('#receivableD').css({
+                'display': 'none'
+            });
+        }
+        
         $('#nameD').css({
             'display': 'none'
         });
@@ -740,12 +966,27 @@ invoicesUnlimited.controller('CustomersController',
           $('#workphoneD').css({
             'display': 'none'
         });
-              $('#receivableD').css({
-            'display': 'inline-table'
-        });
          $('#creditsD').css({
             'display': 'none'
         });
+        
+         $('#nameDUp').css({
+            'display': 'none'
+        });
+          $('#custNameDUp').css({
+            'display': 'none'
+        });
+              $('#emailDUp').css({
+            'display': 'none'
+        });
+          $('#workphoneDUp').css({
+            'display': 'none'
+        });
+         $('#creditsDUp').css({
+            'display': 'none'
+        });
+        
+        
     }
     $scope.sortByCredits= function()
     {
@@ -760,6 +1001,45 @@ invoicesUnlimited.controller('CustomersController',
             }
             return a.entity.unusedCredits.localeCompare(b.entity.unusedCredits)
         });
+        
+        if($("#creditsD").css('display') === "none"){
+            $scope.customers.sort(function(a,b){
+            if(!a.entity.unusedCredits)
+            {
+                a.entity.unusedCredits = "";
+            }
+            if(!b.entity.unusedCredits)
+            {
+                b.entity.unusedCredits = "";
+            }
+            return a.entity.unusedCredits.localeCompare(b.entity.unusedCredits)
+        });
+            $('#creditsD').css({
+                'display': 'inline-table'
+            });
+            $('#creditsDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.customers.sort(function(a,b){
+            if(!a.entity.unusedCredits)
+            {
+                a.entity.unusedCredits = "";
+            }
+            if(!b.entity.unusedCredits)
+            {
+                b.entity.unusedCredits = "";
+            }
+            return b.entity.unusedCredits.localeCompare(a.entity.unusedCredits)
+        });
+            $('#creditsDUp').css({
+                'display': 'inline-table'
+            });
+            $('#creditsD').css({
+                'display': 'none'
+            });
+        }
          $('#nameD').css({
             'display': 'none'
         });
@@ -775,9 +1055,25 @@ invoicesUnlimited.controller('CustomersController',
               $('#receivableD').css({
             'display': 'none'
         });
-         $('#creditsD').css({
-            'display': 'inline-table'
-        }); 
+        
+        
+         $('#nameDUp').css({
+            'display': 'none'
+        });
+          $('#custNameDUp').css({
+            'display': 'none'
+        });
+              $('#emailDUp').css({
+            'display': 'none'
+        });
+          $('#workphoneDUp').css({
+            'display': 'none'
+        });
+              $('#receivableDUp').css({
+            'display': 'none'
+        });
+        
+        
     }
     $scope.sortByDate= function(){
        

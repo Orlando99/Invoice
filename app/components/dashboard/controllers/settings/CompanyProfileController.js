@@ -147,8 +147,10 @@ invoicesUnlimited.controller('CompanyProfileController',
                 $scope.org.set('logo', obj);
                 $scope.org.save()
                 .then(function(obj){
+                    showSnackbar("Save Successful");
                     hideLoader();
                      window.location.reload();
+                    
                 });
             });
         }

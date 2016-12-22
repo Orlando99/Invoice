@@ -2,14 +2,13 @@
   <div class="container hidesm">
 
       <div class="" style="position: relative !important; top: 0px !important; cursor: pointer;">
-    <h3 ng-click="showMenu()" class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">{{currentCreditNotes}} <i class="arrow-down-black"></i>
+    <h3 id="menu_head" ng-click="showMenu()" class="section-title float-left text-uppercase text-weight-normalize text-color-normalize layout-margin-tb-lg">{{currentCreditNotes}} <i class="arrow-down-black"></i>
       </h3>
     <ul id="ul_wrapp" class="filtermenu">
           <li><a ng-click="allCreditNotes()">All Credit Notes</a></li>
           <li><a ng-click="openCreditNotes()">Open Credit Notes</a></li>
         <li><a ng-click="closedCreditNotes()">Closed Credit Notes</a></li>
           <li><a ng-click="voidCreditNotes()">Void Credit Notes</a></li>
-
         </ul>
       </div>
     <a ui-sref="dashboard.sales.creditnotes.new" class="float-right button button-add text-transform">New</a>
@@ -20,15 +19,15 @@
 
     <table class="data-table creditnotes-data no-border show_table_hover" style = "margin-bottom: 20px;">
       <tr style="cursor: pointer" class="thead">
-        <td ng-click = "sortByDate()" class="text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td Style="padding-left: 12px !important"  ng-click = "sortByCreditNote()" class="text-uppercase text-info">Credit Note<span><img id="creditnote" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByDate()" class="text-uppercase text-info">Date<span><img id="date" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="dateUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+        <td Style="padding-left: 12px !important"  ng-click = "sortByCreditNote()" class="text-uppercase text-info">Credit Note<span><img id="creditnote" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="creditnoteUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
         <!--<img src="./assets/images/dropdown-arrow-primary.png" alt="">-->
 
-        <td ng-click = "sortByRefNum()" class="text-uppercase text-info text-center">Ref#.<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByCusName()" class="text-uppercase text-info">Cust. Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByStatus()" class="text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByAmount()" class="text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-        <td ng-click = "sortByBalance()" class="text-uppercase text-info">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+        <td ng-click = "sortByRefNum()" class="text-uppercase text-info text-center">Ref#.<span><img id="refno" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="refnoUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+        <td ng-click = "sortByCusName()" class="text-uppercase text-info">Cust. Name<span><img id="cusname" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="cusnameUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+        <td ng-click = "sortByStatus()" class="text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="statusUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+        <td ng-click = "sortByAmount()" class="text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="amountUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+        <td ng-click = "sortByBalance()" class="text-uppercase text-info">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="balanceUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
 
       </tr>
       <tr class="trow" ng-repeat="creditNote in creditNoteList"

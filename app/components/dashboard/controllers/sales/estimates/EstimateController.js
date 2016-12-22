@@ -822,13 +822,31 @@ function listEstimates() {
 $scope.sortByEstimateNumber= function()
 {
       $scope.estimateList.sort(function(a,b){
-           
       return a.entity.estimateNumber.localeCompare(b.entity.estimateNumber)});
+    
+    if($("#estimate").css('display') === "none"){
+           $scope.estimateList.sort(function(a,b){
+      return a.entity.estimateNumber.localeCompare(b.entity.estimateNumber)});
+            $('#estimate').css({
+                'display': 'inline-table'
+            });
+            $('#estimateUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+            $scope.estimateList.sort(function(a,b){
+      return b.entity.estimateNumber.localeCompare(a.entity.estimateNumber)});
+            $('#estimateUp').css({
+                'display': 'inline-table'
+            });
+            $('#estimate').css({
+                'display': 'none'
+            });
+        }
+    
     $('#date').css({
             'display': 'none'
-        });
-              $('#estimate').css({
-            'display': 'inline-table'
         });
               $('#refno').css({
             'display': 'none'
@@ -843,18 +861,53 @@ $scope.sortByEstimateNumber= function()
             'display': 'none'
         });
               $('#amount').css({
+            'display': 'none'
+        });
+    
+    
+    $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#duedateUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
             'display': 'none'
         });
 }  
 
 $scope.sortByDate= function()
 {
-      $scope.estimateList.sort(function(a,b){ 
-           
+     
+    if($("#date").css('display') === "none"){
+           $scope.estimateList.sort(function(a,b){ 
       return b.estimateDate.localeCompare(a.estimateDate)});
-    $('#date').css({
-            'display': 'inline-table'
-        });
+            $('#date').css({
+                'display': 'inline-table'
+            });
+            $('#dateUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.estimateList.sort(function(a,b){ 
+      return a.estimateDate.localeCompare(b.estimateDate)});
+            $('#dateUp').css({
+                'display': 'inline-table'
+            });
+            $('#date').css({
+                'display': 'none'
+            });
+        }
               $('#estimate').css({
             'display': 'none'
         });
@@ -873,22 +926,58 @@ $scope.sortByDate= function()
               $('#amount').css({
             'display': 'none'
         });
+    
+    $('#estimateUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#duedateUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+    
 }
 
 $scope.sortByRefNo= function()
 {
-      $scope.estimateList.sort(function(a,b){ 
-          
+      
+     if($("#refno").css('display') === "none"){
+            $scope.estimateList.sort(function(a,b){ 
       return a.entity.referenceNumber.localeCompare(b.entity.referenceNumber)});
+            $('#refno').css({
+                'display': 'inline-table'
+            });
+            $('#refnoUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.estimateList.sort(function(a,b){ 
+      return b.entity.referenceNumber.localeCompare(a.entity.referenceNumber)});
+            $('#refnoUp').css({
+                'display': 'inline-table'
+            });
+            $('#refno').css({
+                'display': 'none'
+            });
+        }
+    
      $('#date').css({
             'display': 'none'
         });
               $('#estimate').css({
             'display': 'none'
         });
-              $('#refno').css({
-            'display': 'inline-table'
-        });
                $('#cusname').css({
             'display': 'none'
         });
@@ -901,12 +990,51 @@ $scope.sortByRefNo= function()
               $('#amount').css({
             'display': 'none'
         });
+    
+    $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#estimateUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#duedateUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
+            'display': 'none'
+        });
+    
 } 
 $scope.sortByCustomerName= function()
 {
-      $scope.estimateList.sort(function(a,b){
-          
+      
+    if($("#cusname").css('display') === "none"){
+            $scope.estimateList.sort(function(a,b){
       return a.customer.displayName.localeCompare(b.customer.displayName)});
+            $('#cusname').css({
+                'display': 'inline-table'
+            });
+            $('#cusnameUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.estimateList.sort(function(a,b){
+      return b.customer.displayName.localeCompare(a.customer.displayName)});
+            $('#cusnameUp').css({
+                'display': 'inline-table'
+            });
+            $('#cusname').css({
+                'display': 'none'
+            });
+        }
+    
     $('#date').css({
             'display': 'none'
         });
@@ -916,9 +1044,6 @@ $scope.sortByCustomerName= function()
               $('#refno').css({
             'display': 'none'
         });
-               $('#cusname').css({
-            'display': 'inline-table'
-        });
               $('#status').css({
             'display': 'none'
         });
@@ -926,13 +1051,53 @@ $scope.sortByCustomerName= function()
             'display': 'none'
         });
               $('#amount').css({
+            'display': 'none'
+        });
+    
+    
+    $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#estimateUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#duedateUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
             'display': 'none'
         });
 } 
 $scope.sortByStatus= function()
 {
-      $scope.estimateList.sort(function(a,b){ 
+      
+    if($("#status").css('display') === "none"){
+           $scope.estimateList.sort(function(a,b){ 
       return a.entity.status.localeCompare(b.entity.status)});
+            $('#status').css({
+                'display': 'inline-table'
+            });
+            $('#statusUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.estimateList.sort(function(a,b){ 
+      return b.entity.status.localeCompare(a.entity.status)});
+            $('#statusUp').css({
+                'display': 'inline-table'
+            });
+            $('#status').css({
+                'display': 'none'
+            });
+        }
+    
     $('#date').css({
             'display': 'none'
         });
@@ -945,13 +1110,30 @@ $scope.sortByStatus= function()
                $('#cusname').css({
             'display': 'none'
         });
-              $('#status').css({
-            'display': 'inline-table'
-        });
               $('#duedate').css({
             'display': 'none'
         });
               $('#amount').css({
+            'display': 'none'
+        });
+    
+    
+    $('#dateUp').css({
+            'display': 'none'
+        });
+              $('#estimateUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#duedateUp').css({
+            'display': 'none'
+        });
+              $('#amountUp').css({
             'display': 'none'
         });
 } 
@@ -959,6 +1141,29 @@ $scope.sortByAmount= function()
 {
       $scope.estimateList.sort(function(a,b){
       return a.totalAmount > (b.totalAmount)});
+    
+    if($("#amount").css('display') === "none"){
+             $scope.estimateList.sort(function(a,b){
+      return a.totalAmount > (b.totalAmount)});
+            $('#amount').css({
+                'display': 'inline-table'
+            });
+            $('#amountUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+               $scope.estimateList.sort(function(a,b){
+      return b.totalAmount > (a.totalAmount)});
+            $('#amountUp').css({
+                'display': 'inline-table'
+            });
+            $('#amount').css({
+                'display': 'none'
+            });
+        }
+    
+    
     $('#date').css({
             'display': 'none'
         });
@@ -977,9 +1182,27 @@ $scope.sortByAmount= function()
               $('#duedate').css({
             'display': 'none'
         });
-              $('#amount').css({
-            'display': 'inline-table'
+    
+    
+     $('#dateUp').css({
+            'display': 'none'
         });
+              $('#estimateUp').css({
+            'display': 'none'
+        });
+              $('#refnoUp').css({
+            'display': 'none'
+        });
+               $('#cusnameUp').css({
+            'display': 'none'
+        });
+              $('#statusUp').css({
+            'display': 'none'
+        });
+              $('#duedateUp').css({
+            'display': 'none'
+        });
+              
 } 
 $scope.showMenu = function(){
     if($('.filtermenu').hasClass('show'))

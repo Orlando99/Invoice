@@ -523,3 +523,7 @@ However, delay the fade out process for 2.5 seconds */
     width: 25% !important;
     max-width: 25% !important;  
 }
+
+#firstname-error{
+    margin-top: 23px !important;
+}
