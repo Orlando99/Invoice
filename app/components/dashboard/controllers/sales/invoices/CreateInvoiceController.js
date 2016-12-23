@@ -34,7 +34,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	var organization = user.get("organizations")[0];
 	$controller('DashboardController',{$scope:$scope,$state:$state});
 
-        $q.when(userFactory.entity[0].currency.fetch())
+    $q.when(userFactory.entity[0].currency.fetch())
     .then(function(obj){
         cc = obj.attributes;
             if(cc.exchangeRate){
@@ -192,7 +192,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			fee.type + ')';
 	}
         
-        $scope.projectId = $state.params.projectId;
+    $scope.projectId = $state.params.projectId;
 
 	function prepareToCreateInvoice() {
 		showLoader();
@@ -208,6 +208,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 			});
 			$scope.customers.push(createCustomerOpener);
+            
 		//	$scope.selectedCustomer = $scope.customers[0];
 		});
 		promises.push(p);
@@ -736,9 +737,9 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		})
 		.then(function(invoice) {
             addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice);
-			hideLoader();
-			$state.go('dashboard.sales.invoices.all');
-
+			//$state.go('dashboard.sales.invoices.all');
+             $state.go('dashboard.sales.invoices.details', {invoiceId:invoice.id});
+             hideLoader();
 		}, function (error) {
 			hideLoader();
 			console.log(error);
@@ -872,8 +873,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
             if($scope.selectedCustomer.entity.email)
                 addNewComment('Invoice emailed to ' + $scope.selectedCustomer.entity.email, true, invoice);
 			hideLoader();
-			$state.go('dashboard.sales.invoices.all');
-
+			//$state.go('dashboard.sales.invoices.all');
+            $state.go('dashboard.sales.invoices.details', {invoiceId:invoice.id});
 		}, function (error) {
 			hideLoader();
 			console.log(error);
@@ -1219,8 +1220,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		});
 	}
 
-        function customerChanged() {
-		if($scope.selectedCustomer.dummy) {
+    function customerChanged() {
+        if($scope.selectedCustomer.dummy) {
 			$state.go('dashboard.customers.new', {backLink : $state.current.name});
 			return;
 		}
@@ -1297,7 +1298,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
         });
 	}
     
-    function commaSeparateNumber(val){
+function commaSeparateNumber(val){
   
   val = val.split(',').join('');
   if(val.indexOf('.') !== -1)

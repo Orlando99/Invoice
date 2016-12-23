@@ -963,9 +963,9 @@ $scope.search = function()
           {   
               obj.entity.referenceNumber = "";
           }
-          if(!obj.customer.displayName)
+          if(!obj.customer)
           {  
-              obj.customer.displayName = "";
+              obj.customer = "";
           }
           if(!obj.entity.status)
           {     
@@ -974,13 +974,23 @@ $scope.search = function()
           if(!obj.amount)
           { 
               obj.amount = "";
-          }   
-          return obj.expenseDate.toLowerCase().includes($scope.searchText.toLowerCase())||
-          obj.entity.category.toLowerCase().includes($scope.searchText.toLowerCase())||
-     obj.entity.referenceNumber.toString().toLowerCase().includes($scope.searchText.toLowerCase())||
-          obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase())||
-          obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase())||
-          obj.amount.toLowerCase().includes($scope.searchText.toLowerCase());
+          }
+          if(!obj.customer)
+          {
+            return obj.expenseDate.toLowerCase().includes($scope.searchText.toLowerCase())||
+            obj.entity.category.toLowerCase().includes($scope.searchText.toLowerCase())||
+            obj.entity.referenceNumber.toString().toLowerCase().includes($scope.searchText.toLowerCase())|| obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase())||
+            obj.amount.toLowerCase().includes($scope.searchText.toLowerCase());
+          }
+          else
+          {
+              return obj.expenseDate.toLowerCase().includes($scope.searchText.toLowerCase())||
+              obj.entity.category.toLowerCase().includes($scope.searchText.toLowerCase())||
+              obj.entity.referenceNumber.toString().toLowerCase().includes($scope.searchText.toLowerCase())||
+              obj.customer.displayName.toLowerCase().includes($scope.searchText.toLowerCase())||
+              obj.entity.status.toLowerCase().includes($scope.searchText.toLowerCase())||
+              obj.amount.toLowerCase().includes($scope.searchText.toLowerCase());
+          }
      });
     }
     else

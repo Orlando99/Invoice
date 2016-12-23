@@ -227,7 +227,7 @@ invoicesUnlimited.controller('NewCustomerController',
         if(!$scope.newCustomer.entity['firstname'])
             contact.entity['firstname'] = $scope.newCustomer.entity['displayName'];
 		
-		contact.save()
+		 contact.save()
 		.then(function() {
 			$scope.newCustomer.entity.add('contactPersons',contact.entity);
 			$scope.newCustomer.entity.set('organization',user.entity[0].get('selectedOrganization'));
@@ -240,14 +240,20 @@ invoicesUnlimited.controller('NewCustomerController',
 				$scope.newCustomer.billingAddress = Object.create(address);
 				$scope.newCustomer.shippingAddress = Object.create(address);
 				hideLoader();
-
 				if($state.params.backLink) {
 					// clear customer in core factory,
 					// or send loadAgain = true from all the
 					// places where coreFactory.loadAllCustomers in used.
 					coreFactory.clearAllOnLogOut();
-					$state.go($state.params.backLink, {customerId:custObj.id});
+                    if($state.params.invoiceId){
+                        $state.go($state.params.backLink, {customerId:custObj.id, invoiceId : $state.params.invoiceId});
+                        
+                    }
+                    else{
+					   $state.go($state.params.backLink, {customerId:custObj.id});
+                    }
 				} else {
+                
                     if(fromTutorial){
                         fromTutorial = false;
                         $state.go('dashboard');

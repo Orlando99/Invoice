@@ -25,7 +25,6 @@ if(! userFactory.entity.length) {
             'exchangeRate'  : 1
         };
         $scope.currentCurrency = temp;
-
         cc = temp;
     }
 
@@ -73,7 +72,7 @@ userFactory.getField('dateFormat')
 
 $.validator.addMethod(
 	"notBackDate",
-	function(value,element){
+    function(value,element){
 		return $scope.todayDate <= $scope.dueDate;
 	}
 );
@@ -210,10 +209,10 @@ function CheckUseCase(stateName) {
 		prepareToEditInvoice();
 	}
 }
-
+//var customerId = $state.params.customerId;//by mee
 function prepareToEditInvoice() {
 	var invoiceId = $state.params.invoiceId;
-	if (! invoiceId) return;
+	if (!invoiceId) return;
 
 	showLoader();
 	$q.when(LoadRequiredData())
@@ -227,10 +226,18 @@ function prepareToEditInvoice() {
 		$scope.deletedItems = [];
 		$scope.itemsWithOutId = 0;
 		$scope.itemsWithIdinDel = 0;
-		
+ 
 		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
 			return invoice.entity.get('customer').id === cust.entity.id;
 		})[0];
+        var customerId = $state.params.customerId; 
+		if(customerId) {
+			$scope.selectedCustomer = $scope.customers.filter(function(cust) {
+				//return cust.entity.id == customerId;
+                return invoice.entity.get('customer').id == customerId;                
+			})[0];
+        }
+       // $scope.customers.push(createCustomerOpener);//by mee
 		return $q.when(customerChangedHelper());
 	})
 	.then(function() {
@@ -935,6 +942,13 @@ function customerChangedHelper() {
 }
 
 $scope.customerChanged = function() {
+   /* 
+    if($scope.selectedCustomer.dummy) 
+    {
+        $state.go('dashboard.customers.new', {backLink : $state.current.name, invoiceId :      $state.params.invoiceId});
+        return;
+    }
+    */
 	showLoader();
 	$q.when(customerChangedHelper())
 	.then(function() {
@@ -950,7 +964,7 @@ $scope.customerChanged = function() {
 		}
 
 		hideLoader();
-	});
+	});    
 }
 //----------------
 function lateFeeNameHelper(obj) {
@@ -1066,8 +1080,8 @@ function ListInvoices() {
 	});	
 }  
     
-    $scope.sortByStatus= function()
-    {
+$scope.sortByStatus= function()
+{
           $scope.invoiceList.sort(function(a,b){ 
           return a.entity.status.localeCompare(b.entity.status)});
         
@@ -1138,8 +1152,8 @@ function ListInvoices() {
         
     }
     
-    $scope.sortByInvoiveNumber= function()
-    {
+$scope.sortByInvoiveNumber= function()
+{
         if($("#invoiceno").css('display') === "none"){
             $scope.invoiceList.sort(function(a,b){
           return b.entity.invoiceNumber.localeCompare(a.entity.invoiceNumber)});
@@ -1207,8 +1221,8 @@ function ListInvoices() {
         });
     }
     
-    $scope.sortByOrderNumber= function()
-    {
+$scope.sortByOrderNumber= function()
+{
         $('#status').css({
             'display': 'none'
         });
@@ -1280,9 +1294,8 @@ function ListInvoices() {
           
     }
     
-    
-    $scope.sortByBalance= function()
-    {
+$scope.sortByBalance= function()
+{
          
         if($("#balance").css('display') === "none"){
             $scope.invoiceList.sort(function(a,b){ 
@@ -1351,8 +1364,8 @@ function ListInvoices() {
         
     }
     
-    $scope.sortByAmount= function()
-    {
+$scope.sortByAmount= function()
+{
         if($("#amount").css('display') === "none"){
             $scope.invoiceList.sort(function(a,b){ 
                 return  b.entity.total - a.entity.total 
@@ -1421,8 +1434,8 @@ function ListInvoices() {
         });
         
     }
-    $scope.sortByCustomerName= function()
-    {
+$scope.sortByCustomerName= function()
+{
           
         if($("#custname").css('display') === "none"){
             $scope.invoiceList.sort(function(a,b){ 
@@ -1491,8 +1504,8 @@ function ListInvoices() {
         });
         
     }
-     $scope.sortByDate= function()
-    {
+$scope.sortByDate= function()
+{
          
          if($("#date").css('display') === "none"){
             $scope.invoiceList.sort(function(a,b){
@@ -1560,8 +1573,8 @@ function ListInvoices() {
         });
          
     }
-     $scope.sortByDueDate= function()
-    {
+$scope.sortByDueDate= function()
+{
           $scope.invoiceList.sort(function(a,b){
           return b.dueDate.localeCompare(a.dueDate)});
          if($("#duedate").css('display') === "none"){
@@ -1630,9 +1643,8 @@ function ListInvoices() {
             'display': 'none'
         });
     }
-     
-    
-    $scope.lateFeeChanged = function(){
+
+$scope.lateFeeChanged = function(){
         if(!$scope.selectedLateFee)
             return;
         
@@ -1644,7 +1656,7 @@ function ListInvoices() {
         $('.add-latefee').addClass('show');
     }
     
-    function prepareAddFeeForm() {
+function prepareAddFeeForm() {
         $scope.latefeeName = '';
         $scope.latefeeTypes = ['%', '$'];
         $scope.selectedFeeType = $scope.latefeeTypes[0];
@@ -1664,7 +1676,7 @@ function ListInvoices() {
         $('#addLateFeeForm').validate().resetForm();
     }
         
-    $scope.addLateFee = function() {
+$scope.addLateFee = function() {
         if (! $('#addLateFeeForm').valid()) return;
 
         showLoader();
@@ -1794,7 +1806,6 @@ $scope.refundedInvoices = function(){
     $('.filtermenu').removeClass('show');
     
 }
-
 $scope.search = function(){
     if($scope.searchText.length)
     {

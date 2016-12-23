@@ -17,7 +17,6 @@ $(document).ready(function(){
         
 	})
 });
- 
 invoicesUnlimited.controller('CustomersController',
 	function($scope,$rootScope,$state,$uibModal,userFactory,
 			 contactPersonFactory, customerFactory, coreFactory, expenseService, 
@@ -755,8 +754,6 @@ invoicesUnlimited.controller('CustomersController',
          
     }
     $scope.sortByEmail= function(){
-        
-        
         if($("#emailD").css('display') === "none"){
              $scope.customers.sort(function(a,b){
             if(!a.entity.email)

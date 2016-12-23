@@ -234,7 +234,8 @@ angular.module('invoicesUnlimited')
 				name	: 'dashboard.customers.new',
 				url 	: '/new',
 				params : {
-					backLink : null
+					backLink : null,
+                    invoiceId : null
 				},
 				views 		: {
 					'customersView' : {
