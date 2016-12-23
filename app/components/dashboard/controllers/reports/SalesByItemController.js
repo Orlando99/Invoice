@@ -83,6 +83,7 @@ $scope.generateReport = function() {
 	$q.when(reportsService.salesByItem(params))
 	.then(function(invoices) {
 		calculateSalesByItem(invoices);
+        
 		hideLoader();
 	});
 }
@@ -129,9 +130,11 @@ function calculateSalesByItem(invoices) {
 
 	$scope.ids = item_ids;
 	$scope.info = info;
+    
 	$scope.totalInvoices = totalInvoices;
 	$scope.totalStr = currencyFilter(total, '$', 2);
 
+    $scope.sortByName();
 	var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 	$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
 	$scope.toDateStr = formatDate($scope.toDate, dateFormat);
@@ -141,7 +144,7 @@ function calculateSalesByItem(invoices) {
          
         if($("#name").css('display') === "none"){
             $scope.ids.sort(function(a,b){ 
-          return $scope.infoObj[a].name.localeCompare($scope.infoObj[b].name)});
+          return $scope.info[a].name.localeCompare($scope.info[b].name)});
             $('#name').css({
                 'display': 'inline-table'
             });
@@ -151,7 +154,7 @@ function calculateSalesByItem(invoices) {
         }
         else{
                $scope.ids.sort(function(a,b){ 
-          return $scope.infoObj[b].name.localeCompare($scope.infoObj[a].name)});
+          return $scope.info[b].name.localeCompare($scope.info[a].name)});
             $('#nameUp').css({
                 'display': 'inline-table'
             });
@@ -181,7 +184,7 @@ $scope.sortByInvoiceCount= function()
           
      if($("#count").css('display') === "none"){
             $scope.ids.sort(function(a,b){ 
-          return  $scope.infoObj[b].count - $scope.infoObj[a].count});
+          return  $scope.info[b].count - $scope.info[a].count});
             $('#count').css({
                 'display': 'inline-table'
             });
@@ -191,7 +194,7 @@ $scope.sortByInvoiceCount= function()
         }
         else{
                $scope.ids.sort(function(a,b){ 
-          return  $scope.infoObj[a].count - $scope.infoObj[b].count});
+          return  $scope.info[a].count - $scope.info[b].count});
             $('#countUp').css({
                 'display': 'inline-table'
             });
@@ -221,7 +224,7 @@ $scope.sortByTax= function()
           
             if($("#tax").css('display') === "none"){
             $scope.ids.sort(function(a,b){ 
-          return  $scope.infoObj[b].amount - $scope.infoObj[a].amount});
+          return  $scope.info[b].amount - $scope.info[a].amount});
     
             $('#tax').css({
                 'display': 'inline-table'
@@ -232,7 +235,7 @@ $scope.sortByTax= function()
         }
         else{
                $scope.ids.sort(function(a,b){ 
-          return  $scope.infoObj[a].amount - $scope.infoObj[b].amount});
+          return  $scope.info[a].amount - $scope.info[b].amount});
     
             $('#taxUp').css({
                 'display': 'inline-table'

@@ -527,3 +527,7 @@ However, delay the fade out process for 2.5 seconds */
 #firstname-error{
     margin-top: 23px !important;
 }
+
+.error-align >label.error{
+margin-top: -23px !important;
+}

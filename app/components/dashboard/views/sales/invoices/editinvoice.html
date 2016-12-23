@@ -9,7 +9,7 @@
         <label class="layout-padding-t-sm">Customer Name</label>
         <select name="customer" class="col-75" ng-model="selectedCustomer" ng-change="customerChanged()"
           ng-options="customer.entity.displayName for customer in customers">
-          <option value="" disabled>Select customer to invoice</option>>
+          <option value="" disabled>Select customer to invoice</option>
         </select>
       </div>
       <div class="input-container col-60 layout-margin-b">
@@ -92,15 +92,15 @@
               <option value="" disabled>Select or Type to add</option>
             </select>
           </div>
-          <div class="col-12 layout-padding layout-padding-l text-right">
+          <div class="col-12 layout-padding layout-padding-l text-right error-align">
             <input tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number"
               placeholder="1" onkeypress="numberValidation(event)" ng-model="invItem.quantity" ng-change="reCalculateItemAmount($index)">
           </div>
-          <div class="col-12 layout-padding layout-padding-l text-right">
+          <div class="col-12 layout-padding layout-padding-l text-right error-align">
             <input tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number"
               placeholder="10.00" onkeypress="numberValidation(event)"  ng-model="invItem.rate" ng-change="reCalculateItemAmount($index)">
           </div>
-          <div class="col-12 layout-padding layout-padding-l text-right" ng-show="itemLevelTax">
+          <div class="col-12 layout-padding layout-padding-l text-right error-align" ng-show="itemLevelTax">
             <input tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number" onkeypress="numberValidation(event)"
               placeholder="10.00" ng-model="invItem.discount" ng-change="reCalculateItemAmount($index)">
           </div>

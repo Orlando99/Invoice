@@ -812,6 +812,7 @@ function listEstimates() {
 		$scope.estimateList = res;
         $scope.allestimateList = res;
          $scope.displayInvoice = res;
+        $scope.sortByDate();
 		hideLoader();
 
 	}, function(error) {
@@ -1139,12 +1140,9 @@ $scope.sortByStatus= function()
 } 
 $scope.sortByAmount= function()
 {
-      $scope.estimateList.sort(function(a,b){
-      return a.totalAmount > (b.totalAmount)});
-    
     if($("#amount").css('display') === "none"){
-             $scope.estimateList.sort(function(a,b){
-      return a.totalAmount > (b.totalAmount)});
+              $scope.estimateList.sort(function(a,b){
+      return a.entity.totalAmount - b.entity.totalAmount});
             $('#amount').css({
                 'display': 'inline-table'
             });
@@ -1154,7 +1152,7 @@ $scope.sortByAmount= function()
         }
         else{
                $scope.estimateList.sort(function(a,b){
-      return b.totalAmount > (a.totalAmount)});
+      return b.entity.totalAmount - a.entity.totalAmount});
             $('#amountUp').css({
                 'display': 'inline-table'
             });
@@ -1162,7 +1160,6 @@ $scope.sortByAmount= function()
                 'display': 'none'
             });
         }
-    
     
     $('#date').css({
             'display': 'none'

@@ -143,6 +143,7 @@ function listProjects() {
 	//	res = res.reverse();
 		$scope.projectList = res;
         $scope.displayedProject = res;
+        $scope.sortByName();
 		hideLoader();
 
 	}, function(error) {
@@ -254,7 +255,6 @@ function prepareEditForm() {
         });
     $scope.timesheetTasks.push(createTaskOpener);
     $scope.timesheetDate = new Date();
-    
 	hideLoader();
 }
     
@@ -271,7 +271,6 @@ $scope.editTask = function(index){
         $scope.editTaskDescription = $scope.tasks[index].attributes.taskDescription;
         $scope.editTaskCost = $scope.tasks[index].attributes.taskCost;
     }
-    
     $(".edit-task").addClass('show');
 }
 
@@ -570,11 +569,28 @@ function userChanged() {
 	}
 } 
   $scope.sortByName = function(){
-    $scope.projectList.sort(function(a,b){
+       
+       if($("#nameD").css('display') === "none"){
+            $scope.projectList.sort(function(a,b){
         return a.entity.projectName.localeCompare(b.entity.projectName)});
-       $('#nameD').css({
-            'display': 'inline-table'
-        });
+            $('#nameD').css({
+                'display': 'inline-table'
+            });
+            $('#nameDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+           $scope.projectList.sort(function(a,b){
+        return b.entity.projectName.localeCompare(a.entity.projectName)});
+            $('#nameDUp').css({
+                'display': 'inline-table'
+            });
+            $('#nameD').css({
+                'display': 'none'
+            });
+        }
+      
           $('#custNameD').css({
             'display': 'none'
         });
@@ -587,17 +603,48 @@ function userChanged() {
               $('#priceD').css({
             'display': 'none'
         });
+      
+      $('#custNameDUp').css({
+            'display': 'none'
+        });
+              $('#descDUp').css({
+            'display': 'none'
+        });
+          $('#billMDUp').css({
+            'display': 'none'
+        });
+              $('#priceDUp').css({
+            'display': 'none'
+        });
+      
 }
   $scope.sortByCustomer = function(){
-    $scope.projectList.sort(function(a,b){
+      if($("#custNameD").css('display') === "none"){
+           $scope.projectList.sort(function(a,b){
     return a.customer.displayName.localeCompare(b.customer.displayName)});
+            $('#custNameD').css({
+                'display': 'inline-table'
+            });
+            $('#custNameDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+           $scope.projectList.sort(function(a,b){
+    return b.customer.displayName.localeCompare(a.customer.displayName)});
+            $('#custNameDUp').css({
+                'display': 'inline-table'
+            });
+            $('#custNameD').css({
+                'display': 'none'
+            });
+        }
+      
       
         $('#nameD').css({
             'display': 'none'
         });
-          $('#custNameD').css({
-            'display': 'inline-table'
-        });
+          
               $('#descD').css({
             'display': 'none'
         });
@@ -605,6 +652,21 @@ function userChanged() {
             'display': 'none'
         });
               $('#priceD').css({
+            'display': 'none'
+        });
+      
+      
+       $('#nameDUp').css({
+            'display': 'none'
+        });
+          
+              $('#descDUp').css({
+            'display': 'none'
+        });
+          $('#billMDUp').css({
+            'display': 'none'
+        });
+              $('#priceDUp').css({
             'display': 'none'
         });
 
@@ -618,12 +680,50 @@ $scope.timesheetUserChanged = function(){
 	}
 }
 $scope.sortByDesc = function(){
-    $scope.projectList.sort(function(a,b){
+    
+     if($("#descD").css('display') === "none"){
+            $scope.projectList.sort(function(a,b){
         if(!a.entity.projectDescription)
             return -1;
         if(!b.entity.projectDescription)
             return 1;
         return a.entity.projectDescription.localeCompare(b.entity.projectDescription)});
+            $('#descD').css({
+                'display': 'inline-table'
+            });
+            $('#descDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+           $scope.projectList.sort(function(a,b){
+        if(!a.entity.projectDescription)
+            return -1;
+        if(!b.entity.projectDescription)
+            return 1;
+        return b.entity.projectDescription.localeCompare(a.entity.projectDescription)});
+            $('#descDUp').css({
+                'display': 'inline-table'
+            });
+            $('#descD').css({
+                'display': 'none'
+            });
+        }
+    
+    
+    $('#nameDUp').css({
+            'display': 'none'
+        });
+          $('#custNameDUp').css({
+            'display': 'none'
+        });
+             
+          $('#billMDUp').css({
+            'display': 'none'
+        });
+              $('#priceDUp').css({
+            'display': 'none'
+        });
     
      $('#nameD').css({
             'display': 'none'
@@ -631,9 +731,7 @@ $scope.sortByDesc = function(){
           $('#custNameD').css({
             'display': 'none'
         });
-              $('#descD').css({
-            'display': 'inline-table'
-        });
+             
           $('#billMD').css({
             'display': 'none'
         });
@@ -642,12 +740,51 @@ $scope.sortByDesc = function(){
         });
 }
 $scope.sortByBilling = function(){
-    $scope.projectList.sort(function(a,b){
+   
+    
+    if($("#billMD").css('display') === "none"){
+             $scope.projectList.sort(function(a,b){
         if(!a.entity.billingMethod)
             return -1;
         if(!b.entity.billingMethod)
             return 1;
         return a.entity.billingMethod.localeCompare(b.entity.billingMethod)});
+            $('#billMD').css({
+                'display': 'inline-table'
+            });
+            $('#billMDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+           $scope.projectList.sort(function(a,b){
+        if(!a.entity.billingMethod)
+            return -1;
+        if(!b.entity.billingMethod)
+            return 1;
+        return b.entity.billingMethod.localeCompare(a.entity.billingMethod)});
+            $('#billMDUp').css({
+                'display': 'inline-table'
+            });
+            $('#billMD').css({
+                'display': 'none'
+            });
+        }
+    
+    $('#nameDUp').css({
+            'display': 'none'
+        });
+          $('#custNameDUp').css({
+            'display': 'none'
+        });
+              $('#descDUp').css({
+            'display': 'none'
+        });
+          
+              $('#priceDUp').css({
+            'display': 'none'
+        });
+    
         $('#nameD').css({
             'display': 'none'
         });
@@ -657,23 +794,62 @@ $scope.sortByBilling = function(){
               $('#descD').css({
             'display': 'none'
         });
-          $('#billMD').css({
-            'display': 'inline-table'
-        });
+          
               $('#priceD').css({
             'display': 'none'
         });
 }
 $scope.sortByAmount = function(){
-    $scope.projectList.sort(function(a,b){
+    
+    if($("#priceD").css('display') === "none"){
+             $scope.projectList.sort(function(a,b){
         if(!a.entity.projectBillingAmount && !b.entity.projectBillingAmount)
             return 0;
         if(!a.entity.projectBillingAmount)
             return -1;
         if(!b.entity.projectBillingAmount)
             return 1;
-        return a.entity.projectBillingAmount-b.entity.projectBillingAmount;
+        return a.entity.projectBillingAmount - b.entity.projectBillingAmount;
     });
+            $('#priceD').css({
+                'display': 'inline-table'
+            });
+            $('#priceDUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+           $scope.projectList.sort(function(a,b){
+        if(!a.entity.projectBillingAmount && !b.entity.projectBillingAmount)
+            return 0;
+        if(!a.entity.projectBillingAmount)
+            return -1;
+        if(!b.entity.projectBillingAmount)
+            return 1;
+        return b.entity.projectBillingAmount - a.entity.projectBillingAmount;
+    });
+            $('#priceDUp').css({
+                'display': 'inline-table'
+            });
+            $('#priceD').css({
+                'display': 'none'
+            });
+    }
+    
+    
+    $('#nameDUp').css({
+            'display': 'none'
+        });
+          $('#custNameDUp').css({
+            'display': 'none'
+        });
+              $('#descDUp').css({
+            'display': 'none'
+        });
+          $('#billMDUp').css({
+            'display': 'none'
+        });
+    
      $('#nameD').css({
             'display': 'none'
         });
@@ -686,16 +862,8 @@ $scope.sortByAmount = function(){
           $('#billMD').css({
             'display': 'none'
         });
-              $('#priceD').css({
-            'display': 'inline-table'
-        });
+              
 }
-
-
-
-
-
-
 
 
 $scope.customerChanged = customerChanged;

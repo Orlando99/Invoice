@@ -97,23 +97,23 @@
       <form id="itemInfoForm" novalidate>
         <div class="table-row" ng-repeat="invItem in invoiceItems">
 
-          <div  class="col-30 layout-padding">
+          <div  class="col-30 layout-padding error-align">
             <i Style="margin-top: 10px" class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
               <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item same_height" ng-model="invItem.selectedItem"
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
                   <option value="" disabled>Select or Type to add</option>
             </select>
             </div>
-          <div class="col-12 layout-padding layout-padding-l text-right">
+          <div class="col-12 layout-padding layout-padding-l text-right error-align">
             <input maxlength="60" tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" onkeypress="numberValidation(event)"
               placeholder="1" ng-model="invItem.quantity" ng-change="reCalculateItemAmount($index)">
           </div>
-          <div class="col-12 layout-padding layout-padding-l text-right">
+          <div class="col-12 layout-padding layout-padding-l text-right error-align">
             <input maxlength="60" tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number" onkeypress="numberValidation(event)"
               placeholder="10.00" ng-model="invItem.rate"
               ng-change="reCalculateItemAmount($index)">
           </div>
-          <div class="col-12 layout-padding layout-padding-l text-right" ng-show="itemLevelTax">
+          <div class="col-12 layout-padding layout-padding-l text-right error-align" ng-show="itemLevelTax">
             <input maxlength="60" tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number" onkeypress="numberValidation(event)"
               placeholder="10.00" ng-model="invItem.discount"
               ng-change="reCalculateItemAmount($index)">

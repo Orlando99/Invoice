@@ -120,7 +120,7 @@ $scope.generateReport = function() {
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		//$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
 		$scope.toDateStr = formatDate($scope.toDate, dateFormat);
-
+        $scope.sortByInvoiceNo();
 		hideLoader();
 	});
 }

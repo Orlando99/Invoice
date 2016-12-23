@@ -16,16 +16,24 @@
     <table class="table-border-tb" style = "margin-bottom: 20px;">
       <tr class="thead">
         <td ng-click="sortByName()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
-          Name <span><img id="nameD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span>
+          Name <span><img id="nameD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="nameDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
         </td>
         <td ng-click="sortByCustomer()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
-            Customer Name <span><img id="custNameD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+            Customer Name <span><img id="custNameD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span>
+            <span><img id="custNameDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
+          </td>
         <td ng-click="sortByDesc()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
-            Description <span><img id="descD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+            Description <span><img id="descD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span>
+          <span><img id="descDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
+          </td>
         <td ng-click="sortByBilling()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
-            Billing Method <span><img id="billMD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+            Billing Method <span><img id="billMD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span>
+          <span><img id="billMDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
+          </td>
         <td ng-click="sortByAmount()" style="cursor:pointer" class="text-uppercase text-info layout-padding-tb-lg">
-            Price <span><img id="priceD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+            Price <span><img id="priceD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span>
+          <span><img id="priceDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
+          </td>
       </tr>
       <tr ng-repeat="project in projectList"
         ui-sref="dashboard.projects.details({projectId:project.entity.id})" style="cursor:pointer">

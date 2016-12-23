@@ -86,7 +86,7 @@ $scope.generateReport = function() {
 		$scope.totalStr = currencyFilter(total, '$', 2);
 		$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
 		$scope.toDateStr = formatDate($scope.toDate, dateFormat);
-
+        $scope.sortByDate();
 		hideLoader();
 	});
 }

@@ -372,6 +372,7 @@ function listExpenses() {
         $scope.allExpenses = res;
         $scope.displayedExpenses = res;
         $scope.currentExpenses = "All Expenses";
+        $scope.sortByDate();
 		hideLoader();
 
 	}, function(error) {
@@ -620,8 +621,6 @@ $scope.sortByCustomerName= function()
               $('#amountUp').css({
             'display': 'none'
         });
-    
-    
     
  }
 

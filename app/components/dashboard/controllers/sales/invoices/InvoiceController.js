@@ -100,7 +100,7 @@ $('#editInvoiceForm').validate({
 		invoiceCreateDate : 'required',
 		invoiceDueDate : {
 			required : true,
-			notBackDate : true
+			//notBackDate : true
 		}
 	},
 	messages: {
@@ -109,7 +109,7 @@ $('#editInvoiceForm').validate({
 		invoiceCreateDate : 'Please provide invoice Create date',
 		invoiceDueDate : {
 			required : 'Please provide invoice Due date',
-			notBackDate : 'Due date can not be before Create date'
+			//notBackDate : 'Due date can not be before Create date'
 		}
 	}
 });
@@ -944,6 +944,7 @@ $scope.customerChanged = function() {
 			$scope.subTotal = 0;
 			$scope.subTotalStr = currencyFilter(0, cc.currencySymbol, 2);
 			$scope.reCalculateTotal();
+            
 
 		} else {
 			reCalculateSubTotal();
@@ -1058,6 +1059,7 @@ function ListInvoices() {
 		$scope.invoiceList = res;
         $scope.allInvoices = res;
         $scope.displayedInvoices = res;
+        $scope.sortByStatus();
 		hideLoader();
 
 	}, function(error) {
@@ -1255,7 +1257,6 @@ function ListInvoices() {
             'display': 'none'
         });
         
-        
         if($("#orderno").css('display') === "none"){
             $scope.invoiceList.sort(function(a,b){ 
           return a.entity.poNumber.localeCompare(b.entity.poNumber)});
@@ -1275,11 +1276,9 @@ function ListInvoices() {
             $('#orderno').css({
                 'display': 'none'
             });
+            
         }
-         
-          
     }
-    
     
     $scope.sortByBalance= function()
     {

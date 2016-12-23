@@ -632,7 +632,7 @@ function listCreditNotes() {
 		$scope.creditNoteList = res;
         $scope.allcreditNoteList = res;
         $scope.displayedCreditNotes =res;
-        
+        $scope.sortByDate();
 		hideLoader();
 
 	}, function(error) {

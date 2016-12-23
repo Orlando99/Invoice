@@ -582,6 +582,7 @@ invoicesUnlimited.controller('CustomersController',
 				doSelectCustomerIfValidId(customerId);
 				doCreateEditObject();
 			}
+            $scope.sortByCustomerName();
 			hideLoader();
 
 		});

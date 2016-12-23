@@ -85,7 +85,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			invoiceCreateDate : 'required',
 			invoiceDueDate : {
 				required : true,
-				notBackDate : true
+				//notBackDate : true
 			}
 		},
 		messages: {
@@ -94,7 +94,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			invoiceCreateDate : 'Please provide invoice Create date',
 			invoiceDueDate : {
 				required : 'Please provide invoice Due date',
-				notBackDate : 'Due date can not be before Create date'
+				//notBackDate : 'Due date can not be before Create date'
 			}
 		}
 	});
@@ -400,7 +400,6 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			});
 		}
 		$scope.customFields = customFields;
-
 		hideLoader();
 	}
         
