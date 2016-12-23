@@ -235,7 +235,10 @@ angular.module('invoicesUnlimited')
 				url 	: '/new',
 				params : {
 					backLink : null,
-                    invoiceId : null
+                    invoiceId : null,
+                    estimateId : null,
+                    creditId : null,
+                    expanseId : null
 				},
 				views 		: {
 					'customersView' : {
@@ -399,6 +402,10 @@ angular.module('invoicesUnlimited')
 				edit : {
 					name	: 'dashboard.sales.estimates.edit',
 					url 	: '/sales/estimates/:estimateId/edit',
+                    params : {
+						estimateId : null,
+						customerId : null
+					},
 					views 	: {
 						'@' : {
 							controller 	 : 'EstimateController',
@@ -448,6 +455,10 @@ angular.module('invoicesUnlimited')
 				edit : {
 					name	: 'dashboard.sales.creditnotes.edit',
 					url 	: '/sales/creditnotes/:creditNoteId/edit',
+                    params : {
+						creditId : null,
+						customerId : null
+					},
 					views 	: {
 						'@' : {
 							controller 	 : 'CreditNoteController',
@@ -509,6 +520,10 @@ angular.module('invoicesUnlimited')
 			edit : {
 				name : 'dashboard.expenses.edit',
 				url : '/expenses/:expenseId/edit',
+                params : {
+					customerId : null,
+                    expanseId  : null
+				},
 				views : {
 					'@' : {
 						controller : 'ExpenseController',
