@@ -141,9 +141,33 @@ function listProjects() {
 	$q.when(projectService.listProjects(user))
 	.then(function(res) {
 	//	res = res.reverse();
-		$scope.projectList = res;
-        $scope.displayedProject = res;
-        $scope.sortByName();
+
+        $scope.projectList = [];
+        $scope.displayedProject = [];
+        
+        if(user.get('role') == 'Staff'){
+            
+            res.forEach(function(proj){
+                var users = proj.entity.get('users');
+                if(users){
+                    for(var i = 0; i < users.length; ++i){
+                        if(users[i].get('chosenUser').get('userName') == user.get('username')){
+                            $scope.projectList.push(proj);
+                            $scope.displayedProject.push(proj);
+                            break;
+                        }
+                    }
+                }
+            });
+            
+            
+        }
+        else{
+            $scope.projectList = res;
+            $scope.displayedProject = res;
+        }
+		$scope.sortByName();
+
 		hideLoader();
 
 	}, function(error) {
@@ -316,7 +340,9 @@ $scope.editTimesheet = function(index){
     $scope.selectedTimesheetList = $scope.timesheets[index];
    
     $scope.editTimesheetTask = $scope.timesheets[index].attributes.task;
-    $scope.editTimesheetUser = $scope.timesheets[index].attributes.user;
+    
+    //$scope.editTimesheetTask = $scope.timesheets[index].attributes.task;
+    $scope.timesheetUser = $scope.timesheets[index].attributes.user;
     var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
     
     $scope.editTimesheetDate = formatDate($scope.timesheets[index].date,dateFormat) ;

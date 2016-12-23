@@ -15,6 +15,10 @@ invoicesUnlimited.controller('ModalContactController',function(
                 required: false,
                 minlength: 14
             },
+            phone: {
+                required: false,
+                minlength: 14
+            },
 			email : {
 				required : false,
 				email : true
@@ -24,6 +28,10 @@ invoicesUnlimited.controller('ModalContactController',function(
             firstname: 'Please enter first name',
             lastname: 'Please enter last name',
             mobile: {
+               // required: 'Please enter mobile number',
+                minlength: 'Please enter a valid phone number'
+            },
+            phone: {
                // required: 'Please enter mobile number',
                 minlength: 'Please enter a valid phone number'
             },

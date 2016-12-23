@@ -153,7 +153,7 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
                 associatedTaxes.push($scope.taxesForGroup[i].entity);
                 total += $scope.taxesForGroup[i].rate;
                 if($scope.taxesForGroup[i].isCompound){
-                    compund += $scope.taxesForGroup[i].rate;
+                    compundRate += $scope.taxesForGroup[i].rate;
                     compundCount++;
                 }
             }

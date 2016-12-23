@@ -259,7 +259,7 @@ $scope.showItemDetail = function(index) {
 	$('#editItemForm').validate().resetForm();
 	$(".edit-item").addClass("show");
 	var item = $scope.items[index];
-
+    $scope.confirmItem = item;
 	$scope.itemIndex = index;
 	$scope.itemName = item.entity.title;
 	$scope.itemRate1 = item.entity.rate;
@@ -281,10 +281,11 @@ $scope.confirmDelete = function(index) {
 	var item = $scope.items[index];
 	if (! item) return;
 
+    $scope.itemIndex = index;
 	$scope.confirmItem = item;
 	$(".confirm-delete").addClass("show");
 }
-
+/*
 $scope.deleteIteminModal = function(confirmed, index) {
 		showLoader();
 		$scope.items[$scope.itemIndex].entity.set('isDeleted', 1);
@@ -295,10 +296,21 @@ $scope.deleteIteminModal = function(confirmed, index) {
 			$state.reload();
 		});
 }
-
+*/
+$scope.deleteIteminModal = function() {
+		$(".confirm-delete").addClass("show");
+}
 $scope.deleteItem = function(confirmed, index) {
 	if(confirmed) {
 		showLoader();
+        $scope.items[$scope.itemIndex].entity.set('isDeleted', 1);
+		$scope.items[$scope.itemIndex].entity.save()
+		.then(function() {
+			$(".confirm-delete").removeClass("show");
+			hideLoader();
+			$state.reload();
+		});
+        /*
 		$scope.confirmItem.entity.set('isDeleted', 1);
 		$scope.confirmItem.entity.save()
 		.then(function() {
@@ -306,6 +318,7 @@ $scope.deleteItem = function(confirmed, index) {
 			hideLoader();
 			$state.reload();
 		});
+        */
 
 	} else {
 		$(".confirm-delete").removeClass("show");

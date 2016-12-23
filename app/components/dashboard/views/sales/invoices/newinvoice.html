@@ -24,10 +24,22 @@
         <input maxlength="15" class="col-75" type="text" ng-model="poNumber">
       </div>
       <!--datepicker-popup-template-url="template/datepickerPopUp/customPopUp.html"-->
-      <div  class="input-container col-60 layout-margin-b datepicker-noclear">
-        <label class="layout-padding-t-sm">Due Date &amp; Terms</label>
-       <input maxlength="60" name="invoiceDueDate" id="end_date" class="col-35 form-control"  type="text" ng-model="dueDate"
-          uib-datepicker-popup="{{dateFormat}}" is-open="openPicker2" show-weeks="false" ng-click="openDatePicker(2)" readonly>
+       
+    <div  class="input-container col-60 layout-margin-b datepicker-noclear">    
+     <label class="layout-padding-t-sm">Invoice Date &amp; Terms</label>
+            <input 
+                 maxlength="60" 
+                 name="invoiceCreateDate" 
+                 class="col-35 form-control" 
+                 type="text" 
+                 uib-datepicker-popup="{{dateFormat}}"
+                 placeholder="12/03/2014" 
+                 ng-model="todayDate" 
+                 is-open="openPicker1" 
+                 ng-click="openDatePicker(1)" 
+                 show-weeks="false" 
+                 ng-change="calculateDueDate()" 
+                 show-weeks="false" show-button-bar="false" readonly>
         
         <select class="col-35 pull-right same_height" ng-change="paymentTermsChanged()"
           ng-options="term.name for term in paymentTerms.terms track by term.value"
@@ -37,13 +49,40 @@
         </select>
       <!--  <span class="due-date">Due Date 12/25/2014</span> -->
       </div>
+        
+      <div class="input-container col-60 layout-margin-b datepicker-noclear" ng-show="hasDueDate">
+      <label class="layout-padding-t-sm">Due Date</label>    
+           <input 
+              maxlength="60" 
+              name="invoiceDueDate" 
+              id="end_date" 
+              class="col-75" 
+              type="text" 
+              ng-model="dueDate"
+              uib-datepicker-popup="{{dateFormat}}" 
+              is-open="openPicker2" 
+              show-weeks="false" 
+              ng-click="openDatePicker(2)" 
+            readonly>
+      </div>
+        <!---
+  <label class="layout-padding-t-sm">Due Date &amp; Terms</label>
+       <input maxlength="60" name="invoiceDueDate" id="end_date" class="col-35 form-control"  type="text" ng-model="dueDate"
+          uib-datepicker-popup="{{dateFormat}}" is-open="openPicker2" show-weeks="false" ng-click="openDatePicker(2)" readonly>
+        
+        <select class="col-35 pull-right same_height" ng-change="paymentTermsChanged()"
+          ng-options="term.name for term in paymentTerms.terms track by term.value"
+          ng-model="paymentTerms.selectedTerm">
+ 
+        </select>
+      </div>
       <div class="input-container col-60 layout-margin-b datepicker-noclear" ng-show="hasDueDate">
         <label class="layout-padding-t-sm">Invoice Date</label>
           <input maxlength="60" name="invoiceCreateDate" class="col-75" type="text" uib-datepicker-popup="{{dateFormat}}"
           placeholder="12/03/2014" ng-model="todayDate" is-open="openPicker1" 
           ng-click="openDatePicker(1)" show-weeks="false" ng-change="calculateDueDate()" show-weeks="false" show-button-bar="false" readonly>
-        
       </div>
+        --->
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Late Fee</label>
         <select name="latefee" class="col-75" ng-change="lateFeeChanged()" ng-model="selectedLateFee"

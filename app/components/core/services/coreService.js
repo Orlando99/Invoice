@@ -71,6 +71,20 @@ invoicesUnlimited.factory('coreFactory',
 			return items;
 		});
 	}
+    
+    core.getAllItemsIncludingDelete = function(params) {
+		var query = new Parse.Query("Item");
+		query.equalTo("organization", params.organization);
+		//query.notEqualTo("isDeleted", 1);
+		query.include("tax");
+		return query.find().then(function(res) {
+			var items = [];
+			res.forEach(function(elem) {
+				items.push(new itemFactory(elem));
+			});
+			return items;
+		});
+	}
 
 	core.getUserRole = function(user) {
 		var query = new Parse.Query(Parse.Role);
