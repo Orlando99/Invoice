@@ -183,13 +183,22 @@ function prepareToEditExpense() {
 		$scope.selectedCategory = $scope.categories.filter(function(category) {
 			return expense.entity.category == category.entity.name;
 		})[0];
-
-		var custObj = expense.entity.get('customer');
-		if (custObj) {
-			$scope.selectedCustomer = $scope.customers.filter(function(cust) {
-				return custObj.id == cust.entity.id;
-			})[0];
-		}
+        
+        var custId = $state.params.customerId;
+        
+        if(custId){
+            $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                return custId === cust.entity.id;
+            })[0];
+        }
+        else{
+            var custObj = expense.entity.get('customer');
+            if (custObj) {
+                $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                    return custObj.id == cust.entity.id;
+                })[0];
+            }
+        }
 
 		if(expense.entity.tax) {
 			$scope.selectedTax = $scope.taxes.filter(function(tax) {
@@ -327,6 +336,8 @@ function loadRequiredData() {
 			return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 		});
 		if(isGoTo.newExpense($state.current.name))
+			$scope.customers = $scope.customers.concat([createCustomerOpener]);
+        if(isGoTo.edit($state.current.name))
 			$scope.customers = $scope.customers.concat([createCustomerOpener]);
 	});
 	promises.push(p);
@@ -900,6 +911,10 @@ $scope.removeFile = function(index) {
 $scope.customerSelected = function() {
 	if( isGoTo.newExpense($state.current.name) && $scope.selectedCustomer.dummy) {
 		$state.go('dashboard.customers.new', {backLink : $state.current.name});
+		return;
+	}
+    if( isGoTo.edit($state.current.name) && $scope.selectedCustomer.dummy) {
+		$state.go('dashboard.customers.new', {backLink : $state.current.name, expenseId : $state.params.expenseId});
 		return;
 	}
 

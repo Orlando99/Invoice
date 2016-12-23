@@ -119,6 +119,8 @@ function prepareToEditCreditNote() {
 	var creditNoteId = $state.params.creditNoteId;
 	if (! creditNoteId) return;
 
+    var custId = $state.params.customerId;
+    
 	showLoader();
 	$q.when(LoadRequiredData())
 	.then(function(msg) {
@@ -132,10 +134,19 @@ function prepareToEditCreditNote() {
 		$scope.deletedItems = [];
 		$scope.itemsWithOutId = 0;
 		$scope.itemsWithIdinDel = 0;
+        
+        if(custId){
+            $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                return custId === cust.entity.id;
+            })[0];
+        }
+        else{
+            $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                return creditNote.entity.get('customer').id === cust.entity.id;
+            })[0];
+        }
 		
-		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
-			return creditNote.entity.get('customer').id == cust.entity.id;
-		})[0];
+		
 		return $q.when(customerChangedHelper());
 	})
 	.then(function() {
@@ -543,6 +554,13 @@ function customerChangedHelper() {
 
 $scope.customerChanged = function() {
 	showLoader();
+    
+    if($scope.selectedCustomer.dummy) 
+    {
+        $state.go('dashboard.customers.new', {'backLink' : $state.current.name, 'creditNoteId' : $state.params.creditNoteId});
+        return;
+    }
+    
 	$q.when(customerChangedHelper())
 	.then(function() {
 		if($scope.creditItems.length < 1) {
@@ -569,6 +587,8 @@ function LoadRequiredData() {
 		$scope.customers = res.sort(function(a,b){
 			return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 		});
+        //$scope.customers = $scope.customers.concat([createCustomerOpener]);
+        //$scope.customers = $scope.customers.push(createCustomerOpener);
 	//	$scope.selectedCustomer = $scope.customers[0];
 	});
 	promises.push(p);

@@ -238,7 +238,7 @@ angular.module('invoicesUnlimited')
                     invoiceId : null,
                     estimateId : null,
                     creditId : null,
-                    expanseId : null
+                    expenseId : null
 				},
 				views 		: {
 					'customersView' : {
@@ -456,7 +456,7 @@ angular.module('invoicesUnlimited')
 					name	: 'dashboard.sales.creditnotes.edit',
 					url 	: '/sales/creditnotes/:creditNoteId/edit',
                     params : {
-						creditId : null,
+						creditNoteId : null,
 						customerId : null
 					},
 					views 	: {
@@ -522,7 +522,7 @@ angular.module('invoicesUnlimited')
 				url : '/expenses/:expenseId/edit',
                 params : {
 					customerId : null,
-                    expanseId  : null
+                    expenseId  : null
 				},
 				views : {
 					'@' : {

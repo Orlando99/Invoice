@@ -148,7 +148,7 @@ function CheckUseCase(stateName) {
 function prepareToEditEstimate() {
 	var estimateId = $state.params.estimateId;
 	if (! estimateId) return;
-
+    var custId = $state.params.customerId;
 	showLoader();
 	$q.when(LoadRequiredData())
 	.then(function(msg) {
@@ -163,9 +163,17 @@ function prepareToEditEstimate() {
 		$scope.itemsWithOutId = 0;
 		$scope.itemsWithIdinDel = 0;
 		
-		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
-			return estimate.entity.get('customer').id == cust.entity.id;
-		})[0];
+        if(custId){
+            $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                return custId === cust.entity.id;
+            })[0];
+        }
+        else{
+            $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                return estimate.entity.get('customer').id === cust.entity.id;
+            })[0];
+        }
+        
 		return $q.when(customerChangedHelper());
 	})
 	.then(function() {
@@ -710,6 +718,11 @@ function customerChangedHelper() {
 }
     
     function customerChanged() {
+    if($scope.selectedCustomer.dummy) 
+    {
+        $state.go('dashboard.customers.new', {'backLink' : $state.current.name, 'estimateId' : $state.params.estimateId});
+        return;
+    }
 	showLoader();
 	$q.when(customerChangedHelper())
 	.then(function() {
@@ -740,7 +753,8 @@ function LoadRequiredData() {
 		$scope.customers = res.sort(function(a,b){
 			return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 		});
-	//	$scope.selectedCustomer = $scope.customers[0];
+	    //$scope.selectedCustomer = $scope.customers[0];
+        $scope.customers.push(createCustomerOpener);
 	});
 	promises.push(p);
 

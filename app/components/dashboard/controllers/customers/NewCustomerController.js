@@ -245,8 +245,18 @@ invoicesUnlimited.controller('NewCustomerController',
 					// or send loadAgain = true from all the
 					// places where coreFactory.loadAllCustomers in used.
 					coreFactory.clearAllOnLogOut();
+                    
                     if($state.params.invoiceId){
                         $state.go($state.params.backLink, {'customerId':custObj.id, 'invoiceId' : $state.params.invoiceId});
+                    }
+                    else if($state.params.estimateId){
+                        $state.go($state.params.backLink, {'customerId':custObj.id, 'estimateId' : $state.params.estimateId});
+                    }
+                    else if($state.params.creditNoteId){
+                        $state.go($state.params.backLink, {'customerId':custObj.id, 'creditNoteId' : $state.params.creditNoteId});
+                    }
+                    else if($state.params.expenseId){
+                        $state.go($state.params.backLink, {'customerId':custObj.id, 'expenseId' : $state.params.expenseId});
                     }
                     else{
 					   $state.go($state.params.backLink, {customerId:custObj.id});
