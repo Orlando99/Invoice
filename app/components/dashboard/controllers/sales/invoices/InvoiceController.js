@@ -987,7 +987,7 @@ function LoadRequiredData() {
 	});
 	promises.push(p);
 
-	p = $q.when(coreFactory.getAllItems({
+	p = $q.when(coreFactory.getAllItemsIncludingDelete({
 		organization : organization
 	})).then(function(items) {
 		$scope.actualItems = items.filter(function(item) {

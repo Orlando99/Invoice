@@ -28,6 +28,7 @@ return {
 
 		query.equalTo("organization", organization);
 		query.include("customer");
+        query.include('users.chosenUser');
 
 		return query.find().then(function(projectObjs) {
 			var projects = [];

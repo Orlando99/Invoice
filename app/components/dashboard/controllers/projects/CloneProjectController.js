@@ -424,7 +424,7 @@ $scope.openDatePicker = function(n) {
             case 2: $scope.openPicker2 = true; break;
 	}
 }
-    
+
 function saveClonedProject() {
 	var project = $scope.project.entity;
 	project.set('customer', $scope.selectedCustomer.entity);
@@ -464,6 +464,13 @@ function saveClonedProject() {
         return obj;
 	});
 }
+
+function showProjectNameError () {
+		var validator = $( "#editProjectForm" ).validate();
+		validator.showErrors({
+			"projectName": "Project with this name already exists"
+		});
+	}
     
 $scope.saveProject = function() {
 	if(!$('#editProjectForm').valid())
@@ -471,17 +478,31 @@ $scope.saveProject = function() {
 
 	showLoader();
 	
-	saveClonedProject()
-	.then(function(project) {
-		hideLoader();
-		console.log(project);
-		//$state.go('dashboard.projects.all');
-        $state.go('dashboard.projects.details', {projectId:project.id});
+    $q.when(projectService.checkProjectNameAvailable({
+			projectName : $scope.projectName,
+			organization : organization
+		}))
+		.then(function(avilable) {
+            if(!avilable){
+                hideLoader();
+                showProjectNameError();
+				scrollToOffset();
+				return Promise.reject('Project with this name already exists');
+            }
+            else{
+                saveClonedProject()
+                .then(function(project) {
+                    hideLoader();
+                    console.log(project);
+                    //$state.go('dashboard.projects.all');
+                    $state.go('dashboard.projects.details', {projectId:project.id});
 
-	}, function(error) {
-		hideLoader();
-		console.log(error.message);
-	});
+                }, function(error) {
+                    hideLoader();
+                    console.log(error.message);
+                });
+            }
+    });
 }
     
 $scope.cancel = function() {
