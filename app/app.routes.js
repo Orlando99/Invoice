@@ -334,6 +334,9 @@ angular.module('invoicesUnlimited')
 				edit : {
 					name	: 'dashboard.sales.invoices.edit',
 					url 	: '/sales/invoices/:invoiceId/edit',
+                    params : {
+						customerId : null
+					},
 					views 	: {
 						'@' : {
 							controller 	 : 'InvoiceController',

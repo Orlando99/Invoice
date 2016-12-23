@@ -181,6 +181,10 @@ $scope.cloneInvoice = function() {
     
 }
 
+$scope.editInvoice = function(){
+    $state.go('dashboard.sales.invoices.edit', {'invoiceId':$scope.invoice.entity.id });
+}
+
 $scope.showAvailableCredits = function() 
 {
 	showLoader();

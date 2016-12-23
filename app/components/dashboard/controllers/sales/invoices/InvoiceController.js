@@ -213,7 +213,9 @@ function CheckUseCase(stateName) {
 function prepareToEditInvoice() {
 	var invoiceId = $state.params.invoiceId;
 	if (!invoiceId) return;
-
+    
+    var custId = $state.params.customerId;
+    
 	showLoader();
 	$q.when(LoadRequiredData())
 	.then(function(msg) {
@@ -226,18 +228,18 @@ function prepareToEditInvoice() {
 		$scope.deletedItems = [];
 		$scope.itemsWithOutId = 0;
 		$scope.itemsWithIdinDel = 0;
- 
-		$scope.selectedCustomer = $scope.customers.filter(function(cust) {
-			return invoice.entity.get('customer').id === cust.entity.id;
-		})[0];
-        var customerId = $state.params.customerId; 
-		if(customerId) {
-			$scope.selectedCustomer = $scope.customers.filter(function(cust) {
-				//return cust.entity.id == customerId;
-                return invoice.entity.get('customer').id == customerId;                
-			})[0];
+        
+        if(custId){
+            $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                return custId === cust.entity.id;
+            })[0];
         }
-       // $scope.customers.push(createCustomerOpener);//by mee
+        else{
+            $scope.selectedCustomer = $scope.customers.filter(function(cust) {
+                return invoice.entity.get('customer').id === cust.entity.id;
+            })[0];
+        }
+       
 		return $q.when(customerChangedHelper());
 	})
 	.then(function() {
@@ -942,13 +944,13 @@ function customerChangedHelper() {
 }
 
 $scope.customerChanged = function() {
-   /* 
+   
     if($scope.selectedCustomer.dummy) 
     {
-        $state.go('dashboard.customers.new', {backLink : $state.current.name, invoiceId :      $state.params.invoiceId});
+        $state.go('dashboard.customers.new', {'backLink' : $state.current.name, 'invoiceId' : $state.params.invoiceId});
         return;
     }
-    */
+    
 	showLoader();
 	$q.when(customerChangedHelper())
 	.then(function() {
@@ -981,9 +983,13 @@ function LoadRequiredData() {
 
 	p = $q.when(coreFactory.getAllCustomers())
 	.then(function(res) {
+        res = res.filter(function(cust) {
+				return cust.entity.status == 'active';
+			});
 		$scope.customers = res.sort(function(a,b){
 			return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 		});
+        $scope.customers.push(createCustomerOpener);
 	//	$scope.selectedCustomer = $scope.customers[0];
 	});
 	promises.push(p);

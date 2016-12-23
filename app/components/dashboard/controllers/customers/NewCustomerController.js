@@ -246,8 +246,7 @@ invoicesUnlimited.controller('NewCustomerController',
 					// places where coreFactory.loadAllCustomers in used.
 					coreFactory.clearAllOnLogOut();
                     if($state.params.invoiceId){
-                        $state.go($state.params.backLink, {customerId:custObj.id, invoiceId : $state.params.invoiceId});
-                        
+                        $state.go($state.params.backLink, {'customerId':custObj.id, 'invoiceId' : $state.params.invoiceId});
                     }
                     else{
 					   $state.go($state.params.backLink, {customerId:custObj.id});
@@ -259,7 +258,7 @@ invoicesUnlimited.controller('NewCustomerController',
                         $state.go('dashboard');
                     }
                     else{
-					$state.go('dashboard.customers.all');
+					   $state.go('dashboard.customers.all');
                     }
 				}
 			});

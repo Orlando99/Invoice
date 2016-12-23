@@ -388,6 +388,8 @@ invoicesUnlimited.controller('CustomersController',
 			return to.endsWith('customers');
 		},
 		edit : function(to){
+            if(!to.includes('customers'))
+                return false;
 			return to.endsWith('edit');
 		},
 		newCustomer : function(to){
