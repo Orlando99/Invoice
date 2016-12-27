@@ -237,7 +237,7 @@ angular.module('invoicesUnlimited')
 					backLink : null,
                     invoiceId : null,
                     estimateId : null,
-                    creditId : null,
+                    creditNoteId : null,
                     expenseId : null
 				},
 				views 		: {

@@ -117,7 +117,7 @@ function CheckUseCase(stateName) {
 
 function prepareToEditCreditNote() {
 	var creditNoteId = $state.params.creditNoteId;
-	if (! creditNoteId) return;
+	if (!creditNoteId) return;
 
     var custId = $state.params.customerId;
     
@@ -553,13 +553,13 @@ function customerChangedHelper() {
 }
 
 $scope.customerChanged = function() {
-	showLoader();
-    
+	
     if($scope.selectedCustomer.dummy) 
     {
         $state.go('dashboard.customers.new', {'backLink' : $state.current.name, 'creditNoteId' : $state.params.creditNoteId});
         return;
     }
+    showLoader();
     
 	$q.when(customerChangedHelper())
 	.then(function() {
@@ -577,19 +577,23 @@ $scope.customerChanged = function() {
 		hideLoader();
 	});
 }
+/*
+//$scope.customers = $scope.customers.concat([createCustomerOpener]);
+        //$scope.customers = $scope.customers.push(createCustomerOpener);
+        // $scope.selectedCustomer = $scope.customers[0];
 
+*/
 function LoadRequiredData() {
 	var promises = [];
 	var p = null;
-
+    coreFactory.clearAllOnLogOut();
 	p = $q.when(coreFactory.getAllCustomers())
 	.then(function(res) {
 		$scope.customers = res.sort(function(a,b){
 			return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 		});
-        //$scope.customers = $scope.customers.concat([createCustomerOpener]);
-        //$scope.customers = $scope.customers.push(createCustomerOpener);
-	//	$scope.selectedCustomer = $scope.customers[0];
+ 
+        $scope.customers.push(createCustomerOpener);
 	});
 	promises.push(p);
 
@@ -683,7 +687,6 @@ function listCreditNotes() {
                 'display': 'none'
             });
         }
-      
       
       $('#date').css({
             'display': 'none'
@@ -879,9 +882,7 @@ function listCreditNotes() {
             $('#cusname').css({
                 'display': 'none'
             });
-        }
-       
-       
+        }      
         $('#date').css({
             'display': 'none'
         });
