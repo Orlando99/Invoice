@@ -39,7 +39,10 @@ var JS_DIR = './assets/js/';
 var colorCount = 98;
 var createItemOpener = {'entity':{'title':'+ Create new item'}, 'dummy':true};
 var createTaxOpener = {'name':'+ Create new tax', 'dummy':true};
-var createCustomerOpener = {'entity':{'displayName':'+ Create new Customer'}, 'dummy':true};
+var createCustomerOpener = 
+{
+   
+    'entity':{'displayName':'+ Create new Customer'}, 'dummy':true};
 var createTaskOpener = {'attributes':{'taskName':'+ Create new task'}, 'taskName':'+ Create new task', 'dummy':true};
 var createUserOpener = {'userName':'+ Create new User', 'dummy':true};
 var createLateFeeOpener = {'toStr':'+ Add New Late Fee', 'dummy':true};
