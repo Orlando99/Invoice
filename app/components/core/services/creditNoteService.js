@@ -1,8 +1,8 @@
 'use strict';
 
-invoicesUnlimited.factory('creditNoteService', ['creditNoteFactory', 'itemService', 'currencyFilter',
+invoicesUnlimited.factory('creditNoteService', ['$q', 'creditNoteFactory', 'itemService', 'currencyFilter',
 
-function(creditNoteFactory, itemService, currencyFilter){
+function($q, creditNoteFactory, itemService, currencyFilter){
 
 return {
 	test : function() {
@@ -43,6 +43,7 @@ return {
 		var CreditNote = Parse.Object.extend('CreditNotes');
 		var query = new Parse.Query(CreditNote);
 		query.include('comments');
+        query.include('refunds');
 
 		return query.get(creditNoteId)
 		.then(function(cnObj) {
@@ -51,6 +52,21 @@ return {
 			});
 			return creditNote;
 		});
+	},
+    addRefunds : function(objs, role) {
+		var promises = [];
+		var Refund = Parse.Object.extend('Refund');
+		var acl = new Parse.ACL();
+		acl.setRoleWriteAccess(role.get("name"), true);
+		acl.setRoleReadAccess(role.get("name"), true);
+
+		for (var i=0; i < objs.length; ++i) {
+			var refund = new Refund();
+			refund.setACL(acl);
+			promises.push(refund.save(objs[i]));
+		}
+		
+		return $q.all(promises);
 	},
 	getCreditNote : function(creditNoteId) {
 		var CreditNote = Parse.Object.extend('CreditNotes');

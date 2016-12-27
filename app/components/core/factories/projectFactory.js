@@ -49,10 +49,19 @@ function Project (parseObject, params) {
 		}
         
         var users = parseObject.get('users');
+        if (users) {
+			users = users.map(function(elem){
+				var usr = new staffFactory(elem);
+				return usr;
+			});
+			this.users = users;
+		}
+        /*
         if(users)
         {
             this.users = users;
         }
+        */
         var timesheets = parseObject.get('timeSheets');
         if(timesheets){
             this.timesheets = timesheets;

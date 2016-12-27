@@ -134,6 +134,94 @@ function showProjectDetail() {
         
         if(project.timesheets)
             project.timesheets.forEach(function(obj){
+                var hh = obj.get('hoursSpent');
+                var mm = obj.get('minutesSpent');
+                
+                $scope.staff.forEach(function(usr){
+                    if(usr.user.userName == obj.get('user').get('userName')){
+                        if(usr.loggedHours){
+                            usr.loggedHours += hh;
+                            usr.loggedHours += ((usr.loggedMinutes + mm) / 60);
+                            usr.loggedMinutes = ((usr.loggedMinutes + mm) % 60);
+                        }
+                        else{
+                            usr.loggedHours = hh + parseInt((mm / 60).toFixed(0));
+                            usr.loggedMinutes = mm % 60;
+                        }
+                        var tempHours = usr.loggedHours < 10 ? '0' + usr.loggedHours : usr.loggedHours + '';
+                        var tempMin = usr.loggedMinutes < 10 ? '0' + usr.loggedMinutes : usr.loggedMinutes + '';
+                        usr.loggedTime = tempHours + ':' + tempMin;
+                        
+                    }
+                    else if(!usr.loggedHours){
+                        usr.loggedHours = 0;
+                        usr.loggedMinutes = 0;
+                        usr.loggedTime = "00:00";
+                    }
+                        
+                });
+                
+                $scope.tasks.forEach(function(tsk){
+                    if(!tsk.loggedHours){
+                        tsk.loggedHours = 0;
+                        tsk.loggedMinutes = 0;
+                        tsk.billedHours = 0;
+                        tsk.billedMinutes = 0;
+                        tsk.unbilledHours = 0;
+                        tsk.unbilledMinutes = 0;
+                        tsk.loggedTime = '00:00';
+                        tsk.billedTime = '00:00';
+                        tsk.unbilledTime = '00:00';
+                    }
+                    
+                    if(tsk.entity.id == obj.get('task').id){
+                        tsk.loggedHours += hh;
+                        tsk.loggedHours += parseInt(((tsk.loggedMinutes + mm) / 60).toFixed(0));
+                        tsk.loggedMinutes = ((tsk.loggedMinutes + mm) % 60);
+                        
+                        var tempHours = tsk.loggedHours < 10 ? '0' + tsk.loggedHours : tsk.loggedHours + '';
+                        var tempMin = tsk.loggedMinutes < 10 ? '0' + tsk.loggedMinutes : tsk.loggedMinutes + '';
+                        tsk.loggedTime = tempHours + ':' + tempMin;
+                        
+                        if(obj.get('isBilled')){
+                            tsk.billedHours += hh;
+                            tsk.billedHours += parseInt(((tsk.billedMinutes + mm) / 60).toFixed(0));
+                            tsk.billedMinutes = ((tsk.billedMinutes + mm) % 60);
+                            
+                            tempHours = tsk.billedHours < 10 ? '0' + tsk.billedHours : tsk.billedHours + '';
+                            tempMin = tsk.billedMinutes < 10 ? '0' + tsk.billedMinutes : tsk.billedMinutes + '';
+                            tsk.billedTime = tempHours + ':' + tempMin;
+                        }
+                        else{
+                            tsk.unbilledHours += hh;
+                            tsk.unbilledHours += parseInt(((tsk.unbilledMinutes + mm) / 60).toFixed(0));
+                            tsk.unbilledMinutes = ((tsk.unbilledMinutes + mm) % 60);
+                            
+                            tempHours = tsk.unbilledHours < 10 ? '0' + tsk.unbilledHours : tsk.unbilledHours + '';
+                            tempMin = tsk.unbilledMinutes < 10 ? '0' + tsk.unbilledMinutes : tsk.unbilledMinutes + '';
+                            tsk.unbilledTime = tempHours + ':' + tempMin;
+                        }
+                        
+                    }   
+                });
+                
+                if(obj.get('isBilled')){
+                    billedHours += hh;
+                    billedMinutes += mm;
+                }
+                else{
+                    hours += hh;
+                    minutes += mm;
+                }
+                
+                
+                hh += parseInt((mm/60).toFixed(0));
+                mm = mm % 60;
+                hh = hh < 10 ? '0' + hh : '' + hh
+                mm = mm < 10 ? '0' + mm : '' + mm
+                obj.time = hh + ':' + mm;
+
+                /*
                 var t = obj.get('timeSpent');
                 if(t){
                     var d = obj.get('date');
@@ -159,6 +247,7 @@ function showProjectDetail() {
                 }
                 else
                     obj.time = "00:00";
+                    */
             });
         
         totalHours = hours + billedHours;
@@ -328,6 +417,7 @@ function createStaffUsers (users, params) {
     obj.set('organization', params.organization);
     obj.setACL(params.acl);
     obj.set('chosenUser', users);
+    obj.set('staffHours', $scope.staffHours);
     parseUsers.push(obj);
 
     return Parse.Object.saveAll(parseUsers).then(function(staffObjs) {
@@ -399,12 +489,16 @@ $scope.saveTimesheet = function(){
         notes : $scope.timesheetDescription,
         timeSpent : d,
         hours : $scope.timesheetHours < 10 ? '0' + $scope.timesheetHours : '' + $scope.timesheetHours,
-        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes
+        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes,
+        hoursSpent : $scope.timesheetHours,
+        minutesSpent : $scope.timesheetMinutes
     };
     
     createTimesheets (newsheet, params);
     
     $scope.timesheetUser = "";
+    $scope.timesheetHours = undefined;
+    $scope.timesheetMinutes = undefined;
     $scope.timesheetTask = "";
     $scope.timesheetDate = new Date();
     $scope.timesheetDescription = "";
@@ -426,7 +520,9 @@ function createTimesheets (timesheets, params) {
     obj.set('task', timesheets.task);
     obj.set('date', timesheets.date);
     obj.set('notes', timesheets.notes);
-    obj.set('timeSpent', timesheets.timeSpent);
+    //obj.set('timeSpent', timesheets.timeSpent);
+    obj.set('hoursSpent', timesheets.hoursSpent);
+    obj.set('minutesSpent', timesheets.minutesSpent);
 
     parseTasks.push(obj);
 

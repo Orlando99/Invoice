@@ -1,8 +1,8 @@
 'use strict';
 
-invoicesUnlimited.factory('creditNoteFactory', ['userFactory', 'creditNoteItemFactory', 'commentFactory',
+invoicesUnlimited.factory('creditNoteFactory', ['userFactory', 'creditNoteItemFactory', 'commentFactory','paymentFactory',
 
-function(userFactory, creditNoteItemFactory, commentFactory) {
+function(userFactory, creditNoteItemFactory, commentFactory, paymentFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -70,8 +70,16 @@ function CreditNote (parseObject, params) {
 		}
 
 	} else if (params.operation == 'details') {
-		creditNoteFields = ['creditNumber', 'creditReceipt'];
+		creditNoteFields = ['creditNumber', 'creditReceipt', 'remainingCredits'];
 
+        var payments = parseObject.get('refunds');
+		if (payments) {
+			payments = payments.map(function(elem){
+				return new paymentFactory(elem);
+			});
+			this.payments = payments;
+		}
+        
 		var comments = parseObject.get('comments');
 		if (comments) {
 			comments = comments.map(function(elem){

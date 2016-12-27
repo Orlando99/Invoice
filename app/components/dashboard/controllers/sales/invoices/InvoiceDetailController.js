@@ -355,10 +355,22 @@ $scope.prepareAddPayment = function() {
 			paymentAmount : {
 				required : true,
 				number : true,
-				min : 0.01
+				min : 0.01,
+                max : $scope.paymentAmount
 			},
 			paymentRef : 'required',
 			paymentMode : 'required'
+		},
+        messages: {
+            paymentDate : 'Please select date',
+			paymentAmount : {
+				required : 'Please enter payment amount',
+				number : 'Please enter valid amount',
+				min : 'Amount must be greater than 0',
+                max : 'Amount cannot be greater than balance due'
+			},
+			paymentRef : 'Please enter reference number',
+			paymentMode : 'Please select payment mode'
 		}
 	});
 	$('#paymentForm').validate().resetForm();

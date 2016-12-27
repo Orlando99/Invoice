@@ -13,6 +13,8 @@
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
         <li><a href="" ng-click="emailReceipt()">Send as Email</a></li>
           <li><a href="" ng-click="textReceipt()">Send as Text</a></li>
+          <li class="modal-opener" data-toggle="record-payment" ng-if="creditNote.entity.remainingCredits > 0"><a href=""
+              ng-click="prepareAddPayment()">Add Refund</a></li>
         <li><a ng-href="{{templateUrl}}" target="_blank" ng-click="creditNotePrinted()">Print</a></li>
       </ul>
     </div>
@@ -61,8 +63,66 @@
         <div class="clearfix"></div>
       </div>
     </div>
+      
+      <div class="clearfix"></div>
 
-    <div class="clearfix"></div>
+    <h3 class="layout-margin-t section-title text-uppercase text-color-normalize">Refund History</h3>
+
+    <div class="container container-table layout-margin-t">
+      <div class="thead layout-padding">
+        <div class="col-15">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Date</h3>
+        </div>
+        <div class="col-15 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Payment</h3>
+        </div>
+        <div class="col-20 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Reference #</h3>
+        </div>
+        <div class="col-25 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Refund Mode</h3>
+        </div>
+        <div class="col-15 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Amount</h3>
+        </div>
+        <div class="col-10 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize"></h3>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="tbody no-border inputs-white modal-opener" ng-repeat="payment in payments" data-toggle="refund-payment"
+        ng-click="showPaymentDetail($index)">
+
+        <div class="table-row row-border">
+          <div class="col-15">
+            <p class="layout-margin-tb">{{payment.date}}</p>
+          </div>
+          <div class="col-15 layout-padding-l">
+            <p class="layout-margin-tb text-color-light">{{$index+1}}</p>
+          </div>
+          <div class="col-20 layout-padding-l">
+            <p class="layout-margin-tb">{{payment.entity.reference}} 
+              <!--<label ng-show="payment.entity.deleted" class="col-20 text-danger">REFUNDED</label>-->
+            </p>
+          </div>
+          <div class="col-25 layout-padding-l">
+            <p class="layout-margin-tb">{{payment.entity.mode}}</p>
+          </div>
+          <div class="col-15 layout-padding-l">
+            <p class="layout-margin-tb">{{payment.amount}}</p>
+          </div>
+          <div ng-hide="true" class="col-10 layout-padding-l">
+            <button class="float-right button button-icon layout-margin-tb" style="font-size:20px">
+              <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></button>
+        <!-- <a href="#" class="float-right layout-margin-t action-edit">edit</a> -->
+          </div>
+          <div class="col-100 text-color-light layout-margin-b pull-top">
+            {{payment.entity.notes}}
+          </div>
+        </div>
+      </div>
+    </div>
+      
 <!--
     <h3 class="layout-margin-t section-title text-uppercase text-color-normalize">Attachments</h3>
 
@@ -81,7 +141,7 @@
       </tr>
     </table>
 -->
-    <div class="spacer"></div>
+    <div class="clearfix spacer"></div>
 
   </div>
 
@@ -119,6 +179,52 @@
       <button class="button button-small button-info text-uppercase">Save</button>
     </div>
   </div>
+
+<div class="popup-modal record-payment hidesm">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Refund</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="paymentForm" class="inputs-white layout-margin-t float-left">
+          <div class="input-container layout-margin-b">
+            <label>Date</label>
+            <input name="paymentDate" class="col-75" type="text" uib-datepicker-popup="{{dateFormat}}"
+              ng-model="paymentDate" is-open="openPicker1" show-weeks="false" ng-click="openDatePicker(1)" readonly>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Amount</label>
+            <input name="paymentAmount" type="text" class="col-75"  onkeypress="numberValidation(event)" placeholder="Type to add"
+              ng-model="paymentAmount">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Reference #</label>
+            <input name="paymentRef" type="text" class="col-75" placeholder="Type to add"
+              ng-model="paymentRef">
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Refund Mode</label>
+            <select name="paymentMode" class="col-75" placeholder="Select or Type to add"
+              ng-model="selectedPaymentMode" ng-options="mode for mode in paymentModes">
+              <option value="" disabled>Select Refund Mode</option>
+            </select>
+          </div>
+          <div class="input-container layout-margin-b">
+            <label>Notes</label>
+            <textarea class="col-75" ng-model="paymentNotes"></textarea>
+          </div>
+        </form>
+        <div class="clearfix"></div>
+        <br/>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase" ng-click="addPayment()">Save</button>
+    </div>
+  </div>
+
   <div class="popup-modal add-comment hidesm">
     <div class="modal container">
       <h3 class="section-title layout-no-margin text-color-normalise text-weight-normalize

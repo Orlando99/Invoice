@@ -16,6 +16,21 @@ var user = userFactory.entity[0];
 var organization = user.get("organizations")[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});
 
+    var cc = userFactory.entity[0].currency.attributes;
+    
+    if(cc.exchangeRate){
+        $scope.currentCurrency = cc;
+    }
+    else{
+        var temp = {
+            'currencySymbol': '$',
+            'exchangeRate'  : 1
+        };
+        $scope.currentCurrency = temp;
+
+        cc = temp;
+    }
+    
     var dateFormat = undefined;
 userFactory.getField('dateFormat')
 .then(function(obj) {
@@ -34,6 +49,17 @@ function showCreditNoteDetail() {
 		console.log(creditNote);
 		$scope.creditNote = creditNote;
 		$scope.creditNo = creditNote.entity.creditNumber;
+        
+        if(creditNote.payments) {
+			creditNote.payments.forEach(function(payment) {
+				payment.date = formatDate(payment.entity.date, dateFormat);
+				payment.amount = currencyFilter(payment.entity.amount*cc.exchangeRate, cc.currencySymbol, 2);
+			});
+			$scope.payments = creditNote.payments;
+		} else {
+			$scope.payments = [];
+		}
+        
        if(creditNote.comments)
        {
             creditNote.comments.forEach(function(obj){
@@ -122,6 +148,93 @@ $scope.setDefaultTemplate = function(index) {
 	});
 }
 
+$scope.prepareAddPayment = function() {
+	$scope.paymentDate = new Date();
+	$scope.paymentAmount = $scope.creditNote.entity.remainingCredits.toFixed(2);
+	$scope.paymentRef = '' + Math.random().toString(10).substr(2,6);
+	$scope.paymentModes = ['Check', 'Cash', 'Bank Transfer', 'Bank Remittance'];
+	$scope.selectedPaymentMode = 'Cash';
+
+	$('#paymentForm').validate({
+		rules: {
+			paymentDate : 'required',
+			paymentAmount : {
+				required : true,
+				number : true,
+				min : 0.01,
+                max : $scope.creditNote.entity.remainingCredits.toFixed(2)
+			},
+			paymentRef : 'required',
+			paymentMode : 'required'
+		},
+        messages: {
+            paymentDate : 'Please select date',
+			paymentAmount : {
+				required : 'Please enter refund amount',
+				number : 'Please enter valid amount',
+				min : 'Amount must be greater than 0',
+                max : 'Amount cannot be greater than remaining credits'
+			},
+			paymentRef : 'Please enter reference number',
+			paymentMode : 'Please select refund mode'
+		}
+	});
+	$('#paymentForm').validate().resetForm();
+}
+
+$scope.addPayment = function() {
+	if (! $('#paymentForm').valid()) return;
+
+	showLoader();
+	var payment = {
+		userID : user,
+		organization : organization,
+		date : $scope.paymentDate,
+		mode : $scope.selectedPaymentMode,
+		amount : Number($scope.paymentAmount),
+		reference : $scope.paymentRef,
+		notes : $scope.paymentNotes,
+        deleted : false
+	};
+
+	var creditObj = $scope.creditNote.entity;
+	creditObj.unset('creditReceipt');
+	creditObj.increment('refundsMade', payment.amount);
+	creditObj.increment('remainingCredits', -payment.amount);
+
+	if(creditObj.remainingCredits <= 0)
+		creditObj.set('status', 'Closed');
+	else{
+        creditObj.set('status', 'Open');
+    }
+
+	var promise = $q.when(coreFactory.getUserRole(user))
+	promise.then(function(role) {
+		return $q.when(creditNoteService.addRefunds([payment], role));
+	})
+	.then(function(objs) {
+		var refundList = creditObj.get('refunds');
+		if (refundList) {
+			refundList = refundList.concat(objs);
+		} else {
+			refundList= objs;
+		}
+
+		creditObj.set('refunds', refundList);
+		return creditObj.save();
+	})
+	.then(function() {
+        var body = 'Refund made for '+ currencyFilter($scope.paymentAmount, '$', 2) +' amount';
+        addNewComment(body, true)
+        .then(function(obj){
+            hideLoader();
+		  $state.reload();
+        });
+		
+	});
+
+}
+
 $scope.textReceipt = function() {
     
     var cust = $scope.creditNote.entity.get('customer')
@@ -136,9 +249,7 @@ $scope.textReceipt = function() {
 	.then(function(obj) {
         addNewComment('Credit Note sent by text', true);
         hideLoader();
-        $("#snackbar").html('Text sent...');
-        $("#snackbar").addClass('show');
-        setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
+        showSnackbar('Text sent...');
         
 		console.log('Receipt sent successfully.');
 		
@@ -187,7 +298,7 @@ function addNewComment(body, isAuto) {
     }
 
 	var data = {};
-	$q.when(coreFactory.getUserRole(user))
+	return $q.when(coreFactory.getUserRole(user))
 	.then(function(role) {
 		return commentFactory.createNewComment(obj, role);
 	})
@@ -203,7 +314,7 @@ function addNewComment(body, isAuto) {
 		creditNote.set('comments', prevComments);
 		return creditNote.save();
 	})
-	.then(function() {
+	.then(function(cr) {
 		var comment = new commentFactory(data.commentObj);
 
         comment.date = formatDate(comment.entity.date, dateFormat);
@@ -214,6 +325,7 @@ function addNewComment(body, isAuto) {
 			$scope.comments = [comment];
 
 		console.log(comment);
+        return cr;
 	});
 
 }

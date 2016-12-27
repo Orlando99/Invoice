@@ -130,7 +130,6 @@ return {
                 });
             });
         });
-        
 	}
 };
 
@@ -154,7 +153,9 @@ function createTimesheets (timesheets, params) {
             obj.set('task', timesheet.task);
             obj.set('date', timesheet.date);
             obj.set('notes', timesheet.notes);
-            obj.set('timeSpent', timesheet.timeSpent);
+            //obj.set('timeSpent', timesheet.timeSpent);
+            obj.set('hoursSpent', timesheet.hoursSpent);
+            obj.set('minutesSpent', timesheet.minutesSpent);
 
             parseTasks.push(obj);
         }
@@ -210,14 +211,15 @@ function createStaffUsers (users, params) {
     var Staff = Parse.Object.extend('Staff');
 
     users.forEach(function(user) {
-        if(user.attributes.chosenUser){
-            existingUsers.push(user);
+        if(user.entity){
+            existingUsers.push(user.entity);
         } else {
             var obj = new Staff();
             obj.set('userID', params.user);
             obj.set('organization', params.organization);
             obj.setACL(params.acl);
-            obj.set('chosenUser', user);
+            obj.set('chosenUser', user.user);
+            obj.set('staffHours', user.staffHours);
 
             parseUsers.push(obj);
         }

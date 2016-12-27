@@ -940,10 +940,12 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	}
 
 	$scope.openDatePicker = function(n) {
+        /*
         if(n == 2){
             if($scope.paymentTerms.selectedTerm.value > 1)
                 return;
         }
+        */
 		switch (n) {
 			case 1: $scope.openPicker1 = true; break;
 			case 2: $scope.openPicker2 = true; break;

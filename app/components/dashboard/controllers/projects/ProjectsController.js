@@ -1,10 +1,10 @@
 'use strict';
 
 invoicesUnlimited.controller('ProjectsController',['$q', '$scope', '$state', '$controller',
-	'userFactory', 'projectService', 'coreFactory', 'taxService', 'expenseService', 'commentFactory', 'currencyFilter','projectUserFactory','appFields','$uibModal',
+	'userFactory', 'projectService', 'coreFactory', 'taxService', 'expenseService', 'commentFactory','taskFactory', 'currencyFilter','projectUserFactory','appFields','$uibModal',
 
 function($q, $scope, $state, $controller, userFactory, projectService,
-	coreFactory, taxService, expenseService, commentFactory, currencyFilter,projectUserFactory,appFields,$uibModal,$uibModalInstance,$document,queryService,user,method,title) {
+	coreFactory, taxService, expenseService, commentFactory,taskFactory, currencyFilter,projectUserFactory,appFields,$uibModal,$uibModalInstance,$document,queryService,user,method,title) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -236,7 +236,7 @@ function prepareEditForm() {
     if($scope.staffUsers)
         for(var i = 0; i < $scope.users.length; ++i){
             for(var j = 0; j < $scope.staffUsers.length; ++j){
-                if($scope.users[i].userName == $scope.staffUsers[j].get('chosenUser').get('userName')){
+                if($scope.users[i].userName == $scope.staffUsers[j].user.get('userName')){
                     //$scope.projectUsers.push($scope.users[i]);
                     $scope.users.splice(i, 1);
                 }
@@ -250,7 +250,18 @@ function prepareEditForm() {
             obj.date = formatDate(
             obj.attributes.date, dateFormat);
             $scope.timesheets.push(obj);
+                    
+            var hh = obj.get('hoursSpent');
 
+            var mm = obj.get('minutesSpent');
+
+            hh = hh < 10 ? '0' + hh : '' + hh
+            mm = mm < 10 ? '0' + mm : '' + mm
+            obj.hours = hh;
+            obj.minutes = mm;
+            //obj.time = hh + ':' + mm;
+            
+            /*
             var t = obj.get('timeSpent');
                 if(t){
                     var d = obj.get('date');
@@ -270,7 +281,7 @@ function prepareEditForm() {
                     obj.hours = "00";
                     obj.minutes = "00";
                 }
-
+                */
         });
     $scope.timesheetTasks = [];
     if(project.tasks)
@@ -285,6 +296,11 @@ function prepareEditForm() {
 $scope.editTask = function(index){
     $scope.selectedTaskIndex = index;
     
+    $scope.editTaskName = $scope.tasks[index].entity.taskName;
+    $scope.editTaskDescription = $scope.tasks[index].entity.taskDescription;
+    $scope.editTaskCost = $scope.tasks[index].entity.taskCost;
+    
+    /*
     if($scope.tasks[index].entity){
         $scope.editTaskName = $scope.tasks[index].entity.taskName;
         $scope.editTaskDescription = $scope.tasks[index].entity.taskDescription;
@@ -295,6 +311,7 @@ $scope.editTask = function(index){
         $scope.editTaskDescription = $scope.tasks[index].attributes.taskDescription;
         $scope.editTaskCost = $scope.tasks[index].attributes.taskCost;
     }
+    */
     $(".edit-task").addClass('show');
 }
 
@@ -305,32 +322,15 @@ $scope.updateTask = function(){
     
     showLoader();
     
-    if($scope.tasks[index].entity){
-        $scope.tasks[index].entity.taskName = $scope.editTaskName;
-        $scope.tasks[index].entity.taskDescription = $scope.editTaskDescription;
-        $scope.tasks[index].entity.taskCost = $scope.editTaskCost;
-        $scope.tasks[index].entity.save()
-        .then(function(obj){
-            $(".edit-task").removeClass('show');
-            hideLoader();
-        });
-    }
-    else{
-        $scope.tasks[index].set('taskName', $scope.editTaskName);
-        $scope.tasks[index].set('taskDescription', $scope.editTaskDescription)
-        $scope.tasks[index].set('taskCost', $scope.editTaskCost);
-        
-        /*
-        $scope.tasks[index].attributes.taskName = $scope.editTaskName;
-        $scope.tasks[index].attributes.taskDescription = $scope.editTaskDescription;
-        $scope.tasks[index].attributes.taskCost = $scope.editTaskCost;
-        */
-        $scope.tasks[index].save()
-        .then(function(obj){
-            $(".edit-task").removeClass('show');
-            hideLoader();
-        });
-    }
+    $scope.tasks[index].entity.taskName = $scope.editTaskName;
+    $scope.tasks[index].entity.taskDescription = $scope.editTaskDescription;
+    $scope.tasks[index].entity.taskCost = $scope.editTaskCost;
+    $scope.tasks[index].entity.save()
+    .then(function(obj){
+        $(".edit-task").removeClass('show');
+        hideLoader();
+    });
+    
 }
  
 $scope.editTimesheet = function(index){
@@ -339,10 +339,19 @@ $scope.editTimesheet = function(index){
     
     $scope.selectedTimesheetList = $scope.timesheets[index];
    
-    $scope.editTimesheetTask = $scope.timesheets[index].attributes.task;
+    $scope.editTimesheetTask = new taskFactory($scope.timesheets[index].attributes.task);
     
-    //$scope.editTimesheetTask = $scope.timesheets[index].attributes.task;
-    $scope.timesheetUser = $scope.timesheets[index].attributes.user;
+    setObjectOperations({
+        object 		: $scope.timesheets[index].attributes.user,
+        fields 		: appFields.projectUser
+    });
+    
+    $scope.staffUsers.forEach(function(obj){
+        if(obj.user.userName == $scope.timesheets[index].attributes.user.userName)
+            $scope.timesheetUser = obj;
+    });
+    
+    //$scope.timesheetUser = $scope.timesheets[index].attributes.user;
     var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
     
     $scope.editTimesheetDate = formatDate($scope.timesheets[index].date,dateFormat) ;
@@ -355,25 +364,27 @@ $scope.editTimesheet = function(index){
 }   
 $scope.updateTimesheet= function()
 {
-    
     var index = $scope.selectedTimesheetIndex ;  
     showLoader();
      
-    $scope.timesheets[index].set("date",$scope.timesheetDate );
+    $scope.timesheets[index].set("date",$scope.timesheetDate);
     $scope.timesheets[index].set("task",$scope.editTimesheetTask.entity);
-    $scope.timesheets[index].set("user",$scope.timesheetUser) ;
+    $scope.timesheets[index].set("user",$scope.timesheetUser.user);
    
     var d = new Date();
      d.subtractHours($scope.editTimesheetHours);
      d.subtractMinutes($scope.editTimesheetMinutes);
     
-    var timeSpent  =  d;
+    //var timeSpent  =  d;
     
     var hours = $scope.editTimesheetHours < 10 ? '0' + $scope.editTimesheetHours : '' + $scope.editTimesheetHours;
     var minutes  =  $scope.editTimesheetMinutes < 10 ? '0' + $scope.editTimesheetMinutes : '' + $scope.editTimesheetMinutes;
 
-    $scope.timesheets[index].set("timeSpent",timeSpent );
-     
+    //$scope.timesheets[index].set("timeSpent",timeSpent );
+    
+    $scope.timesheets[index].set("hoursSpent",$scope.editTimesheetHours );
+    $scope.timesheets[index].set("minutesSpent",$scope.editTimesheetMinutes );
+    
     $scope.timesheets[index].hours = hours ;
     $scope.timesheets[index].minutes = minutes;
 
@@ -401,25 +412,24 @@ $scope.saveTimesheet = function(){
     
     var tsk = undefined;
     
-    if($scope.timesheetTask.entity)
-        tsk = $scope.timesheetTask.entity;
-    else
-        tsk = $scope.timesheetTask;
+    tsk = $scope.timesheetTask.entity;
     
-    var d = new Date();
-    d.subtractHours($scope.timesheetHours);
-    d.subtractMinutes($scope.timesheetMinutes);
+    //var d = new Date();
+    //d.subtractHours($scope.timesheetHours);
+    //d.subtractMinutes($scope.timesheetMinutes);
     
     $scope.timesheets.push({
-        user : $scope.timesheetUser.attributes.chosenUser || $scope.timesheetUser,
+        user : $scope.timesheetUser.user,
         task : tsk,
         date : formatDate(
         $scope.timesheetDate, dateFormat),
         sheetDate : $scope.timesheetDate,
         notes : $scope.timesheetDescription,
-        timeSpent : d,
+        //timeSpent : d,
         hours : $scope.timesheetHours < 10 ? '0' + $scope.timesheetHours : '' + $scope.timesheetHours,
-        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes
+        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes,
+        hoursSpent : $scope.timesheetHours,
+        minutesSpent : $scope.timesheetMinutes
     });
     
     
@@ -474,6 +484,7 @@ $scope.addNewTask = function() {
     obj.set('taskCost', $scope.newTaskCost);
 
     return obj.save().then(function(task) {
+        task = new taskFactory(task);
         $scope.tasks.push(task);
         $scope.timesheetTasks.pop();
         $scope.timesheetTasks.push(task);
@@ -493,12 +504,19 @@ $scope.addNewTask = function() {
 $scope.addNewUser = function(){
     if(!$('#addUserForm').valid())
         return;
-    $scope.staffUsers.push($scope.newUser);
+    $scope.staffUsers.push({
+        user : $scope.newUser,
+        staffHours : $scope.staffHours 
+    });
+    
     $(".add-user").removeClass('show');
     //$scope.newUser = "";
 }
 
 $scope.removeUser = function(index){
+    $scope.users.pop();
+    $scope.users.push($scope.staffUsers[index].user);
+    $scope.users.push(createUserOpener);
     $scope.staffUsers.splice(index, 1);
 }
 

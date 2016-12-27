@@ -168,6 +168,15 @@ function prepareEditForm() {
         obj.attributes.date, dateFormat);
         $scope.timesheets.push(obj);
         
+        var hh = obj.get('hoursSpent');
+
+        var mm = obj.get('minutesSpent');
+
+        hh = hh < 10 ? '0' + hh : '' + hh
+        mm = mm < 10 ? '0' + mm : '' + mm
+        obj.hours = hh;
+        obj.minutes = mm;
+        /*
         var t = obj.get('timeSpent');
             if(t){
                 var d = obj.get('date');
@@ -187,7 +196,7 @@ function prepareEditForm() {
                 obj.hours = "00";
                 obj.minutes = "00";
             }
-        
+        */
     });
     $scope.timesheetTasks = [];
     project.tasks.forEach(function(task){
@@ -331,7 +340,9 @@ $scope.saveTimesheet = function(){
         notes : $scope.timesheetDescription,
         timeSpent : d,
         hours : $scope.timesheetHours < 10 ? '0' + $scope.timesheetHours : '' + $scope.timesheetHours,
-        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes
+        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes,
+        hoursSpent : $scope.timesheetHours,
+        minutesSpent : $scope.timesheetMinutes
     });
     
     

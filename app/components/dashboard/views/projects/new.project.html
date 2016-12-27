@@ -160,16 +160,16 @@
 
           <div class="col-20 layout-padding">
             <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-              <label>{{user.userName}}</label>
+              <label>{{user.user.userName}}</label>
           </div>
             <div class="col-25 layout-padding layout-padding-l">
-            <label>{{user.title}}</label>
+            <label>{{user.user.title}}</label>
           </div>
             <div class="col-35 layout-padding layout-padding-l">
-            <label>{{user.emailID}}</label>
+            <label>{{user.user.emailID}}</label>
           </div>
           <div class="col-10 layout-padding layout-padding-l">
-            <label>{{user.role}}</label>
+            <label>{{user.user.role}}</label>
           </div>
           
           <div class="col-5 layout-padding layout-padding-l text-right">
@@ -283,7 +283,7 @@
             <label class="layout-padding-t-sm">User</label>
               
               
-            <select class="col-75" name="timesheetUser" ng-change="timeSheetUserChanged()" ng-model="timesheetUser" placeholder="Select User" ng-options="user.userName for user in projectUsers">
+            <select class="col-75" name="timesheetUser" ng-change="timeSheetUserChanged()" ng-model="timesheetUser" placeholder="Select User" ng-options="user.user.userName for user in projectUsers">
                   <option value="" disabled>Select User</option>
               </select>
 <!--
@@ -365,6 +365,10 @@
               <select class="col-75" name="newUser" ng-change="userChanged()" ng-model="newUser" placeholder="Select User" ng-options="user.userName for user in users">
                   <option value="" disabled>Select User</option>
               </select>
+          </div>
+        <div class="input-container layout-margin-b" ng-show="billingMethod == 'Based on staff hours'">
+            <label class="layout-padding-t-sm">Rate/Hour</label>
+            <input class="col-75" onkeypress="numberValidation(event)" type="number" name="staffHours" ng-model="staffHours" placeholder="Type to add">
           </div>
 
         </form>

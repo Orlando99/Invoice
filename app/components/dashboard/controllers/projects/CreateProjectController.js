@@ -171,7 +171,9 @@ function prepareForm() {
     for(var i = 0; i < $scope.users.length; ++i){
         var username = user.get('username');
         if($scope.users[i].userName == username){
-            $scope.projectUsers.push($scope.users[i]);
+            $scope.projectUsers.push({
+                user : $scope.users[i]
+            });
             $scope.users.splice(i, 1);
         }
     }
@@ -299,18 +301,22 @@ $scope.saveTimesheet = function(){
     });
     
     $scope.timesheets.push({
-        user : $scope.timesheetUser,
+        user : $scope.timesheetUser.user,
         task : $scope.timesheetTask,
         date : $scope.timesheetDate,
         notes : $scope.timesheetDescription,
         timeSpent : d,
         hours : $scope.timesheetHours < 10 ? '0' + $scope.timesheetHours : '' + $scope.timesheetHours,
-        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes
+        minutes : $scope.timesheetMinutes < 10 ? '0' + $scope.timesheetMinutes : '' + $scope.timesheetMinutes,
+        hoursSpent : $scope.timesheetHours,
+        minutesSpent : $scope.timesheetMinutes
     });
     $scope.timesheetUser = "";
     $scope.timesheetTask = "";
     $scope.timesheetDate = new Date();
     $scope.timesheetDescription = "";
+    $scope.timesheetHours = undefined;
+    $scope.timesheetMinutes = undefined;
     $(".new-timesheet").removeClass("show");
 }
     
@@ -439,7 +445,12 @@ $scope.addTimesheet = function(){
 $scope.addNewUser = function(){
     if(!$('#addUserForm').valid())
         return;
-    $scope.projectUsers.push($scope.newUser);
+    
+    $scope.projectUsers.push({
+        user : $scope.newUser,
+        staffHours : $scope.staffHours
+    });
+    
     $scope.users = $scope.users.filter(function(el) {
         return el !== $scope.newUser;
     });
@@ -449,7 +460,7 @@ $scope.addNewUser = function(){
 
 $scope.removeUser = function(index){
     $scope.users.pop();
-    $scope.users.push($scope.projectUsers[index]);
+    $scope.users.push($scope.projectUsers[index].user);
     $scope.users.push(createUserOpener);
     $scope.projectUsers.splice(index, 1);
 }

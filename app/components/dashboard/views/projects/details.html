@@ -120,9 +120,9 @@
         <div class="table-row row-border" ng-repeat="task in tasks">
           <p class="col-20 task text-color-light text-weight-normalize" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.taskName}}</p>
 
-          <p class="col-20 task text-color-light text-weight-normalize text-center" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.taskHours.toFixed(2) || "0.00"}}</p>
-          <p class="col-20 task text-color-light text-weight-normalize text-center" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.billedHours.toFixed(2) || "0"}}</p>
-          <p class="col-20 task text-color-light text-weight-normalize text-center" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.entity.taskHours.toFixed(2) - task.entity.billedHours.toFixed(2) || "0.00"}}</p>
+          <p class="col-20 task text-color-light text-weight-normalize text-center" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.loggedTime}}</p>
+          <p class="col-20 task text-color-light text-weight-normalize text-center" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.billedTime}}</p>
+          <p class="col-20 task text-color-light text-weight-normalize text-center" ng-class="{'tasks-detail': project.billingMethod != 'Based on task hours'}">{{task.unbilledTime}}</p>
 
           <p ng-show="project.billingMethod == 'Based on task hours'" class="col-20 text-color-light text-weight-normalize text-right">{{'$' + (task.entity.taskCost.toFixed(2) || '0.00')}}</p>
         
@@ -144,7 +144,7 @@
         <div class="table-row row-border" ng-repeat="user in staff">
           <p class="col-16 text-color-light text-weight-normalize">{{user.user.attributes.userName}}</p>
           <p class="col-25 text-color-light text-weight-normalize" style="word-break: break-all;">{{user.user.attributes.emailID}}</p>
-          <p class="col-25 text-color-light text-weight-normalize text-center"></p>
+          <p class="col-25 text-color-light text-weight-normalize text-center">{{user.loggedTime}}</p>
             <!--
           <p class="col-15 text-color-light text-weight-normalize text-center"></p>
           <p class="col-15 text-color-light text-weight-normalize text-center"></p>
@@ -213,7 +213,7 @@
             
         <div class="input-container layout-margin-b" ng-show="project.billingMethod == 'Based on task hours'">
             <label class="layout-padding-t-sm">Rate/Hour</label>
-            <input class="col-75" onkeypress="numberValidation(event)" name="newTaskCost" type="number" ng-model="newTaskCost" placeholder="Select or Type to add">
+            <input class="col-75" onkeypress="numberValidation(event)" name="newTaskCost" type="number" ng-model="newTaskCost" placeholder="Type to add">
           </div>
 
         </form>
@@ -239,6 +239,11 @@
               <select class="col-75" name="newUser" ng-change="userChanged()" ng-model="newUser" placeholder="Select User" ng-options="user.userName for user in users">
                   <option value="" disabled>Select User</option>
               </select>
+          </div>
+            
+        <div class="input-container layout-margin-b" ng-show="project.billingMethod == 'Based on staff hours'">
+            <label class="layout-padding-t-sm">Rate/Hour</label>
+            <input class="col-75" onkeypress="numberValidation(event)" name="staffHours" type="number" ng-model="staffHours" placeholder="Type to add">
           </div>
 
         </form>
