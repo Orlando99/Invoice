@@ -73,10 +73,13 @@ return {
 		var Invoices = Parse.Object.extend('Invoices');
 		var query = new Parse.Query(Invoices);
 		query.equalTo('organization', params.organization);
-		query.containedIn('status', ['Unpaid', 'Paid', 'Overdue']);
-		query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
-		query.lessThanOrEqualTo('invoiceDate', params.toDate);
-		//query.select('invoiceNumber', 'customer', 'balanceDue');
+		
+        //m query.containedIn('status', ['Unpaid', 'Paid', 'Overdue']);
+		
+        //m query.greaterThanOrEqualTo('invoiceDate', params.fromDate);
+		//m query.lessThanOrEqualTo('invoiceDate', params.toDate);
+		
+        //query.select('invoiceNumber', 'customer', 'balanceDue');
 		query.include('customer');
 
 		return query.find()

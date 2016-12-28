@@ -8,7 +8,8 @@
 </style>
   <div class="container hidesm">
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-t">Customer Balances</h3>
-        <div class="actions float-right layout-margin-tb" uib-dropdown>
+  <!----    
+      <div class="actions float-right layout-margin-tb" uib-dropdown>
     <button id="reports-ul-btn" class="button button-small button-neutral text-uppercase float-right layout-margin-t-sm " uib-dropdown-toggle>More<img src="./assets/images/dropdown-arrow-w.png" alt="">
     </button>
         <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
@@ -17,6 +18,9 @@
       </ul>
       </div>
     <div class="clearfix"></div>
+      
+
+      
     <div class="container-table layout-margin-t inputs-white filter">
       <div class="thead">
         <p class="layout-margin-tb col-25 text-uppercase text-color-normalize text-weight-normalize">Date Range</p>
@@ -43,16 +47,34 @@
         </p>
       </div>
     </div>
+      
+      --->
     <div class="clearfix"></div><br>
-    <div class="container text-center">
+    <!--
+     <div class="container text-center">
       <h3 class="layout-margin-tb text-color-normalize text-weight-normalize">Merchant Account Solutions</h3>
       <p class="layout-no-margin text-color-light text-weight-normalize">Customer Balances</p>
       <p class="layout-no-margin text-color-light text-weight-normalize">From {{fromDateStr}} To {{toDateStr}}</p>
     </div>
+      ---> 
+    <div class="container text-center">
+      <h3 class="layout-margin-tb text-color-normalize text-weight-normalize">Merchant Account Solutions</h3>
+      <p class="layout-no-margin text-color-light text-weight-normalize">Customer Balances</p>
+      <p class="layout-no-margin text-color-light text-weight-normalize">As of {{toDateStr}}</p>
+    </div>
     <br>
     <div style="cursor: pointer" class="container-table layout-margin-t inputs-white filter">
       <div  class="thead">
-        <h3 ng-click="sortByName()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Customer Name<span><img id="name" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="nameUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></h3>
+        <h3 ng-click="sortByName()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Customer Name
+        
+            
+            <span><img id="name" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span>
+            
+            <span><img id="nameUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></h3>
+        
+          
+          
+          
         <h3 ng-click="sortByCredit()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits<span><img id="credit" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="creditUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></h3>
         <!--
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Invoice Balance (FCY) <img src="./assets/images/dropdown-arrow-primary.png" alt=""></h3> 
@@ -70,11 +92,13 @@
         <div class="col-25 layout-container layout-margin-tb text-color-light text-weight-normalize">
           <a>$12.20</a>
         </div> -->
+          
+          
         <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
           {{info[id].balanceDueStr}}
         </div>
       </div>
-      <div class="table-row row-border">
+      <div class="table-row row-border" Style = "margin-bottom: 50px;">
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           Total
         </div>

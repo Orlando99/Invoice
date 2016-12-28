@@ -54,8 +54,9 @@ $scope.generateReport = function() {
     
     var selectedDate =  $scope.toDate;
     var todayDate =  new Date();
-    var fromDate1 =  $scope.fromDate
+  //  var fromDate1 =  $scope.fromDate
     var toDate1 =  $scope.toDate
+   /*
     if(selectedDate>todayDate)
     {
         ShowMessage("Select a valid Date!","error");   
@@ -66,9 +67,10 @@ $scope.generateReport = function() {
         ShowMessage("The from date can't be after the to date.","error");   
         return false;
     }
+    */
 	showLoader();
 	var params = {
-		fromDate : $scope.fromDate,
+		//fromDate : $scope.fromDate,
 		toDate : $scope.toDate,
 		organization : organization
 	};
@@ -121,7 +123,9 @@ $scope.generateReport = function() {
 			totalCredit += subAmount;
 		});
 
-		ids.forEach(function(id) {
+		ids.forEach(function(id) 
+        {
+            console.log("info[id].balanceDue = "+info[id].balanceDue)
 			info[id].balanceDueStr = currencyFilter(info[id].balanceDue, '$', 2);
             info[id].availableCreditStr = currencyFilter(info[id].availableCredit, '$', 2);
 		});
@@ -132,7 +136,7 @@ $scope.generateReport = function() {
 		$scope.totalCreditStr = currencyFilter(totalCredit, '$', 2);
         
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
-		$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
+		//$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
 		$scope.toDateStr = formatDate($scope.toDate, dateFormat);
         $scope.sortByName();
 		hideLoader();
@@ -198,7 +202,7 @@ $scope.sortByName= function()
     {
           $scope.ids.sort(function(a,b){ 
           return $scope.info[a].name.localeCompare($scope.info[b].name)});
-    if($("#name").css('display') === "none"){
+        if($("#name").css('display') === "none"){
           $scope.ids.sort(function(a,b){ 
           return $scope.info[a].name.localeCompare($scope.info[b].name)});
     

@@ -39,7 +39,9 @@ userFactory.getField('dateFormat')
 	showInvoiceDetail();
 });
 
-function showInvoiceDetail() {
+function showInvoiceDetail() 
+{
+    scrollToOffset();
 	var invoiceId = $state.params.invoiceId;
 	if (! invoiceId) return;
 
@@ -667,7 +669,6 @@ $scope.addAttachment = function(obj) {
 	});
 }
  
-
 $scope.textReceipt = function() {
     
     var cust = $scope.invoice.entity.get('customer')
