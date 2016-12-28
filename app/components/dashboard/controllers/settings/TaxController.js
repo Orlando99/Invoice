@@ -83,16 +83,38 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 		taxService.getTaxes(user,function(taxContent){
 			$scope.taxes = taxContent;
             $scope.displayedTaxes = $scope.taxes;
+            $scope.sortByTaxName();
 		});
 	}
  //
    $scope.sortByTaxName= function(){
-    $scope.taxes.sort(function(a,b){
-        return a.name.localeCompare(b.name)});
-       $('#name').css({
-            'display': 'inline-table'
-        });
+       
+       if($("#name").css('display') === "none"){
+            $scope.taxes.sort(function(a,b){
+        return a.rate < (b.rate)});
+            $('#name').css({
+                'display': 'inline-table'
+            });
+            $('#nameUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.taxes.sort(function(a,b){
+        return b.rate < (a.rate)});
+            $('#nameUp').css({
+                'display': 'inline-table'
+            });
+            $('#name').css({
+                'display': 'none'
+            });
+        }
+       
             $('#percentage').css({
+            'display': 'none'
+        });
+       
+            $('#percentageUp').css({
             'display': 'none'
         });
     }
@@ -100,12 +122,36 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
    $scope.sortByPercentage= function(){
     $scope.taxes.sort(function(a,b){
         return a.rate < (b.rate)});
+       
+       if($("#percentage").css('display') === "none"){
+           $scope.taxes.sort(function(a,b){
+        return a.rate < (b.rate)});
+            $('#percentage').css({
+                'display': 'inline-table'
+            });
+            $('#percentageUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+            $scope.taxes.sort(function(a,b){
+        return b.rate < (a.rate)});
+            $('#percentageUp').css({
+                'display': 'inline-table'
+            });
+            $('#percentage').css({
+                'display': 'none'
+            });
+        }
+
        $('#name').css({
             'display': 'none'
         });
-            $('#percentage').css({
-            'display': 'inline-table'
+       
+        $('#nameUp').css({
+            'display': 'none'
         });
+            
     }
         
 //        

@@ -28,7 +28,6 @@
         <td ng-click = "sortByStatus()" class="text-uppercase text-info">Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="statusUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
         <td ng-click = "sortByAmount()" class="text-uppercase text-info">Amount<span><img id="amount" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="amountUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
         <td ng-click = "sortByBalance()" class="text-uppercase text-info">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="balanceUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
-
       </tr>
       <tr class="trow" ng-repeat="creditNote in creditNoteList"
         ui-sref="dashboard.sales.creditnotes.details({creditNoteId:creditNote.entity.id})">

@@ -274,8 +274,9 @@ function loadCurrencies() {
 		setDefaultCurrencyIndex();
 		hideLoader();
         $scope.displayedCurrencies = currencies;
-        
+        $scope.sortByCurencyName();
 	});
+    
 }
 
 function setDefaultCurrencyIndex() {
@@ -439,44 +440,118 @@ $scope.confirmDeleteCurrency = function(){
 	});
 }
   $scope.sortByCurencyName= function(){
-      $scope.currencies.sort(function(a,b){
+      if($("#name").css('display') === "none"){
+          $scope.currencies.sort(function(a,b){
         return a.entity.title.localeCompare(b.entity.title)});
-      $('#name').css({
-            'display': 'inline-table'
-        });
-            $('#symbol').css({
+            $('#name').css({
+                'display': 'inline-table'
+            });
+            $('#nameUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.currencies.sort(function(a,b){
+        return b.entity.title.localeCompare(a.entity.title)});
+            $('#nameUp').css({
+                'display': 'inline-table'
+            });
+            $('#name').css({
+                'display': 'none'
+            });
+        }
+      
+        $('#symbol').css({
             'display': 'none'
         });
        $('#exrate').css({
+            'display': 'none'
+        });
+      
+      $('#symbolUp').css({
+            'display': 'none'
+        });
+       $('#exrateUp').css({
             'display': 'none'
         });
     } 
 
   $scope.sortBySymbol= function(){
-      $scope.currencies.sort(function(a,b){
+    
+      if($("#symbol").css('display') === "none"){
+         $scope.currencies.sort(function(a,b){
         return a.entity.currencySymbol.localeCompare(b.currencySymbol.title)});
+            $('#symbol').css({
+                'display': 'inline-table'
+            });
+            $('#symbolUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.currencies.sort(function(a,b){
+        return b.entity.currencySymbol.localeCompare(a.currencySymbol.title)});
+            $('#symbolUp').css({
+                'display': 'inline-table'
+            });
+            $('#symbol').css({
+                'display': 'none'
+            });
+        }
+      
        $('#name').css({
             'display': 'none'
         });
-            $('#symbol').css({
-            'display': 'inline-table'
-        });
+           
        $('#exrate').css({
+            'display': 'none'
+        });
+      
+      $('#nameUp').css({
+            'display': 'none'
+        });
+           
+       $('#exrateUp').css({
             'display': 'none'
         });
     } 
   $scope.sortByExchangeRate= function(){
-      $scope.currencies.sort(function(a,b){
+      
+      if($("#exrate").css('display') === "none"){
+         $scope.currencies.sort(function(a,b){
         return a.entity.exchangeRate < b.entity.exchangeRate});
+            $('#exrate').css({
+                'display': 'inline-table'
+            });
+            $('#exrateUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.currencies.sort(function(a,b){
+        return b.entity.exchangeRate < a.entity.exchangeRate});
+            $('#exrateUp').css({
+                'display': 'inline-table'
+            });
+            $('#exrate').css({
+                'display': 'none'
+            });
+        }
+      
+      $('#nameUp').css({
+            'display': 'none'
+        });
+            $('#symbolUp').css({
+            'display': 'none'
+        });
+      
        $('#name').css({
             'display': 'none'
         });
             $('#symbol').css({
             'display': 'none'
         });
-       $('#exrate').css({
-            'display': 'inline-table'
-        });
+       
     } 
 $scope.currencyChanged = function() {
 	if($scope.currencyObj)

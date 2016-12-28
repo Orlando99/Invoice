@@ -368,19 +368,23 @@ btn btn-sm btn-success pull-right uib-close ng-binding
 }
 
 .text-partialpaid{
-    color: #9a36b3;
+    
+    color :rgb(154, 54, 159);
+
 }
 
 .text-sent{
-    color: #558cf4;
+
+    color :rgb(85, 140, 244);    
 }
 
 .text-paid{
-    color: #61c045;
+    color :rgb(97, 192, 69);
 }
 
 .text-overdue{
-    color: #d93936;
+    
+    color :rgb(150, 6, 10);
 }
 
 .vertical-separator-right {
@@ -531,3 +535,13 @@ However, delay the fade out process for 2.5 seconds */
 .error-align >label.error{
 margin-top: -23px !important;
 }
+
+.custom-field >label.error{
+    min-height: 45px !important;
+    display: block !important;
+    width: 100% !important;
+    position: absolute !important;
+}
+
+
+

@@ -394,8 +394,6 @@ function listExpenses() {
 
 $scope.sortByCatName= function()
 {
-    $scope.expenseList.sort(function(a,b){ 
-      return a.entity.category.localeCompare(b.entity.category)});
     
     if($("#catname").css('display') === "none"){
              $scope.expenseList.sort(function(a,b){ 
@@ -511,13 +509,10 @@ $scope.sortByDate= function()
               $('#amountUp').css({
             'display': 'none'
         });
-    
  }
 
 $scope.sortByReferenceNumber= function()
 {
- 
-    
     if($("#refno").css('display') === "none"){
              $scope.expenseList.sort(function(a,b){
   return a.entity.referenceNumber.localeCompare(b.entity.referenceNumber)});
@@ -637,9 +632,7 @@ $scope.sortByCustomerName= function()
 
 $scope.sortByStatus= function()
 {
-  $scope.expenseList.sort(function(a,b){
-  return a.entity.status.localeCompare(b.entity.status)});
-    
+ 
     if($("#status").css('display') === "none"){
             $scope.expenseList.sort(function(a,b){
   return a.entity.status.localeCompare(b.entity.status)});

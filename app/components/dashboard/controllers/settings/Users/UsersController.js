@@ -40,6 +40,7 @@ invoicesUnlimited.controller('UsersController',
 	$scope.users = [];
 
 	hideLoader();
+    
 
     $scope.deleteUserConfirm = function($index){
         $scope.currenDeleteIndex = $index;
@@ -88,7 +89,6 @@ invoicesUnlimited.controller('UsersController',
           }
         });	
 
-		
 	}
 
 	$scope.editUser = function(id) {
@@ -275,16 +275,33 @@ invoicesUnlimited.controller('UsersController',
             $scope.users.splice(index, 1);
         
         $scope.dispalyedUsers = $scope.users;
-        
+        $scope.sortByUserName();
         
 	});
     
     $scope.sortByUserName= function(){
-    $scope.users.sort(function(a,b){
+    
+        if($("#name").css('display') === "none"){
+           $scope.users.sort(function(a,b){
         return a.userName.localeCompare(b.userName)});
-         $('#name').css({
-            'display': 'inline-table'
-        });
+            $('#name').css({
+                'display': 'inline-table'
+            });
+            $('#nameUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.users.sort(function(a,b){
+        return b.userName.localeCompare(a.userName)});
+            $('#nameUp').css({
+                'display': 'inline-table'
+            });
+            $('#name').css({
+                'display': 'none'
+            });
+        }
+        
             $('#email').css({
             'display': 'none'
         });
@@ -294,45 +311,137 @@ invoicesUnlimited.controller('UsersController',
          $('#status').css({
             'display': 'none'
         });
+        
+        
+         $('#emailUp').css({
+            'display': 'none'
+        });
+       $('#roleUp').css({
+            'display': 'none'
+        });
+         $('#statusUp').css({
+            'display': 'none'
+        });
+        
     }
     
     $scope.sortByemail= function(){
     $scope.users.sort(function(a,b){
         return a.emailID.localeCompare(b.emailID)});
+        
+        if($("#email").css('display') === "none"){
+           $scope.users.sort(function(a,b){
+        return a.userName.localeCompare(b.userName)});
+            $('#email').css({
+                'display': 'inline-table'
+            });
+            $('#emailUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.users.sort(function(a,b){
+        return b.userName.localeCompare(a.userName)});
+            $('#emailUp').css({
+                'display': 'inline-table'
+            });
+            $('#email').css({
+                'display': 'none'
+            });
+        }
+        
         $('#name').css({
             'display': 'none'
         });
-            $('#email').css({
-            'display': 'inline-table'
-        });
+            
        $('#role').css({
             'display': 'none'
         });
          $('#status').css({
+            'display': 'none'
+        });
+        
+        
+        $('#nameUp').css({
+            'display': 'none'
+        });
+            
+       $('#roleUp').css({
+            'display': 'none'
+        });
+         $('#statusUp').css({
             'display': 'none'
         });
     }
     
     $scope.sortByRole= function(){
-    $scope.users.sort(function(a,b){
+    
+         if($("#role").css('display') === "none"){
+          $scope.users.sort(function(a,b){
         return a.role.localeCompare(b.role)});
+            $('#role').css({
+                'display': 'inline-table'
+            });
+            $('#roleUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.users.sort(function(a,b){
+        return b.role.localeCompare(a.role)});
+            $('#roleUp').css({
+                'display': 'inline-table'
+            });
+            $('#role').css({
+                'display': 'none'
+            });
+        }
+        
          $('#name').css({
             'display': 'none'
         });
             $('#email').css({
             'display': 'none'
         });
-       $('#role').css({
-            'display': 'inline-table'
-        });
          $('#status').css({
+            'display': 'none'
+        });
+        
+        
+        $('#nameUp').css({
+            'display': 'none'
+        });
+            $('#emailUp').css({
+            'display': 'none'
+        });
+         $('#statusUp').css({
             'display': 'none'
         });
     }
     
     $scope.sortByStatus= function(){
-    $scope.users.sort(function(a,b){
+        
+        if($("#status").css('display') === "none"){
+           $scope.users.sort(function(a,b){
         return a.status.localeCompare(b.status)});
+            $('#status').css({
+                'display': 'inline-table'
+            });
+            $('#statusUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.users.sort(function(a,b){
+        return b.status.localeCompare(a.status)});
+            $('#statusUp').css({
+                'display': 'inline-table'
+            });
+            $('#status').css({
+                'display': 'none'
+            });
+        }
+        
          $('#name').css({
             'display': 'none'
         });
@@ -342,9 +451,18 @@ invoicesUnlimited.controller('UsersController',
        $('#role').css({
             'display': 'none'
         });
-         $('#status').css({
-            'display': 'inline-table'
+        
+        $('#nameUp').css({
+            'display': 'none'
         });
+            $('#emailUp').css({
+            'display': 'none'
+        });
+       $('#roleUp').css({
+            'display': 'none'
+        });
+        
+         
     }
  
     $scope.search = function()

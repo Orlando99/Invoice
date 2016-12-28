@@ -1059,6 +1059,9 @@ function ListInvoices() {
             case "Partial Paid":
 				obj.statusClass = "text-partialpaid";
 				break;
+            case "Sent":
+				obj.statusClass = "text-sent";
+				break;
 			default:
 				obj.statusClass = "text-color-normalize";
 			}

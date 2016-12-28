@@ -22,10 +22,10 @@
         <div class="clearfix"></div>
         <table class="table-border-tb" style = "margin-bottom: 20px;">
           <tr style="cursor: pointer" class="thead">
-            <td ng-click="sortByUserName()" class="text-uppercase text-info layout-padding">User Name<span><img id="name" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-            <td ng-click="sortByemail()" class="text-uppercase text-info layout-padding">Email<span><img id="email" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-            <td ng-click="sortByRole()" class="text-uppercase text-info layout-padding">Role<span><img id="role" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
-            <td ng-click="sortByStatus()" class="text-uppercase text-info layout-padding" >Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span></td>
+            <td ng-click="sortByUserName()" class="text-uppercase text-info layout-padding">User Name<span><img id="name" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="nameUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+            <td ng-click="sortByemail()" class="text-uppercase text-info layout-padding">Email<span><img id="email" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="emailUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+            <td ng-click="sortByRole()" class="text-uppercase text-info layout-padding">Role<span><img id="role" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="roleUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
+            <td ng-click="sortByStatus()" class="text-uppercase text-info layout-padding" >Status<span><img id="status" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="statusUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></td>
             <td class="text-uppercase text-info layout-padding text-right actions"></td>
           </tr>
           <tr ng-repeat="user in users" class="user-row">

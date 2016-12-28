@@ -189,6 +189,7 @@ function loadItemsAndTaxes() {
 
 	$q.all(promises).then(function() {
 		hideLoader();
+        $scope.sortByItemName();
 
 	}, function(error) {
 		console.log(error.message);
@@ -198,47 +199,120 @@ function loadItemsAndTaxes() {
 
 }
 $scope.sortByItemName= function(){
-   
-    $scope.items.sort(function(a,b)
-    {
-        return a.entity.title.localeCompare(b.entity.title)
-    });
-       $('#name').css({
-            'display': 'inline-table'
-        });
-            $('#price').css({
+       
+    if($("#name").css('display') === "none"){
+            $scope.items.sort(function(a,b)
+    {return a.entity.title.localeCompare(b.entity.title)});
+            $('#name').css({
+                'display': 'inline-table'
+            });
+            $('#nameUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.items.sort(function(a,b)
+    {return b.entity.title.localeCompare(a.entity.title)});
+            $('#nameUp').css({
+                'display': 'inline-table'
+            });
+            $('#name').css({
+                'display': 'none'
+            });
+        }
+    
+         $('#price').css({
             'display': 'none'
         });
        $('#description').css({
             'display': 'none'
         });
+    
+         $('#priceUp').css({
+            'display': 'none'
+        });
+       $('#descriptionUp').css({
+            'display': 'none'
+        });
+    
     }  
    
 $scope.sortByPrice= function(){
-    $scope.items.sort(function(a,b){
+    
+    if($("#price").css('display') === "none"){
+           $scope.items.sort(function(a,b){
         return   b.entity.rate - a.entity.rate});
+            $('#price').css({
+                'display': 'inline-table'
+            });
+            $('#priceUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.items.sort(function(a,b){
+        return   a.entity.rate - b.entity.rate});
+            $('#priceUp').css({
+                'display': 'inline-table'
+            });
+            $('#price').css({
+                'display': 'none'
+            });
+        }
+    
         $('#name').css({
             'display': 'none'
         });
-            $('#price').css({
-            'display': 'inline-table'
-        });
+        
        $('#description').css({
+            'display': 'none'
+        });
+    
+    
+        $('#nameUp').css({
+            'display': 'none'
+        });
+        
+       $('#descriptionUp').css({
             'display': 'none'
         });
     }  
    
 $scope.sortByDescription= function(){
-    $scope.items.sort(function(a,b){
+    
+    if($("#description").css('display') === "none"){
+            $scope.items.sort(function(a,b){
         return a.entity.itemDescription.localeCompare(b.entity.itemDescription)});
+            $('#description').css({
+                'display': 'inline-table'
+            });
+            $('#descriptionUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+              $scope.items.sort(function(a,b){
+        return b.entity.itemDescription.localeCompare(a.entity.itemDescription)});
+            $('#descriptionUp').css({
+                'display': 'inline-table'
+            });
+            $('#description').css({
+                'display': 'none'
+            });
+        }
+    
        $('#name').css({
             'display': 'none'
         });
             $('#price').css({
             'display': 'none'
         });
-       $('#description').css({
-            'display': 'inline-table'
+    
+    $('#nameUp').css({
+            'display': 'none'
+        });
+            $('#priceUp').css({
+            'display': 'none'
         });
     }  
    
