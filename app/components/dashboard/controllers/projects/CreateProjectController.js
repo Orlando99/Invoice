@@ -70,7 +70,7 @@ $('#addTimesheetForm').validate({
             required : "Please enter minutes",
             number : "Enter valid minutes",
             min : "Please enter valid minutes",
-            max : "Please enter valid minutes"
+            max : "Minutes must be less than 60"
         },
         timesheetUser : 'Please select user',
         timeSheetTask : 'Please select task'
@@ -284,6 +284,35 @@ function createUser(){
     
 $scope.userChanged = userChanged;  
 
+$scope.prepareToEditUser = function(index){
+    $scope.userIndex = index;
+    
+    $scope.editUser = $scope.projectUsers[$scope.userIndex].user;
+    $scope.editStaffHours = $scope.projectUsers[$scope.userIndex].staffHours;
+    
+    $scope.editusers = [];
+    
+    angular.copy($scope.users, $scope.editusers);
+    
+    $scope.editusers.pop();
+    $scope.editusers.push($scope.editUser);
+    $scope.editusers.push(createUserOpener);
+    
+    $(".edit-user").addClass('show');
+}
+
+$scope.updateUser = function(){
+    /*
+    if(!$('#editUserForm').valid())
+        return;
+        */
+    
+    $scope.projectUsers[$scope.userIndex].user = $scope.editUser;
+    $scope.projectUsers[$scope.userIndex].staffHours = $scope.editStaffHours;
+    
+    $(".edit-user").removeClass('show');
+}
+    
 $scope.saveTimesheet = function(){
     if(!$("#addTimesheetForm").valid())
         return;

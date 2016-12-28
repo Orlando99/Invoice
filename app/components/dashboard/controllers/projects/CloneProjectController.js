@@ -2,9 +2,9 @@
 
 invoicesUnlimited.controller('CloneProjectController',
 	['$scope', '$state', '$controller', '$q', 'userFactory',
-	'projectService', 'coreFactory', 'taxService', 'commentFactory',
+	'projectService', 'coreFactory', 'taxService', 'commentFactory','taskFactory',
 	'currencyFilter', 'projectUserFactory', 'appFields','$uibModal',
-function($scope, $state, $controller, $q, userFactory,projectService,coreFactory,taxService,commentFactory,currencyFilter,projectUserFactory,appFields,$uibModal,$uibModalInstance,$document,queryService,user,method,title) {
+function($scope, $state, $controller, $q, userFactory,projectService,coreFactory,taxService,commentFactory,taskFactory,currencyFilter,projectUserFactory,appFields,$uibModal,$uibModalInstance,$document,queryService,user,method,title) {
 
     if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -260,8 +260,19 @@ $scope.editTimesheet = function(index){
     
     $scope.selectedTimesheetList = $scope.timesheets[index];
    
-    $scope.editTimesheetTask = $scope.timesheets[index].attributes.task;
-    $scope.editTimesheetUser = $scope.timesheets[index].attributes.user;
+    $scope.editTimesheetTask = new taskFactory($scope.timesheets[index].attributes.task);
+    
+    setObjectOperations({
+        object 		: $scope.timesheets[index].attributes.user,
+        fields 		: appFields.projectUser
+    });
+    
+    $scope.staffUsers.forEach(function(obj){
+        if(obj.user.userName == $scope.timesheets[index].attributes.user.userName)
+            $scope.timesheetUser = obj;
+    });
+    
+    //$scope.editTimesheetUser = $scope.timesheets[index].attributes.user;
     var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
     
     $scope.editTimesheetDate = formatDate($scope.timesheets[index].date,dateFormat) ;
@@ -397,6 +408,7 @@ $scope.addNewTask = function() {
     obj.set('taskCost', $scope.newTaskCost);
 
     return obj.save().then(function(task) {
+        task = new taskFactory(task);
         $scope.tasks.push(task);
         $scope.timesheetTasks.pop();
         $scope.timesheetTasks.push(task);
@@ -416,7 +428,10 @@ $scope.addNewTask = function() {
 $scope.addNewUser = function(){
     if(!$('#addUserForm').valid())
         return;
-    $scope.staffUsers.push($scope.newUser);
+    $scope.staffUsers.push({
+        user : $scope.newUser,
+        staffHours : $scope.staffHours 
+    });
     $(".add-user").removeClass('show');
     //$scope.newUser = "";
 }

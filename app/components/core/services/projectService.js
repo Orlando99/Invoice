@@ -212,6 +212,8 @@ function createStaffUsers (users, params) {
 
     users.forEach(function(user) {
         if(user.entity){
+            user.entity.set('chosenUser', user.user);
+            user.entity.staffHours = user.staffHours;
             existingUsers.push(user.entity);
         } else {
             var obj = new Staff();
@@ -225,9 +227,15 @@ function createStaffUsers (users, params) {
         }
     });
 
+    return Parse.Object.saveAll(parseUsers.concat(existingUsers)).then(function(staffObjs) {
+        return staffObjs;
+    });
+    
+    /*
     return Parse.Object.saveAll(parseUsers).then(function(staffObjs) {
         return staffObjs.concat(existingUsers);
     });
+    */
 }
 function getOrganization (user) {
 	var organizationArray = user.get("organizations");

@@ -513,6 +513,35 @@ $scope.addNewUser = function(){
     //$scope.newUser = "";
 }
 
+$scope.prepareToEditUser = function(index){
+    $scope.userIndex = index;
+    
+    $scope.editUser = $scope.staffUsers[$scope.userIndex].user;
+    $scope.editStaffHours = $scope.staffUsers[$scope.userIndex].staffHours;
+    
+    $scope.editusers = [];
+    
+    angular.copy($scope.users, $scope.editusers);
+    
+    $scope.editusers.pop();
+    $scope.editusers.push($scope.editUser);
+    $scope.editusers.push(createUserOpener);
+    
+    $(".edit-user").addClass('show');
+}
+
+$scope.updateUser = function(){
+    /*
+    if(!$('#editUserForm').valid())
+        return;
+        */
+    
+    $scope.staffUsers[$scope.userIndex].user = $scope.editUser;
+    $scope.staffUsers[$scope.userIndex].staffHours = $scope.editStaffHours;
+    
+    $(".edit-user").removeClass('show');
+}
+
 $scope.removeUser = function(index){
     $scope.users.pop();
     $scope.users.push($scope.staffUsers[index].user);

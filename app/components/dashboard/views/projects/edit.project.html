@@ -155,21 +155,21 @@
 
       <form id="itemInfoForm" novalidate>
           <div class="table-row" ng-repeat="user in staffUsers track by $index">
-
-          <div class="col-20 layout-padding">
-            <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-              <label>{{user.user.userName}}</label>
-          </div>
-            <div class="col-25 layout-padding layout-padding-l">
-            <label>{{user.user.title}}</label>
-          </div>
-            <div class="col-35 layout-padding layout-padding-l">
-            <label>{{user.user.emailID}}</label>
-          </div>
-          <div class="col-10 layout-padding layout-padding-l">
-            <label>{{user.user.role}}</label>
-          </div>
-          
+              <div style="cursor: pointer;" ng-click="prepareToEditUser($index)">
+                  <div class="col-20 layout-padding">
+                    <i class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
+                      <label>{{user.user.userName}}</label>
+                  </div>
+                    <div class="col-25 layout-padding layout-padding-l">
+                    <label>{{user.user.title}}</label>
+                  </div>
+                    <div class="col-35 layout-padding layout-padding-l">
+                    <label>{{user.user.emailID}}</label>
+                  </div>
+                  <div class="col-10 layout-padding layout-padding-l">
+                    <label>{{user.user.role}}</label>
+                  </div>
+              </div>
           <div class="col-5 layout-padding layout-padding-l text-right">
             <button class="button button-icon button-no-margin" ng-click="removeUser($index)"><img src="./assets/images/icon-times-round.png" alt=""></button>
           </div>
@@ -518,6 +518,35 @@
       </div>
       <div class="clearfix"></div>
       <button class="button button-small button-info text-uppercase layout-margin-r" ng-click="addNewUser()">Add</button>
+    </div>
+  </div>
+
+<div class="popup-modal edit-user hidesm">
+    <div class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit User</h3>
+      <button class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="editUserForm" class="inputs-white" novalidate>
+
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Select User</label>
+              <select class="col-75" name="newUser" ng-change="userChanged()" ng-model="editUser" placeholder="Select User" ng-options="user.userName for user in editusers track by user.id">
+                  <option value="" disabled>Select User</option>
+              </select>
+          </div>
+            <div class="input-container layout-margin-b" ng-show="billingMethod == 'Based on staff hours'">
+            <label class="layout-padding-t-sm">Rate/Hour</label>
+            <input class="col-75" name="staffHours" type="number" ng-model="editStaffHours" placeholder="Select or Type to add">
+          </div>
+
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase layout-margin-r" ng-click="updateUser()">Save</button>
     </div>
   </div>
 

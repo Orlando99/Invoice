@@ -64,8 +64,7 @@ $('#addTimesheetForm').validate({
 		timesheetHours : {
             required : true,
             number : true,
-            min : 0,
-            max : 23
+            min : 0
         },
 		timesheetMinutes : {
             required : true,
@@ -81,14 +80,13 @@ $('#addTimesheetForm').validate({
 		timesheetHours : {
             required : "Please enter hours",
             number : "Enter valid hours",
-            min : "Please enter valid hours",
-            max : "Please enter valid hours"
+            min : "Please enter valid hours"
         },
 		timesheetMinutes : {
             required : "Please enter minutes",
             number : "Enter valid minutes",
             min : "Please enter valid minutes",
-            max : "Please enter valid minutes"
+            max : "Minutes must be less than 60"
         },
         timesheetUser : 'Please select user',
         timeSheetTask : 'Please select task'
@@ -99,6 +97,12 @@ function showProjectDetail() {
 	var projectId = $state.params.projectId;
 	if (! projectId) return;
 
+    var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY',
+		'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+	var colors = ['#0ea81c', '#c31e1e']
+	var monthlyBillabel   = [0,0,0,0,0,0,0,0,0,0,0,0];
+	var monthlyUnbilled  = [0,0,0,0,0,0,0,0,0,0,0,0];
+    
 	showLoader();
 	$q.when(projectService.getProjectDetails(projectId))
 	.then(function(project) {
@@ -132,35 +136,135 @@ function showProjectDetail() {
         var billedHours = 0;
         var billedMinutes = 0;
         
-        if(project.timesheets)
+        if(project.timesheets){ 
             project.timesheets.forEach(function(obj){
                 var hh = obj.get('hoursSpent');
                 var mm = obj.get('minutesSpent');
                 
+                if($scope.staff)
+                    $scope.staff.forEach(function(usr){
+                        if(usr.user.userName == obj.get('user').get('userName')){
+                            if(usr.loggedHours){
+                                usr.loggedHours += hh;
+                                usr.loggedHours += ((usr.loggedMinutes + mm) / 60);
+                                usr.loggedMinutes = ((usr.loggedMinutes + mm) % 60);
+                            }
+                            else{
+                                usr.loggedHours = hh + parseInt((mm / 60).toFixed(0));
+                                usr.loggedMinutes = mm % 60;
+                                usr.unbilledHours = 0;
+                                usr.unbilledMinutes = 0;
+                                usr.unbilledTime = '00:00';
+                            }
+                            
+                            if(!obj.get('isBilled')){
+                                usr.unbilledHours += hh;
+                                usr.unbilledHours += parseInt(((usr.unbilledMinutes + mm) / 60).toFixed(0));
+                                usr.unbilledMinutes = ((usr.unbilledMinutes + mm) % 60);
+
+                                var tempHours = usr.unbilledHours < 10 ? '0' + usr.unbilledHours : usr.unbilledHours + '';
+                                var tempMin = usr.unbilledMinutes < 10 ? '0' + usr.unbilledMinutes : usr.unbilledMinutes + '';
+                                usr.unbilledTime = tempHours + ':' + tempMin;
+                            }
+                            
+                            var tempHours = usr.loggedHours < 10 ? '0' + usr.loggedHours : usr.loggedHours + '';
+                            var tempMin = usr.loggedMinutes < 10 ? '0' + usr.loggedMinutes : usr.loggedMinutes + '';
+                            usr.loggedTime = tempHours + ':' + tempMin;
+
+                        }
+                        else if(!usr.loggedHours){
+                            usr.loggedHours = 0;
+                            usr.loggedMinutes = 0;
+                            usr.loggedTime = "00:00";
+                            usr.unbilledHours = 0;
+                            usr.unbilledMinutes = 0;
+                            usr.unbilledTime = '00:00';
+                        }
+
+                    });
+                
+                if($scope.tasks)
+                    $scope.tasks.forEach(function(tsk){
+                        if(!tsk.loggedHours){
+                            tsk.loggedHours = 0;
+                            tsk.loggedMinutes = 0;
+                            tsk.billedHours = 0;
+                            tsk.billedMinutes = 0;
+                            tsk.unbilledHours = 0;
+                            tsk.unbilledMinutes = 0;
+                            tsk.loggedTime = '00:00';
+                            tsk.billedTime = '00:00';
+                            tsk.unbilledTime = '00:00';
+                        }
+
+                        if(tsk.entity.id == obj.get('task').id){
+                            tsk.loggedHours += hh;
+                            tsk.loggedHours += parseInt(((tsk.loggedMinutes + mm) / 60).toFixed(0));
+                            tsk.loggedMinutes = ((tsk.loggedMinutes + mm) % 60);
+
+                            var tempHours = tsk.loggedHours < 10 ? '0' + tsk.loggedHours : tsk.loggedHours + '';
+                            var tempMin = tsk.loggedMinutes < 10 ? '0' + tsk.loggedMinutes : tsk.loggedMinutes + '';
+                            tsk.loggedTime = tempHours + ':' + tempMin;
+
+                            if(obj.get('isBilled')){
+                                tsk.billedHours += hh;
+                                tsk.billedHours += parseInt(((tsk.billedMinutes + mm) / 60).toFixed(0));
+                                tsk.billedMinutes = ((tsk.billedMinutes + mm) % 60);
+
+                                tempHours = tsk.billedHours < 10 ? '0' + tsk.billedHours : tsk.billedHours + '';
+                                tempMin = tsk.billedMinutes < 10 ? '0' + tsk.billedMinutes : tsk.billedMinutes + '';
+                                tsk.billedTime = tempHours + ':' + tempMin;
+                            }
+                            else{
+                                tsk.unbilledHours += hh;
+                                tsk.unbilledHours += parseInt(((tsk.unbilledMinutes + mm) / 60).toFixed(0));
+                                tsk.unbilledMinutes = ((tsk.unbilledMinutes + mm) % 60);
+
+                                tempHours = tsk.unbilledHours < 10 ? '0' + tsk.unbilledHours : tsk.unbilledHours + '';
+                                tempMin = tsk.unbilledMinutes < 10 ? '0' + tsk.unbilledMinutes : tsk.unbilledMinutes + '';
+                                tsk.unbilledTime = tempHours + ':' + tempMin;
+                            }
+
+                        }   
+                    });
+                
+                var sheetDate = obj.get('date');
+                var mon = sheetDate.getMonth();
+                
+                monthlyBillabel[mon] += (hh + parseInt((mm/60).toFixed(0)));
+                
+                if(obj.get('isBilled')){
+                    billedHours += hh;
+                    billedMinutes += mm;
+                }
+                else{
+                    hours += hh;
+                    minutes += mm;
+                    monthlyUnbilled[mon] += (hh + parseInt((mm/60).toFixed(0)));
+                }
+                
+                
+                hh += parseInt((mm/60).toFixed(0));
+                mm = mm % 60;
+                hh = hh < 10 ? '0' + hh : '' + hh
+                mm = mm < 10 ? '0' + mm : '' + mm
+                obj.time = hh + ':' + mm;
+            });
+        }
+        else{
+            if($scope.staff)
                 $scope.staff.forEach(function(usr){
-                    if(usr.user.userName == obj.get('user').get('userName')){
-                        if(usr.loggedHours){
-                            usr.loggedHours += hh;
-                            usr.loggedHours += ((usr.loggedMinutes + mm) / 60);
-                            usr.loggedMinutes = ((usr.loggedMinutes + mm) % 60);
-                        }
-                        else{
-                            usr.loggedHours = hh + parseInt((mm / 60).toFixed(0));
-                            usr.loggedMinutes = mm % 60;
-                        }
-                        var tempHours = usr.loggedHours < 10 ? '0' + usr.loggedHours : usr.loggedHours + '';
-                        var tempMin = usr.loggedMinutes < 10 ? '0' + usr.loggedMinutes : usr.loggedMinutes + '';
-                        usr.loggedTime = tempHours + ':' + tempMin;
-                        
-                    }
-                    else if(!usr.loggedHours){
+                    if(!usr.loggedHours){
                         usr.loggedHours = 0;
                         usr.loggedMinutes = 0;
                         usr.loggedTime = "00:00";
-                    }
-                        
+                        usr.unbilledHours = 0;
+                        usr.unbilledMinutes = 0;
+                        usr.unbilledTime = '00:00';
+                    }    
                 });
-                
+
+            if($scope.tasks)
                 $scope.tasks.forEach(function(tsk){
                     if(!tsk.loggedHours){
                         tsk.loggedHours = 0;
@@ -172,83 +276,9 @@ function showProjectDetail() {
                         tsk.loggedTime = '00:00';
                         tsk.billedTime = '00:00';
                         tsk.unbilledTime = '00:00';
-                    }
-                    
-                    if(tsk.entity.id == obj.get('task').id){
-                        tsk.loggedHours += hh;
-                        tsk.loggedHours += parseInt(((tsk.loggedMinutes + mm) / 60).toFixed(0));
-                        tsk.loggedMinutes = ((tsk.loggedMinutes + mm) % 60);
-                        
-                        var tempHours = tsk.loggedHours < 10 ? '0' + tsk.loggedHours : tsk.loggedHours + '';
-                        var tempMin = tsk.loggedMinutes < 10 ? '0' + tsk.loggedMinutes : tsk.loggedMinutes + '';
-                        tsk.loggedTime = tempHours + ':' + tempMin;
-                        
-                        if(obj.get('isBilled')){
-                            tsk.billedHours += hh;
-                            tsk.billedHours += parseInt(((tsk.billedMinutes + mm) / 60).toFixed(0));
-                            tsk.billedMinutes = ((tsk.billedMinutes + mm) % 60);
-                            
-                            tempHours = tsk.billedHours < 10 ? '0' + tsk.billedHours : tsk.billedHours + '';
-                            tempMin = tsk.billedMinutes < 10 ? '0' + tsk.billedMinutes : tsk.billedMinutes + '';
-                            tsk.billedTime = tempHours + ':' + tempMin;
-                        }
-                        else{
-                            tsk.unbilledHours += hh;
-                            tsk.unbilledHours += parseInt(((tsk.unbilledMinutes + mm) / 60).toFixed(0));
-                            tsk.unbilledMinutes = ((tsk.unbilledMinutes + mm) % 60);
-                            
-                            tempHours = tsk.unbilledHours < 10 ? '0' + tsk.unbilledHours : tsk.unbilledHours + '';
-                            tempMin = tsk.unbilledMinutes < 10 ? '0' + tsk.unbilledMinutes : tsk.unbilledMinutes + '';
-                            tsk.unbilledTime = tempHours + ':' + tempMin;
-                        }
-                        
-                    }   
+                    }  
                 });
-                
-                if(obj.get('isBilled')){
-                    billedHours += hh;
-                    billedMinutes += mm;
-                }
-                else{
-                    hours += hh;
-                    minutes += mm;
-                }
-                
-                
-                hh += parseInt((mm/60).toFixed(0));
-                mm = mm % 60;
-                hh = hh < 10 ? '0' + hh : '' + hh
-                mm = mm < 10 ? '0' + mm : '' + mm
-                obj.time = hh + ':' + mm;
-
-                /*
-                var t = obj.get('timeSpent');
-                if(t){
-                    var d = obj.get('date');
-                    var msec = d - t;
-                    var hh = Math.floor(msec / 1000 / 60 / 60);
-                    msec -= hh * 1000 * 60 * 60;
-                    var mm = Math.floor(msec / 1000 / 60);
-                    msec -= mm * 1000 * 60;
-
-                    if(obj.get('isBilled')){
-                        billedHours += hh;
-                        billedMinutes += mm;
-                    }
-                    else{
-                        hours += hh;
-                        minutes += mm;
-                    }
-
-                    hh = hh < 10 ? '0' + hh : '' + hh
-                    mm = mm < 10 ? '0' + mm : '' + mm
-                    obj.time = hh + ':' + mm;
-
-                }
-                else
-                    obj.time = "00:00";
-                    */
-            });
+        }
         
         totalHours = hours + billedHours;
         totalMinutes = minutes + billedMinutes;
@@ -279,9 +309,76 @@ function showProjectDetail() {
         if($scope.project.billingMethod != 'Based on task hours')
             $('.task').addClass('tasks-detail');
         
+        drawChart(months, monthlyBillabel, monthlyUnbilled, colors);
+        
         hideLoader();
 	});
 
+}
+    
+function drawChart(months, billable, unbilled, colors){
+    
+    var fiscalMonth = organization.get('fiscalYearStart');
+    var count = getrotateCount(fiscalMonth);
+    
+    months.rotate(count);
+    billable.rotate(count);
+    unbilled.rotate(count);
+    
+    var ctx = $("#projectchart");
+		var myChart = new Chart(ctx, {
+			type: 'bar',
+			data: {
+				labels: months,
+				datasets: [{
+                    label:"Billable Hours",
+					backgroundColor: colors[0],
+					data: billable
+				}, {
+                     label:"Unbilled Hours",
+					backgroundColor: colors[1],
+					data: unbilled
+				}]
+			},
+			options: {
+				responsive: false,
+                tooltipTemplate: "<%if (labels){%><%=labels%>:: <%}%><%= value %>",
+                tooltips: {
+                    mode: 'single',
+                        custom: function(tooltip) {
+                            // tooltip will be false if tooltip is not visible or should be hidden
+                            if (!tooltip) {
+                                return;
+                            }
+                            
+                            tooltip.title = [];
+                        },
+                    callbacks: {
+                        label:
+                        function(item,data) {
+							var value = data.datasets[item.datasetIndex].data[item.index];
+							var label = data.labels[item.index];
+							
+							//return [item.xLabel + ': ' + $scope.currentCurrency.currencySymbol + numberWithCommas(parseFloat(value).toFixed(2))];
+							return [item.xLabel + ': ' + value];
+						}
+                    }
+                },
+				legend: {
+					display: true,
+                    position : 'bottom'
+				},
+				scales: {
+					yAxes:
+                    [{
+						ticks: {
+							beginAtZero:true
+						}
+					}]
+
+				}
+			}
+		});
 }
     
 $scope.deleteProjectClicked = function(){

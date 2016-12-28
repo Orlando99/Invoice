@@ -446,6 +446,50 @@ invoicesUnlimited.controller('CreateInvoiceController',
                         rate = projectId.project.entity.projectBillingAmount;
                         quantity = 1;
                     }
+                    else if(projectId.project.entity.get('billingMethod') == 'Based on task hours'){
+                        rate = 0;
+                        var sheets = projectId.project.timesheets;
+                        quantity = 1;
+                        for(var i = 0; i < sheets.length; ++i){
+                            if(sheets[i].get('isBilled'))
+                                continue;
+                            
+                            var time = sheets[i].time;
+                            var hours = parseInt(time.split(':')[0]);
+                            var min = parseInt(time.split(':')[1]);
+                            hours += min/60;
+                            hours = parseFloat(hours.toFixed(2));
+                            var tskCost = sheets[i].get('task').get('taskCost');
+                            if(!tskCost)
+                                tskCost = 0;
+                            rate += hours*tskCost;
+                        }
+                    }
+                    else if(projectId.project.entity.get('billingMethod') == 'Based on staff hours'){
+                        rate = 0;
+                        var sheets = projectId.project.timesheets;
+                        quantity = 1;
+                        for(var i = 0; i < sheets.length; ++i){
+                            if(sheets[i].get('isBilled'))
+                                continue;
+                            
+                            var time = sheets[i].time;
+                            var hours = parseInt(time.split(':')[0]);
+                            var min = parseInt(time.split(':')[1]);
+                            hours += min/60;
+                            hours = parseFloat(hours.toFixed(2));
+                            
+                            var ind = projectId.project.users.findIndex(function(temp){
+                                            return temp.user.id == sheets[i].get('user').id;
+                                        });
+                            var staffRate = projectId.project.users[ind].entity.staffHours;
+
+                            if(!staffRate)
+                                staffRate = 0;
+                            
+                            rate += hours*staffRate;
+                        }
+                    }
                     
                     var t = {
                         create : true,
@@ -576,10 +620,31 @@ invoicesUnlimited.controller('CreateInvoiceController',
                             var min = parseInt(time.split(':')[1]);
                             hours += min/60;
                             hours = parseFloat(hours.toFixed(2));
+                            
+                            var rate = 0;
+                            
+                            if(projectId.project.entity.get('billingMethod') == 'Based on task hours'){
+                                rate = sheets[i].get('task').get('taskCost');
+                                if(!rate)
+                                    rate = 0;
+                            }
+                            else if(projectId.project.entity.get('billingMethod') == 'Based on staff hours'){
+                                var ind = projectId.project.users.findIndex(function(temp){
+                                                return temp.user.id == sheets[i].get('user').id;
+                                            });
+                                rate = projectId.project.users[ind].entity.staffHours;
+                                    
+                                if(!rate)
+                                    rate = 0;
+                            }
+                            else{
+                                rate = projectAmount;
+                            }
+                            
                             var t = {
                                 create : true,
                                 entity : {
-                                    rate : projectAmount,
+                                    rate : rate,
                                     title : projectId.project.entity.projectName
                                 }
                             }
@@ -590,13 +655,108 @@ invoicesUnlimited.controller('CreateInvoiceController',
                             $scope.invoiceItems[i] = {
                                 selectedItem : t,
                                 selectedTax : undefined,
-                                rate : projectAmount,
+                                rate : rate,
                                 quantity : hours,
                                 discount : 0,
                                 amount : 0
                             };
                             $scope.itemChanged(i);
                         }
+
+                        $scope.items.push(createItemOpener);
+                    }
+                }
+                else if(projectId.dataOnInvoice == 4) {
+                    if(projectId.project.timesheets){
+                        $scope.items.pop();
+
+                        var projectAmount = 0;
+
+                        if(projectId.project.entity.get('billingMethod') == 'Based on project hours')
+                            projectAmount = projectId.project.entity.get('projectBillingHours');
+
+                        var sheets = projectId.project.timesheets;
+
+                        var tasks = [];
+                        
+                        for(var i = 0; i < sheets.length; ++i){
+                            if(sheets[i].get('isBilled'))
+                                continue;
+                            var time = sheets[i].time;
+                            var hours = parseInt(time.split(':')[0]);
+                            var min = parseInt(time.split(':')[1]);
+                            hours += min/60;
+                            hours = parseFloat(hours.toFixed(2));
+                            
+                            var tsk = sheets[i].get('user');
+                            
+                            var index = tasks.findIndex(function(obj){
+                                return obj.id == tsk.id;
+                            });
+                            
+                            if(index >= 0){
+                                tasks[index].quantity += hours;
+                            }
+                            else {
+                                if(projectId.project.entity.get('billingMethod') == 'Based on project hours'){
+                                    tasks.push({
+                                        taskName : tsk.get('userName'),
+                                        quantity : hours,
+                                        taskRate : projectAmount,
+                                        id       : tsk.id
+                                    });
+                                }
+                                else if(projectId.project.entity.get('billingMethod') == 'Based on staff hours'){
+                                    var ind = projectId.project.users.findIndex(function(temp){
+                                                    return temp.user.id == tsk.id;
+                                                });
+                                    var staffRate = projectId.project.users[ind].entity.staffHours;
+                                    
+                                    if(!staffRate)
+                                        staffRate = 0;
+                                    
+                                    tasks.push({
+                                        taskName : tsk.get('userName'),
+                                        quantity : hours,
+                                        taskRate : staffRate,
+                                        id       : tsk.id
+                                    });
+                                }
+                            }
+                        }
+                        
+                        var count = 0;
+                        tasks.forEach(function(obj){
+                            
+                            var itemName = undefined;
+                            
+                            if(projectId.itemNameToShow == 1){
+                                itemName = projectId.project.entity.projectName;
+                            }
+                            
+                            var t = {
+                                create : true,
+                                entity : {
+                                    rate : obj.taskRate,
+                                    title : itemName
+                                }
+                            }
+
+                            $scope.items.push(t);
+
+                            $scope.addInvoiceItem();
+                            $scope.invoiceItems[count] = {
+                                selectedItem : t,
+                                selectedTax : undefined,
+                                rate : obj.taskRate,
+                                quantity : obj.quantity,
+                                discount : 0,
+                                amount : 0
+                            };
+                            $scope.itemChanged(count);
+                            
+                            count++;
+                        });
 
                         $scope.items.push(createItemOpener);
                     }

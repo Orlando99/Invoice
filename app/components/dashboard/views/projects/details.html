@@ -69,7 +69,10 @@
 
     <div class="col-40">
       <h3 class="layout-margin-tb text-uppercase text-weight-normalize">Project Snapshot</h3>
+        <canvas id="projectchart" height="291px" width="428px"></canvas>
+        <!--
       <img src="./assets/images/graph4.png" alt="">
+        -->
     </div>
 
     <div class="clearfix spacer"></div>
@@ -132,24 +135,24 @@
     <div class="tab" data-name="users">
       <div class="container-table">
         <div class="thead">
-          <p class="col-16 text-uppercase text-color-normalize text-weight-normalize">Name</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize">Name</p>
           <p class="col-25 text-uppercase text-color-normalize text-weight-normalize">Email</p>
-          <p class="col-25 text-uppercase text-color-normalize text-weight-normalize text-center">Logged Hours</p>
-            <!--
-          <p class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Billed Hours</p>
-          <p class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hours</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-center">Logged Hours</p>
+            
+          <p ng-show="project.billingMethod == 'Based on staff hours'" class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Unbilled Hours</p>
+        <!--  <p class="col-15 text-uppercase text-color-normalize text-weight-normalize text-center">Billed Hours</p>
 -->
-          <p class="col-25 text-uppercase text-color-normalize text-weight-normalize text-right">Role</p>
+          <p class="col-20 text-uppercase text-color-normalize text-weight-normalize text-right">Role</p>
         </div>
         <div class="table-row row-border" ng-repeat="user in staff">
-          <p class="col-16 text-color-light text-weight-normalize">{{user.user.attributes.userName}}</p>
+          <p class="col-20 text-color-light text-weight-normalize">{{user.user.attributes.userName}}</p>
           <p class="col-25 text-color-light text-weight-normalize" style="word-break: break-all;">{{user.user.attributes.emailID}}</p>
-          <p class="col-25 text-color-light text-weight-normalize text-center">{{user.loggedTime}}</p>
-            <!--
-          <p class="col-15 text-color-light text-weight-normalize text-center"></p>
-          <p class="col-15 text-color-light text-weight-normalize text-center"></p>
+          <p class="col-20 text-color-light text-weight-normalize text-center">{{user.loggedTime}}</p>
+            
+          <p ng-show="project.billingMethod == 'Based on staff hours'" class="col-15 text-color-light text-weight-normalize text-center">{{user.unbilledTime}}</p>
+         <!-- <p class="col-15 text-color-light text-weight-normalize text-center"></p>
 -->
-          <p class="col-25 text-color-light text-weight-normalize text-right">{{user.user.attributes.role}}</p>
+          <p class="col-20 text-color-light text-weight-normalize text-right">{{user.user.attributes.role}}</p>
         </div>
       </div>
     </div>
@@ -338,8 +341,9 @@
               
             <select class="col-75" name="timesheetUser" ng-model="dataOnInvoice">
                   <option value="1">Single line for Project</option>
-                  <option ng-hide="project.billingMethod == 'Fixed cost for project'" value="2">Line for each task</option>
+                  <option ng-hide="project.billingMethod == 'Fixed cost for project' || project.billingMethod == 'Based on staff hours'" value="2">Line for each task</option>
                   <option ng-hide="project.billingMethod == 'Fixed cost for project'" value="3">Line for each timesheet</option>
+                  <option ng-hide="project.billingMethod == 'Fixed cost for project' || project.billingMethod == 'Based on task hours'" value="4">Line for each user</option>
                   <!--<option value="4">Line for each user</option>-->
               </select>
           </div>
