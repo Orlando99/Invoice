@@ -165,8 +165,9 @@ invoicesUnlimited.controller('CompanyProfileController',
          $q.all(promises)
          .then(function(){
              hideLoader();
-             showSnackbar("Save Successful");
-             window.location.reload();
+             showSnackbar("Save Successful. Reloading page in 3 sec...");
+             setTimeout(function(){ window.location.reload(); }, 2000);
+             //window.location.reload();
          });
          
          /*

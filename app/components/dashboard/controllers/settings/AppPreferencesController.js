@@ -65,8 +65,12 @@ invoicesUnlimited.controller('AppPreferencesController',
                 $state.go('dashboard.settings.taxes');
             }
             else{
+                showSnackbar("Save Successful. Reloading page in 3 sec...");
+                setTimeout(function(){ window.location.reload(); }, 2000);
+                /*
                 showSnackbar("Save Successful")
                 window.location.reload();
+                */
                 hideLoader();
             }
 		});

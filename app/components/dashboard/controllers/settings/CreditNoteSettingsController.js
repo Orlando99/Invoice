@@ -71,9 +71,13 @@ $scope.save = function() {
 
 	$q.when(creditNoteService.setPreferences(user, prefs))
 	.then(function() {
+        showSnackbar("Save Successful. Reloading page in 3 sec...");
+         setTimeout(function(){ $state.reload(); }, 2000);
+        /*
         showSnackbar('Save Successful');
 		console.log('creditNote prefs updated.');
 		$state.reload();
+        */
 		hideLoader();
 
 	}, function(error) {

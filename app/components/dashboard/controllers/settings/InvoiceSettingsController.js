@@ -268,8 +268,13 @@ $scope.save = function() {
 	$q.when(invoiceService.setPreferences(user, prefs))
 	.then(function() {
 		console.log('invoice prefs updated.');
+        
+        showSnackbar("Save Successful. Reloading page in 3 sec...");
+        setTimeout(function(){ $state.reload(); }, 2000);
+        /*
 		$state.reload();
         showSnackbar("Save Successful");
+        */
 		hideLoader();
 
 	}, function(error) {
