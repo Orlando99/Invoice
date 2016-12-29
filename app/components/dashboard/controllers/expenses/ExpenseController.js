@@ -455,11 +455,11 @@ $scope.sortByCatName= function()
 
 $scope.sortByDate= function()
 {
-  
-    
     if($("#date").css('display') === "none"){
              $scope.expenseList.sort(function(a,b){
-  return a.expenseDate.localeCompare(b.expenseDate)});
+                 return a.entity.expanseDate>b.entity.expanseDate ? -1 : a.entity.expanseDate<b.entity.expanseDate ? 1 : 0;
+                //return a.expenseDate.localeCompare(b.expenseDate)
+             });
             $('#date').css({
                 'display': 'inline-table'
             });
@@ -468,8 +468,10 @@ $scope.sortByDate= function()
             });
         }
         else{
-               $scope.expenseList.sort(function(a,b){
-  return b.expenseDate.localeCompare(a.expenseDate)});
+           $scope.expenseList.sort(function(a,b){
+               return b.entity.expanseDate>a.entity.expanseDate ? -1 : b.entity.expanseDate<a.entity.expanseDate ? 1 : 0;
+               //return b.expenseDate.localeCompare(a.expenseDate)
+           });
             $('#dateUp').css({
                 'display': 'inline-table'
             });

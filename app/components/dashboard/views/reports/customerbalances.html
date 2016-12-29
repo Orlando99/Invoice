@@ -74,19 +74,28 @@
         
           
           
+        <h3 ng-click="sortByBalance()" class="text-center layout-margin-tb col-25 text-uppercase text-weight-normalize">Invoice Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="balanceUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></h3>
           
-        <h3 ng-click="sortByCredit()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits<span><img id="credit" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="creditUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></h3>
+        <h3 ng-click="sortByCredit()" class="text-center layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits<span><img id="credit" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="creditUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></h3>
+          
+        <h3 ng-click="sortByCustomerBalance()" class="text-center layout-margin-tb col-25 text-uppercase text-weight-normalize">Balance<span><img id="customerbalance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="customerbalanceUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></h3>
         <!--
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Invoice Balance (FCY) <img src="./assets/images/dropdown-arrow-primary.png" alt=""></h3> 
         <h3 class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Available Credits (FCY) <img src="./assets/images/dropdown-arrow-primary.png" alt=""></h3> -->
-        <h3 ng-click="sortByBalance()" class="layout-margin-tb col-25 text-uppercase text-weight-normalize">Balance<span><img id="balance" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="balanceUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span></h3>
+        
       </div>
       <div class="table-row row-border" ng-repeat="id in ids">
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           {{info[id].name}}
         </div>
-        <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
+          <div class="text-center col-25 layout-margin-tb text-color-light text-weight-normalize">
+          {{info[id].balanceDueStr}}
+        </div>
+        <div class="text-center col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           {{info[id].availableCreditStr}}
+        </div>
+          <div class="text-center col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
+          {{info[id].customerBalanceStr}}
         </div>
           <!--
         <div class="col-25 layout-container layout-margin-tb text-color-light text-weight-normalize">
@@ -94,24 +103,27 @@
         </div> -->
           
           
-        <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
-          {{info[id].balanceDueStr}}
-        </div>
+        
       </div>
       <div class="table-row row-border" Style = "margin-bottom: 50px;">
         <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
           Total
         </div>
-        <div class="col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
+        <div class="text-center col-25 layout-margin-tb text-color-light text-weight-normalize">
+          {{totalBalanceStr}}
+        </div>
+          
+        <div class="text-center col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
             {{totalCreditStr}}
+        </div>
+          <div class="text-center col-25 input-container layout-margin-tb text-color-light text-weight-normalize">
+            {{totalCustomerBalanceStr}}
         </div>
           <!--
         <div class="col-25 layout-container layout-margin-tb text-color-light text-weight-normalize">
           $25.45
         </div> -->
-        <div class="col-25 layout-margin-tb text-color-light text-weight-normalize">
-          {{totalBalanceStr}}
-        </div>
+        
       </div>
  
     </div>

@@ -37,6 +37,7 @@ $('#editProjectForm').validate({
         projectBudgetHours : 'Please enter hours'
 	}
 });
+    /*
 $('#addTimesheetForm').validate({
 	rules: {
 		timesheetDate : 'required',
@@ -49,6 +50,43 @@ $('#addTimesheetForm').validate({
 		timesheetDate : 'Please select a date',
 		timesheetHours : 'Please enter hours',
 		timesheetMinutes : 'Please enter minutes',
+        timesheetUser : 'Please select user',
+        timeSheetTask : 'Please select task'
+	}
+});
+*/
+$('#addTimesheetForm').validate({
+	rules: {
+		timesheetDate : 'required',
+		timesheetHours : {
+            required : true,
+            digits : true,
+            min : 0,
+            //max : 23
+        },
+		timesheetMinutes : {
+            required : true,
+            digits : true,
+            min : 0,
+            max : 59
+        },
+        timesheetUser : 'required',
+        timeSheetTask : 'required'
+	},
+	messages: {
+		timesheetDate : 'Please select a date',
+		timesheetHours : {
+            required : "Please enter hours",
+            digits : "Enter valid hours",
+            min : "Please enter valid hours",
+            //max : "Please enter valid hours"
+        },
+		timesheetMinutes : {
+            required : "Please enter minutes",
+            digits : "Enter valid minutes",
+            min : "Please enter valid minutes",
+            max : "Minutes must be less than 60"
+        },
         timesheetUser : 'Please select user',
         timeSheetTask : 'Please select task'
 	}

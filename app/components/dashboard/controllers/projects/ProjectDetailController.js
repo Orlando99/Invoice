@@ -63,12 +63,12 @@ $('#addTimesheetForm').validate({
 		timesheetDate : 'required',
 		timesheetHours : {
             required : true,
-            number : true,
+            digits : true,
             min : 0
         },
 		timesheetMinutes : {
             required : true,
-            number : true,
+            digits : true,
             min : 0,
             max : 59
         },
@@ -79,12 +79,12 @@ $('#addTimesheetForm').validate({
 		timesheetDate : 'Please select a date',
 		timesheetHours : {
             required : "Please enter hours",
-            number : "Enter valid hours",
+            digits : "Enter valid hours",
             min : "Please enter valid hours"
         },
 		timesheetMinutes : {
             required : "Please enter minutes",
-            number : "Enter valid minutes",
+            digits : "Enter valid minutes",
             min : "Please enter valid minutes",
             max : "Minutes must be less than 60"
         },
@@ -146,7 +146,7 @@ function showProjectDetail() {
                         if(usr.user.userName == obj.get('user').get('userName')){
                             if(usr.loggedHours){
                                 usr.loggedHours += hh;
-                                usr.loggedHours += ((usr.loggedMinutes + mm) / 60);
+                                usr.loggedHours += parseInt(((usr.loggedMinutes + mm) / 60).toFixed(0));
                                 usr.loggedMinutes = ((usr.loggedMinutes + mm) % 60);
                             }
                             else{
@@ -164,12 +164,12 @@ function showProjectDetail() {
 
                                 var tempHours = usr.unbilledHours < 10 ? '0' + usr.unbilledHours : usr.unbilledHours + '';
                                 var tempMin = usr.unbilledMinutes < 10 ? '0' + usr.unbilledMinutes : usr.unbilledMinutes + '';
-                                usr.unbilledTime = tempHours + ':' + tempMin;
+                                usr.unbilledTime = numberWithCommas(tempHours) + ':' + tempMin;
                             }
                             
                             var tempHours = usr.loggedHours < 10 ? '0' + usr.loggedHours : usr.loggedHours + '';
                             var tempMin = usr.loggedMinutes < 10 ? '0' + usr.loggedMinutes : usr.loggedMinutes + '';
-                            usr.loggedTime = tempHours + ':' + tempMin;
+                            usr.loggedTime = numberWithCommas(tempHours) + ':' + tempMin;
 
                         }
                         else if(!usr.loggedHours){
@@ -204,7 +204,7 @@ function showProjectDetail() {
 
                             var tempHours = tsk.loggedHours < 10 ? '0' + tsk.loggedHours : tsk.loggedHours + '';
                             var tempMin = tsk.loggedMinutes < 10 ? '0' + tsk.loggedMinutes : tsk.loggedMinutes + '';
-                            tsk.loggedTime = tempHours + ':' + tempMin;
+                            tsk.loggedTime = numberWithCommas(tempHours) + ':' + tempMin;
 
                             if(obj.get('isBilled')){
                                 tsk.billedHours += hh;
@@ -213,7 +213,7 @@ function showProjectDetail() {
 
                                 tempHours = tsk.billedHours < 10 ? '0' + tsk.billedHours : tsk.billedHours + '';
                                 tempMin = tsk.billedMinutes < 10 ? '0' + tsk.billedMinutes : tsk.billedMinutes + '';
-                                tsk.billedTime = tempHours + ':' + tempMin;
+                                tsk.billedTime = numberWithCommas(tempHours) + ':' + tempMin;
                             }
                             else{
                                 tsk.unbilledHours += hh;
@@ -222,7 +222,7 @@ function showProjectDetail() {
 
                                 tempHours = tsk.unbilledHours < 10 ? '0' + tsk.unbilledHours : tsk.unbilledHours + '';
                                 tempMin = tsk.unbilledMinutes < 10 ? '0' + tsk.unbilledMinutes : tsk.unbilledMinutes + '';
-                                tsk.unbilledTime = tempHours + ':' + tempMin;
+                                tsk.unbilledTime = numberWithCommas(tempHours) + ':' + tempMin;
                             }
 
                         }   
@@ -248,8 +248,37 @@ function showProjectDetail() {
                 mm = mm % 60;
                 hh = hh < 10 ? '0' + hh : '' + hh
                 mm = mm < 10 ? '0' + mm : '' + mm
-                obj.time = hh + ':' + mm;
+                obj.time = numberWithCommas(hh) + ':' + mm;
             });
+            
+            if(project.timesheets.length < 1){
+                if($scope.staff)
+                    $scope.staff.forEach(function(usr){
+                        if(!usr.loggedHours){
+                            usr.loggedHours = 0;
+                            usr.loggedMinutes = 0;
+                            usr.loggedTime = "00:00";
+                            usr.unbilledHours = 0;
+                            usr.unbilledMinutes = 0;
+                            usr.unbilledTime = '00:00';
+                        }    
+                    });
+
+                if($scope.tasks)
+                    $scope.tasks.forEach(function(tsk){
+                        if(!tsk.loggedHours){
+                            tsk.loggedHours = 0;
+                            tsk.loggedMinutes = 0;
+                            tsk.billedHours = 0;
+                            tsk.billedMinutes = 0;
+                            tsk.unbilledHours = 0;
+                            tsk.unbilledMinutes = 0;
+                            tsk.loggedTime = '00:00';
+                            tsk.billedTime = '00:00';
+                            tsk.unbilledTime = '00:00';
+                        }  
+                    });
+            }
         }
         else{
             if($scope.staff)
@@ -288,21 +317,22 @@ function showProjectDetail() {
         
         totalHours = totalHours < 10 ? "0" + totalHours.toFixed(0) : totalHours.toFixed(0);
         totalMinutes = totalMinutes < 10 ? "0" + totalMinutes.toFixed(0) : totalMinutes.toFixed(0);
-        $scope.billableHours = totalHours + ":" + totalMinutes;
+        //$scope.billableHours = totalHours + ":" + totalMinutes;
+        $scope.billableHours = numberWithCommas(totalHours) + ":" + totalMinutes;
         
         hours += (minutes/60);
         minutes = minutes % 60;
         
         hours = hours < 10 ? "0" + hours.toFixed(0) : hours.toFixed(0);
         minutes = minutes < 10 ? "0" + minutes.toFixed(0) : minutes.toFixed(0);
-        $scope.unbilledHours = hours + ":" + minutes;
+        $scope.unbilledHours = numberWithCommas(hours) + ":" + minutes;
         
         billedHours += (billedMinutes/60);
         billedMinutes = billedMinutes % 60;
         
         billedHours = billedHours < 10 ? "0" + billedHours.toFixed(0) : billedHours.toFixed(0);
         billedMinutes = billedMinutes < 10 ? "0" + billedMinutes.toFixed(0) : billedMinutes.toFixed(0);
-        $scope.billedHours = billedHours + ":" + billedMinutes;
+        $scope.billedHours = numberWithCommas(billedHours) + ":" + billedMinutes;
         
         $scope.timesheets = project.timesheets;
  
@@ -314,6 +344,10 @@ function showProjectDetail() {
         hideLoader();
 	});
 
+}
+    
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
     
 function drawChart(months, billable, unbilled, colors){

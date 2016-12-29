@@ -278,13 +278,21 @@ $scope.sortByDays= function()
     }
 $scope.sortByBalance= function()
     {
+    /*
           $scope.invoices1.sort(function(a,b){ 
-          return  b.balanceDue - a.balanceDue});
-    $scope.invoices1.sort(function(a,b){ 
-          return  b.overDueDays1 - a.overDueDays1});
-    if($("#balance").css('display') === "none"){
+                return  b.balanceDue - a.balanceDue;
+          });
+          */
+    /*
         $scope.invoices1.sort(function(a,b){ 
-          return  b.overDueDays1 - a.overDueDays1});
+              return  b.overDueDays1 - a.overDueDays1
+        });
+        */
+    if($("#balance").css('display') === "none"){
+        $scope.invoices1.sort(function(a,b){
+            return  b.entity.get('total') - a.entity.get('total');
+          //return  b.entity.balanceDue.localeCompare(a.entity.balanceDue);
+        });
             $('#balance').css({
                 'display': 'inline-table'
             });
@@ -294,7 +302,9 @@ $scope.sortByBalance= function()
         }
         else{
          $scope.invoices1.sort(function(a,b){ 
-          return  a.overDueDays1 - b.overDueDays1});
+             return  a.entity.get('total') - b.entity.get('total');
+            //return  a.entity.balanceDue.localeCompare(b.entity.balanceDue);
+         });
             $('#balanceUp').css({
                 'display': 'inline-table'
             });

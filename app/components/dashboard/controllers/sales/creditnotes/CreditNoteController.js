@@ -597,7 +597,7 @@ function LoadRequiredData() {
 	});
 	promises.push(p);
 
-	p = $q.when(coreFactory.getAllItems({
+	p = $q.when(coreFactory.getAllItemsIncludingDelete({
 		organization : organization
 	})).then(function(items) {
 		$scope.actualItems = items.filter(function(item) {
@@ -734,7 +734,9 @@ function listCreditNotes() {
       
       if($("#date").css('display') === "none"){
              $scope.creditNoteList.sort(function(a,b){
-      return a.creditNoteDate.localeCompare(b.creditNoteDate)});
+                 return a.entity.creditNoteDate>b.entity.creditNoteDate ? -1 : a.entity.creditNoteDate<b.entity.creditNoteDate ? 1 : 0;
+                //return a.creditNoteDate.localeCompare(b.creditNoteDate)
+             });
             $('#date').css({
                 'display': 'inline-table'
             });
@@ -744,7 +746,9 @@ function listCreditNotes() {
         }
         else{
               $scope.creditNoteList.sort(function(a,b){
-      return b.creditNoteDate.localeCompare(a.creditNoteDate)});
+                  return b.entity.creditNoteDate>a.entity.creditNoteDate ? -1 : b.entity.creditNoteDate<a.entity.creditNoteDate ? 1 : 0;
+                //return b.creditNoteDate.localeCompare(a.creditNoteDate)
+              });
             $('#dateUp').css({
                 'display': 'inline-table'
             });

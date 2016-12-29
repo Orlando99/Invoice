@@ -123,9 +123,14 @@ $scope.generateReport = function() {
 			totalCredit += subAmount;
 		});
 
+        var totalCustomerBalance = 0;
+        
 		ids.forEach(function(id) 
         {
             console.log("info[id].balanceDue = "+info[id].balanceDue)
+            info[id].customerBalance = info[id].balanceDue - info[id].availableCredit;
+            totalCustomerBalance += info[id].customerBalance;
+            info[id].customerBalanceStr = currencyFilter(info[id].customerBalance, '$', 2);
 			info[id].balanceDueStr = currencyFilter(info[id].balanceDue, '$', 2);
             info[id].availableCreditStr = currencyFilter(info[id].availableCredit, '$', 2);
 		});
@@ -134,6 +139,7 @@ $scope.generateReport = function() {
 		$scope.ids = ids;
 		$scope.totalBalanceStr = currencyFilter(totalBlanceDue, '$', 2);
 		$scope.totalCreditStr = currencyFilter(totalCredit, '$', 2);
+		$scope.totalCustomerBalanceStr = currencyFilter(totalCustomerBalance, '$', 2);
         
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		//$scope.fromDateStr = formatDate($scope.fromDate, dateFormat);
@@ -225,17 +231,24 @@ $scope.sortByName= function()
             });
         }
     
-              $('#credit').css({
+          $('#credit').css({
             'display': 'none'
         });
-              $('#balance').css({
+          $('#balance').css({
             'display': 'none'
         });
     
-     $('#creditUp').css({
+        $('#creditUp').css({
             'display': 'none'
         });
-              $('#balanceUp').css({
+          $('#balanceUp').css({
+            'display': 'none'
+        });
+    
+        $('#customerbalance').css({
+            'display': 'none'
+        });
+        $('#customerbalanceUp').css({
             'display': 'none'
         });
     
@@ -245,7 +258,7 @@ $scope.sortByCredit= function()
         
         if($("#credit").css('display') === "none"){
           $scope.ids.sort(function(a,b){ 
-          return  $scope.info[b].availableCredit > $scope.info[a].availableCredit});
+          return  $scope.info[b].availableCredit - $scope.info[a].availableCredit});
     
             $('#credit').css({
                 'display': 'inline-table'
@@ -256,7 +269,7 @@ $scope.sortByCredit= function()
         }
         else{
          $scope.ids.sort(function(a,b){ 
-          return  $scope.info[a].availableCredit > $scope.info[b].availableCredit});
+          return  $scope.info[a].availableCredit - $scope.info[b].availableCredit});
             $('#creditUp').css({
                 'display': 'inline-table'
             });
@@ -265,10 +278,10 @@ $scope.sortByCredit= function()
             });
         }
     
-    $('#balanceUp').css({
+        $('#balanceUp').css({
             'display': 'none'
         });
-    $('#nameUp').css({
+        $('#nameUp').css({
             'display': 'none'
         });
     
@@ -276,11 +289,19 @@ $scope.sortByCredit= function()
               $('#balance').css({
             'display': 'none'
         });
-    $('#name').css({
+        $('#name').css({
+            'display': 'none'
+        });
+    
+        $('#customerbalance').css({
+            'display': 'none'
+        });
+        $('#customerbalanceUp').css({
             'display': 'none'
         });
     }
-$scope.sortByBalance= function()
+
+    $scope.sortByBalance= function()
     {
           $scope.ids.sort(function(a,b){ 
           return  $scope.info[b].balanceDue - $scope.info[a].balanceDue});
@@ -296,8 +317,9 @@ $scope.sortByBalance= function()
             });
         }
         else{
-         $scope.ids.sort(function(a,b){ 
-          return  $scope.info[a].balanceDue - $scope.info[b].balanceDue});
+             $scope.ids.sort(function(a,b){ 
+                return  $scope.info[a].balanceDue - $scope.info[b].balanceDue
+             });
             $('#balanceUp').css({
                 'display': 'inline-table'
             });
@@ -309,14 +331,70 @@ $scope.sortByBalance= function()
         $('#name').css({
             'display': 'none'
         });
-              $('#credit').css({
+        $('#credit').css({
             'display': 'none'
         });
     
         $('#nameUp').css({
             'display': 'none'
         });
-              $('#creditUp').css({
+        $('#creditUp').css({
+            'display': 'none'
+        });
+        
+        $('#customerbalance').css({
+            'display': 'none'
+        });
+        $('#customerbalanceUp').css({
+            'display': 'none'
+        });
+    
+    }
+    
+    $scope.sortByCustomerBalance= function()
+    {
+          $scope.ids.sort(function(a,b){ 
+          return  $scope.info[b].customerBalance - $scope.info[a].customerBalance});
+    
+        if($("#customerbalance").css('display') === "none"){
+         $scope.ids.sort(function(a,b){ 
+          return  $scope.info[b].customerBalance - $scope.info[a].customerBalance});
+            $('#customerbalance').css({
+                'display': 'inline-table'
+            });
+            $('#customerbalanceUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+         $scope.ids.sort(function(a,b){ 
+          return  $scope.info[a].balanceDue - $scope.info[b].balanceDue});
+            $('#customerbalanceUp').css({
+                'display': 'inline-table'
+            });
+            $('#customerbalance').css({
+                'display': 'none'
+            });
+        }
+    
+        $('#balance').css({
+            'display': 'none'
+        });
+        
+        $('#name').css({
+            'display': 'none'
+        });
+        $('#credit').css({
+            'display': 'none'
+        });
+    
+        $('#nameUp').css({
+            'display': 'none'
+        });
+        $('#creditUp').css({
+            'display': 'none'
+        });
+        $('#balanceUp').css({
             'display': 'none'
         });
     

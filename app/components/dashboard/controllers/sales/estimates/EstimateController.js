@@ -904,8 +904,10 @@ $scope.sortByDate= function()
 {
      
     if($("#date").css('display') === "none"){
-           $scope.estimateList.sort(function(a,b){ 
-      return b.estimateDate.localeCompare(a.estimateDate)});
+           $scope.estimateList.sort(function(a,b){
+               return a.entity.estimateDate>b.entity.estimateDate ? -1 : a.entity.estimateDate<b.entity.estimateDate ? 1 : 0;
+                //return b.estimateDate.localeCompare(a.estimateDate)
+           });
             $('#date').css({
                 'display': 'inline-table'
             });
@@ -914,8 +916,10 @@ $scope.sortByDate= function()
             });
         }
         else{
-             $scope.estimateList.sort(function(a,b){ 
-      return a.estimateDate.localeCompare(b.estimateDate)});
+             $scope.estimateList.sort(function(a,b){
+                 return b.entity.estimateDate>a.entity.estimateDate ? -1 : b.entity.estimateDate<a.entity.estimateDate ? 1 : 0;
+                //return a.estimateDate.localeCompare(b.estimateDate)
+             });
             $('#dateUp').css({
                 'display': 'inline-table'
             });

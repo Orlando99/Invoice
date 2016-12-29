@@ -45,13 +45,13 @@ $('#addTimesheetForm').validate({
 		timesheetDate : 'required',
 		timesheetHours : {
             required : true,
-            number : true,
+            digits : true,
             min : 0,
             //max : 23
         },
 		timesheetMinutes : {
             required : true,
-            number : true,
+            digits : true,
             min : 0,
             max : 59
         },
@@ -62,13 +62,13 @@ $('#addTimesheetForm').validate({
 		timesheetDate : 'Please select a date',
 		timesheetHours : {
             required : "Please enter hours",
-            number : "Enter valid hours",
+            digits : "Enter valid hours",
             min : "Please enter valid hours",
             //max : "Please enter valid hours"
         },
 		timesheetMinutes : {
             required : "Please enter minutes",
-            number : "Enter valid minutes",
+            digits : "Enter valid minutes",
             min : "Please enter valid minutes",
             max : "Minutes must be less than 60"
         },

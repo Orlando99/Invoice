@@ -1082,7 +1082,7 @@ function ListInvoices() {
 		$scope.invoiceList = res;
         $scope.allInvoices = res;
         $scope.displayedInvoices = res;
-        $scope.sortByStatus();
+        $scope.sortByDate();
 		hideLoader();
 
 	}, function(error) {
@@ -1519,7 +1519,8 @@ $scope.sortByDate= function()
          
          if($("#date").css('display') === "none"){
             $scope.invoiceList.sort(function(a,b){
-        return b.invoiceDate.localeCompare(a.invoiceDate)});
+                return a.entity.invoiceDate>b.entity.invoiceDate ? -1 : a.entity.invoiceDate<b.entity.invoiceDate ? 1 : 0;
+            });
             $('#date').css({
                 'display': 'inline-table'
             });
@@ -1529,7 +1530,8 @@ $scope.sortByDate= function()
         }
         else{
              $scope.invoiceList.sort(function(a,b){
-        return a.invoiceDate.localeCompare(b.invoiceDate)});
+                 return b.entity.invoiceDate>a.entity.invoiceDate ? -1 : b.entity.invoiceDate<a.entity.invoiceDate ? 1 : 0;
+             });
             $('#dateUp').css({
                 'display': 'inline-table'
             });
@@ -1586,10 +1588,13 @@ $scope.sortByDate= function()
 $scope.sortByDueDate= function()
 {
           $scope.invoiceList.sort(function(a,b){
-          return b.dueDate.localeCompare(a.dueDate)});
+            return b.dueDate.localeCompare(a.dueDate)
+          });
          if($("#duedate").css('display') === "none"){
             $scope.invoiceList.sort(function(a,b){
-          return b.dueDate.localeCompare(a.dueDate)});
+                return a.entity.dueDate>b.entity.dueDate ? -1 : a.entity.dueDate<b.entity.dueDate ? 1 : 0;
+                //return b.dueDate.localeCompare(a.dueDate)
+            });
             $('#duedate').css({
                 'display': 'inline-table'
             });
@@ -1599,7 +1604,9 @@ $scope.sortByDueDate= function()
         }
         else{
             $scope.invoiceList.sort(function(a,b){
-          return a.dueDate.localeCompare(b.dueDate)});
+                return b.entity.dueDate>a.entity.dueDate ? -1 : b.entity.dueDate<a.entity.dueDate ? 1 : 0;
+                //return a.dueDate.localeCompare(b.dueDate)
+            });
             $('#duedateUp').css({
                 'display': 'inline-table'
             });
