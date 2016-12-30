@@ -204,8 +204,9 @@ function listProjects() {
             $scope.projectList = res;
             $scope.displayedProject = res;
         }
-		$scope.sortByName();
+		//$scope.sortByName();
 
+        $scope.sortByLatest();
 		hideLoader();
 
 	}, function(error) {
@@ -678,7 +679,14 @@ function userChanged() {
         $scope.newUser = "";
 		return;
 	}
-} 
+}
+    
+    $scope.sortByLatest = function(){
+        $scope.projectList.sort(function(a,b){
+                return a.entity.createdAt>b.entity.createdAt ? -1 : a.entity.createdAt<b.entity.createdAt ? 1 : 0;
+            });
+    }
+    
   $scope.sortByName = function(){
        
        if($("#nameD").css('display') === "none"){

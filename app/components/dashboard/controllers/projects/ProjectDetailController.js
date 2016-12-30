@@ -392,9 +392,9 @@ function drawChart(months, billable, unbilled, colors){
                         function(item,data) {
 							var value = data.datasets[item.datasetIndex].data[item.index];
 							var label = data.labels[item.index];
-							
+							return [item.xLabel + ': ' + numberWithCommas(parseFloat(value).toFixed(0))];
 							//return [item.xLabel + ': ' + $scope.currentCurrency.currencySymbol + numberWithCommas(parseFloat(value).toFixed(2))];
-							return [item.xLabel + ': ' + value];
+							//return [item.xLabel + ': ' + value];
 						}
                     }
                 },
