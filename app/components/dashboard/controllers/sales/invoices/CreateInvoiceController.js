@@ -828,7 +828,13 @@ invoicesUnlimited.controller('CreateInvoiceController',
             })
         }
         
-		return invoiceService.createNewInvoice(invoice, $scope.invoiceItems, $scope.userRole, $scope.files);
+		return invoiceService.createNewInvoice(invoice, $scope.invoiceItems, $scope.userRole, $scope.files)
+        .then(function(invObj){
+            return invoiceService.copyInInvoiceInfo(invObj)
+            .then(function(infoObj){
+                return invObj;
+            });
+        });
 	}
 
 	function saveAndSendInvoice() {
