@@ -310,6 +310,7 @@
             border-bottom:1px solid #808181;
         }
         
+        /*
         .header a.logo{
             width: 138px;
             min-height: 44px;
@@ -319,7 +320,15 @@
             background: url(./cardimages/01_IU-Web-Admin.png) no-repeat center center;
             background-size: contain;
         }
-        
+        */
+        .header a.logo{
+            width: 138px;
+            min-height: 44px;
+            display: block;
+            margin:0 auto;
+            padding: 5px 0 20px 0;
+            background-size: contain;
+        }
         /***************  SECTION CONTENT ***************/
         
         
@@ -1020,6 +1029,7 @@ function getInvoiceInfo (invoiceInfoId){
             if (res === "Paid") $('.btn-pay').hide();
         }).then(function(){
             if (result.img) $('#logo-img').attr('src',result.img.url());
+            else $('#logo-img').attr('src',"./cardimages/01_IU-Web-Admin.png");
             $('.b-name').text(result.businessName);
             $('.phone').text(result.phone);
             $('.email').text(result.email);
@@ -1335,8 +1345,8 @@ $(document).ready(function(){
        <!-- start HEADER -->
     <div class="header">
         <div class="wrapper">
-            <a href="https://invoicesunlimited.net/app" class="logo">
-                <img id='logo-img' src="">
+            <a style="text-align: center !important;" href="https://invoicesunlimited.net/app" class="logo">
+                <img style="width: 100px !important;" id='logo-img' src="">
             </a>
         </div>
     </div>

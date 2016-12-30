@@ -180,7 +180,7 @@ invoicesUnlimited.controller('NewUserController',
 				// email already taken
 				//var elem = $('input[id="newusername"]')[0];
 				//elem.setCustomValidity(error.message);
-				$('button[id="newUserSubmit"]')[0].click();
+				//$('button[id="newUserSubmit"]')[0].click();
 			
 			hideLoader();
 		})
