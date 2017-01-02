@@ -406,7 +406,10 @@ function drawChart(months, billable, unbilled, colors){
 					yAxes:
                     [{
 						ticks: {
-							beginAtZero:true
+							beginAtZero:true,
+                            userCallback: function(value, index, values) {
+                                return numberWithCommas(value);
+                            }
 						}
 					}]
 

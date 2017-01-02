@@ -1175,8 +1175,29 @@ invoicesUnlimited.controller('CreateInvoiceController',
                     });
                 }
                 if(index == -1){
+                    
+                    var nvalue = undefined;
+                    if(item.selectedTax.type == 2){
+                        nvalue = item.selectedTax.name.replace('(Tax Group)', "") + "( ";
+                        var assTax = item.selectedTax.entity.get('associatedTaxes');
+                        var count = 0;
+                        assTax.forEach(function(obj){
+                            if(count > 0){
+                                nvalue = nvalue + " + ";
+                                
+                            }
+                            nvalue = nvalue + obj.get('title') + "(" + obj.get('value') + "%)";
+                            count++;
+                        });
+                        
+                        nvalue = nvalue + " )";
+                    }
+                    else{
+                        nvalue = item.selectedTax.name + ' (' + item.selectedTax.rate + '%)';
+                    }
+                    
                     $scope.itemTaxes.push({
-                        nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
+                        nameValue :  nvalue,
                         amount: currencyFilter(item.taxValue, '$', 2),
                         count: 1,
                         name: item.selectedTax.name,
@@ -1187,7 +1208,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
                     $scope.itemTaxes[index].amountValue += item.taxValue;
                     $scope.itemTaxes[index].count++;
                     $scope.itemTaxes[index].amount = currencyFilter($scope.itemTaxes[index].amountValue, '$', 2);
-                    $scope.itemTaxes[index].nameValue = item.selectedTax.name + ' (' + item.selectedTax.rate + '%)';
+                    //$scope.itemTaxes[index].nameValue = item.selectedTax.name + ' (' + item.selectedTax.rate + '%)';
                 }
             }
             /*
