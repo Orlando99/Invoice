@@ -26,6 +26,50 @@ invoicesUnlimited.controller('CompanyProfileController',
 		console.log('User not logged in');
 		return undefined;
 	}
+        
+    $("#businessInfoForm").validate({
+		onkeyup : false,
+		onfocusout : false,
+		rules: {
+			businessName : {
+				required : true
+			},
+            streetName : {
+				required : true
+			},
+            city : {
+				required : true
+			},
+            state : {
+				required : true
+			},
+			zipCode: {
+				required : true,
+				minlength : 5,
+                digits : true
+			}
+		},
+		messages: {
+			businessName : {
+				required : "Please enter business name"
+			},
+            streetName : {
+				required : "Please enter street name"
+			},
+            city : {
+				required : "Please enter city"
+			},
+            state : {
+				required : "Please enter state"
+			},
+			zipCode: {
+				required : "Please enter zip code",
+				minlength : "Please enter valid zip code",
+                digits : "Please enter valid zip code"
+			}
+		}
+	});
+        
     if(!$scope.userLogo){
         var selectedorganization = userFactory.entity[0].get("selectedOrganization");
         var query = new Parse.Query('Organization');
@@ -74,6 +118,13 @@ invoicesUnlimited.controller('CompanyProfileController',
         }
     });
         
+    if(user.get('EPNusername')){
+        $scope.enableBusinessInfo = false;
+    }
+    else{
+        $scope.enableBusinessInfo = true;
+    }
+        
 	$scope.removeLogo = function(){
         
         $scope.isDeleteLogo = true;
@@ -111,6 +162,11 @@ invoicesUnlimited.controller('CompanyProfileController',
     $scope.saveBusiness = saveNow;
         
      function saveNow(){
+         
+         if($scope.enableBusinessInfo){
+             if(!$("#businessInfoForm").valid()) return;
+         }
+         
             showLoader();
         user.set('fullName',$scope.UserInfo.name);
         user.set( 'email',$scope.UserInfo.email);
@@ -139,6 +195,9 @@ invoicesUnlimited.controller('CompanyProfileController',
          var promises = [];
          
          promises.push(user.save());
+         
+         if($scope.enableBusinessInfo)
+            promises.push($scope.businessInfo.save());
          
          if($scope.newLogo){
             

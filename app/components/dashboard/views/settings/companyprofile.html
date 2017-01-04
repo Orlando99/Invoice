@@ -53,34 +53,34 @@
     <br>
 
     <h3 class="text-info text-weight-normalize text-uppercase layout-margin-tb">Company Details</h3>
-      <div ng-hide="businessInfo">
-      <form class="inputs-white col-60">
+      <div ng-show="enableBusinessInfo">
+      <form id="businessInfoForm" class="inputs-white col-60">
       
           <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Business Name</label>
-        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.businessName" placeholder="Business Name">
+        <input maxlength="60" name="businessName" class="col-75" type="text" ng-model="businessInfo.businessName" placeholder="Business Name">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Street</label>
-        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.streetName" placeholder="Street Name">
+        <input maxlength="60" name="streetName" class="col-75" type="text" ng-model="businessInfo.streetName" placeholder="Street Name">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">City</label>
-        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.city" placeholder="City">
+        <input maxlength="60" name="city" class="col-75" type="text" ng-model="businessInfo.city" placeholder="City">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">State</label>
-        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.state" placeholder="State">
+        <input maxlength="60" name="state" class="col-75" type="text" ng-model="businessInfo.state" placeholder="State">
       </div>
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-smm">Zip Code</label>
-        <input maxlength="60" class="col-75" type="text" ng-model="bsnsInfo.zipCode" placeholder="Zip Code">
+        <input maxlength="60" name="zipCode" class="col-75" ng-model="businessInfo.zipCode" placeholder="Zip Code">
       </div>
     
       </form>
           </div>
 
-    <div ng-show="businessInfo" class="col-60">
+    <div ng-hide="enableBusinessInfo" class="col-60">
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Business Name</p>
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="businessInfo.businessName || 'Business Name Placeholder'"></p>
 
