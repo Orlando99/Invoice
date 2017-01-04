@@ -248,7 +248,7 @@ invoicesUnlimited.controller('NewCustomerController',
 		});
         
         if(!$scope.newCustomer.entity['firstname'])
-            contact.entity['firstname'] = $scope.newCustomer.entity['displayName'];
+            contact.entity['firstname'] = $scope.newCustomer.entity['displayName'].split(' ')[0];
 		
 		 contact.save()
 		.then(function() {
