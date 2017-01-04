@@ -118,11 +118,11 @@ invoicesUnlimited.controller('CompanyProfileController',
         }
     });
         
-    if(user.get('EPNusername')){
-        $scope.enableBusinessInfo = false;
+    if(!user.get('EPNusername') || !user.get('EPNrestrictKey') || !user.get('merchantID')){
+        $scope.enableBusinessInfo = true;
     }
     else{
-        $scope.enableBusinessInfo = true;
+        $scope.enableBusinessInfo = false;
     }
         
 	$scope.removeLogo = function(){
