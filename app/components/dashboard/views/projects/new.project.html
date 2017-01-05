@@ -64,14 +64,14 @@
         <select class="col-75" name="budgetType" ng-model="budgetType">
             <option value="" disabled selected>Select Budget Type</option>
             <option value="None">None</option>
-            <option value="Total project cost">Total Project Cost</option>
+            <option value="Total project cost">Total project cost</option>
             <option value="Total project hours">Total project hours</option>
             <option value="Hours per task">Hours per task</option>
             <option value="Hours per staff">Hours per staff</option>
         </select>
       </div>
         
-        <div ng-show="budgetType == 'Total Project Cost'" class="input-container col-60 layout-margin-b">
+        <div ng-show="budgetType == 'Total project cost'" class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Amount</label>
         <input class="col-75" name="projectBudgetCost" onkeypress="numberValidation(event)" ng-model="projectBudgetCost" type="number">
       </div>

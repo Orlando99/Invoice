@@ -408,7 +408,7 @@ function drawChart(months, billable, unbilled, colors){
 						ticks: {
 							beginAtZero:true,
                             userCallback: function(value, index, values) {
-                                return numberWithCommas(value);
+                                return numberWithCommas(value.toFixed(2));
                             }
 						}
 					}]
