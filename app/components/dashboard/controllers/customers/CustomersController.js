@@ -22,7 +22,7 @@ invoicesUnlimited.controller('CustomersController',
 			 contactPersonFactory, customerFactory, coreFactory, expenseService, 
 			 invoicesFactory ,$controller,$q, appFields, currencyFilter, currencyFactory){
 
-	var customerId = parseInt($state.params.customerId);
+	var customerId = $state.params.customerId;
 	var user = userFactory;
 	var organization = user.entity[0].get("organizations")[0];
 	
@@ -126,19 +126,36 @@ invoicesUnlimited.controller('CustomersController',
         
         return result;
 	}
-
+    /*
 	var isCustomerIdValid = function(id){
 		if (isNaN(id)) return false;
 		if (id >= 0 && id < $scope.customers.length) return true;
 		else return false;
 	}
+    */
 	var doSelectCustomerIfValidId = function(id){
+        var index = getCustomerIndex(id);
+        if(index != -1){
+            selectCustomer($scope.customers[index]);
+			$scope.selectedCustomerId = id;
+        } else {
+            $state.go('dashboard.customers.all');
+        }
+        
+        /*
 		if (isCustomerIdValid(id)) {
 			selectCustomer($scope.customers[id]);
 			$scope.selectedCustomerId = id;
 		}
 		else $state.go('dashboard.customers.all');
+        */
 	}
+    
+    function getCustomerIndex(id){
+        return $scope.customers.findIndex(function(obj){
+            return id == obj.entity.id;
+        })
+    }
 
 	var doCreateEditObject = function(){
 		$scope.selectedCustomerEdit = 
@@ -370,7 +387,10 @@ invoicesUnlimited.controller('CustomersController',
 								display : true
 							},
 							ticks: {
-								beginAtZero:true
+								beginAtZero:true,
+                                userCallback: function(value, index, values) {
+                                    return numberWithCommas(value.toFixed(2));
+                                }
 							}
 						}]
 					}
@@ -380,6 +400,10 @@ invoicesUnlimited.controller('CustomersController',
 
 	}
 
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
 	var isGoTo = {
 		details : function(to){
 			return to.endsWith('details');	
@@ -487,8 +511,9 @@ invoicesUnlimited.controller('CustomersController',
         
 		$q.when($scope.selectedCustomer.entity.save()).then(function(){
                 $scope.selectedCustomer = null;
+                
                 $scope.customers
-                .splice($scope.selectedCustomerId,1);
+                .splice(getCustomerIndex($scope.selectedCustomerId),1);
                 $scope.selectedCustomerId = null;
                 hideLoader();
                 $state.go('dashboard.customers.all');
@@ -511,7 +536,7 @@ invoicesUnlimited.controller('CustomersController',
 		$q.when($scope.selectedCustomer.entity.save()).then(function(){
                 $scope.selectedCustomer = null;
                 $scope.customers
-                .splice($scope.selectedCustomerId,1);
+                .splice(getCustomerIndex($scope.selectedCustomerId),1);
                 $scope.selectedCustomerId = null;
                 hideLoader();
                 $state.go('dashboard.customers.all');
@@ -538,11 +563,11 @@ invoicesUnlimited.controller('CustomersController',
 		$scope.selectedCustomerEdit = null;
 		$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
 	}
-
+    /*
 	var isGoToDetailsWithInvalidCustomerId = function(to,id){
 		return to.endsWith('details') && (!isCustomerIdValid(id));
 	}
-
+    */
 	function LoadCustomers(loadAgain) {
 		//showLoader();
 		$q.when(coreFactory.getAllCustomers(loadAgain)).then(function(res){
@@ -1224,10 +1249,10 @@ invoicesUnlimited.controller('CustomersController',
 				event.preventDefault();
 				return;
 			}
-			doSelectCustomerIfValidId(parseInt(toParams.customerId));
+			doSelectCustomerIfValidId(toParams.customerId);
 		}
 		else if (isGoTo.edit(toState.name)) {
-			doSelectCustomerIfValidId(parseInt(toParams.customerId));
+			doSelectCustomerIfValidId(toParams.customerId);
 			doCreateEditObject();
 
 		} else if (fromState.name.endsWith('new')) {

@@ -349,7 +349,10 @@ function drawBarChart() {
 					yAxes:
                     [{
 						ticks: {
-							beginAtZero:true
+							beginAtZero:true,
+                            userCallback: function(value, index, values) {
+                                return numberWithCommas(value.toFixed(2));
+                            }
 						}
 					}]
 
@@ -503,6 +506,8 @@ function drawPieChart()
         
 		var ctx = document.getElementById("piechart");
         //console.log(Chart.defaults );
+        var helpers = Chart.helpers;
+        
 		var myChart = new Chart(ctx, {
 			type: 'pie',
 			data: {
@@ -513,17 +518,31 @@ function drawPieChart()
 				}],
 			},
 			options: {
-                
+                elements: {
+                    arc: {
+                        borderColor: "#fff",
+                        borderWidth: 0
+                    }
+                },
+                segmentShowStroke: true,
+                segmentStrokeColor: "#000",
+                segmentStrokeWidth: 50,
                 legend: {
                     display  : true,
-                     position : 'bottom',
-                    fullWidth: false,     
+                    position : 'bottom',
+                    fullWidth: false,
                     labels: {
                            boxWidth:	20,	 
                            fontSize: 12
                            //fontColor: 'rgb(255, 99, 132)'
                         //padding:5
-                   }
+                    },
+                    onHover : function(event, legendItem) {
+                        alert("hi");
+                    },
+                    onClick: function (e, legendItem) {
+                        e.stopPropagation();
+                    }
                 }, 
 				showTooltips: true,
                 showAllTooltips: false,
@@ -566,6 +585,26 @@ function drawPieChart()
 				}
 			}
 		});
+        
+        /*
+        var legendHolder = document.createElement('div');
+        legendHolder.innerHTML = myChart.generateLegend();
+
+        // Include a html legend template after the module doughnut itself
+        helpers.each(legendHolder.firstChild.childNodes, function (legendNode, index) {
+            helpers.addEvent(legendNode, 'mouseover', function () {
+                var activeSegment = myChart.segments[index];
+                activeSegment.save();
+                myChart.showTooltip([activeSegment]);
+                activeSegment.restore();
+            });
+        });
+        helpers.addEvent(legendHolder.firstChild, 'mouseout', function () {
+            myChart.draw();
+        });
+
+        myChart.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
+        */
      });  
   }   
 function addToRelevantRange(creatDate, expireDate, amount) {
