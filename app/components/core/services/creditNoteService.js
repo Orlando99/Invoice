@@ -604,7 +604,7 @@ function fillInXmlData(xmlUrl, user, creditNote) {
 		var labels = jsonObj.items.label;
 
 		// static values
-		labels['invoice-title'] = "Credit";
+		labels['invoice-title'] = "Credit Note";
 		labels['billType'] 	 = "estimate";
 		labels['list-header-total'] = "Total";
 		labels['headerTitle'] = "";

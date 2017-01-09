@@ -992,12 +992,83 @@ function reCalculateSubTotal(_scope) {
 		subTotal += item.amount * ((100 - item.discount) * 0.01);
 		item.taxValue = calculateTax(item.amount, item.selectedTax);
 		totalTax += item.taxValue;
+        
+        if (item.selectedTax) {
+                var index = -1;
+                
+                if(item.selectedTax.type == 2){
+                    var assTax = item.selectedTax.entity.get('associatedTaxes');
+                    
+                    assTax.forEach(function(taxObj){
+                        index = -1;
+                        
+                        if(_scope.itemTaxes.length){
+                            index = _scope.itemTaxes.findIndex(function(obj){
+                                return obj.name == taxObj.get('title');
+                            });
+                        }
+                        
+                        var taxAmount = 0;
+                        
+                        if(taxObj.get('compound')){
+                            taxAmount = item.amount * (item.selectedTax.rate - taxObj.get('value')) * 0.01;
+                            
+                            taxAmount = (item.amount + taxAmount) * taxObj.get('value') * 0.01;
+                        }
+                        else{
+                            taxAmount = item.amount * taxObj.get('value') * 0.01;
+                        }
+                        
+                        if(index == -1){
+                            _scope.itemTaxes.push({
+                                nameValue :  taxObj.get('title') + ' (' + taxObj.get('value') + '%)',
+                                amount: currencyFilter(taxAmount, '$', 2),
+                                count: 1,
+                                name: taxObj.get('title'),
+                                amountValue: taxAmount
+                            });
+                        }
+                        else{
+                            _scope.itemTaxes[index].amountValue += taxAmount;
+                            _scope.itemTaxes[index].count++;
+                            _scope.itemTaxes[index].amount = currencyFilter(_scope.itemTaxes[index].amountValue, '$', 2);
+                        }
+                    });
+                }
+                else {
+                    if(_scope.itemTaxes.length){
+                        index = _scope.itemTaxes.findIndex(function(obj){
+                            return obj.name == item.selectedTax.name;
+                        });
+                    }
+                    
+                    if(index == -1){
+                        _scope.itemTaxes.push({
+                            nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
+                            amount: currencyFilter(item.taxValue, '$', 2),
+                            count: 1,
+                            name: item.selectedTax.name,
+                            amountValue: item.taxValue
+                        });
+                    }
+                    else{
+                        _scope.itemTaxes[index].amountValue += item.taxValue;
+                        _scope.itemTaxes[index].count++;
+                        _scope.itemTaxes[index].amount = currencyFilter(_scope.itemTaxes[index].amountValue, '$', 2);
+                    }
+                }
+                
+                
+            }
+        
+        /*
 		if (item.selectedTax) {
 			_scope.itemTaxes.push({
 				nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
 				amount: currencyFilter(item.taxValue, '$', 2)
 			});
 		}
+        */
 	});
 
 	_scope.totalTax = totalTax;

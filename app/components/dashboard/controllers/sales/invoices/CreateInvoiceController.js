@@ -1169,6 +1169,75 @@ invoicesUnlimited.controller('CreateInvoiceController',
             
             if (item.selectedTax) {
                 var index = -1;
+                
+                if(item.selectedTax.type == 2){
+                    var assTax = item.selectedTax.entity.get('associatedTaxes');
+                    
+                    assTax.forEach(function(taxObj){
+                        index = -1;
+                        
+                        if($scope.itemTaxes.length){
+                            index = $scope.itemTaxes.findIndex(function(obj){
+                                return obj.name == taxObj.get('title');
+                            });
+                        }
+                        
+                        var taxAmount = 0;
+                        
+                        if(taxObj.get('compound')){
+                            taxAmount = item.amount * (item.selectedTax.rate - taxObj.get('value')) * 0.01;
+                            
+                            taxAmount = (item.amount + taxAmount) * taxObj.get('value') * 0.01;
+                        }
+                        else{
+                            taxAmount = item.amount * taxObj.get('value') * 0.01;
+                        }
+                        
+                        if(index == -1){
+                            $scope.itemTaxes.push({
+                                nameValue :  taxObj.get('title') + ' (' + taxObj.get('value') + '%)',
+                                amount: currencyFilter(taxAmount, '$', 2),
+                                count: 1,
+                                name: taxObj.get('title'),
+                                amountValue: taxAmount
+                            });
+                        }
+                        else{
+                            $scope.itemTaxes[index].amountValue += taxAmount;
+                            $scope.itemTaxes[index].count++;
+                            $scope.itemTaxes[index].amount = currencyFilter($scope.itemTaxes[index].amountValue, '$', 2);
+                        }
+                    });
+                }
+                else {
+                    if($scope.itemTaxes.length){
+                        index = $scope.itemTaxes.findIndex(function(obj){
+                            return obj.name == item.selectedTax.name;
+                        });
+                    }
+                    
+                    if(index == -1){
+                        $scope.itemTaxes.push({
+                            nameValue :  item.selectedTax.name + ' (' + item.selectedTax.rate + '%)',
+                            amount: currencyFilter(item.taxValue, '$', 2),
+                            count: 1,
+                            name: item.selectedTax.name,
+                            amountValue: item.taxValue
+                        });
+                    }
+                    else{
+                        $scope.itemTaxes[index].amountValue += item.taxValue;
+                        $scope.itemTaxes[index].count++;
+                        $scope.itemTaxes[index].amount = currencyFilter($scope.itemTaxes[index].amountValue, '$', 2);
+                    }
+                }
+                
+                
+            }
+            
+            /*
+            if (item.selectedTax) {
+                var index = -1;
                 if($scope.itemTaxes.length){
                     index = $scope.itemTaxes.findIndex(function(obj){
                         return obj.name == item.selectedTax.name;
@@ -1211,6 +1280,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
                     //$scope.itemTaxes[index].nameValue = item.selectedTax.name + ' (' + item.selectedTax.rate + '%)';
                 }
             }
+            */
             /*
 			if (item.selectedTax) {
 				$scope.itemTaxes.push({

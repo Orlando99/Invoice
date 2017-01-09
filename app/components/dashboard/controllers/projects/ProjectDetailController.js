@@ -146,11 +146,11 @@ function showProjectDetail() {
                         if(usr.user.userName == obj.get('user').get('userName')){
                             if(usr.loggedHours){
                                 usr.loggedHours += hh;
-                                usr.loggedHours += parseInt(((usr.loggedMinutes + mm) / 60).toFixed(0));
+                                usr.loggedHours += parseInt(Math.floor((usr.loggedMinutes + mm) / 60));
                                 usr.loggedMinutes = ((usr.loggedMinutes + mm) % 60);
                             }
                             else{
-                                usr.loggedHours = hh + parseInt((mm / 60).toFixed(0));
+                                usr.loggedHours = hh + parseInt(Math.floor(mm / 60));
                                 usr.loggedMinutes = mm % 60;
                                 usr.unbilledHours = 0;
                                 usr.unbilledMinutes = 0;
@@ -159,7 +159,7 @@ function showProjectDetail() {
                             
                             if(!obj.get('isBilled')){
                                 usr.unbilledHours += hh;
-                                usr.unbilledHours += parseInt(((usr.unbilledMinutes + mm) / 60).toFixed(0));
+                                usr.unbilledHours += parseInt(Math.floor((usr.unbilledMinutes + mm) / 60));
                                 usr.unbilledMinutes = ((usr.unbilledMinutes + mm) % 60);
 
                                 var tempHours = usr.unbilledHours < 10 ? '0' + usr.unbilledHours : usr.unbilledHours + '';
@@ -199,7 +199,7 @@ function showProjectDetail() {
 
                         if(tsk.entity.id == obj.get('task').id){
                             tsk.loggedHours += hh;
-                            tsk.loggedHours += parseInt(((tsk.loggedMinutes + mm) / 60).toFixed(0));
+                            tsk.loggedHours += parseInt(Math.floor((tsk.loggedMinutes + mm) / 60));
                             tsk.loggedMinutes = ((tsk.loggedMinutes + mm) % 60);
 
                             var tempHours = tsk.loggedHours < 10 ? '0' + tsk.loggedHours : tsk.loggedHours + '';
@@ -208,7 +208,7 @@ function showProjectDetail() {
 
                             if(obj.get('isBilled')){
                                 tsk.billedHours += hh;
-                                tsk.billedHours += parseInt(((tsk.billedMinutes + mm) / 60).toFixed(0));
+                                tsk.billedHours += parseInt(Math.floor((tsk.billedMinutes + mm) / 60));
                                 tsk.billedMinutes = ((tsk.billedMinutes + mm) % 60);
 
                                 tempHours = tsk.billedHours < 10 ? '0' + tsk.billedHours : tsk.billedHours + '';
@@ -217,7 +217,7 @@ function showProjectDetail() {
                             }
                             else{
                                 tsk.unbilledHours += hh;
-                                tsk.unbilledHours += parseInt(((tsk.unbilledMinutes + mm) / 60).toFixed(0));
+                                tsk.unbilledHours += parseInt(Math.floor((tsk.unbilledMinutes + mm) / 60));
                                 tsk.unbilledMinutes = ((tsk.unbilledMinutes + mm) % 60);
 
                                 tempHours = tsk.unbilledHours < 10 ? '0' + tsk.unbilledHours : tsk.unbilledHours + '';
@@ -231,7 +231,7 @@ function showProjectDetail() {
                 var sheetDate = obj.get('date');
                 var mon = sheetDate.getMonth();
                 
-                monthlyBillabel[mon] += (hh + parseInt((mm/60).toFixed(0)));
+                monthlyBillabel[mon] += (hh + parseInt(Math.floor(mm/60)));
                 
                 if(obj.get('isBilled')){
                     billedHours += hh;
@@ -240,11 +240,11 @@ function showProjectDetail() {
                 else{
                     hours += hh;
                     minutes += mm;
-                    monthlyUnbilled[mon] += (hh + parseInt((mm/60).toFixed(0)));
+                    monthlyUnbilled[mon] += (hh + parseInt(Math.floor(mm/60)));
                 }
                 
                 
-                hh += parseInt((mm/60).toFixed(0));
+                hh += parseInt(Math.floor(mm/60));
                 mm = mm % 60;
                 hh = hh < 10 ? '0' + hh : '' + hh
                 mm = mm < 10 ? '0' + mm : '' + mm
@@ -315,23 +315,23 @@ function showProjectDetail() {
         totalHours += (totalMinutes/60);
         totalMinutes = totalMinutes % 60;
         
-        totalHours = totalHours < 10 ? "0" + totalHours.toFixed(0) : totalHours.toFixed(0);
-        totalMinutes = totalMinutes < 10 ? "0" + totalMinutes.toFixed(0) : totalMinutes.toFixed(0);
+        totalHours = totalHours < 10 ? "0" + Math.floor(totalHours) : Math.floor(totalHours);
+        totalMinutes = totalMinutes < 10 ? "0" + Math.floor(totalMinutes) : Math.floor(totalMinutes);
         //$scope.billableHours = totalHours + ":" + totalMinutes;
         $scope.billableHours = numberWithCommas(totalHours) + ":" + totalMinutes;
         
         hours += (minutes/60);
         minutes = minutes % 60;
         
-        hours = hours < 10 ? "0" + hours.toFixed(0) : hours.toFixed(0);
-        minutes = minutes < 10 ? "0" + minutes.toFixed(0) : minutes.toFixed(0);
+        hours = hours < 10 ? "0" + Math.floor(hours) : Math.floor(hours);
+        minutes = minutes < 10 ? "0" + Math.floor(minutes) : Math.floor(minutes);
         $scope.unbilledHours = numberWithCommas(hours) + ":" + minutes;
         
         billedHours += (billedMinutes/60);
         billedMinutes = billedMinutes % 60;
         
-        billedHours = billedHours < 10 ? "0" + billedHours.toFixed(0) : billedHours.toFixed(0);
-        billedMinutes = billedMinutes < 10 ? "0" + billedMinutes.toFixed(0) : billedMinutes.toFixed(0);
+        billedHours = billedHours < 10 ? "0" + Math.floor(billedHours) : Math.floor(billedHours);
+        billedMinutes = billedMinutes < 10 ? "0" + Math.floor(billedMinutes) : Math.floor(billedMinutes);
         $scope.billedHours = numberWithCommas(billedHours) + ":" + billedMinutes;
         
         $scope.timesheets = project.timesheets;

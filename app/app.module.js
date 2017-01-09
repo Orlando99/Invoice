@@ -380,6 +380,22 @@ function calculateTax(amount, tax) {
   if (tax.type == 1)
     res = amount * tax.rate * 0.01;
   else if (tax.type == 2) {
+    res = amount * (tax.rate - tax.compound) * 0.01;
+    if (tax.compound)
+      res += (amount + res) * tax.compound * 0.01;
+  }
+
+  return res;
+}
+
+/*
+function calculateTax(amount, tax) {
+  if (! tax) return 0;
+
+  var res = 0;
+  if (tax.type == 1)
+    res = amount * tax.rate * 0.01;
+  else if (tax.type == 2) {
     res = amount * tax.rate * 0.01;
     if (tax.compound)
       res = res * tax.compound * 0.01;
@@ -387,7 +403,7 @@ function calculateTax(amount, tax) {
 
   return res;
 }
-
+*/
 function isEmpty(obj) {
   for(var key in obj) {
     if (obj.hasOwnProperty(key)) {
