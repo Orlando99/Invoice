@@ -122,6 +122,51 @@
     </div>
   </div>
 
+<div class="popup-modal edit-tax-group hidesm">
+    <div style="max-height: calc(100vh - 210px); overflow-y: auto;" class="modal container">
+
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Edit Tax Group</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="editTaxGroupForm" class="inputs-white">
+          <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Tax Group Name</label>
+            <input maxlength="60" name="name" type="text" class="col-75" placeholder="Type to add" ng-model="taxGroupName">
+          </div>
+          
+          <div class="col-25 spacer">Select Taxes to add:</div>
+            <table class="table-border-tb">
+             <tr class="thead">
+               <td class="text-uppercase text-info layout-padding-tb-lg">
+
+               </td>
+               <td class="text-uppercase text-info layout-padding-tb-lg">Tax Name</td>
+               <td class="text-uppercase text-info layout-padding-tb-lg text-left">Percentage</td>
+             </tr>
+             <tr class="trow" ng-repeat="tax in taxesForGroup">
+               <td class="text-uppercase text-info layout-padding-tb-lg">
+                 <label class="input-container input-checkbox-container layout-margin-tb">
+                   <input type="checkbox" ng-model="shouldAdd[$index]">
+                   <span class="checkbox float-left"></span>
+                 </label>
+               </td>
+               <td class="text-color-light text-weight-normalize layout-padding-tb-lg">{{tax.name}}</td>
+               <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left" >{{tax.rate}}</td>
+             </tr>
+           </table>
+          
+        </form>
+      </div>
+        <div class="col-25 spacer"></div>
+      <div class="clearfix"></div>
+      <button class="button button-small button-info text-uppercase"
+        ng-click="updateGroupTax()">Save</button>
+    </div>
+  </div>
+
   <div class="popup-modal edit-tax hidesm">
     <div class="modal container">
 

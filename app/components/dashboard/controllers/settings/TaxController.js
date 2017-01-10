@@ -1,8 +1,9 @@
 'use strict';
-  var digitsOnly = /[1234567890]/g;
-    var integerOnly = /[0-9\.]/g;
-    var alphaOnly = /[A-Za-z]/g;
-    var usernameOnly = /[0-9A-Za-z\._-]/g;
+var digitsOnly = /[1234567890]/g;
+var integerOnly = /[0-9\.]/g;
+var alphaOnly = /[A-Za-z]/g;
+var usernameOnly = /[0-9A-Za-z\._-]/g;
+
 invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 	'userFactory', 'taxService',
 	function($scope,$state,$controller,userFactory,taxService){
@@ -55,6 +56,15 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
 		}
 	});
         
+    $('#editTaxGroupForm').validate({
+		rules: {
+			name: 'required'
+		},
+		messages: {
+			name : 'Please enter Tax Group name'
+		}
+	});
+        
 	$('#editTaxForm').validate({
 		rules: {
 			name: 'required',
@@ -86,12 +96,13 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
             $scope.sortByTaxName();
 		});
 	}
- //
+
    $scope.sortByTaxName= function(){
        
        if($("#name").css('display') === "none"){
             $scope.taxes.sort(function(a,b){
-        return a.rate < (b.rate)});
+                return b.name.toLowerCase().localeCompare(a.name.toLowerCase());
+            });
             $('#name').css({
                 'display': 'inline-table'
             });
@@ -101,7 +112,8 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
         }
         else{
              $scope.taxes.sort(function(a,b){
-        return b.rate < (a.rate)});
+                return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+             });
             $('#nameUp').css({
                 'display': 'inline-table'
             });
@@ -111,21 +123,24 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
         }
        
             $('#percentage').css({
-            'display': 'none'
-        });
+                'display': 'none'
+            });
        
             $('#percentageUp').css({
-            'display': 'none'
-        });
+                'display': 'none'
+            });
     }
    
    $scope.sortByPercentage= function(){
-    $scope.taxes.sort(function(a,b){
-        return a.rate < (b.rate)});
-       
+       /*
+        $scope.taxes.sort(function(a,b){
+            return a.rate < (b.rate)
+        });
+       */
        if($("#percentage").css('display') === "none"){
            $scope.taxes.sort(function(a,b){
-        return a.rate < (b.rate)});
+                return a.rate < (b.rate)
+           });
             $('#percentage').css({
                 'display': 'inline-table'
             });
@@ -135,7 +150,8 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
         }
         else{
             $scope.taxes.sort(function(a,b){
-        return b.rate < (a.rate)});
+                return b.rate < (a.rate)
+            });
             $('#percentageUp').css({
                 'display': 'inline-table'
             });
@@ -144,17 +160,15 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
             });
         }
 
-       $('#name').css({
+        $('#name').css({
             'display': 'none'
         });
        
         $('#nameUp').css({
             'display': 'none'
         });
-            
     }
-        
-//        
+                
 	$scope.print_values = function() {
 		console.log("tax name: " + $scope.taxName);
 		console.log("tax rate: " + $scope.taxRate);
@@ -183,6 +197,30 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
                 $scope.shouldAdd.push(false);
             }
         });
+    }
+        
+    function initializeEditGroupTaxVariables(tax){
+        $scope.taxGroupId = tax.id;
+		$scope.taxGroupName = tax.entity.get('title');
+        $scope.taxesForGroup = [];
+        $scope.shouldAdd = [];
+        
+        $scope.taxes.forEach(function(obj){
+            if(obj.type != 2){
+                $scope.taxesForGroup.push(obj);
+                $scope.shouldAdd.push(false);
+            }
+        });
+        
+        var assTaxes = tax.entity.get('associatedTaxes');
+        
+        for(var i = 0; i < assTaxes.length; ++i){
+            for(var j = 0; j < $scope.taxesForGroup.length; ++j){
+                if(assTaxes[i].id == $scope.taxesForGroup[j].id){
+                    $scope.shouldAdd[j] = true;
+                }
+            }
+        }
     }
         
     $scope.saveNewGroupTax = function() {
@@ -236,7 +274,51 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
                 getTaxes();
             }
 		});
+	}
+    
+    $scope.updateGroupTax = function() {
+		if(! $('#editTaxGroupForm').valid()) return;
+		
+        showLoader();
         
+        var associatedTaxes = [];
+        var compundCount = 0;
+        var compundRate = 0;
+        var total = 0;
+        for(var i = 0; i < $scope.taxesForGroup.length; ++i){
+            if($scope.shouldAdd[i]){
+                associatedTaxes.push($scope.taxesForGroup[i].entity);
+                total += $scope.taxesForGroup[i].rate;
+                if($scope.taxesForGroup[i].isCompound){
+                    compundRate += $scope.taxesForGroup[i].rate;
+                    compundCount++;
+                }
+            }
+        }
+        
+        if(compundCount > 1){
+            ShowMessage('You can assign only one compund tax to a tax group.', 'error');
+            hideLoader();
+            return;
+        }
+        
+        if(associatedTaxes.length < 1){
+            ShowMessage('You must select at least 1 tax.', 'error');
+            hideLoader();
+            return;
+        }
+        
+        var taxToSave = $scope.selectedTax.entity;
+        taxToSave.set('title', $scope.taxGroupName);
+        taxToSave.set('value', total);
+        taxToSave.set('compound', compundRate);
+        taxToSave.set('associatedTaxes', associatedTaxes);
+        
+        taxToSave.save()
+        .then(function(taxObj){
+            $(".edit-tax-group").removeClass("show");
+            getTaxes();
+        });
 	}
 
 	$scope.saveNewTax = function() {
@@ -269,13 +351,21 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
     }
 	
 	$scope.editTax = function(tax) {
-		$('#editTaxForm').validate().resetForm();
-		$(".edit-tax").addClass("show");
-		// record selected tax attributes
-		$scope.taxId = tax.id;
-		$scope.taxName = tax.name;
-		$scope.taxRate = tax.rate;
-		$scope.isCompound = tax.isCompound;
+        if(tax.type == 1){
+            $('#editTaxForm').validate().resetForm();
+            $(".edit-tax").addClass("show");
+            // record selected tax attributes
+            $scope.taxId = tax.id;
+            $scope.taxName = tax.name;
+            $scope.taxRate = tax.rate;
+            $scope.isCompound = tax.isCompound;
+        }
+        else{
+            $scope.selectedTax = tax;
+            $('#editTaxGroupForm').validate().resetForm();
+            $(".edit-tax-group").addClass("show");
+            initializeEditGroupTaxVariables(tax);
+        }
 	}
 
 	$scope.saveEditedTax = function() {
@@ -359,9 +449,8 @@ invoicesUnlimited.controller('TaxController',['$scope', '$state', '$controller',
                obj.rate = "";  
              } 
               
-            return obj.name.toLowerCase().includes($scope.searchText.toLowerCase())||
-            obj.rate.toString().toLowerCase().includes($scope.searchText.toLowerCase());
-               
+            return obj.name.toLowerCase().includes($scope.searchText.toLowerCase()) ||
+                obj.rate.toString().toLowerCase().includes($scope.searchText.toLowerCase());
           });
         }
         else

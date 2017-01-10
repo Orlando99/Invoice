@@ -365,8 +365,10 @@ function drawBarChart() {
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+    
+    
 function drawPieChart() 
-    {
+{
 	var promiseList = [];
 	var promise = undefined;
 
@@ -392,10 +394,164 @@ function drawPieChart()
 		});
 	})
 	.then(function(objs) 
-        {
+    {
+        var uniqueExpenses = [];
+        var total = 0;
+        
+        objs.forEach(function(exp){
+            var index = uniqueExpenses.findIndex(function(uObj){
+                return uObj.name == exp.entity.category;
+            });
+            
+            if(index > -1){
+                uniqueExpenses[index].amount += exp.entity.amount;
+            }
+            else{
+                uniqueExpenses.push({
+                    name: exp.entity.category,
+                    amount: exp.entity.amount
+                });
+            }
+            total += exp.entity.amount;
+        });
+        
+        uniqueExpenses.forEach(function(exp){
+            exp.percentage = (exp.amount / total * 100).toFixed(2);
+        });
+        
+        var expenseNameList = [];
+		var expenseValueList = [];
+		var expenseColorList = [];
+        
+        uniqueExpenses.sort(function(a, b){
+            return b.amount - a.amount;
+        });
+        
+        uniqueExpenses.forEach(function(exp){
+            exp.value = currencyFilter(exp.amount*cc.exchangeRate, cc.currencySymbol, 2)
+            expenseNameList.push(exp.name + ' (' + exp.percentage + '%)');
+            expenseValueList.push(exp.amount);
+            expenseColorList.push(getColor(exp.name));
+        });
+        
+        $scope.expenseList = uniqueExpenses;
+        
+        $scope.totalExpenseAmount = currencyFilter(total*cc.exchangeRate, cc.currencySymbol, 2);
+        
+		var ctx = document.getElementById("piechart");
+        //console.log(Chart.defaults );
+        var helpers = Chart.helpers;
+        
+		var myChart = new Chart(ctx, {
+			type: 'pie',
+			data: {
+				labels: expenseNameList,
+				datasets: [{
+					data: expenseValueList,
+					backgroundColor: expenseColorList
+				}],
+			},
+			options: {
+                elements: {
+                    arc: {
+                        borderColor: "#fff",
+                        borderWidth: 0
+                    }
+                },
+                segmentShowStroke: true,
+                segmentStrokeColor: "#000",
+                segmentStrokeWidth: 50,
+                legend: {
+                    display  : true,
+                    position : 'bottom',
+                    fullWidth: false,
+                    labels: {
+                           boxWidth:	20,	 
+                           fontSize: 12
+                           //fontColor: 'rgb(255, 99, 132)'
+                        //padding:5
+                    },
+                    onHover : function(event, legendItem) {
+                        alert("hi");
+                    },
+                    onClick: function (e, legendItem) {
+                        e.stopPropagation();
+                    }
+                }, 
+				showTooltips: true,
+                showAllTooltips: false,
+				responsive: false,
+				rotation: 0,
+                hover: {
+                    intersect: true,
+                    animationDuration: 400,
+                    enabled: true
+            },
+            tooltips:
+            {
+                enabled: true,
+                custom: function(tooltip) {
+                            // tooltip will be false if tooltip is not visible or should be hidden
+                            if (!tooltip) {
+                                return;
+                            }
+                            //tooltip.afterBody = ["hello"];
+                            if(tooltip.body){
+                                tooltip.title = [tooltip.body[0].lines[0]];
+                                tooltip.body[0].lines = [tooltip.body[0].lines[1]];
+                                tooltip.titleFontSize = 20;
+                                tooltip.bodyFontSize = 14;
+                                tooltip.y -= 10;
+                            }
+                            //tooltip.title = [];
+                        },
+					callbacks: {
+						label:
+                        function(item,data) {
+							var value = data.datasets[item.datasetIndex].data[item.index];
+							var label = data.labels[item.index];
+							//var percentage = ((value / totalExpense) * 100).toFixed(1);
+							return [ "$ "+numberWithCommas(value.toFixed(2)), label];
+						}
+
+					}
+				}
+			}
+		});
+     });  
+} 
+    
+/*
+function drawPieChart() 
+{
+	var promiseList = [];
+	var promise = undefined;
+
+	promise = $q.when(coreFactory.getExpenseCategories({
+		organization : organization
+	})).then(function(objs) {
+		$scope.categories = objs;
+	});
+	promiseList.push(promise);
+
+	promise = $q.when(coreFactory.getDefaultExpenseCategories())
+	.then(function(objs) {
+		$scope.defaultCategories = objs;
+	});
+	promiseList.push(promise);
+
+	expenseService.getExpensesForSummary({
+		organization : organization
+	}).then(function(objs) {
+		return $q.all(promiseList)
+		.then(function() {
+			return objs;
+		});
+	})
+	.then(function(objs) 
+    {
 		var totalExpense = 0;
 		var expenseList = [];
-        var expenseList2 = [];
         
 		var expenseNameList = [];
 		var expenseValueList = [];
@@ -410,7 +566,7 @@ function drawPieChart()
         {
            listNew[i] = objs[i].entity;    
         }
-          listNew.sort(function(a,b) {        
+        listNew.sort(function(a,b) {        
 			return b.amount- a.amount;
 		});
         for(var i = 0 ; i < size ; i++)
@@ -467,7 +623,7 @@ function drawPieChart()
                        oName : name
                   }
                 }
-      }//end of for
+        }//end of for
 		expenseList.sort(function(a,b) {
 			return b.value - a.value;
 		});
@@ -502,7 +658,6 @@ function drawPieChart()
             }
         }
 		$scope.totalExpenseAmount = currencyFilter(totalExpense*cc.exchangeRate, cc.currencySymbol, 2);  
-//,,,.,.,.,.....................................
         
 		var ctx = document.getElementById("piechart");
         //console.log(Chart.defaults );
@@ -555,19 +710,19 @@ function drawPieChart()
             },
             tooltips:
             {
-                    enabled: true,
+                enabled: true,
                 custom: function(tooltip) {
                             // tooltip will be false if tooltip is not visible or should be hidden
                             if (!tooltip) {
                                 return;
                             }
                             //tooltip.afterBody = ["hello"];
-                        if(tooltip.body){
-                            tooltip.title = [tooltip.body[0].lines[0]];
-                            tooltip.body[0].lines = [tooltip.body[0].lines[1]];
-                            tooltip.titleFontSize = 20;
-                            tooltip.bodyFontSize = 14;
-                        }
+                            if(tooltip.body){
+                                tooltip.title = [tooltip.body[0].lines[0]];
+                                tooltip.body[0].lines = [tooltip.body[0].lines[1]];
+                                tooltip.titleFontSize = 20;
+                                tooltip.bodyFontSize = 14;
+                            }
                             //tooltip.title = [];
                         },
 					callbacks: {
@@ -581,32 +736,12 @@ function drawPieChart()
 						}
 
 					}
-                    
 				}
 			}
 		});
-        
-        /*
-        var legendHolder = document.createElement('div');
-        legendHolder.innerHTML = myChart.generateLegend();
-
-        // Include a html legend template after the module doughnut itself
-        helpers.each(legendHolder.firstChild.childNodes, function (legendNode, index) {
-            helpers.addEvent(legendNode, 'mouseover', function () {
-                var activeSegment = myChart.segments[index];
-                activeSegment.save();
-                myChart.showTooltip([activeSegment]);
-                activeSegment.restore();
-            });
-        });
-        helpers.addEvent(legendHolder.firstChild, 'mouseout', function () {
-            myChart.draw();
-        });
-
-        myChart.chart.canvas.parentNode.parentNode.appendChild(legendHolder.firstChild);
-        */
      });  
-  }   
+}
+*/
 function addToRelevantRange(creatDate, expireDate, amount) {
 	// if there is no expire date, then invoice can not be in Overdue state.
 	if (! expireDate) {

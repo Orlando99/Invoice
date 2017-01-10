@@ -335,64 +335,63 @@
 
     <script>
         $(document).ready(function(){
-        $('#edit_expanse_ammount').mask("#,##0.00", {reverse: true});
-            
+            $('#edit_expanse_ammount').mask("#,##0.00", {reverse: true});
+
             $(document).click(function(event) { 
-        if(!$(event.target).closest('#menu_head').length) {
-        if($(".filtermenu").hasClass('show')) {
-            $(".filtermenu").removeClass('show');
-        }else{
-        }
-        }   
-         if(!$(event.target).closest('#ul_wrapp').length) {
-        }
-       else{
-                $(".filtermenu").removeClass('show');
-        }
-        });
+                if(!$(event.target).closest('#menu_head').length) {
+                    if($(".filtermenu").hasClass('show')) {
+                        $(".filtermenu").removeClass('show');
+                    }
+                    else{
+                    }
+                }   
+                if(!$(event.target).closest('#ul_wrapp').length) {
+                }
+                else{
+                    $(".filtermenu").removeClass('show');
+                }
+            });
         });
         
-         $("#ul_wrapp").click(function(event) { 
+        $("#ul_wrapp").click(function(event) { 
              $("#ul_wrapp").removeClass('show');
         });
         function div_add_class(x) {
-                    $("#div_wrapp").addClass("organization showing-menu");
-                    $("#div_wrapp").addClass("showing-menu");
-                    $("#ul_wrapp").addClass("submenu");
-                    $("#ul_wrapp").addClass("user-submenu");
-                    $("#ul_wrapp").addClass("show");
+            $("#div_wrapp").addClass("organization showing-menu");
+            $("#div_wrapp").addClass("showing-menu");
+            $("#ul_wrapp").addClass("submenu");
+            $("#ul_wrapp").addClass("user-submenu");
+            $("#ul_wrapp").addClass("show");
         }
         
         function ul_add_class(x) {
-                    $("#div_wrapp").addClass("organization showing-menu");
-                    $("#div_wrapp").addClass("showing-menu");
-                    $("#ul_wrapp").addClass("submenu");
-                    $("#ul_wrapp").addClass("user-submenu");
-                    $("#ul_wrapp").addClass("show");
+            $("#div_wrapp").addClass("organization showing-menu");
+            $("#div_wrapp").addClass("showing-menu");
+            $("#ul_wrapp").addClass("submenu");
+            $("#ul_wrapp").addClass("user-submenu");
+            $("#ul_wrapp").addClass("show");
         }
         
        function mouse_out(x) {
-                    $("#div_wrapp").removeClass("showing-menu");
-                    $("#ul_wrapp").removeClass("show");
+            $("#div_wrapp").removeClass("showing-menu");
+            $("#ul_wrapp").removeClass("show");
         }
         
-       function resizeIframe(obj){
-          
-     obj.style.height = 0;
-     obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';}
-        
+        function resizeIframe(obj){ 
+            obj.style.height = 0;
+            obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
+        }
         
         function auto_grow(element) {
-        element.style.height = "auto";
-        element.style.overflow = "hidden";
-        element.style.height = (element.scrollHeight)+"px";}
+            element.style.height = "auto";
+            element.style.overflow = "hidden";
+            element.style.height = (element.scrollHeight)+"px";
+        }
         
-          function close_mess(obj){
-               $("#close_error_div").hide();
-             //alert("Hello");
-         }
+        function close_mess(obj){
+            $("#close_error_div").hide();
+        }
         
-//});
     </script>
 
 
