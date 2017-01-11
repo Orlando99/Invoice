@@ -230,6 +230,15 @@ angular.module('invoicesUnlimited')
 					}
 				}
 			},
+            emailContact : {
+				name	: 'dashboard.customers.emailContact',
+				url 	: '/:customerId/emailContact',
+				views 		: {
+					'customersView' : {
+						templateUrl : COMPONENTS + 'dashboard/views/customers/emailContact.html'
+					}
+				}
+			},
 			newCust	: {
 				name	: 'dashboard.customers.new',
 				url 	: '/new',

@@ -1,5 +1,3 @@
-<style>
-    </style>
 <div class="container hidesm" ng-class="{'deactive': selectedCustomer.entity.status == 'inactive'}">
     <a ui-sref="dashboard.customers.all" class="button-icon float-left">
       <img src="./assets/images/icon-back.png" alt="Kappa">
@@ -27,7 +25,7 @@
       <button class="button button-small button-neutral text-uppercase menu" uib-dropdown-toggle>More <img src="./assets/images/dropdown-arrow-w.png" alt="">
       </button>
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
-        <li><a href="">Email Contact</a></li>
+        <li><a ui-sref="dashboard.customers.emailContact({customerId:selectedCustomerId})">Email Contact</a></li>
         <!--<li><a href="">Clone</a></li> data-toggle="add-contact-person"-->
       
           
@@ -151,7 +149,7 @@
               </td>
               <td class="layout-padding-tb-lg valign-top">
               <span ng-show="person.entity.mobile">{{'M: '+person.entity.mobile}}<br/></span>
-              <span ng-show="person.entity.phone">{{'W: '+person.entity.phone}}</td>
+                  <span ng-show="person.entity.phone">{{'W: '+person.entity.phone}}</span></td>
               <td class="layout-padding-tb-lg valign-top">{{person.entity.email}}</td>
               <td class="layout-padding-tb-lg valign-top actions">
                 <a ng-click="editContact(this.person, $index);" class="action-edit" style = "position: relative;top: -18px;">Edit</a>

@@ -156,6 +156,96 @@ invoicesUnlimited.controller('CustomersController',
             return id == obj.entity.id;
         })
     }
+    
+    function prepareToEmailContact(){
+        var customerId = $state.params.customerId;
+        
+        var index = getCustomerIndex(customerId);
+        if(index != -1){
+            $scope.selectedCustomer = $scope.customers[index];
+			$scope.selectedCustomerId = customerId;
+        } else {
+            $state.go('dashboard.customers.all');
+        }
+        
+        /*
+        angular.element(document).ready(function () {
+            var custemails = $scope.selectedCustomer.contactPersons;
+        
+            var emailArray = [];
+            var count = 0;
+            custemails.forEach(function(obj){
+                if(obj.entity.email)
+                    emailArray.push({
+                        id: obj.entity.email,
+                        text: obj.entity.email
+                    });
+            });
+
+            $('#toEmail').select2({
+                data: emailArray,
+                placeholder: 'Select Email'
+            });
+            $scope.trix = 'abc1';
+        });
+        */
+    }
+    
+    var events = ['trixInitialize', 'trixChange', 'trixSelectionChange', 'trixFocus', 'trixBlur', 'trixFileAccept', 'trixAttachmentAdd', 'trixAttachmentRemove'];
+
+    for (var i = 0; i < events.length; i++) {
+        $scope[events[i]] = function(e, elm) {
+            console.info('Event type:', e.type);
+            //debugger;
+        }
+    };
+    
+    $scope.trixBlur = function(e, editor){
+        console.info('Event type:', e.type);
+        $scope.trix = editor.element.innerHTML;
+        //debugger;
+    }
+    
+    $scope.sendMail = function(){
+        $('#send-email-form').validate({
+            rules : {
+                toEmail : 'required',
+                subject : 'required'
+            },
+            messages : {
+                toEmail : 'Please select email',
+                subject : 'Please enter subject'
+            }
+        });
+        
+        if(!$('#send-email-form').valid())
+            return;
+        
+        var obj = $scope.selectedCustomer;
+        var body = $scope.trix;
+        var email = $('#toEmail').val();
+        var subject = $('#subject').val();
+        debugger;
+        showLoader();
+        
+        Parse.Cloud.run("sendMailgunHtml", {
+                toEmail: email.join(", "),
+                fromEmail: $scope.selectedCustomer.entity.displayName + " <no-reply@invoicesunlimited.com>",
+                subject : subject,
+                html : body
+                }).then(function(msg) {
+                    console.log(msg);
+                    showSnackbar("Email sent. Redirecting...");
+                    hideLoader();
+                    setTimeout(function(){
+                        $state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
+                    }, 2000);
+                });
+    }
+    
+    $scope.cancelSendingEmail = function(){
+        $state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
+    }
 
 	var doCreateEditObject = function(){
 		$scope.selectedCustomerEdit = 
@@ -418,6 +508,9 @@ invoicesUnlimited.controller('CustomersController',
 		},
 		newCustomer : function(to){
 			return to.endsWith('new');	
+		},
+        emailContact : function(to){
+			return to.endsWith('emailContact');	
 		}
 	}
 
@@ -608,6 +701,9 @@ invoicesUnlimited.controller('CustomersController',
 				doSelectCustomerIfValidId(customerId);
 				doCreateEditObject();
 			}
+            else if (isGoTo.emailContact($state.current.name)){
+                prepareToEmailContact();
+            }
             $scope.sortByCustomerName();
 			hideLoader();
 
@@ -1233,6 +1329,27 @@ invoicesUnlimited.controller('CustomersController',
 			if (isGoTo.edit($state.current.name) || isGoTo.newCustomer($state.current.name)) {
 				autoFormatTelephoneNumbers();
 			}
+            else if(isGoTo.emailContact($state.current.name)){
+                var custemails = $scope.selectedCustomer.contactPersons;
+        
+                var emailArray = [];
+                var count = 0;
+                custemails.forEach(function(obj){
+                    if(obj.entity.email)
+                        emailArray.push({
+                            id: obj.entity.email,
+                            text: obj.entity.email
+                        });
+                });
+
+                $('#toEmail').html('');
+                
+                $('#toEmail').select2({
+                    data: emailArray,
+                    placeholder: 'Select Email'
+                });
+                $scope.trix = '';
+            }
 		});
 
 	var stateChangeEvent = $rootScope.$on('$stateChangeStart',
@@ -1251,6 +1368,9 @@ invoicesUnlimited.controller('CustomersController',
 			}
 			doSelectCustomerIfValidId(toParams.customerId);
 		}
+        else if(isGoTo.emailContact(toState.name)){
+            prepareToEmailContact();
+        }
 		else if (isGoTo.edit(toState.name)) {
 			doSelectCustomerIfValidId(toParams.customerId);
 			doCreateEditObject();
@@ -1262,6 +1382,7 @@ invoicesUnlimited.controller('CustomersController',
 			stateChangeEvent();
 			stateChangeEvent = null;
 		}
+        
 	});
 
 	LoadCustomers();
@@ -1286,6 +1407,8 @@ invoicesUnlimited.controller('CustomersController',
     $scope.searchObject = {};
     $scope.search = function()
     {
+        if(!$scope.searchObject.searchText)
+            return;
          if($scope.searchObject.searchText.length)
          {
            $scope.customers = $scope.displayedCustomers.filter(function(obj)

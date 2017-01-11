@@ -1,0 +1,48 @@
+<div class="container hidesm" ng-class="{'deactive': selectedCustomer.entity.status == 'inactive'}">
+    <h2 style="margin-top: 20px !important; margin-bottom: 5px !important;">Email to {{selectedCustomer.entity.displayName}}</h2>
+    <hr>
+    <style>
+        .select2-selection__rendered{
+                height: 27px;
+                overflow: visible !important;
+        }
+        .select2-search--inline{
+            height: 20px !important;
+        }
+        .select2-search__field{
+            height: 20px !important;
+            min-height: 20px !important;
+        }
+    </style>
+    <form class="col-80 inputs-white" id="send-email-form" novalidate>
+
+        <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Send To</label>
+            <select id="toEmail" name="toEmail" class="col-75 pull-right toEmail"  placeholder="Email" multiple="multiple">
+            </select>
+        </div>
+        
+        <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Subject</label>
+            <input maxlength="60" name="subject" id="subject" class="col-75 pull-right alphaNumericField" type="text" placeholder="Subject" ng-model="emailSubject"/>
+        </div>
+        
+        <div class="input-container layout-margin-b">
+            <label class="layout-padding-t-sm">Body</label>
+            <!--
+            <textarea class="col-75 pull-right" ng-model="emailbody"/>
+-->
+            <div class="col-75 pull-right">
+                <trix-editor style="height: 400px !important;" ng-model-options="{ updateOn: 'blur' }" spellcheck="false" class="trix-content" ng-model="trix" angular-trix trix-initialize="trixInitialize(e, editor);" trix-change="trixChange(e, editor);" trix-selection-change="trixSelectionChange(e, editor);" trix-focus="trixFocus(e, editor);" trix-blur="trixBlur(e, editor);" trix-file-accept="trixFileAccept(e, editor);" trix-attachment-add="trixAttachmentAdd(e, editor);" trix-attachment-remove="trixAttachmentRemove(e, editor);" placeholder="Write something.."></trix-editor>
+            </div>
+        </div>
+        
+        
+    </form>
+    <div class="clearfix layout-margin-tb-lg spacer"></div>
+    <button ng-click="sendMail();" class="button button-info text-uppercase layout-margin-r">Send</button>
+    <button ng-click="cancelSendingEmail();" class="button button-neutral text-uppercase">Cancel</button>
+    <div class="clearfix layout-margin-tb-lg spacer"></div>
+    
+</div>
+  <!--<div class="popup-modal"></div>-->
