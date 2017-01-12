@@ -832,11 +832,24 @@ invoicesUnlimited.controller('CreateInvoiceController',
         .then(function(invObj){
             return invoiceService.copyInInvoiceInfo(invObj)
             .then(function(infoObj){
+                $scope.invoiceInfo = infoObj;
                 return invObj;
             });
         });
 	}
 
+    function saveAndSendInvoice() {
+		return saveInvoice()
+		.then(function(invoice) {
+            return invoiceService.createInvoiceReceipt(invoice.id, $scope.invoiceInfo.id)
+			.then(function(invoiceObj) {
+                invoiceService.sendInvoiceReceipt(invoiceObj);
+				return invoiceObj;
+			});
+		});
+	}
+        
+        /*
 	function saveAndSendInvoice() {
 		return saveInvoice()
 		.then(function(invoice) {
@@ -852,7 +865,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		});
         
 	}
-
+    */
 	function showInvoiceNumberError () {
 		var validator = $( "#addInvoiceForm" ).validate();
 		validator.showErrors({
@@ -901,10 +914,16 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			}
 		})
 		.then(function(invoice) {
-            addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice);
+            addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice)
+            .then(function(obj){
+                hideLoader();
+                $state.go('dashboard.sales.invoices.details', {invoiceId:obj.id});
+            });
+            /*
 			//$state.go('dashboard.sales.invoices.all');
              $state.go('dashboard.sales.invoices.details', {invoiceId:invoice.id});
              hideLoader();
+             */
 		}, function (error) {
 			hideLoader();
 			console.log(error);
@@ -972,47 +991,49 @@ invoicesUnlimited.controller('CreateInvoiceController',
         }
     
     function addNewComment(commentbody, isAuto, invoice){
-    var obj = {
-		userID : user,
-		organization : organization,
-		name : user.get('username'),
-		date : new Date(),
-		isAutomaticallyGenerated : isAuto,
-		comment : commentbody
-	}
-    
-    if(!user.get('isTrackUsage') && isAuto) {
-        return;
+        var obj = {
+            userID : user,
+            organization : organization,
+            name : user.get('username'),
+            date : new Date(),
+            isAutomaticallyGenerated : isAuto,
+            comment : commentbody
+        }
+
+        if(!user.get('isTrackUsage') && isAuto) {
+            return;
+        }
+
+        var data = {};
+        return $q.when(coreFactory.getUserRole(user))
+        .then(function(role) {
+            return commentFactory.createNewComment(obj, role);
+        })
+        .then(function(obj) {
+            data.commentObj = obj;
+            //var invoice = $scope.invoice.entity;
+            var prevComments = invoice.get('comments');
+            if(prevComments)
+                prevComments.push(obj);
+            else
+                prevComments = [obj];
+
+            invoice.set('comments', prevComments);
+            return invoice.save();
+        })
+        .then(function(invObj) {
+            return invObj;
+            /*
+            var comment = new commentFactory(data.commentObj);
+
+            if($scope.comments)
+                $scope.comments.push(comment);
+            else
+                $scope.comments = [comment];
+                */
+            console.log(comment);
+        });
     }
-
-	var data = {};
-	$q.when(coreFactory.getUserRole(user))
-	.then(function(role) {
-		return commentFactory.createNewComment(obj, role);
-	})
-	.then(function(obj) {
-		data.commentObj = obj;
-		//var invoice = $scope.invoice.entity;
-		var prevComments = invoice.get('comments');
-		if(prevComments)
-			prevComments.push(obj);
-		else
-			prevComments = [obj];
-
-		invoice.set('comments', prevComments);
-		return invoice.save();
-	})
-	.then(function() {
-		var comment = new commentFactory(data.commentObj);
-
-		if($scope.comments)
-			$scope.comments.push(comment);
-		else
-			$scope.comments = [comment];
-
-		console.log(comment);
-	});
-}
 
 
 	$scope.saveAndSend = function () {
@@ -1034,12 +1055,27 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			}
 		})
 		.then(function(invoice) {
-            addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice);
+            addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice)
+            .then(function(invObj){
+                if($scope.selectedCustomer.entity.email){
+                    addNewComment('Invoice emailed to ' + $scope.selectedCustomer.entity.email, true, invoice)
+                    .then(function(obj){
+                        hideLoader();
+                        $state.go('dashboard.sales.invoices.details', {invoiceId:obj.id});
+                    });
+                }
+                else{
+                    hideLoader();
+                    $state.go('dashboard.sales.invoices.details', {invoiceId:invObj.id});
+                }
+            });
+            /*
             if($scope.selectedCustomer.entity.email)
                 addNewComment('Invoice emailed to ' + $scope.selectedCustomer.entity.email, true, invoice);
 			hideLoader();
 			//$state.go('dashboard.sales.invoices.all');
             $state.go('dashboard.sales.invoices.details', {invoiceId:invoice.id});
+            */
 		}, function (error) {
 			hideLoader();
 			console.log(error);

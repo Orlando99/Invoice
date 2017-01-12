@@ -278,6 +278,7 @@ invoicesUnlimited.controller('CustomersController',
     
 	var selectCustomer = function(item)
     {
+        $("#toEmail").select2("close");
 		$scope.selectedCustomer = item;
         var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
         $scope.selectedCustomer.invoices.forEach(function(obj){
@@ -288,6 +289,10 @@ invoicesUnlimited.controller('CustomersController',
             if(obj)
                 obj.date = formatDate(obj.entity.date, dateFormat);
         });
+        
+        $scope.comments = $scope.selectedCustomer.comments;
+        
+        $scope.sortByDate();
         
 		var obj = $scope.selectedCustomer.entity;
 		if (!obj.billingAddress) return;
@@ -1197,21 +1202,83 @@ invoicesUnlimited.controller('CustomersController',
         
     }
     $scope.sortByDate= function(){
+        
+        if($("#date").css('display') === "none"){
+            $scope.comments.sort(function(a,b){
+                return a.entity.date>b.entity.date ? -1 : a.entity.date<b.entity.date ? 1 : 0;
+            });
+            $('#date').css({
+                'display': 'inline-table'
+            });
+            $('#dateUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.comments.sort(function(a,b){
+                return b.entity.date>a.entity.date ? -1 : b.entity.date<a.entity.date ? 1 : 0;
+            });
+            $('#dateUp').css({
+                'display': 'inline-table'
+            });
+            $('#date').css({
+                'display': 'none'
+            });
+        }
        
-        $scope.comments.sort(function(a,b){
-            if(!a.entity.date)
-            {
-                a.entity.date = "";
-            }
-            if(!b.entity.date)
-            {
-                b.entity.date = "";
-            }
-            return a.entity.date.localeCompare(b.entity.date)
+        $('#user').css({
+                'display': 'none'
         });
+        $('#userUp').css({
+                'display': 'none'
+        });
+        /*
+        $scope.comments.sort(function(a,b){
+            if(!a.date)
+            {
+                a.date = "";
+            }
+            if(!b.date)
+            {
+                b.date = "";
+            }
+            //return a.date.localeCompare(b.date)
+            return a.entity.date>b.entity.date ? -1 : a.entity.date<b.entity.date ? 1 : 0;
+        });
+        */
     }
     $scope.sortByUser= function(){
+       if($("#user").css('display') === "none"){
+            $scope.comments.sort(function(a,b){
+                a.entity.name.localeCompare(b.entity.name);
+            });
+            $('#user').css({
+                'display': 'inline-table'
+            });
+            $('#userUp').css({
+                'display': 'none'
+            });
+        }
+        else{
+             $scope.comments.sort(function(a,b){
+                b.entity.name.localeCompare(a.entity.name)
+            });
+            $('#userUp').css({
+                'display': 'inline-table'
+            });
+            $('#user').css({
+                'display': 'none'
+            });
+        }
        
+        $('#date').css({
+                'display': 'none'
+        });
+        $('#dateUp').css({
+                'display': 'none'
+        });
+        
+        
         $scope.comments.sort(function(a,b){
             return a.entity.name.localeCompare(b.entity.name)
         });
