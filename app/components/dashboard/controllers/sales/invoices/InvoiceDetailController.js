@@ -664,8 +664,11 @@ $scope.addAttachment = function(obj) {
 		return invoiceObj.save();
 	})
 	.then(function(invObj) {
-		$state.reload();
-		hideLoader();
+        addNewComment('File Attached', true)
+        .then(function(invObj){
+            $state.reload();
+            hideLoader();
+        });
 	});
 }
  
