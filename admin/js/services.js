@@ -16,7 +16,14 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
     'AuthKey',
     'EPNusername',
     'EPNrestrictKey',
-    'state'
+      //'tutorial',
+      //'firstScreen',
+      //'country',
+      //'role',
+      //'colorTheme',
+      //'getInvoiceNotification',
+      //'isTrackUsage'
+    //'state'
   ];
 
   var searchedFields = [
@@ -27,6 +34,16 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
     'username'
   ];
 
+    UserRecord.prototype.SetDummyInfo = function(){
+        this.set("tutorial",0);
+        this.set("firstScreen","Dashboard");
+        this.set("country","United States of America");
+        this.set("role","Admin");
+        this.set("colorTheme","appBlueColor");
+        this.set("getInvoiceNotification",1);
+        this.set("isTrackUsage",1);
+    }
+    
   UserRecord.searchedFields = searchedFields;
 
   UserRecord.temp = {
@@ -89,6 +106,18 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
     }
   });
 
+    Object.defineProperty(UserRecord.prototype, "businessName", {
+    get: function() {
+      if (!this.get('businessInfo')) return;
+      return this.get("businessInfo").get('businessName');
+    },
+    set: function(aValue) {
+      if (!this.get('businessInfo'))
+          this.get("businessInfo").set('businessName',aValue);
+      return this.set('company', aValue);
+    }
+  });
+    
   Object.defineProperty(UserRecord.prototype, "address", {
     get: function() {
       if (!this.get('businessInfo')) return;
@@ -132,9 +161,9 @@ clientAdminPortalApp.factory('accountInfoFactory', function() {
 clientAdminPortalApp.factory('businessInfoFactory', function() {
 
   var defaultBusinessInfo = {
-      owherShip     : "LLC",
-      businessDescp : "Testing the Product",
-      federalTaxId  : "555555555"
+      ownershipType     : "LLC",
+      businessDescription : "Testing the Product",
+      federalTaxID  : "555555555"
   }
 
   var BusinessInfo = Parse.Object.extend("BusinessInfo");
@@ -182,9 +211,68 @@ clientAdminPortalApp.factory('principalInfoFactory', function() {
       this.set("city",data.city);
       this.set("zipCode",data.zipCode);
       this.set("state",data.state);
-      this.set("address",data.address);
+      this.set("steetName",data.address);
     }
   }
 
   return PrincipalInfo;
+});
+
+clientAdminPortalApp.factory('organizationFactory', function() {
+  var Organization = Parse.Object.extend('Organization');
+
+  Organization.prototype.SetDummyInfo = function(){
+    this.set("creditNumber","CN-0001");
+    this.set("dateFormat","MM/dd/yyyy");
+    this.set("fiscalYearStart","January");
+    this.set("fieldSeparator","/");
+    this.set("estimateNumber","EST-0001");
+    this.set("invoiceNumber","INV-0001");
+    this.set("language","en-us");
+    this.set("timeZone","( PDT ) America/Los_Angeles ( Pacific Standard Time )");
+  }
+
+  Organization.prototype.SetData = function(data){
+    if (data) {
+      this.set("email",data.email);
+      this.set("name",data.username);
+    }
+  }
+
+  return Organization;
+});
+
+clientAdminPortalApp.factory('currencyFactory', function() {
+  var Currency = Parse.Object.extend('Currency');
+
+  Currency.prototype.SetDummyInfo = function(){
+    this.set("exchangeRate",1);
+    this.set("currencySymbol","$");
+    this.set("decimalPlace",2);
+    this.set("format","###,###,###");
+    this.set("title","USD - US Dollar");
+  }
+
+  return Currency;
+});
+
+clientAdminPortalApp.factory('projectUserFactory', function() {
+  var ProjectUser = Parse.Object.extend('ProjectUser');
+
+  ProjectUser.prototype.SetDummyInfo = function(){
+    this.set("status","Activated");
+    this.set("role","Main");
+    this.set("country","United States of America");
+  }
+  
+  ProjectUser.prototype.SetData = function(data){
+    if (data) {
+      this.set("companyName",data.businessName);
+      this.set("userName",data.username);
+      this.set("emailID",data.email);
+      this.set("title",data.fullname);
+    }
+  }
+
+  return ProjectUser;
 });

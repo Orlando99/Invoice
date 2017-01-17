@@ -217,7 +217,7 @@
 
                     <div class="form-group cl">
                         <label>Merchant ID</label>
-                        <input id="MerchantID" ng-model="newUserRecord.merchantReferenceId" type="text" class="form-control" required/>
+                        <input id="MerchantID" ng-model="newUserRecord.merchantID" type="text" class="form-control" required/>
                     </div>
 
                     <div class="form-group cl">
@@ -287,38 +287,38 @@
                                     <div class="window-shadow"></div>
                                     <ul style="display: initial;">
                                         <li ng-click="newUserRecord.paymentGateway = '';" class="select-empty"><a>None</a></li>
-                                        <li ng-click="newUserRecord.paymentGateway = 'epn';" class="select-epn"><a>Epn</a></li>
-                                        <li ng-click="newUserRecord.paymentGateway = 'authNet';" class="select-authnet"><a>Auth. Net</a></li>
-                                        <li ng-click="newUserRecord.paymentGateway = 'pivotal';" class="select-pivotal"><a>Pivotal</a></li>
+                                        <li ng-click="newUserRecord.paymentGateway = '1';" class="select-epn"><a>Epn</a></li>
+                                        <li ng-click="newUserRecord.paymentGateway = '2';" class="select-authnet"><a>Auth. Net</a></li>
+                                        <li ng-click="newUserRecord.paymentGateway = '3';" class="select-pivotal"><a>Pivotal</a></li>
                                     </ul>
                                 </div>
                             </li>
                         </ul>
                     </div>
 
-                    <div ng-show="newUserRecord.paymentGateway == 'epn'" class="gatewayType_EPN">
+                    <div ng-show="newUserRecord.paymentGateway == '1'" class="gatewayType_EPN">
                         <div class="form-group cl">
                             <label>EPN Username</label>
-                            <input ng-model="newUserRecord.merchantId" type="text" class="form-control" />
+                            <input ng-model="newUserRecord.EPNusername" type="text" class="form-control" />
                         </div>
                         <div class="form-group cl">
                             <label>EPN Restrict Key</label>
-                            <input ng-model="newUserRecord.epnPassword" type="text" class="form-control" />
+                            <input ng-model="newUserRecord.EPNrestrictKey" type="text" class="form-control" />
                         </div>
                     </div>
 
-                    <div ng-show="accInfo.paymentGateway == 'authNet'" class="gatewayType_AUTH_NET">
+                    <div ng-show="accInfo.paymentGateway == '2'" class="gatewayType_AUTH_NET">
                         <div class="form-group cl">
                             <label>Auth. Net Username</label>
-                            <input ng-model="newUserRecord.authNetUsername" type="text" class="form-control" />
+                            <input ng-model="newUserRecord.AuthNet" type="text" class="form-control" />
                         </div>
                         <div class="form-group cl">
                             <label>Auth. Net Password</label>
-                            <input ng-model="newUserRecord.authNetPassword" type="text" class="form-control" />
+                            <input ng-model="newUserRecord.AuthKey" type="text" class="form-control" />
                         </div>
                     </div>
 
-                    <div ng-show="accInfo.paymentGateway == 'pivotal'" class="gatewayType_PIVOTAL">
+                    <div ng-show="accInfo.paymentGateway == '3'" class="gatewayType_PIVOTAL">
                         <div class="form-group cl">
                             <label>Pivotal Username</label>
                             <input ng-model="newUserRecord.pivotalUsername" type="text" class="form-control" />
@@ -329,7 +329,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group cl">
+                    <div class="form-group cl" ng-hide="1">
                         <lable>
                         <input type="checkbox" ng-model="newUserRecord.skipApplication">Skip Application</input>
                         <!--ng-disabled="addForm.$invalid"-->

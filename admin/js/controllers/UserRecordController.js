@@ -1,8 +1,8 @@
 'use strict';
 
 clientAdminPortalApp.controller('UserRecordController',
-    ['$scope', '$state', '$modal', 'userRecordFactory', 'accountInfoFactory', 'businessInfoFactory','signatureFactory','principalInfoFactory',
-    function($scope, $state, $modal, userRecordFactory, accountInfoFactory, businessInfoFactory, signatureFactory,principalInfoFactory) {
+    ['$scope', '$state', '$modal', 'userRecordFactory', 'accountInfoFactory', 'businessInfoFactory','signatureFactory','principalInfoFactory','organizationFactory','currencyFactory','projectUserFactory',
+    function($scope, $state, $modal, userRecordFactory, accountInfoFactory, businessInfoFactory, signatureFactory,principalInfoFactory,organizationFactory,currencyFactory,projectUserFactory) {
 
   if (!(Parse.User.current() && Parse.User.current().authenticated())) {
     $state.go("login");
@@ -27,9 +27,9 @@ clientAdminPortalApp.controller('UserRecordController',
 
   $scope.gatewayTypeNames = {
     '': 'Select Gateway',
-    'epn': 'Epn',
-    'authNet': 'Auth. Net',
-    'pivotal': 'Pivotal'
+    '1': 'Epn',
+    '2': 'Auth. Net',
+    '3': 'Pivotal'
   };
 
   $scope.statesAbbr = [
@@ -54,7 +54,8 @@ clientAdminPortalApp.controller('UserRecordController',
           console.log("successfull load of " + list.length + " elements with skip " + $scope.lastUsedQuerySkip);
           $scope.$apply(function() {
             for (var i = 0; i < list.length; i++) {
-              if (list[i].accountInfo && list[i].accountInfo.id) {
+              //if (list[i].accountInfo && list[i].accountInfo.id) {
+              if (list[i].businessInfo && list[i].businessInfo.id) {
                 (function(record) {
                   var accountQuery = new Parse.Query("AccountInfo");
                   var busQuery = new Parse.Query('BusinessInfo');
@@ -68,6 +69,7 @@ clientAdminPortalApp.controller('UserRecordController',
                       record.accountInfo = acc;
                       record.businessInfo  = bus;
                       record.accountAssigned = true;
+                      record.businessAssigned = true;
                       console.log("Fetched account for " + record.fullName);
                       if (record.state) {
                         console.log("STATE: " + record.state);
@@ -143,6 +145,7 @@ clientAdminPortalApp.controller('UserRecordController',
 
   $scope.newUserRecord = new userRecordFactory();
   $scope.newUserRecord.set("accountInfo", new accountInfoFactory);
+  $scope.newUserRecord.set("businessInfo", new businessInfoFactory);
   $scope.newUserRecord.accountAssigned = true;
   $scope.newUserRecord.paymentGateway = '';
   $scope.newUserRecord.skipApplication = true;
@@ -167,36 +170,38 @@ clientAdminPortalApp.controller('UserRecordController',
           user.AuthNet = "";
       }
       
-    Parse.Cloud.run('UpdateUser',{
-      user : {
-        id     : user.id,
-        params : {
-          merchantID      : user.merchantID,
-          company         : user.company,
-          fullName        : user.fullName,
-          email           : user.email,
-          username        : user.username,
-          EPNrestrictKey  : user.EPNrestrictKey,
-          EPNusername     : user.EPNusername,
-          AuthNet         : user.AuthNet,
-          AuthKey         : user.AuthKey,
-          paymentGateway  : user.paymentGateway.toString()
-        }
-      }
-    }).then(function(res){
-      alert("User was successfuly saved!");
-      $scope.updateQueryResults();
-    },function(err){
-      console.log("User account update failed:" + err.message);
-    });
+      Parse.Cloud.run('UpdateUser',{
+          user : {
+            id     : user.id,
+            params : {
+              merchantID      : user.merchantID,
+              company         : user.company,
+              fullName        : user.fullName,
+              email           : user.email,
+              username        : user.username,
+              EPNrestrictKey  : user.EPNrestrictKey,
+              EPNusername     : user.EPNusername,
+              AuthNet         : user.AuthNet,
+              AuthKey         : user.AuthKey,
+              paymentGateway  : user.paymentGateway.toString()
+            }
+          }
+        }).then(function(res){
+            alert("User was successfuly saved!");
+            $scope.updateQueryResults();
+        },function(err){
+          console.log("User account update failed:" + err.message);
+        });
+      
   }
 
   $scope.deleteAndNotify = function(record) {
     if (!confirm("Are you sure want to remove?")) return;
 
-    var deleting = {id: record.id};
+    //var deleting = {id: record.id};
+    var deleting = record.id;
     var beforeDelete = $scope.records.length;
-    Parse.Cloud.run("deleteUser", {deleting: deleting}, {
+    Parse.Cloud.run("deleteUser", {identificator: deleting}, {
       success: function() {
         console.log("Cloud delete successfull");
       },
@@ -228,6 +233,9 @@ clientAdminPortalApp.controller('UserRecordController',
         },
         account : function(){
           return new accountInfoFactory();
+        },
+        business : function(){
+          return new businessInfoFactory();
         }
       }
     });
@@ -258,7 +266,9 @@ clientAdminPortalApp.controller('UserRecordController',
             $scope.records.push($scope.newUserRecord);
             $scope.newUserRecord = new userRecordFactory();
             $scope.newUserRecord.set("accountInfo", new accountInfoFactory);
+            $scope.newUserRecord.set("businessInfo", new businessInfoFactory);
             $scope.newUserRecord.accountAssigned = true;
+            $scope.newUserRecord.businessAssigned = true;
             $scope.newUserRecord.paymentGateway = '';
           });
           console.log("successfully created:", record);
@@ -284,10 +294,14 @@ clientAdminPortalApp.controller('UserRecordController',
         }
 
         var userTables = {
-          business : new businessInfoFactory(),
+          //business : new businessInfoFactory(),
+          business : null,
           account : null,
           principal : new principalInfoFactory(),
-          signatureImage : new signatureFactory()
+          signatureImage : new signatureFactory(),
+          selectedOrganization : new organizationFactory(),
+            currency : new currencyFactory(),
+            projectUser : new projectUserFactory()
         }
         
         for (var table in userTables){
@@ -297,18 +311,77 @@ clientAdminPortalApp.controller('UserRecordController',
             userTables[table].SetData(formInfo);
         }
 
+        result.business.SetData(formInfo);
+          
         userTables.signatureImage.set("imageName","Signature_" + user.id);
         userTables.signatureImage.set("user",user);
         userTables.account = result.account;
+        userTables.business = result.business;
+        userTables.selectedOrganization.set("userID", user);
+        userTables.currency.set('userId', user);
+        userTables.projectUser.set('userID', user);
 
         var promises = toArray(userTables).map(function(table){
           return table.save();
         });
 
-        Parse.Promise.when(promises).then(function(busObj,accObj,prObj,signObj){
-
-          if (busObj && accObj && prObj && signObj)
-
+        Parse.Promise.when(promises).then(function(busObj,accObj,prObj,signObj,orgObj,currObj,projObj){
+            currObj.set('organization', orgObj);
+            currObj.save()
+            .then(function(currencyObj){
+                Parse.Cloud.run("UpdateUser",{user : {
+                  id : user.id,
+                  params : {},
+                  pointers : [
+                    {
+                      id : busObj.id,
+                      className : 'BusinessInfo',
+                      field : 'businessInfo'
+                    },
+                    {
+                      id : accObj.id,
+                      className : 'AccountInfo',
+                      field : 'accountInfo'
+                    },
+                    {
+                      id : prObj.id,
+                      className : 'PrincipalInfo',
+                      field : 'principalInfo'
+                    },
+                    {
+                      id : signObj.id,
+                      className : 'Signature',
+                      field : 'signatureImage'
+                    },
+                    {
+                      id : orgObj.id,
+                      className : 'Organization',
+                      field : 'selectedOrganization'
+                    },
+                    {
+                      id : orgObj.id,
+                      className : 'Organization',
+                      field : 'organizations'
+                    },
+                    {
+                      id : currencyObj.id,
+                      className : 'Currency',
+                      field : 'currency'
+                    }
+                  ]
+                }})
+                .then(function(msg){
+                    console.log("Cloud update successfull");
+                    //$scope.updateQueryResults();
+                    window.location.reload();
+                }, function(error){
+                    console.log(error);
+                });
+            });
+            
+            
+            /*
+          if (busObj && accObj && prObj && signObj){
             var saving = {};
             saving.id = user.id;
             saving.busId = busObj.id;
@@ -326,6 +399,8 @@ clientAdminPortalApp.controller('UserRecordController',
                 console.log("Cloud update failed:" + error.message);
               }
             });
+          }
+            */
         });
 
       });

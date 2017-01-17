@@ -1,16 +1,20 @@
 'use strict';
 
 clientAdminPortalApp.controller('ModalCreateController',
-    ['$scope', '$modalInstance', 'newUserRecord','accountInfoFactory', 'gatewayTypeNames','account',
-    function($scope, $modalInstance, newUserRecord,accountInfoFactory, gatewayTypeNames,account, Validate, ValidateModal) {
+    ['$scope', '$modalInstance', 'newUserRecord','accountInfoFactory','businessInfoFactory', 'gatewayTypeNames','account','business',
+    function($scope, $modalInstance, newUserRecord,accountInfoFactory,businessInfoFactory, gatewayTypeNames,account,business, Validate, ValidateModal) {
   $scope.newUserRecord = newUserRecord;
   $scope.newUserRecord.password = '';
   $scope.gatewayTypeNames = gatewayTypeNames;
   
   $scope.account = new accountInfoFactory();
+  $scope.business = new businessInfoFactory();
+  $scope.newUserRecord.SetDummyInfo();
   $scope.account.SetDummyInfo();
-  $scope.newUserRecord.set("account", $scope.account);
+  $scope.newUserRecord.set("accountInfo", $scope.account);
+  $scope.newUserRecord.set("businessInfo", $scope.business);
   $scope.newUserRecord.accountAssigned = true;
+  $scope.newUserRecord.businessAssigned = true;
 
   $scope.statesAbbr = {
     "AL":"AL",
@@ -288,7 +292,8 @@ $scope.Validate = {
       if (validated && form.$valid)
         $modalInstance.close({
           newUser : $scope.newUserRecord,
-          account : $scope.account
+          account : $scope.account,
+          business : $scope.business
         });
     });
   }
