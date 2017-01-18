@@ -271,10 +271,18 @@ function loadCurrencies() {
 	}))
 	.then(function(currencies) {
 		$scope.currencies = currencies;
+        
+        $scope.currencies.forEach(function(obj){
+            for(var i = 0; i < $scope.availableCurrencies.length; ++i){
+                if(obj.entity.title == $scope.availableCurrencies[i])
+                    $scope.availableCurrencies.splice(i, 1);
+            }
+        });
+        
 		setDefaultCurrencyIndex();
 		hideLoader();
         $scope.displayedCurrencies = currencies;
-        $scope.sortByCurencyName();
+        //$scope.sortByCurencyName();
 	});
     
 }
@@ -439,6 +447,7 @@ $scope.confirmDeleteCurrency = function(){
 		hideLoader();
 	});
 }
+/*
   $scope.sortByCurencyName= function(){
       if($("#name").css('display') === "none"){
           $scope.currencies.sort(function(a,b){
@@ -553,6 +562,7 @@ $scope.confirmDeleteCurrency = function(){
         });
        
     } 
+    */
 $scope.currencyChanged = function() {
 	if($scope.currencyObj)
 		$scope.currencyObj.currencySymbol =

@@ -643,6 +643,60 @@ return {
 			return invoice;
 		}); 
         */
+	},
+	downloadInvoiceReceipt : function(invoice) {
+		var inv = new invoiceFactory(invoice, {
+			operation : 'sendReceipt'
+		});
+        
+        var link = inv.entity.invoiceReceipt.url();
+        return $.ajax({
+                type: "GET",
+                url: 'proxy.php',
+                dataType: "html",
+                data: {
+                address: link
+            }
+        }).then(function (htmlDoc) {
+            if(inv.entity.customerEmails)
+            {
+                var toEmail = inv.entity.customerEmails[0];
+                //var customerName = inv.customer.displayName;
+                //var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
+                var businessName = inv.organization.name;
+                var link = inv.entity.invoiceReceipt.url();
+
+                var emailSubject = 'Invoice From ' + businessName;
+                var emailBody = htmlDoc;
+            }
+            htmlDoc = htmlDoc.replace('<!DOCTYPE html>', '');
+            htmlDoc = htmlDoc.trim();
+            var abc = 1;
+            //var fr = document.getElementById('targetframe1');
+            var fr = document.createElement('iframe');
+            document.body.appendChild(fr);
+            fr.style.display = 'none';
+            fr.setAttribute("id", "myFrame");
+            fr.contentWindow.document.open();
+            fr.contentWindow.document.write(htmlDoc);
+            fr.contentWindow.document.close();
+            
+            fr.onload = function() {
+               //var div=iframe.contentWindow.document.getElementById('mydiv');
+                abc = 0;
+                return Parse.Cloud.run("sendMailgunHtml", {
+                toEmail: toEmail,
+                fromEmail: "no-reply@invoicesunlimited.com",
+                subject : emailSubject,
+                html : '<html>' + $('#myFrame').contents().find('html').html() + '</html>'
+                }).then(function(msg) {
+                    console.log(msg);
+                    return invoice;
+                });
+            };
+
+            return Promise.resolve('');
+        });
 	}
 
 };
