@@ -1,8 +1,8 @@
 'use strict';
 
 clientAdminPortalApp.controller('UserRecordController',
-    ['$scope', '$state', '$modal', 'userRecordFactory', 'accountInfoFactory', 'businessInfoFactory','signatureFactory','principalInfoFactory','organizationFactory','currencyFactory','projectUserFactory',
-    function($scope, $state, $modal, userRecordFactory, accountInfoFactory, businessInfoFactory, signatureFactory,principalInfoFactory,organizationFactory,currencyFactory,projectUserFactory) {
+    ['$q','$scope', '$state', '$modal', 'userRecordFactory', 'accountInfoFactory', 'businessInfoFactory','signatureFactory','principalInfoFactory','organizationFactory','currencyFactory','projectUserFactory',
+    function($q,$scope, $state, $modal, userRecordFactory, accountInfoFactory, businessInfoFactory, signatureFactory,principalInfoFactory,organizationFactory,currencyFactory,projectUserFactory) {
 
   if (!(Parse.User.current() && Parse.User.current().authenticated())) {
     $state.go("login");
@@ -199,21 +199,76 @@ clientAdminPortalApp.controller('UserRecordController',
     if (!confirm("Are you sure want to remove?")) return;
 
     //var deleting = {id: record.id};
-    var deleting = record.id;
-    var beforeDelete = $scope.records.length;
-    Parse.Cloud.run("deleteUser", {identificator: deleting}, {
-      success: function() {
-        console.log("Cloud delete successfull");
-      },
-      error: function(error) {
-        console.log("Cloud delete failed: " + error.message);
-      }
-    }).then(function() {
-      $scope.updateQueryResults();
-      $scope.$apply(function() {
-          $scope.updateQueryResults();
-        });
-    });
+      var org = record.get('selectedOrganization');
+      var bus = record.get('businessInfo');
+      var acc = record.get('accountInfo');
+      var curr = record.get('currency');
+      var prin = record.get('principalInfo');
+      debugger;
+      
+      var projUser = new Parse.Query("ProjectUser");
+      projUser.equalTo("userName", record.get('username'));
+      projUser.first()
+      .then(function(obj){
+          obj.destroy();
+      });
+      
+      var query = new Parse.Query(Parse.Role);
+        query.equalTo("name", record.get('username'));
+      
+      query.first()
+      .then(function(roleObj){
+          var promises = [];
+          if(roleObj)
+              promises.push(roleObj.destroy());
+          promises.push(org.destroy());
+          if(bus)
+            promises.push(bus.destroy());
+          if(acc)
+            promises.push(acc.destroy());
+          promises.push(curr.destroy());
+          promises.push(prin.destroy());
+
+          $q.all(promises)
+          .then(function(){
+                var deleting = record.id;
+                var beforeDelete = $scope.records.length;
+                Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+                  success: function() {
+                    console.log("Cloud delete successfull");
+                  },
+                  error: function(error) {
+                    console.log("Cloud delete failed: " + error.message);
+                  }
+                }).then(function() {
+                  $scope.updateQueryResults();
+                  $scope.$apply(function() {
+                      $scope.updateQueryResults();
+                    });
+                });
+          }, function(error){
+              var deleting = record.id;
+                var beforeDelete = $scope.records.length;
+                Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+                  success: function() {
+                    console.log("Cloud delete successfull");
+                  },
+                  error: function(error) {
+                    console.log("Cloud delete failed: " + error.message);
+                  }
+                }).then(function() {
+                  $scope.updateQueryResults();
+                  $scope.$apply(function() {
+                      $scope.updateQueryResults();
+                    });
+                });
+              console.error(error);
+          });
+      });
+      
+      
+      
+    
   }
 
   $scope.openModalCreate = function() {
