@@ -101,7 +101,7 @@
                                         <input type="text" class="form-control" ng-model="record.city"/>
                                     </div>
 
-                                    <div class="form-group cl">
+                                    <div class="form-group cl" ng-show="false">
                                         <input type="checkbox" ng-disabled="record.skipAppDisabled"
                                                ng-model="record.skipApplication">
                                             <span ng-show="!record.skipAppDisabled">Skip Application</span>
@@ -168,18 +168,21 @@
                                     
                                      <div class="form-group cl">
                                         <label>State</label>
+                                         <input type="text" class="form-control" ng-model="record.state" name="state"/>
+                                         <!--
                                         <select class="form-control" ng-model="record.state" ng-options="i as i for i in statesAbbr" name="state">
                                             <option value="" disabled>Select state</option>
                                         </select>
+                                        -->
                                     </div>
 
                                     <div class="form-group cl">
                                         <label>Zip</label>
-                                        <input type="text" class="form-control" ng-model="record.zip"/>
+                                        <input type="text" class="form-control" ng-model="record.zipCode"/>
                                     </div>
                                     <div class="form-group cl">
                                         <label>Phone</label>
-                                        <input type="text" class="form-control phonenumber" ng-model="record.phonenumber"/>
+                                        <input type="text" class="form-control phonenumber" ng-model="record.phoneNumber"/>
                                     </div>
                                 </div>
 
@@ -189,9 +192,9 @@
                                   <div class="form-group cl">
                                         <hr style="margin-top: 20px !important">
                                        
-                                        <select style="width: 15%; margin-left: 7%; margin-top: 20px; float: left"   name="months">
+                                        <select ng-change="updatePayment(record);" ng-model="record.month" style="width: 15%; margin-left: 7%; margin-top: 20px; float: left" name="months">
                                                             <option value="" disabled>Month</option>
-                                                            <option selected value='1'>Janaury</option>
+                                                            <option value='1'>Janaury</option>
                                                             <option value='2'>February</option>
                                                             <option value='3'>March</option>
                                                             <option value='4'>April</option>
@@ -205,20 +208,20 @@
                                                             <option value='12'>December</option>
                                         </select>
                                       
-                                        <select style="width: 15%; margin-left: 3%; margin-top: 20px ; float: left"  name="years">
+                                        <select ng-change="updatePayment(record);" ng-model="record.year" style="width: 15%; margin-left: 3%; margin-top: 20px ; float: left"  name="years">
                                                             <option value="" disabled>Year</option>
-                                                            <option selected value='1'>2008</option>
-                                                            <option value='2'>2009</option>
-                                                            <option value='3'>2010</option>
-                                                            <option value='4'>2011</option>
-                                                            <option value='5'>2012</option>
-                                                            <option value='6'>2013</option>
-                                                            <option value='7'>2014</option>
-                                                            <option value='8'>2015</option>
-                                                            <option value='9'>2016</option>
-                                                            <option value='10'>2017</option>
-                                                            <option value='11'>2018</option>
-                                                            <option value='12'>2019</option>
+                                                            <option selected value='2008'>2008</option>
+                                                            <option value='2009'>2009</option>
+                                                            <option value='2010'>2010</option>
+                                                            <option value='2011'>2011</option>
+                                                            <option value='2012'>2012</option>
+                                                            <option value='2013'>2013</option>
+                                                            <option value='2014'>2014</option>
+                                                            <option value='2015'>2015</option>
+                                                            <option value='2016'>2016</option>
+                                                            <option value='2017'>2017</option>
+                                                            <option value='2018'>2018</option>
+                                                            <option value='2019'>2019</option>
                                         </select>
                                        <label style="margin-left: 8% !important; margin-top: 20px; float: left"> Credit Card Volume</label>
                                       
@@ -232,24 +235,29 @@
                                       <label style="margin-left: 14% !important; margin-top: 20px">Visa</label>
                                       <label style="margin-top: 20px">Mastercard</label>
                                       <label style="margin-top: 20px">Amex</label>
+                                      <!--
                                       <label style="margin-top: 20px">Discover</label>
+                                        -->
                                       <label style="margin-top: 20px">Other</label>
                                     </div>
                             </div>
                                 
                                 <div style="margin-top: -20px" class="row">
                                   <div class="form-group cl">
-                                      <label name="visa_value" id="visa_value" style="margin-left: 14% !important; margin-top: 20px">$100.23</label>
-                                      <label name="master_value" id="master_value" style="margin-top: 20px">$210.23</label>
-                                      <label name="amex_value" id="amex_value" style="margin-top: 20px">$310.23</label>
+                                      <label name="visa_value" id="visa_value" style="margin-left: 14% !important; margin-top: 20px">{{record.visa}}</label>
+                                      <label name="master_value" id="master_value" style="margin-top: 20px">{{record.masterCard}}</label>
+                                      <label name="amex_value" id="amex_value" style="margin-top: 20px">{{record.amex}}</label>
+                                      <!--
                                       <label name="discover_value" name="discover_value" style="margin-top: 20px">$420.23</label>
-                                      <label name="other_value" name="other_value" style="margin-top: 20px">$520.23</label>
+                                        -->
+                                      <label name="other_value" name="other_value" style="margin-top: 20px">{{record.other}}</label>
                                     </div>
                             </div>
                                 
                                 <div style="margin-top: -20px" class="row">
                                   <div class="form-group cl">
-                                      <label  style="margin-left: 14% !important; margin-top: 20px; float:left"><strong>Total: <span id="total_value"> $3900.67</span></strong></label>
+                                      <label  style="margin-left: 14% !important; margin-top: 20px; float:left"><strong>Total: <span id="total_value"> {{record.total}}</span></strong></label>
+                                      <!--
                                       <label  style="margin-left: 14% !important; margin-top: 20px; float: left"><strong>Total Charge :</strong></label>
                                         <select style="width: 15%; margin-left: -5%; margin-top: 20px; float: left" name="total_charge">
                                             <option value="30_basic_pts">30 Basic Pts</option>
@@ -276,6 +284,7 @@
                                             <option value="20">20</option>
                                       </select>
                                       <label style="margin-left: 1% !important; margin-top: 20px; float: left" id="sub_total_val"><strong>$39874.01</strong></label>
+                                        -->
                                     </div>
                             </div>
                                 

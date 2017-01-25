@@ -20,8 +20,12 @@ return {
 		var lateFee = new LateFee();
 
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
+        
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        
 		lateFee.setACL(acl);
         //lateFee.set('userID', params.userID);
         console.log(params);

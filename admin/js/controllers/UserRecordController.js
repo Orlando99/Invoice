@@ -54,26 +54,81 @@ clientAdminPortalApp.controller('UserRecordController',
           console.log("successfull load of " + list.length + " elements with skip " + $scope.lastUsedQuerySkip);
           $scope.$apply(function() {
             for (var i = 0; i < list.length; i++) {
-              //if (list[i].accountInfo && list[i].accountInfo.id) {
+                
+                (function(record) {
+                    var paymentsQuery = new Parse.Query("Payment");
+                    paymentsQuery.equalTo("userID", list[i]);
+                    paymentsQuery.equalTo("mode", "Credit Card");
+                    paymentsQuery.find()
+                    .then(function(objs){
+                        
+                        var visa = 0;
+                        var masterCard = 0;
+                        var amex = 0;
+                        var other = 0;
+                        
+                        var month = 12;
+                        var year = 2017;
+                        
+                        var startDate = new Date(year, 0, 1, 0, 0, 1, 1);
+                        var endDate = new Date(year, month, 1, 0, 0, 0, 0);
+                        var payments = objs.filter(function(obj){
+                            return obj.get('date') >= startDate && obj.get('date') < endDate;
+                        });
+                        
+                        payments.forEach(function(payment){
+                            var fourdigits = payment.get('firstFourDigits');
+                            if(fourdigits.startsWith('4')){
+                                visa += payment.get('amount');
+                            } 
+                            else if(fourdigits.startsWith('5')){
+                                masterCard += payment.get('amount');
+                            }
+                            else if(fourdigits.startsWith('30') || fourdigits.startsWith('34') || fourdigits.startsWith('36') || fourdigits.startsWith('37') || fourdigits.startsWith('38') || fourdigits.startsWith('39')){
+                                amex += payment.get('amount');
+                            }
+                            else{
+                                other += payment.get('amount');
+                            }
+                        });
+                        
+                        $scope.$apply(function() {
+                          record.allPayments = objs;
+                            record.month = month;
+                            record.year = year;
+                            var total = visa + masterCard + amex + other;
+                            
+                          record.visa = "$" + visa.toFixed(2);
+                          record.masterCard = "$" + masterCard.toFixed(2);
+                          record.amex = "$" + amex.toFixed(2);
+                          record.other = "$" + other.toFixed(2);
+                          record.total = "$" + total.toFixed(2);
+
+                        });
+                    }, function(error){
+                        if(record.username == "mazhar"){
+                            debugger;
+                        }
+                    });
+                })(list[i]);
+                
               if (list[i].businessInfo && list[i].businessInfo.id) {
                 (function(record) {
-                  var accountQuery = new Parse.Query("AccountInfo");
+                  
                   var busQuery = new Parse.Query('BusinessInfo');
-                  accountQuery.equalTo('objectId',record.accountInfo ? record.accountInfo.id : null);
+                  
                   busQuery.equalTo('objectId', record.businessInfo ? record.businessInfo.id : null);
-                  Parse.Promise.when([
-                    accountQuery.first(),
-                    busQuery.first()
-                  ]).then(function(acc,bus){
+                  
+                  busQuery.first()
+                  .then(function(bus){
                     $scope.$apply(function() {
-                      record.accountInfo = acc;
                       record.businessInfo  = bus;
-                      record.accountAssigned = true;
                       record.businessAssigned = true;
-                      console.log("Fetched account for " + record.fullName);
+                      
                       if (record.state) {
                         console.log("STATE: " + record.state);
                       }
+                        /*
                       if (record.get('businessInfo') && 
                           record.get('principalInfo') && 
                           record.get('accountInfo') &&
@@ -82,6 +137,7 @@ clientAdminPortalApp.controller('UserRecordController',
                       } 
                       else
                         record.skipAppDisabled = false;
+                        */
                     });
                   },function(e){
                     console.log("Failed to fetch accout for " + record.fullName + ": " + 
@@ -89,14 +145,16 @@ clientAdminPortalApp.controller('UserRecordController',
                   });
                 })(list[i]);
               } else {
+                  /*
                 (function(record) {
                   var account = new accountInfoFactory();
                   record.set("accountInfo", account);
                   record.accountAssigned = true;
                   console.log("Created account for " + record.username);
                 })(list[i]);
+                */
               }
-              list[i].paymentGateway = '';
+              //list[i].paymentGateway = '';
               $scope.records.push(list[i]);
             }
             $scope.lastUsedQuerySkip += list.length;
@@ -134,6 +192,7 @@ clientAdminPortalApp.controller('UserRecordController',
     $scope.lastUsedQueryGotAll = false;
     $scope.lastUsedQuerySkip = 0;
     query.limit($scope.queryChunkSize);
+      query.include("businessInfo");
     $scope.records = [];
     query.descending("updatedAt");
     $scope.lastUsedQuery = query;
@@ -163,38 +222,115 @@ clientAdminPortalApp.controller('UserRecordController',
 
     if (!form.$valid) return;
 
-      if(user.paymentGateway.length < 1){
+      if(user.paymentGateway){
+          if(user.paymentGateway.length < 1){
+              user.EPNrestrictKey = "";
+              user.EPNusername = "";
+              user.AuthKey = "";
+              user.AuthNet = "";
+          }
+      }
+      else {
           user.EPNrestrictKey = "";
           user.EPNusername = "";
           user.AuthKey = "";
           user.AuthNet = "";
+          user.paymentGateway = "";
       }
       
-      Parse.Cloud.run('UpdateUser',{
-          user : {
-            id     : user.id,
-            params : {
-              merchantID      : user.merchantID,
-              company         : user.company,
-              fullName        : user.fullName,
-              email           : user.email,
-              username        : user.username,
-              EPNrestrictKey  : user.EPNrestrictKey,
-              EPNusername     : user.EPNusername,
-              AuthNet         : user.AuthNet,
-              AuthKey         : user.AuthKey,
-              paymentGateway  : user.paymentGateway.toString()
-            }
-          }
-        }).then(function(res){
-            alert("User was successfuly saved!");
-            $scope.updateQueryResults();
-        },function(err){
-          console.log("User account update failed:" + err.message);
-        });
+       user.businessInfo.save(null, {
+         success: function(business){
+             Parse.Cloud.run('UpdateUser',{
+                  user : {
+                    id     : user.id,
+                    params : {
+                      merchantID      : user.merchantID,
+                      company         : user.company,
+                      fullName        : user.fullName,
+                      email           : user.email,
+                      username        : user.username,
+                      EPNrestrictKey  : user.EPNrestrictKey,
+                      EPNusername     : user.EPNusername,
+                      AuthNet         : user.AuthNet,
+                      AuthKey         : user.AuthKey,
+                      paymentGateway  : user.paymentGateway.toString()
+                    }
+                  }
+                }).then(function(res){
+                    alert("User was successfuly saved!");
+                    $scope.updateQueryResults();
+                },function(err){
+                  console.log("User account update failed:" + err.message);
+                });
+         }, error: function(response, error) {
+             Parse.Cloud.run('UpdateUser',{
+                  user : {
+                    id     : user.id,
+                    params : {
+                      merchantID      : user.merchantID,
+                      company         : user.company,
+                      fullName        : user.fullName,
+                      email           : user.email,
+                      username        : user.username,
+                      EPNrestrictKey  : user.EPNrestrictKey,
+                      EPNusername     : user.EPNusername,
+                      AuthNet         : user.AuthNet,
+                      AuthKey         : user.AuthKey,
+                      paymentGateway  : user.paymentGateway.toString()
+                    }
+                  }
+                }).then(function(res){
+                    alert("User was successfuly saved!");
+                    $scope.updateQueryResults();
+                },function(err){
+                  console.log("User account update failed:" + err.message);
+                });
+         }
+       });
+      
+      
       
   }
 
+  $scope.updatePayment = function(record){
+      var startDate = new Date(record.year, 0, 1, 0, 0, 1, 1);
+      var endDate = new Date(record.year, record.month, 1, 0, 0, 0, 0);
+      var payments = record.allPayments.filter(function(obj){
+          return obj.get('date') >= startDate && obj.get('date') < endDate;
+      });
+      
+        var visa = 0;
+        var masterCard = 0;
+        var amex = 0;
+        var other = 0;
+
+        payments.forEach(function(payment){
+            var fourdigits = payment.get('firstFourDigits');
+            if(fourdigits.startsWith('4')){
+                visa += payment.get('amount');
+            } 
+            else if(fourdigits.startsWith('5')){
+                masterCard += payment.get('amount');
+            }
+            else if(fourdigits.startsWith('30') || fourdigits.startsWith('34') || fourdigits.startsWith('36') || fourdigits.startsWith('37') || fourdigits.startsWith('38') || fourdigits.startsWith('39')){
+                amex += payment.get('amount');
+            }
+            else{
+                other += payment.get('amount');
+            }
+        });
+
+        
+        var total = visa + masterCard + amex + other;
+
+        record.visa = "$" + visa.toFixed(2);
+        record.masterCard = "$" + masterCard.toFixed(2);
+        record.amex = "$" + amex.toFixed(2);
+        record.other = "$" + other.toFixed(2);
+        record.total = "$" + total.toFixed(2);
+
+  }
+  
   $scope.deleteAndNotify = function(record) {
     if (!confirm("Are you sure want to remove?")) return;
 

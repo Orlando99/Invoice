@@ -85,9 +85,12 @@ return {
 	},
 	createNewExpense : function(expense, role, files) {
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
 
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        
 		var promise = undefined;
         var newFiles = undefined;
 		if(files.length) {

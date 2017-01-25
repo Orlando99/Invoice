@@ -21,9 +21,12 @@ return {
 		var promises = [];
 		var Payment = Parse.Object.extend('Payment');
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
 
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        
 		for (var i=0; i < objs.length; ++i) {
 			var payment = new Payment();
 			payment.setACL(acl);
@@ -153,9 +156,12 @@ return {
 		var invItemsToUpdate = {};
 		var InvoiceItem = Parse.Object.extend("InvoiceItems");
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
 
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        
 		// filter items from invoiceItems
 		invoiceItems.forEach(function(item) {
 			if (item.selectedItem.create) {
@@ -278,9 +284,12 @@ return {
 	createNewInvoice : function(invoice, invoiceItems, role, files) {
 		var items = [];
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
 
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        
 		var promise = undefined;
 		var newFiles = undefined; // store already saved and newly created files
 		if(files.length) {

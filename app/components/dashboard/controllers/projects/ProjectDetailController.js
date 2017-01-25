@@ -485,8 +485,11 @@ $scope.addNewTask = function() {
     showLoader();
     
     var acl = new Parse.ACL();
-    acl.setRoleWriteAccess($scope.userRole.get("name"), true);
-    acl.setRoleReadAccess($scope.userRole.get("name"), true);
+    //acl.setRoleWriteAccess($scope.userRole.get("name"), true);
+    //acl.setRoleReadAccess($scope.userRole.get("name"), true);
+    
+    acl.setPublicReadAccess(true);
+    acl.setPublicWriteAccess(true);
     
     var Task = Parse.Object.extend('Task');
     
@@ -525,8 +528,11 @@ $scope.addNewUser = function(){
     showLoader();
     
     var acl = new Parse.ACL();
-    acl.setRoleWriteAccess($scope.userRole.get("name"), true);
-    acl.setRoleReadAccess($scope.userRole.get("name"), true);
+    //acl.setRoleWriteAccess($scope.userRole.get("name"), true);
+    //acl.setRoleReadAccess($scope.userRole.get("name"), true);
+    
+    acl.setPublicReadAccess(true);
+    acl.setPublicWriteAccess(true);
     
     var params = {
 			user : user,
@@ -603,8 +609,11 @@ $scope.saveTimesheet = function(){
     showLoader();
     
     var acl = new Parse.ACL();
-    acl.setRoleWriteAccess($scope.userRole.get("name"), true);
-    acl.setRoleReadAccess($scope.userRole.get("name"), true);
+    //acl.setRoleWriteAccess($scope.userRole.get("name"), true);
+    //acl.setRoleReadAccess($scope.userRole.get("name"), true);
+    
+    acl.setPublicReadAccess(true);
+    acl.setPublicWriteAccess(true);
     
     var params = {
 			user : user,

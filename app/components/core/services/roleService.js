@@ -85,8 +85,12 @@ invoicesUnlimited.factory('roleFactory',
 	role.createACL = function(){
 		if (!role.entity.length) return;
 		var newACL = new Parse.ACL();
+        /*
 		newACL.setRoleWriteAccess(role.entity[0],true);
 		newACL.setRoleReadAccess(role.entity[0],true);
+        */
+        roleACL.setPublicReadAccess(true);
+        roleACL.setPublicWriteAccess(true);
 		return newACL;
 	}
 

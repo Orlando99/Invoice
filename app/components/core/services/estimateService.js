@@ -139,9 +139,12 @@ return {
 	createNewEstimate : function(estimate, estimateItems, role, files) {
 		var items = [];
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
 
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        
 		//var promise =  Parse.Promise.as(undefined);//undefined;
 /*		if(file) {
 			var parseFile = new Parse.File(file.name, file);
@@ -262,9 +265,12 @@ return {
 		var estItemsToUpdate = {};
 		var EstimateItem = Parse.Object.extend("EstimateItem");
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
 
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        
 		// filter items from estimateItems
 		estimateItems.forEach(function(item) {
 			if (item.selectedItem.create) {

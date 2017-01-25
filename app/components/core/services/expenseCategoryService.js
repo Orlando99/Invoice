@@ -6,9 +6,12 @@ function(expenseCategoryFactory){
 return {
 	createNewCategory : function(params, role) {
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
 
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
+        
 		var Category = Parse.Object.extend('Category');
 		var obj = new Category();
 		obj.setACL(acl);

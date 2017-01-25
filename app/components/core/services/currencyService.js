@@ -100,9 +100,10 @@ invoicesUnlimited.factory('currencyFactory',
 
 	currency.createNewCurrency = function(params, role) {
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
- 
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
 		var ctr = Parse.Object.extend("Currency");
 		var object = new ctr();
 		object.setACL(acl);

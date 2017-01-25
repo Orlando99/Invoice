@@ -417,8 +417,11 @@ $scope.saveNewItem = function() {
 	$q.when(coreFactory.getUserRole(user))
 	.then(function(role) {
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
+        
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
 
 		params.acl = acl;
 

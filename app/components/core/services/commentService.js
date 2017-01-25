@@ -23,8 +23,12 @@ invoicesUnlimited.factory('commentFactory', function(userFactory){
 		var obj = new commentObj();
 
 		var acl = new Parse.ACL();
+        /*
 		acl.setRoleWriteAccess(role.get("name"), true);
 		acl.setRoleReadAccess(role.get("name"), true);
+        */
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
 		obj.setACL(acl);
 
 		return obj.save(params);

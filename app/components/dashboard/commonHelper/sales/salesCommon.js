@@ -61,9 +61,12 @@ return {
 		$q.when(coreFactory.getUserRole(params.user))
 		.then(function(role) {
 			var acl = new Parse.ACL();
-			acl.setRoleWriteAccess(role.get("name"), true);
-			acl.setRoleReadAccess(role.get("name"), true);
+			//acl.setRoleWriteAccess(role.get("name"), true);
+			//acl.setRoleReadAccess(role.get("name"), true);
 
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            
 			params1.acl = acl;
 
 			return itemService.createItems(params1);
@@ -105,9 +108,12 @@ return {
 		$q.when(coreFactory.getUserRole(params.user))
 		.then(function(role) {
 			var acl = new Parse.ACL();
-			acl.setRoleWriteAccess(role.get("name"), true);
-			acl.setRoleReadAccess(role.get("name"), true);
+			//acl.setRoleWriteAccess(role.get("name"), true);
+			//acl.setRoleReadAccess(role.get("name"), true);
 
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            
 			params1.acl = acl;
 
 			return itemService.createItems(params1);
@@ -149,9 +155,12 @@ return {
 		$q.when(coreFactory.getUserRole(params.user))
 		.then(function(role) {
 			var acl = new Parse.ACL();
-			acl.setRoleWriteAccess(role.get("name"), true);
-			acl.setRoleReadAccess(role.get("name"), true);
+			//acl.setRoleWriteAccess(role.get("name"), true);
+			//acl.setRoleReadAccess(role.get("name"), true);
 
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            
 			params1.acl = acl;
 
 			return itemService.createItems(params1);

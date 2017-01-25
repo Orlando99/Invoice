@@ -82,20 +82,24 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
 
   Object.defineProperty(UserRecord.prototype, "paymentGateway", {
     get: function() {
+        /*
       if (!this.accountAssigned) {
         return "Loading...";
       }
+      */
       return this.get("paymentGateway");
     },
     set: function(aValue) {
+        /*
       if (!this.accountAssigned) {
         return;
       }
+      */
       return this.set("paymentGateway",aValue);
     }
   });
 
-  Object.defineProperty(UserRecord.prototype, "phonenumber", {
+  Object.defineProperty(UserRecord.prototype, "phoneNumber", {
     get: function() {
       if (!this.get('businessInfo')) return;
       return this.get("businessInfo").get('phoneNumber');
@@ -126,6 +130,36 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
     set: function(aValue) {
       if (!this.get('businessInfo')) return;
       return this.get("businessInfo").set('streetName',aValue);
+    }
+  });
+    Object.defineProperty(UserRecord.prototype, "city", {
+    get: function() {
+      if (!this.get('businessInfo')) return;
+      return this.get("businessInfo").get('city');
+    },
+    set: function(aValue) {
+      if (!this.get('businessInfo')) return;
+      return this.get("businessInfo").set('city',aValue);
+    }
+  });
+    Object.defineProperty(UserRecord.prototype, "zipCode", {
+    get: function() {
+      if (!this.get('businessInfo')) return;
+      return this.get("businessInfo").get('zipCode');
+    },
+    set: function(aValue) {
+      if (!this.get('businessInfo')) return;
+      return this.get("businessInfo").set('zipCode',aValue);
+    }
+  });
+    Object.defineProperty(UserRecord.prototype, "state", {
+    get: function() {
+      if (!this.get('businessInfo')) return;
+      return this.get("businessInfo").get('state');
+    },
+    set: function(aValue) {
+      if (!this.get('businessInfo')) return;
+      return this.get("businessInfo").set('state',aValue);
     }
   });
 
@@ -179,7 +213,7 @@ clientAdminPortalApp.factory('businessInfoFactory', function() {
         this.set("businessName",data.businessName);
         this.set("zipCode",data.zipCode);
         this.set("streetName",data.address);
-        this.set("phone",data.phone);
+        this.set("phoneNumber",data.phone);
         this.set("state",data.state);
       }
     }

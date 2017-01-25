@@ -60,8 +60,11 @@ invoicesUnlimited.factory('taxService', function($q){
 				params.type = 2;	// 1 = tax, 2 = tax group
 				
 				var acl = new Parse.ACL();
-				acl.setRoleWriteAccess(role.get("name"), true);
-				acl.setRoleReadAccess(role.get("name"), true);
+				//acl.setRoleWriteAccess(role.get("name"), true);
+				//acl.setRoleReadAccess(role.get("name"), true);
+                
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
                 
 				var Tax = Parse.Object.extend("Tax");
 				var tax = new Tax();
@@ -98,9 +101,12 @@ invoicesUnlimited.factory('taxService', function($q){
 				params.type = 1;	// 1 = tax, 2 = tax group
 				
 				var acl = new Parse.ACL();
-				acl.setRoleWriteAccess(role.get("name"), true);
-				acl.setRoleReadAccess(role.get("name"), true);
+				//acl.setRoleWriteAccess(role.get("name"), true);
+				//acl.setRoleReadAccess(role.get("name"), true);
 
+                acl.setPublicReadAccess(true);
+                acl.setPublicWriteAccess(true);
+                
 				var Tax = Parse.Object.extend("Tax");
 				var tax = new Tax();
 				tax.setACL(acl);

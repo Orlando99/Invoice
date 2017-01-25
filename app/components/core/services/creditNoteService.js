@@ -57,9 +57,10 @@ return {
 		var promises = [];
 		var Refund = Parse.Object.extend('Refund');
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
-
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
+        acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
 		for (var i=0; i < objs.length; ++i) {
 			var refund = new Refund();
 			refund.setACL(acl);
