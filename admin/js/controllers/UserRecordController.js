@@ -93,6 +93,7 @@ clientAdminPortalApp.controller('UserRecordController',
                         });
                         
                         $scope.$apply(function() {
+                            record.oldUsername = record.username;
                           record.allPayments = objs;
                             record.month = month;
                             record.year = year;
@@ -238,6 +239,24 @@ clientAdminPortalApp.controller('UserRecordController',
           user.paymentGateway = "";
       }
       
+      
+      if(user.oldUsername != user.username){
+          var projectUser = new Parse.Query("ProjectUser");
+          projectUser.equalTo("userName", user.oldUsername);
+          projectUser.first()
+          .then(function(pUser){
+              pUser.set("userName", user.username);
+              pUser.save(null, {
+                  success : function(o){
+                      debugger;
+                  }, error : function(response, error){
+                      debugger;
+                  }
+              });
+          });
+          
+      }
+      
        user.businessInfo.save(null, {
          success: function(business){
              Parse.Cloud.run('UpdateUser',{
@@ -249,6 +268,7 @@ clientAdminPortalApp.controller('UserRecordController',
                       fullName        : user.fullName,
                       email           : user.email,
                       username        : user.username,
+                      password        : user.get('password'),
                       EPNrestrictKey  : user.EPNrestrictKey,
                       EPNusername     : user.EPNusername,
                       AuthNet         : user.AuthNet,
@@ -272,6 +292,7 @@ clientAdminPortalApp.controller('UserRecordController',
                       fullName        : user.fullName,
                       email           : user.email,
                       username        : user.username,
+                      password        : user.get('password'),
                       EPNrestrictKey  : user.EPNrestrictKey,
                       EPNusername     : user.EPNusername,
                       AuthNet         : user.AuthNet,

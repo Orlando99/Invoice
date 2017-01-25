@@ -117,7 +117,7 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
     },
     set: function(aValue) {
       if (this.get('businessInfo'))
-          this.get("businessInfo").set('businessName',aValue);
+         this.get("businessInfo").set('businessName',aValue);
       return this.set('company', aValue);
     }
   });
