@@ -673,6 +673,7 @@ return {
             htmlDoc = htmlDoc.trim();
             var abc = 1;
             //var fr = document.getElementById('targetframe1');
+            
             var fr = document.createElement('iframe');
             document.body.appendChild(fr);
             fr.style.display = 'none';
@@ -682,19 +683,26 @@ return {
             fr.contentWindow.document.close();
             
             fr.onload = function() {
-               //var div=iframe.contentWindow.document.getElementById('mydiv');
-                abc = 0;
-                return Parse.Cloud.run("sendMailgunHtml", {
-                toEmail: toEmail,
-                fromEmail: "no-reply@invoicesunlimited.com",
-                subject : emailSubject,
-                html : '<html>' + $('#myFrame').contents().find('html').html() + '</html>'
-                }).then(function(msg) {
-                    console.log(msg);
-                    return invoice;
+               var div = fr.contentWindow.document.getElementsByTagName('body');
+                div = div.innerHTML;
+                //var html = '<page id="page-container" backtop="0mm" backbottom="10mm" backleft="10mm" backright="15mm">' + $('#myFrame').contents().find('body').html() + '</page>';
+                var html = '<page id="page-container">' + $('#myFrame').contents().find('body').html() + '</page>';
+                debugger;
+                var abc = 0;
+                $.ajax({
+                    method:"POST",
+                    type:"POST",
+                    url: "generatePDF.php",
+                    data: { 
+                        'html' : html,
+                    }
+                })
+                .then(function (htmlDoc) {
+                    debugger;
                 });
+                
             };
-
+            
             return Promise.resolve('');
         });
 	}

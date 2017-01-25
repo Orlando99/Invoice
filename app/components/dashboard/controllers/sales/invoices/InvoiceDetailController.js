@@ -114,6 +114,9 @@ function showInvoiceDetail()
 }
     
 $scope.invoicePrinted = function(){
+    //debugger;
+    //invoiceService.downloadInvoiceReceipt($scope.invoice.entity);
+    
     addNewComment('Invoice printed', true);
 }
 
