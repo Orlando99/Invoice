@@ -46,7 +46,7 @@
             <label class="layout-padding-t-smm">Currency Code</label>
             <select name="currencyCode" class="col-75" ng-options="currency for currency in availableCurrencies"
               ng-model="currencyObj.title" ng-change="currencyChanged()">
-              <option value="" disabled selected>Select or Type to add</option>
+              <option value="" disabled selected>Select Currency Code</option>
             </select>
           </div>
           <div class="input-container layout-margin-b">
@@ -160,14 +160,14 @@
 <div class="popup-modal delete-currency hidesm">
     <div class="modal container" style="width: 650px !important;">
 
-      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Delete Tax</h3>
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Delete Currency</h3>
       <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
       </button>
       <div class="clearfix"></div>
       <hr class="layout-margin-tb">
 
       <div class="col-80 text-left layout-center" style="margin-bottom: 20px; margin-top: 20px; margin-left: -15px;">
-        <label>Are you sure want to delete this tax?</label>
+        <label>Are you sure want to delete this Currency?</label>
       </div>
       <div class="clearfix"></div>
         <hr class="layout-margin-tb">

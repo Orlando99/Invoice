@@ -89,8 +89,8 @@ invoicesUnlimited.factory('roleFactory',
 		newACL.setRoleWriteAccess(role.entity[0],true);
 		newACL.setRoleReadAccess(role.entity[0],true);
         */
-        roleACL.setPublicReadAccess(true);
-        roleACL.setPublicWriteAccess(true);
+        newACL.setPublicReadAccess(true);
+        newACL.setPublicWriteAccess(true);
 		return newACL;
 	}
 

@@ -78,27 +78,37 @@
                                     </div>
 
                                     <div class="form-group cl">
-                                        <label>Merchant ID</label>
-                                        <input class="form-control" ng-model="record.merchantID"/>
-                                    </div>
-
-                                    <div class="form-group cl">
-                                        <label>Business Name</label>
-                                        <input type="text" class="form-control" ng-model="record.businessName"/>
-                                    </div>
-
-                                    <div class="form-group cl">
-                                        <label>Email</label>
-                                        <input type="text" class="form-control" ng-model="record.email"/>
-                                    </div>
-
-                                    <div class="form-group cl">
                                         <label>Address</label>
                                         <input type="text" class="form-control" ng-model="record.address"/>
                                     </div>
                                     <div class="form-group cl">
                                         <label>City</label>
                                         <input type="text" class="form-control" ng-model="record.city"/>
+                                    </div>
+                                    
+                                    <div class="form-group cl">
+                                        <label>State</label>
+                                         <input type="text" class="form-control" ng-model="record.state" name="state"/>
+                                         <!--
+                                        <select class="form-control" ng-model="record.state" ng-options="i as i for i in statesAbbr" name="state">
+                                            <option value="" disabled>Select state</option>
+                                        </select>
+                                        -->
+                                    </div>
+
+                                    <div class="form-group cl">
+                                        <label>Zip</label>
+                                        <input type="text" class="form-control" ng-model="record.zipCode"/>
+                                    </div>
+                                    
+                                    <div class="form-group cl">
+                                        <label>Phone</label>
+                                        <input type="text" class="form-control phonenumber" ng-model="record.phoneNumber"/>
+                                    </div>
+                                    
+                                    <div class="form-group cl">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" ng-model="record.email"/>
                                     </div>
 
                                     <div class="form-group cl" ng-show="false">
@@ -112,6 +122,16 @@
                                 </div>
 
                                 <div class="form-right">
+                                    
+                                    <div class="form-group cl">
+                                        <label>Merchant ID</label>
+                                        <input class="form-control" ng-model="record.merchantID"/>
+                                    </div>
+
+                                    <div class="form-group cl">
+                                        <label>Business Name</label>
+                                        <input type="text" class="form-control" ng-model="record.businessName"/>
+                                    </div>
                                     
                                     <div class="form-group cl">
                                         <label>Username</label>
@@ -165,25 +185,6 @@
                                         </div>
                                     </div>
 
-                                    
-                                     <div class="form-group cl">
-                                        <label>State</label>
-                                         <input type="text" class="form-control" ng-model="record.state" name="state"/>
-                                         <!--
-                                        <select class="form-control" ng-model="record.state" ng-options="i as i for i in statesAbbr" name="state">
-                                            <option value="" disabled>Select state</option>
-                                        </select>
-                                        -->
-                                    </div>
-
-                                    <div class="form-group cl">
-                                        <label>Zip</label>
-                                        <input type="text" class="form-control" ng-model="record.zipCode"/>
-                                    </div>
-                                    <div class="form-group cl">
-                                        <label>Phone</label>
-                                        <input type="text" class="form-control phonenumber" ng-model="record.phoneNumber"/>
-                                    </div>
                                 </div>
 
                                 

@@ -67,16 +67,16 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
     });
   }
 
-  var pass = "";
+  UserRecord.pass = "";
 
   Object.defineProperty(UserRecord.prototype,'password', {
     get: function(){
-      return pass;
+      return this.pass;
     },
     set : function(value){
-      pass = value;
-      if (/^\*{2,}/g.test(pass)) return;
-      this.set('password',pass);
+      this.pass = value;
+      if (/^\*{2,}/g.test(this.pass)) return;
+      this.set('password',this.pass);
     }
   });
 

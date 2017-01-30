@@ -271,14 +271,14 @@ function loadCurrencies() {
 	}))
 	.then(function(currencies) {
 		$scope.currencies = currencies;
-        
+        /*
         $scope.currencies.forEach(function(obj){
             for(var i = 0; i < $scope.availableCurrencies.length; ++i){
                 if(obj.entity.title == $scope.availableCurrencies[i])
                     $scope.availableCurrencies.splice(i, 1);
             }
         });
-        
+        */
 		setDefaultCurrencyIndex();
 		hideLoader();
         $scope.displayedCurrencies = currencies;
@@ -298,7 +298,7 @@ $scope.prepareAddCurrency = function() {
 	$scope.currencyObj = {
 		title : undefined,
 		currencySymbol : undefined,
-		decimalPlace : '0',
+		decimalPlace : '2',
 		format : '###,###,###',
 		exchangeRate : undefined
 	}

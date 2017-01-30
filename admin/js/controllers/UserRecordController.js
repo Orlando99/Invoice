@@ -367,7 +367,8 @@ clientAdminPortalApp.controller('UserRecordController',
       projUser.equalTo("userName", record.get('username'));
       projUser.first()
       .then(function(obj){
-          obj.destroy();
+          if(obj)
+            obj.destroy();
       });
       
       var query = new Parse.Query(Parse.Role);
@@ -378,13 +379,16 @@ clientAdminPortalApp.controller('UserRecordController',
           var promises = [];
           if(roleObj)
               promises.push(roleObj.destroy());
-          promises.push(org.destroy());
+          if(org)
+            promises.push(org.destroy());
           if(bus)
             promises.push(bus.destroy());
           if(acc)
             promises.push(acc.destroy());
-          promises.push(curr.destroy());
-          promises.push(prin.destroy());
+          if(curr)
+            promises.push(curr.destroy());
+          if(prin)
+            promises.push(prin.destroy());
 
           $q.all(promises)
           .then(function(){
