@@ -382,7 +382,7 @@
 
                     <div class="form-group cl">
                         <label>Phone</label>
-                        <input id="Phone" type="text" class="form-control phonenumber" ng-model="newUserRecord.phonenumber" required/>
+                        <input id="Phone" type="text" class="form-control phonenumber" ng-model="newUserRecord.phoneNumber" required/>
                     </div>
 
                     <div class="form-group cl">
@@ -395,11 +395,13 @@
                                 </a>
                                 <div ng-click = "newUserRecord.showDropdownSelect = false;" ng-show="newUserRecord.showDropdownSelect">
                                     <div class="window-shadow"></div>
-                                    <ul style="display: initial;">
+                                    <ul style="display: initial; margin-bottom: 20px;">
                                         <li ng-click="newUserRecord.paymentGateway = '';" class="select-empty"><a>None</a></li>
                                         <li ng-click="newUserRecord.paymentGateway = '1';" class="select-epn"><a>Epn</a></li>
                                         <li ng-click="newUserRecord.paymentGateway = '2';" class="select-authnet"><a>Auth. Net</a></li>
+                                        <!--
                                         <li ng-click="newUserRecord.paymentGateway = '3';" class="select-pivotal"><a>Pivotal</a></li>
+                                        -->
                                     </ul>
                                 </div>
                             </li>
@@ -417,7 +419,7 @@
                         </div>
                     </div>
 
-                    <div ng-show="accInfo.paymentGateway == '2'" class="gatewayType_AUTH_NET">
+                    <div ng-show="newUserRecord.paymentGateway == '2'" class="gatewayType_AUTH_NET">
                         <div class="form-group cl">
                             <label>Auth. Net Username</label>
                             <input ng-model="newUserRecord.AuthNet" type="text" class="form-control" />
@@ -447,7 +449,7 @@
                     </div>
 
                     
-                    <div  class="form-group cl">
+                    <div  class="form-group cl" style="margin-top: 35px;">
                         <input style="margin-left: 20%" type="submit" class="button" value="Submit" ng-click="ok(addForm);"/>
                         <a class="button-cancel" ng-click="cancel();">Cancel</a>
                     </div>

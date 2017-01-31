@@ -63,6 +63,8 @@ invoicesUnlimited.controller('NewCustomerController',
 	$scope.newCustomer = new customerFactory(new Customer());
 	$scope.newCustomer.entity.set('userID',user.entity[0]);
 	$scope.newCustomer.entity.set('status','active');
+    
+    $scope.newCustomer.entity.paymentTerms = "Due on Receipt";
 
 	$scope.newCustomer.billingAddress = Object.create(address);
 

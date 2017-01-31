@@ -1,8 +1,8 @@
 'use strict';
 
 clientAdminPortalApp.controller('UserRecordController',
-    ['$q','$scope', '$state', '$modal', 'userRecordFactory', 'accountInfoFactory', 'businessInfoFactory','signatureFactory','principalInfoFactory','organizationFactory','currencyFactory','projectUserFactory',
-    function($q,$scope, $state, $modal, userRecordFactory, accountInfoFactory, businessInfoFactory, signatureFactory,principalInfoFactory,organizationFactory,currencyFactory,projectUserFactory) {
+    ['$q','$scope', '$state', '$modal', 'userRecordFactory', 'accountInfoFactory', 'businessInfoFactory','signatureFactory','principalInfoFactory','organizationFactory','currencyFactory','projectUserFactory','preferencesFactory',
+    function($q,$scope, $state, $modal, userRecordFactory, accountInfoFactory, businessInfoFactory, signatureFactory,principalInfoFactory,organizationFactory,currencyFactory,projectUserFactory,preferencesFactory) {
 
   if (!(Parse.User.current() && Parse.User.current().authenticated())) {
     $state.go("login");
@@ -127,7 +127,7 @@ clientAdminPortalApp.controller('UserRecordController',
                       record.businessAssigned = true;
                       
                       if (record.state) {
-                        console.log("STATE: " + record.state);
+                        //console.log("STATE: " + record.state);
                       }
                         /*
                       if (record.get('businessInfo') && 
@@ -517,7 +517,8 @@ clientAdminPortalApp.controller('UserRecordController',
           signatureImage : new signatureFactory(),
           selectedOrganization : new organizationFactory(),
             currency : new currencyFactory(),
-            projectUser : new projectUserFactory()
+            projectUser : new projectUserFactory(),
+            preferences : new preferencesFactory()
         }
         
         for (var table in userTables){
@@ -536,14 +537,32 @@ clientAdminPortalApp.controller('UserRecordController',
         userTables.selectedOrganization.set("userID", user);
         userTables.currency.set('userId', user);
         userTables.projectUser.set('userID', user);
+        userTables.preferences.set('userID', user);
 
         var promises = toArray(userTables).map(function(table){
           return table.save();
         });
-
-        Parse.Promise.when(promises).then(function(busObj,accObj,prObj,signObj,orgObj,currObj,projObj){
+          
+          //Parse.Promise.when(promises).then(function(busObj,accObj,prObj,signObj,orgObj,currObj,projObj,prefObj){
+          Parse.Promise.when(promises).then(function(result){
+              
+              var busObj = result[0];
+              var accObj = result[1];
+              var prObj = result[2];
+              var signObj = result[3];
+              var orgObj = result[4];
+              var currObj = result[5];
+              var projObj = result[6];
+              var prefObj = result[7];
+              
             currObj.set('organization', orgObj);
+            prefObj.set('organization', orgObj);
+            var p = [];
+            prefObj.save();
+            //p.push(currObj.save());
+            //p.push(prefObj.save());
             currObj.save()
+            //$q.all(p)
             .then(function(currencyObj){
                 Parse.Cloud.run("UpdateUser",{user : {
                   id : user.id,
@@ -593,6 +612,8 @@ clientAdminPortalApp.controller('UserRecordController',
                 }, function(error){
                     console.log(error);
                 });
+            }, function(err){
+                debugger;
             });
             
             
@@ -618,7 +639,72 @@ clientAdminPortalApp.controller('UserRecordController',
           }
             */
         });
-
+          
+          /*
+        Parse.Promise.when(promises).then(function(busObj,accObj,prObj,signObj,orgObj,currObj,projObj,prefObj){
+            currObj.set('organization', orgObj);
+            prefObj.set('organization', orgObj);
+            var p = [];
+            prefObj.save();
+            //p.push(currObj.save());
+            //p.push(prefObj.save());
+            currObj.save()
+            //$q.all(p)
+            .then(function(currencyObj){
+                Parse.Cloud.run("UpdateUser",{user : {
+                  id : user.id,
+                  params : {},
+                  pointers : [
+                    {
+                      id : busObj.id,
+                      className : 'BusinessInfo',
+                      field : 'businessInfo'
+                    },
+                    {
+                      id : accObj.id,
+                      className : 'AccountInfo',
+                      field : 'accountInfo'
+                    },
+                    {
+                      id : prObj.id,
+                      className : 'PrincipalInfo',
+                      field : 'principalInfo'
+                    },
+                    {
+                      id : signObj.id,
+                      className : 'Signature',
+                      field : 'signatureImage'
+                    },
+                    {
+                      id : orgObj.id,
+                      className : 'Organization',
+                      field : 'selectedOrganization'
+                    },
+                    {
+                      id : orgObj.id,
+                      className : 'Organization',
+                      field : 'organizations'
+                    },
+                    {
+                      id : currencyObj.id,
+                      className : 'Currency',
+                      field : 'currency'
+                    }
+                  ]
+                }})
+                .then(function(msg){
+                    console.log("Cloud update successfull");
+                    //$scope.updateQueryResults();
+                    window.location.reload();
+                }, function(error){
+                    console.log(error);
+                });
+            }, function(err){
+                debugger;
+            });
+            
+        });
+          */
       });
 
     }, function() {

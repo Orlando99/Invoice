@@ -310,3 +310,26 @@ clientAdminPortalApp.factory('projectUserFactory', function() {
 
   return ProjectUser;
 });
+
+clientAdminPortalApp.factory('preferencesFactory', function() {
+  var Preferencies = Parse.Object.extend('Preferencies');
+
+  Preferencies.prototype.SetDummyInfo = function(){
+    this.set("invoiceShippingCharges",0);
+    this.set("creditNotes","Thank you for your business. If you have any questions, please contact us as soon as possible.");
+    this.set("invoiceThanksNotes","Thank you for your payment. We appreciate your business and look forward to assisting you in the future.");
+    this.set("creditTerms","");
+    this.set("invoiceDiscount",0);
+    this.set("invoiceNotes","Thank you for your business. If you have any questions, please contact us as soon as possible.");
+    this.set("estimateNotes","Thank you for your business. If you have any questions, please contact us as soon as possible.");
+    this.set("invoiceTerms","");
+    this.set("estimateTerms","");
+    this.set("invoiceAdjustments",0);
+    this.set("invoiceSalesPerson",0);
+    this.set("invoiceAg",1);
+    this.set("estimateAg",1);
+    this.set("creditAg",1);
+  }
+
+  return Preferencies;
+});
