@@ -982,7 +982,8 @@ var Validate = {
             mastercard : /^5/,
             amex : /^3[467]/,
             jcb : /^35/,
-            discover : /^65/
+            discover : /^6(?:011|5)/
+            //discover : /^65/
         }
 
         for(var cardCheck in regexCards) {

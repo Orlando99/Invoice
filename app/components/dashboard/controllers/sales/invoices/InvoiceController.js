@@ -689,7 +689,8 @@ $scope.cancel = function() {
 
 $scope.calculateDueDate = function() {		
 		var d = new Date($scope.todayDate);
-		d.setHours(d.getHours() + 12);
+		//d.setHours(d.getHours() + 12);
+		d.setHours(0);
         
         if($scope.paymentTerms.selectedTerm.value != 1){
             d = d.addDays($scope.paymentTerms.selectedTerm.value-1);

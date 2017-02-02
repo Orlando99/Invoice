@@ -65,6 +65,7 @@ clientAdminPortalApp.controller('UserRecordController',
                         var visa = 0;
                         var masterCard = 0;
                         var amex = 0;
+                        var discover = 0;
                         var other = 0;
                         
                         var month = 12;
@@ -84,6 +85,9 @@ clientAdminPortalApp.controller('UserRecordController',
                             else if(fourdigits.startsWith('5')){
                                 masterCard += payment.get('amount');
                             }
+                            else if(fourdigits.startsWith('6')){
+                                discover += payment.get('amount');
+                            }
                             else if(fourdigits.startsWith('30') || fourdigits.startsWith('34') || fourdigits.startsWith('36') || fourdigits.startsWith('37') || fourdigits.startsWith('38') || fourdigits.startsWith('39')){
                                 amex += payment.get('amount');
                             }
@@ -97,11 +101,12 @@ clientAdminPortalApp.controller('UserRecordController',
                           record.allPayments = objs;
                             record.month = month;
                             record.year = year;
-                            var total = visa + masterCard + amex + other;
+                            var total = visa + masterCard + amex + discover + other;
                             
                           record.visa = "$" + visa.toFixed(2);
                           record.masterCard = "$" + masterCard.toFixed(2);
                           record.amex = "$" + amex.toFixed(2);
+                          record.discover = "$" + discover.toFixed(2);
                           record.other = "$" + other.toFixed(2);
                           record.total = "$" + total.toFixed(2);
 
@@ -323,6 +328,7 @@ clientAdminPortalApp.controller('UserRecordController',
         var visa = 0;
         var masterCard = 0;
         var amex = 0;
+        var discover = 0;
         var other = 0;
 
         payments.forEach(function(payment){
@@ -333,6 +339,9 @@ clientAdminPortalApp.controller('UserRecordController',
             else if(fourdigits.startsWith('5')){
                 masterCard += payment.get('amount');
             }
+            else if(fourdigits.startsWith('6')){
+                discover += payment.get('amount');
+            }
             else if(fourdigits.startsWith('30') || fourdigits.startsWith('34') || fourdigits.startsWith('36') || fourdigits.startsWith('37') || fourdigits.startsWith('38') || fourdigits.startsWith('39')){
                 amex += payment.get('amount');
             }
@@ -342,11 +351,12 @@ clientAdminPortalApp.controller('UserRecordController',
         });
 
         
-        var total = visa + masterCard + amex + other;
+        var total = visa + masterCard + amex + discover + other;
 
         record.visa = "$" + visa.toFixed(2);
         record.masterCard = "$" + masterCard.toFixed(2);
         record.amex = "$" + amex.toFixed(2);
+        record.discover = "$" + discover.toFixed(2);
         record.other = "$" + other.toFixed(2);
         record.total = "$" + total.toFixed(2);
 
