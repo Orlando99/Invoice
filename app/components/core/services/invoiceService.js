@@ -600,10 +600,18 @@ return {
             htmlDoc = htmlDoc.trim();
             var abc = 1;
             //var fr = document.getElementById('targetframe1');
+            /*
             var fr = document.createElement('iframe');
             document.body.appendChild(fr);
             fr.style.display = 'none';
             fr.setAttribute("id", "myFrame");
+            fr.src = "about:blank";
+            fr.contentWindow.document.open();
+            fr.contentWindow.document.write(htmlDoc);
+            fr.contentWindow.document.close();
+            */
+            var fr = document.getElementById('targetframe1');
+            fr.src = "about:blank";
             fr.contentWindow.document.open();
             fr.contentWindow.document.write(htmlDoc);
             fr.contentWindow.document.close();
@@ -615,7 +623,7 @@ return {
                 toEmail: toEmail,
                 fromEmail: "no-reply@invoicesunlimited.com",
                 subject : emailSubject,
-                html : '<html>' + $('#myFrame').contents().find('html').html() + '</html>'
+                html : '<html>' + $('#targetframe1').contents().find('html').html() + '</html>'
                 }).then(function(msg) {
                     console.log(msg);
                     return invoice;

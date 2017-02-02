@@ -692,7 +692,7 @@ $scope.calculateDueDate = function() {
 		d.setHours(d.getHours() + 12);
         
         if($scope.paymentTerms.selectedTerm.value != 1){
-            d = d.addDays($scope.paymentTerms.selectedTerm.value);
+            d = d.addDays($scope.paymentTerms.selectedTerm.value-1);
         }
         
 		$scope.dueDate = d; //$.format.date(d, "MM/dd/yyyy");
