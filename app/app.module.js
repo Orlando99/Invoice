@@ -45,6 +45,10 @@ var createUserOpener = {'userName':'+ Create new User', 'dummy':true};
 var createLateFeeOpener = {'toStr':'+ Add New Late Fee', 'dummy':true};
 var fromTutorial = false;
 
+var IRIS = "https://www.crmmas.com/postleads/t/a6bdcab71d18568c68511c8d61466660";
+var IRIS_SOURCE = "IU-WEB";
+var IRIS_ORIGINATOR = "1035";
+
 var GetTemplate = function(name,file) {
   return COMPONENTS + name + '/views/' + file;
 }

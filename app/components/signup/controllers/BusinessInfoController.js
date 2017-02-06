@@ -304,8 +304,14 @@ userFactory.entity[0].get('company')
         
     $scope.saveAndLaterBusinessInfo = function(){
         nextScreen = 'signup.invoiceTemplateInfo';
+        
+        saveData();
+        
+        return;
+        
         if($('#signUpForm').validate().errorList)
         {   
+            $('#signUpForm').reset();
             signUpFactory.setField('BusinessInfo',{
                     field : 'businessName',
                     value : signUpFactory.getField('User','company')
@@ -342,8 +348,31 @@ userFactory.entity[0].get('company')
                 });
             })
             .then(function(){
-                hideLoader();
-                $state.go('signup.invoiceTemplateInfo')
+                
+                $.ajax({
+                    method:"POST",
+                    type:"POST",
+                    url: IRIS,
+                    data: { 
+                        'originator' : IRIS_ORIGINATOR,
+                        'source' : IRIS_SOURCE,
+                        'DBA' : signUpFactory.getField('User','company'),
+                        'Email' : currentUser.get('email'),
+                        'userId' : currentUser.id
+                    }
+                })
+                .then(function (result) {
+                    console.log("IRIS Lead Submitted");
+                    debugger;
+                    hideLoader();
+                    $state.go('signup.invoiceTemplateInfo');
+                }, function(error){
+                    console.error("IRIS Lead Sumission failed");
+                    debugger;
+                    hideLoader();
+                    $state.go('signup.invoiceTemplateInfo');
+                });
+                
                 //$state.go('signup.principal-info');
             },errorCallback);
             
@@ -358,7 +387,9 @@ userFactory.entity[0].get('company')
         
     function saveData(){
 	
-		if (!$('#signUpForm').valid()) return;
+        if(nextScreen != 'signup.invoiceTemplateInfo'){
+		      if (!$('#signUpForm').valid()) return;
+        }
         
         signUpFactory.setDefaultValues();
         
@@ -417,20 +448,75 @@ userFactory.entity[0].get('company')
     
          function savePrincipalInfo(){
 
-            showLoader();
+                showLoader();
 
                 currentUser.set('fullName', $scope.fullName);
-            $q.when(user.save())
-            .then(function() {
-                saveHelper().then(function(){
-                hideLoader();
-                $state.go(nextScreen);
-
-            },function(error){
-                hideLoader();
-                console.log(error.message);
-            });
-            });
+                $q.when(user.save())
+                .then(function() {
+                    saveHelper()
+                    .then(function(){
+                          
+                        if(nextScreen == 'signup.invoiceTemplateInfo'){
+                            var lastName = undefined;
+                            var firstName = undefined;
+                            if($scope.fullName){
+                                firstName = $scope.fullName.split(' ')[0];
+                                if($scope.fullName.split(' ').length > 1)
+                                    lastName = $scope.fullName.split(' ')[1];
+                            }
+                            
+                            $.ajax({
+                                method:"POST",
+                                type:"POST",
+                                url: IRIS,
+                                data: { 
+                                    'originator' : IRIS_ORIGINATOR,
+                                    'source' : IRIS_SOURCE,
+                                    'DBA' : signUpFactory.getField('User','company'),
+                                    'Email' : currentUser.get('email'),
+                                    'userId' : currentUser.id,
+                                    'Location Address'	: $scope.bsnsInfo['streetName'],
+                                    'Mailing Address'	: $scope.bsnsInfo['streetName'],
+                                    'Location'			: $scope.bsnsInfo['streetName'],
+                                    'Mailing'			: $scope.bsnsInfo['streetName'],
+                                    'Location State'	: $scope.bsnsInfo['state'],
+                                    'Mailing State'		: $scope.bsnsInfo['state'],
+                                    'Location ZIP'		: $scope.bsnsInfo['zipCode'],
+                                    'Mailing ZIP'		: $scope.bsnsInfo['zipCode'],
+                                    'Location City'		: $scope.bsnsInfo['city'],
+                                    'Mailing City'		: $scope.bsnsInfo['city'],
+                                    'Federal Tax ID'	: $scope.bsnsInfo['federalTaxID'],
+                                    'Entity Type'	    : $scope.bsnsInfo['ownershipType'],
+                                    'Residence Address'	: $scope.principalInfo['streetName'],
+                                    'Residence state'	: $scope.principalInfo['state'],
+                                    'Residence zip'		: $scope.principalInfo['zipCode'],
+                                    'Residence city'	: $scope.principalInfo['city'],
+                                    'Date of Birth'		: $scope.principalInfo['dob'],
+                                    'Social Security Number'	: $scope.principalInfo['ssn'],
+                                    'Contact_First_Name'	: firstName,
+                                    'Contact_Last_Name'	: lastName
+                                }
+                            })
+                            .then(function (result) {
+                                console.log("IRIS Lead Submitted");
+                                debugger;
+                                hideLoader();
+                                $state.go('signup.invoiceTemplateInfo');
+                            }, function(error){
+                                console.error("IRIS Lead Sumission failed");
+                                debugger;
+                                hideLoader();
+                                $state.go('signup.invoiceTemplateInfo');
+                            });
+                        }
+                        
+                        hideLoader();
+                        $state.go(nextScreen);
+                    },function(error){
+                        hideLoader();
+                        console.log(error.message);
+                    });
+                });
 
 
         };

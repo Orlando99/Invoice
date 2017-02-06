@@ -110,8 +110,32 @@ invoicesUnlimited.controller('MerchantAccountController',
 			});
 		})
 		.then(function(){
-			hideLoader();
-			$state.go('signup.invoiceTemplateInfo');
+            
+            $.ajax({
+                    method:"POST",
+                    type:"POST",
+                    url: IRIS,
+                    data: { 
+                        'originator' : IRIS_ORIGINATOR,
+                        'source' : IRIS_SOURCE,
+                        'DBA' : user1.entity[0].get('company'),
+                        'Email' : user1.entity[0].get('email'),
+                        'userId' : user1.entity[0].id
+                    }
+                })
+                .then(function (result) {
+                    console.log("IRIS Lead Submitted");
+                    debugger;
+                    hideLoader();
+                    $state.go('signup.invoiceTemplateInfo');
+                }, function(error){
+                    console.error("IRIS Lead Sumission failed");
+                    debugger;
+                    hideLoader();
+                    $state.go('signup.invoiceTemplateInfo');
+            });
+            
+			
 		},errorCallback);
 	}
     

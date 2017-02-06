@@ -82,8 +82,76 @@ invoicesUnlimited.controller('SignatureController',
 		},function(error){
 			console.log(error.messge);
 		}).then(function(){
-			hideLoader();
-			$state.go('signup.confirm');
+			//hideLoader();
+            debugger;
+            var currentUser = user.entity[0];
+            var bsnsInfo = currentUser.get('businessInfo');
+            var principalInfo = currentUser.get('principalInfo');
+            var accountInfo = currentUser.get('accountInfo');
+            
+            var lastName = undefined;
+            var firstName = undefined;
+            if(currentUser.fullName){
+                firstName = currentUser.fullName.split(' ')[0];
+                if(currentUser.fullName.split(' ').length > 1)
+                    lastName = $scope.fullName.split(' ')[1];
+            }
+
+            $.ajax({
+                method:"POST",
+                type:"POST",
+                url: IRIS,
+                data: { 
+                    'originator' : IRIS_ORIGINATOR,
+                    'source' : IRIS_SOURCE,
+                    'DBA' : currentUser.get('company'),
+                    'Email' : currentUser.get('email'),
+                    'userId' : currentUser.id,
+                    'Location Address'	: bsnsInfo.get('streetName'),
+                    'Mailing Address'	: bsnsInfo.get('streetName'),
+                    'Location'			: bsnsInfo.get('streetName'),
+                    'Mailing'			: bsnsInfo.get('streetName'),
+                    'Location State'	: bsnsInfo.get('state'),
+                    'Mailing State'		: bsnsInfo.get('state'),
+                    'Location ZIP'		: bsnsInfo.get('zipCode'),
+                    'Mailing ZIP'		: bsnsInfo.get('zipCode'),
+                    'Location City'		: bsnsInfo.get('city'),
+                    'Mailing City'		: bsnsInfo.get('city'),
+                    'Federal Tax ID'	: bsnsInfo.get('federalTaxID'),
+                    'Entity Type'	    : bsnsInfo.get('ownershipType'),
+                    'Residence Address'	: principalInfo.get('streetName'),
+                    'Residence state'	: principalInfo.get('state'),
+                    'Residence zip'		: principalInfo.get('zipCode'),
+                    'Residence city'	: principalInfo.get('city'),
+                    'Date of Birth'		: principalInfo.get('dob'),
+                    'Social Security Number'	: principalInfo.get('ssn'),
+                    'Contact_First_Name'	: firstName,
+                    'Contact_Last_Name'	: lastName,
+                    'Average sales amount'	: accountInfo.get('avgSale'),
+                    'Estimated monthly credit and debit card sales'	: accountInfo.get('monthlySales'),
+                    'Bank Name'	        : accountInfo.get('bankName'),
+                    'Routing #'	        : accountInfo.get('routingNumber'),
+                    'DDA #'	            : accountInfo.get('accountNumber'),
+                    'Monthly Processing Limit'	: accountInfo.get('monthlySales'),
+                    'Business_Volume'	: accountInfo.get('monthlySales'),
+                    'Signature-base64'	: sigData,
+                    'Lead File'	: sigData,
+                    'Signature-name'	: "Signature.png"
+                }
+            })
+            .then(function (result) {
+                //console.log("IRIS Lead Submitted");
+                debugger;
+                hideLoader();
+                $state.go('signup.confirm');
+            }, function(error){
+                //console.error("IRIS Lead Sumission failed");
+                debugger;
+                hideLoader();
+                $state.go('signup.confirm');
+            });
+            
+			//$state.go('signup.confirm');
 		},function(error){
 			console.log(error.messge);
 		});

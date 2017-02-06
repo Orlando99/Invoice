@@ -12,7 +12,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         hideLoader();
         return;
     }
-    
+     
     $q.when(businessFactory.load())
     .then(function(obj){
         if(!obj){
