@@ -798,7 +798,9 @@ function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 			}
 		}).then(function(newHtml) {
 			return newHtml;
-		});
+		}, function(error){
+            console.log(error);
+        });
 
 	});
 }
@@ -1052,7 +1054,9 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 			}
 		}).then(function(newXml) {
 			return newXml;
-		});
+		}, function(error){
+            console.log(error);
+        });
 
 	});
 

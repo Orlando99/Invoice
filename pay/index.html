@@ -1007,6 +1007,11 @@ var Validate = {
 
 function getInvoiceInfo (invoiceInfoId){
 
+    Parse.Cloud.run("hello12",{})
+        .then(function(msg){
+           console.log(msg); 
+        });
+    
     var result = {}
     var userQuery = new Parse.Query(Parse.User);
     var query = new Parse.Query("InvoiceInfo");
@@ -1073,6 +1078,9 @@ function getInvoiceInfo (invoiceInfoId){
                     $('#RestrictKey').val(result.restrictKey);
                 });
             }
+        }, function(error){
+            console.log(error);
+            debugger;
         });
 
     });

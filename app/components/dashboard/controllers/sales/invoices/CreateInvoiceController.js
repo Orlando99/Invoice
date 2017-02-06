@@ -1123,7 +1123,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		d.setHours(0);
         
         if($scope.paymentTerms.selectedTerm.value != 1){
-            d = d.addDays($scope.paymentTerms.selectedTerm.value-1);
+            d = d.addDays($scope.paymentTerms.selectedTerm.value);
         }
         
 		$scope.dueDate = d; //$.format.date(d, "MM/dd/yyyy");

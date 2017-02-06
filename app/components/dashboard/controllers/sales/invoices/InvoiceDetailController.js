@@ -723,7 +723,7 @@ $scope.emailReceipt = function() {
             }
              $scope.invoice.entity.save();   
         }
-        addNewComment('Invoice sent by email', true);
+        addNewComment('Invoice emailed to ' + $scope.invoice.entity.customerEmails[0], true);
         hideLoader();
         showSnackbar('Email sent...');
 		console.log('Receipt sent successfully.');

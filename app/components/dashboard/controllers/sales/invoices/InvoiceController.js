@@ -529,22 +529,23 @@ function saveEditedInvoice(params) {
 			user, $scope.userRole, $scope.files)
 
 	.then(function(obj) {
-        //----------------------------
-        
-        var commentbody = 'Invoice edited';
-        var isAuto = true;
-        
-        addNewComment(commentbody, isAuto);
- 
-        //----------------------------
-		if (params.generateReceipt) {
-			var info = obj.get('invoiceInfo');
-			if (info) info = info.id;
-			return invoiceService.createInvoiceReceipt(obj.id, info);
+        return invoiceService.copyInInvoiceInfo(obj)
+        .then(function(invInfo){
+            var commentbody = 'Invoice edited';
+            var isAuto = true;
 
-		} else {
-			return obj;
-		}
+            addNewComment(commentbody, isAuto);
+
+            //----------------------------
+            if (params.generateReceipt) {
+                var info = obj.get('invoiceInfo');
+                if (info) info = info.id;
+                return invoiceService.createInvoiceReceipt(obj.id, info);
+
+            } else {
+                return obj;
+            }
+        });
 	});
 }
     
@@ -693,7 +694,7 @@ $scope.calculateDueDate = function() {
 		d.setHours(0);
         
         if($scope.paymentTerms.selectedTerm.value != 1){
-            d = d.addDays($scope.paymentTerms.selectedTerm.value-1);
+            d = d.addDays($scope.paymentTerms.selectedTerm.value);
         }
         
 		$scope.dueDate = d; //$.format.date(d, "MM/dd/yyyy");
