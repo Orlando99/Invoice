@@ -74,10 +74,10 @@ invoicesUnlimited.controller('AccountInfoController',
 		}
 	});
     */
-    $('#phoneNumber').mask('9 (999) 999-9999',mobileOptions);
+    $('.mobilePhone').mask('9 (999) 999-9999',mobileOptions);
 
 	$("#signUpForm").validate({
-		onkeyup : true,
+		//onkeyup : true,
 		onfocusout : true,
 		rules: {
 			avgSale 		: {
@@ -225,17 +225,26 @@ invoicesUnlimited.controller('AccountInfoController',
 
 	$scope.saveAndContinueLater = function(){
 		if(! allFieldsFilled()) {
-			$state.go('dashboard');
+            showLoader();
+            submitLead();
+			//$state.go('signup.invoiceTemplateInfo');
 			return;
 		}
 
-		if (!$('#signUpForm').valid()) return;
+		if (!$('#signUpForm').valid()){
+            showLoader();
+            submitLead();
+            return;
+        } 
 
 		showLoader();
 		saveHelper().then(function(){
+            submitLead();
+            /*
 			hideLoader();
 			if (signUpFactory.getFactory('User').entity.length)
-			$state.go('dashboard');
+			$state.go('signup.invoiceTemplateInfo');
+            */
 
 		},function(error){
 			hideLoader();
@@ -243,6 +252,65 @@ invoicesUnlimited.controller('AccountInfoController',
 		});
 
 	};
+    
+    function submitLead(){
+        //var currentUser = user.entity[0];
+            var bsnsInfo = currentUser.get('businessInfo');
+            var principalInfo = currentUser.get('principalInfo');
+            //var accountInfo = currentUser.get('accountInfo');
+            
+            var lastName = undefined;
+            var firstName = undefined;
+            if(currentUser.fullName){
+                firstName = currentUser.fullName.split(' ')[0];
+                if(currentUser.fullName.split(' ').length > 1)
+                    lastName = $scope.fullName.split(' ')[1];
+            }
+
+            $.ajax({
+                method:"POST",
+                type:"POST",
+                url: IRIS,
+                data: { 
+                    'originator' : IRIS_ORIGINATOR,
+                    'source' : IRIS_SOURCE,
+                    'DBA' : currentUser.get('company'),
+                    'Email' : currentUser.get('email'),
+                    'userId' : currentUser.id,
+                    'Location Address'	: bsnsInfo.get('streetName'),
+                    'Mailing Address'	: bsnsInfo.get('streetName'),
+                    'Location'			: bsnsInfo.get('streetName'),
+                    'Mailing'			: bsnsInfo.get('streetName'),
+                    'Location State'	: bsnsInfo.get('state'),
+                    'Mailing State'		: bsnsInfo.get('state'),
+                    'Location ZIP'		: bsnsInfo.get('zipCode'),
+                    'Mailing ZIP'		: bsnsInfo.get('zipCode'),
+                    'Location City'		: bsnsInfo.get('city'),
+                    'Mailing City'		: bsnsInfo.get('city'),
+                    'Federal Tax ID'	: bsnsInfo.get('federalTaxID'),
+                    'Entity Type'	    : bsnsInfo.get('ownershipType'),
+                    'Residence Address'	: principalInfo.get('streetName'),
+                    'Residence state'	: principalInfo.get('state'),
+                    'Residence zip'		: principalInfo.get('zipCode'),
+                    'Residence city'	: principalInfo.get('city'),
+                    'Date of Birth'		: principalInfo.get('dob'),
+                    'Social Security Number'	: principalInfo.get('ssn'),
+                    'Contact_First_Name'	: firstName,
+                    'Contact_Last_Name'	: lastName
+                }
+            })
+            .then(function (result) {
+                //console.log("IRIS Lead Submitted");
+                debugger;
+                hideLoader();
+                $state.go('signup.invoiceTemplateInfo');
+            }, function(error){
+                //console.error("IRIS Lead Sumission failed");
+                debugger;
+                hideLoader();
+                $state.go('signup.invoiceTemplateInfo');
+            });
+    }
 
 	function allFieldsFilled() {
   		for(var field in $scope.accountInfo) {
