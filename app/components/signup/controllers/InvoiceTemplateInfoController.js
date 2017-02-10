@@ -117,6 +117,10 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             currentUser.set('phonenumber', b.phoneNumber);
             currentUser.set('tutorial', 1);
             currentUser.set('businessInfo', obj);
+            
+            if(!currentUser.get('principalInfo'))
+                submitLead();
+            
             $q.when(currentUser.save())
             .then(function(u){
                 var query = new Parse.Query('ProjectUser');
@@ -134,6 +138,54 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             });
         });
 	}
+        
+        function submitLead(){
+            
+            var lastName = undefined;
+            var firstName = undefined;
+            if($scope.fullName){
+                firstName = $scope.fullName.split(' ')[0];
+                if($scope.fullName.split(' ').length > 1)
+                    lastName = $scope.fullName.split(' ')[1];
+            }
+            
+            $.ajax({
+                method:"POST",
+                type:"POST",
+                url: IRIS,
+                data: { 
+                    'originator' : IRIS_ORIGINATOR,
+                    'source' : IRIS_SOURCE,
+                    'DBA' : $scope.bsnsInfo.businessName,
+                    'Email' : currentUser.get('email'),
+                    'userId' : currentUser.id,
+                    'Location Address'	: $scope.bsnsInfo.streetName,
+                    'Mailing Address'	: $scope.bsnsInfo.streetName,
+                    'Location'			: $scope.bsnsInfo.streetName,
+                    'Mailing'			: $scope.bsnsInfo.streetName,
+                    'Location State'	: $scope.bsnsInfo.state,
+                    'Mailing State'		: $scope.bsnsInfo.state,
+                    'Location ZIP'		: $scope.bsnsInfo.zipCode,
+                    'Mailing ZIP'		: $scope.bsnsInfo.zipCode,
+                    'Location City'		: $scope.bsnsInfo.city,
+                    'Mailing City'		: $scope.bsnsInfo.city,
+                    'Location_Phone'	: $scope.bsnsInfo.phoneNumber,
+                    'Contact_First_Name'	: firstName,
+                    'Contact_Last_Name'	: lastName
+                }
+            })
+            .then(function (result) {
+                console.log("IRIS Lead Submitted");
+                debugger;
+                //hideLoader();
+                //$state.go('signup.invoiceTemplateInfo');
+            }, function(error){
+                console.error("IRIS Lead Sumission failed");
+                debugger;
+                //hideLoader();
+                //$state.go('signup.invoiceTemplateInfo');
+            });
+        }
         
         $scope.nextClicked = function(){
             $('.tutorial').hide();

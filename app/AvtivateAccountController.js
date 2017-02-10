@@ -195,6 +195,7 @@ invoicesUnlimited.controller('AvtivateAccountController',
 		showLoader();
 		var result = $scope.ValidateForm(function(validated){
 			if (!validated) {
+                $scope.newWin.close();
                 $("#username_error").show();
                 $("#email_error").show();
 				hideLoader();
@@ -216,6 +217,8 @@ invoicesUnlimited.controller('AvtivateAccountController',
 				error.email = "email address does not exist";
                 
 				$("#signUpForm").validate().showErrors(error);
+                if($scope.newWin)
+                    $scope.newWin.close();
 				hideLoader();
 			}
             

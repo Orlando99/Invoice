@@ -110,7 +110,9 @@ invoicesUnlimited.controller('MerchantAccountController',
 			});
 		})
 		.then(function(){
-            
+            hideLoader();
+            $state.go('signup.invoiceTemplateInfo');
+            /*
             $.ajax({
                     method:"POST",
                     type:"POST",
@@ -134,7 +136,7 @@ invoicesUnlimited.controller('MerchantAccountController',
                     hideLoader();
                     $state.go('signup.invoiceTemplateInfo');
             });
-            
+            */
 			
 		},errorCallback);
 	}
