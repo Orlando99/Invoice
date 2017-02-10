@@ -12,6 +12,11 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 
 	var user = userFactory;
 
+    if ($state.$current.name.includes('processing')) {
+		showLoader();
+        return;
+	}
+        
 	if (user.entity.length) {
 		$state.go('dashboard');
 		return;

@@ -196,6 +196,12 @@ angular.module('invoicesUnlimited')
 			url : '/resetPassword',
 			controller : "LoginController",
 			templateUrl : COMPONENTS + 'login/views/forgotpassView.html'
+		},
+		processing : {
+			name : 'processing',
+			url : '/processing',
+			controller : "LoginController",
+			templateUrl : COMPONENTS + 'login/views/processing.html'
 		}
 	}
 

@@ -189,8 +189,8 @@ invoicesUnlimited.controller('AvtivateAccountController',
         
         if(!$("#signUpForm").valid())
             return;
-        
-        $scope.newWin = window.open('','_blank');
+        var url = $state.href('processing');
+        $scope.newWin = window.open(url,'_blank');
         debugger;
 		showLoader();
 		var result = $scope.ValidateForm(function(validated){
@@ -198,6 +198,7 @@ invoicesUnlimited.controller('AvtivateAccountController',
                 $scope.newWin.close();
                 $("#username_error").show();
                 $("#email_error").show();
+                $('label.error').hide();
 				hideLoader();
 				return;
 			}
