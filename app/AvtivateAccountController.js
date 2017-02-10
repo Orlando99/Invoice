@@ -190,7 +190,8 @@ invoicesUnlimited.controller('AvtivateAccountController',
         if(!$("#signUpForm").valid())
             return;
         var url = $state.href('processing');
-        $scope.newWin = window.open(url,'_blank');
+        //$scope.newWin = window.open(url,'_blank');
+        $scope.newWin = window.open('http://invoicesunlimited.com/activate-account/','_blank');
         debugger;
 		showLoader();
 		var result = $scope.ValidateForm(function(validated){
