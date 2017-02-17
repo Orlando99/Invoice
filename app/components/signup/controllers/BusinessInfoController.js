@@ -455,7 +455,7 @@ userFactory.entity[0].get('company')
                 .then(function() {
                     saveHelper()
                     .then(function(){
-                          
+                          /*
                         if(nextScreen == 'signup.invoiceTemplateInfo'){
                             var lastName = undefined;
                             var firstName = undefined;
@@ -509,7 +509,7 @@ userFactory.entity[0].get('company')
                                 $state.go('signup.invoiceTemplateInfo');
                             });
                         }
-                        
+                        */
                         hideLoader();
                         $state.go(nextScreen);
                     },function(error){

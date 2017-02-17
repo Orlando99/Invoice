@@ -118,7 +118,7 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             currentUser.set('tutorial', 1);
             currentUser.set('businessInfo', obj);
             
-            if(!currentUser.get('principalInfo'))
+            //if(!currentUser.get('principalInfo'))
                 submitLead();
             
             $q.when(currentUser.save())
@@ -140,7 +140,8 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
 	}
         
         function submitLead(){
-            
+            var principalInfo = currentUser.get('principalInfo');
+            var accountInfo = currentUser.get('accountInfo');
             var lastName = undefined;
             var firstName = undefined;
             if($scope.fullName){
@@ -148,12 +149,74 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
                 if($scope.fullName.split(' ').length > 1)
                     lastName = $scope.fullName.split(' ')[1];
             }
-            
-            $.ajax({
-                method:"POST",
-                type:"POST",
-                url: IRIS,
-                data: { 
+            var data = undefined;
+            if(accountInfo){
+                data = {
+                    'originator' : IRIS_ORIGINATOR,
+                    'source' : IRIS_SOURCE,
+                    'DBA' : $scope.bsnsInfo.businessName,
+                    'Email' : currentUser.get('email'),
+                    'userId' : currentUser.id,
+                    'Location Address'	: $scope.bsnsInfo.streetName,
+                    'Mailing Address'	: $scope.bsnsInfo.streetName,
+                    'Location'			: $scope.bsnsInfo.streetName,
+                    'Mailing'			: $scope.bsnsInfo.streetName,
+                    'Location State'	: $scope.bsnsInfo.state,
+                    'Mailing State'		: $scope.bsnsInfo.state,
+                    'Location ZIP'		: $scope.bsnsInfo.zipCode,
+                    'Mailing ZIP'		: $scope.bsnsInfo.zipCode,
+                    'Location City'		: $scope.bsnsInfo.city,
+                    'Mailing City'		: $scope.bsnsInfo.city,
+                    'Location_Phone'	: $scope.bsnsInfo.phoneNumber,
+                    'Contact_First_Name'	: firstName,
+                    'Contact_Last_Name'	: lastName,
+                    'Residence Address'	: principalInfo.get('streetName'),
+                    'Residence state'	: principalInfo.get('state'),
+                    'Residence zip'		: principalInfo.get('zipCode'),
+                    'Residence city'	: principalInfo.get('city'),
+                    'Date of Birth'		: principalInfo.get('dob'),
+                    'Social Security Number'	: principalInfo.get('ssn'),
+                    'Contact_First_Name'	: firstName,
+                    'Contact_Last_Name'	: lastName,
+                    'Average sales amount'	: accountInfo.get('avgSale'),
+                    'Estimated monthly credit and debit card sales'	: accountInfo.get('monthlySales'),
+                    'Bank Name'	        : accountInfo.get('bankName'),
+                    'Routing #'	        : accountInfo.get('routingNumber'),
+                    'DDA #'	            : accountInfo.get('accountNumber'),
+                    'Monthly Processing Limit'	: accountInfo.get('monthlySales'),
+                    'Business_Volume'	: accountInfo.get('monthlySales'),
+                }
+            } else if(principalInfo){
+                data = {
+                    'originator' : IRIS_ORIGINATOR,
+                    'source' : IRIS_SOURCE,
+                    'DBA' : $scope.bsnsInfo.businessName,
+                    'Email' : currentUser.get('email'),
+                    'userId' : currentUser.id,
+                    'Location Address'	: $scope.bsnsInfo.streetName,
+                    'Mailing Address'	: $scope.bsnsInfo.streetName,
+                    'Location'			: $scope.bsnsInfo.streetName,
+                    'Mailing'			: $scope.bsnsInfo.streetName,
+                    'Location State'	: $scope.bsnsInfo.state,
+                    'Mailing State'		: $scope.bsnsInfo.state,
+                    'Location ZIP'		: $scope.bsnsInfo.zipCode,
+                    'Mailing ZIP'		: $scope.bsnsInfo.zipCode,
+                    'Location City'		: $scope.bsnsInfo.city,
+                    'Mailing City'		: $scope.bsnsInfo.city,
+                    'Location_Phone'	: $scope.bsnsInfo.phoneNumber,
+                    'Contact_First_Name'	: firstName,
+                    'Contact_Last_Name'	: lastName,
+                    'Residence Address'	: principalInfo.get('streetName'),
+                    'Residence state'	: principalInfo.get('state'),
+                    'Residence zip'		: principalInfo.get('zipCode'),
+                    'Residence city'	: principalInfo.get('city'),
+                    'Date of Birth'		: principalInfo.get('dob'),
+                    'Social Security Number'	: principalInfo.get('ssn'),
+                    'Contact_First_Name'	: firstName,
+                    'Contact_Last_Name'	: lastName
+                }
+            } else{
+                data = { 
                     'originator' : IRIS_ORIGINATOR,
                     'source' : IRIS_SOURCE,
                     'DBA' : $scope.bsnsInfo.businessName,
@@ -173,6 +236,13 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
                     'Contact_First_Name'	: firstName,
                     'Contact_Last_Name'	: lastName
                 }
+            }
+            
+            $.ajax({
+                method:"POST",
+                type:"POST",
+                url: IRIS,
+                data: data
             })
             .then(function (result) {
                 console.log("IRIS Lead Submitted");

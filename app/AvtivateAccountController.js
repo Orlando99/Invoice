@@ -66,7 +66,8 @@ invoicesUnlimited.controller('AvtivateAccountController',
     $("input").keyup(function(event){
             var id = event.target.id;
             $('#' + id + '-' + 'error').css('display', 'none');
-       
+            $('#' + id + '_' + 'error').css('display', 'none');
+            
             $('#' + id).removeClass('error');
     });
         

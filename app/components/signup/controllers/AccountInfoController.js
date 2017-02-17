@@ -226,20 +226,20 @@ invoicesUnlimited.controller('AccountInfoController',
 	$scope.saveAndContinueLater = function(){
 		if(! allFieldsFilled()) {
             showLoader();
-            submitLead();
+            //submitLead();
 			//$state.go('signup.invoiceTemplateInfo');
 			return;
 		}
 
 		if (!$('#signUpForm').valid()){
             showLoader();
-            submitLead();
+            //submitLead();
             return;
         } 
 
 		showLoader();
 		saveHelper().then(function(){
-            submitLead();
+            //submitLead();
             /*
 			hideLoader();
 			if (signUpFactory.getFactory('User').entity.length)
@@ -264,7 +264,7 @@ invoicesUnlimited.controller('AccountInfoController',
             if(currentUser.fullName){
                 firstName = currentUser.fullName.split(' ')[0];
                 if(currentUser.fullName.split(' ').length > 1)
-                    lastName = $scope.fullName.split(' ')[1];
+                    lastName = currentUser.fullName.split(' ')[1];
             }
 
             $.ajax({

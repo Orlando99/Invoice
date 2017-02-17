@@ -687,9 +687,9 @@ $scope.textReceipt = function() {
 	showLoader();
 	$q.when(invoiceService.sendInvoiceText($scope.invoice.entity))
 	.then(function(obj) {
-        var mob = inv.entity.get('customer');
+        var mob = $scope.invoice.entity.get('customer');
         mob = mob.get('mobile');
-        addNewComment('Invoice sent by text to' + mob, true);
+        addNewComment('Invoice sent by text to ' + mob, true);
         hideLoader();
         showSnackbar('Text sent...');
         

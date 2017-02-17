@@ -1278,7 +1278,7 @@ $(document).ready(function(){
                                     paymentID : paymentId
                                 }).then(function(url){
                                     $('.download-pdf').attr('href',url);
-                                    //$('.print-pdf').attr('href',url);
+                                    $('.print-pdf').attr('href',url);
                                     pdfUrl = url;
                                     var query = new Parse.Query("InvoiceInfo");
                                     query.equalTo("objectId", invoiceInfoId);
@@ -1314,7 +1314,7 @@ $(document).ready(function(){
                                             Parse.Cloud.run('saveInvoiceTemplate', {invoiceId:invoiceId,htmlData:newHtml}).then(function(res){
                                                 var links = JSON.parse(res);
                                                 Parse.Cloud.run('createShortUrl',{link: (links.htmlLink + "?InvoiceInfoID=" + invoiceInfoId)}).then(function(shortUrl){
-                                                    $('.print-pdf').attr('href',shortUrl.data.data.url);
+                                                    //$('.print-pdf').attr('href',shortUrl.data.data.url);
                                                     $.ajax({
                                                         method: "POST",
                                                         url : "./confirmEmail.php",
