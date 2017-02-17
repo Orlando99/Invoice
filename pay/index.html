@@ -1222,8 +1222,16 @@ $(document).ready(function(){
                             Parse.Cloud.run('doPayment',{invoiceInfoId : invoiceInfoId, firstFourDigits : temp}).then(function(res){
                                 
                                 var result = JSON.parse(res);
+                                
+                                var d = result.date;
+                                var arr = d.split('/');
+                                var temp = arr[0];
+                                arr[0] = arr[1];
+                                arr[1] = temp;
+                                var newDate = arr.join('/');
+                                
                                 $('#pdf-invoice-number').text(result.invoiceNumber);
-                                $('#pdf-date').text(result.date);
+                                $('#pdf-date').text(newDate);
                                 $('#pdf-payment-status').text(result.paymentStatus);
                                 $('#pdf-amount-received').text(result.amountReceived);
                                 //$('#pdf-amount-due').text(result.amountDue);
@@ -1231,7 +1239,7 @@ $(document).ready(function(){
                                 $('#pdf-amount-due').text("$0.00");
                                 $('#pdf-total').text(result.total);
                                 $('#pdf-subtotal').text(result.subtotal);
-                                paymentDate = result.date;
+                                paymentDate = newDate;
                                 invoiceId = result.invoiceId;
                                 debugger;
                                 status = result.paymentStatus;

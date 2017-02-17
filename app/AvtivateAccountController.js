@@ -138,7 +138,7 @@ invoicesUnlimited.controller('AvtivateAccountController',
 			},
 			email : {
 				required : "Please specify your email !",
-				email : "Please write valid email address"
+				email : "Please enter a valid email address"
 				//EmailExists : "The email is already taken!"
 			},
 			password: {
@@ -186,6 +186,8 @@ invoicesUnlimited.controller('AvtivateAccountController',
 	};
 
 	$scope.sendMessage = function(){
+        $('#username-exists').val(0);
+        $('#email-exists').val(0);
         
         if(!$("#signUpForm").valid())
             return;

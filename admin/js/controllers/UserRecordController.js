@@ -68,8 +68,8 @@ clientAdminPortalApp.controller('UserRecordController',
                         var discover = 0;
                         var other = 0;
                         
-                        var month = 12;
-                        var year = 2017;
+                        var month = (new Date()).getMonth() + 1;
+                        var year = (new Date()).getFullYear();
                         
                         var startDate = new Date(year, 0, 1, 0, 0, 1, 1);
                         var endDate = new Date(year, month, 1, 0, 0, 0, 0);
