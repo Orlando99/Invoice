@@ -118,7 +118,7 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             currentUser.set('tutorial', 1);
             currentUser.set('businessInfo', obj);
             
-            //if(!currentUser.get('principalInfo'))
+            if(!currentUser.get('signatureImage'))
                 submitLead();
             
             $q.when(currentUser.save())
@@ -263,6 +263,9 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
         $(document).click(function() {
             $('.tutorial').hide();
         });
+        
+        $('.mobilePhone').mask('9 (999) 999-9999',mobileOptions);
+        /*
     $('#phoneNumber').mask("(Z00) 000-0000",{
 		translation : {
 			'Z': {
@@ -270,4 +273,5 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
 			}
 		}
 	});
+        */
 }]);

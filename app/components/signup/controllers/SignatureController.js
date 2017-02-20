@@ -96,7 +96,7 @@ invoicesUnlimited.controller('SignatureController',
                 if(currentUser.fullName.split(' ').length > 1)
                     lastName = $scope.fullName.split(' ')[1];
             }
-            /*
+            
             $.ajax({
                 method:"POST",
                 type:"POST",
@@ -151,7 +151,7 @@ invoicesUnlimited.controller('SignatureController',
                 hideLoader();
                 $state.go('signup.confirm');
             });
-            */
+            
             
 			$state.go('signup.confirm');
 		},function(error){
