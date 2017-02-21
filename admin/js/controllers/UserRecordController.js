@@ -377,10 +377,130 @@ clientAdminPortalApp.controller('UserRecordController',
       projUser.equalTo("userName", record.get('username'));
       projUser.first()
       .then(function(obj){
-          if(obj)
-            obj.destroy();
+          if(obj){
+              var userRole = obj.get("role");
+              obj.destroy();
+              
+              var query = new Parse.Query(Parse.Role);
+              query.equalTo("name", record.get('username'));
+
+              query.first()
+              .then(function(roleObj){
+                  var promises = [];
+                  if(roleObj)
+                      promises.push(roleObj.destroy());
+                  if(userRole == "Main"){
+                      if(org)
+                        promises.push(org.destroy());
+                      if(bus)
+                        promises.push(bus.destroy());
+                      if(acc)
+                        promises.push(acc.destroy());
+                      if(curr)
+                        promises.push(curr.destroy());
+                      if(prin)
+                        promises.push(prin.destroy());
+                  }
+
+                  $q.all(promises)
+                  .then(function(){
+                        var deleting = record.id;
+                        var beforeDelete = $scope.records.length;
+                        Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+                          success: function() {
+                            console.log("Cloud delete successfull");
+                          },
+                          error: function(error) {
+                            console.log("Cloud delete failed: " + error.message);
+                          }
+                        }).then(function() {
+                          $scope.updateQueryResults();
+                          $scope.$apply(function() {
+                              $scope.updateQueryResults();
+                            });
+                        });
+                  }, function(error){
+                      var deleting = record.id;
+                        var beforeDelete = $scope.records.length;
+                        Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+                          success: function() {
+                            console.log("Cloud delete successfull");
+                          },
+                          error: function(error) {
+                            console.log("Cloud delete failed: " + error.message);
+                          }
+                        }).then(function() {
+                          $scope.updateQueryResults();
+                          $scope.$apply(function() {
+                              $scope.updateQueryResults();
+                            });
+                        });
+                      console.error(error);
+                  });
+              });
+              
+          }
+      }, function(error){
+          var query = new Parse.Query(Parse.Role);
+          query.equalTo("name", record.get('username'));
+
+          query.first()
+          .then(function(roleObj){
+              var promises = [];
+              if(roleObj)
+                  promises.push(roleObj.destroy());
+              if(record.get("role") == "Admin"){
+                  if(org)
+                    promises.push(org.destroy());
+                  if(bus)
+                    promises.push(bus.destroy());
+                  if(acc)
+                    promises.push(acc.destroy());
+                  if(curr)
+                    promises.push(curr.destroy());
+                  if(prin)
+                    promises.push(prin.destroy());
+              }
+
+              $q.all(promises)
+              .then(function(){
+                    var deleting = record.id;
+                    var beforeDelete = $scope.records.length;
+                    Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+                      success: function() {
+                        console.log("Cloud delete successfull");
+                      },
+                      error: function(error) {
+                        console.log("Cloud delete failed: " + error.message);
+                      }
+                    }).then(function() {
+                      $scope.updateQueryResults();
+                      $scope.$apply(function() {
+                          $scope.updateQueryResults();
+                        });
+                    });
+              }, function(error){
+                  var deleting = record.id;
+                    var beforeDelete = $scope.records.length;
+                    Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+                      success: function() {
+                        console.log("Cloud delete successfull");
+                      },
+                      error: function(error) {
+                        console.log("Cloud delete failed: " + error.message);
+                      }
+                    }).then(function() {
+                      $scope.updateQueryResults();
+                      $scope.$apply(function() {
+                          $scope.updateQueryResults();
+                        });
+                    });
+                  console.error(error);
+              });
+          });
       });
       
+      /*
       var query = new Parse.Query(Parse.Role);
         query.equalTo("name", record.get('username'));
       
@@ -389,16 +509,18 @@ clientAdminPortalApp.controller('UserRecordController',
           var promises = [];
           if(roleObj)
               promises.push(roleObj.destroy());
-          if(org)
-            promises.push(org.destroy());
-          if(bus)
-            promises.push(bus.destroy());
-          if(acc)
-            promises.push(acc.destroy());
-          if(curr)
-            promises.push(curr.destroy());
-          if(prin)
-            promises.push(prin.destroy());
+          if(record.get("role") == "Admin"){
+              if(org)
+                promises.push(org.destroy());
+              if(bus)
+                promises.push(bus.destroy());
+              if(acc)
+                promises.push(acc.destroy());
+              if(curr)
+                promises.push(curr.destroy());
+              if(prin)
+                promises.push(prin.destroy());
+          }
 
           $q.all(promises)
           .then(function(){
@@ -436,7 +558,7 @@ clientAdminPortalApp.controller('UserRecordController',
               console.error(error);
           });
       });
-      
+      */
       
       
     
