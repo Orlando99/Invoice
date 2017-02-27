@@ -87,12 +87,13 @@ invoicesUnlimited.controller('MerchantAccountController',
         /*
         signUpFactory.setField('BusinessInfo',{
 				field : 'businessName',
-				value : signUpFactory.getField('User','company')
+				value : user1.entity[0].get('company')
 			});
-        */
+            */
+        
         signUpFactory.setField('BusinessInfo',{
 				field : 'businessName',
-				value : user1.entity[0].get('company')
+				value : ""
 			});
 		
 		var business = signUpFactory.create('BusinessInfo');
