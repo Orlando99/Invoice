@@ -6,7 +6,7 @@ invoicesUnlimited.controller('AccountActController',
 	
 	var user = signUpFactory.getFactory('User');
 
-	if (!user.entity.length) $state.go('signup');
+	if (!user.entity.length) $state.go('login');
 
 	$scope.goNext = function(){
 		if (signUpFactory.getFactory('User').entity.length)
