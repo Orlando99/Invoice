@@ -543,5 +543,8 @@ margin-top: -23px !important;
     position: absolute !important;
 }
 
+.navigation>li a {
+    height: auto !important;
+}
 
 
