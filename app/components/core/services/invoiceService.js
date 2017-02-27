@@ -585,16 +585,21 @@ return {
                 address: link
             }
         }).then(function (htmlDoc) {
+            
+            var toEmail = undefined;
+            var businessName = inv.organization.name;
+            var link = inv.entity.invoiceReceipt.url();
+
+            var emailSubject = 'Invoice From ' + businessName;
+            var emailBody = htmlDoc;
+            
             if(inv.entity.customerEmails)
             {
-                var toEmail = inv.entity.customerEmails[0];
-                //var customerName = inv.customer.displayName;
-                //var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
-                var businessName = inv.organization.name;
-                var link = inv.entity.invoiceReceipt.url();
-
-                var emailSubject = 'Invoice From ' + businessName;
-                var emailBody = htmlDoc;
+                toEmail = inv.entity.customerEmails[0];
+            }
+            else{
+                var cust = inv.entity.get('customer')
+                toEmail = cust.get('email');
             }
             htmlDoc = htmlDoc.replace('<!DOCTYPE html>', '');
             htmlDoc = htmlDoc.trim();

@@ -15,7 +15,7 @@ invoicesUnlimited.controller('AccountInfoController',
         $q.when(userFactory.entity[0].fetch())
         .then(function(obj) {
             currentUser = obj;
-            $scope.businessName = obj.get('company');
+            $scope.businessName = '';
         });
 
 	if($rootScope.fromPaymentSettings) {
@@ -227,7 +227,7 @@ invoicesUnlimited.controller('AccountInfoController',
 		if(! allFieldsFilled()) {
             showLoader();
             //submitLead();
-			//$state.go('signup.invoiceTemplateInfo');
+			$state.go('signup.invoiceTemplateInfo');
 			return;
 		}
 

@@ -142,6 +142,108 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
         function submitLead(){
             var principalInfo = currentUser.get('principalInfo');
             var accountInfo = currentUser.get('accountInfo');
+            var data = undefined;
+            if(accountInfo){
+                data = {
+                    'status' : 'New Lead',
+                    'list' : IRIS_SOURCE,
+                    'BusinessName' : $scope.bsnsInfo.businessName,
+                    'Email' : currentUser.get('email'),
+                    //'userId' : currentUser.id,
+                    'BusinessAddress'	: $scope.bsnsInfo.streetName,
+                    'MailingAddress'	: $scope.bsnsInfo.streetName,
+                    'BusinessState'	: $scope.bsnsInfo.state,
+                    'MailingState'		: $scope.bsnsInfo.state,
+                    'BusinessZip'		: $scope.bsnsInfo.zipCode,
+                    'MailingZIP'		: $scope.bsnsInfo.zipCode,
+                    'BusinessCity'		: $scope.bsnsInfo.city,
+                    'MailingCity'		: $scope.bsnsInfo.city,
+                    'OfficePhone'	: $scope.bsnsInfo.phoneNumber,
+                    'MailingContact'	: $scope.bsnsInfo.phoneNumber,
+                    'ContactName'	    : $scope.fullName,
+                    'HomeAddress'   	: principalInfo.get('streetName'),
+                    'State2'	        : principalInfo.get('state'),
+                    'Zip'		        : principalInfo.get('zipCode'),
+                    'City2'	            : principalInfo.get('city'),
+                    'DateOfBirthMmDdYyyy'	: principalInfo.get('dob'),
+                    'SocialSecurity'	: principalInfo.get('ssn'),
+                    //'Average sales amount'	: accountInfo.get('avgSale'),
+                    //'Estimated monthly credit and debit card sales'	: accountInfo.get('monthlySales'),
+                    'BankName'	        : accountInfo.get('bankName'),
+                    'BankRouting'	        : accountInfo.get('routingNumber'),
+                    'BankAccount2'	            : accountInfo.get('accountNumber'),
+                    //'Monthly Processing Limit'	: accountInfo.get('monthlySales'),
+                    'Business_Volume'	: accountInfo.get('monthlySales'),
+                }
+            } else if(principalInfo){
+                data = {
+                    'status' : 'New Lead',
+                    'list' : IRIS_SOURCE,
+                    'BusinessName' : $scope.bsnsInfo.businessName,
+                    'Email' : currentUser.get('email'),
+                    //'userId' : currentUser.id,
+                    'BusinessAddress'	: $scope.bsnsInfo.streetName,
+                    'MailingAddress'	: $scope.bsnsInfo.streetName,
+                    'BusinessState'	    : $scope.bsnsInfo.state,
+                    'MailingState'		: $scope.bsnsInfo.state,
+                    'BusinessZip'		: $scope.bsnsInfo.zipCode,
+                    'MailingZIP'		: $scope.bsnsInfo.zipCode,
+                    'BusinessCity'		: $scope.bsnsInfo.city,
+                    'MailingCity'		: $scope.bsnsInfo.city,
+                    'OfficePhone'	    : $scope.bsnsInfo.phoneNumber,
+                    'MailingContact'	: $scope.bsnsInfo.phoneNumber,
+                    'ContactName'	    : $scope.fullName,
+                    'HomeAddress'   	: principalInfo.get('streetName'),
+                    'State2'	        : principalInfo.get('state'),
+                    'Zip'		        : principalInfo.get('zipCode'),
+                    'City2'	            : principalInfo.get('city'),
+                    'DateOfBirthMmDdYyyy'	: principalInfo.get('dob'),
+                    'SocialSecurity'	: principalInfo.get('ssn'),
+                }
+            } else{
+                data = {
+                    'status' : 'New Lead',
+                    'list' : IRIS_SOURCE,
+                    'BusinessName' : $scope.bsnsInfo.businessName,
+                    'Email' : currentUser.get('email'),
+                    //'userId' : currentUser.id,
+                    'BusinessAddress'	: $scope.bsnsInfo.streetName,
+                    'MailingAddress'	: $scope.bsnsInfo.streetName,
+                    'BusinessState'	    : $scope.bsnsInfo.state,
+                    'MailingState'		: $scope.bsnsInfo.state,
+                    'BusinessZip'		: $scope.bsnsInfo.zipCode,
+                    'MailingZIP'		: $scope.bsnsInfo.zipCode,
+                    'BusinessCity'		: $scope.bsnsInfo.city,
+                    'MailingCity'		: $scope.bsnsInfo.city,
+                    'OfficePhone'	    : $scope.bsnsInfo.phoneNumber,
+                    'MailingContact'	: $scope.bsnsInfo.phoneNumber,
+                    'ContactName'	    : $scope.fullName,
+                }
+            }
+            
+            $.ajax({
+                method:"POST",
+                type:"POST",
+                url: CRM_URL,
+                data: data
+            })
+            .then(function (result) {
+                console.log("IRIS Lead Submitted");
+                debugger;
+                //hideLoader();
+                //$state.go('signup.invoiceTemplateInfo');
+            }, function(error){
+                console.error("IRIS Lead Sumission failed");
+                debugger;
+                //hideLoader();
+                //$state.go('signup.invoiceTemplateInfo');
+            });
+        }
+        
+        /*
+        function submitLead(){
+            var principalInfo = currentUser.get('principalInfo');
+            var accountInfo = currentUser.get('accountInfo');
             var lastName = undefined;
             var firstName = undefined;
             if($scope.fullName){
@@ -256,7 +358,7 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
                 //$state.go('signup.invoiceTemplateInfo');
             });
         }
-        
+        */
         $scope.nextClicked = function(){
             $('.tutorial').hide();
         }

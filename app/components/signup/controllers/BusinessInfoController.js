@@ -245,7 +245,7 @@ invoicesUnlimited.controller('BusinessInfoController',
 	$('input[name="federalTaxID"]').mask('00-0000000');
 userFactory.entity[0].get('company')
 	$scope.bsnsInfo = {
-		'businessName'  : userFactory.entity[0].get('company'),
+		'businessName'  : '',
 		//'businessName'  : signUpFactory.getField('User','company'),
 		'streetName'	: '',
 		'city'			: '',

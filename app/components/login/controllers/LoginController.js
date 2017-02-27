@@ -129,7 +129,40 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
 		$('.successMessage').html(msg).show();
 		$('.input-container').css({'border':''});
 	}
-        
+        /*
+        submitLead();
+        function submitLead(){
+            var data = undefined;
+            
+            data = {
+                'status' : "New Lead",
+                'list' : IRIS_SOURCE,
+                'BusinessName' : 'Testing',
+                'Email' : 'Test@email.com',
+                'HomeAddress' : '09/29/1993',
+                'DateOfBirthMmDdYyyy' : '01/01/1993'
+                
+            }
+            
+            $.ajax({
+                method:"POST",
+                type:"POST",
+                url: CRM_URL,
+                data: data
+            })
+            .then(function (result) {
+                console.log("IRIS Lead Submitted");
+                debugger;
+                //hideLoader();
+                //$state.go('signup.invoiceTemplateInfo');
+            }, function(error){
+                console.error("IRIS Lead Sumission failed");
+                debugger;
+                //hideLoader();
+                //$state.go('signup.invoiceTemplateInfo');
+            });
+        }
+        */
         Parse.Cloud.run("hello12",{})
         .then(function(msg){
            console.log(msg); 

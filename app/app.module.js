@@ -48,6 +48,7 @@ var fromTutorial = false;
 var IRIS = "https://www.crmmas.com/postleads/t/a6bdcab71d18568c68511c8d61466660";
 var IRIS_SOURCE = "IU-WEB";
 var IRIS_ORIGINATOR = "1035";
+var CRM_URL = "http://merchantaccountcrm.com/ext_lead_import.php";
 
 var GetTemplate = function(name,file) {
   return COMPONENTS + name + '/views/' + file;
