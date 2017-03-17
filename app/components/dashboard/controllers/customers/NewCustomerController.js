@@ -128,6 +128,7 @@ invoicesUnlimited.controller('NewCustomerController',
         });
         
         $scope.newCustomer.entity.currency = $scope.currencies[$scope.defaultCurrencyIndex].entity.title;
+        //$scope.newCustomer.entity.currency = $scope.currencies[$scope.defaultCurrencyIndex].entity;
     }
     
     $scope.customerCurrencyChanged = function(){

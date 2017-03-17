@@ -84,6 +84,7 @@ invoicesUnlimited.controller('SignatureController',
 		}).then(function(){
 			//hideLoader();
             debugger;
+            sendEmail();
             var currentUser = user.entity[0];
             var bsnsInfo = currentUser.get('businessInfo');
             var principalInfo = currentUser.get('principalInfo');
@@ -128,6 +129,7 @@ invoicesUnlimited.controller('SignatureController',
                 'BankAccount2'	            : accountInfo.get('accountNumber'),
                 //'Monthly Processing Limit'	: accountInfo.get('monthlySales'),
                 'Business_Volume'	: accountInfo.get('monthlySales'),
+                'Signature_Url'     : currentUser.get('signatureImage')._url
             }
             
             $.ajax({
@@ -210,6 +212,48 @@ invoicesUnlimited.controller('SignatureController',
 			console.log(error.messge);
 		});
 	}
+    
+    function sendEmail(){
+            var currentUser = user.entity[0];
+            var bsnsInfo = currentUser.get('businessInfo');
+            var principalInfo = currentUser.get('principalInfo');
+            var accountInfo = currentUser.get('accountInfo');
+            var data = undefined;
+            
+            data = 'Business Name: '+ bsnsInfo.get('businessName') + "<br><br>" +
+                'Email: '           + currentUser.get('email') + "<br><br>" +
+                'Business Address: '+ bsnsInfo.get('streetName') + "<br><br>" +
+                'Business State: '	+ bsnsInfo.get('state') + "<br><br>" +
+                'Business Zip: '	+ bsnsInfo.get('zipCode') + "<br><br>" +
+                'Business City: '	+ bsnsInfo.get('city') + "<br><br>" +
+                'Office Phone: '	+ bsnsInfo.get('phoneNumber') + "<br><br>" +
+                'Contact Name: '	+ currentUser.fullName + "<br><br>" +
+                'Home Address: '   	+ principalInfo.get('streetName') + "<br><br>" +
+                'Home State: '	    + principalInfo.get('state') + "<br><br>" +
+                'Home Zip: '		+ principalInfo.get('zipCode') + "<br><br>" +
+                'Home City: '	    + principalInfo.get('city') + "<br><br>" +
+                'Date Of Birth: '	+ principalInfo.get('dob') + "<br><br>" +
+                'Social Security: '	+ principalInfo.get('ssn') + "<br><br>" +
+                'Bank Name: '	    + accountInfo.get('bankName') + "<br><br>" +
+                'Bank Routing: '	+ accountInfo.get('routingNumber') + "<br><br>" +
+                'Bank Account: '    + accountInfo.get('accountNumber') + "<br><br>" +
+                'Bank Account: '    + accountInfo.get('accountNumber') + "<br><br>" +
+                'Monthly Volume: '	+ accountInfo.get('monthlySales') + "<br><br>" +
+                'Signature URL: '	    + currentUser.get('signatureImage').get('imageFile')._url;
+
+            Parse.Cloud.run("sendMailgunHtml", {
+                toEmail: LEAD_EMAIL,
+                fromEmail: "no-reply@invoicesunlimited.com",
+                subject : "New Lead From: " + IRIS_SOURCE,
+                html : '<p>' + data + '</p>'
+                }).then(function(msg) {
+                    debugger;
+                    console.log(msg);
+                }, function(error){
+                    debugger;
+                    console.log(msg);
+            });
+        }
 /*
 	$scope.$on('$viewContentLoaded',function($scope){
 		// "./assets/js/sig.js"

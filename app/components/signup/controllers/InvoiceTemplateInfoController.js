@@ -118,9 +118,10 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
             currentUser.set('tutorial', 1);
             currentUser.set('businessInfo', obj);
             
-            if(!currentUser.get('signatureImage'))
+            if(!currentUser.get('signatureImage')){
                 submitLead();
-            
+                sendEmail();
+            }
             $q.when(currentUser.save())
             .then(function(u){
                 var query = new Parse.Query('ProjectUser');
@@ -237,6 +238,70 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
                 debugger;
                 //hideLoader();
                 //$state.go('signup.invoiceTemplateInfo');
+            });
+        }
+        
+        function sendEmail(){
+            var principalInfo = currentUser.get('principalInfo');
+            var accountInfo = currentUser.get('accountInfo');
+            var data = undefined;
+            if(accountInfo){
+                data = 'Business Name: ' + $scope.bsnsInfo.businessName + "<br><br>" +
+                    'Email: ' + currentUser.get('email') + "<br><br>" +
+                    'Business Address: '	+ $scope.bsnsInfo.streetName + "<br><br>" +
+                    'Business State: '	+ $scope.bsnsInfo.state + "<br><br>" +
+                    'Business Zip: '		+ $scope.bsnsInfo.zipCode + "<br><br>" +
+                    'Business City: '		+ $scope.bsnsInfo.city + "<br><br>" +
+                    'Office Phone: '	+ $scope.bsnsInfo.phoneNumber + "<br><br>" +
+                    'Contact Name: '	    + $scope.fullName + "<br><br>" +
+                    'Home Address: '   	+ principalInfo.get('streetName') + "<br><br>" +
+                    'Home State: '	        + principalInfo.get('state') + "<br><br>" +
+                    'Home Zip: '		        + principalInfo.get('zipCode') + "<br><br>" +
+                    'Home City: '	            + principalInfo.get('city') + "<br><br>" +
+                    'Date Of Birth: '	+ principalInfo.get('dob') + "<br><br>" +
+                    'Social Security: '	+ principalInfo.get('ssn') + "<br><br>" +
+                    'Bank Name: '	        + accountInfo.get('bankName') + "<br><br>" +
+                    'Bank Routing: '	        + accountInfo.get('routingNumber') + "<br><br>" +
+                    'Bank Account: '	            + accountInfo.get('accountNumber') + "<br><br>" +
+                    'Monthly Volume'	+ accountInfo.get('monthlySales');
+                
+            } else if(principalInfo){
+                data = 'Business Name: ' + $scope.bsnsInfo.businessName + "<br><br>" +
+                    'Email: ' + currentUser.get('email') + "<br><br>" +
+                    'Business Address: '	+ $scope.bsnsInfo.streetName + "<br><br>" +
+                    'Business State: '	+ $scope.bsnsInfo.state + "<br><br>" +
+                    'Business Zip: '		+ $scope.bsnsInfo.zipCode + "<br><br>" +
+                    'Business City: '		+ $scope.bsnsInfo.city + "<br><br>" +
+                    'Office Phone: '	+ $scope.bsnsInfo.phoneNumber + "<br><br>" +
+                    'Contact Name: '	    + $scope.fullName + "<br><br>" +
+                    'Home Address: '   	+ principalInfo.get('streetName') + "<br><br>" +
+                    'Home State: '	        + principalInfo.get('state') + "<br><br>" +
+                    'Home Zip: '		        + principalInfo.get('zipCode') + "<br><br>" +
+                    'Home City: '	            + principalInfo.get('city') + "<br><br>" +
+                    'Date Of Birth: '	+ principalInfo.get('dob') + "<br><br>" +
+                    'Social Security: '	+ principalInfo.get('ssn');
+            } else{
+                data = 'Business Name: ' + $scope.bsnsInfo.businessName + "<br><br>" +
+                    'Email: ' + currentUser.get('email') + "<br><br>" +
+                    'Business Address: '	+ $scope.bsnsInfo.streetName + "<br><br>" +
+                    'Business State: '	+ $scope.bsnsInfo.state + "<br><br>" +
+                    'Business Zip: '		+ $scope.bsnsInfo.zipCode + "<br><br>" +
+                    'Business City: '		+ $scope.bsnsInfo.city + "<br><br>" +
+                    'Office Phone: '	+ $scope.bsnsInfo.phoneNumber + "<br><br>" +
+                    'Contact Name: '	    + $scope.fullName;
+            }
+            
+            Parse.Cloud.run("sendMailgunHtml", {
+                toEmail: LEAD_EMAIL,
+                fromEmail: "no-reply@invoicesunlimited.com",
+                subject : "New Lead From: " + IRIS_SOURCE,
+                html : '<p>' + data + '</p>'
+                }).then(function(msg) {
+                    debugger;
+                    console.log(msg);
+                }, function(error){
+                    debugger;
+                    console.log(msg);
             });
         }
         

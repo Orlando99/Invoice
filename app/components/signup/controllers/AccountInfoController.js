@@ -240,11 +240,11 @@ invoicesUnlimited.controller('AccountInfoController',
 		showLoader();
 		saveHelper().then(function(){
             //submitLead();
-            /*
+            
 			hideLoader();
 			if (signUpFactory.getFactory('User').entity.length)
 			$state.go('signup.invoiceTemplateInfo');
-            */
+            
 
 		},function(error){
 			hideLoader();
@@ -311,7 +311,7 @@ invoicesUnlimited.controller('AccountInfoController',
                 $state.go('signup.invoiceTemplateInfo');
             });
     }
-
+    
 	function allFieldsFilled() {
   		for(var field in $scope.accountInfo) {
   			if (! $scope.accountInfo[field])

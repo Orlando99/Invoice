@@ -539,10 +539,11 @@ userFactory.entity[0].get('company')
 		state			: '',
 		zipCode			: '',
 		dob				: '',
-		ssn				: ''
+		ssn				: '',
+        ownershipType   : ''
 	};
         
-        var fields = ['streetName','city','state','zipCode'];
+        var fields = ['streetName','city','state','zipCode', 'ownershipType'];
         
         $scope.toggleHomeInfo = function(){
 		fields.forEach(function(field){
@@ -552,7 +553,7 @@ userFactory.entity[0].get('company')
     
         function saveHelper() {
             $scope.principalInfo.dob = formatDate($scope.dob, "MM-DD-YYYY");
-            
+            debugger;
             if($scope.toggleHomeChecked)
                 {
                     fields.forEach(function(field){
