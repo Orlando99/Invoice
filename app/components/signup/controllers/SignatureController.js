@@ -122,14 +122,11 @@ invoicesUnlimited.controller('SignatureController',
                 'City2'	            : principalInfo.get('city'),
                 'DateOfBirthMmDdYyyy'	: principalInfo.get('dob'),
                 'SocialSecurity'	: principalInfo.get('ssn'),
-                //'Average sales amount'	: accountInfo.get('avgSale'),
-                //'Estimated monthly credit and debit card sales'	: accountInfo.get('monthlySales'),
                 'BankName'	        : accountInfo.get('bankName'),
-                'BankRouting'	        : accountInfo.get('routingNumber'),
-                'BankAccount2'	            : accountInfo.get('accountNumber'),
-                //'Monthly Processing Limit'	: accountInfo.get('monthlySales'),
+                'BankRouting'	    : accountInfo.get('routingNumber'),
+                'BankAccount2'	    : accountInfo.get('accountNumber'),
                 'Business_Volume'	: accountInfo.get('monthlySales'),
-                'Signature_Url'     : currentUser.get('signatureImage')._url
+                'Signature_Url'     : currentUser.get('signatureImage').get('imageFile')._url
             }
             
             $.ajax({
