@@ -1,21 +1,31 @@
 <div class="container hidesm">
-    <h3 class="text-uppercase text-weight-normalize text-color-normalize layout-margin-t">New Customer  </h3>
+    <label style="font-size: 20px; vertical-align: -webkit-baseline-middle;" class="text-uppercase text-color-normalize">New Customer</label>
+    <label style="float: right; margin-top: 11px;"> *Indicates Required Fields</label>
     <hr class="layout-margin-tb">
 
     <form class="col-60 inputs-white" id="new-customer-form" novalidate>
 
+    <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-sm">First Name*</label>
+        <input maxlength="60" class="col-75 pull-right alphaNumericField" id = "firstNameD" name = "firstName" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName"/>
+      </div>
+        
+    <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-sm">Mobile Phone*</label>
+        <input maxlength="60" class="col-75 pull-right alphaNumericField" type="text" placeholder="Mobile" id="mobilePhone" name="mobilePhone" ng-model="newCustomer.entity.mobile"/>
+      </div>
+        
+        <div class="clearfix spacer"></div>
+        
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Primary Contact</label>
-        <select class="layout-margin-t col-30 layout-margin-r" ng-model="newCustomer.entity.salutation">
+        <select class="layout-margin-t col-20 layout-margin-r" ng-model="newCustomer.entity.salutation">
           <option value="" selected>None</option>
           <option value="Ms.">Ms.</option>
           <option value="Mr.">Mr.</option>
         </select>
-        
-          
-          <input maxlength="60" class="col-20  layout-margin-r alphaNumericField"  id = "firstNameD" name = "firstName" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName"/>
        
-          <input maxlength="60" class="col-20 alphaNumericField" type="text" id = "lastNameD" name = "lastName" placeholder="Last Name" 
+          <input maxlength="60" style="width: 52% !important; max-width: 52% !important;" class="col-50 alphaNumericField" type="text" id = "lastNameD" name = "lastName" placeholder="Last Name" 
                ng-model="newCustomer.entity.lastName"/>
       </div>
 
@@ -34,9 +44,8 @@
       </div>
 
       <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-sm">Phone Number</label>
-        <input type="text" placeholder="Work Phone" name = "phoneNumber"ng-model="newCustomer.entity.phone" class="col-35" id="workPhone"/>
-        <input type="text" placeholder="Mobile" id="mobilePhone" name="mobilePhone" ng-model="newCustomer.entity.mobile" class="col-35 pull-right">
+        <label class="layout-padding-t-sm">Work Phone</label>
+        <input type="text" placeholder="Work Phone" name="phoneNumber" ng-model="newCustomer.entity.phone" class="col-75 pull-right" id="workPhone"/>
       </div>
 
       <div class="input-container layout-margin-b">

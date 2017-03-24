@@ -51,13 +51,21 @@ invoicesUnlimited.controller('CustomersController',
     }
    
     $('#edit-customer-form').validate({
-		rules: {
-			displayName: 'required',
-			email : {
-				required : false,
-				email : true
-			}
+        rules: {
+			firstName: 'required',
+            mobilePhone: {
+                required: true,
+                minlength: 14
+            }
+		},
+        messages: {
+			firstName: 'Please enter first name',
+            mobilePhone: {
+                required: "Please enter phone number",
+                minlength: "Please enter a valid phone number"
+            }
 		}
+        
 	});
 
 	$scope.selectedCustomer;

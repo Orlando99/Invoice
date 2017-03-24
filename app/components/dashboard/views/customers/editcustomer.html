@@ -1,19 +1,31 @@
   <div class="container hidesm">
-    <h3 class="text-uppercase text-weight-normalize text-color-normalize layout-margin-t">Edit Customer</h3>
+    <label style="font-size: 20px; vertical-align: -webkit-baseline-middle;" class="text-uppercase text-color-normalize">Edit Customer</label>
+    <label style="float: right; margin-top: 11px;"> *Indicates Required Fields</label>
     <hr class="layout-margin-tb">
 
     <form class="col-60 inputs-white layout-margin-t" id = "edit-customer-form" novalidate>
   
+    <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-sm">First Name*</label>
+        <input maxlength="60" class="col-75 pull-right alphaNumericField" id = "firstNameD" type="text" name = "firstName" placeholder="First Name" ng-model="selectedCustomerEdit.firstName"/>
+      </div>
+        
+    <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-sm">Mobile Phone*</label>
+        <input maxlength="60" class="col-75 pull-right alphaNumericField" name="mobilePhone" type="text" placeholder="Mobile" ng-model="selectedCustomerEdit.mobile" id="mobilePhone"/>
+      </div>
+        
+        <div class="clearfix spacer"></div>
+        
       <div class="input-container layout-margin-b">
         <label class="layout-padding-t-sm">Primary Contact</label>
-        <select class="layout-margin-t col-30 layout-margin-r" ng-model="selectedCustomerEdit.salutation">
+        <select class="layout-margin-t col-20 layout-margin-r" ng-model="selectedCustomerEdit.salutation">
           <!--<option value="Salutat...">Salutat...</option>-->
           <option value="">None</option>
           <option value="Ms." selected>Ms.</option>
           <option value="Mr.">Mr.</option>
         </select>
-        <input class="col-20  layout-margin-r" type="text" name = "firstName" placeholder="First Name" ng-model="selectedCustomerEdit.firstName">
-        <input class="col-20" type="text" name = "lastName" placeholder="Last Name" 
+        <input class="col-50" style="width: 52% !important; max-width: 52% !important;" type="text" name = "lastName" placeholder="Last Name" 
                ng-model="selectedCustomerEdit.lastName">
       </div>
 
@@ -27,10 +39,6 @@
        
           <input class="col-75 pull-right " type="text" name="displayName" id="displayName" placeholder="Display Name" ng-click="displayNameClicked = true;"
                ng-model="selectedCustomerEdit.displayName" />
-          
-          
-         
-          
         <span class="info-icon info-icon-gray"></span>
         <p class="info-tooltip tooltip-dark">
           This is the name that will display for this contact for invoices, estimates, &amp; projects.
@@ -38,9 +46,8 @@
       </div>
 
       <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-sm">Phone Number</label>
-        <input type="text" placeholder="Work Phone" ng-model="selectedCustomerEdit.phone" id="workPhone" class="col-35">
-        <input type="text" placeholder="Mobile" ng-model="selectedCustomerEdit.mobile" id="mobilePhone" class="col-35 pull-right">
+        <label class="layout-padding-t-sm">Work Number</label>
+        <input type="text" placeholder="Work Phone" ng-model="selectedCustomerEdit.phone" id="workPhone" class="col-75 pull-right">
       </div>
 
       <div class="input-container layout-margin-b">

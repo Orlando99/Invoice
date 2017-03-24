@@ -89,9 +89,9 @@ invoicesUnlimited.controller('NewCustomerController',
 
 	$('#new-customer-form').validate({
 		rules: {
-			displayName: 'required',
+			firstName: 'required',
             mobilePhone: {
-                required: false,
+                required: true,
                 minlength: 14
             },
             phoneNumber: {
@@ -104,9 +104,9 @@ invoicesUnlimited.controller('NewCustomerController',
 			}
 		},
         messages: {
-			displayName: 'Please enter display name',
+			firstName: 'Please enter first name',
             mobilePhone: {
-                //required: false,
+                required: "Please enter phone number",
                 minlength: "Please enter a valid phone number"
             },
             phoneNumber: {
