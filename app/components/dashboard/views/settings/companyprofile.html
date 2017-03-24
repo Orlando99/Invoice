@@ -76,7 +76,11 @@
         <label class="layout-padding-t-smm">Zip Code</label>
         <input maxlength="60" name="zipCode" class="col-75" ng-model="businessInfo.zipCode" placeholder="Zip Code">
       </div>
-    
+      <div class="input-container layout-margin-b">
+        <label class="layout-padding-t-smm">Country</label>
+        <input maxlength="60" name="country" class="col-75" ng-model="UserInfo.country" placeholder="Country">
+      </div>
+          
       </form>
           </div>
 
@@ -95,6 +99,9 @@
 
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Zip Code</p>
       <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="businessInfo.zipCode || 'Zip Code Placeholder'"></p>
+        
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-25">Country</p>
+      <p class="layout-margin-tb layout-no-padding text-color-normalize col-75" ng-bind="UserInfo.country || 'Zip Code Placeholder'"></p>
     </div>
     <div class="clearfix spacer"></div>
     <button ng-click="saveBusiness();" style = "margin-bottom: 20px;"class="button button-info text-uppercase">Save</button>

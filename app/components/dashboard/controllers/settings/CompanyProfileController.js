@@ -47,6 +47,9 @@ invoicesUnlimited.controller('CompanyProfileController',
 				required : true,
 				minlength : 5,
                 digits : true
+			},
+            country : {
+				required : true
 			}
 		},
 		messages: {
@@ -66,6 +69,9 @@ invoicesUnlimited.controller('CompanyProfileController',
 				required : "Please enter zip code",
 				minlength : "Please enter valid zip code",
                 digits : "Please enter valid zip code"
+			},
+            country : {
+				required : "Please enter country"
 			}
 		}
 	});
@@ -114,7 +120,8 @@ invoicesUnlimited.controller('CompanyProfileController',
         $scope.UserInfo = {
             name 		: user.get("fullName"),
             email 		: user.get("email"),
-            username 	: user.get("username")
+            username 	: user.get("username"),
+            country     : user.get("country")
         }
     });
         
@@ -171,6 +178,7 @@ invoicesUnlimited.controller('CompanyProfileController',
         user.set('fullName',$scope.UserInfo.name);
         user.set( 'email',$scope.UserInfo.email);
         user.set('username',$scope.UserInfo.username);
+        user.set('country',$scope.UserInfo.country);
          
          /*
         if(!$scope.businessInfo){
