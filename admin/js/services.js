@@ -10,6 +10,7 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
     'name',
     'email',
     'username',
+    'country',
     'accountInfo',
     'businessInfo',
     'AuthNet',
