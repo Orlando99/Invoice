@@ -843,11 +843,31 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		.then(function(invoice) {
             return invoiceService.createInvoiceReceipt(invoice.id, $scope.invoiceInfo.id)
 			.then(function(invoiceObj) {
-                invoiceService.sendInvoiceReceipt(invoiceObj);
+                //invoiceService.sendInvoiceReceipt(invoiceObj);
+                sendToContacts(invoiceObj);
 				return invoiceObj;
 			});
 		});
 	}
+        
+        function sendToContacts(invoiceObj){
+            $scope.contacts.forEach(function(obj){
+                if(obj.selected){
+                    if(obj.contact.indexOf('@') > 0){
+                        invoiceService.sendInvoiceReceiptToEmail(invoiceObj, obj.contact)
+                        .then(function(result){
+                            addNewComment('Invoice emailed to ' + obj.contact, true, invoiceObj)
+                        });
+                    }
+                    else {
+                        invoiceService.sendInvoiceTextToNumber(invoiceObj, obj.contact)
+                        .then(function(result){
+                            addNewComment('Invoice texted to ' + obj.contact, true, invoiceObj)
+                        });
+                    }
+                }
+            });
+        }
         
         /*
 	function saveAndSendInvoice() {
@@ -1036,7 +1056,52 @@ invoicesUnlimited.controller('CreateInvoiceController',
     }
 
 
-	$scope.saveAndSend = function () {
+	$scope.saveAndSend = function(){
+		if (! validateForms())	return;
+        
+        var persons = $scope.selectedCustomer.entity.get('contactPersons');
+        
+        $scope.contacts = [];
+        
+        if(persons.length){
+            persons.forEach(function(obj){
+                if(obj.get('email')){
+                    $scope.contacts.push({
+                        selected : true,
+                        contact : obj.get('email')
+                    });
+                }
+                
+                if(obj.get('phone')){
+                    $scope.contacts.push({
+                        selected : true,
+                        contact : obj.get('phone')
+                    });
+                }
+                
+                if(obj.get('mobile')){
+                    $scope.contacts.push({
+                        selected : true,
+                        contact : obj.get('mobile')
+                    });
+                }
+            });
+        }
+        
+        if($scope.contacts.length){
+            $('.email-text').addClass('show');
+        } else {
+            saveAndSend1();
+        }
+    }
+    
+    $scope.sendReceipt = function(){
+        debugger;
+        saveAndSend1();
+    }
+    
+    function saveAndSend1() {
+        
 		if (! validateForms())	return;
 
 		showLoader();
@@ -1057,6 +1122,10 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		.then(function(invoice) {
             addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice)
             .then(function(invObj){
+                hideLoader();
+                $state.go('dashboard.sales.invoices.details', {invoiceId:invObj.id});
+                
+                /*
                 if($scope.selectedCustomer.entity.email){
                     addNewComment('Invoice emailed to ' + $scope.selectedCustomer.entity.email, true, invoice)
                     .then(function(obj){
@@ -1068,6 +1137,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
                     hideLoader();
                     $state.go('dashboard.sales.invoices.details', {invoiceId:invObj.id});
                 }
+                */
             });
             /*
             if($scope.selectedCustomer.entity.email)

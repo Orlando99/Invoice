@@ -281,7 +281,7 @@
           <button class="button layout-margin-r text-uppercase button-neutral"
             ng-click="uploadFile()">uploadFileBtn</button>
 -->
-          <button class="button layout-margin-r text-uppercase button-neutral" ng-click="save()">Save As Draft</button>
+          <button class="button layout-margin-r text-uppercase button-neutral" ng-click="save()">Save</button>
           <button class="button layout-margin-r text-uppercase button-info" ng-click="saveAndSend()">Save &amp; Send</button>
           <button class="button layout-margin-r text-uppercase button-neutral" ng-click="cancel()">Cancel</button>
         </form>
@@ -363,6 +363,50 @@
           <button class="button button-small button-info text-uppercase"
             ng-click="saveNewTax()">Save</button>
         </div>
+  </div>
+
+<div class="popup-modal email-text hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">How would you like to send receipt?</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="addItemForm" class="layout-margin-tb col-100 inputs-white">
+            
+            
+            
+            
+            <table class="table-border-tb" style = "margin-bottom: 20px;">
+                 <tr class="trow show_hover" ng-repeat="contact in contacts">
+                   <td class="text-uppercase text-info layout-padding-tb-lg">
+                     <label class="input-container input-checkbox-container layout-margin-tb">
+                       <input type="checkbox" ng-model="contact.selected">
+                       <span class="checkbox float-left"></span>
+                     </label>
+                   </td>
+                   <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left" style="width: 750px !important;">{{contact.contact}}</td>
+                 </tr>
+               </table>
+            
+            
+            
+            <!--
+          <div class="input-container layout-margin-b">
+            <label class=" input-checkbox-container layout-margin-tb">
+               <input type="checkbox">
+               <span class="checkbox float-left"></span>
+             </label>
+            <input name="name" type="text" class="col-75" ng-model="newItem.name">
+          </div>
+            -->
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-info text-uppercase" ng-click="sendReceipt()">Send</button>
+    </div>
   </div>
 
 <div class="popup-modal add-latefee hidesm">

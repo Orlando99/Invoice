@@ -1,0 +1,201 @@
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>  
+  <div class="container hidesm">
+
+    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb" ng-click="printSelected()">New Invoice</h3>
+    <div class="clearfix"></div>
+    <hr>
+    <form id="addInvoiceForm" novalidate class="inputs-white layout-margin-b">
+      <div class="input-container col-60 layout-margin-b">
+        <label class="layout-padding-t-sm">Customer Name</label>
+          
+        <select name="customer" class="col-75 can-create-customer" ng-model="selectedCustomer" ng-change="customerChanged()"
+          ng-options="customer.entity.displayName for customer in customers">
+          <option value="" disabled>Select Customer</option>
+      <!-- <option ng-repeat="customer in customers">{{customer.entity.displayName}}</option> -->
+        </select>
+      </div>
+      
+      <div class="clearfix"></div>
+    </form>
+
+    <div class="clearfix"></div>
+    <br>
+
+    <div class="container container-table layout-margin-t">
+      <div class="thead layout-padding">
+        <div class="col-30 ">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize">Amount</h3>
+        </div>
+        <div class="col-5 layout-padding-l">
+          <h3 class="text-weight-normalize layout-no-margin text-uppercase text-color-normalize"></h3>
+        </div>
+      </div>
+      <div class="clearfix"></div>
+      <div class="tbody no-border inputs-white">
+
+      <form id="itemInfoForm" novalidate>
+        <div class="table-row" ng-repeat="invItem in invoiceItems">
+
+          <div  class="col-30 layout-padding error-align">
+            <i Style="margin-top: 10px" class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
+              
+              <input maxlength="60" tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number" onkeypress="numberValidation(event)"
+              placeholder="Enter in Amount" ng-model="invItem.rate"
+              ng-change="reCalculateItemAmount($index)">
+              
+              <select ng-show="false" tri:fix-input-name name="item{{$index}}" class="check-item ellipsis can-create-item same_height" ng-model="invItem.selectedItem"
+              ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
+                  <option value="" disabled>Select or Type to add</option>
+            </select>
+            </div>
+          <div class="col-12 layout-padding layout-padding-l text-right error-align">
+            <input ng-show="false" maxlength="60" tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" onkeypress="numberValidation(event)"
+              placeholder="1" ng-model="invItem.quantity" ng-change="reCalculateItemAmount($index)">
+          </div>
+          <div class="col-12 layout-padding layout-padding-l text-right error-align">
+            
+          </div>
+          <div class="col-12 layout-padding layout-padding-l text-right error-align" ng-show="itemLevelTax">
+            <input ng-show="false" maxlength="60" tri:fix-input-name name="discount{{$index}}" class="check-discount" type="number" onkeypress="numberValidation(event)"
+              placeholder="10.00" ng-model="invItem.discount"
+              ng-change="reCalculateItemAmount($index)">
+          </div>
+          <div class="col-12 layout-padding layout-padding-l">  
+              <select ng-show="false" class="ellipsis same_height" ng-model="invItem.selectedTax" ng-options="tax.name for tax in taxes"
+              ng-change="taxChanged($index)">
+              <option value="">None</option>
+            </select>
+          </div>
+          <div class="col-16 layout-padding layout-padding-l text-center">
+            <p class="layout-no-margin"></p>
+          </div>
+          <div class="col-5 layout-padding layout-padding-l text-right">
+            <button class="button button-icon button-no-margin" ng-click="removeInvoiceItem($index)"><img src="./assets/images/icon-times-round.png" alt=""></button>
+          </div>
+
+        </div>
+      </form>
+
+        <a href="javascript:" class="button layout-margin-tb" ng-click="addInvoiceItem()">
+          + Add another item</a>
+        <!--
+        <a href="javascript:" class="button layout-margin-tb modal-opener" data-toggle="new-item"
+          ng-click="prepareCreateItem()">
+          + Create new item</a>
+        -->
+        <hr>
+        <div class="col-60 pull-right">
+          <div class="col-25">Sub Total</div>
+          <div class="col-65 text-right">{{subTotalStr}}</div>
+          <br>
+          <form id="extrasForm" class="inputs-white">
+            <div class="input-container layout-margin-tb" ng-show="invoiceLevelTax">
+              <label class="layout-padding-t-smm">Discount (%)</label>
+              <input maxlength="60" name="discount" type="number" class="col-30" ng-model="discount" onkeypress="numberValidation(event)"
+                ng-change="reCalculateTotal()">
+              <label class="col-35 text-right layout-padding-t-smm">{{discountStr}}</label>
+            </div>
+            <div class="input-container layout-margin-tb" ng-show="showShippingCharges">
+              <label class="layout-padding-t-smm">Shipping Charges</label>
+              <input maxlength="60" name="shipCharges" type="number" class="col-30" ng-model="shippingCharges" onkeypress="numberValidation(event)"
+                ng-change="reCalculateTotal()">
+              <label class="col-35 text-right layout-padding-t-smm">{{shippingChargesStr}}</label>
+            </div>
+            <div class="input-container input-info layout-margin-tb" ng-show="showAdjustments">
+              <label class="layout-padding-t-smm">Adjustment</label>
+              <input maxlength="60" name="adjustment" type="number" class="col-30" ng-model="adjustments" onkeypress="numberValidation(event)"
+                ng-change="reCalculateTotal()">
+              <span class="info-icon info-icon-gray estimates-custom-info-icon"></span>
+              <p class="info-tooltip tooltip-dark info-left estimates-custom-tooltip">
+                Add any additional adjustments needed for the total amount ex: +5 or -5
+              </p>
+              <label class="col-35 text-right layout-padding-t-smm">{{adjustmentsStr}}</label>
+            </div>
+            <div class="col-90 layout-margin-tb" ng-repeat="tax in itemTaxes">
+              <label class="col-60 text-right layout-padding-t-smm">{{tax.nameValue}}</label>
+              <label class="col-40 text-right layout-padding-t-smm">{{tax.amount}}</label>
+            </div>
+          </form>
+        </div>
+        <div class="table-row row-border layout-padding layout-margin-tb">
+          <div class="col-60 pull-right">
+            <div class="col-25"><h3 class="layout-no-margin text-uppercase text-weight-normalize">Total</h3></div>
+            <div class="col-65 text-right"><h3 class="layout-no-margin text-uppercase text-weight-normalize">{{totalStr}}</h3></div>
+          </div>
+        </div>
+
+        <form class="table-row col-60 layout-margin-tb">
+          <div class="input-container layout-margin-b">
+            <label class="col-i-30">Customer Notes</label>
+            <textarea class="col-70" maxlength="200" ng-model="notes" onkeyup="auto_grow(this)"></textarea>
+          </div>
+          <div class="clearfix"></div>
+          <br />
+          
+          <!--
+          <div class="clearfix"></div>
+          <p class="col-i-30">Template Used</p>
+          <p class="col-70">'Standard Template' <a href="javascript:">Choose</a></p>
+          -->
+
+          <div class="clearfix spacer"></div>
+<!--
+          <button class="button layout-margin-r text-uppercase button-neutral"
+            ng-click="uploadFile()">uploadFileBtn</button>
+-->
+          <button class="button layout-margin-r text-uppercase button-neutral" ng-click="save()">Save</button>
+          <button class="button layout-margin-r text-uppercase button-info" ng-click="saveAndSend()">Save &amp; Send</button>
+          <button class="button layout-margin-r text-uppercase button-neutral" ng-click="cancel()">Cancel</button>
+        </form>
+
+      </div>
+    </div>
+    <div class="clearfix spacer"></div>
+    <div class="spacer"></div>
+  </div>
+
+<div class="popup-modal email-text hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">How would you like to send receipt?</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="addItemForm" class="layout-margin-tb col-100 inputs-white">
+            
+            
+            
+            
+            <table class="table-border-tb" style = "margin-bottom: 20px;">
+                 <tr class="trow show_hover" ng-repeat="contact in contacts">
+                   <td class="text-uppercase text-info layout-padding-tb-lg">
+                     <label class="input-container input-checkbox-container layout-margin-tb">
+                       <input type="checkbox" ng-model="contact.selected">
+                       <span class="checkbox float-left"></span>
+                     </label>
+                   </td>
+                   <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left" style="width: 750px !important;">{{contact.contact}}</td>
+                 </tr>
+               </table>
+            
+            
+            
+            <!--
+          <div class="input-container layout-margin-b">
+            <label class=" input-checkbox-container layout-margin-tb">
+               <input type="checkbox">
+               <span class="checkbox float-left"></span>
+             </label>
+            <input name="name" type="text" class="col-75" ng-model="newItem.name">
+          </div>
+            -->
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-info text-uppercase" ng-click="sendReceipt()">Send</button>
+    </div>
+  </div>
+
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

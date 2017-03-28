@@ -14,7 +14,19 @@
         <li><a ng-click="refundedInvoices()">Refunded Invoices</a></li>
         </ul>
       </div>
-    <a ui-sref="dashboard.sales.invoices.new" class="float-right button button-add text-transform">New</a>
+      <!--
+    <a ui-sref="dashboard.sales.invoices.quick" class="float-right button button-add text-transform">New</a>
+      -->
+    <div class="actions float-right" uib-dropdown>
+      <button class="button button-small button-add text-uppercase" uib-dropdown-toggle>New
+      </button>
+      <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
+          <li><a ui-sref="dashboard.sales.invoices.quick">Create Quick Invoice</a></li>
+          <li><a ui-sref="dashboard.sales.invoices.new">Create Invoice</a></li>
+      </ul>
+      
+      
+    </div>
    
     <form class="float-right layout-margin-t">
         <input type="text" class="search-bar" placeholder="Search" ng-model="searchText" ng-change="search()">

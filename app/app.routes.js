@@ -313,6 +313,19 @@ angular.module('invoicesUnlimited')
 						}
 					}
 				},
+                quickInvoice : {
+					name : 'dashboard.sales.invoices.quick',
+					url : '/sales/invoices/quick',
+					params : {
+						customerId : null
+					},
+					views : {
+						'@' : {
+							controller 	 : 'QuickInvoiceController',
+							templateUrl : COMPONENTS + 'dashboard/views/sales/invoices/quickinvoice.html'
+						}
+					}
+				},
 				cloneInvoice : {
 					name : 'dashboard.sales.invoices.clone',
 					url : '/sales/invoices/clone',
