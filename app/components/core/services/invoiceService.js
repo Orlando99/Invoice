@@ -139,8 +139,8 @@ return {
             var today = new Date();
             if(d < today)
 			     invoice.set('status', 'Overdue');
-            else
-                invoice.set('status', 'Sent');
+            //else
+            //    invoice.set('status', 'Sent');
 			return invoice.save()
 			.then(function(inv) {
 				return invInfoObj;

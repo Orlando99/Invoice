@@ -337,6 +337,12 @@ invoicesUnlimited.controller('QuickInvoiceController',
             return invoiceService.createInvoiceReceipt(invoice.id, $scope.invoiceInfo.id)
 			.then(function(invoiceObj) {
                 //invoiceService.sendInvoiceReceipt(invoiceObj);
+                
+                if(st == "Draft"){
+                    invoiceObj.set("status", "Sent");
+                    invoiceObj.save();
+                }
+                
                 sendToContacts(invoiceObj);
 				return invoiceObj;
 			});

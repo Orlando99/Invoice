@@ -844,6 +844,11 @@ invoicesUnlimited.controller('CreateInvoiceController',
             return invoiceService.createInvoiceReceipt(invoice.id, $scope.invoiceInfo.id)
 			.then(function(invoiceObj) {
                 //invoiceService.sendInvoiceReceipt(invoiceObj);
+                var st = invoiceObj.get('status');
+                if(st == "Draft"){
+                    invoiceObj.set("status", "Sent");
+                    invoiceObj.save();
+                }
                 sendToContacts(invoiceObj);
 				return invoiceObj;
 			});
