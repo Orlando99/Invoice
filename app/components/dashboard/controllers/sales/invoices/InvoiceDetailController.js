@@ -93,10 +93,23 @@ function showInvoiceDetail()
 
 		// create invoice receipt if necessary,
 		if(! receipt) {
-			return invoiceService.createInvoiceReceipt(invoiceId,info)
-			.then(function(obj) {
-				return obj.get('invoiceReceipt');
-			});
+            if(!info)
+            {
+                return invoiceService.copyInInvoiceInfo(invoice.entity)
+                .then(function(infoObj){
+                    info = infoObj.id;
+                    return invoiceService.createInvoiceReceipt(invoiceId,info)
+                    .then(function(obj) {
+                        return obj.get('invoiceReceipt');
+                    });
+                });
+            }
+            else {
+                return invoiceService.createInvoiceReceipt(invoiceId,info)
+                .then(function(obj) {
+                    return obj.get('invoiceReceipt');
+                });
+            }
 		} else {
 			return Promise.resolve(receipt);
 		}
