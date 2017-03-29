@@ -165,33 +165,30 @@
 
       <div class="col-80 text-left layout-center">
         <form id="addItemForm" class="layout-margin-tb col-100 inputs-white">
-            
-            
-            
-            
-            <table class="table-border-tb" style = "margin-bottom: 20px;">
-                 <tr class="trow show_hover" ng-repeat="contact in contacts">
+           <table ng-show="contacts.length" class="table-border-tb" style = "margin-bottom: 20px;">
+               <label ng-show="contacts.length">Email</label>
+               <tr class="trow show_hover" ng-repeat="contact in contacts">
                    <td class="text-uppercase text-info layout-padding-tb-lg">
-                     <label class="input-container input-checkbox-container layout-margin-tb">
-                       <input type="checkbox" ng-model="contact.selected">
-                       <span class="checkbox float-left"></span>
-                     </label>
+                       <label class="input-container input-checkbox-container layout-margin-tb">
+                           <input type="checkbox" ng-model="contact.selected">
+                           <span class="checkbox float-left"></span>
+                       </label>
                    </td>
-                   <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left" style="width: 750px !important;">{{contact.contact}}</td>
-                 </tr>
-               </table>
-            
-            
-            
-            <!--
-          <div class="input-container layout-margin-b">
-            <label class=" input-checkbox-container layout-margin-tb">
-               <input type="checkbox">
-               <span class="checkbox float-left"></span>
-             </label>
-            <input name="name" type="text" class="col-75" ng-model="newItem.name">
-          </div>
-            -->
+                   <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left" style="width: 750px !important;">{{contact.contactName}}</td>
+               </tr>
+            </table>
+            <table ng-show="mobileContacts.length" class="table-border-tb" style = "margin-bottom: 20px;">
+                <label ng-show="mobileContacts.length">Mobile</label>
+                <tr class="trow show_hover" ng-repeat="contact in mobileContacts">
+                    <td class="text-uppercase text-info layout-padding-tb-lg">
+                        <label class="input-container input-checkbox-container layout-margin-tb">
+                            <input type="checkbox" ng-model="contact.selected">
+                            <span class="checkbox float-left"></span>
+                        </label>
+                    </td>
+                    <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left" style="width: 750px !important;">{{contact.contactName}}</td>
+                </tr>
+            </table>
         </form>
       </div>
       <div class="clearfix"></div>

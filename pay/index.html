@@ -1005,6 +1005,10 @@ var Validate = {
     }
 };
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+        
 function getInvoiceInfo (invoiceInfoId){
 
     Parse.Cloud.run("hello12",{})
@@ -1043,7 +1047,7 @@ function getInvoiceInfo (invoiceInfoId){
             $('.phone').text(result.phone);
             $('.email').text(result.email);
             $('.due-date').text(Date.parse(result.dueDate).toString('MMMM dS, yyyy'));
-            $('.total-due').text('$' + parseFloat(result.totalDue).toFixed(2));
+            $('.total-due').text('$' + numberWithCommas(parseFloat(result.totalDue).toFixed(2)));
             $('#Total').val(result.totalDue);
             $('.invoice-date').text("Invoice Date: " + Date.parse(result.invoiceDate).toString('MMMM dS, yyyy'));
             $('.reference-number').text("Reference Number: " + result.referenceNumber);

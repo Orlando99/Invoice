@@ -345,21 +345,21 @@ invoicesUnlimited.controller('QuickInvoiceController',
         
     function sendToContacts(invoiceObj){
         $scope.contacts.forEach(function(obj){
-            if(obj.selected){
-                if(obj.contact.indexOf('@') > 0){
+                if(obj.selected){
                     invoiceService.sendInvoiceReceiptToEmail(invoiceObj, obj.contact)
                     .then(function(result){
                         addNewComment('Invoice emailed to ' + obj.contact, true, invoiceObj)
                     });
                 }
-                else {
+            });
+            $scope.mobileContacts.forEach(function(obj){
+                if(obj.selected){
                     invoiceService.sendInvoiceTextToNumber(invoiceObj, obj.contact)
                     .then(function(result){
                         addNewComment('Invoice texted to ' + obj.contact, true, invoiceObj)
                     });
                 }
-            }
-        });
+            });
     }
         
 	function showInvoiceNumberError () {
@@ -478,33 +478,41 @@ invoicesUnlimited.controller('QuickInvoiceController',
         var persons = $scope.selectedCustomer.entity.get('contactPersons');
         
         $scope.contacts = [];
+        $scope.mobileContacts = [];
         
         if(persons.length){
             persons.forEach(function(obj){
+                var first = obj.get('firstname') ? obj.get('firstname') : '';
+                var last = obj.get('lastname') ? obj.get('lastname') : '';
+                
+                var name = first + ' ' + last;
                 if(obj.get('email')){
                     $scope.contacts.push({
                         selected : true,
-                        contact : obj.get('email')
+                        contact : obj.get('email'),
+                        contactName : '('+ name + ') ' + obj.get('email')
                     });
                 }
                 
                 if(obj.get('phone')){
-                    $scope.contacts.push({
+                    $scope.mobileContacts.push({
                         selected : true,
-                        contact : obj.get('phone')
+                        contact : obj.get('phone'),
+                        contactName : '('+ name + ') ' + obj.get('phone')
                     });
                 }
                 
                 if(obj.get('mobile')){
-                    $scope.contacts.push({
+                    $scope.mobileContacts.push({
                         selected : true,
-                        contact : obj.get('mobile')
+                        contact : obj.get('mobile'),
+                        contactName : '('+ name + ') ' + obj.get('mobile')
                     });
                 }
             });
         }
         
-        if($scope.contacts.length){
+        if($scope.contacts.length || $scope.mobileContacts.length){
             $('.email-text').addClass('show');
         } else {
             saveAndSend1();
