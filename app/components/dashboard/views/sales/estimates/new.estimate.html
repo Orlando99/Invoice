@@ -72,7 +72,9 @@
         <div class="table-row" ng-repeat="estItem in estimateItems">
 
           <div class="col-30 layout-padding">
+              <!--
             <i Style="margin-top: 7px" class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
+                -->
             <select tri:fix-input-name name="item{{$index}}" class="check-item ellipsis" ng-model="estItem.selectedItem"
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
               <option value="" disabled>Select or Type to add</option>

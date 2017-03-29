@@ -37,8 +37,9 @@
         <div class="table-row" ng-repeat="invItem in invoiceItems">
 
           <div  class="col-30 layout-padding error-align">
+              <!--
             <i Style="margin-top: 10px" class="icons float-left"><img src="./assets/images/handle.png" alt=""></i>
-              
+              -->
               <input maxlength="60" tri:fix-input-name name="rate{{$index}}" class="check-rate" type="number" onkeypress="numberValidation(event)"
               placeholder="Enter in Amount" ng-model="invItem.rate"
               ng-change="reCalculateItemAmount($index)">
