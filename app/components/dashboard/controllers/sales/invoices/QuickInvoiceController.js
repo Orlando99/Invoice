@@ -521,7 +521,25 @@ invoicesUnlimited.controller('QuickInvoiceController',
     
     $scope.sendReceipt = function(){
         debugger;
-        saveAndSend1();
+        var email = 0;
+        var mobile = 0;
+        
+        $scope.contacts.forEach(function(obj){
+            if(obj.selected)
+                email++;
+        });
+        
+        $scope.mobileContacts.forEach(function(obj){
+            if(obj.selected)
+                mobile++;
+        });
+        
+        if(email > 0 || mobile > 0){
+            saveAndSend1();
+        }
+        else {
+            $('#emailText-error').show();
+        }
     }
     
     function saveAndSend1() {

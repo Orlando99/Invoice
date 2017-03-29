@@ -377,7 +377,9 @@
 
       <div class="col-80 text-left layout-center">
         <form id="addItemForm" class="layout-margin-tb col-100 inputs-white">
-            
+            <div id="emailText-error" style="color: red; display: none;">
+            <label >Please select at least one email/mobile</label><br><br>
+            </div>
             <table ng-show="contacts.length" class="table-border-tb" style = "margin-bottom: 20px;">
                 <label ng-show="contacts.length">Email</label>
                  <tr class="trow show_hover" ng-repeat="contact in contacts">
