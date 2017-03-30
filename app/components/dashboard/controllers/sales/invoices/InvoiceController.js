@@ -515,9 +515,22 @@ function saveEditedInvoice(params) {
 		invoice.set('lateFee', $scope.selectedLateFee.entity);
 	else	invoice.unset('lateFee');
 
-	if($scope.paymentTerms.selectedTerm.value > 0)
+	if($scope.paymentTerms.selectedTerm.value > 0){
 		invoice.set('dueDate', $scope.dueDate);
-	else	invoice.unset('dueDate');
+        var today = new Date();
+        today.setHours(23);
+        if(invoice.get('status') == 'Overdue'){
+            if($scope.dueDate > today){
+                invoice.set('status', 'Unpaid');
+            }
+        }
+    }
+	else {
+        invoice.unset('dueDate');
+        if(invoice.get('status') == 'Overdue'){
+            invoice.set('status', 'Unpaid');
+        }
+    }
 
 	var email = $scope.selectedCustomer.entity.email;
 	if(email)
