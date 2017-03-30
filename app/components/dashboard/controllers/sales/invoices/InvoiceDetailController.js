@@ -690,37 +690,169 @@ $scope.addAttachment = function(obj) {
  
 $scope.textReceipt = function() {
     
-    var cust = $scope.invoice.entity.get('customer')
-    var email = cust.get('mobile');
-    if(!email){
+    $('#text-error').hide();
+    
+    var customer = $scope.invoice.entity.get('customer');
+    
+    var persons = customer.get('contactPersons');
+
+    $scope.mobileContacts = [];
+
+    if(persons.length){
+        persons.forEach(function(obj){
+            var first = obj.get('firstname') ? obj.get('firstname') : '';
+            var last = obj.get('lastname') ? obj.get('lastname') : '';
+            var primary = obj.get('defaultPerson') == 1 ? true : false;
+
+            var name = first + ' ' + last;
+            if(obj.get('phone')){
+                $scope.mobileContacts.push({
+                    selected : primary,
+                    contact : obj.get('phone'),
+                    contactName : '('+ name + ') ' + obj.get('phone')
+                });
+            }
+
+            if(obj.get('mobile')){
+                $scope.mobileContacts.push({
+                    selected : primary,
+                    contact : obj.get('mobile'),
+                    contactName : '('+ name + ') ' + obj.get('mobile')
+                });
+            }
+        });
+    }
+
+    if($scope.mobileContacts.length){
+        $('.text-popup').addClass('show');
+    } else {
         ShowMessage("Please Enter Mobile for Customer!","error");
+        return;
+    }
+}
+
+$scope.sendText = function(){
+    var email = 0;
+
+    $scope.mobileContacts.forEach(function(obj){
+        if(obj.selected)
+            email++;
+    });
+
+    if(email < 1){
+        $('#text-error').show();
         return;
     }
     
 	showLoader();
-	$q.when(invoiceService.sendInvoiceText($scope.invoice.entity))
-	.then(function(obj) {
-        var mob = $scope.invoice.entity.get('customer');
-        mob = mob.get('mobile');
-        addNewComment('Invoice sent by text to ' + mob, true);
-        hideLoader();
-        showSnackbar('Text sent...');
-        
-		console.log('Receipt sent successfully.');
-		
-	});
+    
+    if($scope.invoice.entity.get('status') == 'Draft')
+    {  
+        var dueDate = $scope.invoice.entity.get('dueDate');
+        var toDate = new Date();
+        if(dueDate<toDate)
+        {
+           $scope.invoice.entity.set('status', 'Overdue');
+        }
+        else
+        {
+           $scope.invoice.entity.set('status', 'Sent');              
+        }
+        $scope.invoice.entity.save();   
+    }
+    
+    $scope.mobileContacts.forEach(function(obj){
+        if(obj.selected){
+            invoiceService.sendInvoiceTextToNumber($scope.invoice.entity, obj.contact)
+            .then(function(result){
+                addNewComment('Invoice texted to ' + obj.contact, true);
+                $('.text-popup').removeClass('show');
+                hideLoader();
+            });
+        }
+    });
 }
 
 $scope.emailReceipt = function() {
+    $('#email-error').hide();
     
-    var cust = $scope.invoice.entity.get('customer')
-    var email = cust.get('email');
-    if(!email){
+    var customer = $scope.invoice.entity.get('customer');
+    
+    var persons = customer.get('contactPersons');
+
+    $scope.contacts = [];
+
+    if(persons.length){
+        persons.forEach(function(obj){
+            var first = obj.get('firstname') ? obj.get('firstname') : '';
+            var last = obj.get('lastname') ? obj.get('lastname') : '';
+            var primary = obj.get('defaultPerson') == 1 ? true : false;
+
+            var name = first + ' ' + last;
+            if(obj.get('email')){
+                $scope.contacts.push({
+                    selected : primary,
+                    contact : obj.get('email'),
+                    contactName : '('+ name + ') ' + obj.get('email')
+                });
+            }
+        });
+    }
+
+    if($scope.contacts.length){
+        $('.email-popup').addClass('show');
+    } else {
         ShowMessage("Please Enter Email for Customer!","error");
         return;
     }
     
+}
+
+$scope.sendEmail = function(){
+    var email = 0;
+
+    $scope.contacts.forEach(function(obj){
+        if(obj.selected)
+            email++;
+    });
+
+    if(email < 1){
+        $('#email-error').show();
+        return;
+    }
+    
 	showLoader();
+    
+    if($scope.invoice.entity.get('status') == 'Draft')
+    {  
+        var dueDate = $scope.invoice.entity.get('dueDate');
+        var toDate = new Date();
+        if(dueDate<toDate)
+        {
+           $scope.invoice.entity.set('status', 'Overdue');
+        }
+        else
+        {
+           $scope.invoice.entity.set('status', 'Sent');              
+        }
+        $scope.invoice.entity.save();   
+    }
+    
+    $scope.contacts.forEach(function(obj){
+        if(obj.selected){
+            invoiceService.sendInvoiceReceiptToEmail($scope.invoice.entity, obj.contact)
+            .then(function(result){
+                addNewComment('Invoice emailed to ' + obj.contact, true);
+                $('.email-popup').removeClass('show');
+                hideLoader();
+            });
+        }
+    });
+    
+    
+    //showSnackbar('Email sent...');
+    
+    /*
 	$q.when(invoiceService.sendInvoiceReceipt($scope.invoice.entity))
 	.then(function(obj) {
         if($scope.invoice.entity.get('status') == 'Draft')
@@ -736,7 +868,7 @@ $scope.emailReceipt = function() {
             {
                $scope.invoice.entity.set('status', 'Sent');              
             }
-             $scope.invoice.entity.save();   
+            $scope.invoice.entity.save();   
         }
         addNewComment('Invoice emailed to ' + email, true);
         hideLoader();
@@ -744,6 +876,7 @@ $scope.emailReceipt = function() {
 		console.log('Receipt sent successfully.');
 		
 	});
+    */
 }
 
 $scope.canDeleteInvoice = function() {

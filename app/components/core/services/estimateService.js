@@ -23,7 +23,7 @@ return {
 		var Estimate = Parse.Object.extend('Estimates');
 		var query = new Parse.Query(Estimate);
 		query.include('comments');
-        query.include('customer');
+        query.include('customer.contactPersons');
 
 		return query.get(estimateId)
 		.then(function(estObj) {
@@ -474,10 +474,96 @@ return {
 		}).then(function(msg) {
 			console.log(msg);
 			return estimate;
+		}, function(error){
+                console.error(error);
+                return estimate;
+            });
+        });
+          
+	},
+    sendEstimetTextToNumber : function(estimate, number) {
+		var est = new estimateFactory(estimate, {
+			operation : 'sendReceipt'
 		});
+        
+        var to = number;
+        var customerName = est.customer.displayName;
+        var amount = currencyFilter(est.entity.totalAmount, '$', 2);
+        var businessName = est.organization.name;
+        var link = est.entity.estimateReceipt.url();
+        var msgBody = customerName + ', '
+            + businessName + ' has sent you an estimate of ' + amount
+            + '. ';
+        
+        
+        return Parse.Cloud.run('createShortUrl', {
+            link: link
+        }).then(function(shortUrl){
+            return Parse.Cloud.run("sendSms", {
+			to: to,
+			body : msgBody + shortUrl.data.data.url
+		}).then(function(msg) {
+			console.log(msg);
+			return estimate;
+		}, function(error){
+                console.error(error);
+                return estimate;
+            });
+        });
+          
+	},
+    sendEstimateReceiptToEmail : function(estimate, email) {
+		var est = new estimateFactory(estimate, {
+			operation : 'sendReceipt'
+		});
+        
+        var link = est.entity.estimateReceipt.url();
+        return $.ajax({
+                type: "GET",
+                url: 'proxy.php',
+                dataType: "html",
+                data: {
+                address: link
+            }
+        }).then(function (htmlDoc) {
+            
+            var toEmail = email;
+            //var customerName = inv.customer.displayName;
+            //var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
+            var businessName = est.organization.name;
+
+            var emailSubject = 'Estimate From ' + businessName;
+            var emailBody = htmlDoc;
+            
+            htmlDoc = htmlDoc.replace('<!DOCTYPE html>', '');
+            htmlDoc = htmlDoc.trim();
+            var abc = 1;
+            //var fr = document.getElementById('targetframe1');
+            var fr = document.createElement('iframe');
+            document.body.appendChild(fr);
+            fr.style.display = 'none';
+            fr.setAttribute("id", "myFrame");
+            fr.contentWindow.document.open();
+            fr.contentWindow.document.write(htmlDoc);
+            fr.contentWindow.document.close();
+            
+            fr.onload = function() {
+               //var div=iframe.contentWindow.document.getElementById('mydiv');
+                abc = 0;
+                return Parse.Cloud.run("sendMailgunHtml", {
+                toEmail: toEmail,
+                fromEmail: "no-reply@invoicesunlimited.com",
+                subject : emailSubject,
+                html : '<html>' + $('#myFrame').contents().find('html').html() + '</html>'
+                }).then(function(msg) {
+                    console.log(msg);
+                    return estimate;
+                });
+            };
+
+            return estimate;
         });
         
-		  
 	},
 	sendEstimateReceipt : function(estimate) {
 		var est = new estimateFactory(estimate, {
@@ -532,39 +618,6 @@ return {
             return estimate;
         });
         
-        /*
-        if(est.entity.customerEmails)
-        {
-            var toEmail = est.entity.customerEmails[0];
-            var customerName = est.customer.displayName;
-            var amount = currencyFilter(est.entity.totalAmount, '$', 2);
-            var businessName = est.organization.name;
-            var link = est.entity.estimateReceipt.url();
-
-            var emailSubject = 'Estimate From ' + businessName;
-            var emailBody = customerName + ',<br/>'
-                + businessName + ' has sent you an estimate of ' + amount
-                + '. Please confirm that the estimate is correct. <a href="'
-                + link + '">Click here to view.</a>';
-        }
-        else{
-            return estimate;
-        }
-
-		return Parse.Cloud.run("sendMailgunHtml", {
-			toEmail: toEmail,
-			fromEmail: "no-reply@invoicesunlimited.com",
-			subject : emailSubject,
-			html : emailBody
-		}).then(function(msg) {
-			console.log(msg);
-			estimate.set('status', 'Sent');
-			return estimate.save();
-		})
-		.then(function(estObj) {
-			return estObj;
-		});
-        */
 	}
 };
 

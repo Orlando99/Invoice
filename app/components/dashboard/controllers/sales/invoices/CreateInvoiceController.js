@@ -1075,11 +1075,12 @@ invoicesUnlimited.controller('CreateInvoiceController',
             persons.forEach(function(obj){
                 var first = obj.get('firstname') ? obj.get('firstname') : '';
                 var last = obj.get('lastname') ? obj.get('lastname') : '';
+                var primary = obj.get('defaultPerson') == 1 ? true : false;
                 
                 var name = first + ' ' + last;
                 if(obj.get('email')){
                     $scope.contacts.push({
-                        selected : true,
+                        selected : primary,
                         contact : obj.get('email'),
                         contactName : '('+ name + ') ' + obj.get('email')
                     });
@@ -1087,7 +1088,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
                 
                 if(obj.get('phone')){
                     $scope.mobileContacts.push({
-                        selected : true,
+                        selected : primary,
                         contact : obj.get('phone'),
                         contactName : '('+ name + ') ' + obj.get('phone')
                     });
@@ -1095,7 +1096,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
                 
                 if(obj.get('mobile')){
                     $scope.mobileContacts.push({
-                        selected : true,
+                        selected : primary,
                         contact : obj.get('mobile'),
                         contactName : '('+ name + ') ' + obj.get('mobile')
                     });

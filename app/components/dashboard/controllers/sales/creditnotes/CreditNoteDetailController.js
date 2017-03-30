@@ -237,6 +237,47 @@ $scope.addPayment = function() {
 
 $scope.textReceipt = function() {
     
+    $('#text-error').hide();
+    
+    var customer = $scope.creditNote.entity.get('customer');
+    
+    var persons = customer.get('contactPersons');
+
+    $scope.mobileContacts = [];
+
+    if(persons.length){
+        persons.forEach(function(obj){
+            var first = obj.get('firstname') ? obj.get('firstname') : '';
+            var last = obj.get('lastname') ? obj.get('lastname') : '';
+            var primary = obj.get('defaultPerson') == 1 ? true : false;
+
+            var name = first + ' ' + last;
+            if(obj.get('phone')){
+                $scope.mobileContacts.push({
+                    selected : primary,
+                    contact : obj.get('phone'),
+                    contactName : '('+ name + ') ' + obj.get('phone')
+                });
+            }
+
+            if(obj.get('mobile')){
+                $scope.mobileContacts.push({
+                    selected : primary,
+                    contact : obj.get('mobile'),
+                    contactName : '('+ name + ') ' + obj.get('mobile')
+                });
+            }
+        });
+    }
+
+    if($scope.mobileContacts.length){
+        $('.text-popup').addClass('show');
+    } else {
+        ShowMessage("Please Enter Mobile for Customer!","error");
+        return;
+    }
+    
+    /*
     var cust = $scope.creditNote.entity.get('customer')
     var email = cust.get('mobile');
     if(!email){
@@ -254,9 +295,71 @@ $scope.textReceipt = function() {
 		console.log('Receipt sent successfully.');
 		
 	});
+    */
+}
+
+$scope.sendText = function(){
+    var email = 0;
+
+    $scope.mobileContacts.forEach(function(obj){
+        if(obj.selected)
+            email++;
+    });
+
+    if(email < 1){
+        $('#text-error').show();
+        return;
+    }
+    
+	showLoader();
+    
+    $scope.mobileContacts.forEach(function(obj){
+        if(obj.selected){
+            creditNoteService.sendCreditNoteTextToNumber($scope.creditNote.entity, obj.contact)
+            .then(function(result){
+                addNewComment('Credit Note texted to ' + obj.contact, true);
+                $('.text-popup').removeClass('show');
+                hideLoader();
+            });
+        }
+    });
 }
 
 $scope.emailReceipt = function() {
+    
+    $('#email-error').hide();
+    
+    var customer = $scope.creditNote.entity.get('customer');
+    
+    var persons = customer.get('contactPersons');
+
+    $scope.contacts = [];
+
+    if(persons.length){
+        persons.forEach(function(obj){
+            var first = obj.get('firstname') ? obj.get('firstname') : '';
+            var last = obj.get('lastname') ? obj.get('lastname') : '';
+            var primary = obj.get('defaultPerson') == 1 ? true : false;
+
+            var name = first + ' ' + last;
+            if(obj.get('email')){
+                $scope.contacts.push({
+                    selected : primary,
+                    contact : obj.get('email'),
+                    contactName : '('+ name + ') ' + obj.get('email')
+                });
+            }
+        });
+    }
+
+    if($scope.contacts.length){
+        $('.email-popup').addClass('show');
+    } else {
+        ShowMessage("Please Enter Email for Customer!","error");
+        return;
+    }
+    
+    /*
     var cust = $scope.creditNote.entity.get('customer')
     var email = cust.get('email');
     if(!email){
@@ -277,6 +380,34 @@ $scope.emailReceipt = function() {
 		hideLoader();
 		console.log(error.message);
 	});
+    */
+}
+
+$scope.sendEmail = function(){
+    var email = 0;
+
+    $scope.contacts.forEach(function(obj){
+        if(obj.selected)
+            email++;
+    });
+
+    if(email < 1){
+        $('#email-error').show();
+        return;
+    }
+    
+	showLoader();
+    
+    $scope.contacts.forEach(function(obj){
+        if(obj.selected){
+            creditNoteService.sendCreditNoteReceiptToEmail($scope.creditNote.entity, obj.contact)
+            .then(function(result){
+                addNewComment('Credit Note emailed to ' + obj.contact, true);
+                $('.email-popup').removeClass('show');
+                hideLoader();
+            });
+        }
+    });
 }
 
 $scope.creditNotePrinted = function(){

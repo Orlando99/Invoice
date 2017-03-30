@@ -239,4 +239,67 @@
     </div>
   </div>
 
+<div class="popup-modal email-popup hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Email to</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="addItemForm" class="layout-margin-tb col-100 inputs-white">
+            <div id="email-error" style="color: red; display: none;">
+                <label>Please select at least one email</label><br><br>
+            </div>
+           <table ng-show="contacts.length" class="table-border-tb" style = "margin-bottom: 20px;">
+               <tr class="trow show_hover" ng-repeat="contact in contacts">
+                   <td class="text-uppercase text-info layout-padding-tb-lg">
+                       <label class="input-container input-checkbox-container layout-margin-tb">
+                           <input type="checkbox" ng-model="contact.selected">
+                           <span class="checkbox float-left"></span>
+                       </label>
+                   </td>
+                   <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left" style="width: 750px !important;">{{contact.contactName}}</td>
+               </tr>
+            </table>
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-info text-uppercase" ng-click="sendEmail()">Send</button>
+    </div>
+  </div>
+
+<div class="popup-modal text-popup hidesm">
+    <div class="modal container">
+      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Text to</h3>
+      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+      </button>
+      <div class="clearfix"></div>
+      <hr class="layout-margin-tb">
+
+      <div class="col-80 text-left layout-center">
+        <form id="addItemForm" class="layout-margin-tb col-100 inputs-white">
+            <div id="text-error" style="color: red; display: none;">
+            <label >Please select at least one phone number</label><br><br>
+            </div>
+            <table ng-show="mobileContacts.length" class="table-border-tb" style = "margin-bottom: 20px;">
+                
+                <tr class="trow show_hover" ng-repeat="contact in mobileContacts">
+                   <td class="text-uppercase text-info layout-padding-tb-lg">
+                     <label class="input-container input-checkbox-container layout-margin-tb">
+                       <input type="checkbox" ng-model="contact.selected">
+                       <span class="checkbox float-left"></span>
+                     </label>
+                   </td>
+                   <td class="text-color-light text-weight-normalize layout-padding-tb-lg text-left" style="width: 750px !important;">{{contact.contactName}}</td>
+                 </tr>
+               </table>
+        </form>
+      </div>
+      <div class="clearfix"></div>
+      <button class="button button-info text-uppercase" ng-click="sendText()">Send</button>
+    </div>
+  </div>
+
 <div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

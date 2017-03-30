@@ -44,6 +44,7 @@ return {
 		var query = new Parse.Query(CreditNote);
 		query.include('comments');
         query.include('refunds');
+        query.include('customer.contactPersons');
 
 		return query.get(creditNoteId)
 		.then(function(cnObj) {
@@ -429,8 +430,97 @@ return {
         }).then(function(msg) {
             console.log(msg);
             return creditNote;
-        });
+        }, function(error){
+                console.error(error);
+                return creditNote;
+            });
         }); 
+	},
+    sendCreditNoteTextToNumber : function(creditNote, number) {
+		var credit = new creditNoteFactory(creditNote, {
+			operation : 'sendReceipt'
+		});
+        var mob = number;
+        //mob = mob.get('mobile');
+        if(mob)
+        {
+            var to = mob;
+            var customerName = credit.customer.displayName;
+            var amount = currencyFilter(credit.entity.remainingCredits, '$', 2);
+            var businessName = credit.organization.name;
+            var link = credit.entity.creditReceipt.url();
+            var msgBody = customerName + ', '
+                + businessName + ' has sent you Credit Note of ' + amount
+                + '. ';
+        }
+        
+        return Parse.Cloud.run('createShortUrl', {
+            link: link
+        }).then(function(shortUrl){
+            return Parse.Cloud.run("sendSms", {
+			to: to,
+			body : msgBody + shortUrl.data.data.url
+        }).then(function(msg) {
+            console.log(msg);
+            return creditNote;
+        }, function(error){
+                console.error(error);
+                return creditNote;
+            });
+        }); 
+	},
+    sendCreditNoteReceiptToEmail : function(creditNote, email) {
+		var credit = new creditNoteFactory(creditNote, {
+			operation : 'sendReceipt'
+		});
+        
+        var link = credit.entity.creditReceipt.url();
+        return $.ajax({
+                type: "GET",
+                url: 'proxy.php',
+                dataType: "html",
+                data: {
+                address: link
+            }
+        }).then(function (htmlDoc) {
+            
+            var toEmail = email;
+            //var customerName = inv.customer.displayName;
+            //var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
+            var businessName = credit.organization.name;
+
+            var emailSubject = 'Credit Note From ' + businessName;
+            var emailBody = htmlDoc;
+
+            htmlDoc = htmlDoc.replace('<!DOCTYPE html>', '');
+            htmlDoc = htmlDoc.trim();
+            var abc = 1;
+            //var fr = document.getElementById('targetframe1');
+            var fr = document.createElement('iframe');
+            document.body.appendChild(fr);
+            fr.style.display = 'none';
+            fr.setAttribute("id", "myFrame");
+            fr.contentWindow.document.open();
+            fr.contentWindow.document.write(htmlDoc);
+            fr.contentWindow.document.close();
+            
+            fr.onload = function() {
+               //var div=iframe.contentWindow.document.getElementById('mydiv');
+                abc = 0;
+                return Parse.Cloud.run("sendMailgunHtml", {
+                toEmail: toEmail,
+                fromEmail: "no-reply@invoicesunlimited.com",
+                subject : emailSubject,
+                html : '<html>' + $('#myFrame').contents().find('html').html() + '</html>'
+                }).then(function(msg) {
+                    console.log(msg);
+                    return creditNote;
+                });
+            };
+
+            return creditNote;
+        });
+        
 	},
 	sendCreditNoteReceipt : function(creditNote) {
 		var credit = new creditNoteFactory(creditNote, {
