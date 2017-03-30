@@ -226,7 +226,7 @@ function saveCreditNote() {
         return addNewComment('Credit Note created for ' + currencyFilter(obj.attributes.total, '$', 2) +' amount', true, obj);
     });
 }
-
+/*
 function saveAndSendCreditNote() {
 	return saveCreditNote()
 	.then(function(creditNote) {
@@ -236,6 +236,37 @@ function saveAndSendCreditNote() {
 			return creditNoteService.sendCreditNoteReceipt(creditNoteObj);
 		});
 	});
+}
+*/
+    
+function saveAndSendCreditNote() {
+	return saveCreditNote()
+	.then(function(creditNote) {
+		return creditNoteService.createCreditNoteReceipt(creditNote.id)
+		.then(function(creditNoteObj) {
+            sendToContacts(creditNoteObj);
+			return creditNoteObj;
+		});
+	});
+}
+    
+function sendToContacts(creditNoteObj){
+    $scope.contacts.forEach(function(obj){
+        if(obj.selected){
+            creditNoteService.sendCreditNoteReceiptToEmail(creditNoteObj, obj.contact)
+            .then(function(result){
+                addNewComment('Credit Note emailed to ' + obj.contact, true, creditNoteObj)
+            });
+        }
+    });
+    $scope.mobileContacts.forEach(function(obj){
+        if(obj.selected){
+            creditNoteService.sendCreditNoteTextToNumber(creditNoteObj, obj.contact)
+            .then(function(result){
+                addNewComment('Credit Note texted to ' + obj.contact, true, creditNoteObj)
+            });
+        }
+    });
 }
 
 function validateForms () {
@@ -285,7 +316,82 @@ $scope.save = function() {
 	});
 }
 
-$scope.saveAndSend = function () {
+$scope.saveAndSend = function(){
+    if (! validateForms())	return;
+
+    $('#emailText-error').hide();
+
+    var persons = $scope.selectedCustomer.entity.get('contactPersons');
+
+    $scope.contacts = [];
+    $scope.mobileContacts = [];
+
+    if(persons.length){
+        persons.forEach(function(obj){
+            var first = obj.get('firstname') ? obj.get('firstname') : '';
+            var last = obj.get('lastname') ? obj.get('lastname') : '';
+            var primary = obj.get('defaultPerson') == 1 ? true : false;
+
+            var name = first + ' ' + last;
+            if(obj.get('email')){
+                $scope.contacts.push({
+                    selected : primary,
+                    contact : obj.get('email'),
+                    contactName : '('+ name + ') ' + obj.get('email')
+                });
+            }
+
+            if(obj.get('phone')){
+                $scope.mobileContacts.push({
+                    selected : primary,
+                    contact : obj.get('phone'),
+                    contactName : '('+ name + ') ' + obj.get('phone')
+                });
+            }
+
+            if(obj.get('mobile')){
+                $scope.mobileContacts.push({
+                    selected : primary,
+                    contact : obj.get('mobile'),
+                    contactName : '('+ name + ') ' + obj.get('mobile')
+                });
+            }
+        });
+    }
+
+    if($scope.contacts.length || $scope.mobileContacts.length){
+        $('.email-text').addClass('show');
+    } else {
+        saveAndSend1();
+    }
+}
+
+$scope.sendReceipt = function(){
+        debugger;
+        
+        var email = 0;
+        var mobile = 0;
+        
+        $scope.contacts.forEach(function(obj){
+            if(obj.selected)
+                email++;
+        });
+        
+        $scope.mobileContacts.forEach(function(obj){
+            if(obj.selected)
+                mobile++;
+        });
+        
+        if(email > 0 || mobile > 0){
+            saveAndSend1();
+        }
+        else {
+            $('#emailText-error').show();
+        }
+    }
+    
+    
+function saveAndSend1() {
 	if (! validateForms())	return;
 
 	showLoader();
@@ -304,8 +410,10 @@ $scope.saveAndSend = function () {
 		}
 	})
 	.then(function(creditNote) {
+        /*
         if($scope.selectedCustomer.entity.email)
                 addNewComment('Credit Note emailed to ' + $scope.selectedCustomer.entity.email, true, creditNote);
+        */
 		hideLoader();
 		$state.go('dashboard.sales.creditnotes.all');
 

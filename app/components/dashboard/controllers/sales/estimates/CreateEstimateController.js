@@ -601,7 +601,7 @@ function saveEstimate() {
         return estimate;
     });
 }
-
+/*
 function saveAndSendEstimate() {
     //return saveEstimate();
     
@@ -613,6 +613,40 @@ function saveAndSendEstimate() {
 		});
 	});
     
+}
+    */
+    
+function saveAndSendEstimate() {
+    //return saveEstimate();
+    
+	return saveEstimate()
+	.then(function(estimate) {
+		return estimateService.createEstimateReceipt(estimate.id)
+		.then(function(estimateObj) {
+            sendToContacts(estimateObj);
+			return estimateObj;
+		});
+	});
+    
+}
+    
+function sendToContacts(estimateObj){
+    $scope.contacts.forEach(function(obj){
+        if(obj.selected){
+            estimateService.sendEstimateReceiptToEmail(estimateObj, obj.contact)
+            .then(function(result){
+                addNewComment('Estimate emailed to ' + obj.contact, true, estimateObj)
+            });
+        }
+    });
+    $scope.mobileContacts.forEach(function(obj){
+        if(obj.selected){
+            estimateService.sendEstimetTextToNumber(estimateObj, obj.contact)
+            .then(function(result){
+                addNewComment('Estimate texted to ' + obj.contact, true, estimateObj)
+            });
+        }
+    });
 }
 
 $scope.cancel = function() {
@@ -705,7 +739,81 @@ $scope.save = function() {
 	});
 }
 
-$scope.saveAndSend = function () {
+$scope.saveAndSend = function(){
+    if (! validateForms())	return;
+
+    $('#emailText-error').hide();
+
+    var persons = $scope.selectedCustomer.entity.get('contactPersons');
+
+    $scope.contacts = [];
+    $scope.mobileContacts = [];
+
+    if(persons.length){
+        persons.forEach(function(obj){
+            var first = obj.get('firstname') ? obj.get('firstname') : '';
+            var last = obj.get('lastname') ? obj.get('lastname') : '';
+            var primary = obj.get('defaultPerson') == 1 ? true : false;
+
+            var name = first + ' ' + last;
+            if(obj.get('email')){
+                $scope.contacts.push({
+                    selected : primary,
+                    contact : obj.get('email'),
+                    contactName : '('+ name + ') ' + obj.get('email')
+                });
+            }
+
+            if(obj.get('phone')){
+                $scope.mobileContacts.push({
+                    selected : primary,
+                    contact : obj.get('phone'),
+                    contactName : '('+ name + ') ' + obj.get('phone')
+                });
+            }
+
+            if(obj.get('mobile')){
+                $scope.mobileContacts.push({
+                    selected : primary,
+                    contact : obj.get('mobile'),
+                    contactName : '('+ name + ') ' + obj.get('mobile')
+                });
+            }
+        });
+    }
+
+    if($scope.contacts.length || $scope.mobileContacts.length){
+        $('.email-text').addClass('show');
+    } else {
+        saveAndSend1();
+    }
+}
+    
+$scope.sendReceipt = function(){
+        debugger;
+        
+        var email = 0;
+        var mobile = 0;
+        
+        $scope.contacts.forEach(function(obj){
+            if(obj.selected)
+                email++;
+        });
+        
+        $scope.mobileContacts.forEach(function(obj){
+            if(obj.selected)
+                mobile++;
+        });
+        
+        if(email > 0 || mobile > 0){
+            saveAndSend1();
+        }
+        else {
+            $('#emailText-error').show();
+        }
+    }
+    
+function saveAndSend1 () {
 	if (! validateForms())	return;
 
 	showLoader();
@@ -724,8 +832,10 @@ $scope.saveAndSend = function () {
 		}
 	})
 	.then(function(estimate) {
+        /*
         if($scope.selectedCustomer.entity.email)
                 addNewComment('Estimate emailed to ' + $scope.selectedCustomer.entity.email, true, estimate);
+                */
 		hideLoader();
 		$state.go('dashboard.sales.estimates.all');
 
