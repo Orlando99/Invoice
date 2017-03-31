@@ -377,9 +377,11 @@ clientAdminPortalApp.controller('UserRecordController',
       projUser.equalTo("userName", record.get('username'));
       projUser.first()
       .then(function(obj){
+          var userRole = undefined;
           if(obj){
-              var userRole = obj.get("role");
+              userRole = obj.get("role");
               obj.destroy();
+          }
               
               var query = new Parse.Query(Parse.Role);
               query.equalTo("name", record.get('username'));
@@ -389,7 +391,7 @@ clientAdminPortalApp.controller('UserRecordController',
                   var promises = [];
                   if(roleObj)
                       promises.push(roleObj.destroy());
-                  if(userRole == "Main"){
+                  if(userRole == "Main" || !userRole){
                       if(org)
                         promises.push(org.destroy());
                       if(bus)
@@ -439,7 +441,7 @@ clientAdminPortalApp.controller('UserRecordController',
                   });
               });
               
-          }
+          
       }, function(error){
           var query = new Parse.Query(Parse.Role);
           query.equalTo("name", record.get('username'));
