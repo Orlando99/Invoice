@@ -546,6 +546,9 @@ $scope.doRefundPayment = function() {
                     promises.push(invoiceObj.save());
                     promises.push(info.save());
 
+                    var body = 'Refund made for '+ currencyFilter(payment.amount, '$', 2) +' amount';
+                    promises.push(addNewComment(body, true));
+                    
                     $q.all(promises)
                     .then(function() {
                         hideLoader();
