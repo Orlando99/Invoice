@@ -470,7 +470,11 @@ $scope.showPaymentDetail = function(index) {
         */
 }
 
-$scope.refundPayment = function() {
+$scope.refundPayment = function(){
+    $('.confirm-refund').addClass('show');
+}
+
+$scope.doRefundPayment = function() {
 	var mode = $scope.selectedPayment.entity.mode;
 	var refunded = $scope.selectedPayment.entity.deleted;
     
