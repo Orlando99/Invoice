@@ -533,7 +533,7 @@ $scope.doRefundPayment = function() {
 
                     var invoiceObj = $scope.invoice.entity;
                     invoiceObj.unset('invoiceReceipt');
-                    //invoiceObj.increment('paymentMade', -payment.amount);
+                    invoiceObj.increment('paymentMade', -payment.amount);
                     invoiceObj.increment('balanceDue', payment.amount);
 
                     if (invoiceObj.get('paymentMade') <= 0)
