@@ -73,7 +73,7 @@ invoicesUnlimited.controller('QuickInvoiceController',
 				number : true,
 				messages : {
 					required : 'Please enter an amount',
-					min : 'Amount should be >= 0',
+					min : 'Please enter an amount',
                     number: 'Please enter a valid amount'
 				}
 			});
