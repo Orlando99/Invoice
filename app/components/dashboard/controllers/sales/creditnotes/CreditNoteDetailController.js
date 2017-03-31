@@ -254,7 +254,7 @@ $scope.textReceipt = function() {
             var name = first + ' ' + last;
             if(obj.get('phone')){
                 $scope.mobileContacts.push({
-                    selected : primary,
+                    selected : false,
                     contact : obj.get('phone'),
                     contactName : '('+ name + ') ' + obj.get('phone')
                 });
