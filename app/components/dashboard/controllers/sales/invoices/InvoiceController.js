@@ -521,14 +521,14 @@ function saveEditedInvoice(params) {
         today.setHours(23);
         if(invoice.get('status') == 'Overdue'){
             if($scope.dueDate > today){
-                invoice.set('status', 'Unpaid');
+                invoice.set('status', 'Draft');
             }
         }
     }
 	else {
         invoice.unset('dueDate');
         if(invoice.get('status') == 'Overdue'){
-            invoice.set('status', 'Unpaid');
+            invoice.set('status', 'Draft');
         }
     }
 
