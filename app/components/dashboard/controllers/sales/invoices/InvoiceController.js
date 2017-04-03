@@ -260,14 +260,14 @@ function prepareEditForm() {
 
 	$scope.todayDate = invoice.entity.invoiceDate;
 	$scope.dueDate = invoice.entity.dueDate;
-
+    /*
 	$scope.paymentTerms = {
 		terms : [
 			{name: "Due on Receipt", value : 1},
 			{name: "Off", 			 value : 0}
 		],
 	};
-    
+    */
     $scope.paymentTerms = {
 			terms : [
 				{name: "Off", value : 0},
@@ -282,7 +282,16 @@ function prepareEditForm() {
 
 	$scope.hasDueDate = (invoice.entity.dueDate) ? true : false;
 	if ($scope.hasDueDate) {
-		$scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms[1];
+        if(!invoice.entity.paymentTerms)
+            $scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms[1];
+        else{
+            $scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms.filter(function(obj){
+                return obj.name == invoice.entity.paymentTerms;
+            })[0];
+            
+            //$scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms[index];
+            
+        }
 	} else {
 		$scope.paymentTerms.selectedTerm = $scope.paymentTerms.terms[0];
 	}
@@ -513,8 +522,11 @@ function saveEditedInvoice(params) {
 
 	if($scope.selectedLateFee)
 		invoice.set('lateFee', $scope.selectedLateFee.entity);
-	else	invoice.unset('lateFee');
+	else	
+        invoice.unset('lateFee');
 
+    invoice.set('paymentTerms', $scope.paymentTerms.selectedTerm.name);
+    
 	if($scope.paymentTerms.selectedTerm.value > 0){
 		invoice.set('dueDate', $scope.dueDate);
         var today = new Date();

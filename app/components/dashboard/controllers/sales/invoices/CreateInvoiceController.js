@@ -782,7 +782,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			poNumber : $scope.poNumber,
 			salesPerson : $scope.salesPerson,
 			notes : $scope.notes,
-			terms : $scope.terms
+			terms : $scope.terms,
+            paymentTerms : $scope.paymentTerms.selectedTerm.name
 
 		};
 		if($scope.customFields.length) {
