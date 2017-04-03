@@ -281,7 +281,8 @@ invoicesUnlimited.controller('QuickInvoiceController',
 			poNumber : $scope.poNumber,
 			salesPerson : $scope.salesPerson,
 			notes : $scope.notes,
-			terms : $scope.terms
+			terms : $scope.terms,
+            paymentTerms : 'Due on Receipt'
 
 		};
 		
