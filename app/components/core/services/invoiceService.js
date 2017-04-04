@@ -1083,14 +1083,36 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 			labels['tip-text'] = labels['tip-price'] = "";
 
 		var discounts = invoice.get("discounts") || 0;
-		var shipCharges = invoice.get('shippingCharges') || 0;
-		var adjustments = invoice.get('adjustments') || 0;
+		//var shipCharges = invoice.get('shippingCharges') || 0;
+		var shipCharges = invoice.get('shippingCharges');
+		var adjustments = invoice.get('adjustments');
+		//var adjustments = invoice.get('adjustments') || 0;
 		var sum = subTotal + totalTax;
 		var discountRatio = (100 - discounts) * 0.01;
 
-		jsonObj.items['shippingChargesPrice'] = currencyFilter(shipCharges, '$', 2);
-		jsonObj.items['adjustmentsPrice'] = currencyFilter(adjustments, '$', 2);
+        if(shipCharges){
+            jsonObj.items['shippingChargesPrice'] = currencyFilter(shipCharges, '$', 2);
+            jsonObj.items['shippingCharges'] = 'SHIPPING CHARGES';
+        }
+        else {
+            jsonObj.items['shippingChargesPrice'] = '';
+            jsonObj.items['shippingCharges'] = '';
+        }
+        
+        shipCharges = invoice.get('shippingCharges') || 0;
+        
+        
+        if(adjustments){
+            jsonObj.items['adjustmentsPrice'] = currencyFilter(adjustments, '$', 2);
+            jsonObj.items['adjustments'] = 'ADJUSTMENTS';
+        }
+        else {
+            jsonObj.items['adjustmentsPrice'] = '';
+            jsonObj.items['adjustments'] = '';
+        }
 
+        adjustments = invoice.get('adjustments') || 0
+        
 		if(discountType == 2) // before tax
 			sum = (subTotal * discountRatio) + totalTax;
 		else if (discountType == 3) // after tax

@@ -765,6 +765,17 @@ invoicesUnlimited.controller('CreateInvoiceController',
     }
 
 	function saveInvoice() {
+        
+        if ($scope.prefs.shipCharges) {
+			if(!$scope.shippingCharges)
+                $scope.shippingCharges = 0;
+		}
+        
+        if ($scope.prefs.adjustments) {
+			if(!$scope.adjustments)
+                $scope.adjustments = 0;
+		}
+        
 		var invoice = {
 			userID : user,
 			organization : organization,
