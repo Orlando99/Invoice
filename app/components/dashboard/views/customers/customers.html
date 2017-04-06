@@ -28,7 +28,7 @@
           </td>
       </tr>
 <tr ng-repeat="customer in customers" ui-sref="dashboard.customers.details({customerId:customer.entity.id})" style="cursor:pointer">
-    <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.displayName}}<span ng-show="customer.entity.status == 'inactive'"> (Deactivated)</span></td>
+    <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.salutation + ' ' + customer.entity.displayName}}<span ng-show="customer.entity.status == 'inactive'"> (Deactivated)</span></td>
         <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.companyName}}</td>
         <td class="layout-padding text-color-light ellipsis" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.email}}</td>
         <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.phone}}</td>
