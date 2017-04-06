@@ -161,21 +161,21 @@
 
         <div class="table-row row-border show_hover">
           <div class="col-15">
-            <p class="layout-margin-tb">{{payment.date}}</p>
+            <p ng-class="payment.entity.deleted ? 'text-danger' : ''" class="layout-margin-tb">{{payment.date}}</p>
           </div>
           <div class="col-15 layout-padding-l">
-            <label class="layout-margin-tb text-color-light">{{$index+1}}</label>
+            <label ng-class="payment.entity.deleted ? 'text-danger' : ''" class="layout-margin-tb text-color-light">{{$index+1}}</label>
           </div>
           <div class="col-20 layout-padding-l">
-            <p>{{payment.entity.reference}} <br/>
+            <p ng-class="payment.entity.deleted ? 'text-danger' : ''">{{payment.entity.reference}} <br/>
               <label ng-show="payment.entity.deleted" class="col-20 text-danger">REFUNDED</label>
             </p>
           </div>
           <div class="col-25 layout-padding-l">
-            <h3 class="text-weight-normalize layout-margin-tb text-color-light">{{payment.entity.mode}}</h3>
+            <h3 ng-class="payment.entity.deleted ? 'text-danger' : ''" class="text-weight-normalize layout-margin-tb text-color-light">{{payment.entity.mode}}</h3>
           </div>
           <div class="col-15 layout-padding-l">
-            <h3 class="text-weight-normalize layout-margin-tb text-color-light">{{payment.amount}}</h3>
+            <h3 ng-class="payment.entity.deleted ? 'text-danger' : ''" class="text-weight-normalize layout-margin-tb text-color-light">{{payment.amount}}</h3>
           </div>
           <div class="col-10 layout-padding-l">
             <button class="float-right button button-icon layout-margin-tb" style="font-size:20px">

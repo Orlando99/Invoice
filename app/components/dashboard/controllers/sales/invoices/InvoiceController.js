@@ -1179,6 +1179,12 @@ function ListInvoices() {
             case "Sent":
 				obj.statusClass = "text-sent";
 				break;
+            case "Refunded":
+				obj.statusClass = "text-danger";
+				break;
+            case "Partial Refunded":
+				obj.statusClass = "text-danger";
+				break;
 			default:
 				obj.statusClass = "text-color-normalize";
 			}
