@@ -551,8 +551,14 @@ $scope.doRefundPayment = function() {
                     
                     $q.all(promises)
                     .then(function() {
+                        $('.confirm-refund').removeClass('show');
+                        $('.refund-payment').removeClass('show');
+
+                        showSnackbar("Payment Refunded");
                         hideLoader();
-                        $state.reload();
+                        setTimeout(function(){ 
+                            $state.reload();
+                        }, 2000);
                     });
                 }
                 
@@ -591,8 +597,14 @@ $scope.doRefundPayment = function() {
         
 	$q.all(promises)
 	.then(function() {
-		hideLoader();
-		$state.reload();
+        $('.confirm-refund').removeClass('show');
+        $('.refund-payment').removeClass('show');
+        
+        showSnackbar("Payment Refunded");
+        hideLoader();
+        setTimeout(function(){ 
+            $state.reload();
+        }, 2000);
 	});
 }
 
@@ -636,8 +648,14 @@ function refundCredit(){
 
         $q.all(promises)
         .then(function() {
+            $('.confirm-refund').removeClass('show');
+            $('.refund-payment').removeClass('show');
+
+            showSnackbar("Payment Refunded");
             hideLoader();
-            $state.reload();
+            setTimeout(function(){ 
+                $state.reload();
+            }, 2000);
         });
         
     });
