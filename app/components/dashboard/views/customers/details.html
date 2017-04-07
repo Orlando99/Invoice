@@ -2,7 +2,7 @@
     <a ui-sref="dashboard.customers.all" class="button-icon float-left">
       <img src="./assets/images/icon-back.png" alt="Kappa">
     </a>
-    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{selectedCustomer.entity.displayName}}<span style="padding-left: 5px !important" ng-show="selectedCustomer.entity.status == 'inactive'"> (Deactivated)</span></h3>
+    <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{selectedCustomer.entity.salutation + ' ' +  selectedCustomer.entity.displayName}}<span style="padding-left: 5px !important" ng-show="selectedCustomer.entity.status == 'inactive'"> (Deactivated)</span></h3>
     <div class="actions float-right layout-margin-tb">
       <a ui-sref="dashboard.customers.edit({customerId:selectedCustomerId})" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <button class="button button-small button-info text-uppercase layout-margin-r menu">New <img src="./assets/images/dropdown-arrow-w.png" alt="">
@@ -61,7 +61,7 @@
           </tr><div class="clearfix"></div>
           <tr class="container text-color-light" ng-show = "selectedCustomer.entity.firstName">
             <td class="col-50 layout-padding-tb">Name</td>
-            <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.firstName + ' ' + selectedCustomer.entity.lastName}}</td>
+            <td class="col-50 layout-padding-tb">{{selectedCustomer.entity.salutation + ' ' + selectedCustomer.entity.firstName + ' ' + selectedCustomer.entity.lastName}}</td>
           </tr><div class="clearfix"></div>
           <tr class="container text-color-light" ng-show = "selectedCustomer.entity.phone">
             <td class="col-50 layout-padding-tb">Mobile</td>
@@ -142,7 +142,7 @@
         </tr>
         <tr class="text-color-light" ng-repeat="person in selectedCustomer.contactPersons track by $index">
               <td class="layout-padding-tb-lg valign-top"style = "position: relative;
-               left: 18px;" >{{person.entity.firstname+' '+person.entity.lastname}}
+               left: 18px;" >{{person.entity.salutation + ' ' + person.entity.firstname+' '+person.entity.lastname}}
                <div ng-show="person.entity.defaultPerson">
                <span class="glyphicon glyphicon-ok-sign" style =  "position: relative;left: -19px;top: -17px;" aria-hidden="true" > </span>
              </div>

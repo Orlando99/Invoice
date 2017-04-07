@@ -106,6 +106,14 @@ function prepareToCreateProject() {
 		$scope.customers = res.sort(function(a,b){
 			return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 		});
+        
+        $scope.customers.forEach(function(obj){
+                if(obj.entity.salutation)
+                    obj.fullName = obj.entity.salutation + " " + obj.entity.displayName;
+                else
+                    obj.fullName = obj.entity.displayName;
+            });
+        
 		$scope.customers.push(createCustomerOpener);
 		//$scope.selectedCustomer = $scope.customers[0];
 	});

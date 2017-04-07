@@ -38,7 +38,7 @@
       <tr ng-repeat="project in projectList"
         ui-sref="dashboard.projects.details({projectId:project.entity.id})" style="cursor:pointer">
         <td class="text-color-light layout-padding-tb-lg">{{project.entity.projectName}}</td>
-        <td class="text-color-light layout-padding-tb-lg">{{project.customer.displayName}}</td>
+        <td class="text-color-light layout-padding-tb-lg">{{project.customer.salutation + ' ' + project.customer.displayName}}</td>
         <td class="text-color-light layout-padding-tb-lg" style="width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 300px;">{{project.entity.projectDescription}}</td>
         <td class="text-color-light layout-padding-tb-lg">{{project.entity.billingMethod}}</td>
         <td class="text-color-light layout-padding-tb-lg">{{project.entity.projectBillingAmount}}</td>

@@ -8,7 +8,7 @@
       <div class="input-container col-60 layout-margin-b">
         <label class="layout-padding-t-sm">Customer Name</label>
         <select name="customer" class="col-75" ng-model="selectedCustomer" ng-change="customerChanged()"
-          ng-options="customer.entity.displayName for customer in customers">
+          ng-options="customer.fullName for customer in customers">
           <option value="" disabled>Select Customer</option>
         </select>
       </div>

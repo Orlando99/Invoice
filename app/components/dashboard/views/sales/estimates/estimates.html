@@ -33,7 +33,7 @@
         <td class="layout-padding text-color-light">{{estimate.estimateDate}}</td>
         <td class="layout-padding text-color-light"><span style="vertical-align: inherit;">{{estimate.entity.estimateNumber}}</span><span ng-show="estimate.attachments"><img style="width: 20px; margin-left:5px" src="./assets/images/pin_icon.png"></span></td>
         <td class="layout-padding text-color-light">{{estimate.entity.referenceNumber}}</td>
-        <td class="layout-padding text-color-light">{{estimate.customer.displayName}}</td>
+        <td class="layout-padding text-color-light">{{estimate.customer.salutation + ' ' + estimate.customer.displayName}}</td>
         <td class="layout-padding"><span class="{{estimate.statusClass}}">{{estimate.entity.status}}</span></td>
         <td class="layout-padding text-color-light">{{estimate.totalAmount}}</td>
       </tr>

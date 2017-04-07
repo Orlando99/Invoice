@@ -40,7 +40,7 @@
         <td class="text-color-light">{{expense.expenseDate}}</td>
         <td class="text-color-light">{{expense.entity.category}}</td>
         <td style="min-width: 120px !important;" class="text-color-light">{{expense.entity.referenceNumber}}</td>
-        <td class="text-color-light">{{expense.customer.displayName}}</td>
+        <td class="text-color-light">{{expense.customer.salutation + ' ' + expense.customer.displayName}}</td>
         <td><span class="{{expense.statusClass}}">{{expense.entity.status}}</span></td>
         <td style="text-align: center !important;" class="text-color-light">{{expense.amount}}</td>
           <td ng-show="expense.attachments"><span><img style="width: 20px;" src="./assets/images/pin_icon.png"></span></td>

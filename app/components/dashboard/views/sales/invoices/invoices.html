@@ -57,7 +57,7 @@
         <td class="text-color-light">{{invoice.invoiceDate}}</td>
         <td class="text-color-light"><span style="vertical-align: inherit;">{{invoice.entity.invoiceNumber}}</span><span ng-show="invoice.attachments"><img style="width: 20px; margin-left:5px" src="./assets/images/pin_icon.png"></span></td>
         <td class="text-color-light">{{invoice.entity.poNumber}}</td>
-        <td class="text-color-light">{{invoice.customer.displayName}}</td>
+        <td class="text-color-light">{{invoice.customer.salutation + ' ' + invoice.customer.displayName}}</td>
         <td class="text-color-light">{{invoice.dueDate}}</td>
         <td  class="text-color-light text-center">{{invoice.total}}</td>
         <td Style="min-width: 97px ; max-width: 133px;"  class="text-color-light text-center">{{invoice.balanceDue}}</td>

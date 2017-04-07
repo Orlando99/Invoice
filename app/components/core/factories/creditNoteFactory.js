@@ -20,7 +20,7 @@ function CreditNote (parseObject, params) {
 		];
 		var customer = parseObject.get("customer");
 		if (customer) {
-			var customerFields = ["displayName"];
+			var customerFields = ["displayName", "salutation"];
 			setObjectOperations({
 				object 		: customer,
 				fieldName	: undefined,
@@ -54,7 +54,7 @@ function CreditNote (parseObject, params) {
 				object 		: customer,
 				fieldName	: undefined,
 				parent 		: undefined,
-				fields 		: ["displayName"]
+				fields 		: ["displayName", "salutation"]
 			});
 			this.customer = customer;
 		}
@@ -99,7 +99,7 @@ function CreditNote (parseObject, params) {
 				object 		: customer,
 				fieldName	: undefined,
 				parent 		: undefined,
-				fields 		: ['displayName']
+				fields 		: ['displayName', 'salutation']
 			});
 			this.customer = customer;
 		}

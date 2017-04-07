@@ -34,7 +34,7 @@
         <td class="text-color-light">{{creditNote.creditNoteDate}}</td>
         <td Style="padding-left: 12px !important"  class="text-color-light">{{creditNote.entity.creditNumber}}</td>
         <td class="text-color-light text-center">{{creditNote.entity.reference}}</td>
-        <td class="text-color-light">{{creditNote.customer.displayName}}</td>
+        <td class="text-color-light">{{creditNote.customer.salutation + ' ' + creditNote.customer.displayName}}</td>
      
         <td><span class="{{creditNote.statusClass}}">{{creditNote.entity.status}}</span></td>
         <td class="text-color-light">{{creditNote.total}}</td>

@@ -9,7 +9,7 @@
         <label class="layout-padding-t-sm">Customer Name</label>
         <select class="col-75" name="customer" id="customer"
                 ng-model="selectedCustomer" ng-change="customerChanged()"
-          ng-options="customer.entity.displayName for customer in customers">
+          ng-options="customer.fullName for customer in customers">
           <option value="" disabled>Select customer</option>
         </select>
       </div>

@@ -18,7 +18,7 @@ function Expense (parseObject, params) {
 		];
 		var customer = parseObject.get('customer');
 		if (customer) {
-			var customerFields = ['displayName'];
+			var customerFields = ['displayName', 'salutation'];
 			setObjectOperations({
 				object 		: customer,
 				fieldName	: undefined,
@@ -46,7 +46,7 @@ function Expense (parseObject, params) {
 		];
 		var customer = parseObject.get('customer');
 		if (customer) {
-			var customerFields = ['displayName'];
+			var customerFields = ['displayName', 'salutation'];
 			setObjectOperations({
 				object 		: customer,
 				fieldName	: undefined,
@@ -64,7 +64,7 @@ function Expense (parseObject, params) {
 		expenseFields = ['category', 'amount', 'expanseDate'];
 		var customer = parseObject.get('customer');
 		if (customer) {
-			var customerFields = ['displayName'];
+			var customerFields = ['displayName', 'salutation'];
 			setObjectOperations({
 				object 		: customer,
 				fieldName	: undefined,

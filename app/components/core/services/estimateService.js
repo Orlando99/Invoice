@@ -825,7 +825,10 @@ function fillInXmlData(xmlUrl, user, estimate) {
 			var mail = custmr.get("email");
 			labels['clientmail'] =  mail;
 			labels['clientmailto'] = "mailto:" + mail;
-			labels['clientname'] = custmr.get("displayName");
+			if(custmr.get("salutation"))
+			     labels['clientname'] = custmr.get('salutation') + " " + custmr.get("displayName");
+            else 
+			     labels['clientname'] = custmr.get("displayName");
 			labels['clientnr'] = custmr.get("phone");
             if(custmr.get('currency'))
 			     labels['body-currency'] = custmr.get("currency").split(" ")[0];

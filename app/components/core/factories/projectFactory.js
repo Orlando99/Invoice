@@ -21,7 +21,7 @@ function Project (parseObject, params) {
 		var customer = parseObject.get("customer");
 		if (customer) {
             var n = customer.get("displayName");
-			var customerFields = ["displayName"];
+			var customerFields = ["displayName", "salutation"];
 			setObjectOperations({
 				object 		: customer,
 				fieldName	: undefined,
