@@ -176,7 +176,7 @@ function loadItemsAndTaxes() {
       {
         $scope.items = items.filter(function(obj)
         {
-            return !obj.entity.expanseId;
+            return !obj.entity.expanseId && obj.entity.title.indexOf('Misc. Item') < 0;
         });
         $scope.displayedItems = $scope.items;
        });
