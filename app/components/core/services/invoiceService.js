@@ -39,6 +39,7 @@ return {
 		var invoiceTable = Parse.Object.extend('Invoices');
 		var query = new Parse.Query(invoiceTable);
 		query.equalTo('organization', params.organization);
+        query.limit(1000);
 		// set year,month,day constraint
 		query.select('invoiceDate', 'dueDate', 'status', 'balanceDue', 'lateFee', 'total');
 
@@ -472,6 +473,7 @@ return {
 
 		query.equalTo("organization", organization);
 		query.include("customer");
+        query.limit(1000);
 		//query.select("invoiceNumber", "invoiceDate", "dueDate", "total", "balanceDue", "status", "customer", "poNumber");
 
 		return query.find().then(function(invoiceObjs) {
