@@ -309,6 +309,8 @@ $scope.applyCredit = function() {
 	} else {
         var due = invoiceObj.get('dueDate');
         var today = new Date();
+        due.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
         if(due > today)
             invoiceObj.set('status', 'Partial Paid');
         else
@@ -418,6 +420,8 @@ $scope.addPayment = function() {
 	else{
 		var due = invoiceObj.get('dueDate');
         var today = new Date();
+        due.setHours(0, 0, 0, 0);
+        today.setHours(0, 0, 0, 0);
         if(due > today)
             invoiceObj.set('status', 'Partial Paid');
         else
@@ -771,10 +775,12 @@ $scope.sendText = function(){
     
 	showLoader();
     
-    if($scope.invoice.entity.get('status') == 'Draft')
+    if($scope.invoice.entity.get('status') == 'Draft' || $scope.invoice.entity.get('status') == 'Sent')
     {  
         var dueDate = $scope.invoice.entity.get('dueDate');
         var toDate = new Date();
+        dueDate.setHours(0, 0, 0, 0);
+        toDate.setHours(0, 0, 0, 0);
         if(dueDate<toDate)
         {
            $scope.invoice.entity.set('status', 'Overdue');
@@ -848,10 +854,12 @@ $scope.sendEmail = function(){
     
 	showLoader();
     
-    if($scope.invoice.entity.get('status') == 'Draft')
+    if($scope.invoice.entity.get('status') == 'Draft' || $scope.invoice.entity.get('status') == 'Sent')
     {  
         var dueDate = $scope.invoice.entity.get('dueDate');
         var toDate = new Date();
+        dueDate.setHours(0, 0, 0, 0);
+        toDate.setHours(0, 0, 0, 0);
         if(dueDate<toDate)
         {
            $scope.invoice.entity.set('status', 'Overdue');

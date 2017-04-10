@@ -135,9 +135,11 @@ return {
 		})
 		.then(function(invInfoObj) {
 			invoice.set('invoiceInfo', invInfoObj);
-            var d = invoice.get('dueDate');
+            var date = invoice.get('dueDate');
             var today = new Date();
-            if(d < today)
+            date.setHours(0, 0, 0, 0);
+            today.setHours(0, 0, 0, 0);
+            if(date < today)
 			     invoice.set('status', 'Overdue');
             //else
             //    invoice.set('status', 'Sent');
