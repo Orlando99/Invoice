@@ -667,6 +667,17 @@ function refundCredit(){
     
 }
  
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
+
+function getFileExtension(filename){
+    return '.' + filename.split('.').pop();
+}
+    
 $scope.addAttachment = function(obj) {
 	var file = obj.files[0];
 	if (!file) return;
@@ -678,11 +689,8 @@ $scope.addAttachment = function(obj) {
     }
     $('#file-error').hide();
 
-    if(n.toLowerCase().indexOf("^") >= 0)
-    {
-        n =  n.replace("^", "");
-        
-    } 
+    n = 'Attachment ' + addZero($scope.attachments.length + 1) + getFileExtension(n);
+    
      var fileSizeinBytes = obj.files[0].size;
      if(fileSizeinBytes > 5242880 )
      {
@@ -694,6 +702,7 @@ $scope.addAttachment = function(obj) {
     showLoader();
     
 	var invoiceObj = $scope.invoice.entity;
+	//var parseFile = new Parse.File(n, file);
 	var parseFile = new Parse.File(n, file);
 
 	$q.when(parseFile.save())

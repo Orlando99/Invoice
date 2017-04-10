@@ -66,7 +66,8 @@ invoicesUnlimited.factory('coreFactory',
 		return query.find().then(function(res) {
 			var items = [];
 			res.forEach(function(elem) {
-				items.push(new itemFactory(elem));
+                if(elem.get('title').indexOf('Misc. Item') < 0)
+				    items.push(new itemFactory(elem));
 			});
 			return items;
 		});

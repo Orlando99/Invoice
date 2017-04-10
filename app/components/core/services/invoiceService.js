@@ -196,7 +196,7 @@ return {
 					newFiles.push(file);
 
 				} else {
-					var parseFile = new Parse.File(file.name, file);
+					var parseFile = new Parse.File(file.fileName, file);
 					promises.push(parseFile.save());
 				}
 			});
@@ -304,7 +304,7 @@ return {
 					newFiles.push(file);
 
 				} else {
-					var parseFile = new Parse.File(file.name, file);
+					var parseFile = new Parse.File(file.fileName, file);
 					promises.push(parseFile.save());
 				}
 			});

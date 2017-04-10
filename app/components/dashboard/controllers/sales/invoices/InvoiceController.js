@@ -318,7 +318,9 @@ function prepareEditForm() {
 	} else {
 		$scope.files = [];
 	}
-
+    
+    $scope.lastFileNumber = $scope.files.length;
+    
 	switch($scope.prefs.discountType) {
 		case 0:
 			$scope.itemLevelTax = false;
@@ -697,7 +699,9 @@ $scope.saveAndSend = function () {
         return;
     }
     $('#file-size-error').hide();
-        
+    
+    n = 'Attachment ' + addZero(++$scope.lastFileNumber) + getFileExtension(n);
+     
     file.fileName = n; // to avoid naming conflict
     file.fileName1= n;
 	$scope.files.push(file);
@@ -706,6 +710,17 @@ $scope.saveAndSend = function () {
 
 $scope.removeFile = function(index) {
 	$scope.files.splice(index,1);
+}
+
+function addZero(i) {
+    if (i < 10) {
+        i = "0" + i;
+    }
+    return i;
+}
+
+function getFileExtension(filename){
+    return '.' + filename.split('.').pop();
 }
 
 //----- common --------

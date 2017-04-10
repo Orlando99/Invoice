@@ -166,6 +166,11 @@ invoicesUnlimited.controller('CompanyProfileController',
         $scope.newLogo = obj.files[0];
         //$scope.tempLogo = obj.files[0];   
     }
+    
+    function getFileExtension(filename){
+        return '.' + filename.split('.').pop();
+    }
+    
     $scope.saveBusiness = saveNow;
         
      function saveNow(){
@@ -209,7 +214,7 @@ invoicesUnlimited.controller('CompanyProfileController',
          
          if($scope.newLogo){
             
-            var parseFile = new Parse.File($scope.newLogo.name, $scope.newLogo);
+            var parseFile = new Parse.File("logo" + getFileExtension($scope.newLogo.name), $scope.newLogo);
              
              promises.push(parseFile.save()
                 .then(function(obj){

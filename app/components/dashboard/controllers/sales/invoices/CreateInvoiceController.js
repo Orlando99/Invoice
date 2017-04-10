@@ -225,7 +225,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			organization : organization
 		})).then(function(items) {
 			$scope.actualItems = items.filter(function(item) {
-				return !item.entity.expanseId;
+				return !item.entity.expanseId && item.entity.title.indexOf('Misc. Item') < 0;
 			});
 			$scope.expenseItems = items.filter(function(item) {
 				return item.entity.expanseId;
@@ -1211,6 +1211,17 @@ invoicesUnlimited.controller('CreateInvoiceController',
 		$state.go('dashboard.sales.invoices.all');
 	}
 
+    function addZero(i) {
+        if (i < 10) {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+    function getFileExtension(filename){
+        return '.' + filename.split('.').pop();
+    }
+    
 	$scope.addNewFile = function(obj) {
 		var file = obj.files[0];
         var n = file.name;
@@ -1235,11 +1246,17 @@ invoicesUnlimited.controller('CreateInvoiceController',
         
         file.fileName = n; // to avoid naming conflict
 		$scope.files.push(file);
+        for(var i = 0; i < $scope.files.length; ++i){
+            $scope.files[i].fileName = 'Attachment ' + addZero(i + 1) + getFileExtension($scope.files[i].fileName);
+        }
 		$scope.$apply();
 	}
 
 	$scope.removeFile = function(index) {
 		$scope.files.splice(index,1);
+        for(var i = 0; i < $scope.files.length; ++i){
+            $scope.files[i].fileName = 'Attachment ' + addZero(i + 1) + getFileExtension($scope.files[i].fileName);
+        }
 	}
 
 	$scope.calculateDueDate = function() {		
