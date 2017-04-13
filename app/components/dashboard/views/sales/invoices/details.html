@@ -518,10 +518,20 @@
         font-size: 16px;
         vertical-align: middle;
     }
+    a {
+			text-decoration: none;
+		}
     </style>
 
     <page id="page-container" backtop="0mm" backbottom="10mm" backleft="10mm" backright="15mm">
-
+		<!--
+		<div class="ff1 fc0" 
+             style="position: relative;
+                    height: 10mm;
+                    white-space: pre;
+                    font-size: 30px;
+                    text-align: center;
+                    line-height: 10mm;" ><span id='pdf-title'>Invoice</span></div>
         <div class="ff1 fc0" 
              style="position: relative;
                     height: 10mm;
@@ -529,11 +539,11 @@
                     font-size: 16px;
                     text-align: center;
                     line-height: 10mm;" ><span id='pdf-payment-name'>#</span></div>
-
+		-->
         <table cellspacing="0" 
                style="width: 185mm;                   
                       height: 122mm;
-                      position: absolute;
+                      /*position: absolute;*/
                       top: 10mm;
                       z-index: 10;
                       table-layout: fixed">
@@ -545,112 +555,121 @@
                 <td style="width: 30mm;"></td>
                 <td style="width: 30mm;"></td>
             </thead>
-            <tr>
-                <td style="font-size: 16px;
-                           height: 9mm;
-                           vertical-align: bottom;"
-                    class="ff1 fc1 top-line" colspan="2">DATE</td>
+			<!--
+			<tr>
+                <td colspan="6" class="btm-line"></td>
+            </tr>
+			
+			<tr>
+                <td style="height: 6mm;"></td>
+            </tr>
+			-->
+			
+			<tr>
+				<td style="font-size: 18px;
+                           vertical-align: middle;
+						   border-right: 1px solid #000000;
+						   border-bottom: 1px solid #000000;
+						   text-align: left;
+						   padding-bottom: 25px;
+						   padding-left: 26px;"
+                    class="ff1 fc0" colspan="3"> <span style="font-size: 60px;">Invoice</span> <br>
+				
+					<span class="fc1">INV-32</span> <br>
+					<span>--------------------------------------------------</span>
+					<br>
+					<span class="fc1" style="padding-right: 70px;">Total</span> <span style="padding-right: 70px;" class="fc1">Date</span> <span class="fc1">Currency</span> <br>
+					<span class="fc0" style="padding-right: 15px;">$277.52</span> <span style="padding-right: 50px;" class="fc0">Apr 12, 2017</span> <span class="fc0">USD</span>
+					
+				</td>
+                
+                <td style="vertical-align: middle;
+                           font-size: 18px;
+                           text-align: left;
+						   border-bottom: 1px solid #000000;
+						   padding-bottom: 10px;
+						   padding-top: 10px;
+						   padding-left: 26px;"
+                    class="ff1 fc0" colspan="3">
+					<span style="margin-bottom: 5px;" id="pdf-address"></span> <br> <br>
+					<span style="margin-bottom: 5px;" id="user-mail"></span> <br> <br>
+					<span style="margin-bottom: 5px;" id="user-phone"></span></td>
+			</tr>
+			
+			<tr>
+                <td style="border-right: 1px solid #000000;" colspan="3" style="height: 6mm;"></td>
+                <td colspan="3" style="height: 6mm;"></td>
+            </tr>
+			
+			<tr>
+                <td style="font-size: 18px;
+                           height: 5mm;
+                           vertical-align: bottom;
+						   border-right: 1px solid #000000;
+						   padding-left: 26px;"
+                    class="ff1 fc0" colspan="3"
+					>
+				<span id="pdf-notes-title"></span> <br><br>
+					<span class="fc1" id="pdf-notes1"></span> <br>
+				</td>
+                
+                <td style="vertical-align: middle;
+                           font-size: 18px;
+                           text-align: left;
+                           height: 5mm;
+						   padding-left: 26px;"
+                    class="ff1 fc1" colspan="3">
+					<span>To client:</span> <br> <br>
+					<span class="fc0" id="client-name"></span> <br><br>
+					<span class="fc0" id="client-mail"></span>
+					</td>
+            </tr>
+			<!--
+			<tr>
+                <td style="font-size: 18px;
+                           height: 5mm;
+                           vertical-align: bottom;
+						   border-right: 1px solid #000000;
+						   padding-left: 26px;"
+                    class="ff1 fc0" colspan="3"><a id="user-mail" class="ff1 fc0" href="#"></a></td>
+                
                 <td style="vertical-align: bottom;
-                           font-size: 16px;
-                           height: 9mm;" colspan="2"
-                    class="ff1 fc0 top-line btm-line" id="pdf-date">04/08/2016</td>
+                           font-size: 18px;
+                           text-align: left;
+                           height: 5mm;
+						   padding-left: 26px;"
+                    class="ff1 fc0" colspan="3"
+					id="client-name"></td>
+            </tr>
+			<tr>
+                <td style="font-size: 18px;
+                           height: 5mm;
+                           vertical-align: bottom;
+						   border-right: 1px solid #000000;
+						   padding-left: 26px;"
+                    class="ff1 fc0" colspan="3"><a id="user-phone" class="ff1 fc0" href="#"></a></td>
+                
                 <td style="vertical-align: bottom;
-                           font-size: 16px;
-                           text-align: center;
-                           height: 9mm;"
-                    class="ff1 fc0 top-line" colspan="2">Total Amount:</td>
+                           font-size: 18px;
+                           text-align: left;
+                           height: 5mm;
+						   padding-left: 26px;"
+                    class="ff1 fc0" colspan="3"><a id="client-mail" class="ff1 fc0" href="#"></a></td>
             </tr>
-
-            <tr>
-                <td class="ff1 fc1" colspan="2"
-                    style="font-size: 16px;
-                           vertical-align: bottom;
-                           height:8mm">INVOICE Number</td>
-                <td class="ff1 fc0 btm-line" colspan="2" id="pdf-invoice-number"
-                    style="height: 8mm;
-                           vertical-align: bottom;
-                           font-size: 16px;">INV-00000</td>
-                <td rowspan="2" colspan="2"
-                    class="ff1" 
-                    style="vertical-align: middle;
-                           color: rgb(50,125,245);
-                           font-size: 40px;
-                           text-align: center;" id="pdf-amount-received">$0,01</td>
+			-->
+			<tr>
+                <td style="border-right: 1px solid #000000;" colspan="3" style="height: 6mm;"></td>
+                <td colspan="3" style="height: 6mm;"></td>
             </tr>
-            
-            <tr>
-                <td class="ff1 fc1" colspan="2"
-                    style="height: 7mm;
-                           vertical-align: bottom;
-                           padding-bottom: 1mm;
-                           font-size: 16px;"></td>
-                <td class="ff1 fc0" colspan="2" id="pdf-payment-status"
-                    style="height: 7mm;
-                           padding-bottom: 1mm;
-                           vertical-align: bottom;
-                           font-size: 16px;"></td>
-            </tr>
-            
-            <tr>
-                <td class="ff1 fc1" colspan="2"
-                    style="font-size: 16px;
-                           vertical-align: bottom;
-                           height:8mm"></td>
-                <td class="ff1 fc0" colspan="2"
-                    style="height: 8mm;
-                           vertical-align: bottom;
-                           font-size: 16px;"></td>
-            </tr>
-            
-            <tr>
-                <td style="height: 18mm;" colspan="6" class="btm-line"></td>
-            </tr>
-
+			
             <tr>
                 <td style="height: 6mm;"></td>
             </tr>
 
             <tr id="invoice-items-header">
-                <!--
-                <td class="ff1 fc2 btm-line" colspan="2"
-                    style="height: 9mm;
-                           font-size: 16px;
-                           vertical-align: middle;
-                           background: #317cf4;
-                           padding-left: 14pt;">Invoice Details</td>
-                <td class="ff1 fc2 btm-line" colspan="1"
-                    style="height: 9mm;
-                           vertical-align: middle;
-                           text-align: right;
-                           font-size: 16px;
-                           background: #317cf4;">Quantity</td>
-                <td class="ff1 fc2 btm-line" colspan="1"
-                    style="height: 9mm;
-                           vertical-align: middle;
-                           text-align: right;
-                           font-size: 16px;
-                           background: #317cf4;">Discount</td>
-                <td class="ff1 fc2 btm-line" colspan="2"
-                    style="height: 9mm;
-                           vertical-align: middle;
-                           text-align: right;
-                           font-size: 16px;
-                           background: #317cf4;
-                           padding-right: 14pt;">Amount</td>
-                -->
+                
             </tr>
-            <!--
-            <tr id="invoice-items">
-                <td class="ff1 fc0 btm-line invoice-item-title" colspan="3">Test</td>
-                <td class="ff1 fc0 btm-line invoice-item-qty" colspan="1">1</td>
-                <td class="ff1 fc0 btm-line invoice-item-cost" colspan="2">$0,01</td>
-            </tr>
-            <tr id="invoice-items">
-                <td class="ff1 fc0 btm-line invoice-item-title" colspan="3">Test</td>
-                <td class="ff1 fc0 btm-line invoice-item-qty" colspan="1">1</td>
-                <td class="ff1 fc0 btm-line invoice-item-cost" colspan="3">$0,01</td>
-            </tr>
-            -->
+            
             <tr id="invoice-subtotal">
                 <td colspan="3" class=""></td>
                 <td class="ff1 fc1 " colspan="2"
@@ -735,7 +754,41 @@
                            padding-top: 3mm;"
                     id="pdf-amount-due">$0.00</td>
             </tr>
-
+			
+			<tr>
+                <td class="ff1 fc0" colspan="2"
+                    style="padding-bottom: 2mm;
+                           vertical-align: middle;
+                           font-size: 18px;
+                           padding-top: 3mm;"
+					id="pdf-notes-title"></td>
+            </tr>
+			<tr>
+                <td class="ff1 fc1" colspan="6"
+                    style="padding-bottom: 2mm;
+                           vertical-align: middle;
+                           font-size: 18px;"
+					id="pdf-notes"></td>
+                
+            </tr>
+			
+			<tr>
+                <td class="ff1 fc0" colspan="2"
+                    style="padding-bottom: 2mm;
+                           vertical-align: middle;
+                           font-size: 18px;
+                           padding-top: 3mm;"
+					id="pdf-terms-title">Terms &amp; Conditions:</td>
+            </tr>
+			<tr>
+                <td class="ff1 fc1" colspan="6"
+                    style="padding-bottom: 2mm;
+                           vertical-align: middle;
+                           font-size: 18px;"
+					id="pdf-terms">All items prices are final.</td>
+                
+            </tr>
+			
         </table>
         
         <div class="ff1 fc1"

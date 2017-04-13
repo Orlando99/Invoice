@@ -1139,10 +1139,10 @@ function updatePage(dataTable){
             
             
             if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
-                $('#invoice-items-header').append('<td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; background: #317cf4; padding-left: 14pt;">Item</td> <td class="ff1 fc2 btm-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4;">Quantity</td> <td class="ff1 fc2 btm-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4;">Discount</td> <td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4; padding-right: 14pt;">Amount</td>');
+                $('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Discount</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
                 
             } else {
-                $('#invoice-items-header').append('<td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; background: #317cf4; padding-left: 14pt;">Item</td> <td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4;">Quantity</td> <td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4; padding-right: 14pt;">Amount</td>');
+                $('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
             }
             
             /*
@@ -1337,8 +1337,45 @@ function updatePage(dataTable){
 				$('#pdf-credit-applied').text($(this).find('creditsAppliedPrice').text());
 				$('#pdf-amount-due').text($(this).find('refundtotal').text());
 				$('#pdf-payment-name').text($(this).find('title').text());
+				
+				var ad = $(this).find('addres1').text();
+				
+				$('#pdf-address').html(ad.replace(/(.{35})/g, "$1<br>"));
+				
+				var longmsg = $(this).find('longmsg').text();
+				if (longmsg.length != 0){
+					var longmsgTitle = $(this).find('longmsg-title').text();
 
-
+					$('#pdf-notes-title').html(longmsgTitle);
+					$('#pdf-notes').html(longmsg);
+				} else {
+					$('#pdf-notes-title').hide();
+					$('#pdf-notes').hide();
+				}
+				
+				var ordernotesTitle = $(this).find('ordernotes-title').text();
+				var ordernotes = $(this).find('ordernotes').text();
+				$('#pdf-terms-title').text(ordernotesTitle);
+				$('#pdf-terms').text(ordernotes);
+				
+				var mailto = $(this).find('mailto').text();
+				$('#user-mail').attr('href', mailto);
+				var mailtotxt = $(this).find('mailtotxt').text();
+				$('#user-mail').text(mailtotxt);
+				
+				var clientmailto = $(this).find('clientmailto').text();
+				$('#client-mail').attr('href', clientmailto);
+				var clientmail = $(this).find('clientmail').text();
+				$('#client-mail').text(clientmail);
+				
+				var clientname = $(this).find('clientname').text();
+				$('#client-name').text(clientname);
+				
+				var nr = $(this).find('nr').text();
+				$('#user-phone').attr('href', "tel:" + nr);
+				$('#user-phone').text(nr);
+				
+				
 				var card_number = $(this).find('refid').text();
 				$('.visa-card').append(card_number);
 				var purchase_order = $(this).find('purchaseOrderNumber').text();

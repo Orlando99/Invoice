@@ -303,13 +303,18 @@ invoicesUnlimited.controller('CustomersController',
         $scope.sortByDate();
         
 		var obj = $scope.selectedCustomer.entity;
-		if (!obj.billingAddress) return;
-        
-        if(obj.notes){
+		
+		if(obj.notes){
             $scope.selectedCustomer.notes = obj.notes;
         }
 		
-		var billingAddress = JSON.parse(obj.billingAddress);
+		var billingAddress = {};
+		
+		if (obj.billingAddress){
+			billingAddress = JSON.parse(obj.billingAddress);
+		}
+		
+		
 		var shippingAddress = {};
 		if (obj.shippingAddress)
 			shippingAddress = JSON.parse(obj.shippingAddress);
@@ -698,6 +703,12 @@ invoicesUnlimited.controller('CustomersController',
 				cust.invoices = invoices.filter(function(inv){
 					return inv.entity.get('customer').id == cust.entity.id;
 				});
+				
+				if(!cust.entity.unusedCredits)
+					cust.entity.unusedCredits = 0;
+				if(!cust.entity.outstanding)
+					cust.entity.outstanding = 0;
+				
 				cust.comments = 
 				cust.invoices.reduce(function(res,cur){
                     if(cur.comments)

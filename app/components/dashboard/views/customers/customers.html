@@ -20,7 +20,7 @@
           </td>
         <td ng-click="sortByEmail()" style="cursor:pointer" class="layout-padding text-uppercase text-info">Email <span><img id="emailD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="emailDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
           </td>
-        <td ng-click="sortByPhone()" style="cursor:pointer" class="layout-padding text-uppercase text-info">Work Phone <span><img id="workphoneD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="workphoneDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
+        <td ng-click="sortByPhone()" style="cursor:pointer" class="layout-padding text-uppercase text-info">Mobile Phone <span><img id="workphoneD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="workphoneDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
           </td>
         <td ng-click="sortByReceivable()" style="cursor:pointer" class="layout-padding text-uppercase text-info">Receivables <span><img id="receivableD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="receivableDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
           </td>
@@ -31,7 +31,7 @@
     <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.salutation + ' ' + customer.entity.displayName}}<span ng-show="customer.entity.status == 'inactive'"> (Deactivated)</span></td>
         <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.companyName}}</td>
         <td class="layout-padding text-color-light ellipsis" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.email}}</td>
-        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.phone}}</td>
+        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.mobile}}</td>
         <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.outstanding}}</td>
         <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.unusedCredits}}</td>
       </tr>      
