@@ -1110,4 +1110,400 @@ $scope.addComment = function() {
 
 }
 
+$scope.downloadInvoice = function(){
+    var url = $scope.invoice.entity.get('invoiceLabels')._url;
+    debugger;
+    
+    var Connect = new XMLHttpRequest();
+
+    Connect.open("GET", url, false);
+
+    Connect.setRequestHeader("Content-Type", "text/xml");
+    Connect.send(null);
+    
+    updatePage(Connect.responseXML);
+}
+
+function updatePage(dataTable){
+            var itemRows = $(dataTable).find('itemRow');
+            var modsRow = $(dataTable).find('modsRow');
+            var attachments = $(dataTable).find('attachment');
+            var customFields = $(dataTable).find('customField');
+            var taxes = $(dataTable).find('tax');
+            var td = $('<td></td>');
+
+            if ($(dataTable).find('billType').text().includes('estimate')){
+                $('.footer .info').hide()
+                $('.payment-due').hide()
+            }
+            
+            
+            if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+                $('#invoice-items-header').append('<td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; background: #317cf4; padding-left: 14pt;">Item</td> <td class="ff1 fc2 btm-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4;">Quantity</td> <td class="ff1 fc2 btm-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4;">Discount</td> <td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4; padding-right: 14pt;">Amount</td>');
+                
+            } else {
+                $('#invoice-items-header').append('<td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; background: #317cf4; padding-left: 14pt;">Item</td> <td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4;">Quantity</td> <td class="ff1 fc2 btm-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; background: #317cf4; padding-right: 14pt;">Amount</td>');
+            }
+            
+            /*
+            if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+                console.log($(dataTable).find('th4').text())
+                var th4 = $(dataTable).find('th4').text();
+                //$('.content.cl th.discount').append(th4);
+                var th2 = $(dataTable).find('th2').text();
+                //$('.content.cl th.quantity').append(th2);
+                var th3 = $(dataTable).find('th3').text();
+                //$('.content.cl th.price').append(th3);
+                
+                $('thead').append('<tr style="margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;"><th class="item" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align: left; " colspan="4" >' + '' + '</th><th class="quantity" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align:right; " colspan="1">' + th2 + '</th><th class="discount" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align:right" colspan="1">' + th4 + '</th><th class="price" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align: right;"  colspan= "1">' + th3 + '</th><!--<th class="linetotal"></th>--></tr>');
+                
+            } else {
+                var th2 = $(dataTable).find('th2').text();
+                //$('.content.cl th.quantity').append(th2);
+                var th3 = $(dataTable).find('th3').text();
+                //$('.content.cl th.price').append(th3);
+                //$('th.quantity').attr('colspan', 2)
+                //$('th.discount').addClass('disable');
+                
+                $('thead').append('<tr style="margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;"><th class="item" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align: left; " colspan="4" >' + '' + '</th><th class="quantity" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align:right; " colspan="2">' + th2 + '</th><th class="price" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align: right;"  colspan= "1">' + th3 + '</th><!--<th class="linetotal"></th>--></tr>');
+            }
+                */
+            itemRows.each(function(funcOne){
+                
+                if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+                    var item = $("<tr class='invoice-items'></tr>");
+                    var itemTitle = $("<td class='ff1 fc0 invoice-item-title' colspan='2'>"+ $(this).children('name').text() +"</td>");
+                    var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('qty').text() +"</td>");
+                    var itemDiscount = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('discount').text() +"</td>");
+                    var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
+                    item.append(itemTitle)
+                        .append(itemQty)
+                        .append(itemDiscount)
+                        .append(itemCost);
+                    $('#invoice-items-header').after($(item));
+                }
+                else {
+                    var item = $("<tr class='invoice-items'></tr>");
+                    var itemTitle = $("<td class='ff1 fc0 invoice-item-title' colspan='2'>"+ $(this).children('name').text() +"</td>");
+                    var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='2'>"+ $(this).children('qty').text() +"</td>");
+                    var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
+                    item.append(itemTitle)
+                        .append(itemQty)
+                        .append(itemCost);
+                    $('#invoice-items-header').after($(item));
+                }
+                
+                /*
+                var tr = $('<tr style="margin: 0;padding: 0;border: 0;font-size: 100%;vertical-align: baseline;color: #807f7f;text-transform: uppercase;"></tr>');
+            
+                if($(this).find('newItem').length){
+                    // tr.append($('<td class="newItem"></td>').html($(this).children('newItem').text()));
+                }else if($(this).find('itemNotes').length){
+                    // tr.append($('<td class="notes"></td>').html($(this).children('itemNotes').text()));
+                }else{
+                    tr.append($('<td class="item" colspan="4" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: left; color: #000"></td>').html($(this).children('name').text()));
+                }
+                
+                if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+                    tr.append($('<td class="quantity" colspan="1" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000"></td>').html($(this).children('qty').text()));
+                    tr.append($('<td class="discount" colspan="1" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right; color: #000" ></td>').html($(this).children('discount').text()));
+                    tr.append($('<td class="price" colspan="1" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000"></td>').html($(this).children('price').text()));
+                } else {
+                    tr.append($('<td class="quantity" colspan="2" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000"></td>').html($(this).children('qty').text()));
+                    tr.append($('<td class="price" colspan="2" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000"></td>').html($(this).children('price').text()));
+                }
+                //tr.append($('<td class="linetotal"></td>').html($(this).children('linetotal').text()));
+                $('tbody').append(tr);
+                */
+
+            });
+            
+            taxes.each(function() {
+                
+                var item = $("<tr class='invoice-taxes'></tr>");
+                var blank = $("<td colspan='3' class=''></td>");
+                var itemTitle = $("<td class='ff1 fc1 ' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).children('name').text() +"</td>");
+                var itemCost = $("<td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).children('value').text() +"</td>");
+                item.append(blank)
+                    .append(itemTitle)
+                    .append(itemCost);
+                $('#invoice-subtotal').after($(item));
+                /*
+                var tr = $('<tr class="salestax" style="margin: 0;padding: 0;border: 0;font-size: 100%;vertical-align: baseline;color: #807f7f;text-transform: uppercase;"></tr>');
+                tr.append($('<td class="" colspan="4" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: left; color: #000"></td>'));
+                tr.append($('<td class="" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000" colspan="1"></td>'));
+                        
+                tr.append($('<td class="saletax" colspan="1" style="margin: 0;padding: 5px 0px;border: 0;font-size: 20px;vertical-align: baseline;line-height: 22px;text-align: right; color: #989898"></td>').html($(this).children('name').text()));
+                tr.append($('<td class="" style="margin: 0;padding: 5px 0px;border: 0;font-size: 20px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #989898" colspan="1"></td>').html($(this).children('value').text()));
+                $('tr.adjustments').after(tr);
+                */
+            });
+
+            var tr = $('<tr class="salestax"></tr>');
+            $('tr.adjustments').after(tr);
+            
+            customFields.each(function() {
+                var tr = $('.customFields');
+                
+                tr.append($('<div class="info-1" style="margin: 0;border: 0;font-size: 100%;font: inherit;float: left;box-sizing: border-box;width: 70%; float: left; margin-left: 3%;margin-left: 0px"><p class="" style="margin: 0;padding: 10px 0px 0px 0px;border: 0;font-size: 16px;vertical-align: baseline;line-height: 30px;margin-bottom: 10px;color: #989898;">' + $(this).children('name').text() + '</p><p class="" style="margin: 0;padding: 0;border: 0;font-size: 16px;margin-bottom: 10px;color: #000;">' + $(this).children('value').text() + '</p></div>'));
+            });
+            
+            attachments.each(function() {
+                var fileName = $(this).text();
+                fileName = fileName.substring(fileName.indexOf("_") + 1 , fileName.length);
+                fileName = fileName.replace(/%20/g, " ");
+                $('.attach').append('<a style="color: #989898" target="_blank" href=\'' + $(this).text() + '\'>' + fileName + '</a><br><br>');
+            });
+
+            $('table tbody tr').each(function(){
+                if($(this).children().text().length == 0){
+                    $(this).addClass('hideOnMob');
+                }
+            });
+            
+
+            var invoiceId = $(dataTable).find('invoiceId').text();
+            $('#pay-link').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+            $('#pay-link-2').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+
+            var labels = $(dataTable).find('items');
+            console.log(labels);
+            labels.each(function(){
+
+				var dueTime = new Date(Date.parse($(this).find('past-due').text()));
+				var now = new Date(Date.now());
+				dueTime = new Date(dueTime.setHours(0,0,0,0));
+				now = new Date(dueTime.setHours(0,0,0,0));
+				if (dueTime.getTime() >= now.getTime() || dueTime.toString() === "Invalid Date") {
+					$('.payment-due p:last').append($(this).find('past-due').text());
+					$('.payment-due').addClass('green-status');
+				} else {
+					$('.payment-due p:last').append($(this).find('past-due').text());
+					$('.payment-due').addClass('red-status');
+				}
+
+				var headerTitle = $(this).find('headerTitle').text();
+				$('.payment-due p:first').append(headerTitle);
+
+				var disablePay = $(this).find('disablePay').text();
+				var disable = 'true'
+
+				if (disable === disablePay) {
+					$('.btn-border-pay').addClass('disable');
+					$('.info.cl').addClass('disable');
+					$('.payment-due').removeClass('red-status');
+					$('.payment-due').addClass('green-status');
+				} 
+
+				var discountAmount = $(this).find('discountAmount').text();
+
+				var tr = $('<tr class="discount"></tr>');
+				tr.append($('<td class="discountNm" colspan="3"></td>').html('Discount'));
+				// tr.append($('<td colspan="1"></td>'));
+				tr.append($('<td class="discountPr"></td>').html(discountAmount));
+
+				if ($(this).find('discountPlace text').text() == 'after') {
+					$('.salestax:last').after(tr);
+				} else if ($(this).find('discountPlace text').text() == 'before') {
+					$('.salestax:first').before(tr);
+				}
+
+				var item = $("<tr class='invoice-adjustments'><td colspan='3' class=''></td><td class='ff1 fc1' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).find('discountNameBottom').text() + "</td><td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).find('discountAmount').text() +"</td></tr>");
+
+				if($(this).find('discountPlace text').text() == 'after'){
+					$('.invoice-taxes:last').after($(item));
+				} 
+				else if($(this).find('discountPlace text').text() == 'before'){
+					$('#invoice-subtotal').after($(item));
+				}
+
+				if($(this).find('adjustments').text().length > 0){
+					var item = $("<tr class='invoice-adjustments'><td colspan='3' class=''></td><td class='ff1 fc1' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).find('adjustments').text() + "</td><td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).find('adjustmentsPrice').text() +"</td></tr>");
+					$('#invoice-subtotal').after($(item));
+				}
+
+				if($(this).find('shippingCharges').text().length > 0){
+					item = $("<tr class='invoice-adjustments'><td colspan='3' class=''></td><td class='ff1 fc1 ' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).find('shippingCharges').text() + "</td><td class='ff1 fc1 ' style=' padding-bottom: 4mm;text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).find('shippingChargesPrice').text() +"</td></tr>");
+
+					$('#invoice-subtotal').after($(item));
+				}
+
+				$('#pdf-invoice-number').text($(this).find('refid').text());
+				$('#pdf-amount-received').text($(this).find('body-price').text());
+				$('#pdf-date').text($(this).find('body-date').text());
+				$('#pdf-subtotal').text($(this).find('subtotalprice').text());
+				$('#pdf-payment-made').text($(this).find('paymentMadePrice').text());
+				$('#pdf-total').text($(this).find('total-price3').text());
+				$('#pdf-credit-applied').text($(this).find('creditsAppliedPrice').text());
+				$('#pdf-amount-due').text($(this).find('refundtotal').text());
+				$('#pdf-payment-name').text($(this).find('title').text());
+
+
+				var card_number = $(this).find('refid').text();
+				$('.visa-card').append(card_number);
+				var purchase_order = $(this).find('purchaseOrderNumber').text();
+				$('.purchase-order').append(purchase_order);
+				var invoice_title = $(this).find('invoice-title').text();
+				$('.invoice-details-1 h1').append(invoice_title);
+				var list_header_total = $(this).find('list-header-total').text();
+				$('.list-header li:first-child span').append(list_header_total);
+				var list_header_date = $(this).find('list-header-date').text();
+				$('.list-header li:nth-child(2) span').append(list_header_date);
+				var list_header_currency = $(this).find('list-header-currency').text();
+				$('.list-header li:nth-child(3) span').append(list_header_currency);
+				var body_price = $(this).find('body-price').text();
+				$('.list-body li:first-child span').append(body_price);
+				var body_date = $(this).find('body-date').text();
+				$('.list-body li:nth-child(2) span').append(body_date);
+				var body_date = $(this).find('body-currency').text();
+				$('.list-body li:nth-child(3) span').append(body_date);
+				var th1 = $(this).find('th1').text();
+				$('.content.cl th.item').append(th1);
+
+				var address_lineone = $(this).find('addres1').text();
+				$('.invoice-details-1 .info-2 p .adr').append(address_lineone);
+				var website_link = $(this).find('website-link').text();
+				$('.invoice-details-1 .info-2 .website a').attr('href', website_link);
+				var website_name = $(this).find('website-name').text();
+				$('.invoice-details-1 .info-2 .website a span').append(website_name);
+				var mailto = $(this).find('mailto').text();
+				$('.invoice-details-1 .info-2 .mailto a').attr('href', mailto);
+				var mailtotxt = $(this).find('mailtotxt').text();
+				$('.invoice-details-1 .info-2 .mailto a span').append(mailtotxt);
+				var nr = $(this).find('nr').text();
+				$('.invoice-details-1 .info-2 .nr a').attr('href', nr);
+				$('.invoice-details-1 .info-2 .nr a span').append(nr);
+				var txtmsg = $(this).find('thanksmsg').text();
+				$('.invoice-details-2 .info-1 p:nth-child(1)').append(txtmsg);
+				var longmsg = $(this).find('longmsg').text();
+				if (longmsg.length != 0){
+					var longmsgTitle = $(this).find('longmsg-title').text();
+
+					$('.notes_para_head').html(longmsgTitle);
+					$('.notes_para').html(longmsg);
+				}
+				var to = $(this).find('to').text();
+				$('.invoice-details-2 .info-2 p:first-child').append(to);
+				var clientname = $(this).find('clientname').text();
+				$('.invoice-details-2 .info-2 .list-client li:first-child span').append(clientname);
+				var clientnr = $(this).find('clientnr').text();
+				$('.invoice-details-2 .info-2 .list-client li:nth-child(2) a').attr('href', clientnr);
+				$('.invoice-details-2 .info-2 .list-client li:nth-child(2) a span').append(clientnr);
+				var clientmailto = $(this).find('clientmailto').text();
+				$('.invoice-details-2 .info-2 .list-client li:nth-child(3) a').attr('href', clientmailto);
+				var clientmail = $(this).find('clientmail').text();
+				$('.invoice-details-2 .info-2 .list-client li:nth-child(3) a span').append(clientmail);
+
+				var ordernotesTitle = $(this).find('ordernotes-title').text();
+				var ordernotes = $(this).find('ordernotes').text();
+				$('.orderNotes').append(ordernotesTitle);
+				$('.orderNotesValues').append(ordernotes);
+
+				var subtotal = $(this).find('subtotal').text();
+				$('td.subtotal').append(subtotal);
+				var adjustments = $(this).find('adjustments').text();
+				$('td.adjustments').append(adjustments);
+				var aPrice = $(this).find('adjustmentsPrice').text();
+				$('td.adjustments-price').append(aPrice);
+				var shippingCharges = $(this).find('shippingCharges').text();
+				$('td.shippingCharges').append(shippingCharges);
+				var scPrice = $(this).find('shippingChargesPrice').text();
+				$('td.shipping-charges-price').append(scPrice);
+				var total_price = $(this).find('total-price').text();
+				//$('.content.cl .subtotal td:nth-child(4)').append(total_price);
+				var salestax = $(this).find('salestax').text();
+				$('.salestax').append(salestax);
+
+				var paymentMadeText = $(this).find('paymentMadeText').text();
+				var paymentMadePrice = $(this).find('paymentMadePrice').text();
+				$('td.payment-made-text').append(paymentMadeText);
+				$('td.payment-made-price').append(paymentMadePrice);
+
+				var paymentRefundMadeText = $(this).find('paymentRefundMadeText').text();
+				var paymentRefundMadePrice = $(this).find('paymentRefundMadePrice').text();
+				if(paymentRefundMadeText == ''){
+					$('td.payment-refund-made-text').hide()
+					$('td.payment-refund-made-price').hide()
+				} else {
+					$('td.payment-refund-made-text').append(paymentRefundMadeText);
+					$('td.payment-refund-made-price').append(paymentRefundMadePrice);
+				}
+
+				var creditsAppliedText = $(this).find('creditsAppliedText').text();
+				var creditsAppliedPrice = $(this).find('creditsAppliedPrice').text();
+				$('td.credits-applied-text').append(creditsAppliedText);
+				$('td.credits-applied-price').append(creditsAppliedPrice);
+				//var salestaxnr = $(this).find('salestaxnr').text();
+				//$('.salestaxnr').append(salestaxnr);
+				var total_price2 = $(this).find('total-price2').text();
+				$('.total-price2').append(total_price2);
+				var total_price3 = $(this).find('total-price3').text();
+				$('.total-price3').append(total_price3);
+				var totaltext = $(this).find('totaltext').text();
+				$('.totl').append(totaltext);
+				var refundprice = $(this).find('refundtotal').text();
+				$('td.refund-total').append(refundprice);
+				var refundtext = $(this).find('refundedText').text();
+				$('.refund-price').append(refundtext)
+				var total_price4 = $(this).find('total-price4').text();
+				$('.total-price4').append(total_price4);
+				var saletax = $(this).find('saletax').text();
+				$('.saletax').append(saletax);
+				var paymentmsg = $(this).find('paymentmsg').text();
+				$('.footer .info p:first-child').append(paymentmsg);
+				var signup = $(this).find('signup').text();
+				$('.footer .info p span').append(signup);
+				var copyright = $(this).find('copyright').text();
+				$('.copyright p').append(copyright);
+				var title = $(this).find('title').text();
+				$('head title').append(title);
+				var item4price = $(this).find('item4price').text();
+				$('.price .item4price').append(item4price);
+				var logo = $(this).find('logo').text();
+				if(logo)
+					$('.logo').attr('src', logo);
+				else
+					$('.logo').attr('src', "https://sslsecuredfiles.com/parse/files/qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3/15bade19-6114-4105-af30-2c890ec7b46f_placelogo_placeholder.jpg");
+
+				var subtotalprice = $(this).find('subtotalprice').text();
+				$('.subtotal-price').append(subtotalprice);
+				var receivedText = $(this).find('received-text').text();
+				$('.received-text').append(receivedText);
+				var receivedPrice = $(this).find('received-price').text();
+				$('.received-price').append(receivedPrice);
+				var dueText = $(this).find('due-text').text();
+				$('.due-text').append(dueText);
+				var duePrice = $(this).find('due-price');
+				$('.due-price').append(duePrice);
+				var tipText = $(this).find('tip-text');
+				$('.tip-text').append(tipText);
+				var tipNr = $(this).find('tip-price');
+				$('.tip-price').append(tipNr);
+			});
+	
+	$.ajax({
+        method:"POST",
+        type : "POST",
+        url: "generatePDF.php",
+        data: { 
+            'html' : $('.pdf-page').html(),
+        }
+    }).then(function(pdfData){
+        var dlnk = document.getElementById('pdfLink');
+
+        var pdf = 'data:application/octet-stream;base64,' + pdfData;
+
+        //dlnk.attr("href", pdf);
+        dlnk.href = pdf;
+
+        dlnk.click();
+        debugger;
+    }, function(error){
+        console.error(error);
+        debugger;
+    });
+	
+}
+    
+    
 }]);

@@ -1126,7 +1126,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 			sum = (subTotal + totalTax) * discountRatio;
 
 		if (discounts) {
-			labels['discountNameBottom'] = {text:"Discount " + discounts + "%:"};
+			labels['discountNameBottom'] = {text:"Discount (" + discounts + "%)"};
 			labels['discountPriceBottom'] = {text:discounts + "%"};
 
 			discounts = Math.abs(sum - subTotal - totalTax);
