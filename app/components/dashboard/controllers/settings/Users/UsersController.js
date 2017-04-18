@@ -189,6 +189,7 @@ invoicesUnlimited.controller('UsersController',
 				userID 		 : userFactory.entity[0],//newUser,
 				status 		 : 'Activated'
 			}).then(function(res){
+				showSnackbar("User Added successfully.")
 				$scope.$apply(function(){
 					$scope.users.push(res);
 				});
@@ -264,15 +265,12 @@ invoicesUnlimited.controller('UsersController',
 			});
 			return el;
 		});
-        
-        var index = $scope.users.findIndex(function(el){
-            if(el.role == 'Main')
-                return true;
-            return false;
-        });
-        
-        if(index >= 0)
-            $scope.users.splice(index, 1);
+		
+		$scope.users = $scope.users.filter(function(obj){
+			if(obj.role == 'Main')
+                return false;
+            return true;
+		});
         
         $scope.dispalyedUsers = $scope.users;
         $scope.sortByUserName();

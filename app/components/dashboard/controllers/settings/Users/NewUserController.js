@@ -28,7 +28,7 @@ invoicesUnlimited.controller('NewUserController',
 	});
 
 	var errorHandler = function(er){
-		if (!er) return;
+		if (!er) return $q.reject();
 		console.log(er);
 		hideLoader();
 		$uibModalInstance.dismiss(er.message);
@@ -150,6 +150,11 @@ invoicesUnlimited.controller('NewUserController',
 		if (!form.checkValidity()) return;
 
 		showLoader();
+		
+		continueSaving();
+	}
+	
+	function continueSaving(){
 		$scope.user.set('password',$scope.user.password);
 		$scope.user.set('colorTheme','appBlueColor');
 		$scope.user.set('isTrackUsage',1);
@@ -183,6 +188,7 @@ invoicesUnlimited.controller('NewUserController',
 				//$('button[id="newUserSubmit"]')[0].click();
 			
 			hideLoader();
+			return $q.reject();
 		})
 		.then(function(role){
 			if (!$scope.user.sendInvite) return Parse.Promise.as(true);
