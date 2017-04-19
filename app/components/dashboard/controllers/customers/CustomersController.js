@@ -1441,6 +1441,13 @@ invoicesUnlimited.controller('CustomersController',
 	var stateChangeEvent = $rootScope.$on('$stateChangeStart',
 	function(event,toState,toParams,fromState,fromParams,options){
 	//	console.log('here');
+		
+		if (!toState.name.includes('customers')) {
+		//	console.log('destroy else');
+			stateChangeEvent();
+			stateChangeEvent = null;
+		}
+		
 		if (isGoTo.customers(toState.name) ||
 			isGoTo.newCustomer(toState.name)) {
 			$scope.selectedCustomer = null;

@@ -1338,6 +1338,12 @@ function updatePage(dataTable){
 				$('#pdf-amount-due').text($(this).find('refundtotal').text());
 				$('#pdf-payment-name').text($(this).find('title').text());
 				
+				var logo = $(this).find('logo').text();
+				if(logo)
+					$('#pdf-logo').attr('src', logo);
+				else
+					$('#pdf-logo').attr('src', "https://sslsecuredfiles.com/parse/files/qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3/15bade19-6114-4105-af30-2c890ec7b46f_placelogo_placeholder.jpg");
+				
 				var ad = $(this).find('addres1').text();
 				
 				$('#pdf-address').html(ad.replace(/(.{35})/g, "$1<br>"));
