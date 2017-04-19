@@ -631,6 +631,11 @@ function saveAndSendEstimate() {
 	.then(function(estimate) {
 		return estimateService.createEstimateReceipt(estimate.id)
 		.then(function(estimateObj) {
+			var st = estimateObj.get('status');
+                if(st == "Draft"){
+                    estimateObj.set("status", "Sent");
+                    estimateObj.save();
+                }
             sendToContacts(estimateObj);
 			return estimateObj;
 		});
