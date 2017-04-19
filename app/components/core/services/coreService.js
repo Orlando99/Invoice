@@ -127,11 +127,17 @@ invoicesUnlimited.factory('coreFactory',
 	}
 
 	core.getGeneralPrefs = function(user) {
+		/*
 		var query = new Parse.Query('Organization');
 		query.equalTo('userID', user);
 		query.select('timeZone', 'fiscalYearStart',
 			'dateFormat', 'fieldSeparator');
 		return query.first();
+		*/
+		
+		var org = user.get('selectedOrganization');
+		return org.fetch();
+		
 	}
 
 	return core;

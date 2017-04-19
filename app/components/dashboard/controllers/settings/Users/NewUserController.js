@@ -160,6 +160,7 @@ invoicesUnlimited.controller('NewUserController',
 		$scope.user.set('isTrackUsage',1);
 		$scope.user.set('getInvoiceNotification',1);
 		$scope.user.set('subscription',false);
+		$scope.user.set('firstScreen','Dashboard');
         $scope.user.set('tutorial',1);
 
 		appFields.newCustomer
@@ -178,6 +179,30 @@ invoicesUnlimited.controller('NewUserController',
 
 		$scope.user.save()
 		.then(function(user){
+			var ctr = Parse.Object.extend("Preferencies");
+			var object = new ctr();
+			object.set('invoiceShippingCharges', 0);
+			object.set('creditNotes',"Thank you for your business. If you have any questions, please contact us as soon as possible.");
+			object.set('invoiceThanksNotes', "Thank you for your payment. We appreciate your business and look forward to assisting you in the future.");
+			object.set('creditTerms', "");
+			object.set('invoiceDiscount', 0);
+			object.set('invoiceNotes', "Thank you for your business. If you have any questions, please contact us as soon as possible.");
+			object.set('estimateNotes', "Thank you for your business. If you have any questions, please contact us as soon as possible.");
+			object.set('invoiceTerms', "");
+			object.set('estimateTerms', "");
+			object.set('invoiceAdjustments', 0);
+			object.set('invoiceSalesPerson', 0);
+			object.set('invoiceAg', 1);
+			object.set('estimateAg', 1);
+			object.set('creditAg', 1);
+			object.set('userID', user);
+			object.set('organization', user.get('selectedOrganization'));
+			object.save()
+			.then(function(pref){
+				console.log("Preferencies created");
+			}, function(error){
+				console.error(error);
+			});
 			return roleFactory.addUser(user);
 		},function(error) {
 			

@@ -32,8 +32,8 @@
         <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.companyName}}</td>
         <td class="layout-padding text-color-light ellipsis" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.email}}</td>
         <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.mobile}}</td>
-        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.outstanding}}</td>
-        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.unusedCredits}}</td>
+        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.outstanding | currency : '$' : 2}}</td>
+        <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.unusedCredits | currency : '$' : 2}}</td>
       </tr>      
     </table>
 
