@@ -6,10 +6,10 @@
     </a>
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{estimateNo}}</h3>
     <div class="actions float-right layout-margin-tb" uib-dropdown>
-      <a ui-sref="dashboard.sales.estimates.edit({estimateId:estimate.entity.id})"
+      <a ng-show="isOwner" ui-sref="dashboard.sales.estimates.edit({estimateId:estimate.entity.id})"
         class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <!--data-toggle="convert-to-invoice"-->
-      <a ui-sref="dashboard.sales.invoices.convertEstimate({estimateId:estimate.entity.id})" class="button button-small button-info text-uppercase layout-margin-r modal-opener">Convert To Invoice</a>
+      <a ng-show="isOwner" ui-sref="dashboard.sales.invoices.convertEstimate({estimateId:estimate.entity.id})" class="button button-small button-info text-uppercase layout-margin-r modal-opener">Convert To Invoice</a>
       <button class="button button-small button-neutral text-uppercase" uib-dropdown-toggle>More <img src="./assets/images/dropdown-arrow-w.png" alt="">
       </button>
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
@@ -17,7 +17,7 @@
           <li><a href="" ng-click="textReceipt()">Send as Text</a></li>
         <li><a ng-href="{{templateUrl}}" ng-click="estimatePrinted()" target="_blank">Print</a></li>
         <li><a ui-sref="dashboard.sales.estimates.clone({estimateId:estimate.entity.id})" ng-click="estimateCloned()">Clone</a></li>
-        <li><a href="" class="modal-opener" data-toggle="confirm-delete">Delete</a></li>
+        <li><a ng-show="isOwner" href="" class="modal-opener" data-toggle="confirm-delete">Delete</a></li>
       </ul>
     </div>
     <div class="clearfix"></div>

@@ -39,6 +39,8 @@ userFactory.getField('dateFormat')
 	showCreditNoteDetail();
 });
 
+$scope.isOwner = false;
+	
 function showCreditNoteDetail() {
 	var creditNoteId = $state.params.creditNoteId;
 	if (! creditNoteId) return;
@@ -46,6 +48,12 @@ function showCreditNoteDetail() {
 	showLoader();
 	$q.when(creditNoteService.getCreditNoteDetails(creditNoteId))
 	.then(function(creditNote) {
+		
+		var usr = creditNote.entity.get('userID');
+		
+		if(userFactory.entity[0].id == usr.id)
+			$scope.isOwner = true;
+		
 		console.log(creditNote);
 		$scope.creditNote = creditNote;
 		$scope.creditNo = creditNote.entity.creditNumber;

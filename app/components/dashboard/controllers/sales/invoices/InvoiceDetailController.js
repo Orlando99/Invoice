@@ -39,6 +39,8 @@ userFactory.getField('dateFormat')
 	showInvoiceDetail();
 });
 
+$scope.isOwner = false;
+	
 function showInvoiceDetail() 
 {
     scrollToOffset();
@@ -48,6 +50,13 @@ function showInvoiceDetail()
 	showLoader();
 	$q.when(invoiceService.getInvoiceDetails(invoiceId))
 	.then(function(invoice) {
+		var usr = invoice.entity.get('userID');
+		
+		if(userFactory.entity[0].id == usr.id)
+			$scope.isOwner = true;
+		
+		debugger;
+		
 	//	console.log(invoice);
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		$scope.invoice = invoice;

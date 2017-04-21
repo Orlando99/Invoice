@@ -10,7 +10,7 @@
         <!--
       <a ui-sref="dashboard.sales.invoices.edit({invoiceId:invoice.entity.id})"
         class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a> -->
-        <a ng-click="editInvoice()"
+        <a ng-show="isOwner" ng-click="editInvoice()"
         class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <button class="button button-small button-neutral text-uppercase" uib-dropdown-toggle>More
         <img src="./assets/images/dropdown-arrow-w.png" alt="">
@@ -31,7 +31,7 @@
           <li><a href="">Print Delivery Note</a></li>
           <li><a href="">Print Packing Slip</a></li>
           -->
-          <li><a href="" ng-click="canDeleteInvoice()">Delete</a></li>
+          <li ng-show="isOwner"><a href="" ng-click="canDeleteInvoice()">Delete</a></li>
       </ul>
       
       

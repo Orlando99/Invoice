@@ -23,7 +23,7 @@ userFactory.getField('dateFormat')
     dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 	showEstimateDetail();
 });
-
+$scope.isOwner = false;
 function showEstimateDetail() {
 	var estimateId = $state.params.estimateId;
 	if (! estimateId) return;
@@ -31,6 +31,12 @@ function showEstimateDetail() {
 	showLoader();
 	$q.when(estimateService.getEstimateDetails(estimateId))
 	.then(function(estimate) {
+		
+		var usr = estimate.entity.get('userID');
+		
+		if(userFactory.entity[0].id == usr.id)
+			$scope.isOwner = true;
+		
 	//	console.log(estimate);
 		$scope.estimate = estimate;
 		$scope.estimateNo = estimate.entity.estimateNumber;

@@ -46,26 +46,49 @@ invoicesUnlimited.factory('coreFactory',
 	
 	core.getAllCustomers = function(loadAgain){
 		if (core.allCustomers && !loadAgain) return core.allCustomers;
-		return queryService.ext.find(
-			"Customer",
-			"organization",
-			(user.entity.length ? user.entity[0].get('selectedOrganization') : {}),
-			[{
-				name  : 'include',
-				param : 'contactPersons'
-			}]
-		)
-		.then(function(customers){
-			var result = [];
-			customers.forEach(function(elem){
-                if(!elem.attributes.isDeleted){
-                    var customer = new customerFactory(elem);
-                    result.push(customer);
-                }
+		if(user.entity[0].get('role') == 'Staff'){
+			return queryService.ext.find(
+				"Customer",
+				"userID",
+				(user.entity.length ? user.entity[0] : {}),
+				[{
+					name  : 'include',
+					param : 'contactPersons'
+				}]
+			)
+			.then(function(customers){
+				var result = [];
+				customers.forEach(function(elem){
+					if(!elem.attributes.isDeleted){
+						var customer = new customerFactory(elem);
+						result.push(customer);
+					}
+				});
+				core.allCustomers = result;
+				return result;
 			});
-			core.allCustomers = result;
-			return result;
-		});
+		} else {
+			return queryService.ext.find(
+				"Customer",
+				"organization",
+				(user.entity.length ? user.entity[0].get('selectedOrganization') : {}),
+				[{
+					name  : 'include',
+					param : 'contactPersons'
+				}]
+			)
+			.then(function(customers){
+				var result = [];
+				customers.forEach(function(elem){
+					if(!elem.attributes.isDeleted){
+						var customer = new customerFactory(elem);
+						result.push(customer);
+					}
+				});
+				core.allCustomers = result;
+				return result;
+			});
+		}
 	}
 	
 	core.getAllInvoices = function(params){
