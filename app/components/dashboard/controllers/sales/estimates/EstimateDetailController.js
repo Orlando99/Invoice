@@ -34,8 +34,12 @@ function showEstimateDetail() {
 		
 		var usr = estimate.entity.get('userID');
 		
-		if(userFactory.entity[0].id == usr.id)
+		if(userFactory.entity[0].get('role') == 'Staff'){
+			if(userFactory.entity[0].id == usr.id)
+				$scope.isOwner = true;
+		} else {
 			$scope.isOwner = true;
+		}
 		
 	//	console.log(estimate);
 		$scope.estimate = estimate;
