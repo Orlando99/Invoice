@@ -1333,7 +1333,7 @@ $(document).ready(function(){
                                                             'businessName'  : invInfo.get("businessName"),
                                                             'email'         : invInfo.get('email'),
                                                             'clientName'    : invInfo.get('clientName'),
-                                                            'paymentAmount' : paymentMade,
+                                                            'paymentAmount' : parseFloat(paymentMade).toFixed(2),
                                                             'paymentDate'   : paymentDate
                                                         }
                                                     }).then(function(){
