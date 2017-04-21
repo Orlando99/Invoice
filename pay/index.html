@@ -1131,12 +1131,16 @@ $(document).ready(function(){
         $('.white-overlay, #loader').show();
         //event.preventDefault();
 
+		var tot = $('#Total').val();
+		tot = parseFloat(tot);
+		tot = tot.toFixed(2);
+		
         var url,data = {
             'Zip'           : $('#Zip').val(),
             'CardNo'        : $('#CardNo').val(),
             'ExpirationDate': $('#ExpirationDate').val(),
             'CVV2'          : $('#CVV2').val(),
-            'Total'         : $('#Total').val(),
+            'Total'         : tot,
             'CVV2Type'      : $('#CVV2Type').val(),
             'ExpMonth'      : $('#ExpMonth').val(),
             'ExpYear'       : $('#ExpYear').val()
@@ -1158,7 +1162,7 @@ $(document).ready(function(){
                     'CardNo'  : parseInt($('#CardNo').val().replace(/\s/g,"")),
                     'CVV2'    : parseInt($('#CVV2').val()),
                     'AuthNet' : $('#AuthNet').val(),
-                    'Total'   : parseFloat($('#Total').val()),
+                    'Total'   : parseFloat(tot),
                     'AuthKey' : $('#AuthKey').val(),
                 });
                 break;
