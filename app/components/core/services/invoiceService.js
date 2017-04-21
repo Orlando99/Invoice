@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, itemService, currencyFilter){
+invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, itemService, currencyFilter, userFactory){
 return {
 	test : function() {
 		console.log("working");
@@ -554,7 +554,8 @@ return {
             var to = mob;
             var customerName = inv.customer.displayName;
             var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
-            var businessName = inv.organization.name;
+            //var businessName = inv.organization.name;
+            var businessName = userFactory.entity[0].get('company');
             var link = inv.entity.invoiceReceipt.url();
             var msgBody = customerName + ', '
                 + businessName + ' has sent you an invoice of ' + amount
@@ -588,7 +589,7 @@ return {
             var to = mob;
             var customerName = inv.customer.displayName;
             var amount = currencyFilter(inv.entity.balanceDue, '$', 2);
-            var businessName = inv.organization.name;
+            var businessName = userFactory.entity[0].get('company');
             var link = inv.entity.invoiceReceipt.url();
             var msgBody = customerName + ', '
                 + businessName + ' has sent you an invoice of ' + amount
@@ -628,7 +629,7 @@ return {
         }).then(function (htmlDoc) {
             
             var toEmail = undefined;
-            var businessName = inv.organization.name;
+            var businessName = userFactory.entity[0].get('company');
             var link = inv.entity.invoiceReceipt.url();
 
             var emailSubject = 'Invoice From ' + businessName;
@@ -713,7 +714,7 @@ return {
         }).then(function (htmlDoc) {
             
             var toEmail = email;
-            var businessName = inv.organization.name;
+            var businessName = userFactory.entity[0].get('company');
             var link = inv.entity.invoiceReceipt.url();
 
             var emailSubject = 'Invoice From ' + businessName;

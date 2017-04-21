@@ -47,83 +47,63 @@ invoicesUnlimited.factory('taxService', function($q){
 			// find organization of current user
 			var organization = getOrganization(params.user);
 			if (! organization)	return;
-			
-			// find role of current user
-			var query = new Parse.Query(Parse.Role);
-			query.equalTo('users', params.user);
-			query.first().then(function(role){
 
-				// set key,values to insert
-				params.userID = params.user;
-				delete params.user;
-				params.organization = organization;
-				params.type = 2;	// 1 = tax, 2 = tax group
-				
-				var acl = new Parse.ACL();
-				//acl.setRoleWriteAccess(role.get("name"), true);
-				//acl.setRoleReadAccess(role.get("name"), true);
-                
-                acl.setPublicReadAccess(true);
-                acl.setPublicWriteAccess(true);
-                
-				var Tax = Parse.Object.extend("Tax");
-				var tax = new Tax();
-				tax.setACL(acl);
-				tax.save(params,{
-					success: function(object){
-                        callback(object);
-						//callback("New Tax created with objectId: " + object.id);
-					},
-					error: function(object, error){
-						callback("Failed to create new Tax, error code:" + error.message);
-					}
-				});
+			// set key,values to insert
+			params.userID = params.user;
+			delete params.user;
+			params.organization = organization;
+			params.type = 2;	// 1 = tax, 2 = tax group
 
-			}, function(error){
-				return console.log("user:" + user.id + " do not have a role");
+			var acl = new Parse.ACL();
+			//acl.setRoleWriteAccess(role.get("name"), true);
+			//acl.setRoleReadAccess(role.get("name"), true);
+
+			acl.setPublicReadAccess(true);
+			acl.setPublicWriteAccess(true);
+
+			var Tax = Parse.Object.extend("Tax");
+			var tax = new Tax();
+			tax.setACL(acl);
+			tax.save(params,{
+				success: function(object){
+					callback(object);
+					//callback("New Tax created with objectId: " + object.id);
+				},
+				error: function(object, error){
+					callback("Failed to create new Tax, error code:" + error.message);
+				}
 			});
-
 		},
 		saveNewTax : function(params, callback) {
 			// find organization of current user
 			var organization = getOrganization(params.user);
 			if (! organization)	return;
-			
-			// find role of current user
-			var query = new Parse.Query(Parse.Role);
-			query.equalTo('users', params.user);
-			query.first().then(function(role){
 
-				// set key,values to insert
-				params.userID = params.user;
-				delete params.user;
-				params.organization = organization;
-				params.type = 1;	// 1 = tax, 2 = tax group
-				
-				var acl = new Parse.ACL();
-				//acl.setRoleWriteAccess(role.get("name"), true);
-				//acl.setRoleReadAccess(role.get("name"), true);
+			// set key,values to insert
+			params.userID = params.user;
+			delete params.user;
+			params.organization = organization;
+			params.type = 1;	// 1 = tax, 2 = tax group
 
-                acl.setPublicReadAccess(true);
-                acl.setPublicWriteAccess(true);
-                
-				var Tax = Parse.Object.extend("Tax");
-				var tax = new Tax();
-				tax.setACL(acl);
-				tax.save(params,{
-					success: function(object){
-                        callback(object);
-						//callback("New Tax created with objectId: " + object.id);
-					},
-					error: function(object, error){
-						callback("Failed to create new Tax, error code:" + error.message);
-					}
-				});
+			var acl = new Parse.ACL();
+			//acl.setRoleWriteAccess(role.get("name"), true);
+			//acl.setRoleReadAccess(role.get("name"), true);
 
-			}, function(error){
-				return console.log("user:" + user.id + " do not have a role");
+			acl.setPublicReadAccess(true);
+			acl.setPublicWriteAccess(true);
+
+			var Tax = Parse.Object.extend("Tax");
+			var tax = new Tax();
+			tax.setACL(acl);
+			tax.save(params,{
+				success: function(object){
+					callback(object);
+					//callback("New Tax created with objectId: " + object.id);
+				},
+				error: function(object, error){
+					callback("Failed to create new Tax, error code:" + error.message);
+				}
 			});
-
 		},
 		saveEditedTax : function (params) {
 			var taxTable = Parse.Object.extend("Tax");

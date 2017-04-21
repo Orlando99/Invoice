@@ -1470,12 +1470,14 @@ invoicesUnlimited.controller('CustomersController',
 
 		} else if (fromState.name.endsWith('new')) {
 			LoadCustomers(true);
-		} else if (!toState.name.includes('customers')) {
+		} 
+		/*
+		else if (!toState.name.includes('customers')) {
 		//	console.log('destroy else');
 			stateChangeEvent();
 			stateChangeEvent = null;
 		}
-        
+        */
 	});
 
 	LoadCustomers();

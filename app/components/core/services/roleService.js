@@ -11,7 +11,8 @@ invoicesUnlimited.factory('roleFactory',
 		if (!user.length) return;
 		if (role.entity.length) return Promise.resolve(role);
 		var query = new Parse.Query(Parse.Role);
-		query.equalTo('name',user[0].username);
+		//query.equalTo('name',user[0].username);
+		query.equalTo('users', user[0]);
 		return query.first().then(
 			function(roleObj){
 				role.entity.pop();

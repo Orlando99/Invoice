@@ -129,6 +129,7 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
 
                 $q.when(query.first()).then(function(projectUser) {
                     projectUser.set('title', $scope.fullName);
+					projectUser.set('companyName', $scope.bsnsInfo.businessName);
                     $q.when(projectUser.save())
                     .then(function(pUser){
                         fromTutorial = true;

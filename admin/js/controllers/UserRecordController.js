@@ -391,7 +391,7 @@ clientAdminPortalApp.controller('UserRecordController',
                   var promises = [];
                   if(roleObj)
                       promises.push(roleObj.destroy());
-                  if(userRole == "Main" || !userRole){
+                  if(userRole == "Main"){
                       if(org)
                         promises.push(org.destroy());
                       if(bus)
@@ -440,8 +440,6 @@ clientAdminPortalApp.controller('UserRecordController',
                       console.error(error);
                   });
               });
-              
-          
       }, function(error){
           var query = new Parse.Query(Parse.Role);
           query.equalTo("name", record.get('username'));
@@ -451,6 +449,11 @@ clientAdminPortalApp.controller('UserRecordController',
               var promises = [];
               if(roleObj)
                   promises.push(roleObj.destroy());
+			  
+			  if(org)
+                    promises.push(org.destroy());
+			  
+			  /*
               if(record.get("role") == "Admin"){
                   if(org)
                     promises.push(org.destroy());
@@ -463,7 +466,7 @@ clientAdminPortalApp.controller('UserRecordController',
                   if(prin)
                     promises.push(prin.destroy());
               }
-
+			  */
               $q.all(promises)
               .then(function(){
                     var deleting = record.id;
@@ -691,8 +694,10 @@ clientAdminPortalApp.controller('UserRecordController',
               
             currObj.set('organization', orgObj);
             prefObj.set('organization', orgObj);
+            projObj.set('organization', orgObj);
             var p = [];
             prefObj.save();
+			projObj.save();
             //p.push(currObj.save());
             //p.push(prefObj.save());
             currObj.save()

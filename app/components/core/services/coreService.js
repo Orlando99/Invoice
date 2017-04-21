@@ -18,7 +18,7 @@ invoicesUnlimited.factory('coreFactory',
 	core.clearAllOnLogOut = function(){
 		core.allCustomers = undefined;
 	}
-
+	/*
 	core.getAllCustomers = function(loadAgain){
 		if (core.allCustomers && !loadAgain) return core.allCustomers;
 		return queryService.ext.find(
@@ -42,7 +42,32 @@ invoicesUnlimited.factory('coreFactory',
 			return result;
 		});
 	}
-
+	*/
+	
+	core.getAllCustomers = function(loadAgain){
+		if (core.allCustomers && !loadAgain) return core.allCustomers;
+		return queryService.ext.find(
+			"Customer",
+			"organization",
+			(user.entity.length ? user.entity[0].get('selectedOrganization') : {}),
+			[{
+				name  : 'include',
+				param : 'contactPersons'
+			}]
+		)
+		.then(function(customers){
+			var result = [];
+			customers.forEach(function(elem){
+                if(!elem.attributes.isDeleted){
+                    var customer = new customerFactory(elem);
+                    result.push(customer);
+                }
+			});
+			core.allCustomers = result;
+			return result;
+		});
+	}
+	
 	core.getAllInvoices = function(params){
 		var query = new Parse.Query("Invoices");
 		if (!params.method) query.equalTo(params.name,params.val1);
@@ -92,6 +117,9 @@ invoicesUnlimited.factory('coreFactory',
 		query.equalTo('users', user);
 		return query.first().then(function(role) {
 			return role;
+		}, function(error){
+			console.log(error);
+			return;
 		});
 	}
 

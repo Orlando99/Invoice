@@ -187,7 +187,8 @@ invoicesUnlimited.controller('UsersController',
 				organization : newUser.selectedOrganization,
 				companyName  : newUser.company,
 				userID 		 : userFactory.entity[0],//newUser,
-				status 		 : 'Activated'
+				status 		 : 'Activated',
+				organization : userFactory.entity[0].get('selectedOrganization')
 			}).then(function(res){
 				showSnackbar("User Added successfully.")
 				$scope.$apply(function(){
@@ -267,7 +268,7 @@ invoicesUnlimited.controller('UsersController',
 		});
 		
 		$scope.users = $scope.users.filter(function(obj){
-			if(obj.role == 'Main')
+			if(obj.role == 'Main' || obj.userName == userFactory.entity[0].get('username'))
                 return false;
             return true;
 		});

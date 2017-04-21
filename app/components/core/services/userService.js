@@ -93,6 +93,7 @@ invoicesUnlimited.factory('userFactory',function(appFields){
                     projectUser.set("userName", user.get('username'));
                     projectUser.set("emailID", user.get('email'));
                     projectUser.set("title", user.get('fullName'));
+                    projectUser.set("organization", user.get('selectedOrganization'));
                    
                     return projectUser.save(null, {
                       success: function(pUser) {

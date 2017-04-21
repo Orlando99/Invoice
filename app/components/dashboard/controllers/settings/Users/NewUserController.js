@@ -223,8 +223,10 @@ invoicesUnlimited.controller('NewUserController',
 				subject 	: 'Invoice Unlimited Login',
 				html 		: htmlBody
 			}).then(function(res) {
+				debugger;
 				return res;
 			},function(e){
+				debugger;
 				return e;
 			});
 		},errorHandler)

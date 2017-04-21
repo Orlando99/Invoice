@@ -47,7 +47,13 @@ invoicesUnlimited.factory('projectUserFactory',
 	var loadAll = function(){
 		var query = new Parse.Query('ProjectUser');
 		query.equalTo('userID',user.entity[0]);
-		return query.find()
+		
+		var queryOrg = new Parse.Query('ProjectUser');
+		queryOrg.equalTo('organization',user.entity[0].get('selectedOrganization'));
+		
+		var finalQuery = Parse.Query.or(query, queryOrg);
+		
+		return finalQuery.find()
 		.then(function(res){
 			projectUser.entities = res.map(function(obj){
 				setObjectOperations({

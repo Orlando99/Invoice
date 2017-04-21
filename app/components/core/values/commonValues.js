@@ -4,6 +4,9 @@ var app = invoicesUnlimited;
 
 app.value('appFields',{
 	user : [
+		'AuthNet',
+		'AuthKey',
+		'paymentGateway',
 		'EPNrestrictKey',
 		'merchantID',
 		'colorTheme',
@@ -38,6 +41,12 @@ app.value('appFields',{
         "isSameAddress"
 	],
 	newCustomer : [
+		'AuthNet',
+		'AuthKey',
+		'paymentGateway',
+		'EPNusername',
+		'merchantID',
+		'EPNrestrictKey',
 		'businessInfo',
 		'principalInfo',
 		'organizations',
