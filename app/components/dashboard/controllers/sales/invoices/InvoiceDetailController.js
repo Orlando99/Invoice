@@ -1300,6 +1300,9 @@ function updatePage(dataTable){
 				$('#pdf-amount-due').text($(this).find('refundtotal').text());
 				$('#pdf-payment-name').text($(this).find('title').text());
 				$('#pdf-currency').text($(this).find('body-currency').text());
+				$('#pdf-total-text').text($(this).find('refundedText').text());
+				$('#pdf-payment-text').text($(this).find('paymentMadeText').text());
+				$('#pdf-credit-text').text($(this).find('creditsAppliedText').text());
 				
 				var ad = $(this).find('addres1').text();
 				
