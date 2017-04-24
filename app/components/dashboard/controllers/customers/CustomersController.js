@@ -686,7 +686,7 @@ invoicesUnlimited.controller('CustomersController',
 				return alphabeticalSort(a.entity.displayName,b.entity.displayName);
 			});
             $scope.displayedCustomers = $scope.customers;
-            
+            /*
 			return $q.when(coreFactory.getAllInvoices({
 				method 	: 'containedIn',
 				name 	: 'customer',
@@ -694,14 +694,40 @@ invoicesUnlimited.controller('CustomersController',
 					return el.entity;
 				})
 			}));
+			*/
+			var promise = [];
+			
+			promise.push(coreFactory.getAllInvoices({
+				method 	: 'containedIn',
+				name 	: 'customer',
+				val1 	: res.map(function(el){
+					return el.entity;
+				})
+			}));
+			
+			promise.push(coreFactory.getAllCreditNotes({
+				method 	: 'containedIn',
+				name 	: 'customer',
+				val1 	: res.map(function(el){
+					return el.entity;
+				})
+			}));
+			
+			return $q.all(promise);
 
-		}).then(function(invoices){
+		}).then(function(results){
+			var invoices = results[0];
+			var creditNotes = results[1];
 			
 			var customersNum = $scope.customers.length;
 
 			$scope.customers.forEach(function(cust){
 				cust.invoices = invoices.filter(function(inv){
 					return inv.entity.get('customer').id == cust.entity.id;
+				});
+				
+				cust.creditNotes = creditNotes.filter(function(note){
+					return note.entity.get('customer').id == cust.entity.id;
 				});
 				
 				if(!cust.entity.unusedCredits)
@@ -717,6 +743,22 @@ invoicesUnlimited.controller('CustomersController',
                         return res.concat([]);
 				},[]);
 			});
+			
+			$scope.customers.forEach(function(cust){
+				var outs = 0;
+				cust.invoices
+				.forEach(function(inv) {
+					outs += inv.entity.balanceDue;
+				});
+				cust.entity.set('outstanding', outs);
+				
+				var credits = 0;
+				cust.creditNotes
+				.forEach(function(note) {
+					credits += note.entity.remainingCredits;
+				});
+				cust.entity.set('unusedCredits', credits);
+			});
 
 			if (isGoTo.details($state.current.name)) {
 				doSelectCustomerIfValidId(customerId);
@@ -731,6 +773,9 @@ invoicesUnlimited.controller('CustomersController',
             $scope.sortByCustomerName();
 			hideLoader();
 
+		}, function(error){
+			debugger;
+			console.error(error);
 		});
 	};
   //nameD,custNameD,emailD,workphoneD,receivableD,creditsD,

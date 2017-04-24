@@ -169,8 +169,10 @@ return {
 	createNewCreditNote : function(creditNote, creditItems, role) {
 		var items = [];
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
+		acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
 
 		var promise = Parse.Promise.as(undefined);//undefined;
 /*		if(file) {
@@ -259,9 +261,10 @@ return {
 		var creditItemsToUpdate = {};
 		var CreditItem = Parse.Object.extend("CreditNoteItem");
 		var acl = new Parse.ACL();
-		acl.setRoleWriteAccess(role.get("name"), true);
-		acl.setRoleReadAccess(role.get("name"), true);
-
+		//acl.setRoleWriteAccess(role.get("name"), true);
+		//acl.setRoleReadAccess(role.get("name"), true);
+		acl.setPublicReadAccess(true);
+        acl.setPublicWriteAccess(true);
 		// filter items from creditItems
 		creditItems.forEach(function(item) {
 			if (item.selectedItem.create) {

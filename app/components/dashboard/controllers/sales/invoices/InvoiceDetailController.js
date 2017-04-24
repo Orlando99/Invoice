@@ -1159,29 +1159,6 @@ function updatePage(dataTable){
                 $('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
             }
             
-            /*
-            if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
-                console.log($(dataTable).find('th4').text())
-                var th4 = $(dataTable).find('th4').text();
-                //$('.content.cl th.discount').append(th4);
-                var th2 = $(dataTable).find('th2').text();
-                //$('.content.cl th.quantity').append(th2);
-                var th3 = $(dataTable).find('th3').text();
-                //$('.content.cl th.price').append(th3);
-                
-                $('thead').append('<tr style="margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;"><th class="item" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align: left; " colspan="4" >' + '' + '</th><th class="quantity" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align:right; " colspan="1">' + th2 + '</th><th class="discount" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align:right" colspan="1">' + th4 + '</th><th class="price" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align: right;"  colspan= "1">' + th3 + '</th><!--<th class="linetotal"></th>--></tr>');
-                
-            } else {
-                var th2 = $(dataTable).find('th2').text();
-                //$('.content.cl th.quantity').append(th2);
-                var th3 = $(dataTable).find('th3').text();
-                //$('.content.cl th.price').append(th3);
-                //$('th.quantity').attr('colspan', 2)
-                //$('th.discount').addClass('disable');
-                
-                $('thead').append('<tr style="margin: 0;padding: 0;border: 0;font-size: 100%;font: inherit;vertical-align: baseline;"><th class="item" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align: left; " colspan="4" >' + '' + '</th><th class="quantity" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align:right; " colspan="2">' + th2 + '</th><th class="price" style="margin: 0;padding: 10px 0 10px 10px;border: 0;font-size: 20px;vertical-align: baseline;white-space: nowrap;font-weight: normal;color: #000;text-align: right;"  colspan= "1">' + th3 + '</th><!--<th class="linetotal"></th>--></tr>');
-            }
-                */
             itemRows.each(function(funcOne){
                 
                 if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
@@ -1206,30 +1183,6 @@ function updatePage(dataTable){
                         .append(itemCost);
                     $('#invoice-items-header').after($(item));
                 }
-                
-                /*
-                var tr = $('<tr style="margin: 0;padding: 0;border: 0;font-size: 100%;vertical-align: baseline;color: #807f7f;text-transform: uppercase;"></tr>');
-            
-                if($(this).find('newItem').length){
-                    // tr.append($('<td class="newItem"></td>').html($(this).children('newItem').text()));
-                }else if($(this).find('itemNotes').length){
-                    // tr.append($('<td class="notes"></td>').html($(this).children('itemNotes').text()));
-                }else{
-                    tr.append($('<td class="item" colspan="4" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: left; color: #000"></td>').html($(this).children('name').text()));
-                }
-                
-                if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
-                    tr.append($('<td class="quantity" colspan="1" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000"></td>').html($(this).children('qty').text()));
-                    tr.append($('<td class="discount" colspan="1" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right; color: #000" ></td>').html($(this).children('discount').text()));
-                    tr.append($('<td class="price" colspan="1" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000"></td>').html($(this).children('price').text()));
-                } else {
-                    tr.append($('<td class="quantity" colspan="2" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000"></td>').html($(this).children('qty').text()));
-                    tr.append($('<td class="price" colspan="2" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000"></td>').html($(this).children('price').text()));
-                }
-                //tr.append($('<td class="linetotal"></td>').html($(this).children('linetotal').text()));
-                $('tbody').append(tr);
-                */
-
             });
             
             taxes.each(function() {
@@ -1242,15 +1195,7 @@ function updatePage(dataTable){
                     .append(itemTitle)
                     .append(itemCost);
                 $('#invoice-subtotal').after($(item));
-                /*
-                var tr = $('<tr class="salestax" style="margin: 0;padding: 0;border: 0;font-size: 100%;vertical-align: baseline;color: #807f7f;text-transform: uppercase;"></tr>');
-                tr.append($('<td class="" colspan="4" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: left; color: #000"></td>'));
-                tr.append($('<td class="" style="margin: 0;padding: 5px 0px;border: 0;font-size: 17px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #000" colspan="1"></td>'));
-                        
-                tr.append($('<td class="saletax" colspan="1" style="margin: 0;padding: 5px 0px;border: 0;font-size: 20px;vertical-align: baseline;line-height: 22px;text-align: right; color: #989898"></td>').html($(this).children('name').text()));
-                tr.append($('<td class="" style="margin: 0;padding: 5px 0px;border: 0;font-size: 20px;vertical-align: baseline;line-height: 22px;text-align: right !important; color: #989898" colspan="1"></td>').html($(this).children('value').text()));
-                $('tr.adjustments').after(tr);
-                */
+                
             });
 
             var tr = $('<tr class="salestax"></tr>');
@@ -1342,25 +1287,25 @@ function updatePage(dataTable){
 					$('#invoice-subtotal').after($(item));
 				}
 
+				$('#pdf-business-name').text(userFactory.entity[0].get('company'));
+				$('#pdf-invoice-title').text($(this).find('invoice-title').text());
 				$('#pdf-invoice-number').text($(this).find('refid').text());
 				$('#pdf-amount-received').text($(this).find('body-price').text());
 				$('#pdf-date').text($(this).find('body-date').text());
 				$('#pdf-subtotal').text($(this).find('subtotalprice').text());
 				$('#pdf-payment-made').text($(this).find('paymentMadePrice').text());
 				$('#pdf-total').text($(this).find('total-price3').text());
+				$('#pdf-total-top').text($(this).find('total-price3').text());
 				$('#pdf-credit-applied').text($(this).find('creditsAppliedPrice').text());
 				$('#pdf-amount-due').text($(this).find('refundtotal').text());
 				$('#pdf-payment-name').text($(this).find('title').text());
-				
-				var logo = $(this).find('logo').text();
-				if(logo)
-					$('#pdf-logo').attr('src', logo);
-				else
-					$('#pdf-logo').attr('src', "https://sslsecuredfiles.com/parse/files/qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3/15bade19-6114-4105-af30-2c890ec7b46f_placelogo_placeholder.jpg");
+				$('#pdf-currency').text($(this).find('body-currency').text());
 				
 				var ad = $(this).find('addres1').text();
 				
-				$('#pdf-address').html(ad.replace(/(.{35})/g, "$1<br>"));
+				$('#pdf-address').html(ad);
+				
+				//$('#pdf-address').html(ad.replace(/(.{35})/g, "$1<br>"));
 				
 				var longmsg = $(this).find('longmsg').text();
 				if (longmsg.length != 0){
@@ -1490,8 +1435,6 @@ function updatePage(dataTable){
 				var creditsAppliedPrice = $(this).find('creditsAppliedPrice').text();
 				$('td.credits-applied-text').append(creditsAppliedText);
 				$('td.credits-applied-price').append(creditsAppliedPrice);
-				//var salestaxnr = $(this).find('salestaxnr').text();
-				//$('.salestaxnr').append(salestaxnr);
 				var total_price2 = $(this).find('total-price2').text();
 				$('.total-price2').append(total_price2);
 				var total_price3 = $(this).find('total-price3').text();
@@ -1516,11 +1459,6 @@ function updatePage(dataTable){
 				$('head title').append(title);
 				var item4price = $(this).find('item4price').text();
 				$('.price .item4price').append(item4price);
-				var logo = $(this).find('logo').text();
-				if(logo)
-					$('.logo').attr('src', logo);
-				else
-					$('.logo').attr('src', "https://sslsecuredfiles.com/parse/files/qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3/15bade19-6114-4105-af30-2c890ec7b46f_placelogo_placeholder.jpg");
 
 				var subtotalprice = $(this).find('subtotalprice').text();
 				$('.subtotal-price').append(subtotalprice);
@@ -1561,6 +1499,6 @@ function updatePage(dataTable){
     });
 	
 }
-    
+	
     
 }]);

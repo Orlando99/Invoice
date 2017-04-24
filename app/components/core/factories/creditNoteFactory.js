@@ -104,6 +104,8 @@ function CreditNote (parseObject, params) {
 			this.customer = customer;
 		}
 
+	} else if(params == "customerBalance"){
+		creditNoteFields = ['remainingCredits', 'creditsUsed', 'creditNumber'];
 	}
 
 	setObjectOperations({

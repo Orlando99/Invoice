@@ -4,6 +4,7 @@ invoicesUnlimited.factory('coreFactory',
 	function(
 		userFactory,
 		customerFactory,
+		 creditNoteFactory,
 		invoicesFactory,
 		itemFactory,
 		expenseCategoryFactory,
@@ -103,6 +104,20 @@ invoicesUnlimited.factory('coreFactory',
 				invoices.push(new invoicesFactory(elem));
 			});
 			return invoices;
+		});
+	}
+	
+	core.getAllCreditNotes = function(params){
+		var query = new Parse.Query("CreditNotes");
+		if (!params.method) query.equalTo(params.name,params.val1);
+		else query[params.method](params.name,params.val1,params.val2,params.val3);
+		
+		return query.find().then(function(res){
+			var creditNotes = [];
+			res.forEach(function(elem){
+				creditNotes.push(new creditNoteFactory(elem, "customerBalance"));
+			});
+			return creditNotes;
 		});
 	}
 
