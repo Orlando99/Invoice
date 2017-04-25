@@ -586,6 +586,8 @@ $scope.reCalculateTotal = function() {
 	$scope.totalStr = currencyFilter($scope.total, '$', 2);
 }
 
+$scope.reCalculateSubTotal = reCalculateSubTotal;
+
 function reCalculateSubTotal() {
 	var items = $scope.estimateItems;
 	var subTotal = 0;
@@ -596,7 +598,11 @@ function reCalculateSubTotal() {
 	// itemInfo.discount is zero, so, expression will evaluate to 1.
 	items.forEach(function(item) {
 		subTotal += item.amount * ((100 - item.discount) * 0.01);
-		item.taxValue = calculateTax(item.amount, item.selectedTax);
+		var dis = Number($scope.discount) || 0;
+		if($scope.prefs.discountType == 2) //before tax
+				item.taxValue = calculateTax(item.amount * ((100 - dis) * 0.01), item.selectedTax);
+			else
+				item.taxValue = calculateTax(item.amount, item.selectedTax);
 		totalTax += item.taxValue;
         
         if (item.selectedTax) {

@@ -491,7 +491,7 @@ return {
 		var invoiceTable = Parse.Object.extend("Invoices");
 		var query = new Parse.Query(invoiceTable);
 		query.include("invoiceItems", "customer", "lateFee",
-			"invoiceItems.item", "invoiceItems.item.tax", "organization",
+			"invoiceItems.item", "invoiceItems.tax", "organization",
 			"userID", "userID.defaultTemplate", "userID.businessInfo");
 
 		var data = {};
@@ -1048,7 +1048,15 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 				var tax = itemList[i].get("tax");
 				if (tax) {
 					var taxName = tax.get("title") + " (" + tax.get("value") + "%)";
-					var t = calculateTax(itemList[i], tax);
+					
+					var t = 0;
+					var discounts = invoice.get("discounts") || 0;
+					if(discountType == 2) //before tax
+						t = calculateTax(amount * ((100 - discounts) * 0.01), tax);
+					else
+						t = calculateTax(amount, tax);
+					
+					//var t = calculateTax(itemList[i], tax);
 					totalTax += t;
 					var taxValue =  currencyFilter(t, '$', 2);
 					var taxObj = {
@@ -1172,7 +1180,24 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 	});
 
 }
+function calculateTax(amount, tax) {
+	var taxType = tax.get("type");
+	var taxRate = tax.get("value");
+	var compound = tax.get("compound");
 
+	//var amount = item.get("amount");
+	var res = 0;
+	if (taxType == 1)
+		res = amount * taxRate * 0.01;
+	else if (taxType == 2) {
+		res = amount * taxRate * 0.01;
+		if (compound)
+			res = res * compound * 0.01;
+	}
+
+	return res;
+}
+/*
 function calculateTax(item, tax) {
 	var taxType = tax.get("type");
 	var taxRate = tax.get("value");
@@ -1190,7 +1215,7 @@ function calculateTax(item, tax) {
 
 	return res;
 }
-
+*/
 function getOrganization (user) {
 	var organizationArray = user.get("organizations");
 	if (!organizationArray) {

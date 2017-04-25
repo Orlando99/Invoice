@@ -134,7 +134,7 @@
           <form id="extrasForm" class="inputs-white">
             <div class="input-container layout-margin-tb" ng-show="invoiceLevelTax">
               <label class="layout-padding-t-smm">Discount (%)</label>
-              <input name="discount" type="number" onkeypress="numberValidation(event)" class="col-30" ng-model="discount" ng-change="reCalculateTotal()">
+              <input name="discount" type="number" onkeypress="numberValidation(event)" class="col-30" ng-model="discount" ng-change="reCalculateSubTotal()">
               <label class="col-35 text-right layout-padding-t-smm">{{discountStr}}</label>
             </div>
             <div class="input-container layout-margin-tb" ng-show="showShippingCharges">
