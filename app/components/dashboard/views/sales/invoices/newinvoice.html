@@ -198,7 +198,7 @@
           <div class="col-65 text-right">{{subTotalStr}}</div>
           <br>
           <form id="extrasForm" class="inputs-white">
-            <div class="input-container layout-margin-tb" ng-show="invoiceLevelTax">
+            <div id="discountD" class="input-container layout-margin-tb" ng-show="invoiceLevelTax">
               <label class="layout-padding-t-smm">Discount (%)</label>
               <input maxlength="60" name="discount" type="number" class="col-30" ng-model="discount" onkeypress="numberValidation(event)"
                 ng-change="reCalculateSubTotal()">
@@ -224,6 +224,7 @@
               <label class="col-60 text-right layout-padding-t-smm">{{tax.nameValue}}</label>
               <label class="col-40 text-right layout-padding-t-smm">{{tax.amount}}</label>
             </div>
+			  <div id="taxD"></div>
           </form>
         </div>
         <div class="table-row row-border layout-padding layout-margin-tb">

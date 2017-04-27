@@ -55,9 +55,12 @@ function loadPrefs() {
 		$scope.shipCharges = (prefs.shipCharges == 1 ? 'yes' : 'no');
 		$scope.adjustments = (prefs.adjustments == 1 ? 'yes' : 'no');
 		$scope.salesPerson = (prefs.salesPerson == 1 ? 'yes' : 'no');
+		$scope.invoiceNotification = (user.get('getInvoiceNotification') == 1 ? 'yes' : 'no');
 		$scope.notes = prefs.notes;
 		$scope.terms = prefs.terms;
 		$scope.showLateFee = 'no';
+		$scope.invoiceThanksNotes = prefs.thanksNote;
+		$scope.paymentConfirmation = (prefs.thanksNote.length > 0 ? 'yes' : 'no');
 
 		var arr = prefs.invoiceNumber.split('-');
 		$scope.prefix = arr[0];
@@ -230,7 +233,7 @@ $scope.save = function() {
 		salesPerson : ($scope.salesPerson == 'yes' ? 1 : 0),
 		notes : $scope.notes,
 		terms : $scope.terms,
-
+		thanksNote : ($scope.paymentConfirmation == 'yes' ? $scope.invoiceThanksNotes : "")
 	}
 
 	if($scope.invoiceAg == 'yes') {
@@ -265,6 +268,9 @@ $scope.save = function() {
 
 //	console.log(prefs);
 
+	user.set('getInvoiceNotification', $scope.invoiceNotification == 'yes' ? 1 : 0);
+	user.save();
+	
 	$q.when(invoiceService.setPreferences(user, prefs))
 	.then(function() {
 		console.log('invoice prefs updated.');

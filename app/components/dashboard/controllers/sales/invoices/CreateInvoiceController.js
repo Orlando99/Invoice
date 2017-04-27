@@ -123,8 +123,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
         }
 	});
 
-	$('#itemInfoForm').validate();
-
+	$('#itemInfoForm').validate();		
+		
 	function setValidationRules() {
 /*		
 		if (! $('.check-item').length) {
@@ -324,7 +324,12 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				break;
 
 			case 2:
+				$scope.itemLevelTax = false;
+				$scope.invoiceLevelTax = true;
+				$scope.discountStr = currencyFilter(0*cc.exchangeRate, cc.currencySymbol, 2);
+				break;
 			case 3:
+				$("#discountD").insertAfter('#taxD');
 				$scope.itemLevelTax = false;
 				$scope.invoiceLevelTax = true;
 				$scope.discountStr = currencyFilter(0*cc.exchangeRate, cc.currencySymbol, 2);

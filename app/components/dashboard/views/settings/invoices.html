@@ -4,6 +4,7 @@
     <h3 class="layout-margin-t section-title">Invoices</h3>
     <hr/>
     <form id="settingsForm" class="inputs-white col-60">
+		<!--
       <div class="input-container input-radio-container layout-margin-b">
         <label class="col-25">Include Thank you Note on Receipt</label>
         <label class="layout-padding-t-sm col-10">
@@ -21,7 +22,54 @@
           No
         </label>
       </div>
-
+		-->
+		
+		<div class="input-container input-radio-container layout-margin-b">
+        <label class="col-25">Get Notifications When Customers Pay Online</label>
+        <label class="layout-padding-t-sm col-10">
+          <span class="layout-margin-r">
+            <input type="radio" name="invoiceNotification" value="yes" ng-model="invoiceNotification">
+            <span class="radio"></span>
+          </span>
+          Yes
+        </label>
+        <label class="layout-padding-t-sm col-10">
+          <span class="layout-margin-r">
+            <input type="radio" name="invoiceNotification" value="no" ng-model="invoiceNotification">
+            <span class="radio"></span>
+          </span>
+          No
+        </label>
+      </div>
+		
+      <div class="clearfix"></div><br>
+		
+		<h3 class="text-uppercase text-weight-normalize layout-margin-tb">Email Receipt</h3><br>
+		
+		<div class="input-container input-radio-container layout-margin-b">
+        <label class="col-25">Send Payment Confirmation</label>
+        <label class="layout-padding-t-sm col-10">
+          <span class="layout-margin-r">
+            <input type="radio" name="paymentConfirmation" value="yes" ng-model="paymentConfirmation">
+            <span class="radio"></span>
+          </span>
+          Yes
+        </label>
+        <label class="layout-padding-t-sm col-10">
+          <span class="layout-margin-r">
+            <input type="radio" name="paymentConfirmation" value="no" ng-model="paymentConfirmation">
+            <span class="radio"></span>
+          </span>
+          No
+        </label>
+      </div>
+		
+      <div class="clearfix"></div>
+		<div id="test" ng-show="paymentConfirmation == 'yes'" class="input-container input-radio-container layout-margin-b">
+        <label class="col-25"></label>
+        <textarea class="col-75" maxlength="200" ng-model="invoiceThanksNotes" onkeyup="auto_grow(this)"></textarea>
+      </div>
+      
       <div class="clearfix"></div>
       <br>
       <h3 class="text-uppercase text-weight-normalize layout-margin-tb">Invoice Number</h3><br>

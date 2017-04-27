@@ -87,7 +87,7 @@ return {
 			invInfo = new InvoiceInfo();
 		} else console.log('used old');
 
-		invInfo.set('sendNotifications', 1);
+		invInfo.set('sendNotifications', userFactory.entity[0].get('getInvoiceNotification'));
 		invInfo.set('invoiceDate', invoice.get('invoiceDate'));
 		invInfo.set('dueDate', invoice.get('dueDate'));
 		invInfo.set('referenceNumber', invoice.get('invoiceNumber'));
@@ -458,6 +458,7 @@ return {
 			prefObj.set("invoiceShippingCharges", params.shipCharges);
 			prefObj.set("invoiceNotes", params.notes);
 			prefObj.set("invoiceTerms", params.terms);
+			prefObj.set("invoiceThanksNotes", params.thanksNote);
 
 			promises.push(prefObj.save());
 			return Parse.Promise.when(promises);
