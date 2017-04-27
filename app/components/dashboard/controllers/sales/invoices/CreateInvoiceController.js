@@ -1352,7 +1352,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 			if($scope.prefs.discountType == 2) //before tax
 				item.taxValue = calculateTax(item.amount * ((100 - dis) * 0.01), item.selectedTax);
 			else
-				item.taxValue = calculateTax(item.amount, item.selectedTax);
+				item.taxValue = calculateTax(item.amount * ((100 - item.discount) * 0.01), item.selectedTax);
 			totalTax += item.taxValue;
             
             if (item.selectedTax) {

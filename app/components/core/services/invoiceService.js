@@ -1056,7 +1056,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 					if(discountType == 2) //before tax
 						t = calculateTax(amount * ((100 - discounts) * 0.01), tax);
 					else
-						t = calculateTax(amount, tax);
+						t = calculateTax(amount * ((100 - discount) * 0.01), tax);
 					
 					//var t = calculateTax(itemList[i], tax);
 					totalTax += t;
