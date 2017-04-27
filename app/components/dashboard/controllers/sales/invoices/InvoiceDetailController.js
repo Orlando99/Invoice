@@ -1287,6 +1287,29 @@ function updatePage(dataTable){
 					$('#invoice-subtotal').after($(item));
 				}
 
+				var headerTitle = $(this).find('headerTitle').text();
+				var pastDate = $(this).find('past-due').text();
+				if(headerTitle){
+					$('#pdf-title').text(headerTitle + "   " + pastDate);
+				} else {
+					//$('.top-bar').hide();
+					$('#pdf-title').text("");
+					$('.top-bar').css('height', '0mm');
+					$('.top-bar').css('border-bottom', '0mm');
+				}
+				
+				var ordernotesTitle = $(this).find('ordernotes-title').text();
+				var ordernotes = $(this).find('ordernotes').text();
+				if(ordernotes){
+					$('#pdf-terms-title').text(ordernotesTitle);
+					$('#pdf-terms').text(ordernotes);
+				} else {
+					$('#pdf-terms-title').text("");
+					$('#pdf-terms').text("");
+					$('#pdf-terms-title').hide();
+					$('#pdf-terms').hide();
+				}
+				
 				$('#pdf-business-name').text(userFactory.entity[0].get('company'));
 				$('#pdf-invoice-title').text($(this).find('invoice-title').text());
 				$('#pdf-invoice-number').text($(this).find('refid').text());
@@ -1317,14 +1340,11 @@ function updatePage(dataTable){
 					$('#pdf-notes-title').html(longmsgTitle);
 					$('#pdf-notes').html(longmsg);
 				} else {
+					$('#pdf-notes-title').html("");
+					$('#pdf-notes').html("");
 					$('#pdf-notes-title').hide();
 					$('#pdf-notes').hide();
 				}
-				
-				var ordernotesTitle = $(this).find('ordernotes-title').text();
-				var ordernotes = $(this).find('ordernotes').text();
-				$('#pdf-terms-title').text(ordernotesTitle);
-				$('#pdf-terms').text(ordernotes);
 				
 				var mailto = $(this).find('mailto').text();
 				$('#user-mail').attr('href', mailto);

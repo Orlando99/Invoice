@@ -15,7 +15,7 @@
           <li><a href="" ng-click="textReceipt()">Send as Text</a></li>
           <li class="modal-opener" data-toggle="record-payment" ng-if="creditNote.entity.remainingCredits > 0"><a href=""
               ng-click="prepareAddPayment()">Add Refund</a></li>
-		  <li><a href="javascript:" ng-click="downloadInvoice()">Download</a></li>
+		  <li><a href="javascript:" ng-click="downloadInvoice()">Download PDF</a></li>
         <li><a ng-href="{{templateUrl}}" target="_blank" ng-click="creditNotePrinted()">Print</a></li>
       </ul>
     </div>
@@ -354,6 +354,13 @@
     </style>
 
     <page id="page-container" backtop="0mm" backbottom="10mm" backleft="10mm" backright="15mm">
+		<div class="ff1 fc0 top-bar" 
+             style="position: relative;
+                    height: 10mm;
+                    white-space: pre;
+                    font-size: 30px;
+                    text-align: center;
+                    line-height: 10mm;" ><span id='pdf-title'>Payment Due   Apr 27, 2017</span></div>
         <table cellspacing="0" 
                style="width: 185mm;                   
                       height: 122mm;
@@ -369,6 +376,13 @@
                 <td style="width: 30mm;"></td>
                 <td style="width: 30mm;"></td>
             </thead>
+			
+			<tr class="top-bar">
+                <td colspan="6" class="btm-line top-bar"></td>
+            </tr>
+			<tr class="top-bar">
+                <td colspan="6" class="top-bar" style="height: 6mm;"></td>
+            </tr>
 			
 			<tr>
 				<td style="font-size: 18px;
@@ -404,7 +418,7 @@
 						   padding-top: 10px;
 						   padding-left: 26px;"
                     class="ff1 fc0" colspan="3">
-					<span style="font-size: 30px;" id="pdf-business-name">Business Name</span> <br> <br>
+					<span id="pdf-business-name">Business Name</span> <br> <br>
 					
 					<table>
 						<tr>
@@ -592,7 +606,7 @@
                     position: absolute;
                     text-align: center;
                     width: 100%;
-                    bottom: 0;">Powered by CJ Technology LLC</div>
+                    bottom: 0;">InvoicesUnlimited.com Powered By © CJ Technologies LLC</div>
 </page>
 
     </div>
