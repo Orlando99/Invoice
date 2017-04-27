@@ -992,6 +992,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 				user.get("country")
 			];
 			labels['addres1'] = address.join(', ');
+			labels['business-name'] = bInfo.get('businessName');
 		}
 
 		// values available from Customer
@@ -1158,6 +1159,14 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 
 		var balanceDue = total - paymentMade - creditApplied;
 		labels['refundtotal'] = currencyFilter(balanceDue, '$', 2);
+		
+		if(balanceDue > 0){
+			labels['headerTitle'] = "Payment Due";
+			labels['disablePay'] = "false";
+		} else {
+			labels['headerTitle'] = "Paid Date";
+			labels['disablePay'] = "true";
+		}
 
 //----------------------------------------------------------------
 

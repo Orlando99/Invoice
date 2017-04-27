@@ -787,6 +787,7 @@ function fillInXmlData(xmlUrl, user, creditNote) {
 				user.get("country")
 			];
 			labels['addres1'] = address.join(', ');
+			labels['business-name'] = bInfo.get('businessName');
 		}
 
 		// values available from Customer
