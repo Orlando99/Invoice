@@ -59,9 +59,6 @@ function showInvoiceDetail()
 			$scope.isOwner = true;
 		}
 		
-		
-		debugger;
-		
 	//	console.log(invoice);
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		$scope.invoice = invoice;
@@ -501,88 +498,13 @@ $scope.doRefundPayment = function() {
     
     if(mode == 'Credit Card'){
         var info = $scope.invoiceInfo;
-        var tansId = info.get('paymentStatus');
-        tansId = tansId.split(',');
-        tansId = tansId[tansId.length - 1];
-        tansId = tansId.replace(/\"/g, "");
-        
-        var account = user.get('EPNusername');
-        var restrictKey = user.get('EPNrestrictKey');
-        var am = $scope.selectedPayment.entity.get('amount');
-        
-        var url = "refund.php";
-        var data = {
-            'HTML'        : 'No',
-            'ePNAccount'  : account,
-            'RestrictKey' : restrictKey,
-            'TransID'     : tansId,
-            'TranType'    : 'Return',
-            'Total'       : am
-        };
-        
-        var data1 = Object.assign({},data,{
-                    
-                });
-        
-        showLoader();
-        $.ajax({
-            method:"GET",
-            url: url,
-            data: data1,
-            complete:function(data){
-                console.log("Reguest is done: " + data);
-            },
-            error: function(data){
-                alert("ERROR: " + data);
-            },
-            success:function(data){
-                debugger;
-                
-                var response = data.match(/[^,]+/g);
-                
-                //showLoader();
-                
-                if(response.length){
-                    var payment = $scope.selectedPayment.entity;
-                    payment.set('deleted', true);
-                    
-                    var info = $scope.invoiceInfo;
-                    info.set('paymentStatus', data);
-
-                    var invoiceObj = $scope.invoice.entity;
-                    invoiceObj.unset('invoiceReceipt');
-                    invoiceObj.increment('paymentMade', -payment.amount);
-                    invoiceObj.increment('balanceDue', payment.amount);
-
-                    if (invoiceObj.get('paymentMade') <= 0)
-                        invoiceObj.set('status', 'Refunded');
-                    else
-                        invoiceObj.set('status', 'Partial Refunded');
-
-                    var promises = [];
-                    promises.push(payment.save());
-                    promises.push(invoiceObj.save());
-                    promises.push(info.save());
-
-                    var body = 'Refund made for '+ currencyFilter(payment.amount, '$', 2) +' amount';
-                    promises.push(addNewComment(body, true));
-                    
-                    $q.all(promises)
-                    .then(function() {
-                        $('.confirm-refund').removeClass('show');
-                        $('.refund-payment').removeClass('show');
-
-                        showSnackbar("Payment Refunded");
-                        hideLoader();
-                        setTimeout(function(){ 
-                            $state.reload();
-                        }, 2000);
-                    });
-                }
-                
-            }
-        });
-        
+		var tansId = info.get('paymentStatus');
+		
+		if(tansId.indexOf('AUTH') < 0){
+			refundEPN();
+		} else {
+			refundAuth();
+		}
     }
     
     if(mode == 'Credit Note'){
@@ -623,6 +545,189 @@ $scope.doRefundPayment = function() {
         setTimeout(function(){ 
             $state.reload();
         }, 2000);
+	});
+}
+
+function refundAuth(){
+	var mode = $scope.selectedPayment.entity.mode;
+	var refunded = $scope.selectedPayment.entity.deleted;
+	
+	var info = $scope.invoiceInfo;
+	var tansId = info.get('paymentStatus');
+	tansId = tansId.split(':');
+	tansId = tansId[tansId.length - 1];
+	tansId = tansId.replace(" ", "");
+	
+	
+	var account = user.get('AuthNet');
+	var restrictKey = user.get('AuthKey');
+	var am = $scope.selectedPayment.entity.get('amount');
+	var lastDigits = $scope.selectedPayment.entity.get('lastFourDigits');
+
+	var url = "refundAuth.php";
+	var data = {
+		'HTML'      : 'No',
+		'AuthNet'  	: account,
+		'AuthKey' 	: restrictKey,
+		'TransID'   : tansId,
+		'TranType'  : 'Return',
+		'Total'     : parseFloat(am)
+	};
+
+	var data1 = Object.assign({},data,{
+
+			});
+
+	debugger;
+	
+	showLoader();
+	$.ajax({
+		method:"GET",
+		url: url,
+		data: data1,
+		complete:function(data){
+			console.log("Reguest is done: " + data);
+		},
+		error: function(data){
+			alert("ERROR: " + data);
+		},
+		success:function(data){
+			debugger;
+
+			var response = data.match(/[^,]+/g);
+
+			var res = data.indexOf('Error');
+
+			debugger;
+			return;
+			
+			if(res < 0){
+				var payment = $scope.selectedPayment.entity;
+				payment.set('deleted', true);
+
+				var info = $scope.invoiceInfo;
+				info.set('paymentStatus', data);
+
+				var invoiceObj = $scope.invoice.entity;
+				invoiceObj.unset('invoiceReceipt');
+				invoiceObj.increment('paymentMade', -payment.amount);
+				invoiceObj.increment('balanceDue', payment.amount);
+
+				if (invoiceObj.get('paymentMade') <= 0)
+					invoiceObj.set('status', 'Refunded');
+				else
+					invoiceObj.set('status', 'Partial Refunded');
+
+				var promises = [];
+				promises.push(payment.save());
+				promises.push(invoiceObj.save());
+				promises.push(info.save());
+
+				var body = 'Refund made for '+ currencyFilter(payment.amount, '$', 2) +' amount';
+				promises.push(addNewComment(body, true));
+
+				$q.all(promises)
+				.then(function() {
+					$('.confirm-refund').removeClass('show');
+					$('.refund-payment').removeClass('show');
+
+					showSnackbar("Payment Refunded");
+					hideLoader();
+					setTimeout(function(){ 
+						$state.reload();
+					}, 2000);
+				});
+			}
+
+		}
+	});
+}
+
+function refundEPN(){
+	var mode = $scope.selectedPayment.entity.mode;
+	var refunded = $scope.selectedPayment.entity.deleted;
+	
+	var info = $scope.invoiceInfo;
+	var tansId = info.get('paymentStatus');
+	tansId = tansId.split(',');
+	tansId = tansId[tansId.length - 1];
+	tansId = tansId.replace(/\"/g, "");
+
+	var account = user.get('EPNusername');
+	var restrictKey = user.get('EPNrestrictKey');
+	var am = $scope.selectedPayment.entity.get('amount');
+
+	var url = "refund.php";
+	var data = {
+		'HTML'        : 'No',
+		'ePNAccount'  : account,
+		'RestrictKey' : restrictKey,
+		'TransID'     : tansId,
+		'TranType'    : 'Return',
+		'Total'       : am
+	};
+
+	var data1 = Object.assign({},data,{
+
+			});
+
+	showLoader();
+	$.ajax({
+		method:"GET",
+		url: url,
+		data: data1,
+		complete:function(data){
+			console.log("Reguest is done: " + data);
+		},
+		error: function(data){
+			alert("ERROR: " + data);
+		},
+		success:function(data){
+			debugger;
+
+			var response = data.match(/[^,]+/g);
+
+			//showLoader();
+
+			if(response.length){
+				var payment = $scope.selectedPayment.entity;
+				payment.set('deleted', true);
+
+				var info = $scope.invoiceInfo;
+				info.set('paymentStatus', data);
+
+				var invoiceObj = $scope.invoice.entity;
+				invoiceObj.unset('invoiceReceipt');
+				invoiceObj.increment('paymentMade', -payment.amount);
+				invoiceObj.increment('balanceDue', payment.amount);
+
+				if (invoiceObj.get('paymentMade') <= 0)
+					invoiceObj.set('status', 'Refunded');
+				else
+					invoiceObj.set('status', 'Partial Refunded');
+
+				var promises = [];
+				promises.push(payment.save());
+				promises.push(invoiceObj.save());
+				promises.push(info.save());
+
+				var body = 'Refund made for '+ currencyFilter(payment.amount, '$', 2) +' amount';
+				promises.push(addNewComment(body, true));
+
+				$q.all(promises)
+				.then(function() {
+					$('.confirm-refund').removeClass('show');
+					$('.refund-payment').removeClass('show');
+
+					showSnackbar("Payment Refunded");
+					hideLoader();
+					setTimeout(function(){ 
+						$state.reload();
+					}, 2000);
+				});
+			}
+
+		}
 	});
 }
 
