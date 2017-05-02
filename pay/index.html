@@ -1235,8 +1235,8 @@ $(document).ready(function(){
                             
                             var temp = $('#CardNo').val();
                             temp = temp.substring(0, 4);
-							var lastDigits = $('#CradNo').val();
-							lastDigits = lastDigits.substr(lastDigits.length() - 4, 4);
+							var lastDigits = $('#CardNo').val();
+							lastDigits = lastDigits.substr(lastDigits.length - 4, 4);
                             Parse.Cloud.run('doPayment',{invoiceInfoId : invoiceInfoId, firstFourDigits : temp, lastFourDigits : lastDigits}).then(function(res){
                                 
                                 var result = JSON.parse(res);

@@ -500,7 +500,7 @@ $scope.doRefundPayment = function() {
         var info = $scope.invoiceInfo;
 		var tansId = info.get('paymentStatus');
 		
-		if(tansId.indexOf('AUTH') < 0){
+		if(tansId.indexOf('YAUTH') >= 0){
 			refundEPN();
 		} else {
 			refundAuth();
@@ -590,8 +590,6 @@ function refundAuth(){
 	var data1 = Object.assign({},data,{
 
 			});
-
-	debugger;
 	
 	showLoader();
 	$.ajax({
@@ -609,8 +607,6 @@ function refundAuth(){
 			var response = data.match(/[^,]+/g);
 
 			var res = data.indexOf('Error');
-
-			debugger;
 			
 			if(res < 0){
 				var payment = $scope.selectedPayment.entity;
@@ -668,13 +664,25 @@ function refundEPN(){
 	var restrictKey = user.get('EPNrestrictKey');
 	var am = $scope.selectedPayment.entity.get('amount');
 
+	var pDate = $scope.selectedPayment.entity.get('date');
+	var nDate = new Date();
+	
+	var hours = Math.abs(nDate - pDate) / (1000*3600);
+	
+	var transType = "";
+	
+	if(hours < 12)
+		transType = "Void";
+	else
+		transType = "Return";
+	
 	var url = "refund.php";
 	var data = {
 		'HTML'        : 'No',
 		'ePNAccount'  : account,
 		'RestrictKey' : restrictKey,
 		'TransID'     : tansId,
-		'TranType'    : 'Return',
+		'TranType'    : transType,
 		'Total'       : am
 	};
 
