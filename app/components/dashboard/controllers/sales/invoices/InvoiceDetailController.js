@@ -563,6 +563,18 @@ function refundAuth(){
 	var restrictKey = user.get('AuthKey');
 	var am = $scope.selectedPayment.entity.get('amount');
 	var lastDigits = $scope.selectedPayment.entity.get('lastFourDigits');
+	
+	var pDate = $scope.selectedPayment.entity.get('date');
+	var nDate = new Date();
+	
+	var hours = Math.abs(nDate - pDate) / (1000*3600);
+	
+	var transType = "";
+	
+	if(hours < 12)
+		transType = "voidTransaction";
+	else
+		transType = "refundTransaction";
 
 	var url = "refundAuth.php";
 	var data = {
@@ -571,7 +583,7 @@ function refundAuth(){
 		'AuthKey' 	: restrictKey,
 		'TransID'   : tansId,
 		'CardNo'   : parseInt(lastDigits),
-		'TranType'  : 'Return',
+		'TranType'  : transType,
 		'Amount'     : parseFloat(am)
 	};
 
@@ -594,14 +606,11 @@ function refundAuth(){
 			alert("ERROR: " + data);
 		},
 		success:function(data){
-			debugger;
-
 			var response = data.match(/[^,]+/g);
 
 			var res = data.indexOf('Error');
 
 			debugger;
-			return;
 			
 			if(res < 0){
 				var payment = $scope.selectedPayment.entity;

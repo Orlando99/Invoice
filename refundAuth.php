@@ -4,7 +4,6 @@
   use net\authorize\api\controller as AnetController;
 
   define("AUTHORIZENET_LOG_FILE", "phplog");
-
   
 // Common setup for API credentials
 $merchantAuthentication = new AnetAPI\MerchantAuthenticationType();
@@ -20,11 +19,10 @@ $paymentOne = new AnetAPI\PaymentType();
 $paymentOne->setCreditCard($creditCard);
 //create a transaction
 $transactionRequest = new AnetAPI\TransactionRequestType();
-$transactionRequest->setTransactionType( "refundTransaction");
+$transactionRequest->setTransactionType( $_POST['TranType']);
 $transactionRequest->setRefTransId($_POST['TransID']);
 $transactionRequest->setAmount($_POST['Amount']);
 $transactionRequest->setPayment($paymentOne);
-
 
 $request = new AnetAPI\CreateTransactionRequest();
 $request->setMerchantAuthentication($merchantAuthentication);
