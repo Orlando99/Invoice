@@ -570,8 +570,9 @@ function refundAuth(){
 		'AuthNet'  	: account,
 		'AuthKey' 	: restrictKey,
 		'TransID'   : tansId,
+		'CardNo'   : parseInt(lastDigits),
 		'TranType'  : 'Return',
-		'Total'     : parseFloat(am)
+		'Amount'     : parseFloat(am)
 	};
 
 	var data1 = Object.assign({},data,{
@@ -582,7 +583,8 @@ function refundAuth(){
 	
 	showLoader();
 	$.ajax({
-		method:"GET",
+		method:"POST",
+		type:"POST",
 		url: url,
 		data: data1,
 		complete:function(data){

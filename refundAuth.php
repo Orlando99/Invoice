@@ -21,6 +21,7 @@ $paymentOne->setCreditCard($creditCard);
 //create a transaction
 $transactionRequest = new AnetAPI\TransactionRequestType();
 $transactionRequest->setTransactionType( "refundTransaction");
+$transactionRequest->setRefTransId($_POST['TransID']);
 $transactionRequest->setAmount($_POST['Amount']);
 $transactionRequest->setPayment($paymentOne);
 
@@ -34,7 +35,7 @@ $response = $controller->executeWithApiResponse( \net\authorize\api\constants\AN
 
 if ($response != null)
 {
-  if($response->getMessages()->getResultCode() == \SampleCode\Constants::RESPONSE_OK)
+  if($response->getMessages()->getResultCode() == "Ok")
   {
 	$tresponse = $response->getTransactionResponse();
 
