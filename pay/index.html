@@ -122,7 +122,8 @@
         
         #accept,
         #invoice-success,
-        #invoice-error {
+        #invoice-error,
+		#alreadyPaid {
             display: none;
         }
         
@@ -1039,7 +1040,14 @@ function getInvoiceInfo (invoiceInfoId){
     }).then(function(){
 
         Parse.Cloud.run('checkInvoiceStatus',{invoiceInfoId:invoiceInfoId}).then(function(res){
-            if (res === "Paid") $('.btn-pay').hide();
+            if (res === "Paid"){ 
+				$('.btn-pay').hide();
+				
+				$('#index').hide();
+				$('#accept').hide();
+				$('#alreadyPaid').show();
+				$('.full-screen-loader,.full-screen-white-overlay').hide();
+			}
         }).then(function(){
             if (result.img) $('#logo-img').attr('src',result.img.url());
             else $('#logo-img').attr('src',"./cardimages/01_IU-Web-Admin.png");
@@ -1227,7 +1235,9 @@ $(document).ready(function(){
                             
                             var temp = $('#CardNo').val();
                             temp = temp.substring(0, 4);
-                            Parse.Cloud.run('doPayment',{invoiceInfoId : invoiceInfoId, firstFourDigits : temp}).then(function(res){
+							var lastDigits = $('#CradNo').val();
+							lastDigits = lastDigits.substr(lastDigits.length() - 4, 4);
+                            Parse.Cloud.run('doPayment',{invoiceInfoId : invoiceInfoId, firstFourDigits : temp, lastFourDigits : lastDigits}).then(function(res){
                                 
                                 var result = JSON.parse(res);
                                 
@@ -1476,6 +1486,38 @@ $(document).ready(function(){
             <div class="pay-accept cl">
                 <p><span class="b-name">(Business Name)</span> does not currently accept credit cards.</p>
                 <p>If you want to discuss other payment options, please call <span class="b-name">(Business Name)</span> <span class="phone">(phone)</span>.</p>
+            </div>
+
+            <div class="pay-info cl">
+                <h4>Safe & Secure</h4>
+                <p>We follow industry-recognized security safeguards.</p>
+                <div class="pay-info-1-full">
+                    <p class='reference-number'>Reference Number: 13951951951</p>
+                    <p class='invoice-date'></p>
+                </div>
+               
+            </div>
+        </div>
+		<div class="wrapper" id="alreadyPaid">
+            <h1 class="title">Invoice Payment</h1>
+            <div class="columns cl">
+                <div class="column-info business-info">
+                    <h3 class='b-name'>Business Name</h3>
+                    <p class='phone'>+1 818 591 3910</p>
+                    <p class='email'>jdoe@gmail.com</p>
+                </div>
+                <div class="column-info date-info">
+                    <h3>Due Date</h3>
+                    <p class='due-date'>July 10, 2015</p>
+                </div>
+                <div class="column-info total-info">
+                    <h3>Total Due</h3>
+                    <p class='total-due'>$.1</p>
+                </div>
+            </div>
+
+            <div class="pay-accept cl">
+                <p>This invoice has already been paid.</p>
             </div>
 
             <div class="pay-info cl">
