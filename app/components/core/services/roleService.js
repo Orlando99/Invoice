@@ -56,7 +56,7 @@ invoicesUnlimited.factory('roleFactory',
 
 	role.createNew = function(params) {
 		if (role.entity.length) return;
-
+		
 		return role.getRole(params)
 		.then(function(roleObj) {
 			var roleACL = new Parse.ACL();
