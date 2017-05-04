@@ -18,36 +18,22 @@
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
           <li><a href="" ng-click="emailReceipt()">Send as Email</a></li>
           <li><a href="" ng-click="textReceipt()">Send as Text</a></li>
-          <li><a ng-href="{{templateUrl}}" ng-click="invoicePrinted()" target="_blank">Print</a></li>
+          <li><a href="" ng-click="invoicePrinted()">Print</a></li>
           <li class="modal-opener" data-toggle="record-payment" ng-if="invoice.entity.balanceDue > 0"><a href=""
               ng-click="prepareAddPayment()">Record Payment</a></li>
           <li><a href="javascript:" ng-click="showAvailableCredits()">Apply Credit Note</a></li>
-          
           <li><a href="javascript:" ng-click="cloneInvoice()">Clone</a></li>
           <li><a href="javascript:" ng-click="downloadInvoice()">Download PDF</a></li>
-          
-          <!--<li><a ui-sref="dashboard.sales.invoices.clone({invoiceId:invoice.entity.id})">Clone</a></li>-->
-          <!--
-          <li><a href="">Print Delivery Note</a></li>
-          <li><a href="">Print Packing Slip</a></li>
-          -->
           <li ng-show="isOwner"><a href="" ng-click="canDeleteInvoice()">Delete</a></li>
       </ul>
-      
-      
     </div>
     <div class="clearfix"></div>
     <hr>
-      <!--
-<div id="snackbar"></div>
--->
+
     <div ng-repeat="comment in comments">
       <p class="log text-color-light text-weight-normalize">{{comment.date}}<span>
         {{comment.entity.comment}} - {{comment.entity.name}}</span></p>
     </div>
-    <!--
-    <p class="log text-color-light text-weight-normalize">12/03/2014 09:10 AM <span>Estimate converted to Invoice INV-000002 - John - <a href="#">View</a></span></p>
-    -->
     <a href="" class="layout-margin-tb modal-opener" data-toggle="add-comment">+ New Comment</a>
 
     <div class="text-center layout-margin-tb">

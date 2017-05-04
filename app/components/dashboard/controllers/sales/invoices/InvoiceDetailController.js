@@ -136,13 +136,6 @@ function showInvoiceDetail()
 	});
 
 }
-    
-$scope.invoicePrinted = function(){
-    //debugger;
-    //invoiceService.downloadInvoiceReceipt($scope.invoice.entity);
-    
-    addNewComment('Invoice printed', true);
-}
 
 $scope.changeTemplate = function() {
 	showLoader();
@@ -1248,7 +1241,27 @@ $scope.addComment = function() {
 
 }
 
+$scope.invoicePrinted = function(){
+	addNewComment('Invoice printed', true);
+	
+	$scope.isPrint = true;
+	
+    var url = $scope.invoice.entity.get('invoiceLabels')._url;
+    debugger;
+    
+    var Connect = new XMLHttpRequest();
+
+    Connect.open("GET", url, false);
+
+    Connect.setRequestHeader("Content-Type", "text/xml");
+    Connect.send(null);
+    
+    updatePage(Connect.responseXML);
+}
+
 $scope.downloadInvoice = function(){
+	$scope.isPrint = false;
+	
     var url = $scope.invoice.entity.get('invoiceLabels')._url;
     debugger;
     
@@ -1631,6 +1644,13 @@ function updatePage(dataTable){
             'html' : $('.pdf-page').html(),
         }
     }).then(function(pdfData){
+		
+		if($scope.isPrint){
+			var ww = window.open("data:application/pdf;base64," + escape(pdfData));
+			ww.print();
+			$state.reload();
+			return;
+		}
         var dlnk = document.getElementById('pdfLink');
 
         var pdf = 'data:application/octet-stream;base64,' + pdfData;
@@ -1640,6 +1660,7 @@ function updatePage(dataTable){
 
         dlnk.click();
         debugger;
+		$state.reload();
     }, function(error){
         console.error(error);
         debugger;
