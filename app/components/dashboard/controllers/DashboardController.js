@@ -125,6 +125,52 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 			$('.navigation > li .link-reports-div').css('left',negative_pos);
 		}
 		
+		$.reject({  
+			reject: {  
+				safari: true, // Apple Safari  
+				//chrome: true, // Google Chrome  
+				firefox: true, // Mozilla Firefox  
+				msie: true, // Microsoft Internet Explorer  
+				opera: true, // Opera  
+				konqueror: true, // Konqueror (Linux)  
+				unknown: true // Everything else  
+			},
+			display: ['chrome'],
+			browserInfo: { // Settings for which browsers to display  
+				chrome: {  
+					// Text below the icon  
+					text: 'Google Chrome',  
+					// URL For icon/text link  
+					url: 'http://www.google.com/chrome/',   
+				} 
+			},
+			// Pop-up Window Text
+			header: '',
+
+			paragraph1: 'Invoices Unlimited is optimized for Google Chrome. If you continue to use this browser you may run into some issues.',
+
+			paragraph2: 'Just click on the icon to get to the download page',
+
+			// Allow closing of window
+			close: true,
+
+			// Message displayed below closing link
+			closeMessage: 'By closing this window you acknowledge that your experience '+
+							'on this website may be degraded',
+			closeLink: 'Close This Window',
+			closeESC: true,  
+			// Use cookies to remmember if window was closed previously?  
+			closeCookie: true, 
+			cookieSettings: {  
+				// Path for the cookie to be saved on  
+				// Should be root domain in most cases  
+				path: '/',  
+				// Expiration Date (in seconds)  
+				// 0 (default) means it ends with the current session  
+				expires: 0  
+			}, 
+			imagePath: './assets/images/'
+		});
 /*
 
 		$('.nav-item').click(function(event) {

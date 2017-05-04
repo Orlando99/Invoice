@@ -547,4 +547,8 @@ margin-top: -23px !important;
     height: auto !important;
 }
 
+#jr_inner{
+	    min-width: 800px !important;
+}
+
 

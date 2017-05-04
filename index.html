@@ -18,7 +18,7 @@
 		<link rel="stylesheet" href="" id="appStyle1"/>
 		<link rel="stylesheet" href="./assets/js/fullcalendar.min.css"/>
 		<link rel="stylesheet" href="./assets/css/custom.css"/>
-        
+        <link rel="stylesheet" href="./assets/css/jquery.reject.css"/>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.2/trix.css">
   
@@ -172,7 +172,9 @@
 	<!-- moment.js should be included before chart.js if time axes is used -->
 	<!-- currently time axes not used, but to avoid potential future issue -->
 	<!-- its already added after moment.js -->
-        
+    
+	<script src="./assets/js/jquery.reject.js"></script>
+		
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
         
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -352,6 +354,7 @@
 
     <script>
         $(document).ready(function(){
+			$.reject();
             $('#edit_expanse_ammount').mask("#,##0.00", {reverse: true});
 
             $(document).click(function(event) { 
