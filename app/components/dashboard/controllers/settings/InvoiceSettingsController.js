@@ -55,6 +55,7 @@ function loadPrefs() {
 		$scope.shipCharges = (prefs.shipCharges == 1 ? 'yes' : 'no');
 		$scope.adjustments = (prefs.adjustments == 1 ? 'yes' : 'no');
 		$scope.salesPerson = (prefs.salesPerson == 1 ? 'yes' : 'no');
+		$scope.itemDesc = (prefs.itemDescOnInvoice == 1 ? 'yes' : 'no');
 		$scope.invoiceNotification = (user.get('getInvoiceNotification') == 1 ? 'yes' : 'no');
 		$scope.notes = prefs.notes;
 		$scope.terms = prefs.terms;
@@ -231,6 +232,7 @@ $scope.save = function() {
 		shipCharges : ($scope.shipCharges == 'yes' ? 1 : 0),
 		adjustments : ($scope.adjustments == 'yes' ? 1 : 0),
 		salesPerson : ($scope.salesPerson == 'yes' ? 1 : 0),
+		itemDescOnInvoice : ($scope.itemDesc == 'yes' ? 1 : 0),
 		notes : $scope.notes,
 		terms : $scope.terms,
 		thanksNote : ($scope.paymentConfirmation == 'yes' ? $scope.invoiceThanksNotes : "")

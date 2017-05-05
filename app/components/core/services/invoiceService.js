@@ -415,6 +415,7 @@ return {
 			prefs.thanksNote = prefObj.get("invoiceThanksNotes");
 			prefs.notes = prefObj.get("invoiceNotes");
 			prefs.terms = prefObj.get("invoiceTerms");
+			prefs.itemDescOnInvoice = prefObj.get("itemDescOnInvoice");
 
 		}).then(function() {
 			var orgTable = Parse.Object.extend("Organization");
@@ -459,6 +460,7 @@ return {
 			prefObj.set("invoiceNotes", params.notes);
 			prefObj.set("invoiceTerms", params.terms);
 			prefObj.set("invoiceThanksNotes", params.thanksNote);
+			prefObj.set("itemDescOnInvoice", params.itemDescOnInvoice);
 
 			promises.push(prefObj.save());
 			return Parse.Promise.when(promises);
@@ -500,28 +502,31 @@ return {
 		.then(function(invoiceObj) {
 			data.invoiceObj = invoiceObj;	// save for later use
 			var user = invoiceObj.get("userID");
-			var template = user.get("defaultTemplate");
-            if(!template){
-                var Template = Parse.Object.extend('InvoiceTemplate');
-                var query = new Parse.Query(Template);
-                query.equalTo ('name', 'Template 1');
-                return query.first()
-                .then(function(t) {
-                    var xmlFile = t.get("templateData");
-                    data.htmlFile = t.get("templateHTML");	// save for later use
-                    data.cardUrl = t.get("linkedFile").url();// save for later use
-                    return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId);
-                });
-            }
-            else{
-                var xmlFile = template.get("templateData");
-                data.htmlFile = template.get("templateHTML");	// save for later use
-                data.cardUrl = template.get("linkedFile").url();// save for later use
-                return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId);
-            }
-            
-			// in case of edit, get them from invocieObj
 			
+			return getPreferences(user)
+			.then(function(pref){
+				var template = user.get("defaultTemplate");
+				if(!template){
+					var Template = Parse.Object.extend('InvoiceTemplate');
+					var query = new Parse.Query(Template);
+					query.equalTo ('name', 'Template 1');
+					return query.first()
+					.then(function(t) {
+						var xmlFile = t.get("templateData");
+						data.htmlFile = t.get("templateHTML");	// save for later use
+						data.cardUrl = t.get("linkedFile").url();// save for later use
+						return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref);
+					});
+				}
+				else{
+					var xmlFile = template.get("templateData");
+					data.htmlFile = template.get("templateHTML");	// save for later use
+					data.cardUrl = template.get("linkedFile").url();// save for later use
+					return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref);
+				}
+			});
+			
+			// in case of edit, get them from invocieObj
 		})
 		.then(function(newXml) {
 			var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
@@ -858,6 +863,46 @@ function createInvoiceItem (itemData, otherData) {
 	return obj;
 }
 
+function getPreferences(user) {
+	var organization = getOrganization(user);
+	if (! organization) {
+		var message = 'user: ' + user.id + ' has no Organization assigned.'
+		return Parse.Promise.error(message);
+	}
+
+	var prefs = {};
+	var prefTable = Parse.Object.extend("Preferencies");
+	var query = new Parse.Query(prefTable);
+	query.equalTo("organization", organization);
+
+	return query.first().then(function(prefObj) {
+	//	var prefObj = prefObjs[0];
+		prefs.discountType = prefObj.get("invoiceDiscount");
+		prefs.numAutoGen = prefObj.get("invoiceAg");
+		prefs.shipCharges = prefObj.get("invoiceShippingCharges");
+		prefs.adjustments = prefObj.get("invoiceAdjustments");
+		prefs.salesPerson = prefObj.get("invoiceSalesPerson");
+		prefs.thanksNote = prefObj.get("invoiceThanksNotes");
+		prefs.notes = prefObj.get("invoiceNotes");
+		prefs.terms = prefObj.get("invoiceTerms");
+		prefs.itemDescOnInvoice = prefObj.get("itemDescOnInvoice");
+	}).then(function() {
+		var orgTable = Parse.Object.extend("Organization");
+		query = new Parse.Query(orgTable);
+		query.select("dateFormat", "invoiceFields", "invoiceNumber");
+
+		return query.get(organization.id).then(function(orgObj) {
+			prefs.dateFormat = orgObj.get("dateFormat");
+			prefs.customFields = orgObj.get("invoiceFields");
+			prefs.invoiceNumber = orgObj.get("invoiceNumber");
+
+		}).then(function() {
+			return prefs;
+		});
+
+	});
+}
+	
 function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 	return $.ajax({
 		type: "GET",
@@ -892,7 +937,7 @@ function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 	});
 }
 
-function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
+function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref) {
 	return $.ajax({
 		type: "GET",
 		url: 'proxy.php',
@@ -1034,6 +1079,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 				var qty = itemList[i].get("quantity");
 				var amount = itemList[i].get("amount");
 				var discount = itemList[i].get("discount") || 0;
+				var desc = itemList[i].get("item").get("itemDescription");
 
 				subTotal += amount * ((100 - discount) * 0.01);
 
@@ -1042,6 +1088,10 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId) {
 					'qty': qty,
 					'price': currencyFilter(amount, '$', 2)
 				};
+				
+				if(desc && pref.itemDescOnInvoice == 1)
+					itmObj.desc = desc;
+				
 				if (discountType == 1)
 					itmObj.discount = (discount ? discount : 0);
 

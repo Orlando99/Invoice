@@ -70,6 +70,28 @@
         <textarea class="col-75" maxlength="200" ng-model="invoiceThanksNotes" onkeyup="auto_grow(this)"></textarea>
       </div>
       
+		<div class="clearfix"></div><br>
+		<br>
+		<h3 class="text-uppercase text-weight-normalize layout-margin-tb">Item Description</h3><br>
+		
+		<div class="input-container input-radio-container layout-margin-b">
+        <label class="col-25">Show item description (if available)</label>
+        <label class="layout-padding-t-sm col-10">
+          <span class="layout-margin-r">
+            <input type="radio" name="itemDesc" value="yes" ng-model="itemDesc">
+            <span class="radio"></span>
+          </span>
+          Yes
+        </label>
+        <label class="layout-padding-t-sm col-10">
+          <span class="layout-margin-r">
+            <input type="radio" name="itemDesc" value="no" ng-model="itemDesc">
+            <span class="radio"></span>
+          </span>
+          No
+        </label>
+      </div>
+		
       <div class="clearfix"></div>
       <br>
       <h3 class="text-uppercase text-weight-normalize layout-margin-tb">Invoice Number</h3><br>
