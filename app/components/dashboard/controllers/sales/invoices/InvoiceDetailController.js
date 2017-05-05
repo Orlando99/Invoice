@@ -1298,9 +1298,12 @@ function updatePage(dataTable){
             
             itemRows.each(function(funcOne){
                 
+				var sp = "<span>" + $(this).children('name').text() + "</span><br><span style='white-space: pre-wrap;word-wrap: break-word; color: #727272; font-size: 10pt;'>" + $(this).children('desc').text() + "</span>";
+				
                 if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
                     var item = $("<tr class='invoice-items'></tr>");
-                    var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+                    //var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+					var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ sp +"</td>");
                     var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('qty').text() +"</td>");
                     var itemDiscount = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('discount').text() +"</td>");
                     var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
@@ -1312,7 +1315,8 @@ function updatePage(dataTable){
                 }
                 else {
                     var item = $("<tr class='invoice-items'></tr>");
-                    var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+                    //var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+					var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ sp +"</td>");
                     var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='2'>"+ $(this).children('qty').text() +"</td>");
                     var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
                     item.append(itemTitle)
