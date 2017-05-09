@@ -1257,6 +1257,13 @@ $scope.invoicePrinted = function(){
 	
 	$scope.isPrint = true;
 	
+	var url1 = $scope.invoice.entity.get('pdfReceipt')._url;
+	
+	if(url1){
+		window.open(url1);
+		return;
+	}
+	
     var url = $scope.invoice.entity.get('invoiceLabels')._url;
     debugger;
     
@@ -1272,6 +1279,19 @@ $scope.invoicePrinted = function(){
 
 $scope.downloadInvoice = function(){
 	$scope.isPrint = false;
+	
+	var url1 = $scope.invoice.entity.get('pdfReceipt')._url;
+	
+	if(url1){
+		var dlnk = document.getElementById('pdfLink');
+
+        var pdf = url1;
+        dlnk.href = pdf;
+		dlnk.download = 'invoice.pdf';
+        dlnk.click();
+		//window.open(url1);
+		return;
+	}
 	
     var url = $scope.invoice.entity.get('invoiceLabels')._url;
     debugger;

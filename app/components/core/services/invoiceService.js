@@ -528,9 +528,15 @@ return {
 			
 			// in case of edit, get them from invocieObj
 		})
-		.then(function(newXml) {
-			var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
-			return labelsFile.save();
+		.then(function(obj) {
+			return $q.when(obj)
+			.then(function(res){
+				var newXml = res.newXml;
+				var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
+				data.pdf = res.pdf;
+				return labelsFile.save();
+			});
+			
 		})
 		.then(function(xml) {
 			data.xml = xml;	// save for later use
@@ -543,6 +549,7 @@ return {
 		.then(function(html) {
 			data.invoiceObj.set("invoiceLabels", data.xml);
 			data.invoiceObj.set("invoiceReceipt", html);
+			data.invoiceObj.set("pdfReceipt", data.pdf);
 			return data.invoiceObj.save();
 		})
 		.then(function(invObj) {
@@ -1225,21 +1232,295 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref) {
 	//	console.log(jsonObj);
 
 		xmlDoc = x2js.json2xml_str(jsonObj);
-		return $.ajax({
-			type: "POST",
-			url: "./assets/php/convert_base64.php",
-			data: {
-				str : xmlDoc
-			}
-		}).then(function(newXml) {
-			return newXml;
+		
+		return updatePage(xmlDoc, invoice)
+		.then(function(pdfFile){
+			return pdfFile.save()
+			.then(function(pdf){
+				
+				labels['pdf'] = pdf.url();
+				xmlDoc = x2js.json2xml_str(jsonObj);
+				return $.ajax({
+					type: "POST",
+					url: "./assets/php/convert_base64.php",
+					data: {
+						str : xmlDoc
+					}
+				}).then(function(newXml) {
+					var obj = {};
+					obj.newXml = newXml;
+					obj.pdf = pdf;
+					//return newXml;
+					return obj;
+				}, function(error){
+					console.log(error);
+				});
+			}, function(error){
+				debugger;
+				console.error(error);
+			});
+			
 		}, function(error){
-            console.log(error);
-        });
-
+			debugger;
+			console.error(error);
+		});
 	});
 
 }
+
+function updatePage(dataTable, invoice){
+	dataTable = $.parseXML(dataTable);
+	var itemRows = $(dataTable).find('itemRow');
+	var modsRow = $(dataTable).find('modsRow');
+	var attachments = $(dataTable).find('attachment');
+	var customFields = $(dataTable).find('customField');
+	var taxes = $(dataTable).find('tax');
+	var td = $('<td></td>');
+
+	if ($(dataTable).find('billType').text().includes('estimate')){
+		$('.footer .info').hide()
+		$('.payment-due').hide()
+	}
+
+	$('#invoice-items-header').html('');
+
+	if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+		$('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Discount</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
+
+	} else {
+		$('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
+	}
+
+	$('.invoice-items').remove();
+	
+	itemRows.each(function(funcOne){
+
+		var sp = "<span>" + $(this).children('name').text() + "</span><br><span style='white-space: pre-wrap;word-wrap: break-word; color: #727272; font-size: 10pt;'>" + $(this).children('desc').text() + "</span>";
+
+		if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+			var item = $("<tr class='invoice-items'></tr>");
+			//var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+			var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ sp +"</td>");
+			var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('qty').text() +"</td>");
+			var itemDiscount = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('discount').text() +"</td>");
+			var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
+			item.append(itemTitle)
+				.append(itemQty)
+				.append(itemDiscount)
+				.append(itemCost);
+			$('#invoice-items-header').after($(item));
+		}
+		else {
+			var item = $("<tr class='invoice-items'></tr>");
+			//var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+			var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ sp +"</td>");
+			var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='2'>"+ $(this).children('qty').text() +"</td>");
+			var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
+			item.append(itemTitle)
+				.append(itemQty)
+				.append(itemCost);
+			$('#invoice-items-header').after($(item));
+		}
+	});
+
+	$('.invoice-taxes').remove();
+	
+	taxes.each(function() {
+
+		var item = $("<tr class='invoice-taxes'></tr>");
+		var blank = $("<td colspan='3' class=''></td>");
+		var itemTitle = $("<td class='ff1 fc1 ' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).children('name').text() +"</td>");
+		var itemCost = $("<td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).children('value').text() +"</td>");
+		item.append(blank)
+			.append(itemTitle)
+			.append(itemCost);
+		$('#invoice-subtotal').after($(item));
+
+	});
+
+	var tr = $('<tr class="salestax"></tr>');
+	$('tr.adjustments').after(tr);
+
+	customFields.each(function() {
+		var tr = $('.customFields');
+
+		tr.append($('<div class="info-1" style="margin: 0;border: 0;font-size: 100%;font: inherit;float: left;box-sizing: border-box;width: 70%; float: left; margin-left: 3%;margin-left: 0px"><p class="" style="margin: 0;padding: 10px 0px 0px 0px;border: 0;font-size: 16px;vertical-align: baseline;line-height: 30px;margin-bottom: 10px;color: #989898;">' + $(this).children('name').text() + '</p><p class="" style="margin: 0;padding: 0;border: 0;font-size: 16px;margin-bottom: 10px;color: #000;">' + $(this).children('value').text() + '</p></div>'));
+	});
+
+	attachments.each(function() {
+		var fileName = $(this).text();
+		fileName = fileName.substring(fileName.indexOf("_") + 1 , fileName.length);
+		fileName = fileName.replace(/%20/g, " ");
+		$('.attach').append('<a style="color: #989898" target="_blank" href=\'' + $(this).text() + '\'>' + fileName + '</a><br><br>');
+	});
+
+	$('table tbody tr').each(function(){
+		if($(this).children().text().length == 0){
+			$(this).addClass('hideOnMob');
+		}
+	});
+
+
+	var invoiceId = $(dataTable).find('invoiceId').text();
+	$('#pay-link').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+	$('#pay-link-2').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+
+	var labels = $(dataTable).find('items');
+	console.log(labels);
+	labels.each(function(){
+
+		var dueTime = new Date(Date.parse($(this).find('past-due').text()));
+		var now = new Date(Date.now());
+		dueTime = new Date(dueTime.setHours(0,0,0,0));
+		now = new Date(dueTime.setHours(0,0,0,0));
+		if (dueTime.getTime() >= now.getTime() || dueTime.toString() === "Invalid Date") {
+			$('.payment-due p:last').append($(this).find('past-due').text());
+			$('.payment-due').addClass('green-status');
+		} else {
+			$('.payment-due p:last').append($(this).find('past-due').text());
+			$('.payment-due').addClass('red-status');
+		}
+
+		var headerTitle = $(this).find('headerTitle').text();
+		$('.payment-due p:first').append(headerTitle);
+
+		var disablePay = $(this).find('disablePay').text();
+		var disable = 'true'
+
+		if (disable === disablePay) {
+			$('.btn-border-pay').addClass('disable');
+			$('.info.cl').addClass('disable');
+			$('.payment-due').removeClass('red-status');
+			$('.payment-due').addClass('green-status');
+		} 
+
+		var discountAmount = $(this).find('discountAmount').text();
+
+		var tr = $('<tr class="discount"></tr>');
+		tr.append($('<td class="discountNm" colspan="3"></td>').html('Discount'));
+		// tr.append($('<td colspan="1"></td>'));
+		tr.append($('<td class="discountPr"></td>').html(discountAmount));
+
+		if ($(this).find('discountPlace text').text() == 'after') {
+			$('.salestax:last').after(tr);
+		} else if ($(this).find('discountPlace text').text() == 'before') {
+			$('.salestax:first').before(tr);
+		}
+
+		var item = $("<tr class='invoice-adjustments'><td colspan='3' class=''></td><td class='ff1 fc1' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).find('discountNameBottom').text() + "</td><td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).find('discountAmount').text() +"</td></tr>");
+
+		if($(this).find('discountPlace text').text() == 'after'){
+			$('.invoice-taxes:last').after($(item));
+		} 
+		else if($(this).find('discountPlace text').text() == 'before'){
+			$('#invoice-subtotal').after($(item));
+		}
+
+		if($(this).find('adjustments').text().length > 0){
+			var item = $("<tr class='invoice-adjustments'><td colspan='3' class=''></td><td class='ff1 fc1' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).find('adjustments').text() + "</td><td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).find('adjustmentsPrice').text() +"</td></tr>");
+			$('#invoice-subtotal').after($(item));
+		}
+
+		if($(this).find('shippingCharges').text().length > 0){
+			item = $("<tr class='invoice-adjustments'><td colspan='3' class=''></td><td class='ff1 fc1 ' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).find('shippingCharges').text() + "</td><td class='ff1 fc1 ' style=' padding-bottom: 4mm;text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).find('shippingChargesPrice').text() +"</td></tr>");
+
+			$('#invoice-subtotal').after($(item));
+		}
+
+		var headerTitle = $(this).find('headerTitle').text();
+		var pastDate = $(this).find('past-due').text();
+		if(headerTitle){
+			$('#pdf-title').text(headerTitle + "   " + pastDate);
+		} else {
+			//$('.top-bar').hide();
+			$('#pdf-title').text("");
+			$('.top-bar').css('height', '0mm');
+			$('.top-bar').css('border-bottom', '0mm');
+		}
+
+		var ordernotesTitle = $(this).find('ordernotes-title').text();
+		var ordernotes = $(this).find('ordernotes').text();
+		if(ordernotes){
+			$('#pdf-terms-title').text(ordernotesTitle);
+			$('#pdf-terms').text(ordernotes);
+		} else {
+			$('#pdf-terms-title').text("");
+			$('#pdf-terms').text("");
+			$('#pdf-terms-title').hide();
+			$('#pdf-terms').hide();
+		}
+
+		$('#pdf-business-name').text(userFactory.entity[0].get('company'));
+		$('#pdf-invoice-title').text($(this).find('invoice-title').text());
+		$('#pdf-invoice-number').text($(this).find('refid').text());
+		$('#pdf-amount-received').text($(this).find('body-price').text());
+		$('#pdf-date').text($(this).find('body-date').text());
+		$('#pdf-subtotal').text($(this).find('subtotalprice').text());
+		$('#pdf-payment-made').text($(this).find('paymentMadePrice').text());
+		$('#pdf-total').text($(this).find('total-price3').text());
+		$('#pdf-total-top').text($(this).find('total-price3').text());
+		$('#pdf-credit-applied').text($(this).find('creditsAppliedPrice').text());
+		$('#pdf-amount-due').text($(this).find('refundtotal').text());
+		$('#pdf-payment-name').text($(this).find('title').text());
+		$('#pdf-currency').text($(this).find('body-currency').text());
+		$('#pdf-total-text').text($(this).find('refundedText').text());
+		$('#pdf-payment-text').text($(this).find('paymentMadeText').text());
+		$('#pdf-credit-text').text($(this).find('creditsAppliedText').text());
+
+		var ad = $(this).find('addres1').text();
+
+		$('#pdf-address').html(ad);
+
+		//$('#pdf-address').html(ad.replace(/(.{35})/g, "$1<br>"));
+
+		var longmsg = $(this).find('longmsg').text();
+		if (longmsg.length != 0){
+			var longmsgTitle = $(this).find('longmsg-title').text();
+
+			$('#pdf-notes-title').html(longmsgTitle);
+			$('#pdf-notes').html(longmsg);
+		} else {
+			$('#pdf-notes-title').html("");
+			$('#pdf-notes').html("");
+			$('#pdf-notes-title').hide();
+			$('#pdf-notes').hide();
+		}
+
+		var mailto = $(this).find('mailto').text();
+		$('#user-mail').attr('href', mailto);
+		var mailtotxt = $(this).find('mailtotxt').text();
+		$('#user-mail').text(mailtotxt);
+
+		var clientmailto = $(this).find('clientmailto').text();
+		$('#client-mail').attr('href', clientmailto);
+		var clientmail = $(this).find('clientmail').text();
+		$('#client-mail').text(clientmail);
+
+		var clientname = $(this).find('clientname').text();
+		$('#client-name').text(clientname);
+
+		var nr = $(this).find('nr').text();
+		$('#user-phone').attr('href', "tel:" + nr);
+		$('#user-phone').text(nr);
+	});
+	
+	return $.ajax({
+        method:"POST",
+        type : "POST",
+        url: "generatePDF.php",
+        data: { 
+            'html' : $('.pdf-page').html(),
+        }
+    }).then(function(pdfData){
+		var pdfFile = new Parse.File("receipt.pdf",{base64: pdfData});
+		return pdfFile;
+    }, function(error){
+        console.error(error);
+        debugger;
+    });
+	
+}
+
 function calculateTax(amount, tax) {
 	var taxType = tax.get("type");
 	var taxRate = tax.get("value");
