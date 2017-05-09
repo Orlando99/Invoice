@@ -1280,6 +1280,19 @@ $(document).ready(function(){
                                         .append(itemCost);
                                     $('#invoice-items-header').after($(item));
                                 }
+								
+								for (var i in result.invTax){
+                                    var title = result.invTax[i].title;
+                                    var cost = result.invTax[i].value;
+                                    var tax = $("<tr></tr>");
+									var blank = $("<td colspan='3'></td>");
+                                    var taxTitle = $("<td class='ff1 fc1' style='vertical-align: bottom; padding-bottom: 3mm; font-size: 16px;' colspan='2'>"+ title +"</td>");
+                                    var taxCost = $("<td class='ff1 fc1' style='text-align: right;vertical-align: bottom;padding-bottom: 3mm;font-size: 16px;'>"+ cost +"</td>");
+                                    tax.append(blank)
+										.append(taxTitle)
+                                        .append(taxCost);
+                                    $('#pdf-subtotal-row').after($(tax));
+                                }
 
                             }, function(err){
                                 console.log(err);
@@ -1730,14 +1743,14 @@ $(document).ready(function(){
                 <td class="ff1 fc0 btm-line invoice-item-title" colspan="3">Test</td>
                 <td class="ff1 fc0 btm-line invoice-item-cost" colspan="3">$0,01</td>
             </tr>-->
-            <tr >
-                <td colspan="3" class="btm-line"></td>
-                <td class="ff1 fc1 btm-line" colspan="2"
+            <tr id="pdf-subtotal-row" >
+                <td colspan="3" class=""></td>
+                <td class="ff1 fc1 " colspan="2"
                     style="vertical-align: bottom;
                            padding-bottom: 3mm;
                            height: 11mm;
                            font-size: 16px;">SUBTOTAL</td>
-                <td class="ff1 fc1 btm-line"
+                <td class="ff1 fc1 "
                     style="height: 11mm;
                            text-align: right;
                            vertical-align: bottom;
@@ -1746,14 +1759,14 @@ $(document).ready(function(){
                     id="pdf-subtotal">$0,01</td>
             </tr>
             <tr>
-                <td colspan="3"></td>
-                <td class="ff1 fc0" colspan="2"
+                <td colspan="3" class="top-line"></td>
+                <td class="ff1 fc0 top-line" colspan="2"
                     style="height: 4mm;
                            padding-top: 1mm;
                            padding-bottom: 2mm;
                            vertical-align: bottom;
                            font-size: 16px;">TOTAL</td>
-                <td class="ff1 fc0"
+                <td class="ff1 fc0 top-line"
                     style="height: 4mm;
                            padding-bottom: 2mm;
                            padding-top: 1mm;

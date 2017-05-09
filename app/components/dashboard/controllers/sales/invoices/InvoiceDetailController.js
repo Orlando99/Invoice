@@ -856,6 +856,17 @@ $scope.addAttachment = function(obj) {
         });
 	});
 }
+
+$scope.copyToClipboard = function() {
+	var aux = document.createElement("input");
+	aux.setAttribute("value", $scope.templateUrl);
+	document.body.appendChild(aux);
+	aux.select();
+	document.execCommand("copy");
+
+	document.body.removeChild(aux);
+	showSnackbar("Invoice link copied to your clipboard.");
+}
  
 $scope.textReceipt = function() {
     
