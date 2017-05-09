@@ -502,7 +502,9 @@ return {
 		.then(function(invoiceObj) {
 			data.invoiceObj = invoiceObj;	// save for later use
 			var user = invoiceObj.get("userID");
-			
+			var org = invoiceObj.get('organization');
+			var logo = org.get('logo');
+			userLogo = logo._url;
 			return getPreferences(user)
 			.then(function(pref){
 				var template = user.get("defaultTemplate");
@@ -515,14 +517,14 @@ return {
 						var xmlFile = t.get("templateData");
 						data.htmlFile = t.get("templateHTML");	// save for later use
 						data.cardUrl = t.get("linkedFile").url();// save for later use
-						return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref);
+						return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref, logo);
 					});
 				}
 				else{
 					var xmlFile = template.get("templateData");
 					data.htmlFile = template.get("templateHTML");	// save for later use
 					data.cardUrl = template.get("linkedFile").url();// save for later use
-					return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref);
+					return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref, logo);
 				}
 			});
 			
@@ -943,8 +945,8 @@ function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 
 	});
 }
-
-function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref) {
+var userLogo = undefined;
+function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 	return $.ajax({
 		type: "GET",
 		url: 'proxy.php',
@@ -1023,7 +1025,10 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref) {
 		// values available from User
 		labels['nr'] = user.get("phonenumber");
 		labels['mailtotxt'] = user.get("email");
-
+		
+		if(userLogo)
+			labels['logo'] = userLogo;
+		
 		// values available from Organization
 		var orgObj = invoice.get("organization");
 		if (orgObj) {
@@ -1033,7 +1038,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref) {
 			if(logo)
 				labels['logo'] = orgObj.get("logo").url();
 		}
-
+		
 		// values available from BusinessInfo
 		var bInfo = user.get("businessInfo");
 		if (bInfo) {
