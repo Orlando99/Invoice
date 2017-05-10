@@ -426,6 +426,17 @@ $scope.estimateCloned = function(){
     addNewComment('Estimate cloned', true);
 }
 
+$scope.copyToClipboard = function() {
+	var aux = document.createElement("input");
+	aux.setAttribute("value", $scope.templateUrl);
+	document.body.appendChild(aux);
+	aux.select();
+	document.execCommand("copy");
+
+	document.body.removeChild(aux);
+	showSnackbar("Estimate link copied to your clipboard.");
+}
+
 $scope.addComment = function() {
 	if (! $scope.newComment) {
 		$('.add-comment').removeClass('show');

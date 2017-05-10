@@ -18,6 +18,7 @@
         <li><a ng-href="{{templateUrl}}" ng-click="estimatePrinted()" target="_blank">Print</a></li>
         <li><a ui-sref="dashboard.sales.estimates.clone({estimateId:estimate.entity.id})" ng-click="estimateCloned()">Clone</a></li>
 		  <li><a href="javascript:" ng-click="downloadInvoice()">Download PDF</a></li>
+		  <li><a href="javascript:" ng-click="copyToClipboard()">Copy Link</a></li>
         <li><a ng-show="isOwner" href="" class="modal-opener" data-toggle="confirm-delete">Delete</a></li>
       </ul>
     </div>
