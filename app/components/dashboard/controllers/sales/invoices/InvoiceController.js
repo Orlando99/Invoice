@@ -496,9 +496,9 @@ function saveEditedInvoice(params) {
 	invoice.set('discounts', $scope.discount);
 	invoice.set('shippingCharges', $scope.shippingCharges);
 	invoice.set('adjustments', $scope.adjustments);
-	invoice.set('subTotal', Number($scope.subTotal));
-    invoice.set('balanceDue', Number($scope.total) - invoice.get('total') + invoice.get('balanceDue'));
-	invoice.set('total', Number($scope.total));
+	invoice.set('subTotal', Number(Number($scope.subTotal).toFixed(2)));
+    invoice.set('balanceDue', Number(Number($scope.total).toFixed(2)) - invoice.get('total') + invoice.get('balanceDue'));
+	invoice.set('total', Number(Number($scope.total).toFixed(2)));
 	//invoice.set('balanceDue', Number($scope.total));
     
 	invoice.set('poNumber', $scope.poNumber);
