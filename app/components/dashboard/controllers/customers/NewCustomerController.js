@@ -30,6 +30,9 @@ invoicesUnlimited.controller('NewCustomerController',
      
     function validateTextInputFunc(e)
     {
+		if(e.which == 0 || e.which == 8 || e.which == 32){
+			return true;
+		}
        if(e.which==32)
        {
             return true;  

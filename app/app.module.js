@@ -67,6 +67,9 @@ function numberValidation(textValue)
 function numberValidationOnText(textValue)
 {
     var k = textValue.which;
+	if(k == 8|| k == 0){
+		return true;
+	}
     if((k < 48 || k > 57) && k != 46)
     {
       textValue.preventDefault();
