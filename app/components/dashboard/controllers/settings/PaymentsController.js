@@ -57,25 +57,34 @@ var merchantID = user.get('merchantID');
 var EPNusername = user.get('EPNusername');
 var EPNrestrictKey = user.get('EPNrestrictKey');
 
-if (! (bInfo && pInfo && aInfo && signature)) {
-	$scope.incompleteProfile = true;
-	$scope.infoMsg = incompleteAccountMsg;
+	if(merchantID){
+		$scope.approved = true;
+		$scope.infoMsg = approvedMsg;
+		$scope.merchantID = merchantID;
+		$scope.businessName = user.get('company');
+		$scope.accountSupportNumber = '(800) 554-4777';
+		$scope.softwareSupportNumber = '(888) 995-9614';
+		$scope.email = 'support@invoicesunlimited.com';
+	}
+	else if (! (bInfo && pInfo && aInfo && signature)) {
+		$scope.incompleteProfile = true;
+		$scope.infoMsg = incompleteAccountMsg;
 
-} else if (! (merchantID && EPNusername && EPNrestrictKey)) {
-	$scope.processingRequest = true;
-	$scope.infoMsg = processingMsg;
-	$scope.phoneNumber = '(800) 554-4777';
-	$scope.email = 'support@invoicesunlimited.com';
+	} else if (! (merchantID)) {
+		$scope.processingRequest = true;
+		$scope.infoMsg = processingMsg;
+		$scope.phoneNumber = '(800) 554-4777';
+		$scope.email = 'support@invoicesunlimited.com';
 
-} else {
-	$scope.approved = true;
-	$scope.infoMsg = approvedMsg;
-	$scope.merchantID = merchantID;
-	$scope.businessName = user.get('company');
-	$scope.accountSupportNumber = '(800) 554-4777';
-	$scope.softwareSupportNumber = '(888) 995-9614';
-	$scope.email = 'support@invoicesunlimited.com';
-}
+	} else {
+		$scope.approved = true;
+		$scope.infoMsg = approvedMsg;
+		$scope.merchantID = merchantID;
+		$scope.businessName = user.get('company');
+		$scope.accountSupportNumber = '(800) 554-4777';
+		$scope.softwareSupportNumber = '(888) 995-9614';
+		$scope.email = 'support@invoicesunlimited.com';
+	}
 
 hideLoader();
 
