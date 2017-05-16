@@ -551,4 +551,7 @@ margin-top: -23px !important;
 	    min-width: 800px !important;
 }
 
-
+.navigation>li a {
+	padding-left: 24px;
+	padding-right: 24px;
+}

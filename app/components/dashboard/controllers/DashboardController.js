@@ -95,6 +95,9 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		else if (c.includes('reports.'))
 			$('#reports').addClass('active');
 
+		else if (c.includes('settings.payments'))
+			$('#payments').addClass('active');
+		
 		else if (c.includes('settings.'))
 			$('#settings').addClass('active');
 

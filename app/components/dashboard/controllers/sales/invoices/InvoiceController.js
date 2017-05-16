@@ -361,7 +361,9 @@ function prepareEditForm() {
 	if(invoice.entity.status == 'Sent') {
 		$scope.previouslySent = true;
 	}
-
+	
+	var miscItems = [];
+	
 	for (var i = 0; i < invoice.invoiceItems.length; ++i) {
 		var invItem = invoice.invoiceItems[i].entity;
 		var actualItem = invItem.get('item');
@@ -384,7 +386,9 @@ function prepareEditForm() {
 				} else {
 					obj.selectedTax = undefined;
 				}
-
+				if(item.entity.title.indexOf("Misc. Item") >= 0){
+					miscItems.push(item.entity.id);
+				}
 				return true;
 			}
 			return false;
@@ -392,6 +396,18 @@ function prepareEditForm() {
 
 		$scope.invoiceItems.push(obj);
 	}
+	
+	$scope.items = $scope.items.filter(function(item){
+		if(item.entity.title.indexOf("Misc. Item") >= 0){
+			var index = miscItems.indexOf(item.entity.id);
+			if(index >= 0)
+				return true;
+			else
+				return false;
+		} else {
+			return true;
+		}
+	});
 
 	var customFields = [];
 	if($scope.prefs.customFields) {
@@ -1144,6 +1160,7 @@ function LoadRequiredData() {
 		$scope.actualItems = items.filter(function(item) {
 			return !item.entity.expanseId;
 		});
+		
 		$scope.expenseItems = items.filter(function(item) {
 			return item.entity.expanseId;
 		});

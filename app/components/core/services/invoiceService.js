@@ -504,7 +504,10 @@ return {
 			var user = invoiceObj.get("userID");
 			var org = invoiceObj.get('organization');
 			var logo = org.get('logo');
-			userLogo = logo._url;
+			if(logo)
+				userLogo = logo._url;
+			else
+				userLogo = undefined;
 			return getPreferences(user)
 			.then(function(pref){
 				var template = user.get("defaultTemplate");
