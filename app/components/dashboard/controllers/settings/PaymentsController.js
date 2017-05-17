@@ -63,7 +63,7 @@ var EPNrestrictKey = user.get('EPNrestrictKey');
 		$scope.merchantID = merchantID;
 		$scope.businessName = user.get('company');
 		$scope.accountSupportNumber = '(800) 554-4777';
-		$scope.softwareSupportNumber = '(888) 995-9614';
+		$scope.softwareSupportNumber = '(888) 995-1840';
 		$scope.email = 'support@invoicesunlimited.com';
 	}
 	else if (! (bInfo && pInfo && aInfo && signature)) {
