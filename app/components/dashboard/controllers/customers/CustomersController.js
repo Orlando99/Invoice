@@ -598,12 +598,43 @@ invoicesUnlimited.controller('CustomersController',
             //$scope.selectedCustomerEdit.entity.isSameAddress = false;
         }
         
-		selected.save().then(function(){
+		var promises = [];
+		
+		var primaryContact = selected.entity.get('primaryContact');
+		debugger;
+		if(primaryContact){
+			primaryContact.set('email', selected.entity.get('email'));
+			primaryContact.set('mobile', selected.entity.get('mobile'));
+			primaryContact.set('phone', selected.entity.get('phone'));
+
+			promises.push(primaryContact.save());
+		} else {
+			primaryContact = selected.contactPersons.filter(function(obj){
+				return obj.entity.get('defaultPerson');
+			})[0];
+			
+			if(primaryContact){
+				primaryContact.entity.set('email', selected.entity.get('email'));
+				primaryContact.entity.set('mobile', selected.entity.get('mobile'));
+				primaryContact.entity.set('phone', selected.entity.get('phone'));
+				
+				selected.entity.set('primaryContact', primaryContact.entity);
+				
+				promises.push(primaryContact.save());
+			}
+		}
+		
+		promises.push(selected.save());
+		
+		$q.all(promises).then(function(){
 			selected.billingAddress = formBillingAddress(selected.entity.billingAddress);
 			$scope.selectedCustomerEdit = null;
 			$scope.billingAddressEdit = null;
             $scope.shippingAddressEdit = formShippingAddress(selected.entity.shippingAddress);
 			$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
+		}, function(error){
+			console.error(error);
+			debugger;
 		});
 	};
 

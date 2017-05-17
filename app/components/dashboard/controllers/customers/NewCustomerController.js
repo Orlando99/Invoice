@@ -259,6 +259,7 @@ invoicesUnlimited.controller('NewCustomerController',
 		 contact.save()
 		.then(function() {
 			$scope.newCustomer.entity.add('contactPersons',contact.entity);
+			$scope.newCustomer.entity.set('primaryContact',contact.entity);
 			$scope.newCustomer.entity.set('organization',user.entity[0].get('selectedOrganization'));
 			$scope.newCustomer.save()
 			.then(function(custObj){
