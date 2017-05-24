@@ -136,12 +136,12 @@ invoicesUnlimited.controller('SignatureController',
                 data: data
             })
             .then(function (result) {
-                console.log("IRIS Lead Submitted");
+                console.log("New CRM Lead Submitted");
                 debugger;
                 hideLoader();
                 //$state.go('signup.invoiceTemplateInfo');
             }, function(error){
-                console.error("IRIS Lead Sumission failed");
+                console.error("New CRM Lead Sumission failed");
                 debugger;
                 hideLoader();
                 //$state.go('signup.invoiceTemplateInfo');
