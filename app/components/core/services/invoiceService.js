@@ -555,6 +555,7 @@ return {
 			data.invoiceObj.set("invoiceLabels", data.xml);
 			data.invoiceObj.set("invoiceReceipt", html);
 			data.invoiceObj.set("pdfReceipt", data.pdf);
+			data.invoiceObj.set('hasPdfReceipt', true);
 			return data.invoiceObj.save();
 		})
 		.then(function(invObj) {

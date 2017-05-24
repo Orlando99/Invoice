@@ -103,7 +103,7 @@ function showInvoiceDetail()
 		if (info) info = info.id;
 
 		// create invoice receipt if necessary,
-		if(! receipt) {
+		if(! receipt || !invoice.entity.get('hasPdfInvoice')) {
             if(!info)
             {
                 return invoiceService.copyInInvoiceInfo(invoice.entity)
@@ -1257,7 +1257,10 @@ $scope.invoicePrinted = function(){
 	
 	$scope.isPrint = true;
 	
-	var url1 = $scope.invoice.entity.get('pdfReceipt')._url;
+	var url1 = undefined;
+	
+	if($scope.invoice.entity.get('pdfReceipt') && $scope.invoice.entity.get('hasPdfReceipt'))
+		url1 = $scope.invoice.entity.get('pdfReceipt')._url;
 	
 	if(url1){
 		window.open(url1);
@@ -1280,7 +1283,10 @@ $scope.invoicePrinted = function(){
 $scope.downloadInvoice = function(){
 	$scope.isPrint = false;
 	
-	var url1 = $scope.invoice.entity.get('pdfReceipt')._url;
+	var url1 = undefined;
+	
+	if($scope.invoice.entity.get('pdfReceipt') && $scope.invoice.entity.get('hasPdfReceipt'))
+		url1 = $scope.invoice.entity.get('pdfReceipt')._url;
 	
 	if(url1){
 		var dlnk = document.getElementById('pdfLink');
