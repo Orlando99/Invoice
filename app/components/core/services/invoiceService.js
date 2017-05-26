@@ -1224,6 +1224,8 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 		labels['paymentMadePrice'] = currencyFilter(paymentMade, '$', 2);
 		labels['creditsAppliedPrice'] = currencyFilter(creditApplied, '$', 2);
 
+		total = parseFloat(total.toFixed(2));
+		
 		var balanceDue = total - paymentMade - creditApplied;
 		labels['refundtotal'] = currencyFilter(balanceDue, '$', 2);
 		

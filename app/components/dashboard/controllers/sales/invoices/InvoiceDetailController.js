@@ -103,7 +103,7 @@ function showInvoiceDetail()
 		if (info) info = info.id;
 
 		// create invoice receipt if necessary,
-		if(! receipt || !invoice.entity.get('hasPdfInvoice')) {
+		if(! receipt || !invoice.entity.get('hasPdfReceipt')) {
             if(!info)
             {
                 return invoiceService.copyInInvoiceInfo(invoice.entity)
