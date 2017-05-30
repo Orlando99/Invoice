@@ -817,6 +817,16 @@ angular.module('invoicesUnlimited')
 					}
 				}
 			},
+			Contact : {
+				name	: 'dashboard.settings.contact',
+				url 	: '/contact',
+				views 	: {
+					'@'	: {
+						controller 	: 'SettingsController',
+						templateUrl	: COMPONENTS + 'dashboard/views/settings/contact.html'
+					}
+				}
+			},
 			CompanyProfile : {
 				name	: 'dashboard.settings.company-profile',
 				url 	: '/company-profile',
