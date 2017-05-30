@@ -36,8 +36,15 @@ return {
 		return $q.all(promises);
 	},
 	getInvoicesForSummary : function(params) {
+		var customerTable = Parse.Object.extend("Customer");
+		var innerQuery = new Parse.Query(customerTable);
+		innerQuery.notEqualTo("isDeleted", 1);
+		
 		var invoiceTable = Parse.Object.extend('Invoices');
 		var query = new Parse.Query(invoiceTable);
+		
+		query.matchesQuery("customer", innerQuery);
+		
 		query.equalTo('organization', params.organization);
         query.limit(1000);
 		// set year,month,day constraint
@@ -471,11 +478,18 @@ return {
 		var organization = getOrganization(user);
 		if (! organization)	return;
 
+		var customerTable = Parse.Object.extend("Customer");
+		var innerQuery = new Parse.Query(customerTable);
+		innerQuery.notEqualTo("isDeleted", 1);
+		
 		var invoiceTable = Parse.Object.extend("Invoices");
 		var query = new Parse.Query(invoiceTable);
 
+		query.matchesQuery("customer", innerQuery);
+		
 		query.equalTo("organization", organization);
 		query.include("customer");
+		//query.notEqualTo("customer.isDeleted", 1);
         query.limit(1000);
 		//query.select("invoiceNumber", "invoiceDate", "dueDate", "total", "balanceDue", "status", "customer", "poNumber");
 

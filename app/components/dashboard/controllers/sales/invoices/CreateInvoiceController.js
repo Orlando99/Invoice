@@ -1132,7 +1132,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
         if($scope.contacts.length || $scope.mobileContacts.length){
             $('.email-text').addClass('show');
         } else {
-            saveAndSend1();
+            //saveAndSend1();
+			ShowMessage("Customer has no email/mobile","error");
         }
     }
     

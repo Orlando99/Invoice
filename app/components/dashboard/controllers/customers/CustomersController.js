@@ -54,14 +54,14 @@ invoicesUnlimited.controller('CustomersController',
         rules: {
 			firstName: 'required',
             mobilePhone: {
-                required: true,
+                required: false,
                 minlength: 14
             }
 		},
         messages: {
 			firstName: 'Please enter first name',
             mobilePhone: {
-                required: "Please enter phone number",
+                //required: "Please enter phone number",
                 minlength: "Please enter a valid phone number"
             }
 		}
@@ -641,12 +641,14 @@ invoicesUnlimited.controller('CustomersController',
  
 	$scope.deleteSelectedCustomer = function()
     {
+		/*
 		if ($scope.selectedCustomer.invoices &&
 			$scope.selectedCustomer.invoices.length) {
              
 			ShowMessage("Customers with invoices involved cannot be deleted!","error");
 			return;
 		}
+		*/
 		showLoader();
         
         $scope.selectedCustomer.entity.set('isDeleted', 1);
@@ -665,12 +667,14 @@ invoicesUnlimited.controller('CustomersController',
     $scope.deleteCustomer = function(confirmed, index) {
 	if(confirmed) 
     {
+		/*
 		 if ($scope.selectedCustomer.invoices &&
 			$scope.selectedCustomer.invoices.length) {
              $(".confirm-delete").removeClass("show");
 			ShowMessage("Customers with invoices involved cannot be deleted!","error");
 			return;
 		}
+		*/
 		showLoader();
         
         $scope.selectedCustomer.entity.set('isDeleted', 1);

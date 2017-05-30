@@ -72,9 +72,9 @@ function showInvoiceDetail()
         
 		$scope.comments = invoice.comments;
         $scope.invoiceInfo = invoice.entity.invoiceInfo;
-        
+        $scope.showPayLink = false;
         if(invoice.entity.balanceDue > 0){
-            
+            $scope.showPayLink = true;
         }
         
 		if(invoice.payments) {
@@ -109,6 +109,7 @@ function showInvoiceDetail()
                 return invoiceService.copyInInvoiceInfo(invoice.entity)
                 .then(function(infoObj){
                     info = infoObj.id;
+					$scope.payLink = "https://invoicesunlimited.net/pay/?InvoiceInfoID=" + info;
                     return invoiceService.createInvoiceReceipt(invoiceId,info)
                     .then(function(obj) {
                         return obj.get('invoiceReceipt');
@@ -116,12 +117,14 @@ function showInvoiceDetail()
                 });
             }
             else {
+				$scope.payLink = "https://invoicesunlimited.net/pay/?InvoiceInfoID=" + info;
                 return invoiceService.createInvoiceReceipt(invoiceId,info)
                 .then(function(obj) {
                     return obj.get('invoiceReceipt');
                 });
             }
 		} else {
+			$scope.payLink = "https://invoicesunlimited.net/pay/?InvoiceInfoID=" + info;
 			return Promise.resolve(receipt);
 		}
 

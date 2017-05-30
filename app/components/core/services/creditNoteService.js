@@ -87,9 +87,15 @@ return {
 		var organization = getOrganization(user);
 		if (! organization)	return;
 
+		var customerTable = Parse.Object.extend("Customer");
+		var innerQuery = new Parse.Query(customerTable);
+		innerQuery.notEqualTo("isDeleted", 1);
+		
 		var CreditNote = Parse.Object.extend("CreditNotes");
 		var query = new Parse.Query(CreditNote);
 
+		query.matchesQuery("customer", innerQuery);
+		
 		query.equalTo("organization", organization);
 		query.include("customer");
 		//query.select("creditNumber", "creditNoteDate", "reference",

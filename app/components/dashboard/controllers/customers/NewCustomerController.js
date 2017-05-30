@@ -94,7 +94,7 @@ invoicesUnlimited.controller('NewCustomerController',
 		rules: {
 			firstName: 'required',
             mobilePhone: {
-                required: true,
+                required: false,
                 minlength: 14
             },
             phoneNumber: {
@@ -109,7 +109,7 @@ invoicesUnlimited.controller('NewCustomerController',
         messages: {
 			firstName: 'Please enter first name',
             mobilePhone: {
-                required: "Please enter phone number",
+                //required: "Please enter phone number",
                 minlength: "Please enter a valid phone number"
             },
             phoneNumber: {

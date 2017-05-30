@@ -21,6 +21,7 @@
           <li><a href="" ng-click="invoicePrinted()">Print</a></li>
           <li class="modal-opener" data-toggle="record-payment" ng-if="invoice.entity.balanceDue > 0"><a href=""
               ng-click="prepareAddPayment()">Record Payment</a></li>
+          <li ng-show="showPayLink"><a href="{{payLink}}">Pay Now</a></li>
           <li><a href="javascript:" ng-click="showAvailableCredits()">Apply Credit Note</a></li>
           <li><a href="javascript:" ng-click="cloneInvoice()">Clone</a></li>
           <li><a href="javascript:" ng-click="downloadInvoice()">Download PDF</a></li>

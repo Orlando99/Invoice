@@ -1164,7 +1164,8 @@ $(document).ready(function(){
                     'HTML'        : 'No',
                     'ePNAccount'  : $('#ePNAccount').val(),
                     'Address'     : $('#Address').val(),
-                    'RestrictKey' : $('#RestrictKey').val()
+                    'RestrictKey' : $('#RestrictKey').val(),
+                    'TranType' : 'Sale'
                 });
                 break;
             case "2":
@@ -1209,7 +1210,7 @@ $(document).ready(function(){
                         var error = $('#gateway').val() == 1 ? 
                                     auth.slice(0,auth.length) :
                                     data.match(/Error message.*/g)[0];
-                        $('#invoice-error-message').text(error);
+                        //$('#invoice-error-message').text(error);
                         $('#invoice-process').hide();
                         $('#invoice-error').show();
                     } else if (/^Y.*/g.test(auth) || /AUTH CODE/g.test(data)) {
