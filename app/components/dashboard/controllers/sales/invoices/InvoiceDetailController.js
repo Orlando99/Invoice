@@ -52,7 +52,7 @@ function showInvoiceDetail()
 	.then(function(invoice) {
 		var usr = invoice.entity.get('userID');
 		
-		if(userFactory.entity[0].get('role') == 'Staff'){
+		if(userFactory.entity[0].get('role') == 'Manager'){
 			if(userFactory.entity[0].id == usr.id)
 				$scope.isOwner = true;
 		} else {

@@ -47,7 +47,7 @@ invoicesUnlimited.factory('coreFactory',
 	
 	core.getAllCustomers = function(loadAgain){
 		if (core.allCustomers && !loadAgain) return core.allCustomers;
-		if(user.entity[0].get('role') == 'Staff'){
+		if(user.entity[0].get('role') == 'Manager'){
 			return queryService.ext.find(
 				"Customer",
 				"userID",
