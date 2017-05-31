@@ -59,6 +59,9 @@ function showInvoiceDetail()
 			$scope.isOwner = true;
 		}
 		
+		if(invoice.entity.get('customer').get('isDeleted') == 1)
+			$scope.isOwner = false;
+		
 	//	console.log(invoice);
 		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
 		$scope.invoice = invoice;

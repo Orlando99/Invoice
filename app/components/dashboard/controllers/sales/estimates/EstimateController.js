@@ -768,7 +768,8 @@ function LoadRequiredData() {
             });
         
 	    //$scope.selectedCustomer = $scope.customers[0];
-        $scope.customers.push(createCustomerOpener);
+		if(user.get('role') != 'Sales')
+        	$scope.customers.push(createCustomerOpener);
 	});
 	promises.push(p);
 

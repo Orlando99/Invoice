@@ -41,6 +41,9 @@ function showEstimateDetail() {
 			$scope.isOwner = true;
 		}
 		
+		if(estimate.entity.get('customer').get('isDeleted') == 1)
+			$scope.isOwner = false;
+		
 	//	console.log(estimate);
 		$scope.estimate = estimate;
 		$scope.estimateNo = estimate.entity.estimateNumber;

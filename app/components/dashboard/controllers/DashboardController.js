@@ -22,8 +22,34 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         $scope.role = user.entity[0].get('role');
         $scope.businessInfo = business;
         $scope.userName =  user.entity[0].get('username');
-        
-        
+
+		if ($('#link-reports').offset) {
+			pos = parseInt($('#link-reports').offset().left);
+			negative_pos = pos * (-1);
+			$('.navigation > li .link-reports-div').css('left',negative_pos);
+		}
+		
+		if($scope.role == 'Sales')
+			$('#invoices-link').css('margin-left',"130px");
+		
+		if($('#link-customers').offset && $scope.role == 'Sales'){
+			var pos = parseInt($('#link-customers').offset().left);
+			var negative_pos = pos * (-1) ;
+			$('.navigation > li .link-sales-div').css('left',negative_pos);
+			$('#invoices-link').css('margin-left',"130px");
+		} else {
+			if ($('#link-sales').offset) {
+				var pos = parseInt($('#link-sales').offset().left);
+				var negative_pos = pos * (-1) ;
+				$('.navigation > li .link-sales-div').css('left',negative_pos);
+			}
+		}
+		
+		if ($('#link-settings').offset) {
+			pos = parseInt($('#link-settings').offset().left);
+			negative_pos = pos * (-1);
+			$('.navigation > li .link-settings-div').css('left',negative_pos);
+		}
         
     });
     

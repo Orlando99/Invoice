@@ -1,231 +1,233 @@
 <div class="container hidesm">
-    <label style="font-size: 20px; vertical-align: -webkit-baseline-middle;" class="text-uppercase text-color-normalize">New Customer</label>
-    <label style="float: right; margin-top: 11px;"> *Indicates Required Fields</label>
-    <hr class="layout-margin-tb">
+	<label style="font-size: 20px; vertical-align: -webkit-baseline-middle;" class="text-uppercase text-color-normalize">New Customer</label>
+	<label style="float: right; margin-top: 11px;"> *Indicates Required Fields</label>
+	<hr class="layout-margin-tb">
 
-    <form class="col-60 inputs-white" id="new-customer-form" novalidate>
+	<form class="col-60 inputs-white" id="new-customer-form" novalidate>
 
-    <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-sm">First Name*</label>
-        <input maxlength="60" class="col-75 pull-right alphaNumericField" id = "firstNameD" name = "firstName" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName"/>
-      </div>
-        
-    <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-sm">Mobile Phone</label>
-        <input maxlength="60" class="col-75 pull-right alphaNumericField" type="text" placeholder="Mobile" id="mobilePhone" name="mobilePhone" ng-model="newCustomer.entity.mobile"/>
-      </div>
-        
-        <div class="clearfix spacer"></div>
-        
-      <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-sm">Primary Contact</label>
-        <select class="layout-margin-t col-20 layout-margin-r" ng-model="newCustomer.entity.salutation">
-          <option value="" selected>None</option>
-          <option value="Ms.">Ms.</option>
-          <option value="Mr.">Mr.</option>
-        </select>
-       
-          <input maxlength="60" style="width: 52% !important; max-width: 52% !important;" class="col-50 alphaNumericField" type="text" id = "lastNameD" name = "lastName" placeholder="Last Name" 
-               ng-model="newCustomer.entity.lastName"/>
-      </div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-sm">First Name*</label>
+			<input maxlength="60" class="col-75 pull-right alphaNumericField" id = "firstNameD" name = "firstName" type="text" placeholder="First Name" ng-model="newCustomer.entity.firstName"/>
+		</div>
 
-      <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-sm">Company Name</label>
-        <input maxlength="60" class="col-75 pull-right alphaNumericField" type="text" placeholder="Company Name" ng-model="newCustomer.entity.companyName"/>
-      </div>
 
-      <div class="input-container input-info input-select-info layout-margin-b">
-        <label class="layout-padding-t-sm">Display Name</label>
-        <input maxlength="60" class="col-75 pull-right alphaNumericField" ng-click="displayNameClicked = true;" type="text" placeholder="Display Name" ng-model="newCustomer.entity.displayName" name="displayName"/>
-        <span class="info-icon info-icon-gray"></span>
-        <p class="info-tooltip tooltip-dark">
-          This is the name that will display for this contact for invoices, estimates, &amp; projects.
-        </p>
-      </div>
 
-      <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-sm">Work Phone</label>
-        <input type="text" placeholder="Work Phone" name="phoneNumber" ng-model="newCustomer.entity.phone" class="col-75 pull-right" id="workPhone"/>
-      </div>
+		<div class="clearfix spacer"></div>
 
-      <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-sm">Email Address</label>
-        <input  name="email" type="text" maxlength="100" placeholder="Email" ng-model="newCustomer.entity.email" class="col-75"/>
-      </div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-sm">Primary Contact</label>
+			<select class="layout-margin-t col-20 layout-margin-r" ng-model="newCustomer.entity.salutation">
+				<option value="" selected>None</option>
+				<option value="Ms.">Ms.</option>
+				<option value="Mr.">Mr.</option>
+			</select>
 
-    </form>
+			<input maxlength="60" style="width: 52% !important; max-width: 52% !important;" class="col-50 alphaNumericField" type="text" id = "lastNameD" name = "lastName" placeholder="Last Name" 
+				   ng-model="newCustomer.entity.lastName"/>
+		</div>
 
-    <div class="clearfix"></div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-sm">Company Name</label>
+			<input maxlength="60" class="col-75 pull-right alphaNumericField" type="text" placeholder="Company Name" ng-model="newCustomer.entity.companyName"/>
+		</div>
 
-    <ul class="tabs tabs-100 container clearfix col-no-padding layout-margin-tb-lg">
-      <li class="text-center col-no-padding active" data-toggle="tab1">
-        <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Payment Details</h4></li>
-      <li class="text-center col-no-padding" data-toggle="tab2">
-        <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Address</h4></li>
-        <li class="text-center col-no-padding" data-toggle="tab4">
-          <h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Notes</h4></li>
-    </ul>
+		<div class="input-container input-info input-select-info layout-margin-b">
+			<label class="layout-padding-t-sm">Display Name</label>
+			<input maxlength="60" class="col-75 pull-right alphaNumericField" ng-click="displayNameClicked = true;" type="text" placeholder="Display Name" ng-model="newCustomer.entity.displayName" name="displayName"/>
+			<span class="info-icon info-icon-gray"></span>
+			<p class="info-tooltip tooltip-dark">
+				This is the name that will display for this contact for invoices, estimates, &amp; projects.
+			</p>
+		</div>
 
-    <div class="container tab active" data-name="tab1">
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-sm">Work Phone</label>
+			<input type="text" placeholder="Work Phone" name="phoneNumber" ng-model="newCustomer.entity.phone" class="col-75 pull-right" id="workPhone"/>
+		</div>
 
-      <form class="col-60 inputs-white" id="payment-details-form">
-        <div class="input-container layout-margin-b">
-          <label class="layout-padding-t">Currency</label>
-          <select class="col-75 layout-margin-tb" ng-change="customerCurrencyChanged()" ng-model="newCustomer.entity.currency">
-            <option ng-repeat="currency in currencies">{{currency.entity.title}}</option>
-              <option value="dummy">+ Add New Currency</option>
-          </select>
-        </div>
-        <div class="input-container layout-margin-b">
-          <label class="layout-padding-t">Payment Terms</label>
-          <select class="col-75 layout-margin-t-sm" ng-model="newCustomer.entity.paymentTerms">
-            <option value="" disabled>Select your terms</option>
-            <option value="Due on Receipt">Due on Receipt</option>
-            <option value="Net 7">Net 7</option>
-            <option value="Net 10">Net 10</option>
-            <option value="Net 30">Net 30</option>
-            <option value="Net 60">Net 60</option>
-            <option value="Net 90">Net 90</option>
-          </select>
-        </div>
-      </form>
-      <div class="clearfix layout-margin-tb-lg"> </div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-sm">Mobile Phone</label>
+			<input maxlength="60" class="col-75 pull-right alphaNumericField" type="text" placeholder="Mobile" id="mobilePhone" name="mobilePhone" ng-model="newCustomer.entity.mobile"/>
+		</div>
 
-    </div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-sm">Email Address</label>
+			<input  name="email" type="text" maxlength="100" placeholder="Email" ng-model="newCustomer.entity.email" class="col-75"/>
+		</div>
 
-    <div class="container tab" data-name="tab2">
-      <h3 class="layout-margin-tb text-weight-normalize text-color-normalize">Billing Address</h3>
-      <div class="clearfix"></div>
-      <form class="col-60 inputs-white" id="address-form">
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t-sm">Street</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.billingAddress.Street">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t-sm">City</label>
-          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress.City">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t-sm">State</label>
-          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress['State\/Province']">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t-sm">Zip Code</label>
-          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress['Zip\/Postal Code']">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t-sm">Country</label>
-          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress.Country">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t-sm alphaNumericField">Fax</label>
-          <input maxlength="60" id="billFax"type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress.Fax">
-        </div>
-        <div class="clearfix"></div><br>
-        <label class="input-container input-checkbox-container layout-margin-tb">
-          <label>Shipping Address</label>
-          <div class="col-75 layout-padding-t-sm">
-            <p class="float-right layout-no-padding">Same as Billing Address</p>
-            <input type="checkbox" ng-model="shipping.setShippingTheSame" ng-click="setShippingAddress()">
-            <span class="checkbox float-right layout-margin-r"></span>
-          </div>
-        </label>
-        <div ng-hide="shipping.setShippingTheSame">
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t">Street</label>
-          <input maxlength="60" type="text" class="col-75" ng-model="newCustomer.shippingAddress.Street">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t">City</label>
-          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress.City">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t">State</label>
-          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress['State\/Province']">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t">Zip Code</label>
-          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress['Zip\/Postal Code']">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t">Country</label>
-          <input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress.Country">
-        </div>
-        <div class="input-container layout-margin-t-sm">
-          <label class="layout-padding-t">Fax</label>
-          <input maxlength="60" id="shipFax" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress.Fax">
-        </div>
-      </div>
-      </form>
+	</form>
 
-    </div>
+	<div class="clearfix"></div>
 
-    <div class="container tab" data-name="tab4">
-      <div class="col-20">
-        <p class="text-color-normalize text-weight-normalize layout-no-padding layout-no-margin">Notes <br/><span class="text-color-light">(For Internal Use Only)</span></p>
-      </div>
+	<ul class="tabs tabs-100 container clearfix col-no-padding layout-margin-tb-lg">
+		<li class="text-center col-no-padding active" data-toggle="tab1">
+			<h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Payment Details</h4></li>
+		<li class="text-center col-no-padding" data-toggle="tab2">
+			<h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Address</h4></li>
+		<li class="text-center col-no-padding" data-toggle="tab4">
+			<h4 class="text-transform text-uppercase text-weight-normalize text-color-normalize">Notes</h4></li>
+	</ul>
 
-      <form class="col-40 inputs-white" id="notes-form">
-        <div class="input-container">
-          <textarea ng-model="newCustomer.entity.notes" maxlength="1000"></textarea>
-        </div>
-      </form>
-    </div>
+	<div class="container tab active" data-name="tab1">
 
-    <div class="clearfix layout-margin-tb-lg spacer"></div>
-    <button ng-click="saveCustomer();" class="button button-info text-uppercase layout-margin-r">Save</button>
-    <button ng-click="cancelSaveCustomer();" class="button button-neutral text-uppercase">Cancel</button>
+		<form class="col-60 inputs-white" id="payment-details-form">
+			<div class="input-container layout-margin-b">
+				<label class="layout-padding-t">Currency</label>
+				<select class="col-75 layout-margin-tb" ng-change="customerCurrencyChanged()" ng-model="newCustomer.entity.currency">
+					<option ng-repeat="currency in currencies">{{currency.entity.title}}</option>
+					<option value="dummy">+ Add New Currency</option>
+				</select>
+			</div>
+			<div class="input-container layout-margin-b">
+				<label class="layout-padding-t">Payment Terms</label>
+				<select class="col-75 layout-margin-t-sm" ng-model="newCustomer.entity.paymentTerms">
+					<option value="" disabled>Select your terms</option>
+					<option value="Due on Receipt">Due on Receipt</option>
+					<option value="Net 7">Net 7</option>
+					<option value="Net 10">Net 10</option>
+					<option value="Net 30">Net 30</option>
+					<option value="Net 60">Net 60</option>
+					<option value="Net 90">Net 90</option>
+				</select>
+			</div>
+		</form>
+		<div class="clearfix layout-margin-tb-lg"> </div>
 
-  </div>
+	</div>
 
-  <div class="spacer hidesm"></div>
+	<div class="container tab" data-name="tab2">
+		<h3 class="layout-margin-tb text-weight-normalize text-color-normalize">Billing Address</h3>
+		<div class="clearfix"></div>
+		<form class="col-60 inputs-white" id="address-form">
+			<div class="input-container layout-margin-t-sm">
+				<label class="layout-padding-t-sm">Street</label>
+				<input maxlength="60" type="text" class="col-75" ng-model="newCustomer.billingAddress.Street">
+			</div>
+			<div class="input-container layout-margin-t-sm">
+				<label class="layout-padding-t-sm">City</label>
+				<input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress.City">
+			</div>
+			<div class="input-container layout-margin-t-sm">
+				<label class="layout-padding-t-sm">State</label>
+				<input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress['State\/Province']">
+			</div>
+			<div class="input-container layout-margin-t-sm">
+				<label class="layout-padding-t-sm">Zip Code</label>
+				<input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress['Zip\/Postal Code']">
+			</div>
+			<div class="input-container layout-margin-t-sm">
+				<label class="layout-padding-t-sm">Country</label>
+				<input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress.Country">
+			</div>
+			<div class="input-container layout-margin-t-sm">
+				<label class="layout-padding-t-sm alphaNumericField">Fax</label>
+				<input maxlength="60" id="billFax"type="text" class="col-75 alphaNumericField" ng-model="newCustomer.billingAddress.Fax">
+			</div>
+			<div class="clearfix"></div><br>
+			<label class="input-container input-checkbox-container layout-margin-tb">
+				<label>Shipping Address</label>
+				<div class="col-75 layout-padding-t-sm">
+					<p class="float-right layout-no-padding">Same as Billing Address</p>
+					<input type="checkbox" ng-model="shipping.setShippingTheSame" ng-click="setShippingAddress()">
+					<span class="checkbox float-right layout-margin-r"></span>
+				</div>
+			</label>
+			<div ng-hide="shipping.setShippingTheSame">
+				<div class="input-container layout-margin-t-sm">
+					<label class="layout-padding-t">Street</label>
+					<input maxlength="60" type="text" class="col-75" ng-model="newCustomer.shippingAddress.Street">
+				</div>
+				<div class="input-container layout-margin-t-sm">
+					<label class="layout-padding-t">City</label>
+					<input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress.City">
+				</div>
+				<div class="input-container layout-margin-t-sm">
+					<label class="layout-padding-t">State</label>
+					<input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress['State\/Province']">
+				</div>
+				<div class="input-container layout-margin-t-sm">
+					<label class="layout-padding-t">Zip Code</label>
+					<input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress['Zip\/Postal Code']">
+				</div>
+				<div class="input-container layout-margin-t-sm">
+					<label class="layout-padding-t">Country</label>
+					<input maxlength="60" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress.Country">
+				</div>
+				<div class="input-container layout-margin-t-sm">
+					<label class="layout-padding-t">Fax</label>
+					<input maxlength="60" id="shipFax" type="text" class="col-75 alphaNumericField" ng-model="newCustomer.shippingAddress.Fax">
+				</div>
+			</div>
+		</form>
+
+	</div>
+
+	<div class="container tab" data-name="tab4">
+		<div class="col-20">
+			<p class="text-color-normalize text-weight-normalize layout-no-padding layout-no-margin">Notes <br/><span class="text-color-light">(For Internal Use Only)</span></p>
+		</div>
+
+		<form class="col-40 inputs-white" id="notes-form">
+			<div class="input-container">
+				<textarea ng-model="newCustomer.entity.notes" maxlength="1000"></textarea>
+			</div>
+		</form>
+	</div>
+
+	<div class="clearfix layout-margin-tb-lg spacer"></div>
+	<button ng-click="saveCustomer();" class="button button-info text-uppercase layout-margin-r">Save</button>
+	<button ng-click="cancelSaveCustomer();" class="button button-neutral text-uppercase">Cancel</button>
+
+</div>
+
+<div class="spacer hidesm"></div>
 
 <div class="popup-modal new-currency hidesm">
-    <div class="modal container">
-      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Currency</h3>
-      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
-      <div class="clearfix"></div>
-      <hr class="layout-margin-tb">
+	<div class="modal container">
+		<h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Add Currency</h3>
+		<button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt=""></button>
+		<div class="clearfix"></div>
+		<hr class="layout-margin-tb">
 
-      <div class="col-80 text-left layout-center">
-        <form id="addCurrencyForm" class="layout-margin-tb col-100 inputs-white">
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-smm">Currency Code</label>
-            <select name="currencyCode" class="col-75" ng-options="currency for currency in availableCurrencies"
-              ng-model="currencyObj.title" ng-change="currencyChanged()">
-              <option value="" disabled selected>Select or Type to add</option>
-            </select>
-          </div>
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-smm">Currency Symbol</label>
-            <input name="currencySymbol" type="text" class="col-75" placeholder="Type to add"
-              ng-model="currencyObj.currencySymbol">
-          </div>
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-smm">Decimal Places</label>
-            <select class="col-75" ng-model="currencyObj.decimalPlace">
-              <option value="0">0</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-            </select>
-          </div>
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-smm">Format</label>
-            <select class="col-75" ng-model="currencyObj.format">
-              <option value="#,###,####">1,234,5678</option>
-              <option value="###,###,###">123,456,789</option>
-              <option value="##,##,##,##">12,34,56,78</option>
-            </select>
-          </div>
-          <div class="input-container layout-margin-b">
-            <label class="layout-padding-t-smm">Exchange Rate</label>
-              
-            <input type="number" name="exchangeRate" ng-model="currencyObj.exchangeRate"   class="col-75"
-              placeholder="Type to add" onkeypress="numberValidation(event)">
-          </div>
-        </form>
-      </div>
-      <div class="clearfix"></div>
-      <button class="button button-info text-uppercase" ng-click="saveNewCurrency()">Save</button>
-    </div>
-  </div>
+		<div class="col-80 text-left layout-center">
+			<form id="addCurrencyForm" class="layout-margin-tb col-100 inputs-white">
+				<div class="input-container layout-margin-b">
+					<label class="layout-padding-t-smm">Currency Code</label>
+					<select name="currencyCode" class="col-75" ng-options="currency for currency in availableCurrencies"
+							ng-model="currencyObj.title" ng-change="currencyChanged()">
+						<option value="" disabled selected>Select or Type to add</option>
+					</select>
+				</div>
+				<div class="input-container layout-margin-b">
+					<label class="layout-padding-t-smm">Currency Symbol</label>
+					<input name="currencySymbol" type="text" class="col-75" placeholder="Type to add"
+						   ng-model="currencyObj.currencySymbol">
+				</div>
+				<div class="input-container layout-margin-b">
+					<label class="layout-padding-t-smm">Decimal Places</label>
+					<select class="col-75" ng-model="currencyObj.decimalPlace">
+						<option value="0">0</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+					</select>
+				</div>
+				<div class="input-container layout-margin-b">
+					<label class="layout-padding-t-smm">Format</label>
+					<select class="col-75" ng-model="currencyObj.format">
+						<option value="#,###,####">1,234,5678</option>
+						<option value="###,###,###">123,456,789</option>
+						<option value="##,##,##,##">12,34,56,78</option>
+					</select>
+				</div>
+				<div class="input-container layout-margin-b">
+					<label class="layout-padding-t-smm">Exchange Rate</label>
+
+					<input type="number" name="exchangeRate" ng-model="currencyObj.exchangeRate"   class="col-75"
+						   placeholder="Type to add" onkeypress="numberValidation(event)">
+				</div>
+			</form>
+		</div>
+		<div class="clearfix"></div>
+		<button class="button button-info text-uppercase" ng-click="saveNewCurrency()">Save</button>
+	</div>
+</div>

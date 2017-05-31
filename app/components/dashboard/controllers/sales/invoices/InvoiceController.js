@@ -1090,7 +1090,8 @@ function customerChangedHelper() {
 			});
 		});
 	//	console.log($scope.invoiceItems);
-		newItems.push(createItemOpener); // add createItem field
+		if(user.get('role') != 'Sales')
+			newItems.push(createItemOpener); // add createItem field
 		return $scope.items = newItems;
 	});
 }
@@ -1149,7 +1150,8 @@ function LoadRequiredData() {
                     obj.fullName = obj.entity.displayName;
             });
         
-        $scope.customers.push(createCustomerOpener);
+		if(user.get('role') != 'Sales')
+        	$scope.customers.push(createCustomerOpener);
 	//	$scope.selectedCustomer = $scope.customers[0];
 	});
 	promises.push(p);
@@ -1165,7 +1167,8 @@ function LoadRequiredData() {
 			return item.entity.expanseId;
 		});
 		$scope.items = $scope.actualItems;
-		$scope.items.push(createItemOpener);
+		if(user.get('role') != 'Sales')
+			$scope.items.push(createItemOpener);
 	});
 	promises.push(p);
 
@@ -1183,7 +1186,8 @@ function LoadRequiredData() {
 
 	p = taxService.getTaxes(user, function(taxes) {
 		$scope.taxes = taxes;
-        $scope.taxes.push(createTaxOpener);
+		if(user.get('role') != 'Sales')
+        	$scope.taxes.push(createTaxOpener);
 	});
 	promises.push(p);
 
@@ -1194,7 +1198,8 @@ function LoadRequiredData() {
 			obj.toStr = lateFeeNameHelper(obj);
 			return obj;
 		});
-        $scope.lateFeeList.push(createLateFeeOpener);
+		if(user.get('role') != 'Sales')
+        	$scope.lateFeeList.push(createLateFeeOpener);
 	})
 	promises.push(p);
 
@@ -1880,7 +1885,8 @@ $scope.addLateFee = function() {
             obj.toStr = lateFeeNameHelper(obj);
             $scope.lateFeeList.pop();
             $scope.lateFeeList.push(obj);
-            $scope.lateFeeList.push(createLateFeeOpener);
+			if(user.get('role') != 'Sales')
+            	$scope.lateFeeList.push(createLateFeeOpener);
             $scope.selectedLateFee = obj;
             $('.add-latefee').removeClass('show');
             hideLoader();

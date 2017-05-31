@@ -1,5 +1,5 @@
 <div style="height: 20px ; background-color: #B8B8B8; text-align: center ; margin-bottom: 10px; margin-top: -12px;">
-    <label style="font-size: 12px; color: #000">InvoicesUnlimited: Version 2.68 (26/05/2017 07:40 PM)</label>
+    <label style="font-size: 12px; color: #000">InvoicesUnlimited: Version 2.69 (31/05/2017 01:21 AM)</label>
 </div>
 <div class="container">
     
@@ -10,27 +10,27 @@
         <img id="img_hover" style="cursor:pointer" src="./assets/images/dropdown-arrow-primary.png" alt="">
         
           <ul Style="margin-top: 10px" id="ul_wrapp" onmouseover="ul_add_class(this)" onmouseout="mouse_out(this)" class="submenu user-submenu">
-          <li ng-hide="role == 'Staff'"><a ui-sref="dashboard.settings.company-profile">Company Profile</a></li>
+          <li ng-hide="role == 'Staff' || role == 'Sales'"><a ui-sref="dashboard.settings.company-profile">Company Profile</a></li>
           <li><a style="cursor:pointer" ng-click="logOut();">Logout</a></li>
         </ul>
       </div>
     </div>
     <ul class="navigation" elem-ready="pageReady()">
       <li id="dashboard" class="nav-item"><a ui-sref="dashboard" ui-sref-opts="{reload:true}">Dashboard</a></li>
-      <li id="customers" class="nav-item"><a ui-sref="dashboard.customers.all" ui-sref-opts="{reload:true}">Customers</a></li>
+      <li id="customers" ng-hide="role == 'Sales'" class="nav-item"><a id="link-customers" ui-sref="dashboard.customers.all" ui-sref-opts="{reload:true}">Customers</a></li>
       <li id="sales" class="nav-item">
         <a href="javascript:" id="link-sales">Sales</a>
         <div class="container-fluid link-sales-div">
           <ul Style="" class="submenu">
             
-            <li><a Style="margin-left: 260px !important" ui-sref="dashboard.sales.invoices.all" ui-sref-opts="{reload:true}">Invoices</a></li>
+            <li><a id="invoices-link" Style="margin-left: 260px !important" ui-sref="dashboard.sales.invoices.all" ui-sref-opts="{reload:true}">Invoices</a></li>
               <li><a Style="margin-left: 70px !important" ui-sref="dashboard.sales.estimates.all" ui-sref-opts="{reload:true}">Estimates</a></li>
             <li><a ui-sref="dashboard.sales.creditnotes.all" ui-sref-opts="{reload:true}">Credit Notes</a></li>
           </ul>
         </div>
       </li>
       
-      <li id="expenses" class="nav-item">
+      <li id="expenses" ng-hide="role == 'Sales'" class="nav-item">
         <a href="javascript:" id="link-expense">Expenses</a>
         <div class="container-fluid link-expense-div">
           <ul class="submenu">
@@ -41,12 +41,12 @@
         </div>
       </li>
       
-      <li id="projects" class="nav-item"><a ui-sref="dashboard.projects.all" ui-sref-opts="{reload:true}">Projects</a></li>
+      <li id="projects" ng-hide="role == 'Sales'" class="nav-item"><a ui-sref="dashboard.projects.all" ui-sref-opts="{reload:true}">Projects</a></li>
         <!--
       <li><a href="timesheets/timesheets.html">Timesheets</a></li>
       -->
 
-      <li id="reports" class="nav-item" ng-hide="role == 'Staff'">
+      <li id="reports" class="nav-item" ng-hide="role == 'Staff' || role == 'Sales'">
         <a  href="javascript:" id="link-reports">Reports</a>
         <div class="container-fluid link-reports-div">
           <ul class="submenu">
@@ -66,7 +66,7 @@
         </div>
       </li>
       
-      <li id="settings" class="nav-item">
+      <li id="settings" ng-hide="role == 'Sales'" class="nav-item">
         <a href="javascript:" id="link-settings">Settings</a>
         <div class="container-fluid link-settings-div">
           <ul class="submenu">
@@ -94,7 +94,7 @@
           </ul>
         </div>
       </li>
-		<li id="payments" class="nav-item"><a ui-sref="dashboard.settings.payments" ui-sref-opts="{reload:true}">Credit Card Processing</a></li>
+		<li id="payments" ng-hide="role == 'Sales'" class="nav-item"><a ui-sref="dashboard.settings.payments" ui-sref-opts="{reload:true}">Credit Card Processing</a></li>
     </ul>
 
 <div id="snackbar"></div>

@@ -108,8 +108,8 @@ invoicesUnlimited.controller('QuickInvoiceController',
                 else
                     obj.fullName = obj.entity.displayName;
             });
-            
-			$scope.customers.push(createCustomerOpener);
+            if(user.get('role') != 'Sales')
+				$scope.customers.push(createCustomerOpener);
             
 		//	$scope.selectedCustomer = $scope.customers[0];
 		});
@@ -530,7 +530,7 @@ invoicesUnlimited.controller('QuickInvoiceController',
             $('.email-text').addClass('show');
         } else {
             //saveAndSend1();
-			ShowMessage("Customer has no email/mobile","error");
+			ShowMessage("The customer does not have a email or phone number in their profile. Please select save.","error");
         }
     }
     

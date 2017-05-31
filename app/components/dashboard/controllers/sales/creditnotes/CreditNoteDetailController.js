@@ -58,6 +58,9 @@ function showCreditNoteDetail() {
 			$scope.isOwner = true;
 		}
 		
+		if(creditNote.entity.get('customer').get('isDeleted') == 1)
+			$scope.isOwner = false;
+		
 		console.log(creditNote);
 		$scope.creditNote = creditNote;
 		$scope.creditNo = creditNote.entity.creditNumber;

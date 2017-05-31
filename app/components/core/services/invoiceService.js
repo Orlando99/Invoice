@@ -485,7 +485,7 @@ return {
 		var invoiceTable = Parse.Object.extend("Invoices");
 		var query = new Parse.Query(invoiceTable);
 
-		query.matchesQuery("customer", innerQuery);
+		//query.matchesQuery("customer", innerQuery);
 		
 		query.equalTo("organization", organization);
 		query.include("customer");

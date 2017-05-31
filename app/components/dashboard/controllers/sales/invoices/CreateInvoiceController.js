@@ -215,7 +215,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
                     obj.fullName = obj.entity.displayName;
             });
             
-			$scope.customers.push(createCustomerOpener);
+			if(user.get('role') != 'Sales')
+				$scope.customers.push(createCustomerOpener);
             
 		//	$scope.selectedCustomer = $scope.customers[0];
 		});
@@ -231,7 +232,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				return item.entity.expanseId;
 			});
 			$scope.items = $scope.actualItems;
-			$scope.items.push(createItemOpener);
+			if(user.get('role') != 'Sales')
+				$scope.items.push(createItemOpener);
 		});
 		promises.push(p);
 
@@ -249,7 +251,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 		p = taxService.getTaxes(user, function(taxes) {
 			$scope.taxes = taxes;
-            $scope.taxes.push(createTaxOpener);
+			if(user.get('role') != 'Sales')
+            	$scope.taxes.push(createTaxOpener);
 		});
 		promises.push(p);
 
@@ -260,7 +263,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				obj.toStr = lateFeeNameHelper(obj);
 				return obj;
 			});
-            $scope.lateFeeList.push(createLateFeeOpener);
+			if(user.get('role') != 'Sales')
+            	$scope.lateFeeList.push(createLateFeeOpener);
 		})
 		promises.push(p);
 
@@ -514,7 +518,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
                     $scope.items.pop();
                     $scope.items.push(t);
-                    $scope.items.push(createItemOpener);
+					if(user.get('role') != 'Sales')
+                    	$scope.items.push(createItemOpener);
 
                     $scope.addInvoiceItem();
                     $scope.invoiceItems[0] = {
@@ -610,8 +615,9 @@ invoicesUnlimited.controller('CreateInvoiceController',
                             
                             count++;
                         });
-
-                        $scope.items.push(createItemOpener);
+						
+						if(user.get('role') != 'Sales')
+                        	$scope.items.push(createItemOpener);
                     }
                 }
                 else if(projectId.dataOnInvoice == 3) {
@@ -675,8 +681,9 @@ invoicesUnlimited.controller('CreateInvoiceController',
                             };
                             $scope.itemChanged(i);
                         }
-
-                        $scope.items.push(createItemOpener);
+						
+						if(user.get('role') != 'Sales')
+                        	$scope.items.push(createItemOpener);
                     }
                 }
                 else if(projectId.dataOnInvoice == 4) {
@@ -771,7 +778,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
                             count++;
                         });
 
-                        $scope.items.push(createItemOpener);
+						if(user.get('role') != 'Sales')
+                        	$scope.items.push(createItemOpener);
                     }
                 }
             });
@@ -1032,7 +1040,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
                 obj.toStr = lateFeeNameHelper(obj);
                 $scope.lateFeeList.pop();
                 $scope.lateFeeList.push(obj);
-                $scope.lateFeeList.push(createLateFeeOpener);
+				if(user.get('role') != 'Sales')
+                	$scope.lateFeeList.push(createLateFeeOpener);
                 $scope.selectedLateFee = obj;
                 $('.add-latefee').removeClass('show');
                 hideLoader();
@@ -1133,7 +1142,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
             $('.email-text').addClass('show');
         } else {
             //saveAndSend1();
-			ShowMessage("Customer has no email/mobile","error");
+			ShowMessage("The customer does not have a email or phone number in their profile. Please select save.","error");
         }
     }
     
@@ -1607,7 +1616,8 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				});
 			});
 		//	console.log($scope.invoiceItems);
-			newItems.push(createItemOpener); // add createItem field
+			if(user.get('role') != 'Sales')
+				newItems.push(createItemOpener); // add createItem field
 			return $scope.items = newItems;
 		});
 	}

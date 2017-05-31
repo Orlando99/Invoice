@@ -99,8 +99,8 @@ function prepareToCreateCreditNote() {
                 else
                     obj.fullName = obj.entity.displayName;
             });
-        
-		$scope.customers.push(createCustomerOpener);
+        if(user.get('role') != 'Sales')
+			$scope.customers.push(createCustomerOpener);
 	//	$scope.selectedCustomer = $scope.customers[0];
 	});
 	promises.push(p);
@@ -115,7 +115,8 @@ function prepareToCreateCreditNote() {
 			return item.entity.expanseId;
 		});
 		$scope.items = $scope.actualItems;
-        $scope.items.push(createItemOpener);
+		if(user.get('role') != 'Sales')
+        	$scope.items.push(createItemOpener);
 	});
 	promises.push(p);
 
@@ -370,7 +371,8 @@ $scope.saveAndSend = function(){
     if($scope.contacts.length || $scope.mobileContacts.length){
         $('.email-text').addClass('show');
     } else {
-        saveAndSend1();
+        //saveAndSend1();
+		ShowMessage("The customer does not have a email or phone number in their profile. Please select save.","error");
     }
 }
 
@@ -523,8 +525,8 @@ function customerChangedHelper() {
 				return item.entity.id == creditItem.selectedItem.entity.id;
 			});
 		});
-        
-        newItems.push(createItemOpener);
+        if(user.get('role') != 'Sales')
+        	newItems.push(createItemOpener);
 	//	console.log($scope.creditItems);
 		return $scope.items = newItems;
 	});

@@ -45,6 +45,7 @@ return {
 		query.include('comments');
         query.include('refunds');
         query.include('customer.contactPersons');
+        query.include('customer');
 
 		return query.get(creditNoteId)
 		.then(function(cnObj) {
@@ -94,7 +95,7 @@ return {
 		var CreditNote = Parse.Object.extend("CreditNotes");
 		var query = new Parse.Query(CreditNote);
 
-		query.matchesQuery("customer", innerQuery);
+		//query.matchesQuery("customer", innerQuery);
 		
 		query.equalTo("organization", organization);
 		query.include("customer");

@@ -599,8 +599,8 @@ function LoadRequiredData() {
                 else
                     obj.fullName = obj.entity.displayName;
             });
-        
-        $scope.customers.push(createCustomerOpener);
+        if(user.get('role') != 'Sales')
+        	$scope.customers.push(createCustomerOpener);
 	});
 	promises.push(p);
 

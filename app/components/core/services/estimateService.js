@@ -24,6 +24,7 @@ return {
 		var query = new Parse.Query(Estimate);
 		query.include('comments');
         query.include('customer.contactPersons');
+        query.include('customer');
 
 		return query.get(estimateId)
 		.then(function(estObj) {
@@ -57,7 +58,7 @@ return {
 		var estimateTable = Parse.Object.extend("Estimates");
 		var query = new Parse.Query(estimateTable);
 
-		query.matchesQuery("customer", innerQuery);
+		//query.matchesQuery("customer", innerQuery);
 		
 		query.equalTo("organization", organization);
 		query.include("customer");
