@@ -48,7 +48,10 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		}
 		
 		if ($('#link-reports').offset() && $scope.role == 'Manager') {
-			pos = parseInt($('#link-reports').offset().left);
+			if(parseInt($('#link-reports').offset().left) != 0)
+				pos = parseInt($('#link-reports').offset().left);
+			else
+				pos = parseInt($('#link-settings').offset().left);
 			negative_pos = pos * (-1);
 			$('.navigation > li .link-settings-div').css('left',negative_pos);
 		}
