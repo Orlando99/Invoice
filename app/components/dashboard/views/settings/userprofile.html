@@ -1,0 +1,66 @@
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+
+<div class="container hidesm">
+	<h3 class="layout-margin-t section-title">User Profile</h3>
+	<hr>
+
+	<form id="user-info-form" class="inputs-white col-60">
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm">Name</label>
+			<input maxlength="60" class="col-75" name="name" type="text" ng-model="UserInfo.name">
+		</div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm">Email</label>
+			<input class="col-75" type="text" name="email" ng-model="UserInfo.email">
+			<label class="layout-padding-t-smm"></label>
+			<label class="layout-padding-t-smm" style="color: red;">{{emailError}}</label>
+		</div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm">Username</label>
+			<input maxlength="60" class="col-75" name="username" type="text" ng-model="UserInfo.username">
+			<label class="layout-padding-t-smm"></label>
+			<label class="layout-padding-t-smm" style="color: red;">{{usernameError}}</label>
+		</div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm">Change Password</label>
+			<button class="button button-default" style="height: 33px !important;" ng-click="showModal()">Change Password</button>
+		</div>
+	</form>
+
+	<div class="clearfix"></div>
+	<br>
+
+	<div class="clearfix spacer"></div>
+	<button ng-click="saveBusiness();" style = "margin-bottom: 20px;"class="button button-info text-uppercase">Save</button>
+</div>
+<div class="popup-modal changepasswrod hidesm" id="changePasswordModal">
+	<div class="modal container">
+		<h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Change Password</h3>
+		<button ng-click="closeModal();" class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+		</button>
+		<div class="clearfix"></div>
+		<hr class="layout-margin-tb">
+
+		<div class="col-80 text-left layout-center">
+			<form id="changePasswordForm" class="layout-margin-tb col-100 inputs-white">
+				<div class="input-container layout-margin-b">
+					<label class="layout-padding-t-smm">Existing Password</label>
+					<input maxlength="60" name="existingPassword" type="password" class="col-75" ng-model="existingPassword">
+				</div>
+				<div class="input-container layout-margin-b">
+					<label class="layout-padding-t-smm">New Password</label>
+					<input maxlength="60" name="newPassword" type="password" class="col-75" ng-model="newPassword">
+				</div>
+				<div class="input-container layout-margin-b">
+					<label class="layout-padding-t-smm">Confirm Password</label>
+					<input maxlength="60" name="confirmPassword" type="password" class="col-75" ng-model="confirmPassword">
+				</div>
+
+			</form>
+		</div>
+		<div class="clearfix"></div>
+		<button class="button button-info text-uppercase" ng-click="updatePassword()">Update Password</button>
+	</div>
+</div>
+
+<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

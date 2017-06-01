@@ -69,18 +69,22 @@ invoicesUnlimited.controller('LoginController',['$scope','$state','userFullFacto
                                      $state.go('signup.invoiceTemplateInfo');
                                   else
                                     {
-                                        switch(firstScreen) 
-                                        {
-                                            case 'Dashboard': 		  $state.go('dashboard'); break;
-                                            case 'Customer List': 	  $state.go('dashboard.customers.all'); break;
-                                            case 'Invoices List': 	  $state.go('dashboard.sales.invoices.all'); break;
-                                            case 'Expense List': 	  $state.go('dashboard.expenses.all'); break;
-                                            case 'Estimate List': 	  $state.go('dashboard.sales.estimates.all'); break;
-                                            case 'Credit Notes List': $state.go('dashboard.sales.creditnotes.all'); break;
-                                            case 'Reports': 		  $state.go('dashboard.reports'); break;
-                                            case 'Settings': 		  $state.go('dashboard.settings.company-profile'); break;
-                                            default: 				  $state.go('dashboard'); break;
-                                        }
+										if(user.entity[0].get('role') == 'Sales')
+											$state.go('dashboard.sales.invoices.all');
+										else {
+											switch(firstScreen) 
+											{
+												case 'Dashboard': 		  $state.go('dashboard'); break;
+												case 'Customer List': 	  $state.go('dashboard.customers.all'); break;
+												case 'Invoices List': 	  $state.go('dashboard.sales.invoices.all'); break;
+												case 'Expense List': 	  $state.go('dashboard.expenses.all'); break;
+												case 'Estimate List': 	  $state.go('dashboard.sales.estimates.all'); break;
+												case 'Credit Notes List': $state.go('dashboard.sales.creditnotes.all'); break;
+												case 'Reports': 		  $state.go('dashboard.reports'); break;
+												case 'Settings': 		  $state.go('dashboard.settings.company-profile'); break;
+												default: 				  $state.go('dashboard'); break;
+											}
+										}
                                     }//end of else
                                 }//end of else
                               }//eend of if 

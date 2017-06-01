@@ -112,18 +112,6 @@ invoicesUnlimited.controller('CompanyProfileController',
         $controller('DashboardController',{$scope:$scope,$state:$state});
         
 	hideLoader();
-
-        
-   $q.when(user.fetch()).then(function()
-   { 
-
-        $scope.UserInfo = {
-            name 		: user.get("fullName"),
-            email 		: user.get("email"),
-            username 	: user.get("username"),
-            country     : user.get("country")
-        }
-    });
         
     if(!user.get('EPNusername') || !user.get('EPNrestrictKey') || !user.get('merchantID')){
         $scope.enableBusinessInfo = true;
@@ -180,34 +168,8 @@ invoicesUnlimited.controller('CompanyProfileController',
          }
          
             showLoader();
-        user.set('fullName',$scope.UserInfo.name);
-        user.set( 'email',$scope.UserInfo.email);
-        user.set('username',$scope.UserInfo.username);
-        user.set('country',$scope.UserInfo.country);
-         
-         /*
-        if(!$scope.businessInfo){
-            businessFactory.createNew({
-                    businessName : $scope.bsnsInfo.businessName,
-                    streetName : $scope.bsnsInfo.streetName,
-                    city        : $scope.bsnsInfo.city,
-                    state       : $scope.bsnsInfo.state,
-                    zipCode     : $scope.bsnsInfo.zipCode,
-                    organization: organization1,
-                    userID      : user
-                }).then(function(obj){
-                user.set('businessInfo', obj);
-                $q.when(user.save())
-                .then(function(){
-                    //$state.go('dashboard.settings.company-profile');
-                });
-            });
-        }
-        */
          
          var promises = [];
-         
-         promises.push(user.save());
          
          if($scope.enableBusinessInfo)
             promises.push($scope.businessInfo.save());
@@ -271,77 +233,4 @@ invoicesUnlimited.controller('CompanyProfileController',
         }
          */
     }
-    $("#changePasswordForm").validate({
-		onkeyup : false,
-		onfocusout : false,
-		rules: {
-			existingPassword : {
-				required : true
-			},
-			newPassword: {
-				required : true,
-				minlength : 6
-			}, //'required',
-			confirmPassword: {
-				required : true,
-				ConfirmPasswordMatch : true
-			}
-		},
-		messages: {
-			existingPassword: {
-				required : "Please enter existing password !",
-				minlength : "Password should contain atleast 6 characters"
-			},
-			newPassword: {
-				required : "Please enter new password !",
-				minlength : "Password should contain atleast 6 characters"
-			},
-			confirmPassword: {
-				required : "Please confirm password !",
-				ConfirmPasswordMatch : "Passwords do not match!"
-			}
-		}
-	});
-    
-    function resetPasswordForm(){
-        $scope.existingPassword = '';
-        $scope.newPassword = '';
-        $scope.confirmPassword = '';
-    }
-    
-    $scope.showModal = function(){
-        $('#changePasswordModal').show();
-    }
-    $scope.closeModal = function(){
-        $('#changePasswordModal').hide();
-        resetPasswordForm();
-    }
-    
-    $scope.updatePassword = function(){
-        if(!$("#changePasswordForm").valid()) return;
-        showLoader();
-        Parse.User.logIn(userFactory.entity[0].username, $scope.existingPassword,{
-				success: function(obj){
-					obj.set('password', $scope.newPassword)
-                    obj.save()
-                    .then(function(){
-                        $('#changePasswordModal').hide();
-                        resetPasswordForm();
-                        hideLoader();
-                    });
-				},
-				error: function(user,error){
-					console.log(error.message);
-                    hideLoader();
-					ShowMessage("Incorrect Existing Password!","error");
-				}
-			});
-        
-    }
-
-	/*
-	$q.all([organizationFactory]).then(function(res){
-		$scope.org = res[0];
-	});
-    */
 }]);

@@ -74,6 +74,13 @@ invoicesUnlimited.factory('projectUserFactory',
 			return loadAll();
 		return Parse.Promise.as(projectUser.entities);
 	};
+	
+	projectUser.getByUsername = function(username) {
+		var query = new Parse.Query('ProjectUser');
+		query.equalTo('userName',username);
+		
+		return query.first();
+	};
 
 	return projectUser;
 

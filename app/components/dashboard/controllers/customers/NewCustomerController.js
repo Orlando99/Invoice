@@ -11,6 +11,11 @@ invoicesUnlimited.controller('NewCustomerController',
 		return;
 	}
     
+	if(userFactory.entity[0].get('role') == 'Sales'){
+		$state.go('dashboard.sales.invoices.all');
+		return;
+	}
+	
     if(fromTutorial){
         $('.tutorial').show();
     }

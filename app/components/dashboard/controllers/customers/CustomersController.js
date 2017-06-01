@@ -31,6 +31,11 @@ invoicesUnlimited.controller('CustomersController',
 		return;
 	}
     
+	if(userFactory.entity[0].get('role') == 'Sales'){
+		$state.go('dashboard.sales.invoices.all');
+		return;
+	}
+	
     userFactory.getField('dateFormat')
 .then(function(obj) {
 	$scope.dateFormat = obj;

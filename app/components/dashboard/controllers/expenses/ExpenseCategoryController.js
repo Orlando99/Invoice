@@ -10,6 +10,11 @@ if(! userFactory.entity.length) {
 	return undefined;
 }
 
+	if(userFactory.entity[0].get('role') == 'Sales'){
+		$state.go('dashboard.sales.invoices.all');
+		return;
+	}
+	
 var user = userFactory.entity[0];
 var organization = user.get('organizations')[0];
 $controller('DashboardController',{$scope:$scope,$state:$state});

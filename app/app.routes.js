@@ -827,6 +827,16 @@ angular.module('invoicesUnlimited')
 					}
 				}
 			},
+			UserProfile : {
+				name	: 'dashboard.settings.user-profile',
+				url 	: '/user-profile',
+				views 	: {
+					'@'	: {
+						controller 	: 'UserProfileController',
+						templateUrl	: COMPONENTS + 'dashboard/views/settings/userprofile.html'
+					}
+				}
+			},
 			CompanyProfile : {
 				name	: 'dashboard.settings.company-profile',
 				url 	: '/company-profile',

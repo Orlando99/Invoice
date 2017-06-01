@@ -12,14 +12,16 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         hideLoader();
         return;
     }
-     
+    
+	$scope.role = user.entity[0].get('role');
+	
     $q.when(businessFactory.load())
     .then(function(obj){
         if(!obj){
             $state.go('signup.invoiceTemplateInfo');
         }
         business = obj.entity[0]; 
-        $scope.role = user.entity[0].get('role');
+        
         $scope.businessInfo = business;
         $scope.userName =  user.entity[0].get('username');
 
@@ -32,8 +34,8 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		if($scope.role == 'Sales')
 			$('#invoices-link').css('margin-left',"130px");
 		
-		if($('#link-customers').offset() && $scope.role == 'Sales'){
-			var pos = parseInt($('#link-customers').offset().left);
+		if($('#link-dashboard').offset() && $scope.role == 'Sales'){
+			var pos = parseInt($('#link-dashboard').offset().left);
 			var negative_pos = pos * (-1) ;
 			$('.navigation > li .link-sales-div').css('left',negative_pos);
 			$('#invoices-link').css('margin-left',"130px");
@@ -247,9 +249,18 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 		$scope.logOut('Your account is not setup correctly.');
 	});
 */
+	
+	if($scope.role == 'Sales' && !($state.current.name.includes('sales') || $state.current.name == 'dashboard.settings.user-profile' || $state.current.name == 'dashboard.settings.app-preferences' || $state.current.name == 'dashboard.settings.contact')){
+		$state.go('dashboard.sales.invoices.all');
+		return;
+	}
+	
     if (! $state.current.name.endsWith('dashboard')){
         return;
-    }
+    } else if($scope.role == 'Sales'){
+		$state.go('dashboard.sales.invoices.all');
+		return;
+	}
     else{
         organization = user.entity[0].get("organizations")[0];
         
