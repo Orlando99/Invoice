@@ -10,7 +10,7 @@
         <img id="img_hover" style="cursor:pointer" src="./assets/images/dropdown-arrow-primary.png" alt="">
         
           <ul Style="margin-top: 10px" id="ul_wrapp" onmouseover="ul_add_class(this)" onmouseout="mouse_out(this)" class="submenu user-submenu">
-          <li ng-hide="role == 'Manager' || role == 'Sales'"><a ui-sref="dashboard.settings.company-profile">Company Profile</a></li>
+          <li ng-hide="role == 'General Employee' || role == 'Sales'"><a ui-sref="dashboard.settings.company-profile">Company Profile</a></li>
           <li ><a ui-sref="dashboard.settings.user-profile">User Profile</a></li>
           <li><a style="cursor:pointer" ng-click="logOut();">Logout</a></li>
         </ul>
@@ -47,7 +47,7 @@
       <li><a href="timesheets/timesheets.html">Timesheets</a></li>
       -->
 
-      <li id="reports" class="nav-item" ng-hide="role == 'Manager' || role == 'Sales'">
+      <li id="reports" class="nav-item" ng-hide="role == 'General Employee' || role == 'Sales'">
         <a  href="javascript:" id="link-reports">Reports</a>
         <div class="container-fluid link-reports-div">
           <ul class="submenu">
@@ -72,10 +72,10 @@
         <div class="container-fluid link-settings-div">
           <ul class="submenu">
             <li>
-              <a ng-hide="role == 'Manager' || role == 'Sales'" style="margin-left: 60px !important" ui-sref="dashboard.settings.company-profile" ui-sref-opts="{reload:true}">Company Profile</a>
+              <a ng-hide="role == 'General Employee' || role == 'Sales'" style="margin-left: 60px !important" ui-sref="dashboard.settings.company-profile" ui-sref-opts="{reload:true}">Company Profile</a>
               <a style="margin-left: 60px !important" ui-sref="dashboard.settings.user-profile" ui-sref-opts="{reload:true}">User Profile</a>
             </li>
-            <li ng-hide="role == 'Manager' || role == 'Sales'">
+            <li ng-hide="role == 'General Employee' || role == 'Sales'">
               <a ui-sref="dashboard.settings.general-preferences" ui-sref-opts="{reload:true}">General</a>
               <a ui-sref="dashboard.settings.invoices" ui-sref-opts="{reload:true}">Invoices</a>
               <a ui-sref="dashboard.settings.invoice-templates" ui-sref-opts="{reload:true}">Invoice Templates</a>
@@ -86,7 +86,7 @@
             <li ng-hide="role == 'Sales'">
               <a ui-sref="dashboard.settings.taxes" ui-sref-opts="{reload:true}">Taxes</a>
               <a ui-sref="dashboard.settings.items" ui-sref-opts="{reload:true}">Items</a>
-              <a ui-sref="dashboard.settings.users" ng-hide="role == 'Manager'" ui-sref-opts="{reload:true}">Users</a>
+              <a ui-sref="dashboard.settings.users" ng-hide="role == 'General Employee'" ui-sref-opts="{reload:true}">Users</a>
               <a ui-sref="dashboard.settings.currencies" ui-sref-opts="{reload:true}">Currency</a>
             </li>
             <li>

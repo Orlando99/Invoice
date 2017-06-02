@@ -183,7 +183,7 @@ function listProjects() {
         $scope.projectList = [];
         $scope.displayedProject = [];
         
-        if(user.get('role') == 'Manager'){
+        if(user.get('role') == 'General Employee'){
             
             res.forEach(function(proj){
                 var users = proj.entity.get('users');
