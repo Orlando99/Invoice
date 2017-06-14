@@ -1172,7 +1172,8 @@ $(document).ready(function(){
                 url = "./request-auth.php";
                 data = Object.assign({},data,{
                     'CardNo'  : parseInt($('#CardNo').val().replace(/\s/g,"")),
-                    'CVV2'    : parseInt($('#CVV2').val()),
+                    //'CVV2'    : parseInt($('#CVV2').val()),
+                    'CVV2'    : $('#CVV2').val(),
                     'AuthNet' : $('#AuthNet').val(),
                     'Total'   : parseFloat(tot),
                     'AuthKey' : $('#AuthKey').val(),

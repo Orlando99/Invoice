@@ -1,44 +1,61 @@
-  <header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
+<header class="dashboard-header hidesm" ng-include src="'./app/shared/dashboard/headerView.html'"></header>
 
-  <div class="container hidesm">
-    <h3 class="layout-margin-t section-title">General Preferences</h3>
-    <hr>
+<div class="container hidesm">
+	<h3 class="layout-margin-t section-title">General Preferences</h3>
+	<hr>
 
-    <form class="inputs-white col-60">
-      <div class="input-container layout-margin-b">
-          
-        <label class="layout-padding-t-smm text-info">Time Zone</label>
-        <select class="col-75" ng-model="timeZones.selectedTimeZone">
-          <option value="" disabled>Select Time Zone</option>
-          <option ng-repeat="timezone in timeZones.timeZones">{{timezone}}</option>
-        </select>
-      </div>
-      <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-smm text-info text-info">Fiscal Year Starts In</label>
-        <select class="col-75" ng-model="months.selectedMonth">
-          <option value="" disabled>Select Month</option>
-          <option ng-repeat="month in months.months">{{month}}</option>
-        </select>
-      </div>
-      <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-smm text-info">Date Format</label>
-        <select class="col-75" ng-model="dateFormats.selectedFormat" ng-options="format.formatExample for format in dateFormats.formats">
-          <option value="" disabled>Select Date Format</option>
-            <!--
-          <option ng-repeat="format in dateFormats.formats">{{format}}</option>
+	<form class="inputs-white col-60">
+		<div class="input-container layout-margin-b">
+
+			<label class="layout-padding-t-smm text-info">Time Zone</label>
+			<select class="col-75" ng-model="timeZones.selectedTimeZone">
+				<option value="" disabled>Select Time Zone</option>
+				<option ng-repeat="timezone in timeZones.timeZones">{{timezone}}</option>
+			</select>
+		</div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm text-info text-info">Fiscal Year Starts In</label>
+			<select class="col-75" ng-model="months.selectedMonth">
+				<option value="" disabled>Select Month</option>
+				<option ng-repeat="month in months.months">{{month}}</option>
+			</select>
+		</div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm text-info">Date Format</label>
+			<select class="col-75" ng-model="dateFormats.selectedFormat" ng-options="format.formatExample for format in dateFormats.formats">
+				<option value="" disabled>Select Date Format</option>
+				<!--
+<option ng-repeat="format in dateFormats.formats">{{format}}</option>
 -->
-        </select>
-      </div>
-      <div class="input-container layout-margin-b">
-        <label class="layout-padding-t-smm text-info">Date Separator</label>
-        <select class="col-75" ng-model="fieldSeparators.selectedSeparator" ng-change="dateSeperatorChanged()">
-          <option value="" disabled>Select Date Separator</option>
-          <option ng-repeat="separator in fieldSeparators.separators">{{separator}}</option>
-        </select>
-      </div>
+			</select>
+		</div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm text-info">Date Separator</label>
+			<select class="col-75" ng-model="fieldSeparators.selectedSeparator" ng-change="dateSeperatorChanged()">
+				<option value="" disabled>Select Date Separator</option>
+				<option ng-repeat="separator in fieldSeparators.separators">{{separator}}</option>
+			</select>
+		</div>
+		<div class="input-container input-radio-container layout-margin-b">
+			<label class="text-info">Display Country on Invoice</label>
+			<label class="layout-padding-t-sm col-10">
+				<span class="layout-margin-r">
+					<input type="radio" name="invoiceNotification" value="yes" ng-model="displayCountry">
+					<span class="radio"></span>
+				</span>
+				Yes
+			</label>
+			<label class="layout-padding-t-sm col-10">
+				<span class="layout-margin-r">
+					<input type="radio" name="invoiceNotification" value="no" ng-model="displayCountry">
+					<span class="radio"></span>
+				</span>
+				No
+			</label>
+		</div>
 
-      <div class="clearfix spacer"></div>
-      <button class="button button-info text-uppercase" ng-click="setDefaultPrefs()">Save</button>
-    </form>
+		<div class="clearfix spacer"></div>
+		<button class="button button-info text-uppercase" ng-click="setDefaultPrefs()">Save</button>
+	</form>
 
-<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>
+	<div class="onmobile" ng-include src="'./app/shared/dashboard/onMobileView.html'"></div>

@@ -427,13 +427,13 @@ return {
 		}).then(function() {
 			var orgTable = Parse.Object.extend("Organization");
 			query = new Parse.Query(orgTable);
-			query.select("dateFormat", "invoiceFields", "invoiceNumber");
+			query.select("dateFormat", "invoiceFields", "invoiceNumber", "displayCountry");
 
 			return query.get(organization.id).then(function(orgObj) {
 				prefs.dateFormat = orgObj.get("dateFormat");
 				prefs.customFields = orgObj.get("invoiceFields");
 				prefs.invoiceNumber = orgObj.get("invoiceNumber");
-
+				prefs.displayCountry = orgObj.get("displayCountry");
 			}).then(function() {
 				return prefs;
 			});
@@ -916,13 +916,13 @@ function getPreferences(user) {
 	}).then(function() {
 		var orgTable = Parse.Object.extend("Organization");
 		query = new Parse.Query(orgTable);
-		query.select("dateFormat", "invoiceFields", "invoiceNumber");
+		query.select("dateFormat", "invoiceFields", "invoiceNumber", "displayCountry");
 
 		return query.get(organization.id).then(function(orgObj) {
 			prefs.dateFormat = orgObj.get("dateFormat");
 			prefs.customFields = orgObj.get("invoiceFields");
 			prefs.invoiceNumber = orgObj.get("invoiceNumber");
-
+			prefs.displayCountry = orgObj.get("displayCountry");
 		}).then(function() {
 			return prefs;
 		});
@@ -1062,11 +1062,14 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 		if (bInfo) {
 			var address = [
 				bInfo.get("streetName"),
-				bInfo.get("zipCode"),
 				bInfo.get("city"),
 				bInfo.get("state"),
-				user.get("country")
+				bInfo.get("zipCode")
 			];
+			
+			if(pref.displayCountry)
+				address.push(user.get("country"));
+			
 			labels['addres1'] = address.join(', ');
 			labels['business-name'] = bInfo.get('businessName');
 		}

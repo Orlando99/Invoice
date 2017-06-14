@@ -211,11 +211,13 @@ function loadGeneralSettings() {
 		var month = prefs.get('fiscalYearStart');
 		var format = prefs.get('dateFormat').toLowerCase();
 		var separator = prefs.get('fieldSeparator');
-
+		var displayCountry = prefs.get('displayCountry');
 		// ios version not saving date format,
 		// so did this to make web version work
 		//format = format.replace(/[.,-//]/g, separator);
 
+		$scope.displayCountry = displayCountry ? 'yes' : 'no';
+		
 		$scope.timeZones.selectedTimeZone =
 		$scope.timeZones.timeZones.filter(function(z) {
 			return z == timeZone;
@@ -269,6 +271,7 @@ $scope.setDefaultPrefs = function() {
 	organization.set('fiscalYearStart', $scope.months.selectedMonth);
 	organization.set('dateFormat', dateFormat);
 	organization.set('fieldSeparator', $scope.fieldSeparators.selectedSeparator);
+	organization.set('displayCountry', $scope.displayCountry == 'yes');
 
 	organization.save().then(function() {
 		userFactory.commonData = {};

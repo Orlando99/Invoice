@@ -817,11 +817,13 @@ function fillInXmlData(xmlUrl, user, estimate) {
 		if (bInfo) {
 			var address = [
 				bInfo.get("streetName"),
-				bInfo.get("zipCode"),
 				bInfo.get("city"),
 				bInfo.get("state"),
-				user.get("country")
+				bInfo.get("zipCode")
 			];
+			if(orgObj.get('displayCountry'))
+				address.push(user.get("country"));
+			
 			labels['addres1'] = address.join(', ');
 			labels['business-name'] = bInfo.get('businessName');
 		}
