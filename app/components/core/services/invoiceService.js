@@ -1107,6 +1107,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 		if (itemList) {
 			items.itemRow = [];
 			taxes.tax = [];
+			var tempTaxes = [];
 			for (var i = 0; i < itemList.length; ++i) {
 				var name = itemList[i].get("item").get("title");
 				var qty = itemList[i].get("quantity");
@@ -1143,14 +1144,34 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 					
 					//var t = calculateTax(itemList[i], tax);
 					totalTax += t;
-					var taxValue =  currencyFilter(t, '$', 2);
+					//var taxValue =  currencyFilter(t, '$', 2);
 					var taxObj = {
 						'name' : taxName,
-						'value': taxValue
+						'value': t
 					};
-					taxes.tax.push(taxObj);
+					
+					var exist = false;
+					
+					for(var j = 0; j < tempTaxes.length; ++j){
+						if(tempTaxes[j].name == taxName){
+							exist = true;
+							tempTaxes[j].value += t;
+							break;
+						}
+					}
+					
+					if(!exist){
+						tempTaxes.push(taxObj);
+					}
+					//taxes.tax.push(taxObj);
 				}
 			}
+			
+			tempTaxes.forEach(function(obj){
+				obj.value = currencyFilter(obj.value, '$', 2);
+				taxes.tax.push(obj);
+			});
+			
 			if (! taxes.tax.length)
 				taxes.tax = undefined;
 

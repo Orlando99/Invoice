@@ -33,7 +33,7 @@ $controller('DashboardController',{$scope:$scope,$state:$state});
 
 
 var invoiceId = $state.params.invoiceId;
-if(! invoiceId) return;
+if(! invoiceId) $state.go('dashboard.sales.invoices.all');
 
 var promises = [];
 var p = null;

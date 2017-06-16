@@ -305,11 +305,21 @@ return {
 		var p = null;
 		var _scope = params._scope;
 
-		p = $q.when(coreFactory.getAllCustomers())
+		p = $q.when(coreFactory.getAllCustomers(true))
 		.then(function(res) {
+			res = res.filter(function(cust) {
+				return cust.entity.status == 'active';
+			});
 			_scope.customers = res.sort(function(a,b){
 				return alphabeticalSort(a.entity.displayName,b.entity.displayName)
 			});
+			
+			_scope.customers.forEach(function(obj){
+                if(obj.entity.salutation)
+                    obj.fullName = obj.entity.salutation + " " + obj.entity.displayName;
+                else
+                    obj.fullName = obj.entity.displayName;
+            });
 		});
 		promises.push(p);
 
@@ -427,10 +437,7 @@ return {
 		_scope.poNumber = invoice.entity.poNumber || "";
 		_scope.disableInvNo =
 			(_scope.prefs.numAutoGen == 1) ? true : false;
-
-		_scope.todayDate = invoice.entity.invoiceDate;
-		_scope.dueDate = invoice.entity.dueDate;
-
+		
 		_scope.paymentTerms = {
 			terms : [
 				{name: "Due on Receipt", value : 1},
@@ -445,6 +452,13 @@ return {
 			_scope.paymentTerms.selectedTerm = _scope.paymentTerms.terms[1];
 		}
 
+		//_scope.todayDate = invoice.entity.invoiceDate;
+		_scope.todayDate = new Date();
+		//_scope.todayDate.setHours(0);
+		//_scope.dueDate = invoice.entity.dueDate;
+
+		_scope.calculateDueDate();
+		
 		var lateFee = invoice.entity.lateFee;
 		if(lateFee) {
 			var list = _scope.lateFeeList;
@@ -637,7 +651,7 @@ return {
 				invoiceCreateDate : 'required',
 				invoiceDueDate : {
 					required : true,
-					notBackDate : true
+					//notBackDate : true
 				}
 			},
 			messages: {
@@ -646,7 +660,7 @@ return {
 				invoiceCreateDate : 'Please provide invoice Create date',
 				invoiceDueDate : {
 					required : 'Please provide invoice Due date',
-					notBackDate : 'Due date can not be before Create date'
+					//notBackDate : 'Due date can not be before Create date'
 				}
 			}
 		});
@@ -748,8 +762,19 @@ return {
 		}
 	},
 	calculateDueDate : function(_scope) {
+		/*
 		var d = new Date(_scope.todayDate);
 		d.setHours(d.getHours() + 12);
+		_scope.dueDate = d; //$.format.date(d, "MM/dd/yyyy");
+		*/
+		var d = new Date(_scope.todayDate);
+		//d.setHours(d.getHours() + 12);
+		d.setHours(0);
+        
+        if(_scope.paymentTerms.selectedTerm.value != 1){
+            d = d.addDays(_scope.paymentTerms.selectedTerm.value);
+        }
+        
 		_scope.dueDate = d; //$.format.date(d, "MM/dd/yyyy");
 	},
 	paymentTermsChanged : function(_scope) {
@@ -909,11 +934,15 @@ function saveInvoice(params) {
 	return invoiceService.createNewInvoice
 		(invoice, _scope.invoiceItems, _scope.userRole, _scope.files)
         .then(function(inv){
-            _scope.estimate.entity.set('status', 'Invoiced');
-            return _scope.estimate.entity.save()
-            .then(function(est){
-                    return inv;
-            });
+			if(_scope.estimate){
+				_scope.estimate.entity.set('status', 'Invoiced');
+				return _scope.estimate.entity.save()
+				.then(function(est){
+						return inv;
+				});
+			} else {
+				return inv;
+			}
         });
 }
 
