@@ -201,7 +201,7 @@ invoicesUnlimited.controller('BusinessInfoController',
                                 });
 
 	$("#signUpForm").validate({
-		onkeyup : false,
+		onkeyup : function(element) {$(element).valid()},
 		onfocusout : false,
 		rules: {
 			company 			: 'required',

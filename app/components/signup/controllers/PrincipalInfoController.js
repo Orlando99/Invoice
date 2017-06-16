@@ -92,7 +92,7 @@ invoicesUnlimited.controller('PrincipalInfoController',
 	}
 
 	$("#signUpForm").validate({
-		onkeyup : false,
+		onkeyup : function(element) {$(element).valid()},
 		onfocusout : false,
 		rules: {
 			streetName 	: 'required',

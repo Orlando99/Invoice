@@ -115,7 +115,7 @@ invoicesUnlimited.controller('SignupController',
 	});
 
         $("#signUpForm").validate({
-		onkeyup : false,
+		onkeyup : function(element) {$(element).valid()},
 		onfocusout : false,
 		rules: {
 			username: {

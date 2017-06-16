@@ -78,7 +78,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 	});
 
 	$('#addInvoiceForm').validate({
-        onkeyup: true,
+        onkeyup: function(element) {$(element).valid()},
 		rules: {
 			customer : 'required',
 			invoiceNumber : 'required',
@@ -1184,6 +1184,7 @@ invoicesUnlimited.controller('CreateInvoiceController',
 				return saveAndSendInvoice()
 
 			} else {
+				$('.email-text').removeClass('show');
 				showInvoiceNumberError();
 				scrollToOffset();
 				return Promise.reject('Invoice with this number already exists');

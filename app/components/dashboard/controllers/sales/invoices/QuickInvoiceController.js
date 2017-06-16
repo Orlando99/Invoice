@@ -52,7 +52,7 @@ invoicesUnlimited.controller('QuickInvoiceController',
         
         
 	$('#addInvoiceForm').validate({
-        onkeyup: true,
+        onkeyup: function(element) {$(element).valid()},
 		rules: {
 			customer : 'required'
 		},

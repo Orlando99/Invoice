@@ -150,7 +150,7 @@ invoicesUnlimited.controller('UserProfileController',
 								  }
 
 								  $("#changePasswordForm").validate({
-									  onkeyup : false,
+									  onkeyup : function(element) {$(element).valid()},
 									  onfocusout : false,
 									  rules: {
 										  existingPassword : {

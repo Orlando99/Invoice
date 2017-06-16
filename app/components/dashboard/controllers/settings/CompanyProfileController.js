@@ -28,7 +28,7 @@ invoicesUnlimited.controller('CompanyProfileController',
 	}
         
     $("#businessInfoForm").validate({
-		onkeyup : false,
+		onkeyup : function(element) {$(element).valid()},
 		onfocusout : false,
 		rules: {
 			businessName : {
