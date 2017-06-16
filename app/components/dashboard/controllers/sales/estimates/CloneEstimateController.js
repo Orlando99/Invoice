@@ -111,6 +111,10 @@ function setValidationRules() {
 
 }
 
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function prepareToClone() {
 	showLoader();
 	$q.when(LoadRequiredData())

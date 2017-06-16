@@ -145,6 +145,10 @@ function CheckUseCase(stateName) {
 	}
 }
 
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function prepareToEditEstimate() {
 	var estimateId = $state.params.estimateId;
 	if (! estimateId) return;

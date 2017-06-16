@@ -286,6 +286,10 @@ invoicesUnlimited.controller('CreateInvoiceController',
 
 	}
 
+	$scope.dateOptions = {
+		showWeeks : false
+	  };
+		
 	function prepareForm() {
 		if($scope.prefs.numAutoGen == 1) {
 			$scope.invoiceNo = $scope.prefs.invoiceNumber;

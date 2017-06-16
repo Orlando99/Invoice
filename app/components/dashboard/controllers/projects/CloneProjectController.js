@@ -133,6 +133,10 @@ function prepareToCloneProject() {
 	});
 }
 
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function prepareEditForm() {
     var project = $scope.project;
 	

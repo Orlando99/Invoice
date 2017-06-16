@@ -41,6 +41,10 @@ userFactory.getField('dateFormat')
 
 $scope.isOwner = false;
 	
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function showInvoiceDetail() 
 {
     scrollToOffset();

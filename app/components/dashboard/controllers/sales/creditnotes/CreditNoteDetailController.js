@@ -40,6 +40,10 @@ userFactory.getField('dateFormat')
 });
 
 $scope.isOwner = false;
+
+$scope.dateOptions = {
+	showWeeks : false
+};
 	
 function showCreditNoteDetail() {
 	var creditNoteId = $state.params.creditNoteId;

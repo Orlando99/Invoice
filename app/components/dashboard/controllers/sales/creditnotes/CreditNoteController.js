@@ -115,6 +115,10 @@ function CheckUseCase(stateName) {
 	}
 }
 
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function prepareToEditCreditNote() {
 	var creditNoteId = $state.params.creditNoteId;
 	if (!creditNoteId) return;

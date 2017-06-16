@@ -92,7 +92,11 @@ $('#addUserForm').validate({
 		newTaskName : 'Please select a user'
 	}
 });
-    
+
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function prepareToCreateProject() {
 	showLoader();
 	var promises = [];

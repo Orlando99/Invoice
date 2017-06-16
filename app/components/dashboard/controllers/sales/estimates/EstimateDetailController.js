@@ -24,6 +24,10 @@ userFactory.getField('dateFormat')
 	showEstimateDetail();
 });
 $scope.isOwner = false;
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function showEstimateDetail() {
 	var estimateId = $state.params.estimateId;
 	if (! estimateId) return;

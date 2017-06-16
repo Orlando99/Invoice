@@ -215,6 +215,10 @@ function listProjects() {
 	});	
 }
 
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function prepareToEditProject() {
 	var projectId = $state.params.projectId;
 	if (! projectId) return;

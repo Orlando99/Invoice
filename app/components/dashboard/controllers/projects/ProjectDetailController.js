@@ -93,6 +93,10 @@ $('#addTimesheetForm').validate({
 	}
 });
 
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function showProjectDetail() {
 	var projectId = $state.params.projectId;
 	if (! projectId) return;

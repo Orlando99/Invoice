@@ -177,6 +177,10 @@ $controller('DashboardController',{$scope:$scope,$state:$state});
 var invoiceId = $state.params.invoiceId;
 if(! invoiceId) $state.go('dashboard.sales.invoices.all');
 
+		$scope.dateOptions = {
+			showWeeks : false
+	  	};
+		
 var promises = [];
 var p = null;
 

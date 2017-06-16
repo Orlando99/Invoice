@@ -35,8 +35,11 @@ function loadSetData() {
    $(this).toggleClass("active");
    event.preventDefault();
 });*/
-    
-    
+
+$scope.dateOptions = {
+	showWeeks : false
+};
+
 $scope.dateRangeChanged = function() {
 	reportsCommon.dateRangeChanged({
 		_scope : $scope

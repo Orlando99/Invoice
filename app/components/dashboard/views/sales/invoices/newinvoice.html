@@ -37,9 +37,9 @@
                  ng-model="todayDate" 
                  is-open="openPicker1" 
                  ng-click="openDatePicker(1)" 
-                 show-weeks="false" 
+				 datepicker-options="dateOptions"
                  ng-change="calculateDueDate()" 
-                 show-weeks="false" show-button-bar="false" readonly>
+                 show-button-bar="false" readonly>
         
         <select class="col-35 pull-right same_height" ng-change="paymentTermsChanged()"
           ng-options="term.name for term in paymentTerms.terms track by term.value"
@@ -61,7 +61,7 @@
               ng-model="dueDate"
               uib-datepicker-popup="{{dateFormat}}" 
               is-open="openPicker2" 
-              show-weeks="false" 
+              datepicker-options="dateOptions"
               ng-click="openDatePicker(2)" 
             readonly>
       </div>

@@ -209,6 +209,11 @@ function CheckUseCase(stateName) {
 		prepareToEditInvoice();
 	}
 }
+	
+	$scope.dateOptions = {
+		showWeeks : false
+	  };
+	
 //var customerId = $state.params.customerId;//by mee
 function prepareToEditInvoice() {
 	var invoiceId = $state.params.invoiceId;

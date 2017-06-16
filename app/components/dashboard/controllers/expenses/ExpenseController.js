@@ -105,6 +105,10 @@ $('#editExpenseForm').validate({
 	}
 });
 
+$scope.dateOptions = {
+	showWeeks : false
+};
+	
 function CheckUseCase(stateName) {
 	if (! stateName)
 		stateName = $state.current.name;
