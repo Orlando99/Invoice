@@ -65,7 +65,7 @@ invoicesUnlimited.controller
 			  closeLink: 'Close This Window',
 			  closeESC: true,  
 			  // Use cookies to remmember if window was closed previously?  
-			  closeCookie: false, 
+			  closeCookie: true, 
 			  cookieSettings: {  
 				  // Path for the cookie to be saved on  
 				  // Should be root domain in most cases  
