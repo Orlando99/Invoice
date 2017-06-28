@@ -1,1811 +1,1864 @@
 <!DOCTYPE HTML>
 <html>
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-
-    <title>Pay - Invoices Unlimited</title>
-    
-    <link rel="apple-touch-icon" sizes="57x57" href="./images/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="./images/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="./images/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="./images/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="./images/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="./images/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="./images/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="./images/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="./images/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="./images/android-icon-192x192.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="./images/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png">
-    <link rel="manifest" href="./images/manifest.json">
-
-
-    <link rel="shortcut icon" href="favicon.ico" />
-    
-    <meta name="description" content="" />
-    <meta name="keywords" content="" />
-
-    <meta http-equiv="cache-control" content="max-age=0" />
-    <meta http-equiv="cache-control" content="no-cache" />
-    <meta http-equiv="expires" content="0" />
-    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-    <meta http-equiv="pragma" content="no-cache" />
-
-    <link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic,300italic,300' rel='stylesheet' type='text/css'>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
-    <!--
-    <script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
-    -->
-    <script src="parse.min.js"></script>
-        <!--[if lt IE 9]>
-        <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-        <![endif]-->
-
-
-    <style>
-
-        /* -------RESET---------- */
-        
-        html, body, div, span, applet, object, iframe,
-        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-        a, abbr, acronym, address, big, cite, code,
-        del, dfn, em, img, ins, kbd, q, s, samp,
-        small, strike, strong, sub, sup, tt, var,
-        b, u, i, center,
-        dl, dt, dd, ol, ul, li,
-        fieldset, form, label, legend,
-        table, caption, tbody, tfoot, thead, tr, th, td,
-        article, aside, canvas, details, embed, 
-        figure, figcaption, footer, header, hgroup, 
-        menu, nav, output, ruby, section, summary,
-        time, mark, audio, video {
-            margin: 0;
-            padding: 0;
-            border: 0;
-            font-size: 100%;
-            font: inherit;
-            vertical-align: baseline;
-        }
-        /* HTML5 display-role reset for older browsers */
-        article, aside, details, figcaption, figure, 
-        footer, header, hgroup, menu, nav, section {
-            display: block;
-        }
-
-        body {
-            line-height: 1;
-        }
-
-        ol, ul {
-            list-style: none;
-        }
-
-        blockquote, q {
-            quotes: none;
-        }
-
-        blockquote:before, blockquote:after,
-        q:before, q:after {
-            content: '';
-            content: none;
-        }
-
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-        }
-        
-        /***************  GLOBAL STYLES  ***************/
-        body {
-            color: #000;
-            font: 14px/18px 'Lato', sans-serif;
-            overflow-x:hidden;
-            overflow-y:scroll;
-            margin: 0;
-        }
-        
-        .success-status {
-            width: 85%;
-        }
-        
-        #invoice-error-message {
-            width: 100%;
-            margin: 10px 0;
-            color: red;
-            font-weight: bold;
-            text-align: center;
-        }
-        
-        #accept,
-        #invoice-success,
-        #invoice-error,
-		#alreadyPaid {
-            display: none;
-        }
-        
-        #index,
-        #invoice-process {
-            display: block;
-        }
-        
-        #paymentResponse {
-            border: 0;
-            height: 25px;
-            width: 100%;
-            overflow: hidden;
-        }
-        
-        .error-load {
-            color: red;
-            font: 25px/27px 'Lato', sans-serif;
-            z-index: 10;
-            color: red;
-            display: inline-block;
-            margin: auto;
-            width: 98%;
-            vertical-align: middle;
-            display: none;
-        }
-        
-        .full-screen-white-overlay:before{
-            content:'';
-            display: inline-block;
-            height: 100%;
-            vertical-align: middle;
-        }
-        
-        .white-overlay,
-        .full-screen-white-overlay {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: url('./cardimages/overlay-white.png') repeat;
-            z-index: 4;
-            text-align: center;
-        }
-        
-        .white-overlay,
-        #loader {
-            display: none;
-        }
-        
-        .white-overlay {
-            z-index: 10;
-        }
-        
-        #loader {
-            z-index: 20;
-        }
-        
-        #loader,
-        .full-screen-loader {
-            position: absolute;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: url('./cardimages/loader.gif') no-repeat center center;  
-            z-index: 5;
-        }
-        
-        body, html {
-            height: 100%;
-            width: 100%;
-        }
-        
-        p {
-            line-height: 26px;
-            font-size:18px;
-            color:#8c8c8c;
-            font-weight: 400;
-        }
-        
-        h1 {
-            font-weight: normal;
-            font-size: 28px;
-            line-height: 32px;
-        }
-        
-        h2 {
-            font-weight: 300;
-            font-size: 26px;
-            line-height: 30px;
-        }
-        
-        h3 {
-            font-size: 24px;
-            line-height: 28px;
-            font-weight: normal;
-        }
-        
-        h4 {
-            font-size: 22px;
-            line-height: 26px;
-            font-weight: normal;
-        }
-        
-        h5 {
-            font-size: 20px;
-            line-height: 24px;
-            font-weight: normal;
-        }
-        
-        a {
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-            color: #000;
-            outline:0;
-        }
-        
-        a:hover {
-            color: #000;
-            outline:0;
-        }
-        
-        strong {
-            font-weight: 700;
-        }
-        
-        .hide{
-            display: none !important;
-        }
-        
-        .cl:before, .cl:after {
-            display: table;
-            content: " ";
-        }
-        
-        .cl,
-        .cl:after {
-            clear: both;
-        }
-        
-        .left{
-            float:left;
-        }
-        
-        .right{
-            float:right;
-        }
-        
-        
-        /***************  WRAPPER STRUCTURE  ***************/
-        .wrapper {
-            width:900px;
-            margin:0 auto;
-        }
-        
-        
-        /***************  UI STYLES ***************/
-        input[type=text], input[type=password], textarea {
-            border:0;
-            padding: 12px;
-            background-color: #f2f2f2;
-            display: block;
-            outline: 0;
-            width: 100%;
-            box-sizing: border-box;
-        
-            position: relative;
-        
-            font-family: 'Lato', sans-serif;
-            font-size: 18px;   
-             line-height: 20px;
-            font-style: 400;
-        
-            -webkit-transition: all 0.5s ease 0s;
-            -moz-transition: all 0.5s ease 0s;
-            -ms-transition: all 0.5s ease 0s;
-            -o-transition: all 0.5s ease 0s;
-        }
-        
-        /***************  HEADER STYLES ***************/
-        .header{
-            background-color:#fff;
-            width:100%;
-            z-index: 10;
-            left:0;
-            right:0;
-            border-bottom:1px solid #808181;
-        }
-        
-        /*
-        .header a.logo{
-            width: 138px;
-            min-height: 44px;
-            display: block;
-            margin:0 auto;
-            padding: 5px 0 20px 0;
-            background: url(./cardimages/01_IU-Web-Admin.png) no-repeat center center;
-            background-size: contain;
-        }
-        */
-        .header img.logo{
-			text-align: center;
-    		max-height: 70px !important;
-    		max-width: 150px;
-            /*width: 138px;*/
-            min-height: 44px;
-            display: block;
-            margin:0 auto;
-            padding: 5px 0 20px 0;
-            background-size: contain;
-        }
-        /***************  SECTION CONTENT ***************/
-        
-        
-        .content{
-            padding-top: 20px;
-            position: relative;
-        }
-        
-        .content h1.title{
-            color:#3b92f5;
-            text-transform: uppercase;
-            font-size:34px;
-            font-weight: 300;
-            text-align:center;
-        }
-        
-        .content .columns{
-            margin-top: 40px;
-            margin-bottom: 10px;
-        }
-        
-        .content .columns .column-info{
-            width:33%;
-            float:left;
-        }
-        
-        .content .columns .column-info:last-child{
-            float:right;
-            text-align: right;
-        }
-
-        .content .columns .column-info:nth-child(2){
-            text-align:center;
-        }
-        
-        .content .columns .column-info h3{
-            color:#8c8c8c;
-            font-weight: 300;
-            margin-bottom: 4px;
-        }
-        
-        .content .columns .column-info:last-child p{
-            font-size: 30px;
-            color:#3d93f6;
-            font-weight: 300;
-        }
-        
-        
-        /* 01_PAY PAGE */
-        .content .pay-form form{
-            position: relative;
-        }
-        
-        .content .pay-form form .form-top{
-            margin-bottom: 18px;
-        }
-        
-        .content .pay-form form .form-top input[type="text"]:nth-child(1){
-            width:49%;
-            float:left;
-        }
-        
-        .content .pay-form form .form-top input[type="text"]:nth-child(2){
-            width:49%;
-            float:right;
-        }
-        
-        .content .pay-form form .form-bottom input[type="text"]:nth-child(1){
-            width:49%;
-            float:left;
-        }
-        
-        .content .pay-form form .form-bottom input[type="text"]:nth-child(2){
-            width:23.5%;
-            float:left;
-            margin-left:18px;
-        }
-        
-        .content .pay-form form .form-bottom input[type="text"]:nth-child(3){
-            width:23.5%;
-            float:right;
-        }
-        
-        .error-message > * {
-            color: red;
-        }
-        
-        .error-message > p{
-            margin-top: 0;
-        }
-        
-        .error-message {
-            margin-bottom: 20px;
-            display: none;
-        }
-        
-        .content  .pay-info{
-            border-top:8px solid #3d93f6;
-            margin-top: 26px;
-            padding-top: 13px;
-        }
-        
-        .content .pay-info h4{
-            color:#8c8c8c;
-            margin: 0 auto;
-            padding-left: 20px;
-            background: url(./images/icn-lock.png) no-repeat center left;
-        }
-        
-        .pay-info > p:nth-child(2) {
-            margin: 0 auto;
-        }
-        
-        .content  .pay-info-1{
-            width: 38%;
-            float:left;
-            margin-top: 16px;
-        }
-        
-        .content  .pay-info-1 p{
-            line-height: 31px;
-            margin: 0;
-        }
-        
-        .content  .pay-info-2{
-            width: 38%;
-            float:left;
-            margin-top: 16px;
-        }
-        
-        .content  .pay-info-2 .cards {
-            background: url(./images/icn-card.png) no-repeat center center;
-            width: 326px;
-            height: 32px;
-            display: block;
-            padding-top: 22px
-        }
-        
-        .content  .pay-info-3{
-            width: 22%;
-            float:right;
-            margin-top: 16px;
-        }
-        
-        .btn-pay[type=submit] {
-            cursor: pointer;
-        }
-        
-        .form-error {
-            border: 1px solid red !important;
-        }
-        
-        .content  .pay-info-3 .btn-pay{
-            background-color: #32c732;
-            border:0;
-            outline:0;
-            display: block;
-            color:#fff;
-            text-transform: uppercase;
-            text-align: center;
-            box-sizing:border-box;
-            border-radius: 3px;
-            padding:18px;
-            font-size:22px;
-            font-weight: 500;
-            width: 100%;
-        }
-        
-        
-        /* 02_ACCEPT PAGE */
-        .pay-accept{
-            text-align: center;
-            margin-top: 24px;
-        }
-        
-        .pay-accept p{
-            color:#ff0000;
-            font-size:20px;
-            line-height: 38px;
-        }
-        
-        .pay-info-1-full{
-            width: 100%;
-            float:inherit;
-        }
-        
-        
-        /* 02_CONFIRMATION PAGE */
-        .pay-confirmation{
-            position: relative;
-            margin-top:24px;
-        }
-        
-        .pay-confirmation p{
-            line-height: 34px;
-            font-size:20px;
-        }
-        
-        .pay-confirmation h2 {
-            background: url(./images/icn-green-check.png) no-repeat center left;
-            color:#8c8c8c;
-            padding-left: 32px;
-        }
-        
-        .pay-confirmation  a{
-            color:#3c92f6;
-            line-height: 34px;
-            font-weight: 400;
-            font-size: 18px;
-            display: block;
-            text-decoration: underline;
-            position: absolute;
-            top:0;
-            right:0;
-        }
-        
-        .pay-confirmation  a.print-pdf{
-            top:0;
-        }
-        
-        .pay-confirmation  a.download-pdf{
-            top:38px;
-        }
-        
-        /* 03_ERROR PAGE */
-        .pay-error {
-            position: relative;
-        }
-        .pay-error p{
-            line-height: 34px;
-            font-size:20px;
-        }
-        
-        
-        .pay-error h2 {
-            background: url(./images/icn-red-error.png) no-repeat center left;
-            color:#8c8c8c;
-            padding-left: 32px;
-        }
-        
-        
-        .btn-try-again{
-            background-color: #f7f016;
-            border:0;
-            outline:0;
-            display: inline-block;
-            color:#3c92f6;
-            text-transform: uppercase;
-            text-align: center;
-            box-sizing:border-box;
-            border-radius: 3px;
-            padding:18px 42px;
-            font-size:26px;
-            font-weight: 500;
-            float:right;
-            cursor: pointer;
-        }
-        
-        /*footer*/
-        
-        .footer{
-            text-align:center;
-            margin-top: 44px;
-        
-        }
-        .footer .wrapper{
-        border-top:2px solid #c3c0c0;
-        padding-top: 18px;
-        }
-        
-        /*card icons*/
-        .visa, .amex, .discover, .jcb, .mastercard,
-        .cvv-card, .cvv-amex {
-            background-repeat: no-repeat;
-            background-position: 98% 0;
-            background-size: contain;
-            -webkit-transition: all 0.1s ease 0s !important;
-            -moz-transition: all 0.1s ease 0s !important;
-            -ms-transition: all 0.1s ease 0s !important;
-            -o-transition: all 0.1s ease 0s !important;
-        }
-        
-        .visa {
-            background-image: url('./cardimages/icon-visa@2x.png');
-        }
-        
-        .amex {
-            background-image: url('./cardimages/icon-amex@2x.png');
-        }
-        
-        .discover {
-            background-image: url('./cardimages/icon-discover@2x.png');
-        }
-        
-        .jcb {
-            background-image: url('./cardimages/icon-jcb@2x.png');
-        }
-        
-        .mastercard {
-            background-image: url('./cardimages/icon-mastercard@2x.png');
-        }
-        
-        .cvv-card {
-            background-image: url('./cardimages/icon-card-cvv@2x.png');
-        }
-        
-        .cvv-amex {
-            background-image: url('./cardimages/icon-cvv-amex@2x.png');
-        }
-        
-        /***************  RESPONSIVE STYLES  ***************/
-        
-        
-        @media (max-width:960px){
-        
-            .wrapper{
-                width: 100%;
-                padding: 0px 10px;
-                box-sizing: border-box;
-            }
-
-            .content .pay-info-1{
-                width: 100%;
-            }
-            
-            .content .pay-info-2,
-            .content .pay-info-3{
-                width: 48%;
-            }
-        }
-        
-        
-        @media (max-width:800px){
-            .content .columns {
-            margin-top: 20px;
-            }
-        
-            .success-state {
-                width: 100%;
-            }
-        
-
-        .content .columns .column-info,
-        .content .columns .column-info:last-child {
-            width: 100%;
-            float: inherit;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        
-        .content .pay-form  input[type="text"]{
-            width: 100% !important;
-            margin: 0px 0px 15px 0px !important;
-        }
-
-        .content .pay-form  input[type="date"]{
-            width: 100% !important;
-            margin: 0px 0px 15px 0px !important;
-        }
-        
-        .content .pay-form form .form-top{
-            margin-bottom: inherit;
-        }
-        
-        .content .pay-info-2, 
-        .content .pay-info-3 {
-            width: 100%;
-        }
-        .footer{
-            margin: 20px 10px;
-        }
-        .content .pay-info{
-            text-align: center;
-        }
-
-        .content .pay-info h4{
-            display: inline-block;
-        }
-
-        .content .pay-info-2 .cards{
-            margin: 0 auto;
-        }
-
-        .pay-confirmation{   
-            text-align: center;
-        }
-
-        .pay-confirmation h2{
-            display: inline-block;
-            background: url(./images/icn-green-check.png) no-repeat top center;
-            padding-top: 26px;
-            padding-left: 0px;
-        }
-        
-        
-        .pay-confirmation  a{
-            position: relative;
-            top:inherit !important;
-            right:inherit !important;
-        }
-
-        .pay-error{
-            text-align: center;
-        }
-          
-        .pay-error .btn-try-again{
-            float:inherit;
-            margin-top:20px;
-        }
-        
-        .pay-error h2 {
-            background: url(./images/icn-red-error.png) no-repeat center top;
-            padding-top: 24px;
-            padding-left: 0px;
-        }
-        
-        }
-        
-        @media (max-width:480px){
-            .content .pay-info-2 .cards{
-                width: 280px;
-                height: 28px;
-                background-size: 280px 28px;
-            }
-        }
-
-    </style>
-
-
-    <script>
-
-Parse.initialize(
-  "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
-  "Xjf3GvwUO0SNsz0nCeM0NjlvQlDlmxGHOi6PqfzI"
-);
-Parse.serverURL = 'https://sslsecuredfiles.com/parse';
-
-String.prototype.capitilizeFirstLetter = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
-function validateForm() {
-
-    var payForm = {
-        error : false,
-        cvv2    : { id : '#CVV2',
-                    error : false,
-                    errorMessage : "" },
-        expdate : { id : '#ExpirationDate',
-                    error : false,
-                    errorMessage : "" },
-        cardno  : { id : '#CardNo',
-                    error : false,
-                    errorMessage : "" },
-        name    : { id : '#Name', 
-                    error : false,
-                    errorMessage: "" }
-    };
-
-    for(var field in payForm){
-        if (field == 'error') continue;
-        var currentField = payForm[field];
-        if ($(currentField.id).hasClass('form-error'))
-            $(currentField.id).removeClass('form-error');
-        
-        if($(currentField['id']).val() == "") {
-            currentField['error'] = true;
-            
-            if (payForm['error']) continue;
-            else payForm['error'] = true;
-        }
-    }
-
-    Validate.CVV2(payForm.cvv2);
-    Validate.Name(payForm.name);
-    Validate.CardNo(payForm.cardno);
-    Validate.ExpDate(payForm.expdate);
-
-    var alertMessage = [];
-
-    for(var field in payForm){
-        if (field == 'error') continue;
-        
-        var currentField = payForm[field];
-        if (currentField['error']) {
-            payForm.error = true;
-            $(currentField['id']).addClass('form-error');
-            if (currentField.errorMessage != "") 
-                alertMessage.push(currentField.errorMessage);
-        }
-    }
-
-    DivideDate();
-
-    if (!payForm.error) $('.error-message').hide('fast');
-    $('.error-list').html('');
-
-    if (alertMessage.length > 0){
-        for(var i in alertMessage){
-            $('.error-list').prepend('<li>' + alertMessage[i] + '</li>')
-        }
-        $('.error-message').show('fast');
-    }
-
-    if (payForm.error)
-        $('.white-overlay, #loader').hide();
-
-    return !payForm.error;
-};
-
-function DivideDate() {
-    var cardDate = $('#ExpirationDate').val().match(/[^\/]+/g);
-    if (cardDate == undefined) return;
-    $('#ExpMonth').val(cardDate[0]);
-    $('#ExpYear').val(cardDate[1]);
-};
-
-var Validate = {
-    CardName : '',
-    Name : function(nameObj) {
-        var fullName = $(nameObj['id']).val().match(/[^ ]+/g);
-
-        if (!fullName) fullName = [];
-
-        switch(fullName.length) {
-            case 0:
-                nameObj.error = true;
-                nameObj.errorMessage = "Name cannot be blank!";
-                break;
-            case 1:
-                nameObj.error = true;
-                nameObj.errorMessage = "Please enter your Full Name";
-                break;
-            default:
-                nameObj.error = false;
-                nameObj.errorMessage = "";
-                
-                var newName = "";
-                for(var word in fullName) 
-                    newName += fullName[word].capitilizeFirstLetter() + " ";
-                $(nameObj['id']).val(newName);
-
-                break;
-        }
-    },
-
-    CardNo : function(cardObj) {
-        var cardnum = $(cardObj['id']).val();
-
-        if (cardnum.length == 0) {
-            cardObj.error = true;
-            cardObj.errorMessage = "Card Number field is empty!";
-        } else if (Validate.CardName != '') {
-            if (Validate.CardName == 'amex' && cardnum.length < 17){
-                cardObj.error = true;
-                cardObj.errorMessage = "Card Number is incomplete!";
-            } else if (Validate.CardName != 'amex' && cardnum.length < 19) {
-                cardObj.error = true;
-                cardObj.errorMessage = "Card Number is incomplete!";
-            }
-        } else {
-            cardObj.error = true;
-            cardObj.errorMessage = "Unknown Card Number type!";
-        }
-    },
-
-    Zip : function(zipObj) {
-        var zip = $(zipObj['id']).val();
-
-        if (zip.length == 0) {
-            zipObj.error = true;
-            zipObj.errorMessage = "Zip Code is empty!";
-        }
-
-    },
-
-    CVV2 : function(cvvObj) {
-        var cvv = $(cvvObj['id']).val();
-
-        if (cvv.length == 0) {
-            cvvObj.error = true;
-            cvvObj.errorMessage = "CVV2 is empty!";
-        } else if ((Validate.CardName == 'amex' && cvv.length < 4) ||
-                   (Validate.CardName != '' && cvv.length < 3)){
-            cvvObj.error = true;
-            cvvObj.errorMessage = "CVV2 is incomplete!";
-        }
-    },
-
-    ExpDate : function(dateObj) {
-        var date = $(dateObj['id']).val();
-
-        if (date.length == 0) {
-            dateObj.error = true;
-            dateObj.errorMessage = "Expiration Date is empty!";
-        } else if (date.length < 5) {
-            dateObj.error = true;
-            dateObj.errorMessage = "Expiration Date is incomplete!";
-        } else {
-            var values = date.match(/[^\/]+/g);
-            var month = parseInt(values[0]);
-            var year = parseInt(values[1]);
-            if (month == 0 || month > 12) {
-                dateObj.error = true;
-                dateObj.errorMessage = "MM cannot be equal to zero or greater than 12.";
-            }
-            if (year < parseInt((new Date()).getFullYear().toString().slice(2))) {
-                dateObj.error = true;
-                dateObj.errorMessage += (dateObj.errorMessage == "" ? "" : "\n");
-                dateObj.errorMessage += "YY cannot be equal to zero or lower than " + (new Date()).getFullYear();
-            }
-        }
-    },
-
-    ExpDateMask : function(e) {
-        var numberToAdd = e.which - 48;
-        if (numberToAdd < 0 || numberToAdd > 9) return false;
-        
-        var expDate = $('#ExpirationDate');
-
-        var potentialResult = expDate.val();
-
-        potentialResult += /\d\d$/.test(expDate.val()) ? "/"+numberToAdd:numberToAdd;
-
-        var year = (new Date()).getFullYear().toString().slice(2);
-
-        var lengthChecks = {
-            l1 : /[01]/,
-            l2 : /(0(?=[1-9])\d)|(1(?=[0-2]))/,
-            l4 : new RegExp('[0-9]{2}/[' + year[0] + '-9]'),
-            l5 : new RegExp('[0-9]{2}/((' + year[0] + '(?=[' + year[1] + '-9]))|[' + (parseInt(year[0])+1) +'-9])[0-9]')
-        }
-
-        if (lengthChecks['l'+potentialResult.length] == undefined) return false;
-        if (lengthChecks['l'+potentialResult.length].test(potentialResult)) return true;
-        else return false;
-    },
-
-    CardNoMask : function(e){
-
-        var cardInput = $('#CardNo');
-        var cvv2Input = $('#CVV2');
-
-        var currentCard = {card:'',cvv2:''};
-
-        var regexCards = {
-            visa : /^4/,
-            mastercard : /^5/,
-            amex : /^3[467]/,
-            jcb : /^35/,
-            discover : /^6(?:011|5)/
-            //discover : /^65/
-        }
-
-        for(var cardCheck in regexCards) {
-            if (regexCards[cardCheck].test(cardInput.val())) {
-                currentCard.card = cardCheck;
-                currentCard.cvv2 = cardCheck == 'amex'?'cvv-amex':'cvv-card';
-                break;
-            }
-        }
-
-        if (!cardInput.hasClass(currentCard.card))
-            cardInput.attr('class',currentCard.card);
-        if (!cvv2Input.hasClass(currentCard.cvv2)) 
-            cvv2Input.attr('class',currentCard.cvv2);
-        
-        Validate.CardName = currentCard.card;
-
-        return true;
-    }
-};
-
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-        
-function getInvoiceInfo (invoiceInfoId){
-
-    Parse.Cloud.run("hello12",{})
-        .then(function(msg){
-           console.log(msg); 
-        });
-    
-    var result = {}
-    var userQuery = new Parse.Query(Parse.User);
-    var query = new Parse.Query("InvoiceInfo");
-    query.get(invoiceInfoId).then(function(invoiceInfo){
-        result['img'] = invoiceInfo.get('organizationLogo');
-        result['businessName'] = invoiceInfo.get('businessName');
-        result['phone'] = invoiceInfo.get('phone');
-        result['email'] = invoiceInfo.get('email');
-        result['dueDate'] = invoiceInfo.get('dueDate');
-        result['totalDue'] = invoiceInfo.get('totalAmount');
-        result['invoiceDate'] = invoiceInfo.get('invoiceDate');
-        result['referenceNumber'] = invoiceInfo.get('referenceNumber');
-        result['id'] = invoiceInfo.get('objectId');
-        result['userId'] = invoiceInfo.get('userId');
-        // The object was retrieved successfully.
-    }, function(error){
-        $('.full-screen-loader').hide();
-        $('.error-load').html('ERROR: ' + error.message).show();
-        // The object was not retrieved successfully.
-        // error is a Parse.Error with an error code and message.
-    }).then(function(){
-
-        Parse.Cloud.run('checkInvoiceStatus',{invoiceInfoId:invoiceInfoId}).then(function(res){
-            if (res === "Paid"){ 
-				$('.btn-pay').hide();
-				
-				$('#index').hide();
-				$('#accept').hide();
-				$('#alreadyPaid').show();
-				$('.full-screen-loader,.full-screen-white-overlay').hide();
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+		<title>Pay - Invoices Unlimited</title>
+
+		<link rel="apple-touch-icon" sizes="57x57" href="./images/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="./images/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="./images/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="./images/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="./images/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="./images/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="./images/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="./images/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="./images/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="./images/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="./images/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="./images/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="./images/favicon-16x16.png">
+		<link rel="manifest" href="./images/manifest.json">
+
+
+		<link rel="shortcut icon" href="favicon.ico" />
+
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+
+		<meta http-equiv="cache-control" content="max-age=0" />
+		<meta http-equiv="cache-control" content="no-cache" />
+		<meta http-equiv="expires" content="0" />
+		<meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+		<meta http-equiv="pragma" content="no-cache" />
+
+		<link href='https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic,300italic,300' rel='stylesheet' type='text/css'>
+		<link href='jquery.reject.css' rel='stylesheet' type='text/css'>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+		<script src="jquery.reject.js"></script>
+		<!--
+<script src="https://npmcdn.com/parse/dist/parse.min.js"></script>
+-->
+		<script src="parse.min.js"></script>
+		<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+
+
+		<style>
+
+			#jr_inner{
+				min-width: 800px !important;
 			}
-        }).then(function(){
-            if (result.img) $('#logo-img').attr('src',result.img.url());
-            else $('#logo-img').attr('src',"./cardimages/01_IU-Web-Admin.png");
-            $('.b-name').text(result.businessName);
-            $('.phone').text(result.phone);
-            $('.email').text(result.email);
-            $('.due-date').text(Date.parse(result.dueDate).toString('MMMM dS, yyyy'));
-            $('.total-due').text('$' + numberWithCommas(parseFloat(result.totalDue).toFixed(2)));
-            $('#Total').val(result.totalDue);
-            $('.invoice-date').text("Invoice Date: " + Date.parse(result.invoiceDate).toString('MMMM dS, yyyy'));
-            $('.reference-number').text("Reference Number: " + result.referenceNumber);
-            $('.full-screen-loader,.full-screen-white-overlay').hide();
 
-            if (result.userId != undefined) {
-                userQuery.get(result.userId, {
-                    success: function(user){
-                        $('#gateway').val(user.get('paymentGateway'));
-                        if ($('#gateway').val() == 1) {
-                            result['restrictKey'] = user.get('EPNrestrictKey');
-                            result['ePNAccount'] = user.get('EPNusername');
-                        } else if ($('#gateway').val() == 2) {
-                            result['AuthKey'] = user.get('AuthKey');
-                            result['AuthNet'] = user.get('AuthNet');
-                        }
-                    },
-                    error: function(object, error) {
-                        $('.full-screen-loader').hide();
-                        $('.error-load').html('ERROR: ' + error.message).show();
-                    }
-                }).then(function(){
-                    if ( !result.EPNusername && !result.restrictKey && !result.AuthKey && !result.AuthNet){
-                        $('#index').hide();
-                        $('#accept').show();
-                        $('.full-screen-loader,.full-screen-white-overlay').hide();
-                        return;
-                    }
-                    $('#AuthNet').val(result.AuthNet);
-                    $('#AuthKey').val(result.AuthKey)
-                    $('#ePNAccount').val(result.ePNAccount);
-                    $('#RestrictKey').val(result.restrictKey);
-                });
-            }
-        }, function(error){
-            console.log(error);
-            debugger;
-        });
+			/* -------RESET---------- */
 
-    });
-};
-var makePdf;
-$(document).ready(function(){
+			html, body, div, span, applet, object, iframe,
+			h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+			a, abbr, acronym, address, big, cite, code,
+			del, dfn, em, img, ins, kbd, q, s, samp,
+			small, strike, strong, sub, sup, tt, var,
+			b, u, i, center,
+			dl, dt, dd, ol, ul, li,
+			fieldset, form, label, legend,
+			table, caption, tbody, tfoot, thead, tr, th, td,
+			article, aside, canvas, details, embed, 
+			figure, figcaption, footer, header, hgroup, 
+			menu, nav, output, ruby, section, summary,
+			time, mark, audio, video {
+				margin: 0;
+				padding: 0;
+				border: 0;
+				font-size: 100%;
+				font: inherit;
+				vertical-align: baseline;
+			}
+			/* HTML5 display-role reset for older browsers */
+			article, aside, details, figcaption, figure, 
+			footer, header, hgroup, menu, nav, section {
+				display: block;
+			}
 
-    var invoiceInfoId = window.location.search.replace('?InvoiceInfoID=', '')
-    getInvoiceInfo(invoiceInfoId);
-    
-    $('#CardNo').on('change keyup', function(ev) {
-        Validate.CardNoMask(ev);
-    });
+			body {
+				line-height: 1;
+			}
 
-    var cardMaskOptions =  {onKeyPress: function(cep, e, field, options){
-        var masks = ['0000 0000 0000 0000', '0000 000000 00000'];
-        mask = (Validate.CardName == 'amex') ? masks[1] : masks[0];
-        $('#CardNo').mask(mask, options);
-    }, placeholder : ''};   
+			ol, ul {
+				list-style: none;
+			}
 
-    var cvvMaskOptions =  {onKeyPress: function(cep, e, field, options){
-        var masks = ['000', '0000'];
-        
-        mask = Validate.CardName == 'amex' ? masks[1] : masks[0];
+			blockquote, q {
+				quotes: none;
+			}
 
-        $('#CVV2').mask(mask, options);
-    }, placeholder : ''};       
+			blockquote:before, blockquote:after,
+			q:before, q:after {
+				content: '';
+				content: none;
+			}
 
-    $('#CVV2').mask('000', cvvMaskOptions);
-    $('#CardNo').mask('0000 0000 0000 0000', cardMaskOptions);
-    $('#ExpirationDate').mask('00/00',{placeholder: 'MM/YY'});
+			table {
+				border-collapse: collapse;
+				border-spacing: 0;
+			}
 
-    $('.btn-try-again').on('click',function(){
-        location.reload();
-    });
+			/***************  GLOBAL STYLES  ***************/
+			body {
+				color: #000;
+				font: 14px/18px 'Lato', sans-serif;
+				overflow-x:hidden;
+				overflow-y:scroll;
+				margin: 0;
+			}
 
-    $('.btn-pay').on('click',function(){
+			.success-status {
+				width: 85%;
+			}
 
-        if($('#Zip-fake').val() == undefined || $('#Zip').val() == '') {
-            $('#Zip').val('12345');
-        } else $('#Zip').val($('#Zip-fake').val());
+			#invoice-error-message {
+				width: 100%;
+				margin: 10px 0;
+				color: red;
+				font-weight: bold;
+				text-align: center;
+			}
 
-        if (!validateForm()) return false;
-        $('.white-overlay, #loader').show();
-        //event.preventDefault();
+			#accept,
+			#invoice-success,
+			#invoice-error,
+			#alreadyPaid {
+				display: none;
+			}
 
-		var tot = $('#Total').val();
-		tot = parseFloat(tot);
-		tot = tot.toFixed(2);
-		
-        var url,data = {
-            'Zip'           : $('#Zip').val(),
-            'CardNo'        : $('#CardNo').val(),
-            'ExpirationDate': $('#ExpirationDate').val(),
-            'CVV2'          : $('#CVV2').val(),
-            'Total'         : tot,
-            'CVV2Type'      : $('#CVV2Type').val(),
-            'ExpMonth'      : $('#ExpMonth').val(),
-            'ExpYear'       : $('#ExpYear').val()
-        };
-        switch($('#gateway').val()){
-            case "1":
-                url = "./request.php";
-                data = Object.assign({},data,{
-                    'NameOnCard'  : $('#Name').val(),
-                    'HTML'        : 'No',
-                    'ePNAccount'  : $('#ePNAccount').val(),
-                    'Address'     : $('#Address').val(),
-                    'RestrictKey' : $('#RestrictKey').val(),
-                    'TranType' : 'Sale'
-                });
-                break;
-            case "2":
-                url = "./request-auth.php";
-                data = Object.assign({},data,{
-                    'CardNo'  : parseInt($('#CardNo').val().replace(/\s/g,"")),
-                    //'CVV2'    : parseInt($('#CVV2').val()),
-                    'CVV2'    : $('#CVV2').val(),
-                    'AuthNet' : $('#AuthNet').val(),
-                    'Total'   : parseFloat(tot),
-                    'AuthKey' : $('#AuthKey').val(),
-                });
-                break;
-            default:
-                alert('Wrong paymentGateway! Contact the business owner!');
-                return;
+			#index,
+			#invoice-process {
+				display: block;
+			}
 
-        }
-        
-        $.ajax({
-            method:"POST",
-            url: url,
-            data: data,
-            complete:function(data){
-                console.log("Reguest is done: " + data);
-            },
-            error: function(data){
-                alert("ERROR: " + data);
-            },
-            success:function(data){
-                debugger;
-                var response = data.match(/[^,]+/g);
-                if (response.length) {
-                    var cleanResponse = [];
-                    for(var i in response) {
-                        cleanResponse.push(response[i].match(/[^"]+/g));
-                    }
+			#paymentResponse {
+				border: 0;
+				height: 25px;
+				width: 100%;
+				overflow: hidden;
+			}
 
-                    var auth = cleanResponse.length > 1 ? cleanResponse[0] : cleanResponse;
+			.error-load {
+				color: red;
+				font: 25px/27px 'Lato', sans-serif;
+				z-index: 10;
+				color: red;
+				display: inline-block;
+				margin: auto;
+				width: 98%;
+				vertical-align: middle;
+				display: none;
+			}
 
-                    if (($('#gateway').val() == 1 && /^[N|U].*/g.test(auth)) || 
-                        ($('#gateway').val() == 2 && /Failed/g.test(data))) {
-                        var error = $('#gateway').val() == 1 ? 
-                                    auth.slice(0,auth.length) :
-                                    data.match(/Error message.*/g)[0];
-                        //$('#invoice-error-message').text(error);
-                        $('#invoice-process').hide();
-                        $('#invoice-error').show();
-                    } else if (/^Y.*/g.test(auth) || /AUTH CODE/g.test(data)) {
-                        if (/AUTH CODE/g.test(data))
-                            data = data.match(/(AUTH CODE.*)|(TRANS ID.*)/g).join(", ");
-                        var query = new Parse.Query("InvoiceInfo");
-                        query.equalTo("objectId",invoiceInfoId);
-                        query.first({
-                            success: function(invoiceInfo) {
-                                invoiceInfo.set('paymentStatus',data);
-                                invoiceInfo.save();
-                            },
-                            error : function(obj,error) {
-                                console.log(error.message);
-                            }
-                        }).then(function(){
-                            
-                            var invoiceId = "";
-                            var status = "";
-                            var paymentId = "";
-                            var receiptUrl = "";
-                            var xmlUrl = "";
-                            var balanceDue = "";
-                            var paymentMade = "";
-                            var paymentDate = "";
-                            
-                            var temp = $('#CardNo').val();
-                            temp = temp.substring(0, 4);
-							var lastDigits = $('#CardNo').val();
-							lastDigits = lastDigits.substr(lastDigits.length - 4, 4);
-                            Parse.Cloud.run('doPayment',{invoiceInfoId : invoiceInfoId, firstFourDigits : temp, lastFourDigits : lastDigits}).then(function(res){
-                                
-                                var result = JSON.parse(res);
-                                
-                                var d = result.date;
-                                var arr = d.split('/');
-                                var temp = arr[0];
-                                arr[0] = arr[1];
-                                arr[1] = temp;
-                                var newDate = arr.join('/');
-                                
-                                $('#pdf-invoice-number').text(result.invoiceNumber);
-                                $('#pdf-date').text(newDate);
-                                $('#pdf-payment-status').text(result.paymentStatus);
-                                $('#pdf-amount-received').text(result.amountReceived);
-                                //$('#pdf-amount-due').text(result.amountDue);
-                                $('#pdf-payment-name').text(result.clientName);
-                                $('#pdf-amount-due').text("$0.00");
-                                $('#pdf-total').text(result.total);
-                                $('#pdf-subtotal').text(result.subtotal);
-                                paymentDate = newDate;
-                                invoiceId = result.invoiceId;
-                                debugger;
-                                status = result.paymentStatus;
-                                paymentId = result.paymentId;
-                                receiptUrl = result.receiptLink;
-                                xmlUrl = result.xmlLink;
-                                balanceDue = result.balanceDue;
-                                paymentMade = result.paymentMade;
+			.full-screen-white-overlay:before{
+				content:'';
+				display: inline-block;
+				height: 100%;
+				vertical-align: middle;
+			}
 
-                                for (var i in result.invItems){
-                                    var title = result.invItems[i].title;
-                                    var cost = result.invItems[i].cost;
-                                    var item = $("<tr class='invoice-items'></tr>");
-                                    var itemTitle = $("<td class='ff1 fc0 btm-line invoice-item-title' colspan='3'>"+ title +"</td>");
-                                    var itemCost = $("<td class='ff1 fc0 btm-line invoice-item-cost' colspan='3'>"+ cost +"</td>");
-                                    item.append(itemTitle)
-                                        .append(itemCost);
-                                    $('#invoice-items-header').after($(item));
-                                }
-								
-								for (var i in result.invTax){
-                                    var title = result.invTax[i].title;
-                                    var cost = result.invTax[i].value;
-                                    var tax = $("<tr></tr>");
-									var blank = $("<td colspan='3'></td>");
-                                    var taxTitle = $("<td class='ff1 fc1' style='vertical-align: bottom; padding-bottom: 3mm; font-size: 16px;' colspan='2'>"+ title +"</td>");
-                                    var taxCost = $("<td class='ff1 fc1' style='text-align: right;vertical-align: bottom;padding-bottom: 3mm;font-size: 16px;'>"+ cost +"</td>");
-                                    tax.append(blank)
-										.append(taxTitle)
-                                        .append(taxCost);
-                                    $('#pdf-subtotal-row').after($(tax));
-                                }
+			.white-overlay,
+			.full-screen-white-overlay {
+				position: absolute;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background: url('./cardimages/overlay-white.png') repeat;
+				z-index: 4;
+				text-align: center;
+			}
 
-                            }, function(err){
-                                console.log(err);
-                            }).then(function(){
-                                return $.ajax({
-                                    method:"POST",
-                                    url: "./generatePDF.php",
-                                    data: { 
-                                        'html' : $('.pdf-page').html(),
-                                    }
-                                });
-                            }).then(function(pdfData){
-                                var pdfUrl = "";
-                                Parse.Cloud.run('savePaidInvoice',{ 
-                                    invoiceID : invoiceId, 
-                                    PDFData : pdfData, 
-                                    paymentID : paymentId
-                                }).then(function(url){
-                                    $('.download-pdf').attr('href',url);
-                                    $('.print-pdf').attr('href',url);
-                                    pdfUrl = url;
-                                    var query = new Parse.Query("InvoiceInfo");
-                                    query.equalTo("objectId", invoiceInfoId);
-                                    return query.first();
-                                }, function(err){
-                                    console.log(err);
-                                }).then(function(invInfo){
-                                    $.ajax({
-                                        method: "POST",
-                                        url : "./getXml.php",
-                                        data : {
-                                            xmlUrl : xmlUrl,
-                                            balanceDue : balanceDue,
-                                            paymentMade : paymentMade
-                                        }
-                                    }).then(function(newXml){
-                                        debugger;
-                                        return Parse.Cloud.run('saveInvoiceTemplate', {invoiceId:invoiceId,xmlData:newXml});
-                                    }, function(error){
-                                        console.log(error);
-                                    }).then(function(saveXmlPromise){
-                                        saveXmlPromise.then(function(result){
-                                            var links = JSON.parse(result);
-                                            return $.ajax({
-                                                method: "POST",
-                                                url : "./getHtml.php",
-                                                data : {
-                                                    xmlUrl : links.xmlLink,
-                                                    htmlUrl : links.htmlLink
-                                                }
-                                            });
-                                        }).then(function(newHtml){
-                                            Parse.Cloud.run('saveInvoiceTemplate', {invoiceId:invoiceId,htmlData:newHtml}).then(function(res){
-                                                var links = JSON.parse(res);
-                                                Parse.Cloud.run('createShortUrl',{link: (links.htmlLink + "?InvoiceInfoID=" + invoiceInfoId)}).then(function(shortUrl){
-                                                    //$('.print-pdf').attr('href',shortUrl.data.data.url);
-                                                    $.ajax({
-                                                        method: "POST",
-                                                        url : "./confirmEmail.php",
-                                                        data : {
-                                                            'receiptUrl'    : shortUrl.data.data.url,
-                                                            'pdf'           : pdfUrl,
-                                                            'clientEmail'   : invInfo.get("clientEmail"),
-                                                            'businessName'  : invInfo.get("businessName"),
-                                                            'email'         : invInfo.get('email'),
-                                                            'clientName'    : invInfo.get('clientName'),
-                                                            'paymentAmount' : parseFloat(paymentMade).toFixed(2),
-                                                            'paymentDate'   : paymentDate
-                                                        }
-                                                    }).then(function(){
-                                                        debugger;
-                                                        $('#invoice-success-status').text(status);
-                                                        $('#invoice-success-email').text(invInfo.get("clientEmail") || invInfo.get("clientPhone"));
-                                                        $('#invoice-success-phone').text(invInfo.get("phone"));
-                                                        $('#invoice-process').hide();
-                                                        $('#invoice-success').show();
-                                                    });
-                                                });
-                                            });
-                                        });
-                                    }, function(err){
-                                        console.log(err);
-                                    });
-                                });
-                            });  
+			.white-overlay,
+			#loader {
+				display: none;
+			}
 
-                        });
-                    }
-                } else {
-                    $('#invoice-process').hide();
-                    $('#invoice-error').show();
-                }
-            }
-        });
-    });
-    
-});
-    
-    </script>
-  </head>
- 
-<body>
+			.white-overlay {
+				z-index: 10;
+			}
 
-       <!-- start HEADER -->
-    <div class="header">
-        <div class="wrapper">
-			<img id='logo-img' class="logo" src="">
-            <!--<a style="text-align: center !important;" href="https://invoicesunlimited.net/app" class="logo">
-                <img style="width: 100px !important;" id='logo-img' src="">
-            </a>-->
-        </div>
-    </div>
-    <!-- end HEADER -->
+			#loader {
+				z-index: 20;
+			}
 
-    <!-- start CONTENT -->
+			#loader,
+			.full-screen-loader {
+				position: absolute;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				background: url('./cardimages/loader.gif') no-repeat center center;  
+				z-index: 5;
+			}
 
-    <div class="content" id="invoice-process">
-        <div class="full-screen-loader"></div>
-        <div class="full-screen-white-overlay">
-            <span class="error-load"></span>
-        </div>
-        <div class="wrapper" id="index">
-            <h1 class="title">Invoice Payment</h1>
-            <div class="columns cl">
-                <div class="column-info business-info">
-                    <h3 class='b-name'></h3>
-                    <p class='phone'></p>
-                    <p class='email'></p>
-                </div>
-                <div class="column-info date-info">
-                    <h3>Due Date</h3>
-                    <p class='due-date'></p>
-                </div>
-                <div class="column-info total-info">
-                    <h3>Total Due</h3>
-                    <p class='total-due'></p>
-                </div>
-            </div>
-            <div class="pay-form cl">
-                <div class="error-message">
-                    <p>Please, fix errors in red:</p>
-                    <ul class="error-list">
-                        <li>Test</li>                  
-                    </ul>
-                </div>
-                <form id="tryitForm" method="POST"><!-- autocomplete="off"> -->
-                    <div class="form-top cl">
-                        <input type="text" name="NameOnCard" id="Name" placeholder="Name on Card" />
-                        <input type="text" name="CardNo" id="CardNo" placeholder="Card Number"/>
-                    </div>
-                    <div class="form-bottom cl">
-                        <input type="text" placeholder="Expiration Date" id="ExpirationDate" name="ExpirationDate" />
-                        <input type="text" name="CVV2" id="CVV2"  placeholder="CVV" />
-                        <input type="text" name="Zip-fake" id="Zip-fake" placeholder="Zip Code (Optional)" />
-                    </div>
-                    <div class="hide">
-                        <input type="text" name="Zip" id="Zip" placeholder="Zip Code" />
-                        <input type="number" name="gateway" id="gateway" placeholder="paymentGateway"/>
-                        <input type="text" name="AuthNet" id="AuthNet" />
-                        <input type="text" name="AuthKey" id="AuthKey" />
-                        <input type="text" name="ePNAccount" id="ePNAccount" />
-                        <input type="text" name="RestrictKey" id="RestrictKey" />
-                        <input type="text" name="Total" id="Total" value=".1" />
-                        <input type="text" name="Address" id="Address" value="Address: 123 Fake St." />
-                        <input type="text" name="CVV2Type" id="CVV2Type" value="1" />
-                        <input type="text" name="ExpMonth" id="ExpMonth" value="" />
-                        <input type="text" name="ExpYear" id="ExpYear" value="" />
-                    </div>
-                    <div class="pay-info cl">
-                        <h4>Safe & Secure</h4>
-                        <p>We follow industry-recognized security safeguards.</p>
-                        <div class="pay-info-1">
-                            <p class='reference-number'></p>
-                            <p class='invoice-date'></p>
-                        </div>
-                        <div class="pay-info-2">
-                            <span class="cards"></span>
-                        </div>
-                        <div class="pay-info-3">
-                            <!--<input type="submit" value="Pay now" class="btn-pay">-->
-                            <a style="cursor:pointer" class="btn-pay">Pay now</a>
-                        </div>
-                    </div>
-                    <div id="loader"></div>
-                    <div class="white-overlay"></div>
-                </form>
-            
-            </div>
-        </div>
-        <div class="wrapper" id="accept">
-            <h1 class="title">Invoice Payment</h1>
-            <div class="columns cl">
-                <div class="column-info business-info">
-                    <h3 class='b-name'>Business Name</h3>
-                    <p class='phone'>+1 818 591 3910</p>
-                    <p class='email'>jdoe@gmail.com</p>
-                </div>
-                <div class="column-info date-info">
-                    <h3>Due Date</h3>
-                    <p class='due-date'>July 10, 2015</p>
-                </div>
-                <div class="column-info total-info">
-                    <h3>Total Due</h3>
-                    <p class='total-due'>$.1</p>
-                </div>
-            </div>
+			body, html {
+				height: 100%;
+				width: 100%;
+			}
 
-            <div class="pay-accept cl">
-                <p><span class="b-name">(Business Name)</span> does not currently accept credit cards.</p>
-                <p>If you want to discuss other payment options, please call <span class="b-name">(Business Name)</span> <span class="phone">(phone)</span>.</p>
-            </div>
+			p {
+				line-height: 26px;
+				font-size:18px;
+				color:#8c8c8c;
+				font-weight: 400;
+			}
 
-            <div class="pay-info cl">
-                <h4>Safe & Secure</h4>
-                <p>We follow industry-recognized security safeguards.</p>
-                <div class="pay-info-1-full">
-                    <p class='reference-number'>Reference Number: 13951951951</p>
-                    <p class='invoice-date'></p>
-                </div>
-               
-            </div>
-        </div>
-		<div class="wrapper" id="alreadyPaid">
-            <h1 class="title">Invoice Payment</h1>
-            <div class="columns cl">
-                <div class="column-info business-info">
-                    <h3 class='b-name'>Business Name</h3>
-                    <p class='phone'>+1 818 591 3910</p>
-                    <p class='email'>jdoe@gmail.com</p>
-                </div>
-                <div class="column-info date-info">
-                    <h3>Due Date</h3>
-                    <p class='due-date'>July 10, 2015</p>
-                </div>
-                <div class="column-info total-info">
-                    <h3>Total Due</h3>
-                    <p class='total-due'>$.1</p>
-                </div>
-            </div>
+			h1 {
+				font-weight: normal;
+				font-size: 28px;
+				line-height: 32px;
+			}
 
-            <div class="pay-accept cl">
-                <p>This invoice has already been paid.</p>
-            </div>
+			h2 {
+				font-weight: 300;
+				font-size: 26px;
+				line-height: 30px;
+			}
 
-            <div class="pay-info cl">
-                <h4>Safe & Secure</h4>
-                <p>We follow industry-recognized security safeguards.</p>
-                <div class="pay-info-1-full">
-                    <p class='reference-number'>Reference Number: 13951951951</p>
-                    <p class='invoice-date'></p>
-                </div>
-               
-            </div>
-        </div>
-    </div>
+			h3 {
+				font-size: 24px;
+				line-height: 28px;
+				font-weight: normal;
+			}
 
-    <div class="content" id="invoice-error">
-        <div class="wrapper">
-            <h1 class="title">Payment Declined</h1>
+			h4 {
+				font-size: 22px;
+				line-height: 26px;
+				font-weight: normal;
+			}
 
-            <p id="invoice-error-message"></p>
+			h5 {
+				font-size: 20px;
+				line-height: 24px;
+				font-weight: normal;
+			}
 
-            <div class="pay-error cl">
-                <div class="pay-info-1-full">
-                    <p>This card was unable to be processed. Please try again. If you continue to have issues, please call your issuing bank.</p>
-                </div>
-                <a class="btn-try-again">Try Again</a>
-            </div>
+			a {
+				text-decoration: none;
+				font-weight: 600;
+				cursor: pointer;
+				color: #000;
+				outline:0;
+			}
 
-        </div>
-    </div>
+			a:hover {
+				color: #000;
+				outline:0;
+			}
 
-    <div class="content" id="invoice-success">
-        <div class="wrapper">
-            <h1 class="title">Payment Confirmation</h1>
+			strong {
+				font-weight: 700;
+			}
+
+			.hide{
+				display: none !important;
+			}
+
+			.cl:before, .cl:after {
+				display: table;
+				content: " ";
+			}
+
+			.cl,
+			.cl:after {
+				clear: both;
+			}
+
+			.left{
+				float:left;
+			}
+
+			.right{
+				float:right;
+			}
 
 
-            <div class="pay-confirmation cl">
-                <h2>Success! You completed your payment.</h2>
-                <div class="pay-info-1-full">
-                    <p class="success-status">Your transaction ID for this payment is: <span id="invoice-success-status"></span></p>
-                    <p>We’ll send a confirmation to: <span id="invoice-success-email"></span></p>
-                    <p>If you have any questions, please call <span id="invoice-success-phone"></span></p>
-                </div>
-                <a href="#" target="_blank" class="print-pdf">Print Receipt</a>
-                <a href="#"  class="download-pdf" download="Receipt.pdf">Download PDF</a>
-            </div>
+			/***************  WRAPPER STRUCTURE  ***************/
+			.wrapper {
+				width:900px;
+				margin:0 auto;
+			}
 
-        </div>
-    </div>
 
-    <!-- end CONTENT -->
+			/***************  UI STYLES ***************/
+			input[type=text], input[type=password], textarea {
+				border:0;
+				padding: 12px;
+				background-color: #f2f2f2;
+				display: block;
+				outline: 0;
+				width: 100%;
+				box-sizing: border-box;
 
-    <!-- start FOOTER -->
-    <div class="footer cl">
-        <div class="wrapper">
-            <p>© Powered by CJ Technologies</p>
-        </div>
-    </div>
-    <!-- end FOOTER -->
+				position: relative;
 
-    <div class='pdf-page' style="display:none">
-    
-    <style type="text/css">
-    
-    /*@font-face{font-family:ff1;src:url(f1.woff)format("woff");}.ff1{font-family:ff1;line-height:0.996582;font-style:normal;font-weight:normal;visibility:visible;}*/
-    .ff1 {
-        font-family: Arial;
-        line-height: 0.996582;
-        font-style: normal;
-    }
-    .fc0 {
-        color: rgb(0,0,0);
-    }
-    .fc1 {
-        color: rgb(170,170,170);
-    }
-    .fc2 {
-        color: rgb(255,255,255);
-    }
-    .btm-line {
-        border-bottom: 1mm solid #aaa;
-    }
-    .top-line {
-        border-top: 1mm solid #aaa;
-    }
-    .invoice-item-title {
-        height: 10mm;
-        padding-left: 14pt;
-        font-size: 16px;
-        vertical-align: middle;
-    }
-    .invoice-item-cost {
-        height: 10mm;
-        text-align: right;
-        padding-right: 40pt;
-        font-size: 16px;
-        vertical-align: middle;
-    }
-    </style>
+				font-family: 'Lato', sans-serif;
+				font-size: 18px;   
+				line-height: 20px;
+				font-style: 400;
 
-    <page id="page-container" backtop="0mm" backbottom="10mm" backleft="10mm" backright="15mm">
+				-webkit-transition: all 0.5s ease 0s;
+				-moz-transition: all 0.5s ease 0s;
+				-ms-transition: all 0.5s ease 0s;
+				-o-transition: all 0.5s ease 0s;
+			}
 
-        <div class="ff1 fc0" 
-             style="position: relative;
-                    height: 10mm;
-                    white-space: pre;
-                    font-size: 16px;
-                    text-align: center;
-                    line-height: 10mm;" >PAYMENT RECEIPT FOR <span id='pdf-payment-name'>#</span></div>
+			/***************  HEADER STYLES ***************/
+			.header{
+				background-color:#fff;
+				width:100%;
+				z-index: 10;
+				left:0;
+				right:0;
+				border-bottom:1px solid #808181;
+			}
 
-        <table cellspacing="0" 
-               style="width: 185mm;                   
-                      height: 122mm;
-                      position: absolute;
-                      top: 10mm;
-                      z-index: 10;
-                      table-layout: fixed">
-            <thead>
-                <td style="width: 26mm;"></td>
-                <td style="width: 32mm;"></td>
-                <td style="width: 30mm;"></td>
-                <td style="width: 30mm;"></td>
-                <td style="width: 30mm;"></td>
-                <td style="width: 30mm;"></td>
-            </thead>
-            <tr>
-                <td style="font-size: 16px;
-                           height: 9mm;
-                           vertical-align: bottom;"
-                    class="ff1 fc1 top-line" colspan="2">PAYMENT DATE</td>
-                <td style="vertical-align: bottom;
-                           font-size: 16px;
-                           height: 9mm;" colspan="2"
-                    class="ff1 fc0 top-line btm-line" id="pdf-date">04/08/2016</td>
-                <td style="vertical-align: bottom;
-                           font-size: 16px;
-                           text-align: center;
-                           height: 9mm;"
-                    class="ff1 fc0 top-line" colspan="2">Amount Received:</td>
-            </tr>
+			/*
+			.header a.logo{
+			width: 138px;
+			min-height: 44px;
+			display: block;
+			margin:0 auto;
+			padding: 5px 0 20px 0;
+			background: url(./cardimages/01_IU-Web-Admin.png) no-repeat center center;
+			background-size: contain;
+			}
+			*/
+			.header img.logo{
+				text-align: center;
+				max-height: 70px !important;
+				max-width: 150px;
+				/*width: 138px;*/
+				min-height: 44px;
+				display: block;
+				margin:0 auto;
+				padding: 5px 0 20px 0;
+				background-size: contain;
+			}
+			/***************  SECTION CONTENT ***************/
 
-            <tr>
-                <td class="ff1 fc1" colspan="2"
-                    style="font-size: 16px;
-                           vertical-align: bottom;
-                           height:8mm">INVOICE Number</td>
-                <td class="ff1 fc0 btm-line" colspan="2" id="pdf-invoice-number"
-                    style="height: 8mm;
-                           vertical-align: bottom;
-                           font-size: 16px;">INV-00000</td>
-                <td rowspan="3" colspan="2"
-                    class="ff1" 
-                    style="vertical-align: middle;
-                           color: rgb(50,125,245);
-                           font-size: 45px;
-                           text-align: center;" id="pdf-amount-received">$0,01</td>
-            </tr>
 
-            <tr>
-                <td class="ff1 fc1" colspan="2"
-                    style="height: 7mm;
-                           vertical-align: bottom;
-                           padding-bottom: 1mm;
-                           font-size: 16px;">REFERENCE NUMBER</td>
-                <td class="ff1 fc0 btm-line" colspan="2" id="pdf-payment-status"
-                    style="height: 7mm;
-                           padding-bottom: 1mm;
-                           vertical-align: bottom;
-                           font-size: 16px;">YAUTH/TKT 164410</td>
-            </tr>
+			.content{
+				padding-top: 20px;
+				position: relative;
+			}
 
-            <tr>
-                <td class="ff1 fc1" colspan="2"
-                    style="font-size: 16px;
-                           vertical-align: bottom;
-                           height:8mm">PAYMENT MODE</td>
-                <td class="ff1 fc0 btm-line" colspan="2"
-                    style="height: 8mm;
-                           vertical-align: bottom;
-                           font-size: 16px;">Credit Card</td>
-            </tr>
+			.content h1.title{
+				color:#3b92f5;
+				text-transform: uppercase;
+				font-size:34px;
+				font-weight: 300;
+				text-align:center;
+			}
 
-            <tr>
-                <td style="height: 18mm;" colspan="6" class="btm-line"></td>
-            </tr>
+			.content .columns{
+				margin-top: 40px;
+				margin-bottom: 10px;
+			}
 
-            <tr>
-                <td style="height: 6mm;"></td>
-            </tr>
+			.content .columns .column-info{
+				width:33%;
+				float:left;
+			}
 
-            <tr id="invoice-items-header">
-                <td class="ff1 fc2 btm-line" colspan="3"
-                    style="height: 9mm;
-                           font-size: 16px;
-                           vertical-align: middle;
-                           background: #317cf4;
-                           padding-left: 14pt;">Invoice Details</td>
-                <td class="ff1 fc2 btm-line" colspan="3"
-                    style="height: 9mm;
-                           vertical-align: middle;
-                           text-align: right;
-                           font-size: 16px;
-                           background: #317cf4;
-                           padding-right: 14pt;">Payment Amount</td>
-            </tr>
-            <!--<tr id="invoice-items">
-                <td class="ff1 fc0 btm-line invoice-item-title" colspan="3">Test</td>
-                <td class="ff1 fc0 btm-line invoice-item-cost" colspan="3">$0,01</td>
-            </tr>-->
-            <tr id="pdf-subtotal-row" >
-                <td colspan="3" class=""></td>
-                <td class="ff1 fc1 " colspan="2"
-                    style="vertical-align: bottom;
-                           padding-bottom: 3mm;
-                           height: 11mm;
-                           font-size: 16px;">SUBTOTAL</td>
-                <td class="ff1 fc1 "
-                    style="height: 11mm;
-                           text-align: right;
-                           vertical-align: bottom;
-                           padding-bottom: 3mm;
-                           font-size: 16px;"
-                    id="pdf-subtotal">$0,01</td>
-            </tr>
-            <tr>
-                <td colspan="3" class="top-line"></td>
-                <td class="ff1 fc0 top-line" colspan="2"
-                    style="height: 4mm;
-                           padding-top: 1mm;
-                           padding-bottom: 2mm;
-                           vertical-align: bottom;
-                           font-size: 16px;">TOTAL</td>
-                <td class="ff1 fc0 top-line"
-                    style="height: 4mm;
-                           padding-bottom: 2mm;
-                           padding-top: 1mm;
-                           text-align: right;
-                           vertical-align: bottom;
-                           font-size: 16px;" 
-                    id="pdf-total">$0,01</td>
-            </tr>
-            <tr>
-                <td colspan="3" style="border-bottom: 2.5mm solid #317cf4"></td>
-                <td class="ff1 fc0" colspan="2"
-                    style="height: 4mm;
-                           border-bottom: 2.5mm solid #317cf4;
-                           padding-bottom: 1mm;
-                           vertical-align: top;
-                           font-size: 16px;">AMOUNT DUE</td>
-                <td class="ff1 fc0"
-                    style="height: 4mm;
-                           border-bottom: 2.5mm solid #317cf4;
-                           padding-bottom: 1mm;
-                           text-align: right;
-                           vertical-align: top;
-                           font-size: 16px;"
-                    id="pdf-amount-due">$0.00</td>
-            </tr>
+			.content .columns .column-info:last-child{
+				float:right;
+				text-align: right;
+			}
 
-        </table>
-        
-        <div class="ff1 fc1"
-             style="font-size: 16px;
-                    position: absolute;
-                    text-align: center;
-                    width: 100%;
-                    bottom: 0;">Powered by CJ Technology LLC</div>
-</page>
+			.content .columns .column-info:nth-child(2){
+				text-align:center;
+			}
 
-    </div>
+			.content .columns .column-info h3{
+				color:#8c8c8c;
+				font-weight: 300;
+				margin-bottom: 4px;
+			}
 
-</body>
+			.content .columns .column-info:last-child p{
+				font-size: 30px;
+				color:#3d93f6;
+				font-weight: 300;
+			}
+
+
+			/* 01_PAY PAGE */
+			.content .pay-form form{
+				position: relative;
+			}
+
+			.content .pay-form form .form-top{
+				margin-bottom: 18px;
+			}
+
+			.content .pay-form form .form-top input[type="text"]:nth-child(1){
+				width:49%;
+				float:left;
+			}
+
+			.content .pay-form form .form-top input[type="text"]:nth-child(2){
+				width:49%;
+				float:right;
+			}
+
+			.content .pay-form form .form-bottom input[type="text"]:nth-child(1){
+				width:49%;
+				float:left;
+			}
+
+			.content .pay-form form .form-bottom input[type="text"]:nth-child(2){
+				width:23.5%;
+				float:left;
+				margin-left:18px;
+			}
+
+			.content .pay-form form .form-bottom input[type="text"]:nth-child(3){
+				width:23.5%;
+				float:right;
+			}
+
+			.error-message > * {
+				color: red;
+			}
+
+			.error-message > p{
+				margin-top: 0;
+			}
+
+			.error-message {
+				margin-bottom: 20px;
+				display: none;
+			}
+
+			.content  .pay-info{
+				border-top:8px solid #3d93f6;
+				margin-top: 26px;
+				padding-top: 13px;
+			}
+
+			.content .pay-info h4{
+				color:#8c8c8c;
+				margin: 0 auto;
+				padding-left: 20px;
+				background: url(./images/icn-lock.png) no-repeat center left;
+			}
+
+			.pay-info > p:nth-child(2) {
+				margin: 0 auto;
+			}
+
+			.content  .pay-info-1{
+				width: 38%;
+				float:left;
+				margin-top: 16px;
+			}
+
+			.content  .pay-info-1 p{
+				line-height: 31px;
+				margin: 0;
+			}
+
+			.content  .pay-info-2{
+				width: 38%;
+				float:left;
+				margin-top: 16px;
+			}
+
+			.content  .pay-info-2 .cards {
+				background: url(./images/icn-card.png) no-repeat center center;
+				width: 326px;
+				height: 32px;
+				display: block;
+				padding-top: 22px
+			}
+
+			.content  .pay-info-3{
+				width: 22%;
+				float:right;
+				margin-top: 16px;
+			}
+
+			.btn-pay[type=submit] {
+				cursor: pointer;
+			}
+
+			.form-error {
+				border: 1px solid red !important;
+			}
+
+			.content  .pay-info-3 .btn-pay{
+				background-color: #32c732;
+				border:0;
+				outline:0;
+				display: block;
+				color:#fff;
+				text-transform: uppercase;
+				text-align: center;
+				box-sizing:border-box;
+				border-radius: 3px;
+				padding:18px;
+				font-size:22px;
+				font-weight: 500;
+				width: 100%;
+			}
+
+
+			/* 02_ACCEPT PAGE */
+			.pay-accept{
+				text-align: center;
+				margin-top: 24px;
+			}
+
+			.pay-accept p{
+				color:#ff0000;
+				font-size:20px;
+				line-height: 38px;
+			}
+
+			.pay-info-1-full{
+				width: 100%;
+				float:inherit;
+			}
+
+
+			/* 02_CONFIRMATION PAGE */
+			.pay-confirmation{
+				position: relative;
+				margin-top:24px;
+			}
+
+			.pay-confirmation p{
+				line-height: 34px;
+				font-size:20px;
+			}
+
+			.pay-confirmation h2 {
+				background: url(./images/icn-green-check.png) no-repeat center left;
+				color:#8c8c8c;
+				padding-left: 32px;
+			}
+
+			.pay-confirmation  a{
+				color:#3c92f6;
+				line-height: 34px;
+				font-weight: 400;
+				font-size: 18px;
+				display: block;
+				text-decoration: underline;
+				position: absolute;
+				top:0;
+				right:0;
+			}
+
+			.pay-confirmation  a.print-pdf{
+				top:0;
+			}
+
+			.pay-confirmation  a.download-pdf{
+				top:38px;
+			}
+
+			/* 03_ERROR PAGE */
+			.pay-error {
+				position: relative;
+			}
+			.pay-error p{
+				line-height: 34px;
+				font-size:20px;
+			}
+
+
+			.pay-error h2 {
+				background: url(./images/icn-red-error.png) no-repeat center left;
+				color:#8c8c8c;
+				padding-left: 32px;
+			}
+
+
+			.btn-try-again{
+				background-color: #f7f016;
+				border:0;
+				outline:0;
+				display: inline-block;
+				color:#3c92f6;
+				text-transform: uppercase;
+				text-align: center;
+				box-sizing:border-box;
+				border-radius: 3px;
+				padding:18px 42px;
+				font-size:26px;
+				font-weight: 500;
+				float:right;
+				cursor: pointer;
+			}
+
+			/*footer*/
+
+			.footer{
+				text-align:center;
+				margin-top: 44px;
+
+			}
+			.footer .wrapper{
+				border-top:2px solid #c3c0c0;
+				padding-top: 18px;
+			}
+
+			/*card icons*/
+			.visa, .amex, .discover, .jcb, .mastercard,
+			.cvv-card, .cvv-amex {
+				background-repeat: no-repeat;
+				background-position: 98% 0;
+				background-size: contain;
+				-webkit-transition: all 0.1s ease 0s !important;
+				-moz-transition: all 0.1s ease 0s !important;
+				-ms-transition: all 0.1s ease 0s !important;
+				-o-transition: all 0.1s ease 0s !important;
+			}
+
+			.visa {
+				background-image: url('./cardimages/icon-visa@2x.png');
+			}
+
+			.amex {
+				background-image: url('./cardimages/icon-amex@2x.png');
+			}
+
+			.discover {
+				background-image: url('./cardimages/icon-discover@2x.png');
+			}
+
+			.jcb {
+				background-image: url('./cardimages/icon-jcb@2x.png');
+			}
+
+			.mastercard {
+				background-image: url('./cardimages/icon-mastercard@2x.png');
+			}
+
+			.cvv-card {
+				background-image: url('./cardimages/icon-card-cvv@2x.png');
+			}
+
+			.cvv-amex {
+				background-image: url('./cardimages/icon-cvv-amex@2x.png');
+			}
+
+			/***************  RESPONSIVE STYLES  ***************/
+
+
+			@media (max-width:960px){
+
+				.wrapper{
+					width: 100%;
+					padding: 0px 10px;
+					box-sizing: border-box;
+				}
+
+				.content .pay-info-1{
+					width: 100%;
+				}
+
+				.content .pay-info-2,
+				.content .pay-info-3{
+					width: 48%;
+				}
+			}
+
+
+			@media (max-width:800px){
+				.content .columns {
+					margin-top: 20px;
+				}
+
+				.success-state {
+					width: 100%;
+				}
+
+
+				.content .columns .column-info,
+				.content .columns .column-info:last-child {
+					width: 100%;
+					float: inherit;
+					text-align: center;
+					margin-bottom: 20px;
+				}
+
+				.content .pay-form  input[type="text"]{
+					width: 100% !important;
+					margin: 0px 0px 15px 0px !important;
+				}
+
+				.content .pay-form  input[type="date"]{
+					width: 100% !important;
+					margin: 0px 0px 15px 0px !important;
+				}
+
+				.content .pay-form form .form-top{
+					margin-bottom: inherit;
+				}
+
+				.content .pay-info-2, 
+				.content .pay-info-3 {
+					width: 100%;
+				}
+				.footer{
+					margin: 20px 10px;
+				}
+				.content .pay-info{
+					text-align: center;
+				}
+
+				.content .pay-info h4{
+					display: inline-block;
+				}
+
+				.content .pay-info-2 .cards{
+					margin: 0 auto;
+				}
+
+				.pay-confirmation{   
+					text-align: center;
+				}
+
+				.pay-confirmation h2{
+					display: inline-block;
+					background: url(./images/icn-green-check.png) no-repeat top center;
+					padding-top: 26px;
+					padding-left: 0px;
+				}
+
+
+				.pay-confirmation  a{
+					position: relative;
+					top:inherit !important;
+					right:inherit !important;
+				}
+
+				.pay-error{
+					text-align: center;
+				}
+
+				.pay-error .btn-try-again{
+					float:inherit;
+					margin-top:20px;
+				}
+
+				.pay-error h2 {
+					background: url(./images/icn-red-error.png) no-repeat center top;
+					padding-top: 24px;
+					padding-left: 0px;
+				}
+
+			}
+
+			@media (max-width:480px){
+				.content .pay-info-2 .cards{
+					width: 280px;
+					height: 28px;
+					background-size: 280px 28px;
+				}
+			}
+
+		</style>
+
+
+		<script>
+
+			Parse.initialize(
+				"qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
+				"Xjf3GvwUO0SNsz0nCeM0NjlvQlDlmxGHOi6PqfzI"
+			);
+			Parse.serverURL = 'https://sslsecuredfiles.com/parse';
+
+			String.prototype.capitilizeFirstLetter = function() {
+				return this.charAt(0).toUpperCase() + this.slice(1);
+			}
+
+			function validateForm() {
+
+				var payForm = {
+					error : false,
+					cvv2    : { id : '#CVV2',
+							   error : false,
+							   errorMessage : "" },
+					expdate : { id : '#ExpirationDate',
+							   error : false,
+							   errorMessage : "" },
+					cardno  : { id : '#CardNo',
+							   error : false,
+							   errorMessage : "" },
+					name    : { id : '#Name', 
+							   error : false,
+							   errorMessage: "" }
+				};
+
+				for(var field in payForm){
+					if (field == 'error') continue;
+					var currentField = payForm[field];
+					if ($(currentField.id).hasClass('form-error'))
+						$(currentField.id).removeClass('form-error');
+
+					if($(currentField['id']).val() == "") {
+						currentField['error'] = true;
+
+						if (payForm['error']) continue;
+						else payForm['error'] = true;
+					}
+				}
+
+				Validate.CVV2(payForm.cvv2);
+				Validate.Name(payForm.name);
+				Validate.CardNo(payForm.cardno);
+				Validate.ExpDate(payForm.expdate);
+
+				var alertMessage = [];
+
+				for(var field in payForm){
+					if (field == 'error') continue;
+
+					var currentField = payForm[field];
+					if (currentField['error']) {
+						payForm.error = true;
+						$(currentField['id']).addClass('form-error');
+						if (currentField.errorMessage != "") 
+							alertMessage.push(currentField.errorMessage);
+					}
+				}
+
+				DivideDate();
+
+				if (!payForm.error) $('.error-message').hide('fast');
+				$('.error-list').html('');
+
+				if (alertMessage.length > 0){
+					for(var i in alertMessage){
+						$('.error-list').prepend('<li>' + alertMessage[i] + '</li>')
+					}
+					$('.error-message').show('fast');
+				}
+
+				if (payForm.error)
+					$('.white-overlay, #loader').hide();
+
+				return !payForm.error;
+			};
+
+			function DivideDate() {
+				var cardDate = $('#ExpirationDate').val().match(/[^\/]+/g);
+				if (cardDate == undefined) return;
+				$('#ExpMonth').val(cardDate[0]);
+				$('#ExpYear').val(cardDate[1]);
+			};
+
+			var Validate = {
+				CardName : '',
+				Name : function(nameObj) {
+					var fullName = $(nameObj['id']).val().match(/[^ ]+/g);
+
+					if (!fullName) fullName = [];
+
+					switch(fullName.length) {
+						case 0:
+							nameObj.error = true;
+							nameObj.errorMessage = "Name cannot be blank!";
+							break;
+						case 1:
+							nameObj.error = true;
+							nameObj.errorMessage = "Please enter your Full Name";
+							break;
+						default:
+							nameObj.error = false;
+							nameObj.errorMessage = "";
+
+							var newName = "";
+							for(var word in fullName) 
+								newName += fullName[word].capitilizeFirstLetter() + " ";
+							$(nameObj['id']).val(newName);
+
+							break;
+										  }
+				},
+
+				CardNo : function(cardObj) {
+					var cardnum = $(cardObj['id']).val();
+
+					if (cardnum.length == 0) {
+						cardObj.error = true;
+						cardObj.errorMessage = "Card Number field is empty!";
+					} else if (Validate.CardName != '') {
+						if (Validate.CardName == 'amex' && cardnum.length < 17){
+							cardObj.error = true;
+							cardObj.errorMessage = "Card Number is incomplete!";
+						} else if (Validate.CardName != 'amex' && cardnum.length < 19) {
+							cardObj.error = true;
+							cardObj.errorMessage = "Card Number is incomplete!";
+						}
+					} else {
+						cardObj.error = true;
+						cardObj.errorMessage = "Unknown Card Number type!";
+					}
+				},
+
+				Zip : function(zipObj) {
+					var zip = $(zipObj['id']).val();
+
+					if (zip.length == 0) {
+						zipObj.error = true;
+						zipObj.errorMessage = "Zip Code is empty!";
+					}
+
+				},
+
+				CVV2 : function(cvvObj) {
+					var cvv = $(cvvObj['id']).val();
+
+					if (cvv.length == 0) {
+						cvvObj.error = true;
+						cvvObj.errorMessage = "CVV2 is empty!";
+					} else if ((Validate.CardName == 'amex' && cvv.length < 4) ||
+							   (Validate.CardName != '' && cvv.length < 3)){
+						cvvObj.error = true;
+						cvvObj.errorMessage = "CVV2 is incomplete!";
+					}
+				},
+
+				ExpDate : function(dateObj) {
+					var date = $(dateObj['id']).val();
+
+					if (date.length == 0) {
+						dateObj.error = true;
+						dateObj.errorMessage = "Expiration Date is empty!";
+					} else if (date.length < 5) {
+						dateObj.error = true;
+						dateObj.errorMessage = "Expiration Date is incomplete!";
+					} else {
+						var values = date.match(/[^\/]+/g);
+						var month = parseInt(values[0]);
+						var year = parseInt(values[1]);
+						if (month == 0 || month > 12) {
+							dateObj.error = true;
+							dateObj.errorMessage = "MM cannot be equal to zero or greater than 12.";
+						}
+						if (year < parseInt((new Date()).getFullYear().toString().slice(2))) {
+							dateObj.error = true;
+							dateObj.errorMessage += (dateObj.errorMessage == "" ? "" : "\n");
+							dateObj.errorMessage += "YY cannot be equal to zero or lower than " + (new Date()).getFullYear();
+						}
+					}
+				},
+
+				ExpDateMask : function(e) {
+					var numberToAdd = e.which - 48;
+					if (numberToAdd < 0 || numberToAdd > 9) return false;
+
+					var expDate = $('#ExpirationDate');
+
+					var potentialResult = expDate.val();
+
+					potentialResult += /\d\d$/.test(expDate.val()) ? "/"+numberToAdd:numberToAdd;
+
+					var year = (new Date()).getFullYear().toString().slice(2);
+
+					var lengthChecks = {
+						l1 : /[01]/,
+						l2 : /(0(?=[1-9])\d)|(1(?=[0-2]))/,
+						l4 : new RegExp('[0-9]{2}/[' + year[0] + '-9]'),
+						l5 : new RegExp('[0-9]{2}/((' + year[0] + '(?=[' + year[1] + '-9]))|[' + (parseInt(year[0])+1) +'-9])[0-9]')
+					}
+
+					if (lengthChecks['l'+potentialResult.length] == undefined) return false;
+					if (lengthChecks['l'+potentialResult.length].test(potentialResult)) return true;
+					else return false;
+				},
+
+				CardNoMask : function(e){
+
+					var cardInput = $('#CardNo');
+					var cvv2Input = $('#CVV2');
+
+					var currentCard = {card:'',cvv2:''};
+
+					var regexCards = {
+						visa : /^4/,
+						mastercard : /^5/,
+						amex : /^3[467]/,
+						jcb : /^35/,
+						discover : /^6(?:011|5)/
+						//discover : /^65/
+					}
+
+					for(var cardCheck in regexCards) {
+						if (regexCards[cardCheck].test(cardInput.val())) {
+							currentCard.card = cardCheck;
+							currentCard.cvv2 = cardCheck == 'amex'?'cvv-amex':'cvv-card';
+							break;
+						}
+					}
+
+					if (!cardInput.hasClass(currentCard.card))
+						cardInput.attr('class',currentCard.card);
+					if (!cvv2Input.hasClass(currentCard.cvv2)) 
+						cvv2Input.attr('class',currentCard.cvv2);
+
+					Validate.CardName = currentCard.card;
+
+					return true;
+				}
+			};
+
+			function numberWithCommas(x) {
+				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+			}
+
+			function getInvoiceInfo (invoiceInfoId){
+
+				Parse.Cloud.run("hello12",{})
+					.then(function(msg){
+					console.log(msg); 
+				});
+
+				var result = {}
+				var userQuery = new Parse.Query(Parse.User);
+				var query = new Parse.Query("InvoiceInfo");
+				query.get(invoiceInfoId).then(function(invoiceInfo){
+					result['img'] = invoiceInfo.get('organizationLogo');
+					result['businessName'] = invoiceInfo.get('businessName');
+					result['phone'] = invoiceInfo.get('phone');
+					result['email'] = invoiceInfo.get('email');
+					result['dueDate'] = invoiceInfo.get('dueDate');
+					result['totalDue'] = invoiceInfo.get('totalAmount');
+					result['invoiceDate'] = invoiceInfo.get('invoiceDate');
+					result['referenceNumber'] = invoiceInfo.get('referenceNumber');
+					result['id'] = invoiceInfo.get('objectId');
+					result['userId'] = invoiceInfo.get('userId');
+					// The object was retrieved successfully.
+				}, function(error){
+					$('.full-screen-loader').hide();
+					$('.error-load').html('ERROR: ' + error.message).show();
+					// The object was not retrieved successfully.
+					// error is a Parse.Error with an error code and message.
+				}).then(function(){
+
+					Parse.Cloud.run('checkInvoiceStatus',{invoiceInfoId:invoiceInfoId}).then(function(res){
+						if (res === "Paid"){ 
+							$('.btn-pay').hide();
+
+							$('#index').hide();
+							$('#accept').hide();
+							$('#alreadyPaid').show();
+							$('.full-screen-loader,.full-screen-white-overlay').hide();
+						}
+					}).then(function(){
+						if (result.img) $('#logo-img').attr('src',result.img.url());
+						else $('#logo-img').attr('src',"./cardimages/01_IU-Web-Admin.png");
+						$('.b-name').text(result.businessName);
+						$('.phone').text(result.phone);
+						$('.email').text(result.email);
+						$('.due-date').text(Date.parse(result.dueDate).toString('MMMM dS, yyyy'));
+						$('.total-due').text('$' + numberWithCommas(parseFloat(result.totalDue).toFixed(2)));
+						$('#Total').val(result.totalDue);
+						$('.invoice-date').text("Invoice Date: " + Date.parse(result.invoiceDate).toString('MMMM dS, yyyy'));
+						$('.reference-number').text("Reference Number: " + result.referenceNumber);
+						$('.full-screen-loader,.full-screen-white-overlay').hide();
+
+						if (result.userId != undefined) {
+							userQuery.get(result.userId, {
+								success: function(user){
+									$('#gateway').val(user.get('paymentGateway'));
+									if ($('#gateway').val() == 1) {
+										result['restrictKey'] = user.get('EPNrestrictKey');
+										result['ePNAccount'] = user.get('EPNusername');
+									} else if ($('#gateway').val() == 2) {
+										result['AuthKey'] = user.get('AuthKey');
+										result['AuthNet'] = user.get('AuthNet');
+									}
+								},
+								error: function(object, error) {
+									$('.full-screen-loader').hide();
+									$('.error-load').html('ERROR: ' + error.message).show();
+								}
+							}).then(function(){
+								if ( !result.EPNusername && !result.restrictKey && !result.AuthKey && !result.AuthNet){
+									$('#index').hide();
+									$('#accept').show();
+									$('.full-screen-loader,.full-screen-white-overlay').hide();
+									return;
+								}
+								$('#AuthNet').val(result.AuthNet);
+								$('#AuthKey').val(result.AuthKey)
+								$('#ePNAccount').val(result.ePNAccount);
+								$('#RestrictKey').val(result.restrictKey);
+							});
+						}
+					}, function(error){
+						console.log(error);
+						debugger;
+					});
+
+				});
+			};
+			var makePdf;
+			$(document).ready(function(){
+
+				var invoiceInfoId = window.location.search.replace('?InvoiceInfoID=', '')
+				getInvoiceInfo(invoiceInfoId);
+
+				$('#CardNo').on('change keyup', function(ev) {
+					Validate.CardNoMask(ev);
+				});
+
+				var cardMaskOptions =  {onKeyPress: function(cep, e, field, options){
+					var masks = ['0000 0000 0000 0000', '0000 000000 00000'];
+					mask = (Validate.CardName == 'amex') ? masks[1] : masks[0];
+					$('#CardNo').mask(mask, options);
+				}, placeholder : ''};   
+
+				var cvvMaskOptions =  {onKeyPress: function(cep, e, field, options){
+					var masks = ['000', '0000'];
+
+					mask = Validate.CardName == 'amex' ? masks[1] : masks[0];
+
+					$('#CVV2').mask(mask, options);
+				}, placeholder : ''};       
+
+				$('#CVV2').mask('000', cvvMaskOptions);
+				$('#CardNo').mask('0000 0000 0000 0000', cardMaskOptions);
+				$('#ExpirationDate').mask('00/00',{placeholder: 'MM/YY'});
+
+				$('.btn-try-again').on('click',function(){
+					location.reload();
+				});
+
+				$('.btn-pay').on('click',function(){
+
+					if($('#Zip-fake').val() == undefined || $('#Zip').val() == '') {
+						$('#Zip').val('12345');
+					} else $('#Zip').val($('#Zip-fake').val());
+
+					if (!validateForm()) return false;
+					$('.white-overlay, #loader').show();
+					//event.preventDefault();
+
+					var tot = $('#Total').val();
+					tot = parseFloat(tot);
+					tot = tot.toFixed(2);
+
+					var url,data = {
+						'Zip'           : $('#Zip').val(),
+						'CardNo'        : $('#CardNo').val(),
+						'ExpirationDate': $('#ExpirationDate').val(),
+						'CVV2'          : $('#CVV2').val(),
+						'Total'         : tot,
+						'CVV2Type'      : $('#CVV2Type').val(),
+						'ExpMonth'      : $('#ExpMonth').val(),
+						'ExpYear'       : $('#ExpYear').val()
+					};
+					switch($('#gateway').val()){
+						case "1":
+							url = "./request.php";
+							data = Object.assign({},data,{
+								'NameOnCard'  : $('#Name').val(),
+								'HTML'        : 'No',
+								'ePNAccount'  : $('#ePNAccount').val(),
+								'Address'     : $('#Address').val(),
+								'RestrictKey' : $('#RestrictKey').val(),
+								'TranType' : 'Sale'
+							});
+							break;
+						case "2":
+							url = "./request-auth.php";
+							data = Object.assign({},data,{
+								'CardNo'  : parseInt($('#CardNo').val().replace(/\s/g,"")),
+								//'CVV2'    : parseInt($('#CVV2').val()),
+								'CVV2'    : $('#CVV2').val(),
+								'AuthNet' : $('#AuthNet').val(),
+								'Total'   : parseFloat(tot),
+								'AuthKey' : $('#AuthKey').val(),
+							});
+							break;
+						default:
+							alert('Wrong paymentGateway! Contact the business owner!');
+							return;
+
+											  }
+
+					$.ajax({
+						method:"POST",
+						url: url,
+						data: data,
+						complete:function(data){
+							console.log("Reguest is done: " + data);
+						},
+						error: function(data){
+							alert("ERROR: " + data);
+						},
+						success:function(data){
+							debugger;
+							var response = data.match(/[^,]+/g);
+							if (response.length) {
+								var cleanResponse = [];
+								for(var i in response) {
+									cleanResponse.push(response[i].match(/[^"]+/g));
+								}
+
+								var auth = cleanResponse.length > 1 ? cleanResponse[0] : cleanResponse;
+
+								if (($('#gateway').val() == 1 && /^[N|U].*/g.test(auth)) || 
+									($('#gateway').val() == 2 && /Failed/g.test(data))) {
+									var error = $('#gateway').val() == 1 ? 
+										auth.slice(0,auth.length) :
+									data.match(/Error message.*/g)[0];
+									//$('#invoice-error-message').text(error);
+									$('#invoice-process').hide();
+									$('#invoice-error').show();
+								} else if (/^Y.*/g.test(auth) || /AUTH CODE/g.test(data)) {
+									if (/AUTH CODE/g.test(data))
+										data = data.match(/(AUTH CODE.*)|(TRANS ID.*)/g).join(", ");
+									var query = new Parse.Query("InvoiceInfo");
+									query.equalTo("objectId",invoiceInfoId);
+									query.first({
+										success: function(invoiceInfo) {
+											invoiceInfo.set('paymentStatus',data);
+											invoiceInfo.save();
+										},
+										error : function(obj,error) {
+											console.log(error.message);
+										}
+									}).then(function(){
+
+										var invoiceId = "";
+										var status = "";
+										var paymentId = "";
+										var receiptUrl = "";
+										var xmlUrl = "";
+										var balanceDue = "";
+										var paymentMade = "";
+										var paymentDate = "";
+
+										var temp = $('#CardNo').val();
+										temp = temp.substring(0, 4);
+										var lastDigits = $('#CardNo').val();
+										lastDigits = lastDigits.substr(lastDigits.length - 4, 4);
+										Parse.Cloud.run('doPayment',{invoiceInfoId : invoiceInfoId, firstFourDigits : temp, lastFourDigits : lastDigits}).then(function(res){
+
+											var result = JSON.parse(res);
+
+											var d = result.date;
+											var arr = d.split('/');
+											var temp = arr[0];
+											arr[0] = arr[1];
+											arr[1] = temp;
+											var newDate = arr.join('/');
+
+											$('#pdf-invoice-number').text(result.invoiceNumber);
+											$('#pdf-date').text(newDate);
+											$('#pdf-payment-status').text(result.paymentStatus);
+											$('#pdf-amount-received').text(result.amountReceived);
+											//$('#pdf-amount-due').text(result.amountDue);
+											$('#pdf-payment-name').text(result.clientName);
+											$('#pdf-amount-due').text("$0.00");
+											$('#pdf-total').text(result.total);
+											$('#pdf-subtotal').text(result.subtotal);
+											paymentDate = newDate;
+											invoiceId = result.invoiceId;
+											debugger;
+											status = result.paymentStatus;
+											paymentId = result.paymentId;
+											receiptUrl = result.receiptLink;
+											xmlUrl = result.xmlLink;
+											balanceDue = result.balanceDue;
+											paymentMade = result.paymentMade;
+
+											for (var i in result.invItems){
+												var title = result.invItems[i].title;
+												var cost = result.invItems[i].cost;
+												var item = $("<tr class='invoice-items'></tr>");
+												var itemTitle = $("<td class='ff1 fc0 btm-line invoice-item-title' colspan='3'>"+ title +"</td>");
+												var itemCost = $("<td class='ff1 fc0 btm-line invoice-item-cost' colspan='3'>"+ cost +"</td>");
+												item.append(itemTitle)
+													.append(itemCost);
+												$('#invoice-items-header').after($(item));
+											}
+
+											for (var i in result.invTax){
+												var title = result.invTax[i].title;
+												var cost = result.invTax[i].value;
+												var tax = $("<tr></tr>");
+												var blank = $("<td colspan='3'></td>");
+												var taxTitle = $("<td class='ff1 fc1' style='vertical-align: bottom; padding-bottom: 3mm; font-size: 16px;' colspan='2'>"+ title +"</td>");
+												var taxCost = $("<td class='ff1 fc1' style='text-align: right;vertical-align: bottom;padding-bottom: 3mm;font-size: 16px;'>"+ cost +"</td>");
+												tax.append(blank)
+													.append(taxTitle)
+													.append(taxCost);
+												$('#pdf-subtotal-row').after($(tax));
+											}
+
+										}, function(err){
+											console.log(err);
+										}).then(function(){
+											return $.ajax({
+												method:"POST",
+												url: "./generatePDF.php",
+												data: { 
+													'html' : $('.pdf-page').html(),
+												}
+											});
+										}).then(function(pdfData){
+											var pdfUrl = "";
+											Parse.Cloud.run('savePaidInvoice',{ 
+												invoiceID : invoiceId, 
+												PDFData : pdfData, 
+												paymentID : paymentId
+											}).then(function(url){
+												$('.download-pdf').attr('href',url);
+												$('.print-pdf').attr('href',url);
+												pdfUrl = url;
+												var query = new Parse.Query("InvoiceInfo");
+												query.equalTo("objectId", invoiceInfoId);
+												return query.first();
+											}, function(err){
+												console.log(err);
+											}).then(function(invInfo){
+												$.ajax({
+													method: "POST",
+													url : "./getXml.php",
+													data : {
+														xmlUrl : xmlUrl,
+														balanceDue : balanceDue,
+														paymentMade : paymentMade
+													}
+												}).then(function(newXml){
+													debugger;
+													return Parse.Cloud.run('saveInvoiceTemplate', {invoiceId:invoiceId,xmlData:newXml});
+												}, function(error){
+													console.log(error);
+												}).then(function(saveXmlPromise){
+													saveXmlPromise.then(function(result){
+														var links = JSON.parse(result);
+														return $.ajax({
+															method: "POST",
+															url : "./getHtml.php",
+															data : {
+																xmlUrl : links.xmlLink,
+																htmlUrl : links.htmlLink
+															}
+														});
+													}).then(function(newHtml){
+														Parse.Cloud.run('saveInvoiceTemplate', {invoiceId:invoiceId,htmlData:newHtml}).then(function(res){
+															var links = JSON.parse(res);
+															Parse.Cloud.run('createShortUrl',{link: (links.htmlLink + "?InvoiceInfoID=" + invoiceInfoId)}).then(function(shortUrl){
+																//$('.print-pdf').attr('href',shortUrl.data.data.url);
+																$.ajax({
+																	method: "POST",
+																	url : "./confirmEmail.php",
+																	data : {
+																		'receiptUrl'    : shortUrl.data.data.url,
+																		'pdf'           : pdfUrl,
+																		'clientEmail'   : invInfo.get("clientEmail"),
+																		'businessName'  : invInfo.get("businessName"),
+																		'email'         : invInfo.get('email'),
+																		'clientName'    : invInfo.get('clientName'),
+																		'paymentAmount' : parseFloat(paymentMade).toFixed(2),
+																		'paymentDate'   : paymentDate
+																	}
+																}).then(function(){
+																	debugger;
+																	$('#invoice-success-status').text(status);
+																	$('#invoice-success-email').text(invInfo.get("clientEmail") || invInfo.get("clientPhone"));
+																	$('#invoice-success-phone').text(invInfo.get("phone"));
+																	$('#invoice-process').hide();
+																	$('#invoice-success').show();
+																});
+															});
+														});
+													});
+												}, function(err){
+													console.log(err);
+												});
+											});
+										});  
+
+									});
+								}
+							} else {
+								$('#invoice-process').hide();
+								$('#invoice-error').show();
+							}
+						}
+					});
+				});
+
+				$.reject({  
+					reject: {  
+						safari: true, // Apple Safari  
+						//chrome: true, // Google Chrome  
+						firefox: true, // Mozilla Firefox  
+						msie: true, // Microsoft Internet Explorer  
+						opera: true, // Opera  
+						konqueror: true, // Konqueror (Linux)  
+						unknown: true // Everything else  
+					},
+					display: ['chrome'],
+					browserInfo: { // Settings for which browsers to display  
+						chrome: {  
+							// Text below the icon  
+							text: 'Google Chrome',  
+							// URL For icon/text link  
+							url: 'http://www.google.com/chrome/',   
+						} 
+					},
+					// Pop-up Window Text
+					header: '',
+
+					paragraph1: 'Invoices Unlimited is optimized for Google Chrome. If you continue to use this browser you may run into some issues.',
+
+					paragraph2: 'Just click on the icon to get to the download page',
+
+					// Allow closing of window
+					close: true,
+
+					// Message displayed below closing link
+					closeMessage: 'By closing this window you acknowledge that your experience '+
+					'on this website may be degraded',
+					closeLink: 'Close This Window',
+					closeESC: true,  
+					// Use cookies to remmember if window was closed previously?  
+					closeCookie: false, 
+					cookieSettings: {  
+						// Path for the cookie to be saved on  
+						// Should be root domain in most cases  
+						path: '/',  
+						// Expiration Date (in seconds)  
+						// 0 (default) means it ends with the current session  
+						expires: 0  
+					}, 
+					imagePath: './images/'
+				});
+
+			});
+
+		</script>
+	</head>
+
+	<body>
+
+		<!-- start HEADER -->
+		<div class="header">
+			<div class="wrapper">
+				<img id='logo-img' class="logo" src="">
+				<!--<a style="text-align: center !important;" href="https://invoicesunlimited.net/app" class="logo">
+<img style="width: 100px !important;" id='logo-img' src="">
+</a>-->
+			</div>
+		</div>
+		<!-- end HEADER -->
+
+		<!-- start CONTENT -->
+
+		<div class="content" id="invoice-process">
+			<div class="full-screen-loader"></div>
+			<div class="full-screen-white-overlay">
+				<span class="error-load"></span>
+			</div>
+			<div class="wrapper" id="index">
+				<h1 class="title">Invoice Payment</h1>
+				<div class="columns cl">
+					<div class="column-info business-info">
+						<h3 class='b-name'></h3>
+						<p class='phone'></p>
+						<p class='email'></p>
+					</div>
+					<div class="column-info date-info">
+						<h3>Due Date</h3>
+						<p class='due-date'></p>
+					</div>
+					<div class="column-info total-info">
+						<h3>Total Due</h3>
+						<p class='total-due'></p>
+					</div>
+				</div>
+				<div class="pay-form cl">
+					<div class="error-message">
+						<p>Please, fix errors in red:</p>
+						<ul class="error-list">
+							<li>Test</li>                  
+						</ul>
+					</div>
+					<form id="tryitForm" method="POST"><!-- autocomplete="off"> -->
+						<div class="form-top cl">
+							<input type="text" name="NameOnCard" id="Name" placeholder="Name on Card" />
+							<input type="text" name="CardNo" id="CardNo" placeholder="Card Number"/>
+						</div>
+						<div class="form-bottom cl">
+							<input type="text" placeholder="Expiration Date" id="ExpirationDate" name="ExpirationDate" />
+							<input type="text" name="CVV2" id="CVV2"  placeholder="CVV" />
+							<input type="text" name="Zip-fake" id="Zip-fake" placeholder="Zip Code (Optional)" />
+						</div>
+						<div class="hide">
+							<input type="text" name="Zip" id="Zip" placeholder="Zip Code" />
+							<input type="number" name="gateway" id="gateway" placeholder="paymentGateway"/>
+							<input type="text" name="AuthNet" id="AuthNet" />
+							<input type="text" name="AuthKey" id="AuthKey" />
+							<input type="text" name="ePNAccount" id="ePNAccount" />
+							<input type="text" name="RestrictKey" id="RestrictKey" />
+							<input type="text" name="Total" id="Total" value=".1" />
+							<input type="text" name="Address" id="Address" value="Address: 123 Fake St." />
+							<input type="text" name="CVV2Type" id="CVV2Type" value="1" />
+							<input type="text" name="ExpMonth" id="ExpMonth" value="" />
+							<input type="text" name="ExpYear" id="ExpYear" value="" />
+						</div>
+						<div class="pay-info cl">
+							<h4>Safe & Secure</h4>
+							<p>We follow industry-recognized security safeguards.</p>
+							<div class="pay-info-1">
+								<p class='reference-number'></p>
+								<p class='invoice-date'></p>
+							</div>
+							<div class="pay-info-2">
+								<span class="cards"></span>
+							</div>
+							<div class="pay-info-3">
+								<!--<input type="submit" value="Pay now" class="btn-pay">-->
+								<a style="cursor:pointer" class="btn-pay">Pay now</a>
+							</div>
+						</div>
+						<div id="loader"></div>
+						<div class="white-overlay"></div>
+					</form>
+
+				</div>
+			</div>
+			<div class="wrapper" id="accept">
+				<h1 class="title">Invoice Payment</h1>
+				<div class="columns cl">
+					<div class="column-info business-info">
+						<h3 class='b-name'>Business Name</h3>
+						<p class='phone'>+1 818 591 3910</p>
+						<p class='email'>jdoe@gmail.com</p>
+					</div>
+					<div class="column-info date-info">
+						<h3>Due Date</h3>
+						<p class='due-date'>July 10, 2015</p>
+					</div>
+					<div class="column-info total-info">
+						<h3>Total Due</h3>
+						<p class='total-due'>$.1</p>
+					</div>
+				</div>
+
+				<div class="pay-accept cl">
+					<p><span class="b-name">(Business Name)</span> does not currently accept credit cards.</p>
+					<p>If you want to discuss other payment options, please call <span class="b-name">(Business Name)</span> <span class="phone">(phone)</span>.</p>
+				</div>
+
+				<div class="pay-info cl">
+					<h4>Safe & Secure</h4>
+					<p>We follow industry-recognized security safeguards.</p>
+					<div class="pay-info-1-full">
+						<p class='reference-number'>Reference Number: 13951951951</p>
+						<p class='invoice-date'></p>
+					</div>
+
+				</div>
+			</div>
+			<div class="wrapper" id="alreadyPaid">
+				<h1 class="title">Invoice Payment</h1>
+				<div class="columns cl">
+					<div class="column-info business-info">
+						<h3 class='b-name'>Business Name</h3>
+						<p class='phone'>+1 818 591 3910</p>
+						<p class='email'>jdoe@gmail.com</p>
+					</div>
+					<div class="column-info date-info">
+						<h3>Due Date</h3>
+						<p class='due-date'>July 10, 2015</p>
+					</div>
+					<div class="column-info total-info">
+						<h3>Total Due</h3>
+						<p class='total-due'>$.1</p>
+					</div>
+				</div>
+
+				<div class="pay-accept cl">
+					<p>This invoice has already been paid.</p>
+				</div>
+
+				<div class="pay-info cl">
+					<h4>Safe & Secure</h4>
+					<p>We follow industry-recognized security safeguards.</p>
+					<div class="pay-info-1-full">
+						<p class='reference-number'>Reference Number: 13951951951</p>
+						<p class='invoice-date'></p>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+		<div class="content" id="invoice-error">
+			<div class="wrapper">
+				<h1 class="title">Payment Declined</h1>
+
+				<p id="invoice-error-message"></p>
+
+				<div class="pay-error cl">
+					<div class="pay-info-1-full">
+						<p>This card was unable to be processed. Please try again. If you continue to have issues, please call your issuing bank.</p>
+					</div>
+					<a class="btn-try-again">Try Again</a>
+				</div>
+
+			</div>
+		</div>
+
+		<div class="content" id="invoice-success">
+			<div class="wrapper">
+				<h1 class="title">Payment Confirmation</h1>
+
+
+				<div class="pay-confirmation cl">
+					<h2>Success! You completed your payment.</h2>
+					<div class="pay-info-1-full">
+						<p class="success-status">Your transaction ID for this payment is: <span id="invoice-success-status"></span></p>
+						<p>We’ll send a confirmation to: <span id="invoice-success-email"></span></p>
+						<p>If you have any questions, please call <span id="invoice-success-phone"></span></p>
+					</div>
+					<a href="#" target="_blank" class="print-pdf">Print Receipt</a>
+					<a href="#"  class="download-pdf" download="Receipt.pdf">Download PDF</a>
+				</div>
+
+			</div>
+		</div>
+
+		<!-- end CONTENT -->
+
+		<!-- start FOOTER -->
+		<div class="footer cl">
+			<div class="wrapper">
+				<p>© Powered by CJ Technologies</p>
+			</div>
+		</div>
+		<!-- end FOOTER -->
+
+		<div class='pdf-page' style="display:none">
+
+			<style type="text/css">
+
+				/*@font-face{font-family:ff1;src:url(f1.woff)format("woff");}.ff1{font-family:ff1;line-height:0.996582;font-style:normal;font-weight:normal;visibility:visible;}*/
+				.ff1 {
+					font-family: Arial;
+					line-height: 0.996582;
+					font-style: normal;
+				}
+				.fc0 {
+					color: rgb(0,0,0);
+				}
+				.fc1 {
+					color: rgb(170,170,170);
+				}
+				.fc2 {
+					color: rgb(255,255,255);
+				}
+				.btm-line {
+					border-bottom: 1mm solid #aaa;
+				}
+				.top-line {
+					border-top: 1mm solid #aaa;
+				}
+				.invoice-item-title {
+					height: 10mm;
+					padding-left: 14pt;
+					font-size: 16px;
+					vertical-align: middle;
+				}
+				.invoice-item-cost {
+					height: 10mm;
+					text-align: right;
+					padding-right: 40pt;
+					font-size: 16px;
+					vertical-align: middle;
+				}
+			</style>
+
+			<page id="page-container" backtop="0mm" backbottom="10mm" backleft="10mm" backright="15mm">
+
+				<div class="ff1 fc0" 
+					 style="position: relative;
+							height: 10mm;
+							white-space: pre;
+							font-size: 16px;
+							text-align: center;
+							line-height: 10mm;" >PAYMENT RECEIPT FOR <span id='pdf-payment-name'>#</span></div>
+
+				<table cellspacing="0" 
+					   style="width: 185mm;                   
+							  height: 122mm;
+							  position: absolute;
+							  top: 10mm;
+							  z-index: 10;
+							  table-layout: fixed">
+					<thead>
+						<td style="width: 26mm;"></td>
+						<td style="width: 32mm;"></td>
+						<td style="width: 30mm;"></td>
+						<td style="width: 30mm;"></td>
+						<td style="width: 30mm;"></td>
+						<td style="width: 30mm;"></td>
+					</thead>
+					<tr>
+						<td style="font-size: 16px;
+								   height: 9mm;
+								   vertical-align: bottom;"
+							class="ff1 fc1 top-line" colspan="2">PAYMENT DATE</td>
+						<td style="vertical-align: bottom;
+								   font-size: 16px;
+								   height: 9mm;" colspan="2"
+							class="ff1 fc0 top-line btm-line" id="pdf-date">04/08/2016</td>
+						<td style="vertical-align: bottom;
+								   font-size: 16px;
+								   text-align: center;
+								   height: 9mm;"
+							class="ff1 fc0 top-line" colspan="2">Amount Received:</td>
+					</tr>
+
+					<tr>
+						<td class="ff1 fc1" colspan="2"
+							style="font-size: 16px;
+								   vertical-align: bottom;
+								   height:8mm">INVOICE Number</td>
+						<td class="ff1 fc0 btm-line" colspan="2" id="pdf-invoice-number"
+							style="height: 8mm;
+								   vertical-align: bottom;
+								   font-size: 16px;">INV-00000</td>
+						<td rowspan="3" colspan="2"
+							class="ff1" 
+							style="vertical-align: middle;
+								   color: rgb(50,125,245);
+								   font-size: 45px;
+								   text-align: center;" id="pdf-amount-received">$0,01</td>
+					</tr>
+
+					<tr>
+						<td class="ff1 fc1" colspan="2"
+							style="height: 7mm;
+								   vertical-align: bottom;
+								   padding-bottom: 1mm;
+								   font-size: 16px;">REFERENCE NUMBER</td>
+						<td class="ff1 fc0 btm-line" colspan="2" id="pdf-payment-status"
+							style="height: 7mm;
+								   padding-bottom: 1mm;
+								   vertical-align: bottom;
+								   font-size: 16px;">YAUTH/TKT 164410</td>
+					</tr>
+
+					<tr>
+						<td class="ff1 fc1" colspan="2"
+							style="font-size: 16px;
+								   vertical-align: bottom;
+								   height:8mm">PAYMENT MODE</td>
+						<td class="ff1 fc0 btm-line" colspan="2"
+							style="height: 8mm;
+								   vertical-align: bottom;
+								   font-size: 16px;">Credit Card</td>
+					</tr>
+
+					<tr>
+						<td style="height: 18mm;" colspan="6" class="btm-line"></td>
+					</tr>
+
+					<tr>
+						<td style="height: 6mm;"></td>
+					</tr>
+
+					<tr id="invoice-items-header">
+						<td class="ff1 fc2 btm-line" colspan="3"
+							style="height: 9mm;
+								   font-size: 16px;
+								   vertical-align: middle;
+								   background: #317cf4;
+								   padding-left: 14pt;">Invoice Details</td>
+						<td class="ff1 fc2 btm-line" colspan="3"
+							style="height: 9mm;
+								   vertical-align: middle;
+								   text-align: right;
+								   font-size: 16px;
+								   background: #317cf4;
+								   padding-right: 14pt;">Payment Amount</td>
+					</tr>
+					<!--<tr id="invoice-items">
+<td class="ff1 fc0 btm-line invoice-item-title" colspan="3">Test</td>
+<td class="ff1 fc0 btm-line invoice-item-cost" colspan="3">$0,01</td>
+</tr>-->
+					<tr id="pdf-subtotal-row" >
+						<td colspan="3" class=""></td>
+						<td class="ff1 fc1 " colspan="2"
+							style="vertical-align: bottom;
+								   padding-bottom: 3mm;
+								   height: 11mm;
+								   font-size: 16px;">SUBTOTAL</td>
+						<td class="ff1 fc1 "
+							style="height: 11mm;
+								   text-align: right;
+								   vertical-align: bottom;
+								   padding-bottom: 3mm;
+								   font-size: 16px;"
+							id="pdf-subtotal">$0,01</td>
+					</tr>
+					<tr>
+						<td colspan="3" class="top-line"></td>
+						<td class="ff1 fc0 top-line" colspan="2"
+							style="height: 4mm;
+								   padding-top: 1mm;
+								   padding-bottom: 2mm;
+								   vertical-align: bottom;
+								   font-size: 16px;">TOTAL</td>
+						<td class="ff1 fc0 top-line"
+							style="height: 4mm;
+								   padding-bottom: 2mm;
+								   padding-top: 1mm;
+								   text-align: right;
+								   vertical-align: bottom;
+								   font-size: 16px;" 
+							id="pdf-total">$0,01</td>
+					</tr>
+					<tr>
+						<td colspan="3" style="border-bottom: 2.5mm solid #317cf4"></td>
+						<td class="ff1 fc0" colspan="2"
+							style="height: 4mm;
+								   border-bottom: 2.5mm solid #317cf4;
+								   padding-bottom: 1mm;
+								   vertical-align: top;
+								   font-size: 16px;">AMOUNT DUE</td>
+						<td class="ff1 fc0"
+							style="height: 4mm;
+								   border-bottom: 2.5mm solid #317cf4;
+								   padding-bottom: 1mm;
+								   text-align: right;
+								   vertical-align: top;
+								   font-size: 16px;"
+							id="pdf-amount-due">$0.00</td>
+					</tr>
+
+				</table>
+
+				<div class="ff1 fc1"
+					 style="font-size: 16px;
+							position: absolute;
+							text-align: center;
+							width: 100%;
+							bottom: 0;">Powered by CJ Technology LLC</div>
+			</page>
+
+		</div>
+
+	</body>
 </html>
