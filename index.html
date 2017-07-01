@@ -8,7 +8,7 @@
 		<meta name="keywords" content=""/>
 		<link rel="icon" href="./assets/images/icon.ico"/>
 		<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
-	<!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
+		<!--<link href="//netdna.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">-->
 		<link rel="stylesheet" href="./assets/css/glyphicon.css"/>	
 
 		<link rel="stylesheet" href="./assets/css/bootstrap_dropdown.css"/>
@@ -18,720 +18,721 @@
 		<link rel="stylesheet" href="" id="appStyle1"/>
 		<link rel="stylesheet" href="./assets/js/fullcalendar.min.css"/>
 		<link rel="stylesheet" href="./assets/css/custom.css"/>
-        <link rel="stylesheet" href="./assets/css/jquery.reject.css"/>
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.2/trix.css">
-  
-        <base target="_parent" />
+		<link rel="stylesheet" href="./assets/css/jquery.reject.css"/>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.2/trix.css">
+
+		<base target="_parent" />
 		<!--[if lt IE 9]>
-			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-		<![endif]-->
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
 		<!--<base href="/invoiceunlimited/"/>-->
 	</head>
 	<body>
 
-	<div class="overlay loader-screen" style="display:none">
-		<img class="loader" src="./assets/images/loader-new.gif"/>
-	</div>
+		<div class="overlay loader-screen" style="display:none">
+			<img class="loader" src="./assets/images/loader-new.gif"/>
+		</div>
 
-	<div id="close_error_div" class="overlay message" style="display:none">
-		<div class="message-window">
-			<div class="message-type"></div>
-			<div class="message-content">
-				<p class="message-text"></p>
-				<div id="close_btn" onclick="close_mess(this)" class="close-btn">Close</div>
+		<div id="close_error_div" class="overlay message" style="display:none">
+			<div class="message-window">
+				<div class="message-type"></div>
+				<div class="message-content">
+					<p class="message-text"></p>
+					<div id="close_btn" onclick="close_mess(this)" class="close-btn">Close</div>
+				</div>
 			</div>
 		</div>
-	</div>
 
-	<div id="view" ui-view></div>
-<!--
-	<script type="text/ng-template" id="template/datepickerPopUp/customPopUp.html">
+		<div id="view" ui-view></div>
+		<!--
+<script type="text/ng-template" id="template/datepickerPopUp/customPopUp.html">
 
-	<ul class="uib-datepicker-popup dropdown-menu uib-position-measure" dropdown-nested ng-if="isOpen" ng-keydown="keydown($event)" ng-click="$event.stopPropagation()">
-	  <li ng-transclude></li>
-	  <li ng-if="showButtonBar" class="uib-button-bar">
-	    <span class="btn-group pull-left">
-	      <button type="button" class="btn btn-sm btn-info uib-datepicker-current" ng-click="select('today', $event)" ng-disabled="isDisabled('today')">{{ getText('current') }}</button>
-	    </span>
-	    <button type="button" class="btn btn-sm btn-success pull-right uib-close" ng-click="close($event)">{{ getText('close') }}</button>
-	</li>
-	</ul>
+<ul class="uib-datepicker-popup dropdown-menu uib-position-measure" dropdown-nested ng-if="isOpen" ng-keydown="keydown($event)" ng-click="$event.stopPropagation()">
+<li ng-transclude></li>
+<li ng-if="showButtonBar" class="uib-button-bar">
+<span class="btn-group pull-left">
+<button type="button" class="btn btn-sm btn-info uib-datepicker-current" ng-click="select('today', $event)" ng-disabled="isDisabled('today')">{{ getText('current') }}</button>
+</span>
+<button type="button" class="btn btn-sm btn-success pull-right uib-close" ng-click="close($event)">{{ getText('close') }}</button>
+</li>
+</ul>
 
-	</script>
+</script>
 -->
-	
+
 		<div class='pdf-page' style="display: none;">
-    
-    <style type="text/css">
-    
-    /*@font-face{font-family:ff1;src:url(f1.woff)format("woff");}.ff1{font-family:ff1;line-height:0.996582;font-style:normal;font-weight:normal;visibility:visible;}*/
-    .ff1 {
-        font-family: Arial;
-        line-height: 0.996582;
-        font-style: normal;
-    }
-    .fc0 {
-        color: rgb(0,0,0);
-    }
-    .fc1 {
-        color: rgb(170,170,170);
-    }
-    .fc2 {
-        color: rgb(255,255,255);
-    }
-    .btm-line {
-        border-bottom: 1mm solid #aaa;
-    }
-    .top-line {
-        border-top: 1mm solid #aaa;
-    }
-    .invoice-item-title {
-        height: 10mm;
-        padding-left: 14pt;
-        font-size: 16px;
-        vertical-align: middle;
-    }
-    .invoice-item-cost {
-        height: 10mm;
-        text-align: right;
-        font-size: 16px;
-        vertical-align: top;
-    }
-    .invoice-item-qty {
-        height: 10mm;
-        text-align: right;
-        font-size: 16px;
-        vertical-align: top;
-    }
-    a {
-			text-decoration: none;
-		}
-    </style>
 
-    <page id="page-container" backtop="0mm" backbottom="10mm" backleft="10mm" backright="15mm">
-		<div class="ff1 fc0 top-bar" 
-             style="position: relative;
-                    height: 10mm;
-                    white-space: pre;
-                    font-size: 30px;
-                    text-align: center;
-                    line-height: 10mm;" ><span id='pdf-title'>Payment Due   Apr 27, 2017</span></div>
-		
-        <table cellspacing="0" 
-               style="width: 185mm;                   
-                      height: 122mm;
-                      /*position: absolute;*/
-                      top: 10mm;
-                      z-index: 10;
-                      table-layout: fixed">
-            <thead>
-                <td style="width: 26mm;"></td>
-                <td style="width: 32mm;"></td>
-                <td style="width: 30mm;"></td>
-                <td style="width: 30mm;"></td>
-                <td style="width: 30mm;"></td>
-                <td style="width: 30mm;"></td>
-            </thead>
-			
-			<tr class="top-bar">
-                <td colspan="6" class="btm-line top-bar"></td>
-            </tr>
-			<tr class="top-bar">
-                <td colspan="6" class="top-bar" style="height: 6mm;"></td>
-            </tr>
-			
-			<tr>
-				<td style="font-size: 18px;
-                           vertical-align: middle;
-						   border-right: 1px solid #000000;
-						   border-bottom: 1px solid #000000;
-						   text-align: left;
-						   padding-bottom: 25px;
-						   padding-left: 26px;"
-                    class="ff1 fc0" colspan="3"> <span style="font-size: 60px;" id="pdf-invoice-title"></span> <br>
-				
-					<span class="fc1" id="pdf-invoice-number"></span> <br>
-					
-					<table style="border-top: 5px solid #000000; margin-top: 5px; padding-top: 5px;">
-						<tr>
-							<td style="width: 25mm; text-align: left;" class="fc1">Total</td>
-							<td style="width: 30mm; text-align: center;" class="fc1">Date</td>
-							<td style="width: 20mm; text-align: right;" class="fc1">Currency</td>
-						</tr>
-						<tr>
-							<td style="text-align: left;" class="fc0" id="pdf-total-top"></td>
-							<td style="text-align: center;" class="fc0" id="pdf-date"></td>
-							<td style="text-align: right;" class="fc0" id="pdf-currency"></td>
-						</tr>
-					</table>
-				</td>
-				
-				<td style="vertical-align: middle;
-                           font-size: 18px;
-                           text-align: left;
-						   border-bottom: 1px solid #000000;
-						   padding-bottom: 10px;
-						   padding-top: 10px;
-						   padding-left: 26px;"
-                    class="ff1 fc0" colspan="3">
-					<span id="pdf-business-name">Business Name</span> <br> <br>
-					
-					<table>
-						<tr>
-							<td style="padding-bottom: 10px; width: 80mm;" id="pdf-address"></td>
-						</tr>
-						<tr>
-							<td style="padding-bottom: 10px; width: 80mm;" id="user-mail"></td>
-						</tr>
-						<tr>
-							<td style="padding-bottom: 10px;" id="user-phone"></td>
-						</tr>
-					</table>
-				</td>
-				
-			</tr>
-			
-			<tr>
-                <td style="border-right: 1px solid #000000;" colspan="3" style="height: 6mm;"></td>
-                <td colspan="3" style="height: 6mm;"></td>
-            </tr>
-			
-			<tr>
-                <td style="font-size: 18px;
-                           height: 5mm;
-                           vertical-align: bottom;
-						   border-right: 1px solid #000000;
-						   padding-left: 26px;"
-                    class="ff1 fc0" colspan="3"
-					>
-				<span id="pdf-notes-title1"></span> <br><br>
-					<span class="fc1" id="pdf-notes1"></span> <br>
-				</td>
-                
-                <td style="vertical-align: middle;
-                           font-size: 18px;
-                           text-align: left;
-                           height: 5mm;
-						   padding-left: 26px;"
-                    class="ff1 fc1" colspan="3">
-					<span>Bill to:</span> <br> <br>
-					<!--<span class="fc0" id="client-name"></span> <br><br>
-					<span class="fc0" id="client-mail"></span>-->
-						<table>
-							<tr>
-								<td style="padding-bottom: 10px; width: 80mm;" class="fc0" id="client-name"></td>
-							</tr>
-							<tr>
-								<td style="padding-bottom: 10px; width: 80mm;" class="fc0" id="client-mail"></td>
-							</tr>
-						</table>
-					</td>
-            </tr>
-			
-			<tr>
-                <td style="border-right: 1px solid #000000;" colspan="3" style="height: 6mm;"></td>
-                <td colspan="3" style="height: 6mm;"></td>
-            </tr>
-			
-            <tr>
-                <td style="height: 6mm;"></td>
-            </tr>
+			<style type="text/css">
 
-            <tr id="invoice-items-header">
-                
-            </tr>
-            
-            <tr id="invoice-subtotal">
-                <td colspan="3" class=""></td>
-                <td class="ff1 fc1 " colspan="2"
-                    style="vertical-align: middle;
-                           height: 11mm;
-                           font-size: 16px;">SUBTOTAL</td>
-                <td class="ff1 fc1 "
-                    style="height: 11mm;
-                           text-align: right;
-                           vertical-align: middle;
-                           font-size: 16px;"
-                    id="pdf-subtotal">$0,01</td>
-            </tr>
-            <tr >
-                <td class="btm-line" colspan="6"></td>
-            </tr>
-            <tr>
-                <td colspan="3"></td>
-                <td class="ff1 fc0" colspan="2"
-                    style="height: 4mm;
-                           padding-top: 1mm;
-                           padding-bottom: 2mm;
-                           vertical-align: bottom;
-                           font-size: 16px;">Total</td>
-                <td class="ff1 fc0"
-                    style="height: 4mm;
-                           padding-bottom: 2mm;
-                           padding-top: 1mm;
-                           text-align: right;
-                           vertical-align: bottom;
-                           font-size: 16px;" 
-                    id="pdf-total">$0,01</td>
-            </tr>
-            <tr>
-                <td colspan="3"></td>
-                <td class="ff1 fc0" colspan="2"
-                    style="height: 4mm;
-                           padding-top: 1mm;
-                           padding-bottom: 2mm;
-                           vertical-align: bottom;
-                           font-size: 16px;"
-					id="pdf-payment-text"></td>
-                <td class="ff1 fc0"
-                    style="height: 4mm;
-                           padding-bottom: 2mm;
-                           padding-top: 1mm;
-                           text-align: right;
-                           vertical-align: bottom;
-                           font-size: 16px;" 
-                    id="pdf-payment-made">$0,01</td>
-            </tr>
-            <tr>
-                <td colspan="3"></td>
-                <td class="ff1 fc0" colspan="2"
-                    style="height: 4mm;
-                           padding-top: 1mm;
-                           padding-bottom: 2mm;
-                           vertical-align: bottom;
-                           font-size: 16px;"
-					id="pdf-credit-text"></td>
-                <td class="ff1 fc0"
-                    style="height: 4mm;
-                           padding-bottom: 2mm;
-                           padding-top: 1mm;
-                           text-align: right;
-                           vertical-align: bottom;
-                           font-size: 16px;" 
-                    id="pdf-credit-applied">$0,01</td>
-            </tr>
-            <tr>
-                <td class="ff1 fc0" colspan="2"
-                    style="border-bottom: 2.5mm solid #317cf4;
-                           padding-bottom: 2mm;
-                           vertical-align: middle;
-                           font-size: 20px;
-                           padding-top: 3mm;" 
-					id="pdf-total-text"></td>
-                <td colspan="3" style="border-bottom: 2.5mm solid #317cf4"></td>
-                <td class="ff1 fc0"
-                    style="border-bottom: 2.5mm solid #317cf4;
-                           padding-bottom: 2mm;
-                           text-align: right;
-                           vertical-align: middle;
-                           font-size: 20px;
-                           padding-top: 3mm;"
-                    id="pdf-amount-due">$0.00</td>
-            </tr>
-			
-			<tr>
-                <td class="ff1 fc0" colspan="2"
-                    style="padding-bottom: 2mm;
-                           vertical-align: middle;
-                           font-size: 18px;
-                           padding-top: 3mm;"
-					id="pdf-notes-title"></td>
-            </tr>
-			<tr>
-                <td class="ff1 fc1" colspan="6"
-                    style="padding-bottom: 2mm;
-                           vertical-align: middle;
-                           font-size: 18px;"
-					id="pdf-notes"></td>
-                
-            </tr>
-			
-			<tr>
-                <td class="ff1 fc0" colspan="2"
-                    style="padding-bottom: 2mm;
-                           vertical-align: middle;
-                           font-size: 18px;
-                           padding-top: 3mm;"
-					id="pdf-terms-title">Terms &amp; Conditions:</td>
-            </tr>
-			<tr>
-                <td class="ff1 fc1" colspan="6"
-                    style="padding-bottom: 2mm;
-                           vertical-align: middle;
-                           font-size: 18px;"
-					id="pdf-terms">All items prices are final.</td>
-                
-            </tr>
-			
-        </table>
-        
-        <div class="ff1 fc1"
-             style="font-size: 16px;
-                    position: absolute;
-                    text-align: center;
-                    width: 100%;
-                    bottom: 0;">InvoicesUnlimited.com Powered By © CJ Technologies LLC</div>
-</page>
+				/*@font-face{font-family:ff1;src:url(f1.woff)format("woff");}.ff1{font-family:ff1;line-height:0.996582;font-style:normal;font-weight:normal;visibility:visible;}*/
+				.ff1 {
+					font-family: Arial;
+					line-height: 0.996582;
+					font-style: normal;
+				}
+				.fc0 {
+					color: rgb(0,0,0);
+				}
+				.fc1 {
+					color: rgb(170,170,170);
+				}
+				.fc2 {
+					color: rgb(255,255,255);
+				}
+				.btm-line {
+					border-bottom: 1mm solid #aaa;
+				}
+				.top-line {
+					border-top: 1mm solid #aaa;
+				}
+				.invoice-item-title {
+					height: 10mm;
+					padding-left: 14pt;
+					font-size: 16px;
+					vertical-align: middle;
+				}
+				.invoice-item-cost {
+					height: 10mm;
+					text-align: right;
+					font-size: 16px;
+					vertical-align: top;
+				}
+				.invoice-item-qty {
+					height: 10mm;
+					text-align: right;
+					font-size: 16px;
+					vertical-align: top;
+				}
+				a {
+					text-decoration: none;
+				}
+			</style>
 
-    </div>
-		
-<iframe  id="targetframe1" name="targetframe1"
-        width="1050px" style="display: none;" frameborder="1" frameborder="0" scrolling="no">
-      </iframe>
-  	<script type="text/ng-template" id="modal-window">
-  		<div id="modal" class="div-refuse center" modal-render="{{$isRendered}}" role="dialog" uib-modal-animation-class="fade" modal-in-class="in" ng-style="{'z-index': 1050 + (index && 1 || 0) + index*10,'position':'fixed','width':'100%','height':'100%'}">
-  			<div class="modal-dialog">
-	      		<div class="modal-content" uib-modal-transclude></div>
-	      	</div>
-	    </div>
-  	</script>
+			<page id="page-container" backtop="0mm" backbottom="10mm" backleft="10mm" backright="15mm">
+				<div class="ff1 fc0 top-bar" 
+					 style="position: relative;
+							height: 10mm;
+							white-space: pre;
+							font-size: 30px;
+							text-align: center;
+							line-height: 10mm;" ><span id='pdf-title'>Payment Due   Apr 27, 2017</span></div>
 
-  	<script type="text/ng-template" id="modal-user">
-    
-	    <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">{{title}}</h3>
-	    <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="" ng-click="closeModal();"></button>
-	    <div class="clearfix"></div>
-	    <hr class="layout-margin-tb">
+				<table cellspacing="0" 
+					   style="width: 185mm;                   
+							  height: 122mm;
+							  /*position: absolute;*/
+							  top: 10mm;
+							  z-index: 10;
+							  table-layout: fixed">
+					<thead>
+						<td style="width: 26mm;"></td>
+						<td style="width: 32mm;"></td>
+						<td style="width: 30mm;"></td>
+						<td style="width: 30mm;"></td>
+						<td style="width: 30mm;"></td>
+						<td style="width: 30mm;"></td>
+					</thead>
 
-	    <div class="col-80 text-left layout-center">
-            
-	    <form autocomplete="off" id="userForm" class="layout-margin-tb col-100 inputs-white" novalidate>
-            <div class="input-container layout-margin-b">
-	        	<label class="layout-padding-t-smm"></label>
-                <label class="col-75" style="color: red;" id="userError"></label>
-	      	</div>
-	      	<div class="input-container layout-margin-b">
-	        	<label class="layout-padding-t-smm">Username</label>
-	        	<input ng-model="user.username" id="newusername" name="newusername" placeholder="Click or Tap to enter" type="text" class="col-75">
-	      	</div>
-	      	<div class="input-container layout-margin-b">
-		        <label class="layout-padding-t-smm">Name</label>
-		        <input ng-model="user.fullName" placeholder="Click or Tap to enter" name="fullName" type="text" class="col-75">
-	    	</div>
-	      	<div class="input-container layout-margin-b">
-	        	<label class="layout-padding-t-smm">Email</label>
-	        	<input id="newUserId" ng-model="user.email" name="newemail" placeholder="Click or Tap to enter" type="email" class="col-75" required>
-	      	</div>
-	      	<div class="input-container layout-margin-b" ng-if="method == 'create'">
-	        	<label class="layout-padding-t-smm">Password</label>
-	        	<input ng-model="user.password"  placeholder="Click or Tap to enter" name="password" type="password" class="col-75" required>
-	      	</div>
-	      	<div class="input-container layout-margin-b input-checkbox-container">
-	        	<label class="layout-padding-t-smm">Role</label>
-	        	<select ng-model="user.role" pattern="General Employee|Admin|Main|Sales" name="role" required class="col-75 layout-margin-b">
-	          		<option value="" disabled selected>Select the Role</option>
-	        		<option value="Admin">Admin</option>
-	        		<option value="General Employee">General Employee</option>
-	        		<option value="Sales">Sales</option>
-	        	<!--<option value="Main">Main</option>-->
-	        	</select>
-	        	<label class="layout-padding-t-smm" ng-if="method == 'update'">Status</label>
-	        	<select ng-model="user.status" ng-if="method == 'update'" pattern="Activated|Deactivated" required class="col-75 layout-margin-b">
-	          		<option value="" disabled>Change the Status</option>
-	        		<option value="Activated">Activated</option>
-	        		<option value="Deactivated">Deactivated</option>
-	        	</select>
-                <p class="col-75 pull-right layout-no-padding" ng-if="user.role == 'Admin'">Unrestricted access to all modules</p>
-	        	<label class="layout-padding-t-smm" ng-if="user.role == 'Admin'"></label>
-                <label class="layout-padding-t-smm"></label>
-                <p style="margin-top: 10px" ng-hide='mustInvite'>
-                    <label class="min-width-0 layout-margin-b" ng-if="method == 'create'">
-                        <input type="checkbox" ng-model="user.sendInvite">
-                        <span class="checkbox float-left"></span>
-                    </label>
-                    
-                    <span class="pull-right layout-no-padding" ng-if="method == 'create'"><strong>Send invitation</strong></span>
-                    
-                </p>
+					<tr class="top-bar">
+						<td colspan="6" class="btm-line top-bar"></td>
+					</tr>
+					<tr class="top-bar">
+						<td colspan="6" class="top-bar" style="height: 6mm;"></td>
+					</tr>
 
-	    	</div>
-	    	<button id="newUserSubmit" ng-show="method == 'create'" ng-click="save();" type="submit" class="button button-info text-uppercase">Save</button>
-	    	<button ng-show="method == 'update'" ng-click="update();" class="button button-info text-uppercase float-left">Save</button>
-      		<button ng-show="method == 'update'" ng-click="delete();" class="button button-danger text-uppercase float-right">Delete</button>
-	    </form>
-	    </div>
-	    <div class="clearfix"></div>
-	    
-	  </script>
+					<tr>
+						<td style="font-size: 18px;
+								   vertical-align: middle;
+								   border-right: 1px solid #000000;
+								   border-bottom: 1px solid #000000;
+								   text-align: left;
+								   padding-bottom: 25px;
+								   padding-left: 26px;"
+							class="ff1 fc0" colspan="3"> <span style="font-size: 60px;" id="pdf-invoice-title"></span> <br>
 
-        <!--
-	<script src="https://www.parsecdn.com/js/parse-1.6.14.min.js"></script>
+							<span class="fc1" id="pdf-invoice-number"></span> <br>
+
+							<table style="border-top: 5px solid #000000; margin-top: 5px; padding-top: 5px;">
+								<tr>
+									<td style="width: 25mm; text-align: left;" class="fc1">Total</td>
+									<td style="width: 30mm; text-align: center;" class="fc1">Date</td>
+									<td style="width: 20mm; text-align: right;" class="fc1">Currency</td>
+								</tr>
+								<tr>
+									<td style="text-align: left;" class="fc0" id="pdf-total-top"></td>
+									<td style="text-align: center;" class="fc0" id="pdf-date"></td>
+									<td style="text-align: right;" class="fc0" id="pdf-currency"></td>
+								</tr>
+							</table>
+						</td>
+
+						<td style="vertical-align: middle;
+								   font-size: 18px;
+								   text-align: left;
+								   border-bottom: 1px solid #000000;
+								   padding-bottom: 10px;
+								   padding-top: 10px;
+								   padding-left: 26px;"
+							class="ff1 fc0" colspan="3">
+							<span id="pdf-business-name">Business Name</span> <br> <br>
+
+							<table>
+								<tr>
+									<td style="padding-bottom: 10px; width: 80mm;" id="pdf-address"></td>
+								</tr>
+								<tr>
+									<td style="padding-bottom: 10px; width: 80mm;" id="user-mail"></td>
+								</tr>
+								<tr>
+									<td style="padding-bottom: 10px;" id="user-phone"></td>
+								</tr>
+							</table>
+						</td>
+
+					</tr>
+
+					<tr>
+						<td style="border-right: 1px solid #000000;" colspan="3" style="height: 6mm;"></td>
+						<td colspan="3" style="height: 6mm;"></td>
+					</tr>
+
+					<tr>
+						<td style="font-size: 18px;
+								   height: 5mm;
+								   vertical-align: bottom;
+								   border-right: 1px solid #000000;
+								   padding-left: 26px;"
+							class="ff1 fc0" colspan="3"
+							>
+							<span id="pdf-notes-title1"></span> <br><br>
+							<span class="fc1" id="pdf-notes1"></span> <br>
+						</td>
+
+						<td style="vertical-align: middle;
+								   font-size: 18px;
+								   text-align: left;
+								   height: 5mm;
+								   padding-left: 26px;"
+							class="ff1 fc1" colspan="3">
+							<span>Bill to:</span> <br> <br>
+							<!--<span class="fc0" id="client-name"></span> <br><br>
+<span class="fc0" id="client-mail"></span>-->
+							<table>
+								<tr>
+									<td style="padding-bottom: 10px; width: 80mm;" class="fc0" id="client-name"></td>
+								</tr>
+								<tr>
+									<td style="padding-bottom: 10px; width: 80mm;" class="fc0" id="client-mail"></td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+
+					<tr>
+						<td style="border-right: 1px solid #000000;" colspan="3" style="height: 6mm;"></td>
+						<td colspan="3" style="height: 6mm;"></td>
+					</tr>
+
+					<tr>
+						<td style="height: 6mm;"></td>
+					</tr>
+
+					<tr id="invoice-items-header">
+
+					</tr>
+
+					<tr id="invoice-subtotal">
+						<td colspan="3" class=""></td>
+						<td class="ff1 fc1 " colspan="2"
+							style="vertical-align: middle;
+								   height: 11mm;
+								   font-size: 16px;">SUBTOTAL</td>
+						<td class="ff1 fc1 "
+							style="height: 11mm;
+								   text-align: right;
+								   vertical-align: middle;
+								   font-size: 16px;"
+							id="pdf-subtotal">$0,01</td>
+					</tr>
+					<tr >
+						<td class="btm-line" colspan="6"></td>
+					</tr>
+					<tr>
+						<td colspan="3"></td>
+						<td class="ff1 fc0" colspan="2"
+							style="height: 4mm;
+								   padding-top: 1mm;
+								   padding-bottom: 2mm;
+								   vertical-align: bottom;
+								   font-size: 16px;">Total</td>
+						<td class="ff1 fc0"
+							style="height: 4mm;
+								   padding-bottom: 2mm;
+								   padding-top: 1mm;
+								   text-align: right;
+								   vertical-align: bottom;
+								   font-size: 16px;" 
+							id="pdf-total">$0,01</td>
+					</tr>
+					<tr>
+						<td colspan="3"></td>
+						<td class="ff1 fc0" colspan="2"
+							style="height: 4mm;
+								   padding-top: 1mm;
+								   padding-bottom: 2mm;
+								   vertical-align: bottom;
+								   font-size: 16px;"
+							id="pdf-payment-text"></td>
+						<td class="ff1 fc0"
+							style="height: 4mm;
+								   padding-bottom: 2mm;
+								   padding-top: 1mm;
+								   text-align: right;
+								   vertical-align: bottom;
+								   font-size: 16px;" 
+							id="pdf-payment-made">$0,01</td>
+					</tr>
+					<tr>
+						<td colspan="3"></td>
+						<td class="ff1 fc0" colspan="2"
+							style="height: 4mm;
+								   padding-top: 1mm;
+								   padding-bottom: 2mm;
+								   vertical-align: bottom;
+								   font-size: 16px;"
+							id="pdf-credit-text"></td>
+						<td class="ff1 fc0"
+							style="height: 4mm;
+								   padding-bottom: 2mm;
+								   padding-top: 1mm;
+								   text-align: right;
+								   vertical-align: bottom;
+								   font-size: 16px;" 
+							id="pdf-credit-applied">$0,01</td>
+					</tr>
+					<tr>
+						<td class="ff1 fc0" colspan="2"
+							style="border-bottom: 2.5mm solid #317cf4;
+								   padding-bottom: 2mm;
+								   vertical-align: middle;
+								   font-size: 20px;
+								   padding-top: 3mm;" 
+							id="pdf-total-text"></td>
+						<td colspan="3" style="border-bottom: 2.5mm solid #317cf4"></td>
+						<td class="ff1 fc0"
+							style="border-bottom: 2.5mm solid #317cf4;
+								   padding-bottom: 2mm;
+								   text-align: right;
+								   vertical-align: middle;
+								   font-size: 20px;
+								   padding-top: 3mm;"
+							id="pdf-amount-due">$0.00</td>
+					</tr>
+
+					<tr>
+						<td class="ff1 fc0" colspan="2"
+							style="padding-bottom: 2mm;
+								   vertical-align: middle;
+								   font-size: 18px;
+								   padding-top: 3mm;"
+							id="pdf-notes-title"></td>
+					</tr>
+					<tr>
+						<td class="ff1 fc1" colspan="6"
+							style="padding-bottom: 2mm;
+								   vertical-align: middle;
+								   font-size: 18px;"
+							id="pdf-notes"></td>
+
+					</tr>
+
+					<tr>
+						<td class="ff1 fc0" colspan="2"
+							style="padding-bottom: 2mm;
+								   vertical-align: middle;
+								   font-size: 18px;
+								   padding-top: 3mm;"
+							id="pdf-terms-title">Terms &amp; Conditions:</td>
+					</tr>
+					<tr>
+						<td class="ff1 fc1" colspan="6"
+							style="padding-bottom: 2mm;
+								   vertical-align: middle;
+								   font-size: 18px;"
+							id="pdf-terms">All items prices are final.</td>
+
+					</tr>
+
+				</table>
+
+				<div class="ff1 fc1"
+					 style="font-size: 16px;
+							position: absolute;
+							text-align: center;
+							width: 100%;
+							bottom: 0;">InvoicesUnlimited.com Powered By © CJ Technologies LLC</div>
+			</page>
+
+		</div>
+
+		<iframe  id="targetframe1" name="targetframe1"
+				width="1050px" style="display: none;" frameborder="1" frameborder="0" scrolling="no">
+		</iframe>
+		<script type="text/ng-template" id="modal-window">
+<div id="modal" class="div-refuse center" modal-render="{{$isRendered}}" role="dialog" uib-modal-animation-class="fade" modal-in-class="in" ng-style="{'z-index': 1050 + (index && 1 || 0) + index*10,'position':'fixed','width':'100%','height':'100%'}">
+	<div class="modal-dialog">
+		<div class="modal-content" uib-modal-transclude></div>
+			</div>
+			</div>
+		</script>
+
+		<script type="text/ng-template" id="modal-user">
+
+<h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">{{title}}</h3>
+<button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="" ng-click="closeModal();"></button>
+<div class="clearfix"></div>
+<hr class="layout-margin-tb">
+
+<div class="col-80 text-left layout-center">
+
+	<form autocomplete="off" id="userForm" class="layout-margin-tb col-100 inputs-white" novalidate>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm"></label>
+			<label class="col-75" style="color: red;" id="userError"></label>
+			</div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm">Username</label>
+			<input ng-model="user.username" id="newusername" name="newusername" placeholder="Click or Tap to enter" type="text" class="col-75">
+			</div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm">Name</label>
+			<input ng-model="user.fullName" placeholder="Click or Tap to enter" name="fullName" type="text" class="col-75">
+			</div>
+		<div class="input-container layout-margin-b">
+			<label class="layout-padding-t-smm">Email</label>
+			<input id="newUserId" ng-model="user.email" name="newemail" placeholder="Click or Tap to enter" type="email" class="col-75" required>
+			</div>
+		<div class="input-container layout-margin-b" ng-if="method == 'create'">
+			<label class="layout-padding-t-smm">Password</label>
+			<input ng-model="user.password"  placeholder="Click or Tap to enter" name="password" type="password" class="col-75" required>
+			</div>
+		<div class="input-container layout-margin-b input-checkbox-container">
+			<label class="layout-padding-t-smm">Role</label>
+			<select ng-model="user.role" pattern="General Employee|Admin|Main|Sales" name="role" required class="col-75 layout-margin-b">
+				<option value="" disabled selected>Select the Role</option>
+				<option value="Admin">Admin</option>
+				<option value="General Employee">General Employee</option>
+				<option value="Sales">Sales</option>
+				<!--<option value="Main">Main</option>-->
+			</select>
+			<label class="layout-padding-t-smm" ng-if="method == 'update'">Status</label>
+			<select ng-model="user.status" ng-if="method == 'update'" pattern="Activated|Deactivated" required class="col-75 layout-margin-b">
+				<option value="" disabled>Change the Status</option>
+				<option value="Activated">Activated</option>
+				<option value="Deactivated">Deactivated</option>
+			</select>
+			<p class="col-75 pull-right layout-no-padding" ng-if="user.role == 'Admin'">Unrestricted access to all modules</p>
+			<label class="layout-padding-t-smm" ng-if="user.role == 'Admin'"></label>
+			<label class="layout-padding-t-smm"></label>
+			<p style="margin-top: 10px" ng-hide='mustInvite'>
+				<label class="min-width-0 layout-margin-b" ng-if="method == 'create'">
+					<input type="checkbox" ng-model="user.sendInvite">
+					<span class="checkbox float-left"></span>
+			</label>
+
+				<span class="pull-right layout-no-padding" ng-if="method == 'create'"><strong>Send invitation</strong></span>
+
+			</p>
+
+			</div>
+		<button id="newUserSubmit" ng-show="method == 'create'" ng-click="save();" type="submit" class="button button-info text-uppercase">Save</button>
+		<button ng-show="method == 'update'" ng-click="update();" class="button button-info text-uppercase float-left">Save</button>
+		<button ng-show="method == 'update'" ng-click="delete();" class="button button-danger text-uppercase float-right">Delete</button>
+			</form>
+			</div>
+<div class="clearfix"></div>
+
+		</script>
+
+		<!--
+<script src="https://www.parsecdn.com/js/parse-1.6.14.min.js"></script>
 -->
-        <script src="assets/js/lib/parse.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.min.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular-sanitize.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.2/trix.js"></script>
-        <script src="assets/js/angular-trix.js"></script>
-	<!--<script src="./assets/js/ui-bootstrap.min.js"></script>
-	<script src="./assets/js/ui-bootstrap-tpls.min.js"></script>-->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
-	<script src="./assets/js/jquery.signature.min.js"></script>
-	<!--[if IE]>
-	<script src="./assets/js/excanvas.js"></script>
-	<![endif]-->
-<!--	<script src="http://code.jquery.com/jquery-migrate-1.3.0.js"></script>-->
-	<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
-    <script src="./assets/js/ocLazyLoad/ocLazyLoad.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/js-polyfills/0.1.33/polyfill.min.js"></script>
+		<script src="assets/js/lib/parse.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/1.2.4/ui-bootstrap-tpls.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.0-beta.2/angular-sanitize.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/trix/0.9.2/trix.js"></script>
+		<script src="assets/js/angular-trix.js"></script>
+		<!--<script src="./assets/js/ui-bootstrap.min.js"></script>
+<script src="./assets/js/ui-bootstrap-tpls.min.js"></script>-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.9.0/jquery-ui.min.js"></script>
+		<script src="./assets/js/jquery.signature.min.js"></script>
+		<!--[if IE]>
+<script src="./assets/js/excanvas.js"></script>
+<![endif]-->
+		<!--	<script src="http://code.jquery.com/jquery-migrate-1.3.0.js"></script>-->
+		<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.min.js"></script>
+		<script src="./assets/js/ocLazyLoad/ocLazyLoad.js"></script>
 
-    <!-- FULL CALENDAR LIBS -->
-	<script src='./assets/js/moment.js'></script>
-	<script src='./assets/js/fullcalendar.min.js'></script>
-	<!-- FULL CALENDAR LIBS -->
+		<!-- FULL CALENDAR LIBS -->
+		<script src='./assets/js/moment.js'></script>
+		<script src='./assets/js/fullcalendar.min.js'></script>
+		<!-- FULL CALENDAR LIBS -->
 
-	<!-- moment.js should be included before chart.js if time axes is used -->
-	<!-- currently time axes not used, but to avoid potential future issue -->
-	<!-- its already added after moment.js -->
-    
-	<script src="./assets/js/jquery.reject.js"></script>
-		
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
-        
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
-        <!--
-    <script src="./assets/js/html2canvas.js"></script>
-        -->
-    <script src="./assets/js/md5.js"></script>
+		<!-- moment.js should be included before chart.js if time axes is used -->
+		<!-- currently time axes not used, but to avoid potential future issue -->
+		<!-- its already added after moment.js -->
 
-    <script src="./app/app.module.js"></script>
+		<script src="./assets/js/jquery.reject.js"></script>
 
-    <script src="./assets/js/xml2json.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.6/Chart.min.js"></script>
 
-    <script src="./app/components/core/values/commonValues.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
-    <script src="./app/AvtivateAccountController.js"></script>
-        
-    <script src="./app/components/signup/controllers/SignupController.js"></script>
-    <script src="./app/components/signup/controllers/VerificationController.js"></script>
-    <script src="./app/components/signup/controllers/BusinessInfoController.js"></script>
-    <script src="./app/components/signup/controllers/PrincipalInfoController.js"></script>
-    <script src="./app/components/signup/controllers/AccountInfoController.js"></script>
-    <script src="./app/components/signup/controllers/SignatureController.js"></script>
-    <script src="./app/components/signup/controllers/ConfirmController.js"></script>
-    <script src="./app/components/signup/controllers/AccountActController.js"></script>
-    <script src="./app/components/signup/controllers/MerchantAccountController.js"></script>
-    <script src="./app/components/signup/controllers/InvoiceTemplateInfoController.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+		<!--
+<script src="./assets/js/html2canvas.js"></script>
+-->
+		<script src="./assets/js/md5.js"></script>
 
-    <script src="./app/components/dashboard/controllers/DashboardController.js"></script>
-    <script src="./app/components/dashboard/controllers/settings/SettingsController.js"></script>
-    <script src="./app/components/dashboard/controllers/settings/CompanyProfileController.js"></script>
-    <script src="./app/components/dashboard/controllers/settings/UserProfileController.js"></script>
-    <script src="./app/components/dashboard/controllers/settings/AppPreferencesController.js"></script>
-    <script src="./app/components/dashboard/controllers/customers/ModalContactController.js"></script>
-    <script src="./app/components/dashboard/controllers/customers/CustomersController.js"></script>
-    <script src="./app/components/dashboard/controllers/customers/NewCustomerController.js"></script>
-    <script src="./app/components/dashboard/controllers/settings/ItemController.js"></script>
-	<script src="./app/components/dashboard/controllers/settings/TaxController.js"></script>
-	<script src="./app/components/dashboard/controllers/settings/CurrencyController.js"></script>
-	<script src="./app/components/dashboard/controllers/settings/PaymentsController.js"></script>
-	<script src="./app/components/dashboard/controllers/settings/InvoiceSettingsController.js"></script>
-	<script src="./app/components/dashboard/controllers/settings/EstimateSettingsController.js"></script>
-	<script src="./app/components/dashboard/controllers/settings/CreditNoteSettingsController.js"></script>
-	<script src="./app/components/dashboard/controllers/settings/Users/NewUserController.js"></script>
-	<script src="./app/components/dashboard/controllers/settings/Users/UsersController.js"></script>
+		<script src="./app/app.module.js"></script>
 
-	<script src="./app/components/dashboard/controllers/sales/invoices/InvoiceController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/invoices/InvoiceDetailController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/invoices/CreateInvoiceController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/invoices/QuickInvoiceController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/invoices/CloneInvoiceController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/invoices/EstimateToInvoiceController.js"></script>
+		<script src="./assets/js/xml2json.min.js"></script>
 
-	<script src="./app/components/dashboard/controllers/sales/estimates/EstimateController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/estimates/EstimateDetailController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/estimates/CreateEstimateController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/estimates/CloneEstimateController.js"></script>
+		<script src="./app/components/core/values/commonValues.js"></script>
 
-	<script src="./app/components/dashboard/controllers/sales/creditnotes/CreditNoteController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/creditnotes/CreditNoteDetailController.js"></script>
-	<script src="./app/components/dashboard/controllers/sales/creditnotes/CreateCreditNoteController.js"></script>
+		<script src="./app/AvtivateAccountController.js"></script>
 
-	<script src="./app/components/dashboard/controllers/expenses/ExpenseController.js"></script>
-	<script src="./app/components/dashboard/controllers/expenses/ExpenseCategoryController.js"></script>
-        
-    <script src="./app/components/dashboard/controllers/projects/ProjectsController.js"></script>
-	<script src="./app/components/dashboard/controllers/projects/ProjectDetailController.js"></script>
-	<script src="./app/components/dashboard/controllers/projects/CreateProjectController.js"></script>
-    <script src="./app/components/dashboard/controllers/projects/CloneProjectController.js"></script>
+		<script src="./app/components/signup/controllers/SignupController.js"></script>
+		<script src="./app/components/signup/controllers/VerificationController.js"></script>
+		<script src="./app/components/signup/controllers/BusinessInfoController.js"></script>
+		<script src="./app/components/signup/controllers/PrincipalInfoController.js"></script>
+		<script src="./app/components/signup/controllers/AccountInfoController.js"></script>
+		<script src="./app/components/signup/controllers/SignatureController.js"></script>
+		<script src="./app/components/signup/controllers/ConfirmController.js"></script>
+		<script src="./app/components/signup/controllers/AccountActController.js"></script>
+		<script src="./app/components/signup/controllers/MerchantAccountController.js"></script>
+		<script src="./app/components/signup/controllers/InvoiceTemplateInfoController.js"></script>
 
-	<script src="./app/components/dashboard/controllers/reports/SalesByCustomerController.js"></script>
-	<script src="./app/components/dashboard/controllers/reports/SalesByItemController.js"></script>
-	<script src="./app/components/dashboard/controllers/reports/CustomerBalanceController.js"></script>
-	<script src="./app/components/dashboard/controllers/reports/InvoiceAgingController.js"></script>
-	<script src="./app/components/dashboard/controllers/reports/PaymentsReceivedController.js"></script>
-	<script src="./app/components/dashboard/controllers/reports/ExpenseByCategoryController.js"></script>
+		<script src="./app/components/dashboard/controllers/DashboardController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/SettingsController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/CompanyProfileController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/UserProfileController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/AppPreferencesController.js"></script>
+		<script src="./app/components/dashboard/controllers/customers/ModalContactController.js"></script>
+		<script src="./app/components/dashboard/controllers/customers/CustomersController.js"></script>
+		<script src="./app/components/dashboard/controllers/customers/NewCustomerController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/ItemController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/TaxController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/CurrencyController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/PaymentsController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/InvoiceSettingsController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/EstimateSettingsController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/CreditNoteSettingsController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/Users/NewUserController.js"></script>
+		<script src="./app/components/dashboard/controllers/settings/Users/UsersController.js"></script>
 
-    <script src="./app/components/login/controllers/LoginController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/invoices/InvoiceController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/invoices/InvoiceDetailController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/invoices/CreateInvoiceController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/invoices/QuickInvoiceController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/invoices/CloneInvoiceController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/invoices/EstimateToInvoiceController.js"></script>
 
-    <script src="./app/app.routes.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/estimates/EstimateController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/estimates/EstimateDetailController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/estimates/CreateEstimateController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/estimates/CloneEstimateController.js"></script>
 
-    <script src="./app/services.js"></script>
-    <script src="./app/components/signup/services/signupService.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/creditnotes/CreditNoteController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/creditnotes/CreditNoteDetailController.js"></script>
+		<script src="./app/components/dashboard/controllers/sales/creditnotes/CreateCreditNoteController.js"></script>
 
-    <script src="./app/components/core/services/queryService.js"></script>
+		<script src="./app/components/dashboard/controllers/expenses/ExpenseController.js"></script>
+		<script src="./app/components/dashboard/controllers/expenses/ExpenseCategoryController.js"></script>
 
-    <script src="./app/components/core/services/userService.js"></script>
-    <script src="./app/components/core/services/businessService.js"></script>
-    <script src="./app/components/core/services/roleService.js"></script>
-    <script src="./app/components/core/services/currencyService.js"></script>
-    <script src="./app/components/core/services/principalService.js"></script>
-    <script src="./app/components/core/services/accountService.js"></script>
-    <script src="./app/components/core/services/preferencesService.js"></script>
-    <script src="./app/components/core/services/signatureService.js"></script>
-    <script src="./app/components/core/services/organizationService.js"></script>
-    <script src="./app/components/core/services/contactPersonService.js"></script>
-    <script src="./app/components/core/services/customerService.js"></script>
-    <script src="./app/components/core/services/coreService.js"></script>
-    <script src="./app/components/core/services/itemService.js"></script>
-	<script src="./app/components/core/services/taxService.js"></script>
-	<script src="./app/components/core/services/invoiceService.js"></script>
-	<script src="./app/components/core/services/commentService.js"></script>
-	<script src="./app/components/core/services/invoicesService.js"></script>
-	<script src="./app/components/core/services/estimateService.js"></script>
-	<script src="./app/components/core/services/creditNoteService.js"></script>
-	<script src="./app/components/core/services/expenseService.js"></script>
-	<script src="./app/components/core/services/lateFeeService.js"></script>
-	<script src="./app/components/core/services/cleanDataService.js"></script>
-	<script src="./app/components/core/services/expenseCategoryService.js"></script>
-	<script src="./app/components/core/services/reportsService.js"></script>
-    <script src="./app/components/core/services/projectService.js"></script>
+		<script src="./app/components/dashboard/controllers/projects/ProjectsController.js"></script>
+		<script src="./app/components/dashboard/controllers/projects/ProjectDetailController.js"></script>
+		<script src="./app/components/dashboard/controllers/projects/CreateProjectController.js"></script>
+		<script src="./app/components/dashboard/controllers/projects/CloneProjectController.js"></script>
 
-	<script src="./app/components/core/factories/itemFactory.js"></script>
-    <script src="./app/components/core/factories/taskFactory.js"></script>
-	<script src="./app/components/core/factories/invoiceFactory.js"></script>
-	<script src="./app/components/core/factories/invoiceItemFactory.js"></script>
-	<script src="./app/components/core/factories/estimateFactory.js"></script>
-	<script src="./app/components/core/factories/estimateItemFactory.js"></script>
-	<script src="./app/components/core/factories/creditNoteFactory.js"></script>
-	<script src="./app/components/core/factories/creditNoteItemFactory.js"></script>
-	<script src="./app/components/core/factories/expenseFactory.js"></script>
-	<script src="./app/components/core/factories/expenseCategoryFactory.js"></script>
-	<script src="./app/components/core/factories/paymentFactory.js"></script>
-	<script src="./app/components/core/factories/lateFeeFactory.js"></script>
-	<script src="./app/components/core/factories/projectUserFactory.js"></script>
-	<script src="./app/components/core/factories/currencyFactory.js"></script>
-    <script src="./app/components/core/factories/projectFactory.js"></script>
-    <script src="./app/components/core/factories/staffFactory.js"></script>
-        
-	<script src="./app/components/dashboard/commonHelper/sales/salesCommon.js"></script>
-	<script src="./app/components/dashboard/commonHelper/reportsCommon.js"></script>
+		<script src="./app/components/dashboard/controllers/reports/SalesByCustomerController.js"></script>
+		<script src="./app/components/dashboard/controllers/reports/SalesByItemController.js"></script>
+		<script src="./app/components/dashboard/controllers/reports/CustomerBalanceController.js"></script>
+		<script src="./app/components/dashboard/controllers/reports/InvoiceAgingController.js"></script>
+		<script src="./app/components/dashboard/controllers/reports/PaymentsReceivedController.js"></script>
+		<script src="./app/components/dashboard/controllers/reports/ExpenseByCategoryController.js"></script>
 
-    <script src="./assets/js/main.js"></script>
-    <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
+		<script src="./app/components/login/controllers/LoginController.js"></script>
 
-        <script type="text/ng-template" id="modal-contact">
-    
-	    <div class="modal-container">
+		<script src="./app/app.routes.js"></script>
 
-	      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">{{title}}</h3>
-	      <button ng-click="Cancel();" class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
-	      <div class="clearfix"></div>
-	      <hr class="layout-margin-tb">
+		<script src="./app/services.js"></script>
+		<script src="./app/components/signup/services/signupService.js"></script>
 
-	      <div class="col-80 text-left layout-center">
-	        <form id="addContactForm" class="layout-margin-tb inputs-white" novalidate>
-	          <div class="input-container layout-margin-b">
+		<script src="./app/components/core/services/queryService.js"></script>
 
-	          	<label class="layout-padding-t-sm">Primary Contact</label>
-		        <select class="col-30 layout-margin-r" ng-model="contact.entity.salutation">
-		          <option value="">None</option>
-		          <option value="Ms." selected>Ms.</option>
-		          <option value="Mr.">Mr.</option>
-		        </select>
-		        <input class="col-20" type="text" placeholder="First Name" id="firstname" name="firstname" ng-model="contact.entity.firstname">
-		        <input class="col-20 pull-right" type="text" placeholder="Last Name" id="lastname" name="lastname" ng-model="contact.entity.lastname">
-	          </div>
+		<script src="./app/components/core/services/userService.js"></script>
+		<script src="./app/components/core/services/businessService.js"></script>
+		<script src="./app/components/core/services/roleService.js"></script>
+		<script src="./app/components/core/services/currencyService.js"></script>
+		<script src="./app/components/core/services/principalService.js"></script>
+		<script src="./app/components/core/services/accountService.js"></script>
+		<script src="./app/components/core/services/preferencesService.js"></script>
+		<script src="./app/components/core/services/signatureService.js"></script>
+		<script src="./app/components/core/services/organizationService.js"></script>
+		<script src="./app/components/core/services/contactPersonService.js"></script>
+		<script src="./app/components/core/services/customerService.js"></script>
+		<script src="./app/components/core/services/coreService.js"></script>
+		<script src="./app/components/core/services/itemService.js"></script>
+		<script src="./app/components/core/services/taxService.js"></script>
+		<script src="./app/components/core/services/invoiceService.js"></script>
+		<script src="./app/components/core/services/commentService.js"></script>
+		<script src="./app/components/core/services/invoicesService.js"></script>
+		<script src="./app/components/core/services/estimateService.js"></script>
+		<script src="./app/components/core/services/creditNoteService.js"></script>
+		<script src="./app/components/core/services/expenseService.js"></script>
+		<script src="./app/components/core/services/lateFeeService.js"></script>
+		<script src="./app/components/core/services/cleanDataService.js"></script>
+		<script src="./app/components/core/services/expenseCategoryService.js"></script>
+		<script src="./app/components/core/services/reportsService.js"></script>
+		<script src="./app/components/core/services/projectService.js"></script>
 
-	          <div class="input-container layout-margin-b">
-	            <label class="layout-padding-t-sm">Phone Number</label>
-	            <input class="col-35 workPhone" type="text" name="phone" ng-model="contact.entity.phone" minlength="14" placeholder="Work">
-	            <input class="col-35 pull-right mobilePhone" name="mobile" type="text" minlength="14" ng-model="contact.entity.mobile" placeholder="Mobile">
-	          </div>
+		<script src="./app/components/core/factories/itemFactory.js"></script>
+		<script src="./app/components/core/factories/taskFactory.js"></script>
+		<script src="./app/components/core/factories/invoiceFactory.js"></script>
+		<script src="./app/components/core/factories/invoiceItemFactory.js"></script>
+		<script src="./app/components/core/factories/estimateFactory.js"></script>
+		<script src="./app/components/core/factories/estimateItemFactory.js"></script>
+		<script src="./app/components/core/factories/creditNoteFactory.js"></script>
+		<script src="./app/components/core/factories/creditNoteItemFactory.js"></script>
+		<script src="./app/components/core/factories/expenseFactory.js"></script>
+		<script src="./app/components/core/factories/expenseCategoryFactory.js"></script>
+		<script src="./app/components/core/factories/paymentFactory.js"></script>
+		<script src="./app/components/core/factories/lateFeeFactory.js"></script>
+		<script src="./app/components/core/factories/projectUserFactory.js"></script>
+		<script src="./app/components/core/factories/currencyFactory.js"></script>
+		<script src="./app/components/core/factories/projectFactory.js"></script>
+		<script src="./app/components/core/factories/staffFactory.js"></script>
 
-	          <div class="input-container layout-margin-b">
-	            <label class="layout-padding-t-sm">Email Address</label>
-	            <input class="col-75" type="email" name="email" id="email" ng-model="contact.entity.email" placeholder="">
-	          </div>
-	        </form>
-	      </div>
-	      <div class="clearfix"></div>
-	      <button ng-click="Save();" class="button button-small button-info text-uppercase">Save</button>
-	    </div>
-  	</script>
-        
+		<script src="./app/components/dashboard/commonHelper/sales/salesCommon.js"></script>
+		<script src="./app/components/dashboard/commonHelper/reportsCommon.js"></script>
 
-    <script>
-        $(document).ready(function(){
-			//$.reject();
-            $('#edit_expanse_ammount').mask("#,##0.00", {reverse: true});
+		<script src="./assets/js/main.js"></script>
+		<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
 
-            $(document).click(function(event) { 
-                if(!$(event.target).closest('#menu_head').length) {
-                    if($(".filtermenu").hasClass('show')) {
-                        $(".filtermenu").removeClass('show');
-                    }
-                    else{
-                    }
-                }   
-                if(!$(event.target).closest('#ul_wrapp').length) {
-                }
-                else{
-                    $(".filtermenu").removeClass('show');
-                }
-            });
-        });
-        
-        $("#ul_wrapp").click(function(event) { 
-             $("#ul_wrapp").removeClass('show');
-        });
-        function div_add_class(x) {
-            $("#div_wrapp").addClass("organization showing-menu");
-            $("#div_wrapp").addClass("showing-menu");
-            $("#ul_wrapp").addClass("submenu");
-            $("#ul_wrapp").addClass("user-submenu");
-            $("#ul_wrapp").addClass("show");
-        }
-        
-        function ul_add_class(x) {
-            $("#div_wrapp").addClass("organization showing-menu");
-            $("#div_wrapp").addClass("showing-menu");
-            $("#ul_wrapp").addClass("submenu");
-            $("#ul_wrapp").addClass("user-submenu");
-            $("#ul_wrapp").addClass("show");
-        }
-        
-       function mouse_out(x) {
-            $("#div_wrapp").removeClass("showing-menu");
-            $("#ul_wrapp").removeClass("show");
-        }
-        
-        function resizeIframe(obj){ 
-            /*
+		<script type="text/ng-template" id="modal-contact">
+
+<div class="modal-container">
+
+	<h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">{{title}}</h3>
+	<button ng-click="Cancel();" class="button button-icon float-right modal-close button-no-margin"><img src="./assets/images/icon-times.png" alt=""></button>
+	<div class="clearfix"></div>
+	<hr class="layout-margin-tb">
+
+	<div class="col-80 text-left layout-center">
+		<form id="addContactForm" class="layout-margin-tb inputs-white" novalidate>
+			<div class="input-container layout-margin-b">
+
+				<label class="layout-padding-t-sm">Primary Contact</label>
+				<select class="col-30 layout-margin-r" ng-model="contact.entity.salutation">
+					<option value="">None</option>
+					<option value="Ms." selected>Ms.</option>
+					<option value="Mr.">Mr.</option>
+			</select>
+				<input class="col-20" type="text" placeholder="First Name" id="firstname" name="firstname" ng-model="contact.entity.firstname">
+				<input class="col-20 pull-right" type="text" placeholder="Last Name" id="lastname" name="lastname" ng-model="contact.entity.lastname">
+			</div>
+
+			<div class="input-container layout-margin-b">
+				<label class="layout-padding-t-sm">Phone Number</label>
+				<input class="col-35 workPhone" type="text" name="phone" ng-model="contact.entity.phone" minlength="14" placeholder="Work">
+				<input class="col-35 pull-right mobilePhone" name="mobile" type="text" minlength="14" ng-model="contact.entity.mobile" placeholder="Mobile">
+			</div>
+
+			<div class="input-container layout-margin-b">
+				<label class="layout-padding-t-sm">Email Address</label>
+				<input class="col-75" type="email" name="email" id="email" ng-model="contact.entity.email" placeholder="">
+			</div>
+			</form>
+			</div>
+	<div class="clearfix"></div>
+	<button ng-click="Save();" class="button button-small button-info text-uppercase">Save</button>
+			</div>
+		</script>
+
+
+		<script>
+			$(document).ready(function(){
+				//$.reject();
+				$('#edit_expanse_ammount').mask("#,##0.00", {reverse: true});
+
+				$(document).click(function(event) { 
+					if(!$(event.target).closest('#menu_head').length) {
+						if($(".filtermenu").hasClass('show')) {
+							$(".filtermenu").removeClass('show');
+						}
+						else{
+						}
+					}   
+					if(!$(event.target).closest('#ul_wrapp').length) {
+					}
+					else{
+						$(".filtermenu").removeClass('show');
+					}
+				});
+			});
+
+			$("#ul_wrapp").click(function(event) { 
+				$("#ul_wrapp").removeClass('show');
+			});
+			function div_add_class(x) {
+				$("#div_wrapp").addClass("organization showing-menu");
+				$("#div_wrapp").addClass("showing-menu");
+				$("#ul_wrapp").addClass("submenu");
+				$("#ul_wrapp").addClass("user-submenu");
+				$("#ul_wrapp").addClass("show");
+			}
+
+			function ul_add_class(x) {
+				$("#div_wrapp").addClass("organization showing-menu");
+				$("#div_wrapp").addClass("showing-menu");
+				$("#ul_wrapp").addClass("submenu");
+				$("#ul_wrapp").addClass("user-submenu");
+				$("#ul_wrapp").addClass("show");
+			}
+
+			function mouse_out(x) {
+				$("#div_wrapp").removeClass("showing-menu");
+				$("#ul_wrapp").removeClass("show");
+			}
+
+			function resizeIframe(obj){ 
+				/*
             obj.style.height = 0;
             obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
             */
-        }
-        
-        function auto_grow(element) {
-            element.style.height = "auto";
-            element.style.overflow = "hidden";
-            element.style.height = (element.scrollHeight)+"px";
-        }
-        
-        function close_mess(obj){
-            $("#close_error_div").hide();
-        }
-        
-    </script>
+			}
+
+			function auto_grow(element) {
+				element.style.height = "auto";
+				element.style.overflow = "hidden";
+				element.style.height = (element.scrollHeight)+"px";
+			}
+
+			function close_mess(obj){
+				$("#close_error_div").hide();
+			}
+
+		</script>
 
 
 	</body>
