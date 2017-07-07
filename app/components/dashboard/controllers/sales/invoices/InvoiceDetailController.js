@@ -88,6 +88,10 @@ function showInvoiceDetail()
 			invoice.payments.forEach(function(payment) {
 				payment.date = formatDate(payment.entity.date, dateFormat);
 				payment.amount = currencyFilter(payment.entity.amount*cc.exchangeRate, cc.currencySymbol, 2);
+				if(payment.entity.mode == "Credit Card")
+					payment.mode = "CC " + payment.entity.lastFourDigits;
+				else
+					payment.mode = payment.entity.mode;
 			});
 			$scope.payments = invoice.payments;
 		} else {

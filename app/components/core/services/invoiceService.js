@@ -1069,8 +1069,13 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 			
 			if(pref.displayCountry)
 				address.push(user.get("country"));
+			var adrs = bInfo.get("streetName") + "<br>" + bInfo.get("city") + ", " + bInfo.get("state") + " " + bInfo.get("zipCode");
 			
-			labels['addres1'] = address.join(', ');
+			if(pref.displayCountry)
+				adrs = adrs + "<br>" + user.get("country");
+			
+			labels['addres1'] = adrs;
+			//labels['addres1'] = address.join(', ');
 			labels['business-name'] = bInfo.get('businessName');
 		}
 
@@ -1206,13 +1211,13 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 
 		var discounts = invoice.get("discounts") || 0;
 		//var shipCharges = invoice.get('shippingCharges') || 0;
-		var shipCharges = invoice.get('shippingCharges');
+		var shipCharges = invoice.get('shippingCharges') || 0;
 		var adjustments = invoice.get('adjustments');
 		//var adjustments = invoice.get('adjustments') || 0;
 		var sum = subTotal + totalTax;
 		var discountRatio = (100 - discounts) * 0.01;
 
-        if(shipCharges){
+        if(pref.shipCharges){
             jsonObj.items['shippingChargesPrice'] = currencyFilter(shipCharges, '$', 2);
             jsonObj.items['shippingCharges'] = 'SHIPPING CHARGES';
         }
@@ -1240,7 +1245,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 		else if (discountType == 3) // after tax
 			sum = (subTotal + totalTax) * discountRatio;
 
-		if (discounts) {
+		if (discounts != undefined) {
 			labels['discountNameBottom'] = {text:"Discount (" + discounts + "%)"};
 			labels['discountPriceBottom'] = {text:discounts + "%"};
 

@@ -339,7 +339,12 @@ invoicesUnlimited.controller('CustomersController',
                     inv.payments.forEach(function(obj){
                         var temp = obj;
                         var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
-                        
+						
+                        if(obj.entity.mode == "Credit Card")
+							obj.mode = "CC " + obj.entity.lastFourDigits;
+						else
+							obj.mode = obj.entity.mode;
+						
                         temp.date = formatDate(obj.entity.date, dateFormat);
                         temp.amount = currencyFilter(obj.entity.amount , "$", 2);
                         temp.invoiceNumber = inv.entity.invoiceNumber;
