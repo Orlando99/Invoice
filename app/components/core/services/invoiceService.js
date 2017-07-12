@@ -1507,6 +1507,7 @@ function updatePage(dataTable, invoice){
 		$('#pdf-business-name').text(userFactory.entity[0].get('company'));
 		$('#pdf-invoice-title').text($(this).find('invoice-title').text());
 		$('#pdf-invoice-number').text($(this).find('refid').text());
+		$('#pdf-order-number').text("   " + $(this).find('purchaseOrderNumber').text());
 		$('#pdf-amount-received').text($(this).find('body-price').text());
 		$('#pdf-date').text($(this).find('body-date').text());
 		$('#pdf-subtotal').text($(this).find('subtotalprice').text());
