@@ -119,6 +119,7 @@ $scope.generateReport = function() {
 				info[customerId] = {
 					name : credit.customer.displayName,
 					availableCredit : subAmount,
+					balanceDue : 0,
 					count : 1
 				};
 				ids.push(customerId);

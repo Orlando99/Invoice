@@ -1189,7 +1189,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 		/* lateFee is already loaded */
 		// only fill if Overdue
 		var lateFee = invoice.get("lateFee");
-		var status = invoice.get("Status");
+		var status = invoice.get("status");
 		var lateFeeValue = 0;
 
 		if (lateFee && status == "Overdue") {
@@ -1203,7 +1203,9 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 
 			} else if (type == "%") {
 				lateFeeValue = subTotal * price * 0.01;
-				labels['tip-price'] = price + type;
+				labels['tip-price'] = currencyFilter(lateFeeValue, '$', 2);
+				//labels['tip-price'] = price + type;
+				labels['tip-text'] = "Late Fee(" + price + type + ")";
 			}
 		}
 		else

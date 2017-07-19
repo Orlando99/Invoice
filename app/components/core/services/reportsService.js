@@ -13,7 +13,7 @@ return {
 		query.lessThanOrEqualTo('invoiceDate', params.toDate);
 		//query.select('invoiceNumber', 'customer', 'total');
 		query.include('customer');
-
+		query.limit(1000);
 		return query.find()
 		.then(function(objs) {
 			var invoices = [];
@@ -35,7 +35,7 @@ return {
 		query.lessThanOrEqualTo('invoiceDate', params.toDate);
 		//query.select('invoiceNumber', 'invoiceItems');
 		query.include('invoiceItems');
-
+		query.limit(1000);
 		return query.find()
 		.then(function(objs) {
 			var invoices = [];
@@ -56,7 +56,7 @@ return {
 		query.lessThanOrEqualTo('creditNoteDate', params.toDate);
 		//query.select('invoiceNumber', 'customer', 'balanceDue');
 		query.include('customer');
-
+		query.limit(1000);
 		return query.find()
 		.then(function(objs) {
 			var notes = [];
@@ -81,7 +81,7 @@ return {
 		
         //query.select('invoiceNumber', 'customer', 'balanceDue');
 		query.include('customer');
-
+		query.limit(1000);
 		return query.find()
 		.then(function(objs) {
 			var invoices = [];
@@ -104,7 +104,7 @@ return {
 		//query.lessThanOrEqualTo('invoiceDate', params.toData);
 		//query.select('invoiceNumber', 'customer', 'balanceDue', 'invoiceDate');
 		query.include('customer');
-
+		query.limit(1000);
 		return query.find()
 		.then(function(objs) {
           
@@ -127,7 +127,7 @@ return {
 		query.lessThanOrEqualTo('invoiceDate', params.toDate);
 		//query.select('invoiceNumber', 'invoiceDate', 'customer', 'payment');
 		query.include('customer', 'payment');
-
+		query.limit(1000);
 		return query.find()
 		.then(function(objs) {
 			var invoices = [];
@@ -146,7 +146,7 @@ return {
 		query.greaterThanOrEqualTo('expanseDate', params.fromDate);
 		query.lessThanOrEqualTo('expanseDate', params.toDate);
 		query.select('category', 'amount');
-
+		query.limit(1000);
 		return query.find();
 	}
 };

@@ -29,6 +29,7 @@ $scope.dateOptions = {
 };
 	
 function showEstimateDetail() {
+	scrollToOffset();
 	var estimateId = $state.params.estimateId;
 	if (! estimateId) return;
 

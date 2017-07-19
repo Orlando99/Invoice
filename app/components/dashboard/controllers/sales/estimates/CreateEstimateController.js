@@ -757,8 +757,8 @@ $scope.save = function() {
 	})
 	.then(function(estimate) {
 		hideLoader();
-		$state.go('dashboard.sales.estimates.all');
-
+		//$state.go('dashboard.sales.estimates.all');
+		$state.go('dashboard.sales.estimates.details', {estimateId:estimate.id});
 	}, function (error) {
 		hideLoader();
 		console.log(error);
@@ -864,8 +864,8 @@ function saveAndSend1 () {
                 addNewComment('Estimate emailed to ' + $scope.selectedCustomer.entity.email, true, estimate);
                 */
 		hideLoader();
-		$state.go('dashboard.sales.estimates.all');
-
+		//$state.go('dashboard.sales.estimates.all');
+		$state.go('dashboard.sales.estimates.details', {estimateId:estimate.id});
 	}, function (error) {
 		hideLoader();
         $state.go('dashboard.sales.estimates.all');
