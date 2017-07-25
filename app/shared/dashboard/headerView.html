@@ -1,103 +1,102 @@
 <div style="height: 20px ; background-color: #B8B8B8; text-align: center ; margin-bottom: 10px; margin-top: -12px;">
-    <label style="font-size: 12px; color: #000">InvoicesUnlimited: Version 2.80 (19/07/2017 09:20 PM)</label>
+	<label style="font-size: 12px; color: #000">InvoicesUnlimited: Version 2.80 (19/07/2017 09:20 PM)</label>
 </div>
 <div class="container">
-    
-      <a href="index.html" class="logo"><img src="./assets/images/01_IU-Web-Admin.png" alt="InvoicesUnlimited"></a>
-      <div  id="div_wrapp" onmouseout="mouse_out(this)" onmouseover="div_add_class(this)" class="organization">
-        <img   src="{{userLogo}}" class="img-circle" style="height: 26px; width:26px; border-radius: 100% !important;" alt="">
-        <a style="cursor:pointer" class="company">{{userName}}</a>
-        <img id="img_hover" style="cursor:pointer" src="./assets/images/dropdown-arrow-primary.png" alt="">
-        
-          <ul Style="margin-top: 10px" id="ul_wrapp" onmouseover="ul_add_class(this)" onmouseout="mouse_out(this)" class="submenu user-submenu">
-          <li ng-hide="role == 'General Employee' || role == 'Sales'"><a ui-sref="dashboard.settings.company-profile">Company Profile</a></li>
-          <li ><a ui-sref="dashboard.settings.user-profile">User Profile</a></li>
-          <li><a style="cursor:pointer" ng-click="logOut();">Logout</a></li>
-        </ul>
-      </div>
-    </div>
-    <ul class="navigation" elem-ready="pageReady()">
-      <li id="dashboard" ng-hide="role == 'Sales'" class="nav-item"><a id="link-dashboard" ui-sref="dashboard" ui-sref-opts="{reload:true}">Dashboard</a></li>
-      <li id="customers" ng-hide="role == 'Sales'" class="nav-item"><a id="link-customers" ui-sref="dashboard.customers.all" ui-sref-opts="{reload:true}">Customers</a></li>
-      <li id="sales" class="nav-item">
-        <a href="javascript:" id="link-sales">Sales</a>
-        <div class="container-fluid link-sales-div">
-          <ul Style="" class="submenu">
-            
-            <li><a id="invoices-link" Style="margin-left: 260px !important" ui-sref="dashboard.sales.invoices.all" ui-sref-opts="{reload:true}">Invoices</a></li>
-              <li><a Style="margin-left: 70px !important" ui-sref="dashboard.sales.estimates.all" ui-sref-opts="{reload:true}">Estimates</a></li>
-            <li><a ui-sref="dashboard.sales.creditnotes.all" ui-sref-opts="{reload:true}">Credit Notes</a></li>
-          </ul>
-        </div>
-      </li>
-      
-      <li id="expenses" ng-hide="role == 'Sales'" class="nav-item">
-        <a href="javascript:" id="link-expense">Expenses</a>
-        <div class="container-fluid link-expense-div">
-          <ul class="submenu">
-            <li><a Style="margin-left: 365px !important" ui-sref="dashboard.expenses.all" ui-sref-opts="{reload:true}">Expenses</a></li>
-          <!-- <li><a href="#">Recurring Expenses</a></li> -->
-            <li><a ui-sref="dashboard.expenses.category" ui-sref-opts="{reload:true}">Expense Category</a></li>
-          </ul>
-        </div>
-      </li>
-      
-      <li id="projects" ng-hide="role == 'Sales'" class="nav-item"><a ui-sref="dashboard.projects.all" ui-sref-opts="{reload:true}">Projects</a></li>
-        <!--
-      <li><a href="timesheets/timesheets.html">Timesheets</a></li>
-      -->
+	<a href="index.html" class="logo"><img src="./assets/images/01_IU-Web-Admin.png" alt="InvoicesUnlimited"></a>
+	<div  id="div_wrapp" onmouseout="mouse_out(this)" onmouseover="div_add_class(this)" class="organization">
+		<img   src="{{userLogo}}" class="img-circle" style="height: 26px; width:26px; border-radius: 100% !important;" alt="">
+		<a style="cursor:pointer" class="company">{{userName}}</a>
+		<img id="img_hover" style="cursor:pointer" src="./assets/images/dropdown-arrow-primary.png" alt="">
 
-      <li id="reports" class="nav-item" ng-hide="role == 'General Employee' || role == 'Sales'">
-        <a  href="javascript:" id="link-reports">Reports</a>
-        <div class="container-fluid link-reports-div">
-          <ul class="submenu">
-            <li>
-              <a ui-sref="dashboard.reports.salesByCustomer" ui-sref-opts="{reload:true}">Sales By Customer</a>
-              <a ui-sref="dashboard.reports.salesByItem" ui-sref-opts="{reload:true}">Sales By Item</a>
-            </li>
-            <li>
-              <a ui-sref="dashboard.reports.customerBalance" ui-sref-opts="{reload:true}">Customer Balance</a>
-              <a ui-sref="dashboard.reports.invoiceAging" ui-sref-opts="{reload:true}">Invoice Aging</a>
-              <a ui-sref="dashboard.reports.paymentsReceived" ui-sref-opts="{reload:true}">Payments Received</a>
-            </li>
-            <li>
-              <a ui-sref="dashboard.reports.expenseByCategory" ui-sref-opts="{reload:true}">Expense by Category</a>
-            </li>
-          </ul>
-        </div>
-      </li>
-      
-      <li id="settings" class="nav-item">
-        <a href="javascript:" id="link-settings">Settings</a>
-        <div class="container-fluid link-settings-div">
-          <ul class="submenu">
-            <li>
-              <a ng-hide="role == 'General Employee' || role == 'Sales'" style="margin-left: 60px !important" ui-sref="dashboard.settings.company-profile" ui-sref-opts="{reload:true}">Company Profile</a>
-              <a style="margin-left: 60px !important" ui-sref="dashboard.settings.user-profile" ui-sref-opts="{reload:true}">User Profile</a>
-            </li>
-            <li ng-hide="role == 'General Employee' || role == 'Sales'">
-              <a ui-sref="dashboard.settings.general-preferences" ui-sref-opts="{reload:true}">General</a>
-              <a ui-sref="dashboard.settings.invoices" ui-sref-opts="{reload:true}">Invoices</a>
-              <a ui-sref="dashboard.settings.invoice-templates" ui-sref-opts="{reload:true}">Invoice Templates</a>
-              <a ui-sref="dashboard.settings.estimates" ui-sref-opts="{reload:true}">Estimates</a>
-              <a ui-sref="dashboard.settings.credit-notes" ui-sref-opts="{reload:true}">Credits</a>
-              <!--<a ui-sref="dashboard.settings.payments" ui-sref-opts="{reload:true}">Payments</a>-->
-            </li>
-            <li ng-hide="role == 'Sales'">
-              <a ui-sref="dashboard.settings.taxes" ui-sref-opts="{reload:true}">Taxes</a>
-              <a ui-sref="dashboard.settings.items" ui-sref-opts="{reload:true}">Items</a>
-              <a ui-sref="dashboard.settings.users" ng-hide="role == 'General Employee'" ui-sref-opts="{reload:true}">Users</a>
-              <a ui-sref="dashboard.settings.currencies" ui-sref-opts="{reload:true}">Currency</a>
-            </li>
-            <li>
-              <a style="margin-right: 70px !important" ui-sref="dashboard.settings.app-preferences" ui-sref-opts="{reload:true}">Preferences</a>
-              <a style="margin-right: 70px !important" ui-sref="dashboard.settings.contact" ui-sref-opts="{reload:true}">Contact</a>
-            </li>
-          </ul>
-        </div>
-      </li>
-		<li id="payments" ng-hide="role == 'Sales'" class="nav-item"><a ui-sref="dashboard.settings.payments" ui-sref-opts="{reload:true}">Credit Card Processing</a></li>
-    </ul>
+		<ul Style="margin-top: 10px" id="ul_wrapp" onmouseover="ul_add_class(this)" onmouseout="mouse_out(this)" class="submenu user-submenu">
+			<li ng-hide="role == 'General Employee' || role == 'Sales'"><a ui-sref="dashboard.settings.company-profile">Company Profile</a></li>
+			<li ><a ui-sref="dashboard.settings.user-profile">User Profile</a></li>
+			<li><a style="cursor:pointer" ng-click="logOut();">Logout</a></li>
+		</ul>
+	</div>
+</div>
+<ul class="navigation" elem-ready="pageReady()">
+	<li id="dashboard" ng-hide="role == 'Sales'" class="nav-item"><a id="link-dashboard" ui-sref="dashboard" ui-sref-opts="{reload:true}">Dashboard</a></li>
+	<li id="customers" ng-hide="role == 'Sales'" class="nav-item"><a id="link-customers" ui-sref="dashboard.customers.all" ui-sref-opts="{reload:true}">Customers</a></li>
+	<li id="sales" class="nav-item">
+		<a href="javascript:" id="link-sales">Sales</a>
+		<div class="container-fluid link-sales-div">
+			<ul Style="" class="submenu">
+
+				<li><a id="invoices-link" Style="margin-left: 260px !important" ui-sref="dashboard.sales.invoices.all" ui-sref-opts="{reload:true}">Invoices</a></li>
+				<li><a Style="margin-left: 70px !important" ui-sref="dashboard.sales.estimates.all" ui-sref-opts="{reload:true}">Estimates</a></li>
+				<li><a ui-sref="dashboard.sales.creditnotes.all" ui-sref-opts="{reload:true}">Credit Notes</a></li>
+			</ul>
+		</div>
+	</li>
+
+	<li id="expenses" ng-hide="role == 'Sales'" class="nav-item">
+		<a href="javascript:" id="link-expense">Expenses</a>
+		<div class="container-fluid link-expense-div">
+			<ul class="submenu">
+				<li><a Style="margin-left: 365px !important" ui-sref="dashboard.expenses.all" ui-sref-opts="{reload:true}">Expenses</a></li>
+				<!-- <li><a href="#">Recurring Expenses</a></li> -->
+				<li><a ui-sref="dashboard.expenses.category" ui-sref-opts="{reload:true}">Expense Category</a></li>
+			</ul>
+		</div>
+	</li>
+
+	<li id="projects" ng-hide="role == 'Sales'" class="nav-item"><a ui-sref="dashboard.projects.all" ui-sref-opts="{reload:true}">Projects</a></li>
+	<!--
+<li><a href="timesheets/timesheets.html">Timesheets</a></li>
+-->
+
+	<li id="reports" class="nav-item" ng-hide="role == 'General Employee' || role == 'Sales'">
+		<a  href="javascript:" id="link-reports">Reports</a>
+		<div class="container-fluid link-reports-div">
+			<ul class="submenu">
+				<li>
+					<a ui-sref="dashboard.reports.salesByCustomer" ui-sref-opts="{reload:true}">Sales By Customer</a>
+					<a ui-sref="dashboard.reports.salesByItem" ui-sref-opts="{reload:true}">Sales By Item</a>
+				</li>
+				<li>
+					<a ui-sref="dashboard.reports.customerBalance" ui-sref-opts="{reload:true}">Customer Balance</a>
+					<a ui-sref="dashboard.reports.invoiceAging" ui-sref-opts="{reload:true}">Invoice Aging</a>
+					<a ui-sref="dashboard.reports.paymentsReceived" ui-sref-opts="{reload:true}">Payments Received</a>
+				</li>
+				<li>
+					<a ui-sref="dashboard.reports.expenseByCategory" ui-sref-opts="{reload:true}">Expense by Category</a>
+				</li>
+			</ul>
+		</div>
+	</li>
+
+	<li id="settings" class="nav-item">
+		<a href="javascript:" id="link-settings">Settings</a>
+		<div class="container-fluid link-settings-div">
+			<ul class="submenu">
+				<li>
+					<a ng-hide="role == 'General Employee' || role == 'Sales'" style="margin-left: 60px !important" ui-sref="dashboard.settings.company-profile" ui-sref-opts="{reload:true}">Company Profile</a>
+					<a style="margin-left: 60px !important" ui-sref="dashboard.settings.user-profile" ui-sref-opts="{reload:true}">User Profile</a>
+				</li>
+				<li ng-hide="role == 'General Employee' || role == 'Sales'">
+					<a ui-sref="dashboard.settings.general-preferences" ui-sref-opts="{reload:true}">General</a>
+					<a ui-sref="dashboard.settings.invoices" ui-sref-opts="{reload:true}">Invoices</a>
+					<a ui-sref="dashboard.settings.invoice-templates" ui-sref-opts="{reload:true}">Invoice Templates</a>
+					<a ui-sref="dashboard.settings.estimates" ui-sref-opts="{reload:true}">Estimates</a>
+					<a ui-sref="dashboard.settings.credit-notes" ui-sref-opts="{reload:true}">Credits</a>
+					<!--<a ui-sref="dashboard.settings.payments" ui-sref-opts="{reload:true}">Payments</a>-->
+				</li>
+				<li ng-hide="role == 'Sales'">
+					<a ui-sref="dashboard.settings.taxes" ui-sref-opts="{reload:true}">Taxes</a>
+					<a ui-sref="dashboard.settings.items" ui-sref-opts="{reload:true}">Items</a>
+					<a ui-sref="dashboard.settings.users" ng-hide="role == 'General Employee'" ui-sref-opts="{reload:true}">Users</a>
+					<a ui-sref="dashboard.settings.currencies" ui-sref-opts="{reload:true}">Currency</a>
+				</li>
+				<li>
+					<a style="margin-right: 70px !important" ui-sref="dashboard.settings.app-preferences" ui-sref-opts="{reload:true}">Preferences</a>
+					<a style="margin-right: 70px !important" ui-sref="dashboard.settings.contact" ui-sref-opts="{reload:true}">Contact</a>
+				</li>
+			</ul>
+		</div>
+	</li>
+	<li id="payments" ng-hide="role == 'Sales'" class="nav-item"><a ui-sref="dashboard.settings.payments" ui-sref-opts="{reload:true}">Credit Card Processing</a></li>
+</ul>
 
 <div id="snackbar"></div>
 

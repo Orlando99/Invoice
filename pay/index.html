@@ -1050,7 +1050,7 @@
 				}).then(function(){
 
 					Parse.Cloud.run('checkInvoiceStatus',{invoiceInfoId:invoiceInfoId}).then(function(res){
-						if (res === "Paid"){ 
+						if (res.status === "Paid"){ 
 							$('.btn-pay').hide();
 
 							$('#index').hide();
@@ -1058,15 +1058,36 @@
 							$('#alreadyPaid').show();
 							$('.full-screen-loader,.full-screen-white-overlay').hide();
 						}
+						
+						result.lateFee = res.lateFee;
 					}).then(function(){
+						
+						var isOverdue = false;
+						
+						var dueDate = Date.parse(result.dueDate);
+	  
+						  dueDate.setHours(23);
+						  dueDate.setMinutes(59);
+						  dueDate.setSeconds(59);
+						
+						var now = new Date();
+						
+						isOverdue = now > dueDate;
+						
 						if (result.img) $('#logo-img').attr('src',result.img.url());
 						else $('#logo-img').attr('src',"./cardimages/01_IU-Web-Admin.png");
 						$('.b-name').text(result.businessName);
 						$('.phone').text(result.phone);
 						$('.email').text(result.email);
 						$('.due-date').text(Date.parse(result.dueDate).toString('MMMM dS, yyyy'));
-						$('.total-due').text('$' + numberWithCommas(parseFloat(result.totalDue).toFixed(2)));
-						$('#Total').val(result.totalDue);
+						if(isOverdue)
+							$('.total-due').text('$' + numberWithCommas((parseFloat(result.totalDue) + result.lateFee).toFixed(2)));
+						else
+							$('.total-due').text('$' + numberWithCommas(parseFloat(result.totalDue).toFixed(2)));
+						if(isOverdue)
+							$('#Total').val((parseFloat(result.totalDue) + result.lateFee).toFixed(2));
+						else
+							$('#Total').val(result.totalDue);
 						$('.invoice-date').text("Invoice Date: " + Date.parse(result.invoiceDate).toString('MMMM dS, yyyy'));
 						$('.reference-number').text("Reference Number: " + result.referenceNumber);
 						$('.full-screen-loader,.full-screen-white-overlay').hide();

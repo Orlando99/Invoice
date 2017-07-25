@@ -489,6 +489,7 @@ return {
 		
 		query.equalTo("organization", organization);
 		query.include("customer");
+		query.include("lateFee");
 		//query.notEqualTo("customer.isDeleted", 1);
         query.limit(1000);
 		//query.select("invoiceNumber", "invoiceDate", "dueDate", "total", "balanceDue", "status", "customer", "poNumber");
