@@ -472,7 +472,6 @@ return {
 			promises.push(prefObj.save());
 			return Parse.Promise.when(promises);
 		});
-
 	},
 	listInvoices : function(user) {
 		var organization = getOrganization(user);
@@ -492,7 +491,6 @@ return {
 		query.include("lateFee");
 		//query.notEqualTo("customer.isDeleted", 1);
         query.limit(1000);
-		//query.select("invoiceNumber", "invoiceDate", "dueDate", "total", "balanceDue", "status", "customer", "poNumber");
 
 		return query.find().then(function(invoiceObjs) {
 			var invoices = [];
@@ -503,7 +501,6 @@ return {
 			});
 			return invoices;
 		});
-
 	},
 	createInvoiceReceipt : function(invoiceId, invoiceInfoId) {
 		var invoiceTable = Parse.Object.extend("Invoices");
