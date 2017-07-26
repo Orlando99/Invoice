@@ -1190,7 +1190,8 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 		var status = invoice.get("status");
 		var lateFeeValue = 0;
 
-		if (lateFee && status == "Overdue") {
+		//if (lateFee && status == "Overdue") {
+		if (lateFee) {
 			labels['tip-text'] = "Late Fee";
 			var price = lateFee.get("price");
 			var type = lateFee.get("type");
@@ -1258,7 +1259,10 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 
 		labels['subtotalprice'] = currencyFilter(subTotal, '$', 2);
 		
-		var total = sum + shipCharges + adjustments + lateFeeValue;
+		var totalWithLateFee = sum + shipCharges + adjustments + lateFeeValue;
+		labels['total-price4'] = currencyFilter(totalWithLateFee, '$', 2);
+		
+		var total = sum + shipCharges + adjustments;
 		labels['total-price3'] = labels['body-price'] = currencyFilter(total, '$', 2);
 
 		var paymentMade = invoice.get("paymentMade") || 0;
@@ -1267,6 +1271,11 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 		labels['paymentMadePrice'] = currencyFilter(paymentMade, '$', 2);
 		labels['creditsAppliedPrice'] = currencyFilter(creditApplied, '$', 2);
 
+		totalWithLateFee = parseFloat(totalWithLateFee.toFixed(2));
+		
+		var balanceDueWithLateFee = totalWithLateFee - paymentMade - creditApplied;
+		labels['due-price'] = currencyFilter(balanceDueWithLateFee, '$', 2);
+		
 		total = parseFloat(total.toFixed(2));
 		
 		var balanceDue = total - paymentMade - creditApplied;
