@@ -225,6 +225,10 @@ function prepareForm() {
 			break;
 	}
 
+	$scope.showShippingCharges = false;
+	$scope.showAdjustments = false;
+	
+	/*
 	if ($scope.prefs.shipCharges) {
 		$scope.showShippingCharges = true;
 		$scope.shippingChargesStr = currencyFilter(0, '$', 2);
@@ -234,7 +238,7 @@ function prepareForm() {
 		$scope.showAdjustments = true;
 		$scope.adjustmentsStr = currencyFilter(0, '$', 2);
 	}
-
+	*/
 	if ($scope.prefs.salesPerson)
 		$scope.showSalesPerson = true;
 

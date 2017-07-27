@@ -219,6 +219,10 @@ function prepareEditForm() {
 	$scope.notes = estimate.entity.notes;
 	$scope.terms = estimate.entity.termsConditions;
 	
+	$scope.showShippingCharges = false;
+	$scope.showAdjustments = false;
+	
+	/*
 	if ($scope.prefs.shipCharges) {
 		$scope.shippingCharges = estimate.entity.shippingCharges;
 		$scope.showShippingCharges = true;
@@ -228,7 +232,7 @@ function prepareEditForm() {
 		$scope.adjustments = estimate.entity.adjustments;
 		$scope.showAdjustments = true;
 	}
-
+	*/
 	if ($scope.prefs.salesPerson) {
 		$scope.salesPerson = estimate.entity.salesPerson || "";
 		$scope.showSalesPerson = true;

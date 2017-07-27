@@ -55,17 +55,24 @@ function prepareForm() {
 		$scope.disableInvNo =
 			($scope.prefs.numAutoGen == 1) ? true : false;
 
+		$scope.paymentTerms = {
+				terms : [
+					{name: "Off", value : 0},
+					{name: "Due on Receipt", value : 1},
+					{name: "Net 7", value : 7},
+					{name: "Net 10", value : 10},
+					{name: "Net 30", value : 30},
+					{name: "Net 60", value : 60},
+					{name: "Net 90", value : 90}
+				],
+				selectedTerm : {name: "Due on Receipt", value : 1}
+			};
+		
 		$scope.hasDueDate = true;
 		$scope.todayDate = new Date();
 		salesCommon.calculateDueDate($scope);
 
-		$scope.paymentTerms = {
-			terms : [
-				{name: "Due on Receipt", value : 1},
-				{name: "Off", 			 value : 0}
-			],
-			selectedTerm : {name: "Due on Receipt", value : 1}
-		};
+		
 
 		$scope.files = [];
         

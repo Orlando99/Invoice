@@ -321,8 +321,8 @@ $scope.save = function() {
 	})
 	.then(function(creditNote) {
 		hideLoader();
-		$state.go('dashboard.sales.creditnotes.all');
-
+		//$state.go('dashboard.sales.creditnotes.all');
+		$state.go('dashboard.sales.creditnotes.details', {creditNoteId:creditNote.id});
 	}, function (error) {
 		hideLoader();
 		console.log(error);
@@ -429,8 +429,8 @@ function saveAndSend1() {
                 addNewComment('Credit Note emailed to ' + $scope.selectedCustomer.entity.email, true, creditNote);
         */
 		hideLoader();
-		$state.go('dashboard.sales.creditnotes.all');
-
+		//$state.go('dashboard.sales.creditnotes.all');
+		$state.go('dashboard.sales.creditnotes.details', {creditNoteId:creditNote.id});
 	}, function (error) {
 		hideLoader();
 		console.log(error);

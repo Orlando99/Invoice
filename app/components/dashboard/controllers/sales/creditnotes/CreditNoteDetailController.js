@@ -1,640 +1,642 @@
 'use strict';
 
-invoicesUnlimited.controller('CreditNoteDetailController',
-	['$q', '$scope', '$state', '$sce', '$controller', 'userFactory',
-		'creditNoteService', 'coreFactory', 'commentFactory', 'currencyFilter',
+invoicesUnlimited.controller('CreditNoteDetailController',[
+	'$q', '$scope', '$state', '$sce', '$controller', 'userFactory',
+	'creditNoteService', 'coreFactory', 'commentFactory', 'currencyFilter',
 
-function($q, $scope, $state, $sce, $controller, userFactory,
-	creditNoteService, coreFactory, commentFactory, currencyFilter) {
+	function($q, $scope, $state, $sce, $controller, userFactory,
+			  creditNoteService, coreFactory, commentFactory, currencyFilter) {
 
-if(! userFactory.entity.length) {
-	console.log('User not logged in');
-	return undefined;
-}
-
-var user = userFactory.entity[0];
-var organization = user.get("organizations")[0];
-$controller('DashboardController',{$scope:$scope,$state:$state});
-
-    var cc = userFactory.entity[0].currency.attributes;
-    
-    if(cc.exchangeRate){
-        $scope.currentCurrency = cc;
-    }
-    else{
-        var temp = {
-            'currencySymbol': '$',
-            'exchangeRate'  : 1
-        };
-        $scope.currentCurrency = temp;
-
-        cc = temp;
-    }
-    
-    var dateFormat = undefined;
-userFactory.getField('dateFormat')
-.then(function(obj) {
-	$scope.dateFormat = obj;
-    dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
-	showCreditNoteDetail();
-});
-
-$scope.isOwner = false;
-
-$scope.dateOptions = {
-	showWeeks : false
-};
-	
-function showCreditNoteDetail() {
-	var creditNoteId = $state.params.creditNoteId;
-	if (! creditNoteId) return;
-
-	showLoader();
-	$q.when(creditNoteService.getCreditNoteDetails(creditNoteId))
-	.then(function(creditNote) {
-		
-		var usr = creditNote.entity.get('userID');
-		
-		if(userFactory.entity[0].get('role') == 'General Employee'){
-			if(userFactory.entity[0].id == usr.id)
-				$scope.isOwner = true;
-		} else {
-			$scope.isOwner = true;
+		if(! userFactory.entity.length) {
+			console.log('User not logged in');
+			return undefined;
 		}
-		
-		if(creditNote.entity.get('customer').get('isDeleted') == 1)
-			$scope.isOwner = false;
-		
-		console.log(creditNote);
-		$scope.creditNote = creditNote;
-		$scope.creditNo = creditNote.entity.creditNumber;
-        
-        if(creditNote.payments) {
-			creditNote.payments.forEach(function(payment) {
-				payment.date = formatDate(payment.entity.date, dateFormat);
-				payment.amount = currencyFilter(payment.entity.amount*cc.exchangeRate, cc.currencySymbol, 2);
-			});
-			$scope.payments = creditNote.payments;
-		} else {
-			$scope.payments = [];
-		}
-        
-       if(creditNote.comments)
-       {
-            creditNote.comments.forEach(function(obj){
-                obj.date = formatDate(obj.entity.date, dateFormat);
-            });
-       }
-		$scope.comments = creditNote.comments;
-		var receipt = creditNote.entity.creditReceipt;
 
-		// create receipt if necessary,
-		if(! receipt) {
-			return creditNoteService.createCreditNoteReceipt(creditNoteId)
+		var user = userFactory.entity[0];
+		var organization = user.get("organizations")[0];
+		$controller('DashboardController',{$scope:$scope,$state:$state});
+
+		var cc = userFactory.entity[0].currency.attributes;
+
+		if(cc.exchangeRate){
+			$scope.currentCurrency = cc;
+		}
+		else{
+			var temp = {
+				'currencySymbol': '$',
+				'exchangeRate'  : 1
+			};
+			$scope.currentCurrency = temp;
+
+			cc = temp;
+		}
+
+		var dateFormat = undefined;
+		userFactory.getField('dateFormat')
 			.then(function(obj) {
-				return obj.get('creditReceipt');
-			});
-		} else {
-			return Promise.resolve(receipt);
-		}
-
-	})
-	.then(function(receipt) {
-		$scope.templateUrl = $sce.trustAsResourceUrl(receipt.url());
-		hideLoader();
-
-	}, function(error) {
-		hideLoader();
-		console.log(error.message);
-	});
-
-}
-
-$scope.changeTemplate = function() {
-	showLoader();
-	$q.when(coreFactory.getInvoiceTemplates())
-	.then(function(templateObjs) {
-		var defaultTemplate = user.get('defaultTemplate');
-		
-		var templates = [];
-		templateObjs.forEach(function(t) {
-			var obj = {
-				entity : t,
-				name : t.get('name'),
-				url : t.get('templatePreview').url()
-			}
-			if (!defaultTemplate && obj.name == 'Template 1')
-				obj.isDefault = true;
-			else
-				obj.isDefault = (defaultTemplate.id == t.id ? true : false);
-
-			templates.push(obj);
-
+			$scope.dateFormat = obj;
+			dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+			showCreditNoteDetail();
 		});
-		$scope.templates = templates;
-		$('.change-template').addClass('show');
-		hideLoader();
 
-	}, function(error) {
-		console.log(error.message);
-		hideLoader();
-	});
-}
+		$scope.isOwner = false;
 
-$scope.setDefaultTemplate = function(index) {
-	showLoader();
-	$scope.templates.forEach(function(t) {
-		t.isDefault = false;
-	});
-	$scope.templates[index].isDefault = true;
+		$scope.dateOptions = {
+			showWeeks : false
+		};
 
-	$scope.creditNote.entity.unset('creditReceipt');
-	user.set('defaultTemplate', $scope.templates[index].entity);
+		function showCreditNoteDetail() {
+			var creditNoteId = $state.params.creditNoteId;
+			if (! creditNoteId) return;
 
-	var promises = [];
-	promises.push(user.save());
-	promises.push($scope.creditNote.entity.save());
+			scrollToOffset();
 
-	$q.all(promises).then(function() {
-		hideLoader();
-		$('.change-template').removeClass('show');
-		console.log('default template selected');
-		$state.reload();
+			showLoader();
+			$q.when(creditNoteService.getCreditNoteDetails(creditNoteId))
+				.then(function(creditNote) {
 
-	}, function(error) {
-		hideLoader();
-		console.log(error,message);
-	});
-}
+				var usr = creditNote.entity.get('userID');
 
-$scope.prepareAddPayment = function() {
-	$scope.paymentDate = new Date();
-	$scope.paymentAmount = $scope.creditNote.entity.remainingCredits.toFixed(2);
-	$scope.paymentRef = '' + Math.random().toString(10).substr(2,6);
-	$scope.paymentModes = ['Check', 'Cash', 'Bank Transfer', 'Bank Remittance'];
-	$scope.selectedPaymentMode = 'Cash';
+				if(userFactory.entity[0].get('role') == 'General Employee'){
+					if(userFactory.entity[0].id == usr.id)
+						$scope.isOwner = true;
+				} else {
+					$scope.isOwner = true;
+				}
 
-	$('#paymentForm').validate({
-		rules: {
-			paymentDate : 'required',
-			paymentAmount : {
-				required : true,
-				number : true,
-				min : 0.01,
-                max : $scope.creditNote.entity.remainingCredits.toFixed(2)
-			},
-			paymentRef : 'required',
-			paymentMode : 'required'
-		},
-        messages: {
-            paymentDate : 'Please select date',
-			paymentAmount : {
-				required : 'Please enter refund amount',
-				number : 'Please enter valid amount',
-				min : 'Amount must be greater than 0',
-                max : 'Amount cannot be greater than remaining credits'
-			},
-			paymentRef : 'Please enter reference number',
-			paymentMode : 'Please select refund mode'
-		}
-	});
-	$('#paymentForm').validate().resetForm();
-}
+				if(creditNote.entity.get('customer').get('isDeleted') == 1)
+					$scope.isOwner = false;
 
-$scope.addPayment = function() {
-	if (! $('#paymentForm').valid()) return;
+				console.log(creditNote);
+				$scope.creditNote = creditNote;
+				$scope.creditNo = creditNote.entity.creditNumber;
 
-	showLoader();
-	var payment = {
-		userID : user,
-		organization : organization,
-		date : $scope.paymentDate,
-		mode : $scope.selectedPaymentMode,
-		amount : Number($scope.paymentAmount),
-		reference : $scope.paymentRef,
-		notes : $scope.paymentNotes,
-        deleted : false
-	};
+				if(creditNote.payments) {
+					creditNote.payments.forEach(function(payment) {
+						payment.date = formatDate(payment.entity.date, dateFormat);
+						payment.amount = currencyFilter(payment.entity.amount*cc.exchangeRate, cc.currencySymbol, 2);
+					});
+					$scope.payments = creditNote.payments;
+				} else {
+					$scope.payments = [];
+				}
 
-	var creditObj = $scope.creditNote.entity;
-	creditObj.unset('creditReceipt');
-	creditObj.increment('refundsMade', payment.amount);
-	creditObj.increment('remainingCredits', -payment.amount);
+				if(creditNote.comments)
+				{
+					creditNote.comments.forEach(function(obj){
+						obj.date = formatDate(obj.entity.date, dateFormat);
+					});
+				}
+				$scope.comments = creditNote.comments;
+				var receipt = creditNote.entity.creditReceipt;
 
-	if(creditObj.remainingCredits <= 0)
-		creditObj.set('status', 'Closed');
-	else{
-        creditObj.set('status', 'Open');
-    }
+				// create receipt if necessary,
+				if(! receipt) {
+					return creditNoteService.createCreditNoteReceipt(creditNoteId)
+						.then(function(obj) {
+						return obj.get('creditReceipt');
+					});
+				} else {
+					return Promise.resolve(receipt);
+				}
 
-	var promise = $q.when(coreFactory.getUserRole(user))
-	promise.then(function(role) {
-		return $q.when(creditNoteService.addRefunds([payment], role));
-	})
-	.then(function(objs) {
-		var refundList = creditObj.get('refunds');
-		if (refundList) {
-			refundList = refundList.concat(objs);
-		} else {
-			refundList= objs;
+			})
+				.then(function(receipt) {
+				$scope.templateUrl = $sce.trustAsResourceUrl(receipt.url());
+				hideLoader();
+
+			}, function(error) {
+				hideLoader();
+				console.log(error.message);
+			});
+
 		}
 
-		creditObj.set('refunds', refundList);
-		return creditObj.save();
-	})
-	.then(function() {
-        var body = 'Refund made for '+ currencyFilter($scope.paymentAmount, '$', 2) +' amount';
-        addNewComment(body, true)
-        .then(function(obj){
-            hideLoader();
-		  $state.reload();
-        });
-		
-	});
+		$scope.changeTemplate = function() {
+			showLoader();
+			$q.when(coreFactory.getInvoiceTemplates())
+				.then(function(templateObjs) {
+				var defaultTemplate = user.get('defaultTemplate');
 
-}
+				var templates = [];
+				templateObjs.forEach(function(t) {
+					var obj = {
+						entity : t,
+						name : t.get('name'),
+						url : t.get('templatePreview').url()
+					}
+					if (!defaultTemplate && obj.name == 'Template 1')
+						obj.isDefault = true;
+					else
+						obj.isDefault = (defaultTemplate.id == t.id ? true : false);
 
-$scope.textReceipt = function() {
-    
-    $('#text-error').hide();
-    
-    var customer = $scope.creditNote.entity.get('customer');
-    
-    var persons = customer.get('contactPersons');
+					templates.push(obj);
 
-    $scope.mobileContacts = [];
+				});
+				$scope.templates = templates;
+				$('.change-template').addClass('show');
+				hideLoader();
 
-    if(persons.length){
-        persons.forEach(function(obj){
-            var first = obj.get('firstname') ? obj.get('firstname') : '';
-            var last = obj.get('lastname') ? obj.get('lastname') : '';
-            var primary = obj.get('defaultPerson') == 1 ? true : false;
+			}, function(error) {
+				console.log(error.message);
+				hideLoader();
+			});
+		}
 
-            var name = first + ' ' + last;
-            if(obj.get('phone')){
-                $scope.mobileContacts.push({
-                    selected : false,
-                    contact : obj.get('phone'),
-                    contactName : '('+ name + ') ' + obj.get('phone')
-                });
-            }
+		$scope.setDefaultTemplate = function(index) {
+			showLoader();
+			$scope.templates.forEach(function(t) {
+				t.isDefault = false;
+			});
+			$scope.templates[index].isDefault = true;
 
-            if(obj.get('mobile')){
-                $scope.mobileContacts.push({
-                    selected : primary,
-                    contact : obj.get('mobile'),
-                    contactName : '('+ name + ') ' + obj.get('mobile')
-                });
-            }
-        });
-    }
+			$scope.creditNote.entity.unset('creditReceipt');
+			user.set('defaultTemplate', $scope.templates[index].entity);
 
-    if($scope.mobileContacts.length){
-        $('.text-popup').addClass('show');
-    } else {
-        ShowMessage("Please Enter Mobile for Customer!","error");
-        return;
-    }
-    
-    /*
+			var promises = [];
+			promises.push(user.save());
+			promises.push($scope.creditNote.entity.save());
+
+			$q.all(promises).then(function() {
+				hideLoader();
+				$('.change-template').removeClass('show');
+				console.log('default template selected');
+				$state.reload();
+
+			}, function(error) {
+				hideLoader();
+				console.log(error,message);
+			});
+		}
+
+		$scope.prepareAddPayment = function() {
+			$scope.paymentDate = new Date();
+			$scope.paymentAmount = $scope.creditNote.entity.remainingCredits.toFixed(2);
+			$scope.paymentRef = '' + Math.random().toString(10).substr(2,6);
+			$scope.paymentModes = ['Check', 'Cash', 'Bank Transfer', 'Bank Remittance'];
+			$scope.selectedPaymentMode = 'Cash';
+
+			$('#paymentForm').validate({
+				rules: {
+					paymentDate : 'required',
+					paymentAmount : {
+						required : true,
+						number : true,
+						min : 0.01,
+						max : $scope.creditNote.entity.remainingCredits.toFixed(2)
+					},
+					paymentRef : 'required',
+					paymentMode : 'required'
+				},
+				messages: {
+					paymentDate : 'Please select date',
+					paymentAmount : {
+						required : 'Please enter refund amount',
+						number : 'Please enter valid amount',
+						min : 'Amount must be greater than 0',
+						max : 'Amount cannot be greater than remaining credits'
+					},
+					paymentRef : 'Please enter reference number',
+					paymentMode : 'Please select refund mode'
+				}
+			});
+			$('#paymentForm').validate().resetForm();
+		}
+
+		$scope.addPayment = function() {
+			if (! $('#paymentForm').valid()) return;
+
+			showLoader();
+			var payment = {
+				userID : user,
+				organization : organization,
+				date : $scope.paymentDate,
+				mode : $scope.selectedPaymentMode,
+				amount : Number($scope.paymentAmount),
+				reference : $scope.paymentRef,
+				notes : $scope.paymentNotes,
+				deleted : false
+			};
+
+			var creditObj = $scope.creditNote.entity;
+			creditObj.unset('creditReceipt');
+			creditObj.increment('refundsMade', payment.amount);
+			creditObj.increment('remainingCredits', -payment.amount);
+
+			if(creditObj.remainingCredits <= 0)
+				creditObj.set('status', 'Closed');
+			else{
+				creditObj.set('status', 'Open');
+			}
+
+			var promise = $q.when(coreFactory.getUserRole(user))
+			promise.then(function(role) {
+				return $q.when(creditNoteService.addRefunds([payment], role));
+			})
+				.then(function(objs) {
+				var refundList = creditObj.get('refunds');
+				if (refundList) {
+					refundList = refundList.concat(objs);
+				} else {
+					refundList= objs;
+				}
+
+				creditObj.set('refunds', refundList);
+				return creditObj.save();
+			})
+				.then(function() {
+				var body = 'Refund made for '+ currencyFilter($scope.paymentAmount, '$', 2) +' amount';
+				addNewComment(body, true)
+					.then(function(obj){
+					hideLoader();
+					$state.reload();
+				});
+
+			});
+
+		}
+
+		$scope.textReceipt = function() {
+
+			$('#text-error').hide();
+
+			var customer = $scope.creditNote.entity.get('customer');
+
+			var persons = customer.get('contactPersons');
+
+			$scope.mobileContacts = [];
+
+			if(persons.length){
+				persons.forEach(function(obj){
+					var first = obj.get('firstname') ? obj.get('firstname') : '';
+					var last = obj.get('lastname') ? obj.get('lastname') : '';
+					var primary = obj.get('defaultPerson') == 1 ? true : false;
+
+					var name = first + ' ' + last;
+					if(obj.get('phone')){
+						$scope.mobileContacts.push({
+							selected : false,
+							contact : obj.get('phone'),
+							contactName : '('+ name + ') ' + obj.get('phone')
+						});
+					}
+
+					if(obj.get('mobile')){
+						$scope.mobileContacts.push({
+							selected : primary,
+							contact : obj.get('mobile'),
+							contactName : '('+ name + ') ' + obj.get('mobile')
+						});
+					}
+				});
+			}
+
+			if($scope.mobileContacts.length){
+				$('.text-popup').addClass('show');
+			} else {
+				ShowMessage("Please Enter Mobile for Customer!","error");
+				return;
+			}
+
+			/*
     var cust = $scope.creditNote.entity.get('customer')
     var email = cust.get('mobile');
     if(!email){
         ShowMessage("Please Enter Mobile for Customer!","error");
         return;
     }
-    
+
 	showLoader();
 	$q.when(creditNoteService.sendCreditNoteText($scope.creditNote.entity))
 	.then(function(obj) {
         addNewComment('Credit Note sent by text', true);
         hideLoader();
         showSnackbar('Text sent...');
-        
+
 		console.log('Receipt sent successfully.');
-		
+
 	});
     */
-}
+		}
 
-$scope.sendText = function(){
-    var email = 0;
+		$scope.sendText = function(){
+			var email = 0;
 
-    $scope.mobileContacts.forEach(function(obj){
-        if(obj.selected)
-            email++;
-    });
+			$scope.mobileContacts.forEach(function(obj){
+				if(obj.selected)
+					email++;
+			});
 
-    if(email < 1){
-        $('#text-error').show();
-        return;
-    }
-    
-	showLoader();
-    
-    $scope.mobileContacts.forEach(function(obj){
-        if(obj.selected){
-            creditNoteService.sendCreditNoteTextToNumber($scope.creditNote.entity, obj.contact)
-            .then(function(result){
-                addNewComment('Credit Note texted to ' + obj.contact, true);
-                $('.text-popup').removeClass('show');
-                hideLoader();
-            });
-        }
-    });
-}
+			if(email < 1){
+				$('#text-error').show();
+				return;
+			}
 
-$scope.emailReceipt = function() {
-    
-    $('#email-error').hide();
-    
-    var customer = $scope.creditNote.entity.get('customer');
-    
-    var persons = customer.get('contactPersons');
+			showLoader();
 
-    $scope.contacts = [];
+			$scope.mobileContacts.forEach(function(obj){
+				if(obj.selected){
+					creditNoteService.sendCreditNoteTextToNumber($scope.creditNote.entity, obj.contact)
+						.then(function(result){
+						addNewComment('Credit Note texted to ' + obj.contact, true);
+						$('.text-popup').removeClass('show');
+						hideLoader();
+					});
+				}
+			});
+		}
 
-    if(persons.length){
-        persons.forEach(function(obj){
-            var first = obj.get('firstname') ? obj.get('firstname') : '';
-            var last = obj.get('lastname') ? obj.get('lastname') : '';
-            var primary = obj.get('defaultPerson') == 1 ? true : false;
+		$scope.emailReceipt = function() {
 
-            var name = first + ' ' + last;
-            if(obj.get('email')){
-                $scope.contacts.push({
-                    selected : primary,
-                    contact : obj.get('email'),
-                    contactName : '('+ name + ') ' + obj.get('email')
-                });
-            }
-        });
-    }
+			$('#email-error').hide();
 
-    if($scope.contacts.length){
-        $('.email-popup').addClass('show');
-    } else {
-        ShowMessage("Please Enter Email for Customer!","error");
-        return;
-    }
-    
-    /*
+			var customer = $scope.creditNote.entity.get('customer');
+
+			var persons = customer.get('contactPersons');
+
+			$scope.contacts = [];
+
+			if(persons.length){
+				persons.forEach(function(obj){
+					var first = obj.get('firstname') ? obj.get('firstname') : '';
+					var last = obj.get('lastname') ? obj.get('lastname') : '';
+					var primary = obj.get('defaultPerson') == 1 ? true : false;
+
+					var name = first + ' ' + last;
+					if(obj.get('email')){
+						$scope.contacts.push({
+							selected : primary,
+							contact : obj.get('email'),
+							contactName : '('+ name + ') ' + obj.get('email')
+						});
+					}
+				});
+			}
+
+			if($scope.contacts.length){
+				$('.email-popup').addClass('show');
+			} else {
+				ShowMessage("Please Enter Email for Customer!","error");
+				return;
+			}
+
+			/*
     var cust = $scope.creditNote.entity.get('customer')
     var email = cust.get('email');
     if(!email){
         ShowMessage("Please Enter Email for Customer!","error");
         return;
     }
-    
+
 	showLoader();
 	$q.when(creditNoteService.sendCreditNoteReceipt($scope.creditNote.entity))
 	.then(function(obj) {
 		console.log('Receipt sent successfully.');
         addNewComment('Credit Note sent by email', true);
-        
+
 		hideLoader();
         showSnackbar('Email sent...');
-    
+
 	}, function(error) {
 		hideLoader();
 		console.log(error.message);
 	});
     */
-}
+		}
 
-$scope.sendEmail = function(){
-    var email = 0;
+		$scope.sendEmail = function(){
+			var email = 0;
 
-    $scope.contacts.forEach(function(obj){
-        if(obj.selected)
-            email++;
-    });
+			$scope.contacts.forEach(function(obj){
+				if(obj.selected)
+					email++;
+			});
 
-    if(email < 1){
-        $('#email-error').show();
-        return;
-    }
-    
-	showLoader();
-    
-    $scope.contacts.forEach(function(obj){
-        if(obj.selected){
-            creditNoteService.sendCreditNoteReceiptToEmail($scope.creditNote.entity, obj.contact)
-            .then(function(result){
-                addNewComment('Credit Note emailed to ' + obj.contact, true);
-                $('.email-popup').removeClass('show');
-                hideLoader();
-            });
-        }
-    });
-}
+			if(email < 1){
+				$('#email-error').show();
+				return;
+			}
 
-$scope.creditNotePrinted = function(){
-    addNewComment('Credit Note printed', true);
-}
+			showLoader();
 
-function addNewComment(body, isAuto) {
-	var obj = {
-		userID : user,
-		organization : organization,
-		name : user.get('username'),
-		date : new Date(),
-		isAutomaticallyGenerated : isAuto,
-		comment : body
-	}
-    
-    if(!user.get('isTrackUsage') && isAuto) {
-        return;
-    }
+			$scope.contacts.forEach(function(obj){
+				if(obj.selected){
+					creditNoteService.sendCreditNoteReceiptToEmail($scope.creditNote.entity, obj.contact)
+						.then(function(result){
+						addNewComment('Credit Note emailed to ' + obj.contact, true);
+						$('.email-popup').removeClass('show');
+						hideLoader();
+					});
+				}
+			});
+		}
 
-	var data = {};
-	return $q.when(coreFactory.getUserRole(user))
-	.then(function(role) {
-		return commentFactory.createNewComment(obj, role);
-	})
-	.then(function(obj) {
-		data.commentObj = obj;
-		var creditNote = $scope.creditNote.entity;
-		var prevComments = creditNote.get('comments');
-		if(prevComments)
-			prevComments.push(obj);
-		else
-			prevComments = [obj];
+		$scope.creditNotePrinted = function(){
+			addNewComment('Credit Note printed', true);
+		}
 
-		creditNote.set('comments', prevComments);
-		return creditNote.save();
-	})
-	.then(function(cr) {
-		var comment = new commentFactory(data.commentObj);
+		function addNewComment(body, isAuto) {
+			var obj = {
+				userID : user,
+				organization : organization,
+				name : user.get('username'),
+				date : new Date(),
+				isAutomaticallyGenerated : isAuto,
+				comment : body
+			}
 
-        comment.date = formatDate(comment.entity.date, dateFormat);
-        
-		if($scope.comments)
-			$scope.comments.push(comment);
-		else
-			$scope.comments = [comment];
+			if(!user.get('isTrackUsage') && isAuto) {
+				return;
+			}
 
-		console.log(comment);
-        return cr;
-	});
+			var data = {};
+			return $q.when(coreFactory.getUserRole(user))
+				.then(function(role) {
+				return commentFactory.createNewComment(obj, role);
+			})
+				.then(function(obj) {
+				data.commentObj = obj;
+				var creditNote = $scope.creditNote.entity;
+				var prevComments = creditNote.get('comments');
+				if(prevComments)
+					prevComments.push(obj);
+				else
+					prevComments = [obj];
 
-}
+				creditNote.set('comments', prevComments);
+				return creditNote.save();
+			})
+				.then(function(cr) {
+				var comment = new commentFactory(data.commentObj);
 
-$scope.addComment = function() {
-	if (! $scope.newComment) {
-		$('.add-comment').removeClass('show');
-		return;
-	}
+				comment.date = formatDate(comment.entity.date, dateFormat);
 
-	showLoader();
-	var obj = {
-		userID : user,
-		organization : organization,
-		name : user.get('username'),
-		date : new Date(),
-		isAutomaticallyGenerated : false,
-		comment : $scope.newComment
-	}
+				if($scope.comments)
+					$scope.comments.push(comment);
+				else
+					$scope.comments = [comment];
 
-	var data = {};
-	$q.when(coreFactory.getUserRole(user))
-	.then(function(role) {
-		return commentFactory.createNewComment(obj, role);
-	})
-	.then(function(obj) {
-		data.commentObj = obj;
-		var creditNote = $scope.creditNote.entity;
-		var prevComments = creditNote.get('comments');
-		if(prevComments)
-			prevComments.push(obj);
-		else
-			prevComments = [obj];
+				console.log(comment);
+				return cr;
+			});
 
-		creditNote.set('comments', prevComments);
-		return creditNote.save();
-	})
-	.then(function() {
-		var comment = new commentFactory(data.commentObj);
+		}
 
-        comment.date = formatDate(comment.entity.date, dateFormat);
-        
-		if($scope.comments)
-			$scope.comments.push(comment);
-		else
-			$scope.comments = [comment];
+		$scope.addComment = function() {
+			if (! $scope.newComment) {
+				$('.add-comment').removeClass('show');
+				return;
+			}
 
-		console.log(comment);
-		$('.add-comment').removeClass('show');
-		$scope.newComment = '';
-		hideLoader();
-	});
+			showLoader();
+			var obj = {
+				userID : user,
+				organization : organization,
+				name : user.get('username'),
+				date : new Date(),
+				isAutomaticallyGenerated : false,
+				comment : $scope.newComment
+			}
 
-}
+			var data = {};
+			$q.when(coreFactory.getUserRole(user))
+				.then(function(role) {
+				return commentFactory.createNewComment(obj, role);
+			})
+				.then(function(obj) {
+				data.commentObj = obj;
+				var creditNote = $scope.creditNote.entity;
+				var prevComments = creditNote.get('comments');
+				if(prevComments)
+					prevComments.push(obj);
+				else
+					prevComments = [obj];
 
-$scope.downloadInvoice = function(){
-    var url = $scope.creditNote.entity.get('creditLabels')._url;
-    debugger;
-    
-    var Connect = new XMLHttpRequest();
+				creditNote.set('comments', prevComments);
+				return creditNote.save();
+			})
+				.then(function() {
+				var comment = new commentFactory(data.commentObj);
 
-    Connect.open("GET", url, false);
+				comment.date = formatDate(comment.entity.date, dateFormat);
 
-    Connect.setRequestHeader("Content-Type", "text/xml");
-    Connect.send(null);
-    
-    updatePage(Connect.responseXML);
-}
+				if($scope.comments)
+					$scope.comments.push(comment);
+				else
+					$scope.comments = [comment];
 
-function updatePage(dataTable){
-            var itemRows = $(dataTable).find('itemRow');
-            var modsRow = $(dataTable).find('modsRow');
-            var attachments = $(dataTable).find('attachment');
-            var customFields = $(dataTable).find('customField');
-            var taxes = $(dataTable).find('tax');
-            var td = $('<td></td>');
+				console.log(comment);
+				$('.add-comment').removeClass('show');
+				$scope.newComment = '';
+				hideLoader();
+			});
 
-            if ($(dataTable).find('billType').text().includes('estimate')){
-                $('.footer .info').hide()
-                $('.payment-due').hide()
-            }
-            
-            
-            if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
-                $('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Discount</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
-                
-            } else {
-                $('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
-            }
-            
-            itemRows.each(function(funcOne){
-                
-                if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
-                    var item = $("<tr class='invoice-items'></tr>");
-                    var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
-                    var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('qty').text() +"</td>");
-                    var itemDiscount = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('discount').text() +"</td>");
-                    var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
-                    item.append(itemTitle)
-                        .append(itemQty)
-                        .append(itemDiscount)
-                        .append(itemCost);
-                    $('#invoice-items-header').after($(item));
-                }
-                else {
-                    var item = $("<tr class='invoice-items'></tr>");
-                    var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
-                    var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='2'>"+ $(this).children('qty').text() +"</td>");
-                    var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
-                    item.append(itemTitle)
-                        .append(itemQty)
-                        .append(itemCost);
-                    $('#invoice-items-header').after($(item));
-                }
-            });
-            
-            taxes.each(function() {
-                
-                var item = $("<tr class='invoice-taxes'></tr>");
-                var blank = $("<td colspan='3' class=''></td>");
-                var itemTitle = $("<td class='ff1 fc1 ' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).children('name').text() +"</td>");
-                var itemCost = $("<td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).children('value').text() +"</td>");
-                item.append(blank)
-                    .append(itemTitle)
-                    .append(itemCost);
-                $('#invoice-subtotal').after($(item));
-                
-            });
+		}
 
-            var tr = $('<tr class="salestax"></tr>');
-            $('tr.adjustments').after(tr);
-            
-            customFields.each(function() {
-                var tr = $('.customFields');
-                
-                tr.append($('<div class="info-1" style="margin: 0;border: 0;font-size: 100%;font: inherit;float: left;box-sizing: border-box;width: 70%; float: left; margin-left: 3%;margin-left: 0px"><p class="" style="margin: 0;padding: 10px 0px 0px 0px;border: 0;font-size: 16px;vertical-align: baseline;line-height: 30px;margin-bottom: 10px;color: #989898;">' + $(this).children('name').text() + '</p><p class="" style="margin: 0;padding: 0;border: 0;font-size: 16px;margin-bottom: 10px;color: #000;">' + $(this).children('value').text() + '</p></div>'));
-            });
-            
-            attachments.each(function() {
-                var fileName = $(this).text();
-                fileName = fileName.substring(fileName.indexOf("_") + 1 , fileName.length);
-                fileName = fileName.replace(/%20/g, " ");
-                $('.attach').append('<a style="color: #989898" target="_blank" href=\'' + $(this).text() + '\'>' + fileName + '</a><br><br>');
-            });
+		$scope.downloadInvoice = function(){
+			var url = $scope.creditNote.entity.get('creditLabels')._url;
+			debugger;
 
-            $('table tbody tr').each(function(){
-                if($(this).children().text().length == 0){
-                    $(this).addClass('hideOnMob');
-                }
-            });
-            
+			var Connect = new XMLHttpRequest();
 
-            var invoiceId = $(dataTable).find('invoiceId').text();
-            $('#pay-link').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
-            $('#pay-link-2').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+			Connect.open("GET", url, false);
 
-            var labels = $(dataTable).find('items');
-            console.log(labels);
-            labels.each(function(){
+			Connect.setRequestHeader("Content-Type", "text/xml");
+			Connect.send(null);
+
+			updatePage(Connect.responseXML);
+		}
+
+		function updatePage(dataTable){
+			var itemRows = $(dataTable).find('itemRow');
+			var modsRow = $(dataTable).find('modsRow');
+			var attachments = $(dataTable).find('attachment');
+			var customFields = $(dataTable).find('customField');
+			var taxes = $(dataTable).find('tax');
+			var td = $('<td></td>');
+
+			if ($(dataTable).find('billType').text().includes('estimate')){
+				$('.footer .info').hide()
+				$('.payment-due').hide()
+			}
+
+
+			if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+				$('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Discount</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
+
+			} else {
+				$('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
+			}
+
+			itemRows.each(function(funcOne){
+
+				if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+					var item = $("<tr class='invoice-items'></tr>");
+					var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+					var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('qty').text() +"</td>");
+					var itemDiscount = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('discount').text() +"</td>");
+					var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
+					item.append(itemTitle)
+						.append(itemQty)
+						.append(itemDiscount)
+						.append(itemCost);
+					$('#invoice-items-header').after($(item));
+				}
+				else {
+					var item = $("<tr class='invoice-items'></tr>");
+					var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+					var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='2'>"+ $(this).children('qty').text() +"</td>");
+					var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
+					item.append(itemTitle)
+						.append(itemQty)
+						.append(itemCost);
+					$('#invoice-items-header').after($(item));
+				}
+			});
+
+			taxes.each(function() {
+
+				var item = $("<tr class='invoice-taxes'></tr>");
+				var blank = $("<td colspan='3' class=''></td>");
+				var itemTitle = $("<td class='ff1 fc1 ' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).children('name').text() +"</td>");
+				var itemCost = $("<td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).children('value').text() +"</td>");
+				item.append(blank)
+					.append(itemTitle)
+					.append(itemCost);
+				$('#invoice-subtotal').after($(item));
+
+			});
+
+			var tr = $('<tr class="salestax"></tr>');
+			$('tr.adjustments').after(tr);
+
+			customFields.each(function() {
+				var tr = $('.customFields');
+
+				tr.append($('<div class="info-1" style="margin: 0;border: 0;font-size: 100%;font: inherit;float: left;box-sizing: border-box;width: 70%; float: left; margin-left: 3%;margin-left: 0px"><p class="" style="margin: 0;padding: 10px 0px 0px 0px;border: 0;font-size: 16px;vertical-align: baseline;line-height: 30px;margin-bottom: 10px;color: #989898;">' + $(this).children('name').text() + '</p><p class="" style="margin: 0;padding: 0;border: 0;font-size: 16px;margin-bottom: 10px;color: #000;">' + $(this).children('value').text() + '</p></div>'));
+			});
+
+			attachments.each(function() {
+				var fileName = $(this).text();
+				fileName = fileName.substring(fileName.indexOf("_") + 1 , fileName.length);
+				fileName = fileName.replace(/%20/g, " ");
+				$('.attach').append('<a style="color: #989898" target="_blank" href=\'' + $(this).text() + '\'>' + fileName + '</a><br><br>');
+			});
+
+			$('table tbody tr').each(function(){
+				if($(this).children().text().length == 0){
+					$(this).addClass('hideOnMob');
+				}
+			});
+
+
+			var invoiceId = $(dataTable).find('invoiceId').text();
+			$('#pay-link').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+			$('#pay-link-2').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+
+			var labels = $(dataTable).find('items');
+			console.log(labels);
+			labels.each(function(){
 
 				var dueTime = new Date(Date.parse($(this).find('past-due').text()));
 				var now = new Date(Date.now());
@@ -704,7 +706,7 @@ function updatePage(dataTable){
 					$('.top-bar').css('height', '0mm');
 					$('.top-bar').css('border-bottom', '0mm');
 				}
-				
+
 				$('#pdf-business-name').text(userFactory.entity[0].get('company'));
 				$('#pdf-invoice-title').text($(this).find('invoice-title').text());
 				$('#pdf-invoice-number').text($(this).find('refid').text());
@@ -721,13 +723,13 @@ function updatePage(dataTable){
 				$('#pdf-total-text').text($(this).find('refundedText').text());
 				$('#pdf-payment-text').text($(this).find('paymentMadeText').text());
 				$('#pdf-credit-text').text($(this).find('creditsAppliedText').text());
-				
+
 				var ad = $(this).find('addres1').text();
-				
+
 				$('#pdf-address').html(ad);
-				
+
 				//$('#pdf-address').html(ad.replace(/(.{35})/g, "$1<br>"));
-				
+
 				var longmsg = $(this).find('longmsg').text();
 				if (longmsg.length != 0){
 					var longmsgTitle = $(this).find('longmsg-title').text();
@@ -740,7 +742,7 @@ function updatePage(dataTable){
 					$('#pdf-notes-title').hide();
 					$('#pdf-notes').hide();
 				}
-				
+
 				var ordernotesTitle = $(this).find('ordernotes-title').text();
 				var ordernotes = $(this).find('ordernotes').text();
 				if(ordernotes){
@@ -752,25 +754,25 @@ function updatePage(dataTable){
 					$('#pdf-terms-title').hide();
 					$('#pdf-terms').hide();
 				}
-				
+
 				var mailto = $(this).find('mailto').text();
 				$('#user-mail').attr('href', mailto);
 				var mailtotxt = $(this).find('mailtotxt').text();
 				$('#user-mail').text(mailtotxt);
-				
+
 				var clientmailto = $(this).find('clientmailto').text();
 				$('#client-mail').attr('href', clientmailto);
 				var clientmail = $(this).find('clientmail').text();
 				$('#client-mail').text(clientmail);
-				
+
 				var clientname = $(this).find('clientname').text();
 				$('#client-name').text(clientname);
-				
+
 				var nr = $(this).find('nr').text();
 				$('#user-phone').attr('href', "tel:" + nr);
 				$('#user-phone').text(nr);
-				
-				
+
+
 				var card_number = $(this).find('refid').text();
 				$('.visa-card').append(card_number);
 				var purchase_order = $(this).find('purchaseOrderNumber').text();
@@ -905,29 +907,29 @@ function updatePage(dataTable){
 				var tipNr = $(this).find('tip-price');
 				$('.tip-price').append(tipNr);
 			});
-	
-	$.ajax({
-        method:"POST",
-        type : "POST",
-        url: "generatePDF.php",
-        data: { 
-            'html' : $('.pdf-page').html(),
-        }
-    }).then(function(pdfData){
-        var dlnk = document.getElementById('pdfLink');
 
-        var pdf = 'data:application/octet-stream;base64,' + pdfData;
+			$.ajax({
+				method:"POST",
+				type : "POST",
+				url: "generatePDF.php",
+				data: { 
+					'html' : $('.pdf-page').html(),
+				}
+			}).then(function(pdfData){
+				var dlnk = document.getElementById('pdfLink');
 
-        //dlnk.attr("href", pdf);
-        dlnk.href = pdf;
+				var pdf = 'data:application/octet-stream;base64,' + pdfData;
 
-        dlnk.click();
-        debugger;
-    }, function(error){
-        console.error(error);
-        debugger;
-    });
-	
-}
+				//dlnk.attr("href", pdf);
+				dlnk.href = pdf;
 
-}]);
+				dlnk.click();
+				debugger;
+			}, function(error){
+				console.error(error);
+				debugger;
+			});
+
+		}
+
+	}]);
