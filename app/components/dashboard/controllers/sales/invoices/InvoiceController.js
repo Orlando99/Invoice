@@ -1247,40 +1247,47 @@ invoicesUnlimited.controller('InvoiceController',[
 						obj.attachments = obj.entity.get('invoiceFiles').length;
 
 					obj.invoiceDate = formatDate(obj.entity.invoiceDate, dateFormat); // "MM/DD/YYYY"
-					obj.dueDate = formatDate(obj.entity.dueDate, dateFormat);
-
-					var dueDate = obj.entity.dueDate;
-					dueDate.setHours(23);
-					dueDate.setMinutes(59);
-					dueDate.setSeconds(59);
-
-					var now = new Date();
-
-					var balanceDue = obj.entity.balanceDue*cc.exchangeRate;
-					var totalAmount = obj.entity.total*cc.exchangeRate;
 
 					var lateFeeValue = 0;
 
-					if(now > dueDate){
-						if(obj.entity.get("lateFee")){
-							var lateFee = obj.entity.get("lateFee");
-							var price = lateFee.get("price");
-							var type = lateFee.get("type");
+					if(obj.entity.dueDate){
+						obj.dueDate = formatDate(obj.entity.dueDate, dateFormat);
 
-							if (type == "$") {
-								lateFeeValue = price;
-							} else if (type == "%") {
-								lateFeeValue = balanceDue * price * 0.01;
+						var dueDate = obj.entity.dueDate;
+						dueDate.setHours(23);
+						dueDate.setMinutes(59);
+						dueDate.setSeconds(59);
+
+						var now = new Date();
+
+						var balanceDue = obj.entity.balanceDue*cc.exchangeRate;
+						var totalAmount = obj.entity.total*cc.exchangeRate;
+
+
+
+						if(now > dueDate){
+							if(obj.entity.get("lateFee")){
+								var lateFee = obj.entity.get("lateFee");
+								var price = lateFee.get("price");
+								var type = lateFee.get("type");
+
+								if (type == "$") {
+									lateFeeValue = price;
+								} else if (type == "%") {
+									lateFeeValue = balanceDue * price * 0.01;
+								}
 							}
 						}
+					} else {
+						obj.dueDate = "";
 					}
 
 					//obj.balanceDue = currencyFilter(obj.entity.balanceDue*cc.exchangeRate, cc.currencySymbol, 2);
 					//obj.total = currencyFilter(obj.entity.total*cc.exchangeRate, cc.currencySymbol, 2);
-					
+
 					obj.balanceDue = currencyFilter(balanceDue + lateFeeValue, cc.currencySymbol, 2);
 					obj.total = currencyFilter(totalAmount + lateFeeValue, cc.currencySymbol, 2);
-					
+
 				});
 
 				res = res.reverse();

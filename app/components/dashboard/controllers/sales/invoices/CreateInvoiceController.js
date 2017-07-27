@@ -384,7 +384,9 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 					$q.when(customerChangedHelper())
 						.then(function() {
 						//	console.log($scope.items);
-						//$scope.addInvoiceItem();
+						if(!$scope.invoiceItems.length)
+							$scope.addInvoiceItem();
+						
 						$scope.invoiceItems[0].selectedItem = $scope.items.filter(function(item) {
 							return item.entity.expanseId == expenseId;
 						})[0];
