@@ -521,16 +521,24 @@ function drawPieChart()
             return b.amount - a.amount;
         });
         
+		if(uniqueExpenses.length > 5){
+			uniqueExpenses.splice(5, uniqueExpenses.length - 5);
+		}
+		
+		var topTotal = 0;
+		
         uniqueExpenses.forEach(function(exp){
             exp.value = currencyFilter(exp.amount*cc.exchangeRate, cc.currencySymbol, 2)
             expenseNameList.push(exp.name + ' (' + exp.percentage + '%)');
             expenseValueList.push(exp.amount);
             expenseColorList.push(getColor(exp.name));
+			topTotal += exp.amount;
         });
         
         $scope.expenseList = uniqueExpenses;
         
         $scope.totalExpenseAmount = currencyFilter(total*cc.exchangeRate, cc.currencySymbol, 2);
+        $scope.totalTopExpenseAmount = currencyFilter(topTotal*cc.exchangeRate, cc.currencySymbol, 2);
         
 		var ctx = document.getElementById("piechart");
         //console.log(Chart.defaults );
