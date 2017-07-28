@@ -1251,7 +1251,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 			labels['discountPriceBottom'] = {text:discounts + "%"};
 
 			discounts = Math.abs(sum - subTotal - totalTax);
-			labels['discountAmount'] = {text:currencyFilter(discounts, '$', 2)};
+			labels['discountAmount'] = {text:currencyFilter(discounts * -1, '$', 2)};
 		}
 		else
 			labels['discountAmount'] = labels['discountNameBottom'] =
