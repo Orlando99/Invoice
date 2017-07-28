@@ -304,7 +304,8 @@ angular.module('invoicesUnlimited')
 					params : {
 						expenseId : null,
 						customerId : null,
-                        projectId : null
+                        projectId : null,
+                        estimateId : null
 					},
 					views : {
 						'@' : {

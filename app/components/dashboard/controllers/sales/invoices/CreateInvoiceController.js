@@ -3,10 +3,10 @@
 invoicesUnlimited.controller('CreateInvoiceController',[
 	'$scope', '$state', '$controller', '$q', 'userFactory',
 	'invoiceService', 'coreFactory', 'commentFactory', 'taxService', 'expenseService',
-	'lateFeeService', 'currencyFilter', 'itemService', 'salesCommon',
+	'lateFeeService', 'currencyFilter', 'itemService', 'salesCommon','estimateService',
 	function($scope, $state, $controller, $q, userFactory,
 			  invoiceService,coreFactory,commentFactory,taxService,expenseService,
-			  lateFeeService,currencyFilter, itemService, salesCommon) {
+			  lateFeeService,currencyFilter, itemService, salesCommon, estimateService) {
 
 		if(! userFactory.entity.length) {
 			console.log('User not logged in');
@@ -370,6 +370,7 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 			var customerId = $state.params.customerId;
 			var expenseId = $state.params.expenseId;
 			var projectId = $state.params.projectId;
+			var estimateId = $state.params.estimateId;
 
 			if(customerId) {
 				$scope.selectedCustomer = $scope.customers.filter(function(cust) {
@@ -386,7 +387,7 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 						//	console.log($scope.items);
 						if(!$scope.invoiceItems.length)
 							$scope.addInvoiceItem();
-						
+
 						$scope.invoiceItems[0].selectedItem = $scope.items.filter(function(item) {
 							return item.entity.expanseId == expenseId;
 						})[0];
@@ -412,6 +413,9 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 				convertProject(projectId);
 			}
 
+			if(estimateId)
+				convertEstimate(estimateId);
+
 			var customFields = [];
 			if($scope.prefs.customFields) {
 				$scope.prefs.customFields.forEach(function(field) {
@@ -425,6 +429,99 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 			}
 			$scope.customFields = customFields;
 			hideLoader();
+		}
+
+		function convertEstimate(estimateId){
+			$q.when(estimateService.getEstimate(estimateId))
+				.then(function(estimate) {
+				$scope.estimate = estimate;
+
+				$scope.selectedCustomer = $scope.customers.filter(function(cust) {
+					return $scope.estimate.entity.get('customer').id === cust.entity.id;
+				})[0];
+
+				customerChanged();
+
+				$q.when(customerChangedHelper())
+					.then(function() {
+
+					$scope.poNumber = estimate.entity.referenceNumber || "";
+
+					$scope.files = [];
+
+					var files = estimate.entity.estimateFiles;
+					if (files) {
+						files.forEach(function(file) {
+							file.fileName = file.name();
+							file.exist = true;
+						});
+						$scope.files = files;
+					} else {
+						$scope.files = [];
+					}
+
+					switch($scope.prefs.discountType) {
+						case 0:
+							$scope.itemLevelTax = false;
+							$scope.invoiceLevelTax = false;
+							break;
+
+						case 1:
+							$scope.itemLevelTax = true;
+							$scope.invoiceLevelTax = false;
+							break;
+
+						case 2:
+						case 3:
+							$scope.itemLevelTax = false;
+							$scope.invoiceLevelTax = true;
+							break;
+													}
+
+					$scope.notes = estimate.entity.notes;
+					$scope.terms = estimate.entity.termsConditions;
+
+					if ($scope.prefs.salesPerson) {
+						$scope.salesPerson = estimate.entity.salesPerson || "";
+						$scope.showSalesPerson = true;
+					}
+
+					$scope.invoiceItems = [];
+					for (var i = 0; i < estimate.estimateItems.length; ++i) {
+						var estItem = estimate.estimateItems[i].entity;
+						var actualItem = estItem.get('item');
+						var obj = {};
+
+						obj.selectedItem = $scope.items.filter(function(item) {
+							if (item.entity.id === actualItem.id) {
+								obj.id = estItem.id;
+								obj.rate = (estItem.amount / estItem.quantity); //Number(item.entity.rate);
+								obj.quantity = estItem.quantity;
+								obj.discount = estItem.discount || 0;
+								obj.taxValue = 0;
+								obj.amount = estItem.amount;
+
+								var estItemTax = estItem.get('tax');
+								if (estItemTax) {
+									obj.selectedTax = $scope.taxes.filter(function(tax) {
+										return tax.id === estItemTax.id;
+									})[0];
+								} else {
+									obj.selectedTax = undefined;
+								}
+
+								return true;
+							}
+							return false;
+						})[0];
+
+						$scope.invoiceItems.push(obj);
+					}
+
+					$scope.reCalculateSubTotal();
+					hideLoader();
+				});
+			});
 		}
 
 		function convertProject(projectId){
@@ -864,7 +961,15 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 					.then(function(exp){
 					exp.set('status', 'Invoiced');
 					exp.save();
-				})
+				});
+			}
+			
+			if($scope.estimate){
+				$scope.estimate.entity.set('status', 'Invoiced');
+				$scope.estimate.entity.save()
+				.then(function(est){
+						
+				});
 			}
 
 			return invoiceService.createNewInvoice(invoice, $scope.invoiceItems, $scope.userRole, $scope.files)
