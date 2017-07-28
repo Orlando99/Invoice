@@ -135,8 +135,13 @@ invoicesUnlimited.controller('InvoiceAgingController',[
 			*/
 
 			if($("#invoiceno").css('display') === "none"){
-				$scope.invoices1.sort(function(a,b){ 
-					return a.entity.invoiceNumber.localeCompare(b.entity.invoiceNumber);
+				$scope.invoices1.sort(function(a,b){
+					var aNum = parseInt(a.entity.invoiceNumber.split('-')[1]);
+					var bNum = parseInt(b.entity.invoiceNumber.split('-')[1]);
+					
+					return aNum - bNum;
+					
+					//return a.entity.invoiceNumber.localeCompare(b.entity.invoiceNumber);
 				});
 				$('#invoiceno').css({
 					'display': 'inline-table'
@@ -146,8 +151,12 @@ invoicesUnlimited.controller('InvoiceAgingController',[
 				});
 			}
 			else{
-				$scope.invoices1.sort(function(a,b){ 
-					return b.entity.invoiceNumber.localeCompare(a.entity.invoiceNumber);
+				$scope.invoices1.sort(function(a,b){
+					var aNum = parseInt(a.entity.invoiceNumber.split('-')[1]);
+					var bNum = parseInt(b.entity.invoiceNumber.split('-')[1]);
+					
+					return bNum - aNum;
+					//return b.entity.invoiceNumber.localeCompare(a.entity.invoiceNumber);
 				});
 				$('#invoicenoUp').css({
 					'display': 'inline-table'

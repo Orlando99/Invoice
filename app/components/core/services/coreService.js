@@ -98,6 +98,7 @@ invoicesUnlimited.factory('coreFactory',
 		else query[params.method](params.name,params.val1,params.val2,params.val3);
 		query.include('comments');
         query.include('payment');
+		query.limit(1000);
 		return query.find().then(function(res){
 			var invoices = [];
 			res.forEach(function(elem){
@@ -111,6 +112,8 @@ invoicesUnlimited.factory('coreFactory',
 		var query = new Parse.Query("CreditNotes");
 		if (!params.method) query.equalTo(params.name,params.val1);
 		else query[params.method](params.name,params.val1,params.val2,params.val3);
+		
+		query.limit(1000);
 		
 		return query.find().then(function(res){
 			var creditNotes = [];
@@ -126,6 +129,7 @@ invoicesUnlimited.factory('coreFactory',
 		query.equalTo("organization", params.organization);
 		query.notEqualTo("isDeleted", 1);
 		query.include("tax");
+		query.limit(1000);
 		return query.find().then(function(res) {
 			var items = [];
 			res.forEach(function(elem) {
@@ -141,6 +145,7 @@ invoicesUnlimited.factory('coreFactory',
 		query.equalTo("organization", params.organization);
 		//query.notEqualTo("isDeleted", 1);
 		query.include("tax");
+		query.limit(1000);
 		return query.find().then(function(res) {
 			var items = [];
 			res.forEach(function(elem) {

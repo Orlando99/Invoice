@@ -16,7 +16,7 @@
       <label>{{phoneNumber}}</label>
       <br />
       <label class="col-50">Email</label>
-      <label>{{email}}</label>
+      <label><a style="cursor: pointer;" ng-click="sendEmail()">{{email}}</a></label>
     </div>
 
     <div class="paymentInfo" ng-show="approved">
@@ -38,7 +38,7 @@
       <label>{{softwareSupportNumber}}</label>
       <br />
       <label class="col-50">Email</label>
-      <label>{{email}}</label>
+      <label><a style="cursor: pointer;" ng-click="sendEmail()">{{email}}</a></label>
 
     </div>
 

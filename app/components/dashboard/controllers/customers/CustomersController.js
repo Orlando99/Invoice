@@ -4,73 +4,73 @@ $(document).ready(function(){
 	$(document).on('click','.menu',function(){
 		var self = $(this).children('.submenu')[0];
 		$('.menu .submenu')
-		.toArray()
-		.filter(function(menu){
+			.toArray()
+			.filter(function(menu){
 			return (menu != self)
-					&& ($(menu).hasClass('showsub'));
+			&& ($(menu).hasClass('showsub'));
 		})
-		.forEach(function(menu){
+			.forEach(function(menu){
 			$(menu).removeClass('showsub');
 		});
 
 		$(this).children('.submenu').toggleClass('showsub');
-        
+
 	})
 });
 invoicesUnlimited.controller('CustomersController',
-	function($scope,$rootScope,$state,$uibModal,userFactory,
-			 contactPersonFactory, customerFactory, coreFactory, expenseService, 
-			 invoicesFactory ,$controller,$q, appFields, currencyFilter, currencyFactory){
+							 function($scope,$rootScope,$state,$uibModal,userFactory,
+									   contactPersonFactory, customerFactory, coreFactory, expenseService, 
+									   invoicesFactory ,$controller,$q, appFields, currencyFilter, currencyFactory){
 
 	var customerId = $state.params.customerId;
 	var user = userFactory;
 	var organization = user.entity[0].get("organizations")[0];
-	
+
 	if (!user.entity.length) {
 		$state.go('login');
 		return;
 	}
-    
+
 	if(userFactory.entity[0].get('role') == 'Sales'){
 		$state.go('dashboard.sales.invoices.all');
 		return;
 	}
-	
-    userFactory.getField('dateFormat')
-.then(function(obj) {
-	$scope.dateFormat = obj;
-});
-   $scope.displayNameClicked = false;
- 
+
+	userFactory.getField('dateFormat')
+		.then(function(obj) {
+		$scope.dateFormat = obj;
+	});
+	$scope.displayNameClicked = false;
+
 	$('.tutorial').hide();
 	var def = $q.defer();
 	$controller('DashboardController',{$scope:$scope,$state:$state});
-    
-    $scope.nextClicked = function(){
-        $('.tutorial').hide();
-    }
-    
-    $scope.skipTutorial = function(){
-        fromTutorial = false;
-        $state.go('dashboard');
-    }
-   
-    $('#edit-customer-form').validate({
-        rules: {
+
+	$scope.nextClicked = function(){
+		$('.tutorial').hide();
+	}
+
+	$scope.skipTutorial = function(){
+		fromTutorial = false;
+		$state.go('dashboard');
+	}
+
+	$('#edit-customer-form').validate({
+		rules: {
 			firstName: 'required',
-            mobilePhone: {
-                required: false,
-                minlength: 14
-            }
+			mobilePhone: {
+				required: false,
+				minlength: 14
+			}
 		},
-        messages: {
+		messages: {
 			firstName: 'Please enter first name',
-            mobilePhone: {
-                //required: "Please enter phone number",
-                minlength: "Please enter a valid phone number"
-            }
+			mobilePhone: {
+				//required: "Please enter phone number",
+				minlength: "Please enter a valid phone number"
+			}
 		}
-        
+
 	});
 
 	$scope.selectedCustomer;
@@ -81,65 +81,65 @@ invoicesUnlimited.controller('CustomersController',
 		setShippingTheSame  : false,
 		tempShippingAddress : {}
 	}
-  
+
 	var formBillingAddress = function(obj)
-    {
+	{
 		var result = "";	
 		var addIfExist = function(w) { return w ? w : "";}
-    if(obj.Street || obj.City ||obj["State\/Province"] ||obj["Zip\/Postal Code"] ||obj.Country || obj.Fax )
-      {
-        if(obj.Fax)
-        {
-             		result += addIfExist(obj.Street) + "\n"
-		+ addIfExist(obj.City) + "\n"
-		+ addIfExist(obj["State\/Province"]) + "\n"
-        + addIfExist(obj["Zip\/Postal Code"]) + "\n"
-        + addIfExist(obj.Country)+ "\n"
-        + "Fax: "+addIfExist(obj.Fax);
-           
-        }
-        else
-        {
-        result += addIfExist(obj.Street) + "\n"
-		+ addIfExist(obj.City) + "\n"
-		+ addIfExist(obj["State\/Province"]) + "\n"
-        + addIfExist(obj["Zip\/Postal Code"]) + "\n"
-        + addIfExist(obj.Country)+ "\n"
-        + addIfExist(obj.Fax);
-         
-        }
-      }
-        return result;
-    }
-    var formShippingAddress = function(obj)
-    {
-		var result = "";	
-		var addIfExist = function(w) { return w ? w : "";}
-      if(obj.Street || obj.City ||obj["State\/Province"] ||obj["Zip\/Postal Code"] ||obj.Country || obj.Fax )
-      {
-        if(obj.Fax)
-        {
-            result += addIfExist(obj.Street) + "\n"
-            + addIfExist(obj.City) + "\n"
-            + addIfExist(obj["State\/Province"]) + "\n"
-            + addIfExist(obj["Zip\/Postal Code"]) + "\n"
-            + addIfExist(obj.Country)+ "\n"
-            + "Fax: "+addIfExist(obj.Fax);
-        }
-        else
-        {
-                 result += addIfExist(obj.Street) + "\n"
-            + addIfExist(obj.City) + "\n"
-            + addIfExist(obj["State\/Province"]) + "\n"
-            + addIfExist(obj["Zip\/Postal Code"]) + "\n"
-            + addIfExist(obj.Country)+ "\n"
-            +addIfExist(obj.Fax);
-        }
-      }
-        
-        return result;
+		if(obj.Street || obj.City ||obj["State\/Province"] ||obj["Zip\/Postal Code"] ||obj.Country || obj.Fax )
+		{
+			if(obj.Fax)
+			{
+				result += addIfExist(obj.Street) + "\n"
+					+ addIfExist(obj.City) + "\n"
+					+ addIfExist(obj["State\/Province"]) + "\n"
+					+ addIfExist(obj["Zip\/Postal Code"]) + "\n"
+					+ addIfExist(obj.Country)+ "\n"
+					+ "Fax: "+addIfExist(obj.Fax);
+
+			}
+			else
+			{
+				result += addIfExist(obj.Street) + "\n"
+					+ addIfExist(obj.City) + "\n"
+					+ addIfExist(obj["State\/Province"]) + "\n"
+					+ addIfExist(obj["Zip\/Postal Code"]) + "\n"
+					+ addIfExist(obj.Country)+ "\n"
+					+ addIfExist(obj.Fax);
+
+			}
+		}
+		return result;
 	}
-    /*
+	var formShippingAddress = function(obj)
+	{
+		var result = "";	
+		var addIfExist = function(w) { return w ? w : "";}
+		if(obj.Street || obj.City ||obj["State\/Province"] ||obj["Zip\/Postal Code"] ||obj.Country || obj.Fax )
+		{
+			if(obj.Fax)
+			{
+				result += addIfExist(obj.Street) + "\n"
+					+ addIfExist(obj.City) + "\n"
+					+ addIfExist(obj["State\/Province"]) + "\n"
+					+ addIfExist(obj["Zip\/Postal Code"]) + "\n"
+					+ addIfExist(obj.Country)+ "\n"
+					+ "Fax: "+addIfExist(obj.Fax);
+			}
+			else
+			{
+				result += addIfExist(obj.Street) + "\n"
+					+ addIfExist(obj.City) + "\n"
+					+ addIfExist(obj["State\/Province"]) + "\n"
+					+ addIfExist(obj["Zip\/Postal Code"]) + "\n"
+					+ addIfExist(obj.Country)+ "\n"
+					+addIfExist(obj.Fax);
+			}
+		}
+
+		return result;
+	}
+	/*
 	var isCustomerIdValid = function(id){
 		if (isNaN(id)) return false;
 		if (id >= 0 && id < $scope.customers.length) return true;
@@ -147,15 +147,15 @@ invoicesUnlimited.controller('CustomersController',
 	}
     */
 	var doSelectCustomerIfValidId = function(id){
-        var index = getCustomerIndex(id);
-        if(index != -1){
-            selectCustomer($scope.customers[index]);
+		var index = getCustomerIndex(id);
+		if(index != -1){
+			selectCustomer($scope.customers[index]);
 			$scope.selectedCustomerId = id;
-        } else {
-            $state.go('dashboard.customers.all');
-        }
-        
-        /*
+		} else {
+			$state.go('dashboard.customers.all');
+		}
+
+		/*
 		if (isCustomerIdValid(id)) {
 			selectCustomer($scope.customers[id]);
 			$scope.selectedCustomerId = id;
@@ -163,28 +163,28 @@ invoicesUnlimited.controller('CustomersController',
 		else $state.go('dashboard.customers.all');
         */
 	}
-    
-    function getCustomerIndex(id){
-        return $scope.customers.findIndex(function(obj){
-            return id == obj.entity.id;
-        })
-    }
-    
-    function prepareToEmailContact(){
-        var customerId = $state.params.customerId;
-        
-        var index = getCustomerIndex(customerId);
-        if(index != -1){
-            $scope.selectedCustomer = $scope.customers[index];
+
+	function getCustomerIndex(id){
+		return $scope.customers.findIndex(function(obj){
+			return id == obj.entity.id;
+		})
+	}
+
+	function prepareToEmailContact(){
+		var customerId = $state.params.customerId;
+
+		var index = getCustomerIndex(customerId);
+		if(index != -1){
+			$scope.selectedCustomer = $scope.customers[index];
 			$scope.selectedCustomerId = customerId;
-        } else {
-            $state.go('dashboard.customers.all');
-        }
-        
-        /*
+		} else {
+			$state.go('dashboard.customers.all');
+		}
+
+		/*
         angular.element(document).ready(function () {
             var custemails = $scope.selectedCustomer.contactPersons;
-        
+
             var emailArray = [];
             var count = 0;
             custemails.forEach(function(obj){
@@ -202,63 +202,63 @@ invoicesUnlimited.controller('CustomersController',
             $scope.trix = 'abc1';
         });
         */
-    }
-    
-    var events = ['trixInitialize', 'trixChange', 'trixSelectionChange', 'trixFocus', 'trixBlur', 'trixFileAccept', 'trixAttachmentAdd', 'trixAttachmentRemove'];
+	}
 
-    for (var i = 0; i < events.length; i++) {
-        $scope[events[i]] = function(e, elm) {
-            console.info('Event type:', e.type);
-            //debugger;
-        }
-    };
-    
-    $scope.trixBlur = function(e, editor){
-        console.info('Event type:', e.type);
-        $scope.trix = editor.element.innerHTML;
-        //debugger;
-    }
-    
-    $scope.sendMail = function(){
-        $('#send-email-form').validate({
-            rules : {
-                toEmail : 'required',
-                subject : 'required'
-            },
-            messages : {
-                toEmail : 'Please select email',
-                subject : 'Please enter subject'
-            }
-        });
-        
-        if(!$('#send-email-form').valid())
-            return;
-        
-        var obj = $scope.selectedCustomer;
-        var body = $scope.trix;
-        var email = $('#toEmail').val();
-        var subject = $('#subject').val();
-        debugger;
-        showLoader();
-        
-        Parse.Cloud.run("sendMailgunHtml", {
-                toEmail: email.join(", "),
-                fromEmail: $scope.selectedCustomer.entity.displayName + " <no-reply@invoicesunlimited.com>",
-                subject : subject,
-                html : body
-                }).then(function(msg) {
-                    console.log(msg);
-                    showSnackbar("Email sent. Redirecting...");
-                    hideLoader();
-                    setTimeout(function(){
-                        $state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
-                    }, 2000);
-                });
-    }
-    
-    $scope.cancelSendingEmail = function(){
-        $state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
-    }
+	var events = ['trixInitialize', 'trixChange', 'trixSelectionChange', 'trixFocus', 'trixBlur', 'trixFileAccept', 'trixAttachmentAdd', 'trixAttachmentRemove'];
+
+	for (var i = 0; i < events.length; i++) {
+		$scope[events[i]] = function(e, elm) {
+			console.info('Event type:', e.type);
+			//debugger;
+		}
+	};
+
+	$scope.trixBlur = function(e, editor){
+		console.info('Event type:', e.type);
+		$scope.trix = editor.element.innerHTML;
+		//debugger;
+	}
+
+	$scope.sendMail = function(){
+		$('#send-email-form').validate({
+			rules : {
+				toEmail : 'required',
+				subject : 'required'
+			},
+			messages : {
+				toEmail : 'Please select email',
+				subject : 'Please enter subject'
+			}
+		});
+
+		if(!$('#send-email-form').valid())
+			return;
+
+		var obj = $scope.selectedCustomer;
+		var body = $scope.trix;
+		var email = $('#toEmail').val();
+		var subject = $('#subject').val();
+		debugger;
+		showLoader();
+
+		Parse.Cloud.run("sendMailgunHtml", {
+			toEmail: email.join(", "),
+			fromEmail: $scope.selectedCustomer.entity.displayName + " <no-reply@invoicesunlimited.com>",
+			subject : subject,
+			html : body
+		}).then(function(msg) {
+			console.log(msg);
+			showSnackbar("Email sent. Redirecting...");
+			hideLoader();
+			setTimeout(function(){
+				$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
+			}, 2000);
+		});
+	}
+
+	$scope.cancelSendingEmail = function(){
+		$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
+	}
 
 	var doCreateEditObject = function(){
 		$scope.selectedCustomerEdit = 
@@ -269,170 +269,170 @@ invoicesUnlimited.controller('CustomersController',
 
 		$scope.shippingAddressEdit = 
 			$.extend(true,{},$scope.selectedCustomer.shippingAddressJSON);
-        
-        $scope.shipping.setShippingTheSame = $scope.selectedCustomer.entity.get('isSameAddress');
+
+		$scope.shipping.setShippingTheSame = $scope.selectedCustomer.entity.get('isSameAddress');
 	}
 
-    $scope.NewExpense = function(){
-        $state.go('dashboard.expenses.new', {customerId:$scope.selectedCustomer.entity.id});
-    }
-    
-    $scope.NewInvoice = function(){
-        $state.go('dashboard.sales.invoices.new', {customerId:$scope.selectedCustomer.entity.id});
-    }
-    
-    $scope.NewCreditNote = function(){
-        $state.go('dashboard.sales.creditnotes.new', {customerId:$scope.selectedCustomer.entity.id});
-    }
-    
-    $scope.NewEstimate = function(){
-        $state.go('dashboard.sales.estimates.new', {customerId:$scope.selectedCustomer.entity.id});
-    }
-    
+	$scope.NewExpense = function(){
+		$state.go('dashboard.expenses.new', {customerId:$scope.selectedCustomer.entity.id});
+	}
+
+	$scope.NewInvoice = function(){
+		$state.go('dashboard.sales.invoices.new', {customerId:$scope.selectedCustomer.entity.id});
+	}
+
+	$scope.NewCreditNote = function(){
+		$state.go('dashboard.sales.creditnotes.new', {customerId:$scope.selectedCustomer.entity.id});
+	}
+
+	$scope.NewEstimate = function(){
+		$state.go('dashboard.sales.estimates.new', {customerId:$scope.selectedCustomer.entity.id});
+	}
+
 	var selectCustomer = function(item)
-    {
-        $("#toEmail").select2("close");
+	{
+		$("#toEmail").select2("close");
 		$scope.selectedCustomer = item;
-        var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
-        $scope.selectedCustomer.invoices.forEach(function(obj){
-            obj.invoiceDate = formatDate(obj.entity.invoiceDate, dateFormat);
-        });
-        
-        $scope.selectedCustomer.comments.forEach(function(obj){
-            if(obj)
-                obj.date = formatDate(obj.entity.date, dateFormat);
-        });
-        
-        $scope.comments = $scope.selectedCustomer.comments;
-        
-        $scope.sortByDate();
-        
+		var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+		$scope.selectedCustomer.invoices.forEach(function(obj){
+			obj.invoiceDate = formatDate(obj.entity.invoiceDate, dateFormat);
+		});
+
+		$scope.selectedCustomer.comments.forEach(function(obj){
+			if(obj)
+				obj.date = formatDate(obj.entity.date, dateFormat);
+		});
+
+		$scope.comments = $scope.selectedCustomer.comments;
+
+		$scope.sortByDate();
+
 		var obj = $scope.selectedCustomer.entity;
-		
+
 		if(obj.notes){
-            $scope.selectedCustomer.notes = obj.notes;
-        }
-		
+			$scope.selectedCustomer.notes = obj.notes;
+		}
+
 		var billingAddress = {};
-		
+
 		if (obj.billingAddress){
 			billingAddress = JSON.parse(obj.billingAddress);
 		}
-		
-		
+
+
 		var shippingAddress = {};
 		if (obj.shippingAddress)
 			shippingAddress = JSON.parse(obj.shippingAddress);
 
-	    $scope.selectedCustomer.billingAddress = formBillingAddress(billingAddress);
-	    $scope.selectedCustomer.billingAddressJSON = billingAddress;
-        $scope.selectedCustomer.shippingAddress = formShippingAddress(shippingAddress);
-	    $scope.selectedCustomer.shippingAddressJSON = shippingAddress;
-        $scope.receivables = 0;
-        var total = 0;
-        
-        $scope.payments = [];
+		$scope.selectedCustomer.billingAddress = formBillingAddress(billingAddress);
+		$scope.selectedCustomer.billingAddressJSON = billingAddress;
+		$scope.selectedCustomer.shippingAddress = formShippingAddress(shippingAddress);
+		$scope.selectedCustomer.shippingAddressJSON = shippingAddress;
+		$scope.receivables = 0;
+		var total = 0;
 
-        $scope.selectedCustomer.invoices
+		$scope.payments = [];
+
+		$scope.selectedCustomer.invoices
 			.forEach(function(inv) {
-                if(inv.payments){
-                    inv.payments.forEach(function(obj){
-                        var temp = obj;
-                        var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
-						
-                        if(obj.entity.mode == "Credit Card")
-							obj.mode = "CC " + obj.entity.lastFourDigits;
-						else
-							obj.mode = obj.entity.mode;
-						
-                        temp.date = formatDate(obj.entity.date, dateFormat);
-                        temp.amount = currencyFilter(obj.entity.amount , "$", 2);
-                        temp.invoiceNumber = inv.entity.invoiceNumber;
-                        $scope.payments.push(temp);
-                    });
-                }
-                $scope.receivables += inv.entity.balanceDue;
-			});
-        
-        
-        
-        $scope.receivables = $scope.receivables.toFixed(2);
-        $scope.receivables = currencyFilter($scope.receivables , "$", 2);
-        drawBarChart();
+			if(inv.payments){
+				inv.payments.forEach(function(obj){
+					var temp = obj;
+					var dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+
+					if(obj.entity.mode == "Credit Card")
+						obj.mode = "CC " + obj.entity.lastFourDigits;
+					else
+						obj.mode = obj.entity.mode;
+
+					temp.date = formatDate(obj.entity.date, dateFormat);
+					temp.amount = currencyFilter(obj.entity.amount , "$", 2);
+					temp.invoiceNumber = inv.entity.invoiceNumber;
+					$scope.payments.push(temp);
+				});
+			}
+			$scope.receivables += inv.entity.balanceDue;
+		});
+
+
+
+		$scope.receivables = $scope.receivables.toFixed(2);
+		$scope.receivables = currencyFilter($scope.receivables , "$", 2);
+		drawBarChart();
 	}
 
-    loadCurrencies();
-    
-    function loadCurrencies() {
-        $q.when(currencyFactory.loadAll({
-            organization : user.entity[0].get('selectedOrganization')
-        }))
-        .then(function(currencies) {
-            $scope.currencies = currencies;
-        });
-    }
-    
-    $scope.customerCurrencyChanged = function(){
-        if($scope.selectedCustomerEdit.currency == "dummy")
-            {
-                $scope.selectedCustomerEdit.currency = '';
-                prepareAddCurrency();
-            }
-    }
-    
-    function prepareAddCurrency() {
-        $scope.currencyObj = {
-            title : undefined,
-            currencySymbol : undefined,
-            decimalPlace : '0',
-            format : '###,###,###',
-            exchangeRate : undefined
-        }
-        $('#addCurrencyForm').validate({
-            rules : {
-                currencyCode : 'required',
-                currencySymbol : 'required',
-                exchangeRate : {
-                    number : true,
-                    min : 0,
-                    required: true
-                }
-            }
-        });
-        $('#addCurrencyForm').validate().resetForm();
-        $('.new-currency').addClass('show');
-    }
-    
-    $scope.currencyChanged = function() {
-        if($scope.currencyObj)
-            $scope.currencyObj.currencySymbol =
-                $scope.currencyObj.title.split(' ')[0];
-    }
+	loadCurrencies();
 
-    $scope.saveNewCurrency = function() {
-        if(! $('#addCurrencyForm').valid()) return;
+	function loadCurrencies() {
+		$q.when(currencyFactory.loadAll({
+			organization : user.entity[0].get('selectedOrganization')
+		}))
+			.then(function(currencies) {
+			$scope.currencies = currencies;
+		});
+	}
 
-        showLoader();
-        var params = $scope.currencyObj;
-        params.userID = user.entity[0];
-        params.organization = user.entity[0].get('selectedOrganization');
-        params.decimalPlace = Number(params.decimalPlace);
-        params.exchangeRate = Number(params.exchangeRate) || undefined;
+	$scope.customerCurrencyChanged = function(){
+		if($scope.selectedCustomerEdit.currency == "dummy")
+		{
+			$scope.selectedCustomerEdit.currency = '';
+			prepareAddCurrency();
+		}
+	}
 
-        $q.when(coreFactory.getUserRole(user.entity[0]))
-        .then(function(role) {
-            return currencyFactory.createNewCurrency(params, role);
-        }, function(error){
-            console.log(error);
-        })
-        .then(function(currency) {
-            $scope.currencies.push(currency);
-            $scope.selectedCustomerEdit.currency = currency.entity.title;
-            $('.new-currency').removeClass('show');
-            hideLoader();
-        });
-    }
-    
+	function prepareAddCurrency() {
+		$scope.currencyObj = {
+			title : undefined,
+			currencySymbol : undefined,
+			decimalPlace : '0',
+			format : '###,###,###',
+			exchangeRate : undefined
+		}
+		$('#addCurrencyForm').validate({
+			rules : {
+				currencyCode : 'required',
+				currencySymbol : 'required',
+				exchangeRate : {
+					number : true,
+					min : 0,
+					required: true
+				}
+			}
+		});
+		$('#addCurrencyForm').validate().resetForm();
+		$('.new-currency').addClass('show');
+	}
+
+	$scope.currencyChanged = function() {
+		if($scope.currencyObj)
+			$scope.currencyObj.currencySymbol =
+				$scope.currencyObj.title.split(' ')[0];
+	}
+
+	$scope.saveNewCurrency = function() {
+		if(! $('#addCurrencyForm').valid()) return;
+
+		showLoader();
+		var params = $scope.currencyObj;
+		params.userID = user.entity[0];
+		params.organization = user.entity[0].get('selectedOrganization');
+		params.decimalPlace = Number(params.decimalPlace);
+		params.exchangeRate = Number(params.exchangeRate) || undefined;
+
+		$q.when(coreFactory.getUserRole(user.entity[0]))
+			.then(function(role) {
+			return currencyFactory.createNewCurrency(params, role);
+		}, function(error){
+			console.log(error);
+		})
+			.then(function(currency) {
+			$scope.currencies.push(currency);
+			$scope.selectedCustomerEdit.currency = currency.entity.title;
+			$('.new-currency').removeClass('show');
+			hideLoader();
+		});
+	}
+
 	function drawBarChart() {
 		var promises = [];
 		promises.push ( $q.when(expenseService.getCustomerExpenses({
@@ -452,17 +452,17 @@ invoicesUnlimited.controller('CustomersController',
 			var monthlyExpense  = [0,0,0,0,0,0,0,0,0,0,0,0];
 			var colors = ['#0ea81c', '#c31e1e'];
 			var months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY',
-				'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
+						  'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 
 			$scope.selectedCustomer.invoices
-			.forEach(function(inv) {
+				.forEach(function(inv) {
 				var index = inv.entity.invoiceDate.getMonth();
 				monthlyIncome[index] += inv.entity.total;
 				invTotal += inv.entity.total;
 			});
 
 			$scope.selectedCustomer.expenses
-			.forEach(function(exp) {
+				.forEach(function(exp) {
 				var index = exp.entity.expanseDate.getMonth();
 				monthlyExpense[index] += exp.entity.amount;
 				expTotal += exp.entity.amount;
@@ -475,8 +475,8 @@ invoicesUnlimited.controller('CustomersController',
 			$scope.totalExpense = currencyFilter(expTotal, '$', 2);
 
 			var ctx = $("#barchart");
-            //ctx.canvas.width = 400 + "px";
-            //ctx.canvas.height = 300 + "px";
+			//ctx.canvas.width = 400 + "px";
+			//ctx.canvas.height = 300 + "px";
 			var myChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
@@ -506,9 +506,9 @@ invoicesUnlimited.controller('CustomersController',
 							},
 							ticks: {
 								beginAtZero:true,
-                                userCallback: function(value, index, values) {
-                                    return numberWithCommas(value.toFixed(2));
-                                }
+								userCallback: function(value, index, values) {
+									return numberWithCommas(value.toFixed(2));
+								}
 							}
 						}]
 					}
@@ -518,10 +518,10 @@ invoicesUnlimited.controller('CustomersController',
 
 	}
 
-    function numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-    }
-    
+	function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+
 	var isGoTo = {
 		details : function(to){
 			return to.endsWith('details');	
@@ -530,14 +530,14 @@ invoicesUnlimited.controller('CustomersController',
 			return to.endsWith('customers');
 		},
 		edit : function(to){
-            if(!to.includes('customers'))
-                return false;
+			if(!to.includes('customers'))
+				return false;
 			return to.endsWith('edit');
 		},
 		newCustomer : function(to){
 			return to.endsWith('new');	
 		},
-        emailContact : function(to){
+		emailContact : function(to){
 			return to.endsWith('emailContact');	
 		}
 	}
@@ -563,23 +563,23 @@ invoicesUnlimited.controller('CustomersController',
 			$scope.shippingAddressEdit = 
 				$.extend(true,{},$scope.billingAddressEdit);
 		}
-        
-        if (! $('#edit-customer-form').valid()) {
+
+		if (! $('#edit-customer-form').valid()) {
 			var v = $('#edit-customer-form').validate();
 			var offset = $(v.errorList[0].element).offset().top - 30;
 			scrollToOffset(offset);
 			return;
 		}
 
-        if($scope.shipping.setShippingTheSame){
-            $scope.selectedCustomer.entity.set('isSameAddress', true);
-            //$scope.selectedCustomerEdit.entity.set('isSameAddress', true);
-        }
-        else{
-            $scope.selectedCustomer.entity.isSameAddress = false;
-            //$scope.selectedCustomerEdit.entity.isSameAddress = false;
-        }
-        
+		if($scope.shipping.setShippingTheSame){
+			$scope.selectedCustomer.entity.set('isSameAddress', true);
+			//$scope.selectedCustomerEdit.entity.set('isSameAddress', true);
+		}
+		else{
+			$scope.selectedCustomer.entity.isSameAddress = false;
+			//$scope.selectedCustomerEdit.entity.isSameAddress = false;
+		}
+
 		var selected = $scope.selectedCustomer;
 
 		selected.billingAddressJSON = $scope.billingAddressEdit;
@@ -595,21 +595,21 @@ invoicesUnlimited.controller('CustomersController',
 			if (appFields.customer.some(function(el){
 				return property == el;
 			}))
-	  		selected.entity[property] = 
-	  			$scope.selectedCustomerEdit[property];
+				selected.entity[property] = 
+					$scope.selectedCustomerEdit[property];
 		}
 
-        if($scope.shipping.setShippingTheSame){
-            selected.entity.set('isSameAddress', true);
-            //$scope.selectedCustomerEdit.entity.set('isSameAddress', true);
-        }
-        else{
-            selected.entity.set('isSameAddress', false);
-            //$scope.selectedCustomerEdit.entity.isSameAddress = false;
-        }
-        
+		if($scope.shipping.setShippingTheSame){
+			selected.entity.set('isSameAddress', true);
+			//$scope.selectedCustomerEdit.entity.set('isSameAddress', true);
+		}
+		else{
+			selected.entity.set('isSameAddress', false);
+			//$scope.selectedCustomerEdit.entity.isSameAddress = false;
+		}
+
 		var promises = [];
-		
+
 		var primaryContact = selected.entity.get('primaryContact');
 		debugger;
 		if(primaryContact){
@@ -622,25 +622,25 @@ invoicesUnlimited.controller('CustomersController',
 			primaryContact = selected.contactPersons.filter(function(obj){
 				return obj.entity.get('defaultPerson');
 			})[0];
-			
+
 			if(primaryContact){
 				primaryContact.entity.set('email', selected.entity.get('email'));
 				primaryContact.entity.set('mobile', selected.entity.get('mobile'));
 				primaryContact.entity.set('phone', selected.entity.get('phone'));
-				
+
 				selected.entity.set('primaryContact', primaryContact.entity);
-				
+
 				promises.push(primaryContact.save());
 			}
 		}
-		
+
 		promises.push(selected.save());
-		
+
 		$q.all(promises).then(function(){
 			selected.billingAddress = formBillingAddress(selected.entity.billingAddress);
 			$scope.selectedCustomerEdit = null;
 			$scope.billingAddressEdit = null;
-            $scope.shippingAddressEdit = formShippingAddress(selected.entity.shippingAddress);
+			$scope.shippingAddressEdit = formShippingAddress(selected.entity.shippingAddress);
 			$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
 		}, function(error){
 			console.error(error);
@@ -648,36 +648,36 @@ invoicesUnlimited.controller('CustomersController',
 		});
 	};
 
- 
+
 	$scope.deleteSelectedCustomer = function()
-    {
+	{
 		/*
 		if ($scope.selectedCustomer.invoices &&
 			$scope.selectedCustomer.invoices.length) {
-             
+
 			ShowMessage("Customers with invoices involved cannot be deleted!","error");
 			return;
 		}
 		*/
 		showLoader();
-        
-        $scope.selectedCustomer.entity.set('isDeleted', 1);
-        
+
+		$scope.selectedCustomer.entity.set('isDeleted', 1);
+
 		$q.when($scope.selectedCustomer.entity.save()).then(function(){
-                $scope.selectedCustomer = null;
-                
-                $scope.customers
-                .splice(getCustomerIndex($scope.selectedCustomerId),1);
-                $scope.selectedCustomerId = null;
-                hideLoader();
-                $state.go('dashboard.customers.all');
+			$scope.selectedCustomer = null;
+
+			$scope.customers
+				.splice(getCustomerIndex($scope.selectedCustomerId),1);
+			$scope.selectedCustomerId = null;
+			hideLoader();
+			$state.go('dashboard.customers.all');
 		});
 	}
-    
-    $scope.deleteCustomer = function(confirmed, index) {
-	if(confirmed) 
-    {
-		/*
+
+	$scope.deleteCustomer = function(confirmed, index) {
+		if(confirmed) 
+		{
+			/*
 		 if ($scope.selectedCustomer.invoices &&
 			$scope.selectedCustomer.invoices.length) {
              $(".confirm-delete").removeClass("show");
@@ -685,30 +685,30 @@ invoicesUnlimited.controller('CustomersController',
 			return;
 		}
 		*/
-		showLoader();
-        
-        $scope.selectedCustomer.entity.set('isDeleted', 1);
-        
-		$q.when($scope.selectedCustomer.entity.save()).then(function(){
-                $scope.selectedCustomer = null;
-                $scope.customers
-                .splice(getCustomerIndex($scope.selectedCustomerId),1);
-                $scope.selectedCustomerId = null;
-                hideLoader();
-                $state.go('dashboard.customers.all');
-		});   
-	} else {
-		$(".confirm-delete").removeClass("show");
-	}    
-}   
-    $scope.confirmDelete = function() {
-	$(".confirm-delete").addClass("show");
-}
+			showLoader();
+
+			$scope.selectedCustomer.entity.set('isDeleted', 1);
+
+			$q.when($scope.selectedCustomer.entity.save()).then(function(){
+				$scope.selectedCustomer = null;
+				$scope.customers
+					.splice(getCustomerIndex($scope.selectedCustomerId),1);
+				$scope.selectedCustomerId = null;
+				hideLoader();
+				$state.go('dashboard.customers.all');
+			});   
+		} else {
+			$(".confirm-delete").removeClass("show");
+		}    
+	}   
+	$scope.confirmDelete = function() {
+		$(".confirm-delete").addClass("show");
+	}
 	$scope.changeStatus = function(status) {
 		showLoader();
 		$scope.selectedCustomer.entity.set('status',status);
 		$scope.selectedCustomer.entity.save()
-		.then(function(cust){
+			.then(function(cust){
 			hideLoader();
 		},function(er){
 			console.log(er.message);
@@ -719,7 +719,7 @@ invoicesUnlimited.controller('CustomersController',
 		$scope.selectedCustomerEdit = null;
 		$state.go('dashboard.customers.details',{customerId:$scope.selectedCustomerId});
 	}
-    /*
+	/*
 	var isGoToDetailsWithInvalidCustomerId = function(to,id){
 		return to.endsWith('details') && (!isCustomerIdValid(id));
 	}
@@ -730,8 +730,8 @@ invoicesUnlimited.controller('CustomersController',
 			$scope.customers = res.sort(function(a,b){
 				return alphabeticalSort(a.entity.displayName,b.entity.displayName);
 			});
-            $scope.displayedCustomers = $scope.customers;
-            /*
+			$scope.displayedCustomers = $scope.customers;
+			/*
 			return $q.when(coreFactory.getAllInvoices({
 				method 	: 'containedIn',
 				name 	: 'customer',
@@ -741,7 +741,7 @@ invoicesUnlimited.controller('CustomersController',
 			}));
 			*/
 			var promise = [];
-			
+
 			promise.push(coreFactory.getAllInvoices({
 				method 	: 'containedIn',
 				name 	: 'customer',
@@ -749,7 +749,7 @@ invoicesUnlimited.controller('CustomersController',
 					return el.entity;
 				})
 			}));
-			
+
 			promise.push(coreFactory.getAllCreditNotes({
 				method 	: 'containedIn',
 				name 	: 'customer',
@@ -757,49 +757,49 @@ invoicesUnlimited.controller('CustomersController',
 					return el.entity;
 				})
 			}));
-			
+
 			return $q.all(promise);
 
 		}).then(function(results){
 			var invoices = results[0];
 			var creditNotes = results[1];
-			
+
 			var customersNum = $scope.customers.length;
 
 			$scope.customers.forEach(function(cust){
 				cust.invoices = invoices.filter(function(inv){
 					return inv.entity.get('customer').id == cust.entity.id;
 				});
-				
+
 				cust.creditNotes = creditNotes.filter(function(note){
 					return note.entity.get('customer').id == cust.entity.id;
 				});
-				
+
 				if(!cust.entity.unusedCredits)
 					cust.entity.unusedCredits = 0;
 				if(!cust.entity.outstanding)
 					cust.entity.outstanding = 0;
-				
+
 				cust.comments = 
-				cust.invoices.reduce(function(res,cur){
-                    if(cur.comments)
-					   return res.concat(cur.comments);
-                    else
-                        return res.concat([]);
+					cust.invoices.reduce(function(res,cur){
+					if(cur.comments)
+						return res.concat(cur.comments);
+					else
+						return res.concat([]);
 				},[]);
 			});
-			
+
 			$scope.customers.forEach(function(cust){
 				var outs = 0;
 				cust.invoices
-				.forEach(function(inv) {
+					.forEach(function(inv) {
 					outs += inv.entity.balanceDue;
 				});
 				cust.entity.set('outstanding', outs);
-				
+
 				var credits = 0;
 				cust.creditNotes
-				.forEach(function(note) {
+					.forEach(function(note) {
 					credits += note.entity.remainingCredits;
 				});
 				cust.entity.set('unusedCredits', credits);
@@ -812,10 +812,10 @@ invoicesUnlimited.controller('CustomersController',
 				doSelectCustomerIfValidId(customerId);
 				doCreateEditObject();
 			}
-            else if (isGoTo.emailContact($state.current.name)){
-                prepareToEmailContact();
-            }
-            $scope.sortByCustomerName();
+			else if (isGoTo.emailContact($state.current.name)){
+				prepareToEmailContact();
+			}
+			$scope.sortByCustomerName();
 			hideLoader();
 
 		}, function(error){
@@ -823,525 +823,520 @@ invoicesUnlimited.controller('CustomersController',
 			console.error(error);
 		});
 	};
-  //nameD,custNameD,emailD,workphoneD,receivableD,creditsD,
-    $scope.sortByCustomerName= function()
-    {
-        if($("#nameD").css('display') === "none"){
-             $scope.customers.sort(function(a,b)
-        {
-            if(!a.entity.displayName)
-            {
-              a.entity.displayName = "";  
-            }
-            if(!b.entity.displayName)
-            {
-              b.entity.displayName = "";  
-            }
-            return a.entity.displayName.localeCompare(b.entity.displayName)
-        });
-            $('#nameD').css({
-                'display': 'inline-table'
-            });
-            $('#nameDUp').css({
-                'display': 'none'
-            });
-        }
-        else{
-               $scope.customers.sort(function(a,b)
-        {
-            if(!a.entity.displayName)
-            {
-              a.entity.displayName = "";  
-            }
-            if(!b.entity.displayName)
-            {
-              b.entity.displayName = "";  
-            }
-            return b.entity.displayName.localeCompare(a.entity.displayName)
-        });
-            $('#nameDUp').css({
-                'display': 'inline-table'
-            });
-            $('#nameD').css({
-                'display': 'none'
-            });
-        }
-        
-         
-          $('#custNameD').css({
-            'display': 'none'
-        });
-              $('#emailD').css({
-            'display': 'none'
-        });
-          $('#workphoneD').css({
-            'display': 'none'
-        });
-              $('#receivableD').css({
-            'display': 'none'
-        });
-         $('#creditsD').css({
-            'display': 'none'
-        });
-        
-        
-         $('#custNameDUp').css({
-            'display': 'none'
-        });
-              $('#emailDUp').css({
-            'display': 'none'
-        });
-          $('#workphoneDUp').css({
-            'display': 'none'
-        });
-              $('#receivableDUp').css({
-            'display': 'none'
-        });
-         $('#creditsDUp').css({
-            'display': 'none'
-        });
-        
-    }
-     $scope.sortByCompanyName= function()
-     {
-         $scope.customers.sort(function(a,b){
-             if(!a.entity.companyName)
-             {
-                 a.entity.companyName = "";
-             }
-             if(!b.entity.companyName)
-             {
-                 b.entity.companyName = "";
-             }
-          return a.entity.companyName.localeCompare(b.entity.companyName)
-        });
-         
-         if($("#custNameD").css('display') === "none"){
-            $scope.customers.sort(function(a,b){
-             if(!a.entity.companyName)
-             {
-                 a.entity.companyName = "";
-             }
-             if(!b.entity.companyName)
-             {
-                 b.entity.companyName = "";
-             }
-          return a.entity.companyName.localeCompare(b.entity.companyName)
-        });
-            $('#custNameD').css({
-                'display': 'inline-table'
-            });
-            $('#custNameDUp').css({
-                'display': 'none'
-            });
-        }
-        else{
-               $scope.customers.sort(function(a,b){
-             if(!a.entity.companyName)
-             {
-                 a.entity.companyName = "";
-             }
-             if(!b.entity.companyName)
-             {
-                 b.entity.companyName = "";
-             }
-          return b.entity.companyName.localeCompare(a.entity.companyName)
-        });
-            $('#custNameDUp').css({
-                'display': 'inline-table'
-            });
-            $('#custNameD').css({
-                'display': 'none'
-            });
-        }
-         
-         $('#nameD').css({
-            'display': 'none'
-        });
-         
-              $('#emailD').css({
-            'display': 'none'
-        });
-          $('#workphoneD').css({
-            'display': 'none'
-        });
-              $('#receivableD').css({
-            'display': 'none'
-        });
-         $('#creditsD').css({
-            'display': 'none'
-        });
-         
-         
-         $('#nameDUp').css({
-            'display': 'none'
-        });
-         
-              $('#emailDUp').css({
-            'display': 'none'
-        });
-          $('#workphoneDUp').css({
-            'display': 'none'
-        });
-              $('#receivableDUp').css({
-            'display': 'none'
-        });
-         $('#creditsDUp').css({
-            'display': 'none'
-        });
-         
-    }
-    $scope.sortByEmail= function(){
-        if($("#emailD").css('display') === "none"){
-             $scope.customers.sort(function(a,b){
-            if(!a.entity.email)
-            {
-                a.entity.email = "";
-            }
-            if(!b.entity.email)
-            {
-                b.entity.email = "";
-            }
-            return a.entity.email.localeCompare(b.entity.email)
-        });
-            $('#emailD').css({
-                'display': 'inline-table'
-            });
-            $('#emailDUp').css({
-                'display': 'none'
-            });
-        }
-        else{
-               $scope.customers.sort(function(a,b){
-            if(!a.entity.email)
-            {
-                a.entity.email = "";
-            }
-            if(!b.entity.email)
-            {
-                b.entity.email = "";
-            }
-            return b.entity.email.localeCompare(a.entity.email)
-        });
-            $('#emailDUp').css({
-                'display': 'inline-table'
-            });
-            $('#emailD').css({
-                'display': 'none'
-            });
-        }
-        
-         $('#nameD').css({
-            'display': 'none'
-        });
-          $('#custNameD').css({
-            'display': 'none'
-        });
-          $('#workphoneD').css({
-            'display': 'none'
-        });
-              $('#receivableD').css({
-            'display': 'none'
-        });
-         $('#creditsD').css({
-            'display': 'none'
-        });
-        
-         $('#nameDUp').css({
-            'display': 'none'
-        });
-          $('#custNameDUp').css({
-            'display': 'none'
-        });
-          $('#workphoneDUp').css({
-            'display': 'none'
-        });
-              $('#receivableDUp').css({
-            'display': 'none'
-        });
-         $('#creditsDUp').css({
-            'display': 'none'
-        });
-        
-    }
-    $scope.sortByPhone= function(){
-        $scope.customers.sort(function(a,b){
-            if(!a.entity.phone)
-            {
-                a.entity.phone = "";
-            }
-            if(!b.entity.phone)
-            {
-                b.entity.phone = "";
-            }
-            return a.entity.phone.localeCompare(b.entity.phone)
-        });
-        
-        if($("#workphoneD").css('display') === "none"){
-             $scope.customers.sort(function(a,b){
-            if(!a.entity.phone)
-            {
-                a.entity.phone = "";
-            }
-            if(!b.entity.phone)
-            {
-                b.entity.phone = "";
-            }
-            return a.entity.phone.localeCompare(b.entity.phone)
-        });
-            $('#workphoneD').css({
-                'display': 'inline-table'
-            });
-            $('#workphoneDUp').css({
-                'display': 'none'
-            });
-        }
-        else{$scope.customers.sort(function(a,b){
-            if(!a.entity.phone)
-            {
-                a.entity.phone = "";
-            }
-            if(!b.entity.phone)
-            {
-                b.entity.phone = "";
-            }
-            return b.entity.phone.localeCompare(a.entity.phone)
-        });
-            $('#workphoneDUp').css({
-                'display': 'inline-table'
-            });
-            $('#workphoneD').css({
-                'display': 'none'
-            });
-        }
-         $('#nameD').css({
-            'display': 'none'
-        });
-          $('#custNameD').css({
-            'display': 'none'
-        });
-              $('#emailD').css({
-            'display': 'none'
-        });
-              $('#receivableD').css({
-            'display': 'none'
-        });
-         $('#creditsD').css({
-            'display': 'none'
-        });
-        
-        
-        $('#nameDUp').css({
-            'display': 'none'
-        });
-          $('#custNameDUp').css({
-            'display': 'none'
-        });
-              $('#emailDUp').css({
-            'display': 'none'
-        });
-              $('#receivableDUp').css({
-            'display': 'none'
-        });
-         $('#creditsDUp').css({
-            'display': 'none'
-        });
-        
-    }
-    $scope.sortByReceivable= function(){
-       
-        if($("#receivableD").css('display') === "none"){
-            $scope.customers.sort(function(a,b){
-            if(!a.entity.outstanding)
-            {
-                a.entity.outstanding = "";
-            }
-            if(!b.entity.outstanding)
-            {
-                b.entity.outstanding = "";
-            }
-            return a.entity.outstanding.localeCompare(b.entity.outstanding)
-        });
-            $('#receivableD').css({
-                'display': 'inline-table'
-            });
-            $('#receivableDUp').css({
-                'display': 'none'
-            });
-        }
-        else{
-               $scope.customers.sort(function(a,b){
-            if(!a.entity.outstanding)
-            {
-                a.entity.outstanding = "";
-            }
-            if(!b.entity.outstanding)
-            {
-                b.entity.outstanding = "";
-            }
-            return b.entity.outstanding.localeCompare(a.entity.outstanding)
-        });
-            $('#receivableDUp').css({
-                'display': 'inline-table'
-            });
-            $('#receivableD').css({
-                'display': 'none'
-            });
-        }
-        
-        $('#nameD').css({
-            'display': 'none'
-        });
-          $('#custNameD').css({
-            'display': 'none'
-        });
-              $('#emailD').css({
-            'display': 'none'
-        });
-          $('#workphoneD').css({
-            'display': 'none'
-        });
-         $('#creditsD').css({
-            'display': 'none'
-        });
-        
-         $('#nameDUp').css({
-            'display': 'none'
-        });
-          $('#custNameDUp').css({
-            'display': 'none'
-        });
-              $('#emailDUp').css({
-            'display': 'none'
-        });
-          $('#workphoneDUp').css({
-            'display': 'none'
-        });
-         $('#creditsDUp').css({
-            'display': 'none'
-        });
-        
-        
-    }
-    $scope.sortByCredits= function()
-    {
-        $scope.customers.sort(function(a,b){
-            if(!a.entity.unusedCredits)
-            {
-                a.entity.unusedCredits = "";
-            }
-            if(!b.entity.unusedCredits)
-            {
-                b.entity.unusedCredits = "";
-            }
-            return a.entity.unusedCredits.localeCompare(b.entity.unusedCredits)
-        });
-        
-        if($("#creditsD").css('display') === "none"){
-            $scope.customers.sort(function(a,b){
-            if(!a.entity.unusedCredits)
-            {
-                a.entity.unusedCredits = "";
-            }
-            if(!b.entity.unusedCredits)
-            {
-                b.entity.unusedCredits = "";
-            }
-            return a.entity.unusedCredits.localeCompare(b.entity.unusedCredits)
-        });
-            $('#creditsD').css({
-                'display': 'inline-table'
-            });
-            $('#creditsDUp').css({
-                'display': 'none'
-            });
-        }
-        else{
-              $scope.customers.sort(function(a,b){
-            if(!a.entity.unusedCredits)
-            {
-                a.entity.unusedCredits = "";
-            }
-            if(!b.entity.unusedCredits)
-            {
-                b.entity.unusedCredits = "";
-            }
-            return b.entity.unusedCredits.localeCompare(a.entity.unusedCredits)
-        });
-            $('#creditsDUp').css({
-                'display': 'inline-table'
-            });
-            $('#creditsD').css({
-                'display': 'none'
-            });
-        }
-         $('#nameD').css({
-            'display': 'none'
-        });
-          $('#custNameD').css({
-            'display': 'none'
-        });
-              $('#emailD').css({
-            'display': 'none'
-        });
-          $('#workphoneD').css({
-            'display': 'none'
-        });
-              $('#receivableD').css({
-            'display': 'none'
-        });
-        
-        
-         $('#nameDUp').css({
-            'display': 'none'
-        });
-          $('#custNameDUp').css({
-            'display': 'none'
-        });
-              $('#emailDUp').css({
-            'display': 'none'
-        });
-          $('#workphoneDUp').css({
-            'display': 'none'
-        });
-              $('#receivableDUp').css({
-            'display': 'none'
-        });
-        
-        
-    }
-    $scope.sortByDate= function(){
-        
-        if($("#date").css('display') === "none"){
-            $scope.comments.sort(function(a,b){
-                return a.entity.date>b.entity.date ? -1 : a.entity.date<b.entity.date ? 1 : 0;
-            });
-            $('#date').css({
-                'display': 'inline-table'
-            });
-            $('#dateUp').css({
-                'display': 'none'
-            });
-        }
-        else{
-             $scope.comments.sort(function(a,b){
-                return b.entity.date>a.entity.date ? -1 : b.entity.date<a.entity.date ? 1 : 0;
-            });
-            $('#dateUp').css({
-                'display': 'inline-table'
-            });
-            $('#date').css({
-                'display': 'none'
-            });
-        }
-       
-        $('#user').css({
-                'display': 'none'
-        });
-        $('#userUp').css({
-                'display': 'none'
-        });
-        /*
+	//nameD,custNameD,emailD,workphoneD,receivableD,creditsD,
+	$scope.sortByCustomerName= function()
+	{
+		if($("#nameD").css('display') === "none"){
+			$scope.customers.sort(function(a,b)
+								  {
+				if(!a.entity.displayName)
+				{
+					a.entity.displayName = "";  
+				}
+				if(!b.entity.displayName)
+				{
+					b.entity.displayName = "";  
+				}
+				return a.entity.displayName.localeCompare(b.entity.displayName)
+			});
+			$('#nameD').css({
+				'display': 'inline-table'
+			});
+			$('#nameDUp').css({
+				'display': 'none'
+			});
+		}
+		else{
+			$scope.customers.sort(function(a,b)
+								  {
+				if(!a.entity.displayName)
+				{
+					a.entity.displayName = "";  
+				}
+				if(!b.entity.displayName)
+				{
+					b.entity.displayName = "";  
+				}
+				return b.entity.displayName.localeCompare(a.entity.displayName)
+			});
+			$('#nameDUp').css({
+				'display': 'inline-table'
+			});
+			$('#nameD').css({
+				'display': 'none'
+			});
+		}
+
+
+		$('#custNameD').css({
+			'display': 'none'
+		});
+		$('#emailD').css({
+			'display': 'none'
+		});
+		$('#workphoneD').css({
+			'display': 'none'
+		});
+		$('#receivableD').css({
+			'display': 'none'
+		});
+		$('#creditsD').css({
+			'display': 'none'
+		});
+
+
+		$('#custNameDUp').css({
+			'display': 'none'
+		});
+		$('#emailDUp').css({
+			'display': 'none'
+		});
+		$('#workphoneDUp').css({
+			'display': 'none'
+		});
+		$('#receivableDUp').css({
+			'display': 'none'
+		});
+		$('#creditsDUp').css({
+			'display': 'none'
+		});
+
+	}
+	$scope.sortByCompanyName= function()
+	{
+		$scope.customers.sort(function(a,b){
+			if(!a.entity.companyName)
+			{
+				a.entity.companyName = "";
+			}
+			if(!b.entity.companyName)
+			{
+				b.entity.companyName = "";
+			}
+			return a.entity.companyName.localeCompare(b.entity.companyName)
+		});
+
+		if($("#custNameD").css('display') === "none"){
+			$scope.customers.sort(function(a,b){
+				if(!a.entity.companyName)
+				{
+					a.entity.companyName = "";
+				}
+				if(!b.entity.companyName)
+				{
+					b.entity.companyName = "";
+				}
+				return a.entity.companyName.localeCompare(b.entity.companyName)
+			});
+			$('#custNameD').css({
+				'display': 'inline-table'
+			});
+			$('#custNameDUp').css({
+				'display': 'none'
+			});
+		}
+		else{
+			$scope.customers.sort(function(a,b){
+				if(!a.entity.companyName)
+				{
+					a.entity.companyName = "";
+				}
+				if(!b.entity.companyName)
+				{
+					b.entity.companyName = "";
+				}
+				return b.entity.companyName.localeCompare(a.entity.companyName)
+			});
+			$('#custNameDUp').css({
+				'display': 'inline-table'
+			});
+			$('#custNameD').css({
+				'display': 'none'
+			});
+		}
+
+		$('#nameD').css({
+			'display': 'none'
+		});
+
+		$('#emailD').css({
+			'display': 'none'
+		});
+		$('#workphoneD').css({
+			'display': 'none'
+		});
+		$('#receivableD').css({
+			'display': 'none'
+		});
+		$('#creditsD').css({
+			'display': 'none'
+		});
+
+
+		$('#nameDUp').css({
+			'display': 'none'
+		});
+
+		$('#emailDUp').css({
+			'display': 'none'
+		});
+		$('#workphoneDUp').css({
+			'display': 'none'
+		});
+		$('#receivableDUp').css({
+			'display': 'none'
+		});
+		$('#creditsDUp').css({
+			'display': 'none'
+		});
+
+	}
+	$scope.sortByEmail= function(){
+		if($("#emailD").css('display') === "none"){
+			$scope.customers.sort(function(a,b){
+				if(!a.entity.email)
+				{
+					a.entity.email = "";
+				}
+				if(!b.entity.email)
+				{
+					b.entity.email = "";
+				}
+				return a.entity.email.localeCompare(b.entity.email)
+			});
+			$('#emailD').css({
+				'display': 'inline-table'
+			});
+			$('#emailDUp').css({
+				'display': 'none'
+			});
+		}
+		else{
+			$scope.customers.sort(function(a,b){
+				if(!a.entity.email)
+				{
+					a.entity.email = "";
+				}
+				if(!b.entity.email)
+				{
+					b.entity.email = "";
+				}
+				return b.entity.email.localeCompare(a.entity.email)
+			});
+			$('#emailDUp').css({
+				'display': 'inline-table'
+			});
+			$('#emailD').css({
+				'display': 'none'
+			});
+		}
+
+		$('#nameD').css({
+			'display': 'none'
+		});
+		$('#custNameD').css({
+			'display': 'none'
+		});
+		$('#workphoneD').css({
+			'display': 'none'
+		});
+		$('#receivableD').css({
+			'display': 'none'
+		});
+		$('#creditsD').css({
+			'display': 'none'
+		});
+
+		$('#nameDUp').css({
+			'display': 'none'
+		});
+		$('#custNameDUp').css({
+			'display': 'none'
+		});
+		$('#workphoneDUp').css({
+			'display': 'none'
+		});
+		$('#receivableDUp').css({
+			'display': 'none'
+		});
+		$('#creditsDUp').css({
+			'display': 'none'
+		});
+
+	}
+	
+	$scope.sortByPhone= function(){
+		$scope.customers.sort(function(a,b){
+			if(!a.entity.mobile)
+			{
+				a.entity.mobile = "";
+			}
+			if(!b.entity.mobile)
+			{
+				b.entity.mobile = "";
+			}
+			return a.entity.mobile.localeCompare(b.entity.mobile)
+		});
+
+		if($("#workphoneD").css('display') === "none"){
+			$scope.customers.sort(function(a,b){
+				if(!a.entity.mobile)
+				{
+					a.entity.mobile = "";
+				}
+				if(!b.entity.mobile)
+				{
+					b.entity.mobile = "";
+				}
+				return a.entity.mobile.localeCompare(b.entity.mobile)
+			});
+			$('#workphoneD').css({
+				'display': 'inline-table'
+			});
+			$('#workphoneDUp').css({
+				'display': 'none'
+			});
+		}
+		else{$scope.customers.sort(function(a,b){
+			if(!a.entity.mobile)
+			{
+				a.entity.mobile = "";
+			}
+			if(!b.entity.mobile)
+			{
+				b.entity.mobile = "";
+			}
+			return b.entity.mobile.localeCompare(a.entity.mobile)
+		});
+			 $('#workphoneDUp').css({
+				 'display': 'inline-table'
+			 });
+			 $('#workphoneD').css({
+				 'display': 'none'
+			 });
+			}
+		$('#nameD').css({
+			'display': 'none'
+		});
+		$('#custNameD').css({
+			'display': 'none'
+		});
+		$('#emailD').css({
+			'display': 'none'
+		});
+		$('#receivableD').css({
+			'display': 'none'
+		});
+		$('#creditsD').css({
+			'display': 'none'
+		});
+
+
+		$('#nameDUp').css({
+			'display': 'none'
+		});
+		$('#custNameDUp').css({
+			'display': 'none'
+		});
+		$('#emailDUp').css({
+			'display': 'none'
+		});
+		$('#receivableDUp').css({
+			'display': 'none'
+		});
+		$('#creditsDUp').css({
+			'display': 'none'
+		});
+
+	}
+	
+	$scope.sortByReceivable= function(){
+
+		if($("#receivableD").css('display') === "none"){
+			$scope.customers.sort(function(a,b){
+				
+				return a.entity.outstanding - b.entity.outstanding;
+			});
+			$('#receivableD').css({
+				'display': 'inline-table'
+			});
+			$('#receivableDUp').css({
+				'display': 'none'
+			});
+		}
+		else{
+			$scope.customers.sort(function(a,b){
+				
+				return b.entity.outstanding - a.entity.outstanding;
+			});
+			$('#receivableDUp').css({
+				'display': 'inline-table'
+			});
+			$('#receivableD').css({
+				'display': 'none'
+			});
+		}
+
+		$('#nameD').css({
+			'display': 'none'
+		});
+		$('#custNameD').css({
+			'display': 'none'
+		});
+		$('#emailD').css({
+			'display': 'none'
+		});
+		$('#workphoneD').css({
+			'display': 'none'
+		});
+		$('#creditsD').css({
+			'display': 'none'
+		});
+
+		$('#nameDUp').css({
+			'display': 'none'
+		});
+		$('#custNameDUp').css({
+			'display': 'none'
+		});
+		$('#emailDUp').css({
+			'display': 'none'
+		});
+		$('#workphoneDUp').css({
+			'display': 'none'
+		});
+		$('#creditsDUp').css({
+			'display': 'none'
+		});
+
+
+	}
+	
+	$scope.sortByCredits= function()
+	{
+		/*
+		$scope.customers.sort(function(a,b){
+			if(!a.entity.unusedCredits)
+			{
+				a.entity.unusedCredits = 0;
+			}
+			if(!b.entity.unusedCredits)
+			{
+				b.entity.unusedCredits = 0;
+			}
+			return a.entity.unusedCredits.localeCompare(b.entity.unusedCredits)
+		});
+		*/
+		if($("#creditsD").css('display') === "none"){
+			$scope.customers.sort(function(a,b){
+				/*
+				if(!a.entity.unusedCredits)
+				{
+					a.entity.unusedCredits = "";
+				}
+				if(!b.entity.unusedCredits)
+				{
+					b.entity.unusedCredits = "";
+				}
+				*/
+				return a.entity.unusedCredits - b.entity.unusedCredits;
+			});
+			$('#creditsD').css({
+				'display': 'inline-table'
+			});
+			$('#creditsDUp').css({
+				'display': 'none'
+			});
+		}
+		else{
+			$scope.customers.sort(function(a,b){
+				/*
+				if(!a.entity.unusedCredits)
+				{
+					a.entity.unusedCredits = "";
+				}
+				if(!b.entity.unusedCredits)
+				{
+					b.entity.unusedCredits = "";
+				}
+				*/
+				return b.entity.unusedCredits - a.entity.unusedCredits;
+			});
+			$('#creditsDUp').css({
+				'display': 'inline-table'
+			});
+			$('#creditsD').css({
+				'display': 'none'
+			});
+		}
+		$('#nameD').css({
+			'display': 'none'
+		});
+		$('#custNameD').css({
+			'display': 'none'
+		});
+		$('#emailD').css({
+			'display': 'none'
+		});
+		$('#workphoneD').css({
+			'display': 'none'
+		});
+		$('#receivableD').css({
+			'display': 'none'
+		});
+
+
+		$('#nameDUp').css({
+			'display': 'none'
+		});
+		$('#custNameDUp').css({
+			'display': 'none'
+		});
+		$('#emailDUp').css({
+			'display': 'none'
+		});
+		$('#workphoneDUp').css({
+			'display': 'none'
+		});
+		$('#receivableDUp').css({
+			'display': 'none'
+		});
+
+
+	}
+	
+	$scope.sortByDate= function(){
+
+		if($("#date").css('display') === "none"){
+			$scope.comments.sort(function(a,b){
+				return a.entity.date>b.entity.date ? -1 : a.entity.date<b.entity.date ? 1 : 0;
+			});
+			$('#date').css({
+				'display': 'inline-table'
+			});
+			$('#dateUp').css({
+				'display': 'none'
+			});
+		}
+		else{
+			$scope.comments.sort(function(a,b){
+				return b.entity.date>a.entity.date ? -1 : b.entity.date<a.entity.date ? 1 : 0;
+			});
+			$('#dateUp').css({
+				'display': 'inline-table'
+			});
+			$('#date').css({
+				'display': 'none'
+			});
+		}
+
+		$('#user').css({
+			'display': 'none'
+		});
+		$('#userUp').css({
+			'display': 'none'
+		});
+		/*
         $scope.comments.sort(function(a,b){
             if(!a.date)
             {
@@ -1355,48 +1350,48 @@ invoicesUnlimited.controller('CustomersController',
             return a.entity.date>b.entity.date ? -1 : a.entity.date<b.entity.date ? 1 : 0;
         });
         */
-    }
-    $scope.sortByUser= function(){
-       if($("#user").css('display') === "none"){
-            $scope.comments.sort(function(a,b){
-                a.entity.name.localeCompare(b.entity.name);
-            });
-            $('#user').css({
-                'display': 'inline-table'
-            });
-            $('#userUp').css({
-                'display': 'none'
-            });
-        }
-        else{
-             $scope.comments.sort(function(a,b){
-                b.entity.name.localeCompare(a.entity.name)
-            });
-            $('#userUp').css({
-                'display': 'inline-table'
-            });
-            $('#user').css({
-                'display': 'none'
-            });
-        }
-       
-        $('#date').css({
-                'display': 'none'
-        });
-        $('#dateUp').css({
-                'display': 'none'
-        });
-        
-        
-        $scope.comments.sort(function(a,b){
-            return a.entity.name.localeCompare(b.entity.name)
-        });
-    }
+	}
+	$scope.sortByUser= function(){
+		if($("#user").css('display') === "none"){
+			$scope.comments.sort(function(a,b){
+				a.entity.name.localeCompare(b.entity.name);
+			});
+			$('#user').css({
+				'display': 'inline-table'
+			});
+			$('#userUp').css({
+				'display': 'none'
+			});
+		}
+		else{
+			$scope.comments.sort(function(a,b){
+				b.entity.name.localeCompare(a.entity.name)
+			});
+			$('#userUp').css({
+				'display': 'inline-table'
+			});
+			$('#user').css({
+				'display': 'none'
+			});
+		}
+
+		$('#date').css({
+			'display': 'none'
+		});
+		$('#dateUp').css({
+			'display': 'none'
+		});
+
+
+		$scope.comments.sort(function(a,b){
+			return a.entity.name.localeCompare(b.entity.name)
+		});
+	}
 	$scope.deleteContact = function(index){
 		showLoader();
 		$scope.selectedCustomer.contactPersons[index]
-		.destroy($scope.selectedCustomer)
-		.then(function(res){
+			.destroy($scope.selectedCustomer)
+			.then(function(res){
 			$scope.selectedCustomer.contactPersons.splice(index,1);
 			$scope.$apply();
 			hideLoader();
@@ -1456,7 +1451,7 @@ invoicesUnlimited.controller('CustomersController',
 		$('#billFax').mask('Z (Y00) 000-0000', obj);
 		$('#shipFax').mask('Z (Y00) 000-0000', obj);
 	}
-    $("#addContactForm").validate({
+	$("#addContactForm").validate({
 		rules: {
 			firstname 		: 'required',
 			lastname	: 'required'
@@ -1464,7 +1459,7 @@ invoicesUnlimited.controller('CustomersController',
 		messages: {
 			firstname 	: 'Please specify your estimated montly credit card sales!',
 			lastname 		: 'Please specify your bank name!'
-			
+
 		}
 	});
 	$scope.createContact = function(){
@@ -1501,43 +1496,43 @@ invoicesUnlimited.controller('CustomersController',
 	}
 
 	$rootScope.$on('$viewContentLoaded',
-		function(event){
-			if (isGoTo.edit($state.current.name) || isGoTo.newCustomer($state.current.name)) {
-				autoFormatTelephoneNumbers();
-			}
-            else if(isGoTo.emailContact($state.current.name)){
-                var custemails = $scope.selectedCustomer.contactPersons;
-        
-                var emailArray = [];
-                var count = 0;
-                custemails.forEach(function(obj){
-                    if(obj.entity.email)
-                        emailArray.push({
-                            id: obj.entity.email,
-                            text: obj.entity.email
-                        });
-                });
+				   function(event){
+		if (isGoTo.edit($state.current.name) || isGoTo.newCustomer($state.current.name)) {
+			autoFormatTelephoneNumbers();
+		}
+		else if(isGoTo.emailContact($state.current.name)){
+			var custemails = $scope.selectedCustomer.contactPersons;
 
-                $('#toEmail').html('');
-                
-                $('#toEmail').select2({
-                    data: emailArray,
-                    placeholder: 'Select Email'
-                });
-                $scope.trix = '';
-            }
-		});
+			var emailArray = [];
+			var count = 0;
+			custemails.forEach(function(obj){
+				if(obj.entity.email)
+					emailArray.push({
+						id: obj.entity.email,
+						text: obj.entity.email
+					});
+			});
+
+			$('#toEmail').html('');
+
+			$('#toEmail').select2({
+				data: emailArray,
+				placeholder: 'Select Email'
+			});
+			$scope.trix = '';
+		}
+	});
 
 	var stateChangeEvent = $rootScope.$on('$stateChangeStart',
-	function(event,toState,toParams,fromState,fromParams,options){
-	//	console.log('here');
-		
+										  function(event,toState,toParams,fromState,fromParams,options){
+		//	console.log('here');
+
 		if (!toState.name.includes('customers')) {
-		//	console.log('destroy else');
+			//	console.log('destroy else');
 			stateChangeEvent();
 			stateChangeEvent = null;
 		}
-		
+
 		if (isGoTo.customers(toState.name) ||
 			isGoTo.newCustomer(toState.name)) {
 			$scope.selectedCustomer = null;
@@ -1551,9 +1546,9 @@ invoicesUnlimited.controller('CustomersController',
 			}
 			doSelectCustomerIfValidId(toParams.customerId);
 		}
-        else if(isGoTo.emailContact(toState.name)){
-            prepareToEmailContact();
-        }
+		else if(isGoTo.emailContact(toState.name)){
+			prepareToEmailContact();
+		}
 		else if (isGoTo.edit(toState.name)) {
 			doSelectCustomerIfValidId(toParams.customerId);
 			doCreateEditObject();
@@ -1572,310 +1567,310 @@ invoicesUnlimited.controller('CustomersController',
 
 	LoadCustomers();
 
-    	var changeDispName = function(newV,oldV) {        
+	var changeDispName = function(newV,oldV) {        
 		if (!$scope.displayNameClicked) {
 			var c = $scope.selectedCustomerEdit;
-            if(c)
-            {
-              if (!c.firstName && !c.lastName) {
-				 c.displayName = "";
-				 return;
-			   }
-                c.displayName = "";
-                c.displayName += c.firstName ? c.firstName : "";
-                c.displayName += " ";
-                c.displayName += c.lastName ? c.lastName : "";
-            }
+			if(c)
+			{
+				if (!c.firstName && !c.lastName) {
+					c.displayName = "";
+					return;
+				}
+				c.displayName = "";
+				c.displayName += c.firstName ? c.firstName : "";
+				c.displayName += " ";
+				c.displayName += c.lastName ? c.lastName : "";
+			}
 		}
 	}
-        
-    $scope.searchObject = {};
-    $scope.search = function()
-    {
-        if(!$scope.searchObject.searchText)
-            return;
-         if($scope.searchObject.searchText.length)
-         {
-           $scope.customers = $scope.displayedCustomers.filter(function(obj)
-           {
-                if(!obj.entity.displayName)
-                {
-                   obj.entity.displayName ="";
-                }
-                if(!obj.entity.companyName)
-                {
-                   obj.entity.companyName ="";
-                }if(!obj.entity.email)
-                {
-                   obj.entity.email ="";
-                }if(!obj.entity.phone)
-                {
-                   obj.entity.phone ="";
-                }if(!obj.entity.outstanding)
-                {
-                    obj.entity.outstanding ="";
-                }
-                if(!obj.entity.unusedCredits)
-                {
-                   obj.entity.unusedCredits ="";
-                }               
-                return obj.entity.displayName .toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
-                obj.entity.companyName.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
-                obj.entity.email.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
-                obj.entity.phone.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
-                obj.entity.outstanding.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
-                obj.entity.unusedCredits.toLowerCase().includes($scope.searchObject.searchText.toLowerCase());
-                       });  
-         }
-         else
-         {
-             $scope.customers = $scope.displayedCustomers;
-         }
-    }  
+
+	$scope.searchObject = {};
+	$scope.search = function()
+	{
+		if(!$scope.searchObject.searchText)
+			return;
+		if($scope.searchObject.searchText.length)
+		{
+			$scope.customers = $scope.displayedCustomers.filter(function(obj)
+																{
+				if(!obj.entity.displayName)
+				{
+					obj.entity.displayName ="";
+				}
+				if(!obj.entity.companyName)
+				{
+					obj.entity.companyName ="";
+				}if(!obj.entity.email)
+				{
+					obj.entity.email ="";
+				}if(!obj.entity.phone)
+				{
+					obj.entity.phone ="";
+				}if(!obj.entity.outstanding)
+				{
+					obj.entity.outstanding ="";
+				}
+				if(!obj.entity.unusedCredits)
+				{
+					obj.entity.unusedCredits ="";
+				}               
+				return obj.entity.displayName .toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+					obj.entity.companyName.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+					obj.entity.email.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+					obj.entity.phone.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+					obj.entity.outstanding.toLowerCase().includes($scope.searchObject.searchText.toLowerCase()) ||
+					obj.entity.unusedCredits.toLowerCase().includes($scope.searchObject.searchText.toLowerCase());
+			});  
+		}
+		else
+		{
+			$scope.customers = $scope.displayedCustomers;
+		}
+	}  
 	$scope.$watch("selectedCustomerEdit.firstName",changeDispName);
 	$scope.$watch("selectedCustomerEdit.lastName",changeDispName);
-    $scope.availableCurrencies = ['ADP - Andorran Peseta',
-'AED - United Arab Emirates Dirham',
-'AFN - Afghan Afghani',
-'ALL - Albanian Lek',
-'AMD - Armenian Dram',
-'ANG - Netherlands Antillean Guilder',
-'AOA - Angolan Kwanza',
-'ARA - Argentine Austral',
-'ARS - Argentine Peso',
-'ATS - Austrian Schilling',
-'AUD - Australian Dollar',
-'AWG - Aruban Florin',
-'AZN - Azerbaijani Manat',
-'BAM - Bosnia-Herzegovina Convertible Mark',
-'BBD - Barbadian Dollar',
-'BDT - Bangladeshi Taka',
-'BEC - Belgian Franc (convertible)',
-'BEF - Belgian Franc',
-'BEL - Belgian Franc (financial)',
-'BGL - Bulgarian Hard Lev',
-'BGM - Bulgarian Socialist Lev',
-'BGN - Bulgarian Lev',
-'BHD - Bahraini Dinar',
-'BIF - Burundian Franc',
-'BMD - Bermudan Dollar',
-'BND - Brunei Dollar',
-'BOB - Bolivian Boliviano',
-'BOP - Bolivian Peso',
-'BOV - Bolivian Mvdol',
-'BRL - Brazilian Real',
-'BSD - Bahamian Dollar',
-'BTN - Bhutanese Ngultrum',
-'BUK - Burmese Kyat',
-'BWP - Botswanan Pula',
-'BYR - Belarusian Ruble',
-'BZD - Belize Dollar',
-'CAD - Canadian Dollar',
-'CDF - Congolese Franc',
-'CHE - WIR Euro',
-'CHF - Swiss Franc',
-'CHW - WIR Franc',
-'CLE - Chilean Escudo',
-'CLF - Chilean Unit of Account (UF)',
-'CLP - Chilean Peso',
-'CNX - Chinese People’s Bank Dollar',
-'CNY - Chinese Yuan',
-'COP - Colombian Peso',
-'COU - Colombian Real Value Unit',
-'CRC - Costa Rican Colón',
-'CSK - Czechoslovak Hard Koruna',
-'CUC - Cuban Convertible Peso',
-'CUP - Cuban Peso',
-'CVE - Cape Verdean Escudo',
-'CYP - Cypriot Pound',
-'CZK - Czech Republic Koruna',
-'DDM - East German Mark',
-'DEM - German Mark',
-'DJF - Djiboutian Franc',
-'DKK - Danish Krone',
-'DOP - Dominican Peso',
-'DZD - Algerian Dinar',
-'ECS - Ecuadorian Sucre',
-'ECV - Ecuadorian Unit of Constant Value',
-'EEK - Estonian Kroon',
-'EGP - Egyptian Pound',
-'ERN - Eritrean Nakfa',
-'ESA - Spanish Peseta (A account)',
-'ESB - Spanish Peseta (convertible account)',
-'ESP - Spanish Peseta',
-'ETB - Ethiopian Birr',
-'EUR - Euro',
-'FIM - Finnish Markka',
-'FJD - Fijian Dollar',
-'FKP - Falkland Islands Pound',
-'FRF - French Franc',
-'GBP - British Pound',
-'GEK - Georgian Kupon Larit',
-'GEL - Georgian Lari',
-'GHS - Ghanaian Cedi',
-'GIP - Gibraltar Pound',
-'GMD - Gambian Dalasi',
-'GNF - Guinean Franc',
-'GNS - Guinean Syli',
-'GQE - Equatorial Guinean Ekwele',
-'GRD - Greek Drachma',
-'GTQ - Guatemalan Quetzal',
-'GWE - Portuguese Guinea Escudo',
-'GWP - Guinea-Bissau Peso',
-'GYD - Guyanaese Dollar',
-'HKD - Hong Kong Dollar',
-'HNL - Honduran Lempira',
-'HRD - Croatian Dinar',
-'HRK - Croatian Kuna',
-'HTG - Haitian Gourde',
-'HUF - Hungarian Forint',
-'IDR - Indonesian Rupiah',
-'IEP - Irish Pound',
-'ILP - Israeli Pound',
-'ILS - Israeli New Sheqel',
-'INR - Indian Rupee',
-'IQD - Iraqi Dinar',
-'IRR - Iranian Rial',
-'ISK - Icelandic Króna',
-'ITL - Italian Lira',
-'JMD - Jamaican Dollar',
-'JOD - Jordanian Dinar',
-'JPY - Japanese Yen',
-'KES - Kenyan Shilling',
-'KGS - Kyrgystani Som',
-'KHR - Cambodian Riel',
-'KMF - Comorian Franc',
-'KPW - North Korean Won',
-'KRW - South Korean Won',
-'KWD - Kuwaiti Dinar',
-'KYD - Cayman Islands Dollar',
-'KZT - Kazakhstani Tenge',
-'LAK - Laotian Kip',
-'LBP - Lebanese Pound',
-'LKR - Sri Lankan Rupee',
-'LRD - Liberian Dollar',
-'LSL - Lesotho Loti',
-'LTL - Lithuanian Litas',
-'LTT - Lithuanian Talonas',
-'LUC - Luxembourgian Convertible Franc',
-'LUF - Luxembourgian Franc',
-'LUL - Luxembourg Financial Franc',
-'LVL - Latvian Lats',
-'LVR - Latvian Ruble',
-'LYD - Libyan Dinar',
-'MAD - Moroccan Dirham',
-'MAF - Moroccan Franc',
-'MCF - Monegasque Franc',
-'MDC - Moldovan Cupon',
-'MDL - Moldovan Leu',
-'MGA - Malagasy Ariary',
-'MGF - Malagasy Franc',
-'MKD - Macedonian Denar',
-'MLF - Malian Franc',
-'MMK - Myanmar Kyat',
-'MNT - Mongolian Tugrik',
-'MOP - Macanese Pataca',
-'MRO - Mauritanian Ouguiya',
-'MTL - Maltese Lira',
-'MTP - Maltese Pound',
-'MUR - Mauritian Rupee',
-'MVR - Maldivian Rufiyaa',
-'MWK - Malawian Kwacha',
-'MXN - Mexican Peso',
-'MXV - Mexican Investment Unit',
-'MYR - Malaysian Ringgit',
-'MZE - Mozambican Escudo',
-'MZN - Mozambican Metical',
-'NAD - Namibian Dollar',
-'NGN - Nigerian Naira',
-'NIO - Nicaraguan Córdoba',
-'NLG - Dutch Guilder',
-'NOK - Norwegian Krone',
-'NPR - Nepalese Rupee',
-'NZD - New Zealand Dollar',
-'OMR - Omani Rial',
-'PAB - Panamanian Balboa',
-'PEI - Peruvian Inti',
-'PEN - Peruvian Nuevo Sol',
-'PGK - Papua New Guinean Kina',
-'PHP - Philippine Peso',
-'PKR - Pakistani Rupee',
-'PLN - Polish Zloty',
-'PTE - Portuguese Escudo',
-'PYG - Paraguayan Guarani',
-'QAR - Qatari Rial',
-'RHD - Rhodesian Dollar',
-'RON - Romanian Leu',
-'RSD - Serbian Dinar',
-'RUB - Russian Ruble',
-'RWF - Rwandan Franc',
-'SAR - Saudi Riyal',
-'SBD - Solomon Islands Dollar',
-'SCR - Seychellois Rupee',
-'SDG - Sudanese Pound',
-'SEK - Swedish Krona',
-'SGD - Singapore Dollar',
-'SHP - St. Helena Pound',
-'SIT - Slovenian Tolar',
-'SKK - Slovak Koruna',
-'SLL - Sierra Leonean Leone',
-'SOS - Somali Shilling',
-'SRD - Surinamese Dollar',
-'SRG - Surinamese Guilder',
-'SSP - South Sudanese Pound',
-'STD - São Tomé & Príncipe Dobra',
-'SUR - Soviet Rouble',
-'SVC - Salvadoran Colón',
-'SYP - Syrian Pound',
-'SZL - Swazi Lilangeni',
-'THB - Thai Baht',
-'TJR - Tajikistani Ruble',
-'TJS - Tajikistani Somoni',
-'TMT - Turkmenistani Manat',
-'TND - Tunisian Dinar',
-'TOP - Tongan Paʻanga',
-'TPE - Timorese Escudo',
-'TRY - Turkish Lira',
-'TTD - Trinidad & Tobago Dollar',
-'TWD - New Taiwan Dollar',
-'TZS - Tanzanian Shilling',
-'UAH - Ukrainian Hryvnia',
-'UAK - Ukrainian Karbovanets',
-'UGX - Ugandan Shilling',
-'USD - US Dollar',
-'USN - US Dollar (Next day)',
-'USS - US Dollar (Same day)',
-'UYI - Uruguayan Peso (Indexed Units)',
-'UYU - Uruguayan Peso',
-'UZS - Uzbekistani Som',
-'VEF - Venezuelan Bolívar',
-'VND - Vietnamese Dong',
-'VUV - Vanuatu Vatu',
-'WST - Samoan Tala',
-'XAF - Central African CFA Franc',
-'XAG - Silver',
-'XAU - Gold',
-'XBA - European Composite Unit',
-'XBB - European Monetary Unit',
-'XBC - European Unit of Account (XBC)',
-'XBD - European Unit of Account (XBD)',
-'XCD - East Caribbean Dollar',
-'XDR - Special Drawing Rights',
-'XEU - European Currency Unit',
-'XFO - French Gold Franc',
-'XFU - French UIC-Franc',
-'XOF - West African CFA Franc',
-'XPD - Palladium',
-'XPF - CFP Franc',
-'XPT - Platinum',
-'XRE - RINET Funds',
-'XSU - Sucre',
-'XTS - Testing Currency Code',
-'XUA - ADB Unit of Account',
-'XXX - Unknown Currency',
-'YDD - Yemeni Dinar',
-'YER - Yemeni Rial',
-'ZAL - South African Rand (financial)',
-'ZAR - South African Rand',
-'ZMW - Zambian Kwacha'];
+	$scope.availableCurrencies = ['ADP - Andorran Peseta',
+								  'AED - United Arab Emirates Dirham',
+								  'AFN - Afghan Afghani',
+								  'ALL - Albanian Lek',
+								  'AMD - Armenian Dram',
+								  'ANG - Netherlands Antillean Guilder',
+								  'AOA - Angolan Kwanza',
+								  'ARA - Argentine Austral',
+								  'ARS - Argentine Peso',
+								  'ATS - Austrian Schilling',
+								  'AUD - Australian Dollar',
+								  'AWG - Aruban Florin',
+								  'AZN - Azerbaijani Manat',
+								  'BAM - Bosnia-Herzegovina Convertible Mark',
+								  'BBD - Barbadian Dollar',
+								  'BDT - Bangladeshi Taka',
+								  'BEC - Belgian Franc (convertible)',
+								  'BEF - Belgian Franc',
+								  'BEL - Belgian Franc (financial)',
+								  'BGL - Bulgarian Hard Lev',
+								  'BGM - Bulgarian Socialist Lev',
+								  'BGN - Bulgarian Lev',
+								  'BHD - Bahraini Dinar',
+								  'BIF - Burundian Franc',
+								  'BMD - Bermudan Dollar',
+								  'BND - Brunei Dollar',
+								  'BOB - Bolivian Boliviano',
+								  'BOP - Bolivian Peso',
+								  'BOV - Bolivian Mvdol',
+								  'BRL - Brazilian Real',
+								  'BSD - Bahamian Dollar',
+								  'BTN - Bhutanese Ngultrum',
+								  'BUK - Burmese Kyat',
+								  'BWP - Botswanan Pula',
+								  'BYR - Belarusian Ruble',
+								  'BZD - Belize Dollar',
+								  'CAD - Canadian Dollar',
+								  'CDF - Congolese Franc',
+								  'CHE - WIR Euro',
+								  'CHF - Swiss Franc',
+								  'CHW - WIR Franc',
+								  'CLE - Chilean Escudo',
+								  'CLF - Chilean Unit of Account (UF)',
+								  'CLP - Chilean Peso',
+								  'CNX - Chinese People’s Bank Dollar',
+								  'CNY - Chinese Yuan',
+								  'COP - Colombian Peso',
+								  'COU - Colombian Real Value Unit',
+								  'CRC - Costa Rican Colón',
+								  'CSK - Czechoslovak Hard Koruna',
+								  'CUC - Cuban Convertible Peso',
+								  'CUP - Cuban Peso',
+								  'CVE - Cape Verdean Escudo',
+								  'CYP - Cypriot Pound',
+								  'CZK - Czech Republic Koruna',
+								  'DDM - East German Mark',
+								  'DEM - German Mark',
+								  'DJF - Djiboutian Franc',
+								  'DKK - Danish Krone',
+								  'DOP - Dominican Peso',
+								  'DZD - Algerian Dinar',
+								  'ECS - Ecuadorian Sucre',
+								  'ECV - Ecuadorian Unit of Constant Value',
+								  'EEK - Estonian Kroon',
+								  'EGP - Egyptian Pound',
+								  'ERN - Eritrean Nakfa',
+								  'ESA - Spanish Peseta (A account)',
+								  'ESB - Spanish Peseta (convertible account)',
+								  'ESP - Spanish Peseta',
+								  'ETB - Ethiopian Birr',
+								  'EUR - Euro',
+								  'FIM - Finnish Markka',
+								  'FJD - Fijian Dollar',
+								  'FKP - Falkland Islands Pound',
+								  'FRF - French Franc',
+								  'GBP - British Pound',
+								  'GEK - Georgian Kupon Larit',
+								  'GEL - Georgian Lari',
+								  'GHS - Ghanaian Cedi',
+								  'GIP - Gibraltar Pound',
+								  'GMD - Gambian Dalasi',
+								  'GNF - Guinean Franc',
+								  'GNS - Guinean Syli',
+								  'GQE - Equatorial Guinean Ekwele',
+								  'GRD - Greek Drachma',
+								  'GTQ - Guatemalan Quetzal',
+								  'GWE - Portuguese Guinea Escudo',
+								  'GWP - Guinea-Bissau Peso',
+								  'GYD - Guyanaese Dollar',
+								  'HKD - Hong Kong Dollar',
+								  'HNL - Honduran Lempira',
+								  'HRD - Croatian Dinar',
+								  'HRK - Croatian Kuna',
+								  'HTG - Haitian Gourde',
+								  'HUF - Hungarian Forint',
+								  'IDR - Indonesian Rupiah',
+								  'IEP - Irish Pound',
+								  'ILP - Israeli Pound',
+								  'ILS - Israeli New Sheqel',
+								  'INR - Indian Rupee',
+								  'IQD - Iraqi Dinar',
+								  'IRR - Iranian Rial',
+								  'ISK - Icelandic Króna',
+								  'ITL - Italian Lira',
+								  'JMD - Jamaican Dollar',
+								  'JOD - Jordanian Dinar',
+								  'JPY - Japanese Yen',
+								  'KES - Kenyan Shilling',
+								  'KGS - Kyrgystani Som',
+								  'KHR - Cambodian Riel',
+								  'KMF - Comorian Franc',
+								  'KPW - North Korean Won',
+								  'KRW - South Korean Won',
+								  'KWD - Kuwaiti Dinar',
+								  'KYD - Cayman Islands Dollar',
+								  'KZT - Kazakhstani Tenge',
+								  'LAK - Laotian Kip',
+								  'LBP - Lebanese Pound',
+								  'LKR - Sri Lankan Rupee',
+								  'LRD - Liberian Dollar',
+								  'LSL - Lesotho Loti',
+								  'LTL - Lithuanian Litas',
+								  'LTT - Lithuanian Talonas',
+								  'LUC - Luxembourgian Convertible Franc',
+								  'LUF - Luxembourgian Franc',
+								  'LUL - Luxembourg Financial Franc',
+								  'LVL - Latvian Lats',
+								  'LVR - Latvian Ruble',
+								  'LYD - Libyan Dinar',
+								  'MAD - Moroccan Dirham',
+								  'MAF - Moroccan Franc',
+								  'MCF - Monegasque Franc',
+								  'MDC - Moldovan Cupon',
+								  'MDL - Moldovan Leu',
+								  'MGA - Malagasy Ariary',
+								  'MGF - Malagasy Franc',
+								  'MKD - Macedonian Denar',
+								  'MLF - Malian Franc',
+								  'MMK - Myanmar Kyat',
+								  'MNT - Mongolian Tugrik',
+								  'MOP - Macanese Pataca',
+								  'MRO - Mauritanian Ouguiya',
+								  'MTL - Maltese Lira',
+								  'MTP - Maltese Pound',
+								  'MUR - Mauritian Rupee',
+								  'MVR - Maldivian Rufiyaa',
+								  'MWK - Malawian Kwacha',
+								  'MXN - Mexican Peso',
+								  'MXV - Mexican Investment Unit',
+								  'MYR - Malaysian Ringgit',
+								  'MZE - Mozambican Escudo',
+								  'MZN - Mozambican Metical',
+								  'NAD - Namibian Dollar',
+								  'NGN - Nigerian Naira',
+								  'NIO - Nicaraguan Córdoba',
+								  'NLG - Dutch Guilder',
+								  'NOK - Norwegian Krone',
+								  'NPR - Nepalese Rupee',
+								  'NZD - New Zealand Dollar',
+								  'OMR - Omani Rial',
+								  'PAB - Panamanian Balboa',
+								  'PEI - Peruvian Inti',
+								  'PEN - Peruvian Nuevo Sol',
+								  'PGK - Papua New Guinean Kina',
+								  'PHP - Philippine Peso',
+								  'PKR - Pakistani Rupee',
+								  'PLN - Polish Zloty',
+								  'PTE - Portuguese Escudo',
+								  'PYG - Paraguayan Guarani',
+								  'QAR - Qatari Rial',
+								  'RHD - Rhodesian Dollar',
+								  'RON - Romanian Leu',
+								  'RSD - Serbian Dinar',
+								  'RUB - Russian Ruble',
+								  'RWF - Rwandan Franc',
+								  'SAR - Saudi Riyal',
+								  'SBD - Solomon Islands Dollar',
+								  'SCR - Seychellois Rupee',
+								  'SDG - Sudanese Pound',
+								  'SEK - Swedish Krona',
+								  'SGD - Singapore Dollar',
+								  'SHP - St. Helena Pound',
+								  'SIT - Slovenian Tolar',
+								  'SKK - Slovak Koruna',
+								  'SLL - Sierra Leonean Leone',
+								  'SOS - Somali Shilling',
+								  'SRD - Surinamese Dollar',
+								  'SRG - Surinamese Guilder',
+								  'SSP - South Sudanese Pound',
+								  'STD - São Tomé & Príncipe Dobra',
+								  'SUR - Soviet Rouble',
+								  'SVC - Salvadoran Colón',
+								  'SYP - Syrian Pound',
+								  'SZL - Swazi Lilangeni',
+								  'THB - Thai Baht',
+								  'TJR - Tajikistani Ruble',
+								  'TJS - Tajikistani Somoni',
+								  'TMT - Turkmenistani Manat',
+								  'TND - Tunisian Dinar',
+								  'TOP - Tongan Paʻanga',
+								  'TPE - Timorese Escudo',
+								  'TRY - Turkish Lira',
+								  'TTD - Trinidad & Tobago Dollar',
+								  'TWD - New Taiwan Dollar',
+								  'TZS - Tanzanian Shilling',
+								  'UAH - Ukrainian Hryvnia',
+								  'UAK - Ukrainian Karbovanets',
+								  'UGX - Ugandan Shilling',
+								  'USD - US Dollar',
+								  'USN - US Dollar (Next day)',
+								  'USS - US Dollar (Same day)',
+								  'UYI - Uruguayan Peso (Indexed Units)',
+								  'UYU - Uruguayan Peso',
+								  'UZS - Uzbekistani Som',
+								  'VEF - Venezuelan Bolívar',
+								  'VND - Vietnamese Dong',
+								  'VUV - Vanuatu Vatu',
+								  'WST - Samoan Tala',
+								  'XAF - Central African CFA Franc',
+								  'XAG - Silver',
+								  'XAU - Gold',
+								  'XBA - European Composite Unit',
+								  'XBB - European Monetary Unit',
+								  'XBC - European Unit of Account (XBC)',
+								  'XBD - European Unit of Account (XBD)',
+								  'XCD - East Caribbean Dollar',
+								  'XDR - Special Drawing Rights',
+								  'XEU - European Currency Unit',
+								  'XFO - French Gold Franc',
+								  'XFU - French UIC-Franc',
+								  'XOF - West African CFA Franc',
+								  'XPD - Palladium',
+								  'XPF - CFP Franc',
+								  'XPT - Platinum',
+								  'XRE - RINET Funds',
+								  'XSU - Sucre',
+								  'XTS - Testing Currency Code',
+								  'XUA - ADB Unit of Account',
+								  'XXX - Unknown Currency',
+								  'YDD - Yemeni Dinar',
+								  'YER - Yemeni Rial',
+								  'ZAL - South African Rand (financial)',
+								  'ZAR - South African Rand',
+								  'ZMW - Zambian Kwacha'];
 });

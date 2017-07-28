@@ -11,10 +11,16 @@ invoicesUnlimited.service('queryService',
 			var arg = arguments;
 			query = new Parse.Query(arg[0]);
 			query.equalTo(arg[1], arg[2]);
+			
+			query.limit(1000);
+			
 			return query.find();
 		}
 		query = new Parse.Query(params.className);
 		query.equalTo(params.field, params.value);
+		
+		query.limit(1000);
+		
 		return query.find();
 	}
 
@@ -29,6 +35,9 @@ invoicesUnlimited.service('queryService',
 			arg[3].forEach(function(method){
 				query[method.name](method.param);	
 			});
+			
+			query.limit(1000);
+			
 			return query.find();
 		}
 		query = new Parse.Query(params.className);
@@ -36,6 +45,8 @@ invoicesUnlimited.service('queryService',
 		params.methods.forEach(function(method){
 			query[method.name](method.param);	
 		});
+		
+		query.limit(1000);
 		
 		return query.find();	
 	}

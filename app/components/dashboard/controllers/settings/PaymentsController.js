@@ -88,6 +88,10 @@ var EPNrestrictKey = user.get('EPNrestrictKey');
 
 hideLoader();
 
+$scope.sendEmail = function(){
+	window.open("mailto:support@invoicesunlimited.com" ,"_self");
+}
+	
 $scope.continueProcess = function() {
 	$rootScope.fromPaymentSettings = true;
 
