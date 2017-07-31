@@ -97,6 +97,21 @@ invoicesUnlimited.factory('currencyFactory',
 		});
 
 	}
+	
+	currency.loadAllOfCurrentUser = function(){
+		var Currency = Parse.Object.extend('Currency');
+		var query = new Parse.Query(Currency);
+		query.equalTo('organization', userFactory.entity[0].get("selectedOrganization"));
+
+		return query.find()
+		.then(function(objs) {
+			var currencies = [];
+			objs.forEach(function(obj) {
+				currencies.push(new currencyFactoryService(obj));
+			});
+			return currencies;
+		});
+	}
 
 	currency.createNewCurrency = function(params, role) {
 		var acl = new Parse.ACL();

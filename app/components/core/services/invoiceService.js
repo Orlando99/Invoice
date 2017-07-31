@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, itemService, currencyFilter, userFactory){
+invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, itemService, currencyFilter, userFactory, currencyFactory){
 return {
 	test : function() {
 		console.log("working");
@@ -522,25 +522,28 @@ return {
 				userLogo = undefined;
 			return getPreferences(user)
 			.then(function(pref){
-				var template = user.get("defaultTemplate");
-				if(!template){
-					var Template = Parse.Object.extend('InvoiceTemplate');
-					var query = new Parse.Query(Template);
-					query.equalTo ('name', 'Template 1');
-					return query.first()
-					.then(function(t) {
-						var xmlFile = t.get("templateData");
-						data.htmlFile = t.get("templateHTML");	// save for later use
-						data.cardUrl = t.get("linkedFile").url();// save for later use
-						return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref, logo);
-					});
-				}
-				else{
-					var xmlFile = template.get("templateData");
-					data.htmlFile = template.get("templateHTML");	// save for later use
-					data.cardUrl = template.get("linkedFile").url();// save for later use
-					return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref, logo);
-				}
+				return currencyFactory.loadAllOfCurrentUser()
+				.then(function(currencies){
+					var template = user.get("defaultTemplate");
+					if(!template){
+						var Template = Parse.Object.extend('InvoiceTemplate');
+						var query = new Parse.Query(Template);
+						query.equalTo ('name', 'Template 1');
+						return query.first()
+						.then(function(t) {
+							var xmlFile = t.get("templateData");
+							data.htmlFile = t.get("templateHTML");	// save for later use
+							data.cardUrl = t.get("linkedFile").url();// save for later use
+							return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref, logo, currencies);
+						});
+					}
+					else{
+						var xmlFile = template.get("templateData");
+						data.htmlFile = template.get("templateHTML");	// save for later use
+						data.cardUrl = template.get("linkedFile").url();// save for later use
+						return fillInXmlData(xmlFile.url(), user, invoiceObj, invoiceInfoId, pref, logo, currencies);
+					}
+				});
 			});
 			
 			// in case of edit, get them from invocieObj
@@ -962,7 +965,7 @@ function fillInHtmlData(xmlUrl, htmlUrl, cardUrl) {
 	});
 }
 var userLogo = undefined;
-function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
+function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo, currencies) {
 	return $.ajax({
 		type: "GET",
 		url: 'proxy.php',
@@ -974,6 +977,9 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 		var x2js = new X2JS();
 		var jsonObj = x2js.xml2json(xmlDoc);
 		var labels = jsonObj.items.label;
+		
+		var currencySymbol = '$';
+		var exchangeRate = 1;
 
 		// static values
 		labels['invoiceId'] = invoiceInfoId;
@@ -1091,6 +1097,15 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 			labels['clientnr'] = custmr.get("phone");
             if(custmr.get("currency"))
 			     labels['body-currency'] = custmr.get("currency").split(" ")[0];
+			
+			var currentCurrency = currencies.filter(function(obj){
+				return obj.entity.title == custmr.get("currency");
+			})[0];
+			
+			if(currentCurrency){
+				currencySymbol = currentCurrency.entity.currencySymbol;
+				exchangeRate = currentCurrency.entity.exchangeRate;
+			}
 		}
 
 		var discountType = invoice.get("discountType");
@@ -1123,7 +1138,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 				var itmObj = {
 					'name': name,
 					'qty': qty,
-					'price': currencyFilter(amount, '$', 2)
+					'price': currencyFilter(amount * exchangeRate, currencySymbol, 2)
 				};
 				
 				if(desc && pref.itemDescOnInvoice == 1)
@@ -1171,7 +1186,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 			}
 			
 			tempTaxes.forEach(function(obj){
-				obj.value = currencyFilter(obj.value, '$', 2);
+				obj.value = currencyFilter(obj.value * exchangeRate, currencySymbol, 2);
 				taxes.tax.push(obj);
 			});
 			
@@ -1198,11 +1213,11 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 
 			if (type == "$") {
 				lateFeeValue = price;
-				labels['tip-price'] = currencyFilter(price, '$', 2);
+				labels['tip-price'] = currencyFilter(price * exchangeRate, currencySymbol, 2);
 
 			} else if (type == "%") {
 				lateFeeValue = subTotal * price * 0.01;
-				labels['tip-price'] = currencyFilter(lateFeeValue, '$', 2);
+				labels['tip-price'] = currencyFilter(lateFeeValue * exchangeRate, currencySymbol, 2);
 				//labels['tip-price'] = price + type;
 				labels['tip-text'] = "Late Fee(" + price + type + ")";
 			}
@@ -1219,7 +1234,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 		var discountRatio = (100 - discounts) * 0.01;
 
         if(pref.shipCharges){
-            jsonObj.items['shippingChargesPrice'] = currencyFilter(shipCharges, '$', 2);
+            jsonObj.items['shippingChargesPrice'] = currencyFilter(shipCharges * exchangeRate, currencySymbol, 2);
             jsonObj.items['shippingCharges'] = 'SHIPPING CHARGES';
         }
         else {
@@ -1231,7 +1246,7 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
         
         
         if(adjustments){
-            jsonObj.items['adjustmentsPrice'] = currencyFilter(adjustments, '$', 2);
+            jsonObj.items['adjustmentsPrice'] = currencyFilter(adjustments * exchangeRate, currencySymbol, 2);
             jsonObj.items['adjustments'] = 'ADJUSTMENTS';
         }
         else {
@@ -1251,35 +1266,35 @@ function fillInXmlData(xmlUrl, user, invoice, invoiceInfoId, pref, logo) {
 			labels['discountPriceBottom'] = {text:discounts + "%"};
 
 			discounts = Math.abs(sum - subTotal - totalTax);
-			labels['discountAmount'] = {text:currencyFilter(discounts * -1, '$', 2)};
+			labels['discountAmount'] = {text:currencyFilter(discounts * -1 * exchangeRate, currencySymbol, 2)};
 		}
 		else
 			labels['discountAmount'] = labels['discountNameBottom'] =
 				labels['discountPriceBottom'] = "";
 
-		labels['subtotalprice'] = currencyFilter(subTotal, '$', 2);
+		labels['subtotalprice'] = currencyFilter(subTotal * exchangeRate, currencySymbol, 2);
 		
 		var totalWithLateFee = sum + shipCharges + adjustments + lateFeeValue;
-		labels['total-price4'] = currencyFilter(totalWithLateFee, '$', 2);
+		labels['total-price4'] = currencyFilter(totalWithLateFee * exchangeRate, currencySymbol, 2);
 		
 		var total = sum + shipCharges + adjustments;
-		labels['total-price3'] = labels['body-price'] = currencyFilter(total, '$', 2);
+		labels['total-price3'] = labels['body-price'] = currencyFilter(total * exchangeRate, currencySymbol, 2);
 
 		var paymentMade = invoice.get("paymentMade") || 0;
 		var creditApplied = invoice.get("creditApplied") || 0;
 
-		labels['paymentMadePrice'] = currencyFilter(paymentMade, '$', 2);
-		labels['creditsAppliedPrice'] = currencyFilter(creditApplied, '$', 2);
+		labels['paymentMadePrice'] = currencyFilter(paymentMade * exchangeRate, currencySymbol, 2);
+		labels['creditsAppliedPrice'] = currencyFilter(creditApplied * exchangeRate, currencySymbol, 2);
 
 		totalWithLateFee = parseFloat(totalWithLateFee.toFixed(2));
 		
 		var balanceDueWithLateFee = totalWithLateFee - paymentMade - creditApplied;
-		labels['due-price'] = currencyFilter(balanceDueWithLateFee, '$', 2);
+		labels['due-price'] = currencyFilter(balanceDueWithLateFee * exchangeRate, currencySymbol, 2);
 		
 		total = parseFloat(total.toFixed(2));
 		
 		var balanceDue = total - paymentMade - creditApplied;
-		labels['refundtotal'] = currencyFilter(balanceDue, '$', 2);
+		labels['refundtotal'] = currencyFilter(balanceDue * exchangeRate, currencySymbol, 2);
 		
 		if(balanceDue > 0){
 			labels['headerTitle'] = "Payment Due";
