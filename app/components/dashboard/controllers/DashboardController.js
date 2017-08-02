@@ -13,6 +13,19 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         return;
     }
     
+	var version = "111";
+	
+	var Version = Parse.Object.extend("Extras");
+	
+	var versionQuery = new Parse.Query(Version);
+	//debugger;
+	versionQuery.first()
+	.then(function(obj){
+		var currentVersion = obj.get("version");
+		if(currentVersion != version)
+			window.location.reload(true);
+	});
+	
 	$scope.role = user.entity[0].get('role');
 	
     $q.when(businessFactory.load())
