@@ -1103,8 +1103,10 @@ invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, itemSer
 				})[0];
 
 				if(currentCurrency){
-					currencySymbol = currentCurrency.entity.currencySymbol;
-					exchangeRate = currentCurrency.entity.exchangeRate;
+					if(currentCurrency.entity.currencySymbol)
+						currencySymbol = currentCurrency.entity.currencySymbol;
+					if(currentCurrency.entity.exchangeRate)
+						exchangeRate = currentCurrency.entity.exchangeRate;
 				}
 			}
 

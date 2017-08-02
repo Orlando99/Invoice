@@ -105,6 +105,7 @@ invoicesUnlimited.factory('reportsService', [
 				//query.lessThanOrEqualTo('invoiceDate', params.toData);
 				//query.select('invoiceNumber', 'customer', 'balanceDue', 'invoiceDate');
 				query.include('customer');
+				query.include("lateFee");
 				query.limit(1000);
 				return query.find()
 					.then(function(objs) {

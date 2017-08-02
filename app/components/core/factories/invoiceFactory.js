@@ -141,7 +141,7 @@ function Invoice(parseObject, params) {
 		}
 
 	} else if (params.operation == 'invoiceAging') {
-		invoiceFields = ['invoiceNumber', 'balanceDue', 'invoiceDate'];
+		invoiceFields = ['invoiceNumber', 'balanceDue', 'invoiceDate', "lateFee"];
 		var customer = parseObject.get('customer');
 		if (customer) {
 			setObjectOperations({

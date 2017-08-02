@@ -81,7 +81,23 @@ invoicesUnlimited.controller('InvoiceAgingController',[
 				invoices.forEach(function(invoice){
 					var customerId = invoice.customer.id;
 					var subAmount = invoice.entity.balanceDue;
-					var subAmount = invoice.entity.balanceDue;
+					
+					if(invoice.entity.lateFee){
+						var lateFee = invoice.entity.lateFee;
+						
+						var price = lateFee.get("price");
+						var type = lateFee.get("type");
+						var lateFeeValue = 0;
+
+						if (type == "$") {
+							lateFeeValue = price;
+						} else if (type == "%") {
+							lateFeeValue = subAmount * price * 0.01;
+						}
+						
+						subAmount += lateFeeValue;
+					}
+					
 					if(info[customerId]){
 						info[customerId].balanceDue += subAmount;
 						info[customerId].count += 1;
@@ -103,7 +119,8 @@ invoicesUnlimited.controller('InvoiceAgingController',[
 
 					invoices[i].overDueDays1 = d-1;
 					//invoices[i].entity.balanceDueOrg = invoices[i].entity.balanceDue;
-					invoices[i].entity.balanceDueStr = currencyFilter(invoices[i].entity.balanceDue, '$', 2);
+					invoices[i].entity.balanceDueStr = currencyFilter(subAmount, '$', 2);
+					//invoices[i].entity.balanceDueStr = currencyFilter(invoices[i].entity.balanceDue, '$', 2);
 
 					i++;
 				});
