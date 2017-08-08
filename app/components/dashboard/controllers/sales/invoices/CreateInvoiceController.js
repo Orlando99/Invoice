@@ -402,6 +402,7 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 							$scope.notes =  exp.get('notes');       
 							$scope.dueDate =  exp.get('expanseDate');
 							$scope.todayDate =  exp.get('expanseDate');    
+							$scope.poNumber =  exp.get('referenceNumber');    
 							$scope.$apply();
 						});
 					});
@@ -1661,7 +1662,10 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 		}
 
 		function customerChangedHelper() {
-			$scope.items.pop(); // remove createItem field
+			if($scope.items[$scope.items.length - 1].dummy)
+				$scope.items.pop();
+			
+			//$scope.items.pop(); // remove createItem field
 
 			var terms = $scope.selectedCustomer.entity.get('paymentTerms');
 			if(terms){

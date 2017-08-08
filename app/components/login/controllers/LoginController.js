@@ -222,7 +222,28 @@ invoicesUnlimited.controller
 		  .then(function(msg){
 		  console.log(msg); 
 	  });
+	  /*
+	  $.ajax({
+		  type: "GET",
+		  url: 'proxy.php',
+		  dataType: "html",
+		  data: {
+			  address: "https://sslsecuredfiles.com/parse/files/qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3/69f28617-c930-4589-9a64-9c3dc10ae303_inv-5.html"
+		  }
+	  }).then(function (htmlDoc) {
 
+		  return Parse.Cloud.run("sendMailgunHtml", {
+				  toEmail: "mianazhar2005@gmail.com",
+				  //toEmail: "shah@sfs-ds.com",
+				  fromEmail: "no-reply@invoicesunlimited.com",
+				  subject : "Sample Invoice",
+				  html : htmlDoc
+			  }).then(function(msg) {
+				  console.log(msg);
+				  return "aa";
+			  });
+	  });
+	  */
 	  /*
         Parse.Cloud.run("sendMailgunSample", {
 			toEmail: 'mianazhar2005@gmail.com',
