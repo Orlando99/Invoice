@@ -46,7 +46,7 @@ function CreditNote (parseObject, params) {
 
 	} else if(params.operation == 'sendReceipt') {
 		creditNoteFields = [
-			'remainingCredits' ,'creditReceipt', 'customerEmails'
+			'remainingCredits' ,'creditReceipt', 'customerEmails', 'emailReceipt'
 		];
 		var customer = parseObject.get("customer");
 		if (customer) {

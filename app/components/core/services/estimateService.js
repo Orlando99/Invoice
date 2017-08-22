@@ -420,6 +420,7 @@ invoicesUnlimited.factory('estimateService', [
 							.then(function(t) {
 							var xmlFile = t.get("templateData");
 							data.htmlFile = t.get("templateHTML");	// save for later use
+							data.emailHtmlFile = t.get("emailHTML");	// save for later use
 							data.cardUrl = t.get("linkedFile").url();// save for later use
 							return fillInXmlData(xmlFile.url(), user, estimateObj);
 						});
@@ -427,6 +428,7 @@ invoicesUnlimited.factory('estimateService', [
 					else{
 						var xmlFile = template.get("templateData");
 						data.htmlFile = template.get("templateHTML");	// save for later use
+						data.emailHtmlFile = template.get("emailHTML");	// save for later use
 						data.cardUrl = template.get("linkedFile").url();// save for later use
 						return fillInXmlData(xmlFile.url(), user, estimateObj);
 					}
@@ -440,7 +442,16 @@ invoicesUnlimited.factory('estimateService', [
 				})
 					.then(function(xml) {
 					data.xml = xml;	// save for later use
-					return fillInHtmlData(xml.url(), data.htmlFile.url(), data.cardUrl);
+					//return fillInHtmlData(xml.url(), data.htmlFile.url(), data.cardUrl);
+					return fillInHtmlDataEmail(xml.url(), data.emailHtmlFile.url(), data.cardUrl);
+				})
+					.then(function(newHtml) {
+					var receiptFile = new Parse.File("test2.html",{base64: newHtml}, "text/html");
+					return receiptFile.save();
+				})
+					.then(function(emailHtml) {
+					data.emailHtml = emailHtml;	// save for later use
+					return fillInHtmlData(data.xml.url(), data.htmlFile.url(), data.cardUrl);
 				})
 					.then(function(newHtml) {
 					var receiptFile = new Parse.File("test2.html",{base64: newHtml}, "text/html");
@@ -449,6 +460,7 @@ invoicesUnlimited.factory('estimateService', [
 					.then(function(html) {
 					data.estimateObj.set("estimateLabels", data.xml);
 					data.estimateObj.set("estimateReceipt", html);
+					data.estimateObj.set("emailReceipt", data.emailHtml);
 					return data.estimateObj.save();
 				})
 					.then(function(estObj) {
@@ -525,7 +537,8 @@ invoicesUnlimited.factory('estimateService', [
 					operation : 'sendReceipt'
 				});
 
-				var link = est.entity.estimateReceipt.url();
+				//var link = est.entity.estimateReceipt.url();
+				var link = est.entity.emailReceipt.url();
 				return $.ajax({
 					type: "GET",
 					url: 'proxy.php',
@@ -549,8 +562,9 @@ invoicesUnlimited.factory('estimateService', [
 					//var fr = document.getElementById('targetframe1');
 					var fr = document.createElement('iframe');
 					document.body.appendChild(fr);
+					fr.src = "about:blank";
 					fr.style.display = 'none';
-					fr.setAttribute("id", "myFrame");
+					fr.setAttribute("id", "myFrameEstimate");
 					fr.contentWindow.document.open();
 					fr.contentWindow.document.write(htmlDoc);
 					fr.contentWindow.document.close();
@@ -562,7 +576,7 @@ invoicesUnlimited.factory('estimateService', [
 							toEmail: toEmail,
 							fromEmail: "no-reply@invoicesunlimited.com",
 							subject : emailSubject,
-							html : '<html>' + $('#myFrame').contents().find('html').html() + '</html>'
+							html : '<html>' + $('#myFrameEstimate').contents().find('html').html() + '</html>'
 						}).then(function(msg) {
 							console.log(msg);
 							return estimate;
@@ -708,6 +722,40 @@ invoicesUnlimited.factory('estimateService', [
 			});
 		}
 
+		function fillInHtmlDataEmail(xmlUrl, htmlUrl, cardUrl) {
+			return $.ajax({
+				type: "GET",
+				url: 'proxy.php',
+				dataType: "html",
+				data: {
+					address: htmlUrl
+				}
+			}).then(function (htmlDoc) {
+				var s1 = 'Connect.open("GET", "uppage.xml"';
+				var s2 = 'Connect.open("GET", ' + '"' + xmlUrl + '"';
+				s2 = s2.replace('http:', 'https:');
+				htmlDoc = htmlDoc.replace(s1,s2);
+				/*
+			s1 = "background: url(icn-card.png) no-repeat";
+			s2 = "background: url(" + cardUrl + ") no-repeat";
+			s2 = s2.replace('http:', 'https:');
+			htmlDoc = htmlDoc.replace(s1,s2);
+			*/
+				return $.ajax({
+					type: "POST",
+					url: "./assets/php/convert_base64.php",
+					data: {
+						str : htmlDoc
+					}
+				}).then(function(newHtml) {
+					return newHtml;
+				}, function(error){
+					console.log(error);
+				});
+
+			});
+		}
+
 		function fillInXmlData(xmlUrl, user, estimate) {
 
 			return $.ajax({
@@ -789,6 +837,27 @@ invoicesUnlimited.factory('estimateService', [
 				else
 					attachments.attachment = undefined;
 
+				var color = user.get("colorTheme");
+
+				if(!color)
+					labels['app-color'] = "#327DF5";
+				else if(color == "appBlueColor")
+					labels['app-color'] = "#327DF5";
+				else if(color == "appSeagreenColor")
+					labels['app-color'] = "#23AA92";
+				else if(color == "appGreenColor")
+					labels['app-color'] = "#0EA81C";
+				else if(color == "appYellowColor")
+					labels['app-color'] = "#EDE005";
+				else if(color == "appBrownColor")
+					labels['app-color'] = "#E87605";
+				else if(color == "appRedColor")
+					labels['app-color'] = "#E80000";
+				else if(color == "appPinkColor")
+					labels['app-color'] = "#E657A3";
+				else if(color == "appPurpleColor")
+					labels['app-color'] = "#7F5CBF";
+
 				/*		var files = estimate.get("estimateFiles");
 		if (files) {
 			attachments.attachment = [];
@@ -800,7 +869,7 @@ invoicesUnlimited.factory('estimateService', [
 			attachments.attachment = undefined;
 */
 				// values available from User
-				labels['nr'] = user.get("phonenumber");
+				//labels['nr'] = user.get("phonenumber");
 				labels['mailtotxt'] = user.get("email");
 
 				// values available from Organization
@@ -827,6 +896,7 @@ invoicesUnlimited.factory('estimateService', [
 
 					labels['addres1'] = address.join(', ');
 					labels['business-name'] = bInfo.get('businessName');
+					labels['nr'] = bInfo.get("phoneNumber");
 				}
 
 				// values available from Customer

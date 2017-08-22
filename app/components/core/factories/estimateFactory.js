@@ -50,7 +50,7 @@ function Estimate (parseObject, params) {
 
 	} else if(params.operation == 'sendReceipt') {
 		estimateFields = [
-			'totalAmount' ,'estimateReceipt', 'customerEmails'
+			'totalAmount' ,'estimateReceipt', 'customerEmails', 'emailReceipt'
 		];
 		var customer = parseObject.get("customer");
 		if (customer) {

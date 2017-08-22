@@ -50,6 +50,9 @@ invoicesUnlimited.controller('CompanyProfileController',
 			},
             country : {
 				required : true
+			},
+            phone : {
+				required : true
 			}
 		},
 		messages: {
@@ -72,9 +75,30 @@ invoicesUnlimited.controller('CompanyProfileController',
 			},
             country : {
 				required : "Please enter country"
+			},
+            phone : {
+				required : "Please enter phone"
 			}
 		}
 	});
+		
+	$("#phoneForm").validate({
+		onkeyup : function(element) {$(element).valid()},
+		onfocusout : false,
+		rules: {
+			phoneNumber : {
+				required : true
+			}
+		},
+		messages: {
+			phoneNumber : {
+				required : "Please enter Phone Number"
+			}
+		}
+	});
+		
+	//$('#phoneNumber').mask('(999) 999-9999');
+	$('.phone').mask('(999) 999-9999');
         
     if(!$scope.userLogo){
         var selectedorganization = userFactory.entity[0].get("selectedOrganization");
@@ -165,13 +189,16 @@ invoicesUnlimited.controller('CompanyProfileController',
          
          if($scope.enableBusinessInfo){
              if(!$("#businessInfoForm").valid()) return;
-         }
+         } else {
+			 if(!$("#phoneForm").valid())
+				 return;
+		 }
          
             showLoader();
          
          var promises = [];
          
-         if($scope.enableBusinessInfo)
+         //if($scope.enableBusinessInfo)
             promises.push($scope.businessInfo.save());
          
          if($scope.newLogo){

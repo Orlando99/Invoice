@@ -51,7 +51,7 @@ function Invoice(parseObject, params) {
 
 	} else if (params.operation == 'sendReceipt') {
 		invoiceFields = [
-			'balanceDue' ,'invoiceReceipt', 'customerEmails'
+			'balanceDue' ,'invoiceReceipt', 'customerEmails', 'emailReceipt'
 		];
 		var customer = parseObject.get("customer");
 		if (customer) {
