@@ -515,9 +515,11 @@ invoicesUnlimited.controller('CreditNoteController',[
 				// filter current customer's expenses from all expenses
 				var custExpenseItems = [];
 				for (var i = 0; i < custExpenses.length; ++i) {
-					for (var j = 0; j < $scope.expenseItems.length; ++j) {
-						if (custExpenses[i].entity.id == $scope.expenseItems[j].entity.expanseId) {
-							custExpenseItems.push($scope.expenseItems[j]);
+					if(custExpenses[i].entity.get('billable') == 'Yes'){
+						for (var j = 0; j < $scope.expenseItems.length; ++j) {
+							if (custExpenses[i].entity.id == $scope.expenseItems[j].entity.expanseId) {
+								custExpenseItems.push($scope.expenseItems[j]);
+							}
 						}
 					}
 				}
@@ -525,6 +527,8 @@ invoicesUnlimited.controller('CreditNoteController',[
 				// check is any expense has updated
 				var newExpenseItems = [];
 				for(var i = 0; i < custExpenses.length; ++i) {
+					if(custExpenses[i].entity.get('billable') == 'No')
+						continue;
 					var exp = custExpenses[i].entity;
 					var itemExist = custExpenseItems.some(function(item) {
 						return (exp.category == item.entity.title &&
