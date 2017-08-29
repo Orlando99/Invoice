@@ -89,69 +89,91 @@ invoicesUnlimited.controller
 			  return;
 		  }
 		  showLoader();
-		  user.login({
-			  username : $scope.username,
-			  password : $scope.password
-		  },function()
-					 {
-			  $('.errorMessage').html('').hide();
-			  var firstScreen = user.entity[0].get('firstScreen');
-			  var tutorial = user.entity[0].get('tutorial');
-			  var userObjectId = user.entity[0].id;
-			  var projectUser = Parse.Object.extend('ProjectUser');
-			  var query = new Parse.Query(projectUser);
-			  query.equalTo('userName', $scope.username);
-			  query.first()
-				  .then(function(obj) {
-				  if(obj)
-				  {
-					  if(obj.get("status") == "Deactivated")
+
+		  var parseUser = Parse.Object.extend('User');
+		  var userQuery = new Parse.Query(parseUser);
+		  userQuery.equalTo('username', $scope.username);
+
+		  userQuery.first()
+			  .then(function(obj){
+			  if(!obj){
+				  hideLoader();
+				  $('.errorMessage').html("Invalid username.").show();
+				  return;
+			  }
+
+			  user.login({
+				  username : $scope.username,
+				  password : $scope.password
+			  },function(){
+				  $('.errorMessage').html('').hide();
+				  var firstScreen = user.entity[0].get('firstScreen');
+				  var tutorial = user.entity[0].get('tutorial');
+				  var userObjectId = user.entity[0].id;
+				  var projectUser = Parse.Object.extend('ProjectUser');
+				  var query = new Parse.Query(projectUser);
+				  query.equalTo('userName', $scope.username);
+				  query.first()
+					  .then(function(obj) {
+					  if(obj)
 					  {
-
-						  user.logout()
-							  .then(function(){
-							  hideLoader();
-							  $('.errorMessage').html("Your Account is not Activated!").show();
-						  });
-					  }
-					  else
-					  {      
-						  if(!tutorial)
-							  $state.go('signup.invoiceTemplateInfo');
-						  else
+						  if(obj.get("status") == "Deactivated")
 						  {
-							  if(user.entity[0].get('role') == 'Sales')
-								  $state.go('dashboard.sales.invoices.all');
-							  else {
-								  switch(firstScreen) 
-										  {
-									  case 'Dashboard': 		  $state.go('dashboard'); break;
-									  case 'Customer List': 	  $state.go('dashboard.customers.all'); break;
-									  case 'Invoices List': 	  $state.go('dashboard.sales.invoices.all'); break;
-									  case 'Expense List': 	  $state.go('dashboard.expenses.all'); break;
-									  case 'Estimate List': 	  $state.go('dashboard.sales.estimates.all'); break;
-									  case 'Credit Notes List': $state.go('dashboard.sales.creditnotes.all'); break;
-									  case 'Reports': 		  $state.go('dashboard.reports'); break;
-									  case 'Settings': 		  $state.go('dashboard.settings.company-profile'); break;
-									  default: 				  $state.go('dashboard'); break;
+
+							  user.logout()
+								  .then(function(){
+								  hideLoader();
+								  $('.errorMessage').html("Your Account is not Activated!").show();
+							  });
+						  }
+						  else
+						  {      
+							  if(!tutorial)
+								  $state.go('signup.invoiceTemplateInfo');
+							  else
+							  {
+								  if(user.entity[0].get('role') == 'Sales')
+									  $state.go('dashboard.sales.invoices.all');
+								  else {
+									  switch(firstScreen) {
+										  case 'Dashboard': 		  $state.go('dashboard'); break;
+										  case 'Customer List': 	  $state.go('dashboard.customers.all'); break;
+										  case 'Invoices List': 	  $state.go('dashboard.sales.invoices.all'); break;
+										  case 'Expense List': 	  $state.go('dashboard.expenses.all'); break;
+										  case 'Estimate List': 	  $state.go('dashboard.sales.estimates.all'); break;
+										  case 'Credit Notes List': $state.go('dashboard.sales.creditnotes.all'); break;
+										  case 'Reports': 		  $state.go('dashboard.reports'); break;
+										  case 'Settings': 		  $state.go('dashboard.settings.company-profile'); break;
+										  default: 				  $state.go('dashboard'); break;
+														}
 								  }
-							  }
+							  }//end of else
 						  }//end of else
-					  }//end of else
-				  }//eend of if 
+					  }//eend of if 
+					  else
+					  {
+						  hideLoader();
+						  $('.errorMessage').html("Invalid username/password.").show();
+					  }
+
+				  });
+			  },function(error){
+				  hideLoader();
+				  if(error.message.indexOf('password') >= 0)
+				  	$('.errorMessage').html("Invalid password.").show();
 				  else
-				  {
-					  hideLoader();
-					  $('.errorMessage').html("Invalid username/password.").show();
-
-				  }
-
+				  	$('.errorMessage').html(error.message.capitilize()).show();
+				  $('.input-container').css({'border':'1px solid red'});
 			  });
-		  },function(error){
+
+		  }, function(error){
 			  hideLoader();
-			  $('.errorMessage').html(error.message.capitilize()).show();
-			  $('.input-container').css({'border':'1px solid red'});
+			  if(error.message.indexOf('password') >= 0)
+			  $('.errorMessage').html("Something went wrong. Please try again").show();
+			  console.error(error.message);
 		  });
+
+
 
 	  }//end of scope.sign in
 
