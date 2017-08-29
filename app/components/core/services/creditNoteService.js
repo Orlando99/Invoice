@@ -1,9 +1,9 @@
 'use strict';
 
 invoicesUnlimited.factory('creditNoteService', [
-	'$q', 'creditNoteFactory', 'itemService', 'currencyFilter',
+	'$q', 'creditNoteFactory', 'itemService', 'currencyFilter','currencyFactory',
 
-	function($q, creditNoteFactory, itemService, currencyFilter){
+	function($q, creditNoteFactory, itemService, currencyFilter, currencyFactory){
 
 		return {
 			test : function() {
@@ -369,31 +369,35 @@ invoicesUnlimited.factory('creditNoteService', [
 					.then(function(creditNoteObj) {
 					data.creditNoteObj = creditNoteObj;	// save for later use
 					var user = creditNoteObj.get("userID");
-					var template = user.get("defaultTemplate");
 
-					if(!template){
-						var Template = Parse.Object.extend('InvoiceTemplate');
-						var query = new Parse.Query(Template);
-						query.equalTo ('name', 'Template 1');
-						return query.first()
-							.then(function(t) {
-							var xmlFile = t.get("templateData");
-							data.htmlFile = t.get("templateHTML");	// save for later use
-							data.emailHtmlFile = t.get("emailHTML");	// save for later use
-							data.cardUrl = t.get("linkedFile").url();// save for later use
-							return fillInXmlData(xmlFile.url(), user, creditNoteObj);
-						});
-					}
-					else{
-						var xmlFile = template.get("templateData");
-						data.htmlFile = template.get("templateHTML");	// save for later use
-						data.emailHtmlFile = template.get("emailHTML");	// save for later use
-						data.cardUrl = template.get("linkedFile").url();// save for later use
-						return fillInXmlData(xmlFile.url(), user, creditNoteObj);
-					}
+					return currencyFactory.loadAllOfCurrentUser()
+						.then(function(currencies){
 
-					// in case of edit, get them from creditNoteObj
+						var template = user.get("defaultTemplate");
 
+						if(!template){
+							var Template = Parse.Object.extend('InvoiceTemplate');
+							var query = new Parse.Query(Template);
+							query.equalTo ('name', 'Template 1');
+							return query.first()
+								.then(function(t) {
+								var xmlFile = t.get("templateData");
+								data.htmlFile = t.get("templateHTML");	// save for later use
+								data.emailHtmlFile = t.get("emailHTML");	// save for later use
+								data.cardUrl = t.get("linkedFile").url();// save for later use
+								return fillInXmlData(xmlFile.url(), user, creditNoteObj, currencies);
+							});
+						}
+						else{
+							var xmlFile = template.get("templateData");
+							data.htmlFile = template.get("templateHTML");	// save for later use
+							data.emailHtmlFile = template.get("emailHTML");	// save for later use
+							data.cardUrl = template.get("linkedFile").url();// save for later use
+							return fillInXmlData(xmlFile.url(), user, creditNoteObj, currencies);
+						}
+
+						// in case of edit, get them from creditNoteObj
+					});
 				})
 					.then(function(newXml) {
 					var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
@@ -741,7 +745,7 @@ invoicesUnlimited.factory('creditNoteService', [
 			});
 		}
 
-		function fillInXmlData(xmlUrl, user, creditNote) {
+		function fillInXmlData(xmlUrl, user, creditNote, currencies) {
 			return $.ajax({
 				type: "GET",
 				url: 'proxy.php',
@@ -754,6 +758,9 @@ invoicesUnlimited.factory('creditNoteService', [
 				var jsonObj = x2js.xml2json(xmlDoc);
 				var labels = jsonObj.items.label;
 
+				var currencySymbol = '$';
+				var exchangeRate = 1;
+				
 				// static values
 				labels['invoice-title'] = "Credit Note";
 				labels['billType'] 	 = "estimate";
@@ -887,6 +894,15 @@ invoicesUnlimited.factory('creditNoteService', [
 					labels['clientnr'] = custmr.get("phone");
 					if(custmr.get("currency"))
 						labels['body-currency'] = custmr.get("currency").split(" ")[0];
+					
+					var currentCurrency = currencies.filter(function(obj){
+						return obj.entity.title == custmr.get("currency");
+					})[0];
+
+					if(currentCurrency){
+						currencySymbol = currentCurrency.entity.currencySymbol;
+						exchangeRate = currentCurrency.entity.exchangeRate;
+					}
 				}
 
 				/* tax is only on item level */
@@ -910,7 +926,7 @@ invoicesUnlimited.factory('creditNoteService', [
 						var itmObj = {
 							'name': name,
 							'qty': qty,
-							'price': currencyFilter(amount, '$', 2)
+							'price': currencyFilter(amount * exchangeRate, currencySymbol, 2)
 						};
 						items.itemRow.push(itmObj);
 
@@ -919,7 +935,7 @@ invoicesUnlimited.factory('creditNoteService', [
 							var taxName = tax.get("title") + " (" + tax.get("value") + "%)";
 							var t = calculateTax(itemList[i], tax);
 							totalTax += t;
-							var taxValue =  currencyFilter(t, '$', 2);
+							var taxValue =  currencyFilter(t * exchangeRate, currencySymbol, 2);
 							var taxObj = {
 								'name' : taxName,
 								'value': taxValue
@@ -936,18 +952,18 @@ invoicesUnlimited.factory('creditNoteService', [
 				}	
 
 				var sum = subTotal + totalTax;
-				labels['subtotalprice'] = currencyFilter(subTotal, '$', 2);
+				labels['subtotalprice'] = currencyFilter(subTotal * exchangeRate, currencySymbol, 2);
 
 				var total = sum;
-				labels['total-price3'] = labels['body-price'] = currencyFilter(total, '$', 2);
+				labels['total-price3'] = labels['body-price'] = currencyFilter(total * exchangeRate, currencySymbol, 2);
 
 				var refundsMade = creditNote.get("refundsMade") || 0;
 				var creditsUsed = creditNote.get("creditsUsed") || 0;
-				labels['paymentMadePrice'] = currencyFilter(refundsMade, '$', 2);
-				labels['creditsAppliedPrice'] = currencyFilter(creditsUsed, '$', 2);
+				labels['paymentMadePrice'] = currencyFilter(refundsMade * exchangeRate, currencySymbol, 2);
+				labels['creditsAppliedPrice'] = currencyFilter(creditsUsed * exchangeRate, currencySymbol, 2);
 
 				var remainingCredits = total - refundsMade - creditsUsed;
-				labels['refundtotal'] = currencyFilter(remainingCredits, '$', 2);
+				labels['refundtotal'] = currencyFilter(remainingCredits * exchangeRate, currencySymbol, 2);
 
 				//----------------------------------------------------------------
 

@@ -13,7 +13,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         return;
     }
     
-	var version = "119";
+	var version = "120";
 	
 	var Version = Parse.Object.extend("Extras");
 	

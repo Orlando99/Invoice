@@ -1,8 +1,8 @@
 'use strict';
 
 invoicesUnlimited.factory('estimateService', [
-	'$q', 'estimateFactory', 'itemService', 'currencyFilter',
-	function($q, estimateFactory, itemService, currencyFilter){
+	'$q', 'estimateFactory', 'itemService', 'currencyFilter','currencyFactory',
+	function($q, estimateFactory, itemService, currencyFilter,currencyFactory){
 
 		return {
 			test : function() {
@@ -410,31 +410,35 @@ invoicesUnlimited.factory('estimateService', [
 					.then(function(estimateObj) {
 					data.estimateObj = estimateObj;	// save for later use
 					var user = estimateObj.get("userID");
-					var template = user.get("defaultTemplate");
 
-					if(!template){
-						var Template = Parse.Object.extend('InvoiceTemplate');
-						var query = new Parse.Query(Template);
-						query.equalTo ('name', 'Template 1');
-						return query.first()
-							.then(function(t) {
-							var xmlFile = t.get("templateData");
-							data.htmlFile = t.get("templateHTML");	// save for later use
-							data.emailHtmlFile = t.get("emailHTML");	// save for later use
-							data.cardUrl = t.get("linkedFile").url();// save for later use
-							return fillInXmlData(xmlFile.url(), user, estimateObj);
-						});
-					}
-					else{
-						var xmlFile = template.get("templateData");
-						data.htmlFile = template.get("templateHTML");	// save for later use
-						data.emailHtmlFile = template.get("emailHTML");	// save for later use
-						data.cardUrl = template.get("linkedFile").url();// save for later use
-						return fillInXmlData(xmlFile.url(), user, estimateObj);
-					}
+					return currencyFactory.loadAllOfCurrentUser()
+						.then(function(currencies){
 
-					// in case of edit, get them from estimateObj
+						var template = user.get("defaultTemplate");
 
+						if(!template){
+							var Template = Parse.Object.extend('InvoiceTemplate');
+							var query = new Parse.Query(Template);
+							query.equalTo ('name', 'Template 1');
+							return query.first()
+								.then(function(t) {
+								var xmlFile = t.get("templateData");
+								data.htmlFile = t.get("templateHTML");	// save for later use
+								data.emailHtmlFile = t.get("emailHTML");	// save for later use
+								data.cardUrl = t.get("linkedFile").url();// save for later use
+								return fillInXmlData(xmlFile.url(), user, estimateObj, currencies);
+							});
+						}
+						else{
+							var xmlFile = template.get("templateData");
+							data.htmlFile = template.get("templateHTML");	// save for later use
+							data.emailHtmlFile = template.get("emailHTML");	// save for later use
+							data.cardUrl = template.get("linkedFile").url();// save for later use
+							return fillInXmlData(xmlFile.url(), user, estimateObj, currencies);
+						}
+
+						// in case of edit, get them from estimateObj
+					});
 				})
 					.then(function(newXml) {
 					var labelsFile = new Parse.File("test1.xml",{base64: newXml}, "text/xml");
@@ -756,7 +760,7 @@ invoicesUnlimited.factory('estimateService', [
 			});
 		}
 
-		function fillInXmlData(xmlUrl, user, estimate) {
+		function fillInXmlData(xmlUrl, user, estimate, currencies) {
 
 			return $.ajax({
 				type: "GET",
@@ -769,6 +773,9 @@ invoicesUnlimited.factory('estimateService', [
 				var x2js = new X2JS();
 				var jsonObj = x2js.xml2json(xmlDoc);
 				var labels = jsonObj.items.label;
+
+				var currencySymbol = '$';
+				var exchangeRate = 1;
 
 				// static values
 				labels['invoice-title'] = "Estimate";
@@ -913,6 +920,15 @@ invoicesUnlimited.factory('estimateService', [
 					labels['clientnr'] = custmr.get("phone");
 					if(custmr.get('currency'))
 						labels['body-currency'] = custmr.get("currency").split(" ")[0];
+
+					var currentCurrency = currencies.filter(function(obj){
+						return obj.entity.title == custmr.get("currency");
+					})[0];
+
+					if(currentCurrency){
+						currencySymbol = currentCurrency.entity.currencySymbol;
+						exchangeRate = currentCurrency.entity.exchangeRate;
+					}
 				}
 
 				var discountType = estimate.get("discountType");
@@ -943,7 +959,7 @@ invoicesUnlimited.factory('estimateService', [
 						var itmObj = {
 							'name': name,
 							'qty': qty,
-							'price': currencyFilter(amount, '$', 2)
+							'price': currencyFilter(amount * exchangeRate, currencySymbol, 2)
 						};
 						if (discountType == 1)
 							itmObj.discount = (discount ? discount : 0);
@@ -960,7 +976,7 @@ invoicesUnlimited.factory('estimateService', [
 							else
 								t = calculateTax(amount, tax);
 							totalTax += t;
-							var taxValue =  currencyFilter(t, '$', 2);
+							var taxValue =  currencyFilter(t * exchangeRate, currencySymbol, 2);
 							var taxObj = {
 								'name' : taxName,
 								'value': taxValue
@@ -1001,25 +1017,25 @@ invoicesUnlimited.factory('estimateService', [
 					labels['discountPriceBottom'] = {text:discounts + "%"};
 
 					discounts = Math.abs(sum - subTotal - totalTax);
-					labels['discountAmount'] = {text:currencyFilter(discounts, '$', 2)};
+					labels['discountAmount'] = {text:currencyFilter(discounts * exchangeRate, currencySymbol, 2)};
 				}
 				else
 					labels['discountAmount'] = labels['discountNameBottom'] =
 						labels['discountPriceBottom'] = "";
 
-				labels['subtotalprice'] = currencyFilter(subTotal, '$', 2);
+				labels['subtotalprice'] = currencyFilter(subTotal * exchangeRate, currencySymbol, 2);
 
 				var total = sum + shipCharges + adjustments;
-				labels['total-price3'] = labels['body-price'] = currencyFilter(total, '$', 2);
+				labels['total-price3'] = labels['body-price'] = currencyFilter(total * exchangeRate, currencySymbol, 2);
 
 				var paymentMade = 0;
 				var creditApplied = 0;
 
-				labels['paymentMadePrice'] = currencyFilter(paymentMade, '$', 2);
-				labels['creditsAppliedPrice'] = currencyFilter(creditApplied, '$', 2);
+				labels['paymentMadePrice'] = currencyFilter(paymentMade * exchangeRate, currencySymbol, 2);
+				labels['creditsAppliedPrice'] = currencyFilter(creditApplied * exchangeRate, currencySymbol, 2);
 
 				var balanceDue = total - paymentMade - creditApplied;
-				labels['refundtotal'] = currencyFilter(balanceDue, '$', 2);
+				labels['refundtotal'] = currencyFilter(balanceDue * exchangeRate, currencySymbol, 2);
 
 				//----------------------------------------------------------------
 
