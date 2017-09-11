@@ -1129,7 +1129,7 @@ function addNewComment(commentbody, isAuto){
 	}
     
     if(!user.get('isTrackUsage') && isAuto) {
-        return;
+        return Promise.resolve("");
     }
 
 	var data = {};

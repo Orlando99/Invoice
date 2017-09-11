@@ -1617,6 +1617,10 @@ invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, itemSer
 			$('#pdf-payment-text').text($(this).find('paymentMadeText').text());
 			$('#pdf-credit-text').text($(this).find('creditsAppliedText').text());
 
+			if($(this).find('total-price3').text().length > 9){
+				$('.pdf-top-values').css("font-size", 24 - (($(this).find('total-price3').text().length - 9) * 2));
+			}
+			
 			var ad = $(this).find('addres1').text();
 
 			$('#pdf-address').html(ad);

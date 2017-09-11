@@ -244,20 +244,20 @@ invoicesUnlimited.controller
 		  .then(function(msg){
 		  console.log(msg); 
 	  });
-	  /*
+	  
 	  $.ajax({
 		  type: "GET",
 		  url: 'proxy.php',
 		  dataType: "html",
 		  data: {
-			  address: "https://sslsecuredfiles.com/parse/files/qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3/f532799d-5ad9-41b2-b882-7b46f8419d6b_inv-5.html"
+			  address: "https://sslsecuredfiles.com/parse/files/qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3/c8f8f81e-7f90-4ee5-8667-dad353eb1072_LC.html"
 		  }
 	  }).then(function (htmlDoc) {
 
 		  return Parse.Cloud.run("sendMailgunHtml", {
-				  toEmail: "mianazhar2005@gmail.com",
+				  //toEmail: "mianazhar2005@gmail.com",
 				  //toEmail: "shah@sfs-ds.com",
-				  //toEmail: "aliilyas@live.com",
+				  toEmail: "aliilyas@live.com",
 				  fromEmail: "no-reply@invoicesunlimited.com",
 				  subject : "Sample Invoice",
 				  html : htmlDoc
@@ -266,7 +266,7 @@ invoicesUnlimited.controller
 				  return "aa";
 			  });
 	  });
-	  */
+	  
 	  /*
         Parse.Cloud.run("sendMailgunSample", {
 			toEmail: 'mianazhar2005@gmail.com',
