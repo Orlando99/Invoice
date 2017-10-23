@@ -26,6 +26,10 @@ curl_setopt_array($ch, $options);
 
 $response = curl_exec($ch);
 
+if (curl_errno($ch)) { 
+   echo curl_error($ch); 
+} 
+
 curl_close($ch);
 
 echo $response;

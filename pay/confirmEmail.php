@@ -1,6 +1,7 @@
 <?php
 
-require_once('/PHPMailer/PHPMailerAutoload.php');
+//require_once('/PHPMailer/PHPMailerAutoload.php');
+require_once(dirname(__FILE__).'\PHPMailer\PHPMailerAutoload.php');
 
 if (!isset($_POST['businessName']) || $_POST['businessName'] == '') die('Business Name not provided!');
 
