@@ -1,6 +1,6 @@
 <?php
 
-require_once(dirname(__FILE__).'/html2pdf/vendor/autoload.php');
+require_once(dirname(__FILE__).'\html2pdf\vendor\autoload.php');
 
 use Spipu\Html2Pdf\Html2Pdf;
 use Spipu\Html2Pdf\Exception\Html2PdfException;
