@@ -6,7 +6,7 @@ function(userFactory, creditNoteItemFactory, commentFactory, paymentFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return "undefined";
 }
 
 function CreditNote (parseObject, params) {

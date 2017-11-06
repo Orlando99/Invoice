@@ -198,7 +198,8 @@ $scope.addNewFile = function(obj) {
 	var file = obj.files[0];
 	file.fileName = file.name; // to avoid naming conflict
 	$scope.files.push(file);
-	$scope.$apply();
+	if(!$scope.$$phase)
+		$scope.$apply();
 }
 
 $scope.removeFile = function(index) {

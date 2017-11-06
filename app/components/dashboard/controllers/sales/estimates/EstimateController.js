@@ -338,7 +338,8 @@ invoicesUnlimited.controller('EstimateController',[
 			$('#file-size-error').hide();
 			file.fileName = n; // to avoid naming conflict
 			$scope.files.push(file);
-			$scope.$apply();
+			if(!$scope.$$phase)
+				$scope.$apply();
 		}
 
 		$scope.removeFile = function(index) {

@@ -702,7 +702,8 @@ function addZero(i) {
         for(var i = 0; i < $scope.files.length; ++i){
             $scope.files[i].fileName = 'Attachment ' + addZero(i + 1) + getFileExtension($scope.files[i].fileName);
         }
-		$scope.$apply();
+		if(!$scope.$$phase)
+			$scope.$apply();
 	}
 
 	$scope.removeFile = function(index) {
@@ -1102,7 +1103,8 @@ $scope.saveNewTax = function() {
 			user : user
 		}, function(){
             reCalculateSubTotal();
-            $scope.$apply();
+            if(!$scope.$$phase)
+				$scope.$apply();
             
             
         });

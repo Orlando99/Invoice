@@ -467,7 +467,8 @@ $scope.addNewTask = function() {
         $scope.newTaskName = "";
         $scope.newTaskDescription = "";
         $scope.newTaskCost = "";
-        $scope.$apply();
+        if(!$scope.$$phase)
+			$scope.$apply();
         hideLoader();
     }, function(error){
         console.log(error);
@@ -513,7 +514,8 @@ $scope.removeTask = function(index){
     $scope.tasks.splice(index, 1);
     $scope.timesheetTasks.splice(index, 1);
     $scope.timesheetTask = "";
-    $scope.$apply();
+    if(!$scope.$$phase)
+		$scope.$apply();
 }
 
 $scope.addUser = function(){

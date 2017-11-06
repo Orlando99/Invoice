@@ -27,7 +27,7 @@
         <td ng-click="sortByCredits()" style="cursor:pointer" class="layout-padding text-uppercase text-info">Credits <span><img id="creditsD" style="display: none" src="./assets/images/dropdown-arrow-primary.png"></span><span><img id="creditsDUp" style="display: none" src="./assets/images/dropdown-arrow-primary_up.png"></span>
           </td>
       </tr>
-<tr ng-repeat="customer in customers" ui-sref="dashboard.customers.details({customerId:customer.entity.id})" style="cursor:pointer">
+<tr ng-repeat="customer in customers" ui-sref="dashboard.customers.details({customerId:customer.entity.id})" ui-sref-opts="{reload: true, notify: true}" style="cursor:pointer">
     <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.salutation + ' ' + customer.entity.displayName}}<span ng-show="customer.entity.status == 'inactive'"> (Deactivated)</span></td>
         <td class="layout-padding text-color-light" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.companyName}}</td>
         <td class="layout-padding text-color-light ellipsis" ng-class="{'deactive': customer.entity.status == 'inactive'}">{{customer.entity.email}}</td>

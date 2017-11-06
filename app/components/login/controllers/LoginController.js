@@ -243,28 +243,8 @@ invoicesUnlimited.controller
 	  Parse.Cloud.run("hello12",{})
 		  .then(function(msg){
 		  console.log(msg); 
-	  });
-	  
-	  $.ajax({
-		  type: "GET",
-		  url: 'proxy.php',
-		  dataType: "html",
-		  data: {
-			  address: "https://sslsecuredfiles.com/parse/files/qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3/c8f8f81e-7f90-4ee5-8667-dad353eb1072_LC.html"
-		  }
-	  }).then(function (htmlDoc) {
-
-		  return Parse.Cloud.run("sendMailgunHtml", {
-				  //toEmail: "mianazhar2005@gmail.com",
-				  //toEmail: "shah@sfs-ds.com",
-				  toEmail: "aliilyas@live.com",
-				  fromEmail: "no-reply@invoicesunlimited.com",
-				  subject : "Sample Invoice",
-				  html : htmlDoc
-			  }).then(function(msg) {
-				  console.log(msg);
-				  return "aa";
-			  });
+	  }, function(error){
+		  console.error(error);
 	  });
 	  
 	  /*

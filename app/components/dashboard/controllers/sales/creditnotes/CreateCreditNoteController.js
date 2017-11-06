@@ -740,7 +740,8 @@ function saveAndSendCreditNote() {
 				user : user
 			}, function(){
 				reCalculateSubTotal();
-				$scope.$apply();
+				if(!$scope.$$phase)
+					$scope.$apply();
 
 
 			});

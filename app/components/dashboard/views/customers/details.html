@@ -4,7 +4,7 @@
     </a>
     <h3 class="float-left section-title text-uppercase text-color-normalize layout-margin-tb">{{selectedCustomer.entity.salutation + ' ' +  selectedCustomer.entity.displayName}}<span style="padding-left: 5px !important" ng-show="selectedCustomer.entity.status == 'inactive'"> (Deactivated)</span></h3>
     <div class="actions float-right layout-margin-tb">
-      <a ui-sref="dashboard.customers.edit({customerId:selectedCustomerId})" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
+      <a ui-sref="dashboard.customers.edit({customerId:selectedCustomerId})" ui-sref-opts="{reload: true, notify: true}" class="button button-small button-neutral text-uppercase layout-margin-r">Edit</a>
       <button class="button button-small button-info text-uppercase layout-margin-r menu">New <img src="./assets/images/dropdown-arrow-w.png" alt="">
         <ul class="submenu list-clear layout-no-padding text-left text-normalize">
           <!--<li><a ui-sref="dashboard.sales.estimates.new">Estimate</a><li>
@@ -25,7 +25,7 @@
       <button class="button button-small button-neutral text-uppercase menu" uib-dropdown-toggle>More <img src="./assets/images/dropdown-arrow-w.png" alt="">
       </button>
       <ul class="submenu list-clear layout-no-padding text-left text-normalize" uib-dropdown-menu>
-        <li><a ui-sref="dashboard.customers.emailContact({customerId:selectedCustomerId})">Email Contact</a></li>
+        <li><a ui-sref="dashboard.customers.emailContact({customerId:selectedCustomerId})" ui-sref-opts="{reload: true, notify: true}">Email Contact</a></li>
         <!--<li><a href="">Clone</a></li> data-toggle="add-contact-person"-->
       
           

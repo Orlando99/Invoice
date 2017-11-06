@@ -1,9 +1,9 @@
 'use strict';
 
 invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory','businessFactory','$q',
-	'invoiceService', 'expenseService', 'coreFactory', 'currencyFilter', 'cleanDataService',
+	'invoiceService', 'expenseService', 'coreFactory', 'currencyFilter', 'cleanDataService','$ngConfirm',
 function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseService,
-	coreFactory,currencyFilter,cleanDataService){
+	coreFactory,currencyFilter,cleanDataService,$ngConfirm){
 	showLoader();
 	var user = userFactory;
 	var business = businessFactory;
@@ -13,17 +13,44 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         return;
     }
     
-	var version = "121";
+	var version = "123";
 	
 	var Version = Parse.Object.extend("Extras");
 	
 	var versionQuery = new Parse.Query(Version);
 	//debugger;
+	/*
 	versionQuery.first()
 	.then(function(obj){
 		var currentVersion = obj.get("version");
 		if(currentVersion != version)
 			window.location.reload(true);
+	});
+	*/
+	
+	versionQuery.first()
+	.then(function(obj){
+		var currentVersion = obj.get("version");
+		if(currentVersion != version){
+			$ngConfirm({
+				boxWidth: '30%',
+    			useBootstrap: false,
+				theme: 'supervan',
+				icon: 'fa fa-refresh fa-spin',
+				title: 'Reload!',
+				content: 'A new version of Invoices Unlimited is available. Please reload the page to strat using it.',
+				scope: $scope,
+				buttons: {
+					relaod: {
+						text: 'Reload Page',
+						btnClass: 'btn-blue',
+						action: function(scope, button){
+							window.location.reload(true);
+						}
+					}
+				}
+			});
+		}
 	});
 	
 	$scope.role = user.entity[0].get('role');

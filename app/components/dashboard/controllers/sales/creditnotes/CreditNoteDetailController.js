@@ -103,6 +103,23 @@ invoicesUnlimited.controller('CreditNoteDetailController',[
 			})
 				.then(function(receipt) {
 				$scope.templateUrl = $sce.trustAsResourceUrl(receipt.url());
+				debugger;
+				return $.ajax({
+					type: "GET",
+					url: 'proxy.php',
+					dataType: "html",
+					data: {
+						address: receipt.url()
+					}
+				}).then(function (htmlDoc) {
+					var fr = document.getElementById('creditFrame');
+					fr.src = "about:blank";
+					fr.contentWindow.document.open();
+					fr.contentWindow.document.write(htmlDoc);
+					fr.contentWindow.document.close();
+					hideLoader();
+				});
+				
 				hideLoader();
 
 			}, function(error) {

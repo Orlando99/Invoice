@@ -4,7 +4,7 @@ invoicesUnlimited.factory('estimateItemFactory', function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return "undefined";
 }
 
 function EstimateItem (parseObject) {

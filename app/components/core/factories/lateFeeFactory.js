@@ -4,7 +4,7 @@ invoicesUnlimited.factory('lateFeeFactory', ['userFactory', function(userFactory
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return "undefined";
 }
 
 var LateFee = function(parseObject) {

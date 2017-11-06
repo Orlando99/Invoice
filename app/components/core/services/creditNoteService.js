@@ -902,6 +902,9 @@ invoicesUnlimited.factory('creditNoteService', [
 					if(currentCurrency){
 						currencySymbol = currentCurrency.entity.currencySymbol;
 						exchangeRate = currentCurrency.entity.exchangeRate;
+						
+						if(!exchangeRate)
+							exchangeRate = 1;
 					}
 				}
 

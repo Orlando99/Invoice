@@ -907,7 +907,8 @@ invoicesUnlimited.controller('ExpenseController',[
 			file.fileName = file.name; // to avoid naming conflict
 			file.fileName1 = file.fileName.substring(file.fileName.indexOf("_") + 1 , file.fileName.length);
 			$scope.files.push(file);
-			$scope.$apply();
+			if(!$scope.$$phase)
+				$scope.$apply();
 		}
 
 		$scope.removeFile = function(index) {

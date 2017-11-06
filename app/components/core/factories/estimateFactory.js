@@ -6,7 +6,7 @@ function(userFactory, estimateItemFactory, commentFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return "undefined";
 }
 
 function Estimate (parseObject, params) {

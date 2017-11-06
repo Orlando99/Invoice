@@ -77,7 +77,7 @@ function numberValidationOnText(textValue)
     }   
 }
  
-var invoicesUnlimited = angular.module('invoicesUnlimited', ['angularTrix','ui.router','oc.lazyLoad','ui.bootstrap','ngSanitize'])
+var invoicesUnlimited = angular.module('invoicesUnlimited', ['angularTrix','ui.router','oc.lazyLoad','ui.bootstrap','ngSanitize', 'cp.ngConfirm'])
 .config(function($locationProvider){
 	//$locationProvider.html5Mode(true).hashPrefix('');
 })
@@ -663,10 +663,16 @@ invoicesUnlimited.directive( 'elemReady', function( $parse ) {
        restrict: 'A',
        link: function( $scope, elem, attrs ) {    
           elem.ready(function(){
+			  var func = $parse(attrs.elemReady);
+              func($scope);
+			  
+			  if(!$scope.$$phase)
+				  $scope.$apply();
+			  /*
             $scope.$apply(function(){
                 var func = $parse(attrs.elemReady);
                 func($scope);
-            })
+            })*/
           })
        }
     }

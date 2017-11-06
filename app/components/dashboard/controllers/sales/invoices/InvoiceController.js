@@ -726,7 +726,8 @@ invoicesUnlimited.controller('InvoiceController',[
 			file.fileName = n; // to avoid naming conflict
 			file.fileName1= n;
 			$scope.files.push(file);
-			$scope.$apply();
+			if(!$scope.$$phase)
+				$scope.$apply();
 		}
 
 		$scope.removeFile = function(index) {
@@ -1954,7 +1955,8 @@ invoicesUnlimited.controller('InvoiceController',[
 				user : user
 			}, function(){
 				reCalculateSubTotal();
-				$scope.$apply();
+				if(!$scope.$$phase)
+					$scope.$apply();
 
 
 			});

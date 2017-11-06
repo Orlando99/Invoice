@@ -15,10 +15,10 @@
 //Parse.initialize(SVV3keys.appID,SVV3keys.jsKey);
 
 Parse.initialize(
-  "qYl5hDbdWGTNXvug7EcnF6S7DUaFc4dHKUb1dNq3",
-  "Xjf3GvwUO0SNsz0nCeM0NjlvQlDlmxGHOi6PqfzI"
-);
-Parse.serverURL = 'https://sslsecuredfiles.com/parse';
+				"2yAPqtvKgpLjfE6VmiYkqwgHgqFxmRi99KucPzPW",
+				"6oxjUk90IAHMjVlv8n1838KhGurFHN9rjPijdjXT"
+			);
+			Parse.serverURL = 'https://parseapi.back4app.com/';
 
 var clientAdminPortalApp = angular.module('clientAdminPortalApp', ['tagged.directives.infiniteScroll', 'ui.router', 'ui.bootstrap']);
 

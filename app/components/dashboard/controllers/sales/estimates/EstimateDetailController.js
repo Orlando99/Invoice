@@ -1,270 +1,287 @@
 'use strict';
 
-invoicesUnlimited.controller('EstimateDetailController',
-	['$q', '$scope', '$state', '$sce', '$controller', 'userFactory',
-		'estimateService', 'coreFactory', 'commentFactory', 'currencyFilter',
+invoicesUnlimited.controller('EstimateDetailController',[
+	'$q', '$scope', '$state', '$sce', '$controller', 'userFactory',
+	'estimateService', 'coreFactory', 'commentFactory', 'currencyFilter',
 
-function($q, $scope, $state, $sce, $controller, userFactory,
-	estimateService, coreFactory, commentFactory, currencyFilter) {
+	function($q, $scope, $state, $sce, $controller, userFactory,
+			  estimateService, coreFactory, commentFactory, currencyFilter) {
 
-if(! userFactory.entity.length) {
-	console.log('User not logged in');
-	return undefined;
-}
-
-var user = userFactory.entity[0];
-var organization = user.get("organizations")[0];
-$controller('DashboardController',{$scope:$scope,$state:$state});
-
-    var dateFormat = undefined;
-userFactory.getField('dateFormat')
-.then(function(obj) {
-	$scope.dateFormat = obj;
-    dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
-	showEstimateDetail();
-});
-$scope.isOwner = false;
-$scope.dateOptions = {
-	showWeeks : false
-};
-	
-function showEstimateDetail() {
-	scrollToOffset();
-	var estimateId = $state.params.estimateId;
-	if (! estimateId) return;
-
-	showLoader();
-	$q.when(estimateService.getEstimateDetails(estimateId))
-	.then(function(estimate) {
-		
-		var usr = estimate.entity.get('userID');
-		
-		if(userFactory.entity[0].get('role') == 'General Employee'){
-			if(userFactory.entity[0].id == usr.id)
-				$scope.isOwner = true;
-		} else {
-			$scope.isOwner = true;
+		if(! userFactory.entity.length) {
+			console.log('User not logged in');
+			return undefined;
 		}
-		
-		if(estimate.entity.get('customer').get('isDeleted') == 1)
-			$scope.isOwner = false;
-		
-	//	console.log(estimate);
-		$scope.estimate = estimate;
-		$scope.estimateNo = estimate.entity.estimateNumber;
-        
-        if(estimate.comments){
-            estimate.comments.forEach(function(obj){
-                obj.date = formatDate(obj.entity.date, dateFormat);
-            });
-        }
-		$scope.comments = estimate.comments;
-		var receipt = estimate.entity.estimateReceipt;
 
-        if(estimate.attachments) {
-			estimate.attachments.forEach(function(attach) {
-				attach.fileName = attach.name();
-                 attach.fileName1 = attach.fileName.substring(attach.fileName.indexOf("_") + 1 , attach.fileName.length);
-				attach.fileUrl = attach.url();
-			});
-			$scope.attachments = estimate.attachments;
-		} else {
-			$scope.attachments = [];
-		}
-        
-        
-		// create receipt if necessary,
-		if(! receipt) {
-			return estimateService.createEstimateReceipt(estimateId)
+		var user = userFactory.entity[0];
+		var organization = user.get("organizations")[0];
+		$controller('DashboardController',{$scope:$scope,$state:$state});
+
+		var dateFormat = undefined;
+		userFactory.getField('dateFormat')
 			.then(function(obj) {
-				return obj.get('estimateReceipt');
+			$scope.dateFormat = obj;
+			dateFormat = $scope.dateFormat.toUpperCase().replace(/E/g, 'd');
+			showEstimateDetail();
+		});
+		$scope.isOwner = false;
+		$scope.dateOptions = {
+			showWeeks : false
+		};
+
+		function showEstimateDetail() {
+			scrollToOffset();
+			var estimateId = $state.params.estimateId;
+			if (! estimateId) return;
+
+			showLoader();
+			$q.when(estimateService.getEstimateDetails(estimateId))
+				.then(function(estimate) {
+
+				var usr = estimate.entity.get('userID');
+
+				if(userFactory.entity[0].get('role') == 'General Employee'){
+					if(userFactory.entity[0].id == usr.id)
+						$scope.isOwner = true;
+				} else {
+					$scope.isOwner = true;
+				}
+
+				if(estimate.entity.get('customer').get('isDeleted') == 1)
+					$scope.isOwner = false;
+
+				//	console.log(estimate);
+				$scope.estimate = estimate;
+				$scope.estimateNo = estimate.entity.estimateNumber;
+
+				if(estimate.comments){
+					estimate.comments.forEach(function(obj){
+						obj.date = formatDate(obj.entity.date, dateFormat);
+					});
+				}
+				$scope.comments = estimate.comments;
+				var receipt = estimate.entity.estimateReceipt;
+
+				if(estimate.attachments) {
+					estimate.attachments.forEach(function(attach) {
+						attach.fileName = attach.name();
+						attach.fileName1 = attach.fileName.substring(attach.fileName.indexOf("_") + 1 , attach.fileName.length);
+						attach.fileUrl = attach.url();
+					});
+					$scope.attachments = estimate.attachments;
+				} else {
+					$scope.attachments = [];
+				}
+
+
+				// create receipt if necessary,
+				if(! receipt) {
+					return estimateService.createEstimateReceipt(estimateId)
+						.then(function(obj) {
+						return obj.get('estimateReceipt');
+					});
+				} else {
+					return Promise.resolve(receipt);
+				}
+
+			})
+				.then(function(receipt) {
+				$scope.templateUrl = $sce.trustAsResourceUrl(receipt.url());
+				debugger;
+				return $.ajax({
+					type: "GET",
+					url: 'proxy.php',
+					dataType: "html",
+					data: {
+						address: receipt.url()
+					}
+				}).then(function (htmlDoc) {
+					var fr = document.getElementById('estimateFrame');
+					fr.src = "about:blank";
+					fr.contentWindow.document.open();
+					fr.contentWindow.document.write(htmlDoc);
+					fr.contentWindow.document.close();
+					hideLoader();
+				});
+
+				hideLoader();
+
+			}, function(error) {
+				hideLoader();
+				console.log(error.message);
 			});
-		} else {
-			return Promise.resolve(receipt);
+
 		}
 
-	})
-	.then(function(receipt) {
-		$scope.templateUrl = $sce.trustAsResourceUrl(receipt.url());
-		hideLoader();
+		$scope.changeTemplate = function() {
+			showLoader();
+			$q.when(coreFactory.getInvoiceTemplates())
+				.then(function(templateObjs) {
+				var defaultTemplate = user.get('defaultTemplate');
 
-	}, function(error) {
-		hideLoader();
-		console.log(error.message);
-	});
+				var templates = [];
+				templateObjs.forEach(function(t) {
+					var obj = {
+						entity : t,
+						name : t.get('name'),
+						url : t.get('templatePreview').url()
+					}
+					if (!defaultTemplate && obj.name == 'Template 1')
+						obj.isDefault = true;
+					else
+						obj.isDefault = (defaultTemplate.id == t.id ? true : false);
 
-}
+					templates.push(obj);
 
-$scope.changeTemplate = function() {
-	showLoader();
-	$q.when(coreFactory.getInvoiceTemplates())
-	.then(function(templateObjs) {
-		var defaultTemplate = user.get('defaultTemplate');
-		
-		var templates = [];
-		templateObjs.forEach(function(t) {
-			var obj = {
-				entity : t,
-				name : t.get('name'),
-				url : t.get('templatePreview').url()
+				});
+				$scope.templates = templates;
+				$('.change-template').addClass('show');
+				hideLoader();
+
+			}, function(error) {
+				console.log(error.message);
+				hideLoader();
+			});
+		}
+
+		$scope.setDefaultTemplate = function(index) {
+			showLoader();
+			$scope.templates.forEach(function(t) {
+				t.isDefault = false;
+			});
+			$scope.templates[index].isDefault = true;
+
+			$scope.estimate.entity.unset('estimateReceipt');
+			user.set('defaultTemplate', $scope.templates[index].entity);
+
+			var promises = [];
+			promises.push(user.save());
+			promises.push($scope.estimate.entity.save());
+
+			$q.all(promises).then(function() {
+				hideLoader();
+				$('.change-template').removeClass('show');
+				console.log('default template selected');
+				$state.reload();
+
+			}, function(error) {
+				hideLoader();
+				console.log(error,message);
+			});
+		}
+
+		$scope.textReceipt = function() {
+
+			$('#text-error').hide();
+
+			var customer = $scope.estimate.entity.get('customer');
+
+			var persons = customer.get('contactPersons');
+
+			$scope.mobileContacts = [];
+
+			if(persons.length){
+				persons.forEach(function(obj){
+					var first = obj.get('firstname') ? obj.get('firstname') : '';
+					var last = obj.get('lastname') ? obj.get('lastname') : '';
+					var primary = obj.get('defaultPerson') == 1 ? true : false;
+
+					var name = first + ' ' + last;
+					if(obj.get('phone')){
+						$scope.mobileContacts.push({
+							selected : false,
+							contact : obj.get('phone'),
+							contactName : '('+ name + ') ' + obj.get('phone')
+						});
+					}
+
+					if(obj.get('mobile')){
+						$scope.mobileContacts.push({
+							selected : primary,
+							contact : obj.get('mobile'),
+							contactName : '('+ name + ') ' + obj.get('mobile')
+						});
+					}
+				});
 			}
-			if (!defaultTemplate && obj.name == 'Template 1')
-				obj.isDefault = true;
-			else
-				obj.isDefault = (defaultTemplate.id == t.id ? true : false);
 
-			templates.push(obj);
+			if($scope.mobileContacts.length){
+				$('.text-popup').addClass('show');
+			} else {
+				ShowMessage("Please Enter Mobile for Customer!","error");
+				return;
+			}
 
-		});
-		$scope.templates = templates;
-		$('.change-template').addClass('show');
-		hideLoader();
+		}
 
-	}, function(error) {
-		console.log(error.message);
-		hideLoader();
-	});
-}
+		$scope.sendText = function(){
+			var email = 0;
 
-$scope.setDefaultTemplate = function(index) {
-	showLoader();
-	$scope.templates.forEach(function(t) {
-		t.isDefault = false;
-	});
-	$scope.templates[index].isDefault = true;
+			$scope.mobileContacts.forEach(function(obj){
+				if(obj.selected)
+					email++;
+			});
 
-	$scope.estimate.entity.unset('estimateReceipt');
-	user.set('defaultTemplate', $scope.templates[index].entity);
+			if(email < 1){
+				$('#text-error').show();
+				return;
+			}
 
-	var promises = [];
-	promises.push(user.save());
-	promises.push($scope.estimate.entity.save());
+			showLoader();
 
-	$q.all(promises).then(function() {
-		hideLoader();
-		$('.change-template').removeClass('show');
-		console.log('default template selected');
-		$state.reload();
+			$scope.mobileContacts.forEach(function(obj){
+				if(obj.selected){
+					estimateService.sendEstimetTextToNumber($scope.estimate.entity, obj.contact)
+						.then(function(result){
+						addNewComment('Estimate texted to ' + obj.contact, true);
+						$('.text-popup').removeClass('show');
+						hideLoader();
+					});
+				}
+			});
+		}
 
-	}, function(error) {
-		hideLoader();
-		console.log(error,message);
-	});
-}
+		$scope.emailReceipt = function() {
 
-$scope.textReceipt = function() {
-    
-    $('#text-error').hide();
-    
-    var customer = $scope.estimate.entity.get('customer');
-    
-    var persons = customer.get('contactPersons');
+			$('#email-error').hide();
 
-    $scope.mobileContacts = [];
+			var customer = $scope.estimate.entity.get('customer');
 
-    if(persons.length){
-        persons.forEach(function(obj){
-            var first = obj.get('firstname') ? obj.get('firstname') : '';
-            var last = obj.get('lastname') ? obj.get('lastname') : '';
-            var primary = obj.get('defaultPerson') == 1 ? true : false;
+			var persons = customer.get('contactPersons');
 
-            var name = first + ' ' + last;
-            if(obj.get('phone')){
-                $scope.mobileContacts.push({
-                    selected : false,
-                    contact : obj.get('phone'),
-                    contactName : '('+ name + ') ' + obj.get('phone')
-                });
-            }
+			$scope.contacts = [];
 
-            if(obj.get('mobile')){
-                $scope.mobileContacts.push({
-                    selected : primary,
-                    contact : obj.get('mobile'),
-                    contactName : '('+ name + ') ' + obj.get('mobile')
-                });
-            }
-        });
-    }
+			if(persons.length){
+				persons.forEach(function(obj){
+					var first = obj.get('firstname') ? obj.get('firstname') : '';
+					var last = obj.get('lastname') ? obj.get('lastname') : '';
+					var primary = obj.get('defaultPerson') == 1 ? true : false;
 
-    if($scope.mobileContacts.length){
-        $('.text-popup').addClass('show');
-    } else {
-        ShowMessage("Please Enter Mobile for Customer!","error");
-        return;
-    }
-    
-}
+					var name = first + ' ' + last;
+					if(obj.get('email')){
+						$scope.contacts.push({
+							selected : primary,
+							contact : obj.get('email'),
+							contactName : '('+ name + ') ' + obj.get('email')
+						});
+					}
+				});
+			}
 
-$scope.sendText = function(){
-    var email = 0;
+			if($scope.contacts.length){
+				$('.email-popup').addClass('show');
+			} else {
+				ShowMessage("Please Enter Email for Customer!","error");
+				return;
+			}
 
-    $scope.mobileContacts.forEach(function(obj){
-        if(obj.selected)
-            email++;
-    });
-
-    if(email < 1){
-        $('#text-error').show();
-        return;
-    }
-    
-	showLoader();
-    
-    $scope.mobileContacts.forEach(function(obj){
-        if(obj.selected){
-            estimateService.sendEstimetTextToNumber($scope.estimate.entity, obj.contact)
-            .then(function(result){
-                addNewComment('Estimate texted to ' + obj.contact, true);
-                $('.text-popup').removeClass('show');
-                hideLoader();
-            });
-        }
-    });
-}
-
-$scope.emailReceipt = function() {
-    
-    $('#email-error').hide();
-    
-    var customer = $scope.estimate.entity.get('customer');
-    
-    var persons = customer.get('contactPersons');
-
-    $scope.contacts = [];
-
-    if(persons.length){
-        persons.forEach(function(obj){
-            var first = obj.get('firstname') ? obj.get('firstname') : '';
-            var last = obj.get('lastname') ? obj.get('lastname') : '';
-            var primary = obj.get('defaultPerson') == 1 ? true : false;
-
-            var name = first + ' ' + last;
-            if(obj.get('email')){
-                $scope.contacts.push({
-                    selected : primary,
-                    contact : obj.get('email'),
-                    contactName : '('+ name + ') ' + obj.get('email')
-                });
-            }
-        });
-    }
-
-    if($scope.contacts.length){
-        $('.email-popup').addClass('show');
-    } else {
-        ShowMessage("Please Enter Email for Customer!","error");
-        return;
-    }
-    
-    /*
+			/*
     var cust = $scope.estimate.entity.get('customer')
     var email = cust.get('email');
     if(!email){
         ShowMessage("Please Enter Email for Customer!","error");
         return;
     }
-    
+
 	showLoader();
 	$q.when(estimateService.sendEstimateReceipt($scope.estimate.entity))
 	.then(function(obj) {
@@ -274,331 +291,331 @@ $scope.emailReceipt = function() {
         $("#snackbar").html('Email sent...');
         $("#snackbar").addClass('show');
         setTimeout(function(){ $("#snackbar").removeClass('show'); }, 3000);
-        
-		
+
+
 	}, function(error) {
 		hideLoader();
 		console.log(error.message);
 	});
     */
-}
+		}
 
-$scope.sendEmail = function(){
-    var email = 0;
+		$scope.sendEmail = function(){
+			var email = 0;
 
-    $scope.contacts.forEach(function(obj){
-        if(obj.selected)
-            email++;
-    });
+			$scope.contacts.forEach(function(obj){
+				if(obj.selected)
+					email++;
+			});
 
-    if(email < 1){
-        $('#email-error').show();
-        return;
-    }
-    
-	showLoader();
-    
-    $scope.contacts.forEach(function(obj){
-        if(obj.selected){
-            estimateService.sendEstimateReceiptToEmail($scope.estimate.entity, obj.contact)
-            .then(function(result){
-                addNewComment('Estimate emailed to ' + obj.contact, true);
-                $('.email-popup').removeClass('show');
-                hideLoader();
-            });
-        }
-    });
-}
+			if(email < 1){
+				$('#email-error').show();
+				return;
+			}
 
-$scope.deleteEstimate = function() {
-	showLoader();
-	var estimate = $scope.estimate.entity;
-	var children = [];
-	var x = undefined;
+			showLoader();
 
-	['comments', 'estimateItems']
-	.forEach(function(field) {
-		x = estimate.get(field);
-		if(x) children = children.concat(x);
-	});
+			$scope.contacts.forEach(function(obj){
+				if(obj.selected){
+					estimateService.sendEstimateReceiptToEmail($scope.estimate.entity, obj.contact)
+						.then(function(result){
+						addNewComment('Estimate emailed to ' + obj.contact, true);
+						$('.email-popup').removeClass('show');
+						hideLoader();
+					});
+				}
+			});
+		}
 
-	Parse.Object.destroyAll(children)
-	.then(function() {
-		return estimate.destroy();
-	})
-	.then(function() {
-		hideLoader();
-		$state.go('dashboard.sales.estimates.all');
-	});
+		$scope.deleteEstimate = function() {
+			showLoader();
+			var estimate = $scope.estimate.entity;
+			var children = [];
+			var x = undefined;
 
-}
+			['comments', 'estimateItems']
+				.forEach(function(field) {
+				x = estimate.get(field);
+				if(x) children = children.concat(x);
+			});
 
-$scope.addAttachment = function(obj) {
-	var file = obj.files[0];
-	if (!file) return;
-    
-    var n = file.name;
-    
-    if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') || n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg'))){
-        $('#file-error').show();
-        return;
-    }
-    $('#file-error').hide();
-    
-     if(n.toLowerCase().indexOf("^") >= 0)
-    {
-        n =  n.replace("^", "");
-        
-    } 
-     var fileSizeinBytes = obj.files[0].size;
-     if(fileSizeinBytes > 5242880 )
-     {
-        $('#file-size-error').show();    
-        return;
-     }
-     $('#file-size-error').hide();
+			Parse.Object.destroyAll(children)
+				.then(function() {
+				return estimate.destroy();
+			})
+				.then(function() {
+				hideLoader();
+				$state.go('dashboard.sales.estimates.all');
+			});
 
-	showLoader();
-	var estimateObj = $scope.estimate.entity;
-	var parseFile = new Parse.File(n, file);
+		}
 
-	$q.when(parseFile.save())
-	.then(function(fileObj) {
-		var fileList = estimateObj.get('estimateFiles');
-		if(fileList)
-			fileList.push(fileObj)
-		else
-			fileList = [fileObj];
+		$scope.addAttachment = function(obj) {
+			var file = obj.files[0];
+			if (!file) return;
 
-		estimateObj.set('estimateFiles', fileList);
-		estimateObj.unset('estimateReceipt');
-		return estimateObj.save();
-	})
-	.then(function(invObj) {
-		$state.reload();
-		hideLoader();
-	});
-}
+			var n = file.name;
 
-function addNewComment(body, isAuto) {
-	var obj = {
-		userID : user,
-		organization : organization,
-		name : user.get('username'),
-		date : new Date(),
-		isAutomaticallyGenerated : false,
-		comment : body
-	}
-    
-    if(!user.get('isTrackUsage') && isAuto) {
-        return;
-    }
+			if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') || n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg'))){
+				$('#file-error').show();
+				return;
+			}
+			$('#file-error').hide();
 
-	var data = {};
-	$q.when(coreFactory.getUserRole(user))
-	.then(function(role) {
-		return commentFactory.createNewComment(obj, role);
-	})
-	.then(function(obj) {
-		data.commentObj = obj;
-		var estimate = $scope.estimate.entity;
-		var prevComments = estimate.get('comments');
-		if(prevComments)
-			prevComments.push(obj);
-		else
-			prevComments = [obj];
+			if(n.toLowerCase().indexOf("^") >= 0)
+			{
+				n =  n.replace("^", "");
 
-		estimate.set('comments', prevComments);
-		return estimate.save();
-	})
-	.then(function() {
-		var comment = new commentFactory(data.commentObj);
+			} 
+			var fileSizeinBytes = obj.files[0].size;
+			if(fileSizeinBytes > 5242880 )
+			{
+				$('#file-size-error').show();    
+				return;
+			}
+			$('#file-size-error').hide();
 
-        comment.date = formatDate(comment.entity.date, dateFormat);
-        
-		if($scope.comments)
-			$scope.comments.push(comment);
-		else
-			$scope.comments = [comment];
+			showLoader();
+			var estimateObj = $scope.estimate.entity;
+			var parseFile = new Parse.File(n, file);
 
-		console.log(comment);
-	});
+			$q.when(parseFile.save())
+				.then(function(fileObj) {
+				var fileList = estimateObj.get('estimateFiles');
+				if(fileList)
+					fileList.push(fileObj)
+				else
+					fileList = [fileObj];
 
-}
-    
-$scope.estimatePrinted = function(){
-    addNewComment('Estimate printed', true);
-}
+				estimateObj.set('estimateFiles', fileList);
+				estimateObj.unset('estimateReceipt');
+				return estimateObj.save();
+			})
+				.then(function(invObj) {
+				$state.reload();
+				hideLoader();
+			});
+		}
 
-$scope.estimateCloned = function(){
-    addNewComment('Estimate cloned', true);
-}
+		function addNewComment(body, isAuto) {
+			var obj = {
+				userID : user,
+				organization : organization,
+				name : user.get('username'),
+				date : new Date(),
+				isAutomaticallyGenerated : false,
+				comment : body
+			}
 
-$scope.copyToClipboard = function() {
-	var aux = document.createElement("input");
-	aux.setAttribute("value", $scope.templateUrl);
-	document.body.appendChild(aux);
-	aux.select();
-	document.execCommand("copy");
+			if(!user.get('isTrackUsage') && isAuto) {
+				return;
+			}
 
-	document.body.removeChild(aux);
-	showSnackbar("Estimate link copied to your clipboard.");
-}
+			var data = {};
+			$q.when(coreFactory.getUserRole(user))
+				.then(function(role) {
+				return commentFactory.createNewComment(obj, role);
+			})
+				.then(function(obj) {
+				data.commentObj = obj;
+				var estimate = $scope.estimate.entity;
+				var prevComments = estimate.get('comments');
+				if(prevComments)
+					prevComments.push(obj);
+				else
+					prevComments = [obj];
 
-$scope.addComment = function() {
-	if (! $scope.newComment) {
-		$('.add-comment').removeClass('show');
-		return;
-	}
+				estimate.set('comments', prevComments);
+				return estimate.save();
+			})
+				.then(function() {
+				var comment = new commentFactory(data.commentObj);
 
-	showLoader();
-	var obj = {
-		userID : user,
-		organization : organization,
-		name : user.get('username'),
-		date : new Date(),
-		isAutomaticallyGenerated : false,
-		comment : $scope.newComment
-	}
+				comment.date = formatDate(comment.entity.date, dateFormat);
 
-	var data = {};
-	$q.when(coreFactory.getUserRole(user))
-	.then(function(role) {
-		return commentFactory.createNewComment(obj, role);
-	})
-	.then(function(obj) {
-		data.commentObj = obj;
-		var estimate = $scope.estimate.entity;
-		var prevComments = estimate.get('comments');
-		if(prevComments)
-			prevComments.push(obj);
-		else
-			prevComments = [obj];
+				if($scope.comments)
+					$scope.comments.push(comment);
+				else
+					$scope.comments = [comment];
 
-		estimate.set('comments', prevComments);
-		return estimate.save();
-	})
-	.then(function() {
-		var comment = new commentFactory(data.commentObj);
+				console.log(comment);
+			});
 
-        comment.date = formatDate(comment.entity.date, dateFormat);
-        
-		if($scope.comments)
-			$scope.comments.push(comment);
-		else
-			$scope.comments = [comment];
+		}
 
-		console.log(comment);
-		$('.add-comment').removeClass('show');
-		hideLoader();
-	});
+		$scope.estimatePrinted = function(){
+			addNewComment('Estimate printed', true);
+		}
 
-}
+		$scope.estimateCloned = function(){
+			addNewComment('Estimate cloned', true);
+		}
 
-$scope.downloadInvoice = function(){
-    var url = $scope.estimate.entity.get('estimateLabels')._url;
-    debugger;
-    
-    var Connect = new XMLHttpRequest();
+		$scope.copyToClipboard = function() {
+			var aux = document.createElement("input");
+			aux.setAttribute("value", $scope.templateUrl);
+			document.body.appendChild(aux);
+			aux.select();
+			document.execCommand("copy");
 
-    Connect.open("GET", url, false);
+			document.body.removeChild(aux);
+			showSnackbar("Estimate link copied to your clipboard.");
+		}
 
-    Connect.setRequestHeader("Content-Type", "text/xml");
-    Connect.send(null);
-    
-    updatePage(Connect.responseXML);
-}
+		$scope.addComment = function() {
+			if (! $scope.newComment) {
+				$('.add-comment').removeClass('show');
+				return;
+			}
 
-function updatePage(dataTable){
-            var itemRows = $(dataTable).find('itemRow');
-            var modsRow = $(dataTable).find('modsRow');
-            var attachments = $(dataTable).find('attachment');
-            var customFields = $(dataTable).find('customField');
-            var taxes = $(dataTable).find('tax');
-            var td = $('<td></td>');
+			showLoader();
+			var obj = {
+				userID : user,
+				organization : organization,
+				name : user.get('username'),
+				date : new Date(),
+				isAutomaticallyGenerated : false,
+				comment : $scope.newComment
+			}
 
-            if ($(dataTable).find('billType').text().includes('estimate')){
-                $('.footer .info').hide()
-                $('.payment-due').hide()
-            }
-            
-            
-            if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
-                $('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Discount</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
-                
-            } else {
-                $('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
-            }
-            
-            itemRows.each(function(funcOne){
-                
-                if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
-                    var item = $("<tr class='invoice-items'></tr>");
-                    var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
-                    var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('qty').text() +"</td>");
-                    var itemDiscount = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('discount').text() +"</td>");
-                    var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
-                    item.append(itemTitle)
-                        .append(itemQty)
-                        .append(itemDiscount)
-                        .append(itemCost);
-                    $('#invoice-items-header').after($(item));
-                }
-                else {
-                    var item = $("<tr class='invoice-items'></tr>");
-                    var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
-                    var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='2'>"+ $(this).children('qty').text() +"</td>");
-                    var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
-                    item.append(itemTitle)
-                        .append(itemQty)
-                        .append(itemCost);
-                    $('#invoice-items-header').after($(item));
-                }
-            });
-            
-            taxes.each(function() {
-                
-                var item = $("<tr class='invoice-taxes'></tr>");
-                var blank = $("<td colspan='3' class=''></td>");
-                var itemTitle = $("<td class='ff1 fc1 ' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).children('name').text() +"</td>");
-                var itemCost = $("<td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).children('value').text() +"</td>");
-                item.append(blank)
-                    .append(itemTitle)
-                    .append(itemCost);
-                $('#invoice-subtotal').after($(item));
-                
-            });
+			var data = {};
+			$q.when(coreFactory.getUserRole(user))
+				.then(function(role) {
+				return commentFactory.createNewComment(obj, role);
+			})
+				.then(function(obj) {
+				data.commentObj = obj;
+				var estimate = $scope.estimate.entity;
+				var prevComments = estimate.get('comments');
+				if(prevComments)
+					prevComments.push(obj);
+				else
+					prevComments = [obj];
 
-            var tr = $('<tr class="salestax"></tr>');
-            $('tr.adjustments').after(tr);
-            
-            customFields.each(function() {
-                var tr = $('.customFields');
-                
-                tr.append($('<div class="info-1" style="margin: 0;border: 0;font-size: 100%;font: inherit;float: left;box-sizing: border-box;width: 70%; float: left; margin-left: 3%;margin-left: 0px"><p class="" style="margin: 0;padding: 10px 0px 0px 0px;border: 0;font-size: 16px;vertical-align: baseline;line-height: 30px;margin-bottom: 10px;color: #989898;">' + $(this).children('name').text() + '</p><p class="" style="margin: 0;padding: 0;border: 0;font-size: 16px;margin-bottom: 10px;color: #000;">' + $(this).children('value').text() + '</p></div>'));
-            });
-            
-            attachments.each(function() {
-                var fileName = $(this).text();
-                fileName = fileName.substring(fileName.indexOf("_") + 1 , fileName.length);
-                fileName = fileName.replace(/%20/g, " ");
-                $('.attach').append('<a style="color: #989898" target="_blank" href=\'' + $(this).text() + '\'>' + fileName + '</a><br><br>');
-            });
+				estimate.set('comments', prevComments);
+				return estimate.save();
+			})
+				.then(function() {
+				var comment = new commentFactory(data.commentObj);
 
-            $('table tbody tr').each(function(){
-                if($(this).children().text().length == 0){
-                    $(this).addClass('hideOnMob');
-                }
-            });
-            
+				comment.date = formatDate(comment.entity.date, dateFormat);
 
-            var invoiceId = $(dataTable).find('invoiceId').text();
-            $('#pay-link').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
-            $('#pay-link-2').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+				if($scope.comments)
+					$scope.comments.push(comment);
+				else
+					$scope.comments = [comment];
 
-            var labels = $(dataTable).find('items');
-            console.log(labels);
-            labels.each(function(){
+				console.log(comment);
+				$('.add-comment').removeClass('show');
+				hideLoader();
+			});
+
+		}
+
+		$scope.downloadInvoice = function(){
+			var url = $scope.estimate.entity.get('estimateLabels')._url;
+			debugger;
+
+			var Connect = new XMLHttpRequest();
+
+			Connect.open("GET", url, false);
+
+			Connect.setRequestHeader("Content-Type", "text/xml");
+			Connect.send(null);
+
+			updatePage(Connect.responseXML);
+		}
+
+		function updatePage(dataTable){
+			var itemRows = $(dataTable).find('itemRow');
+			var modsRow = $(dataTable).find('modsRow');
+			var attachments = $(dataTable).find('attachment');
+			var customFields = $(dataTable).find('customField');
+			var taxes = $(dataTable).find('tax');
+			var td = $('<td></td>');
+
+			if ($(dataTable).find('billType').text().includes('estimate')){
+				$('.footer .info').hide()
+				$('.payment-due').hide()
+			}
+
+
+			if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+				$('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="1" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Discount</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
+
+			} else {
+				$('#invoice-items-header').append('<td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; font-size: 16px; vertical-align: middle; /*background: #317cf4;*/ padding-left: 14pt;">Item</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/">Quantity</td> <td class="ff1 fc0 btm-line top-line" colspan="2" style="height: 9mm; vertical-align: middle; text-align: right; font-size: 16px; /*background: #317cf4;*/ padding-right: 14pt;">Amount</td>');
+			}
+
+			itemRows.each(function(funcOne){
+
+				if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
+					var item = $("<tr class='invoice-items'></tr>");
+					var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+					var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('qty').text() +"</td>");
+					var itemDiscount = $("<td class='ff1 fc0  invoice-item-qty' colspan='1'>"+ $(this).children('discount').text() +"</td>");
+					var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
+					item.append(itemTitle)
+						.append(itemQty)
+						.append(itemDiscount)
+						.append(itemCost);
+					$('#invoice-items-header').after($(item));
+				}
+				else {
+					var item = $("<tr class='invoice-items'></tr>");
+					var itemTitle = $("<td class='ff1 fc0 invoice-item-title' style='width: 50mm;' colspan='2'>"+ $(this).children('name').text() +"</td>");
+					var itemQty = $("<td class='ff1 fc0  invoice-item-qty' colspan='2'>"+ $(this).children('qty').text() +"</td>");
+					var itemCost = $("<td class='ff1 fc0  invoice-item-cost' colspan='2'>"+ $(this).children('price').text() +"</td>");
+					item.append(itemTitle)
+						.append(itemQty)
+						.append(itemCost);
+					$('#invoice-items-header').after($(item));
+				}
+			});
+
+			taxes.each(function() {
+
+				var item = $("<tr class='invoice-taxes'></tr>");
+				var blank = $("<td colspan='3' class=''></td>");
+				var itemTitle = $("<td class='ff1 fc1 ' colspan='2' style = 'padding-bottom: 4mm; vertical-align: middle; font-size: 16px;'>" + $(this).children('name').text() +"</td>");
+				var itemCost = $("<td class='ff1 fc1 ' style='padding-bottom: 4mm; text-align: right; vertical-align: middle; font-size: 16px;'>" + $(this).children('value').text() +"</td>");
+				item.append(blank)
+					.append(itemTitle)
+					.append(itemCost);
+				$('#invoice-subtotal').after($(item));
+
+			});
+
+			var tr = $('<tr class="salestax"></tr>');
+			$('tr.adjustments').after(tr);
+
+			customFields.each(function() {
+				var tr = $('.customFields');
+
+				tr.append($('<div class="info-1" style="margin: 0;border: 0;font-size: 100%;font: inherit;float: left;box-sizing: border-box;width: 70%; float: left; margin-left: 3%;margin-left: 0px"><p class="" style="margin: 0;padding: 10px 0px 0px 0px;border: 0;font-size: 16px;vertical-align: baseline;line-height: 30px;margin-bottom: 10px;color: #989898;">' + $(this).children('name').text() + '</p><p class="" style="margin: 0;padding: 0;border: 0;font-size: 16px;margin-bottom: 10px;color: #000;">' + $(this).children('value').text() + '</p></div>'));
+			});
+
+			attachments.each(function() {
+				var fileName = $(this).text();
+				fileName = fileName.substring(fileName.indexOf("_") + 1 , fileName.length);
+				fileName = fileName.replace(/%20/g, " ");
+				$('.attach').append('<a style="color: #989898" target="_blank" href=\'' + $(this).text() + '\'>' + fileName + '</a><br><br>');
+			});
+
+			$('table tbody tr').each(function(){
+				if($(this).children().text().length == 0){
+					$(this).addClass('hideOnMob');
+				}
+			});
+
+
+			var invoiceId = $(dataTable).find('invoiceId').text();
+			$('#pay-link').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+			$('#pay-link-2').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+
+			var labels = $(dataTable).find('items');
+			console.log(labels);
+			labels.each(function(){
 
 				var dueTime = new Date(Date.parse($(this).find('past-due').text()));
 				var now = new Date(Date.now());
@@ -668,7 +685,7 @@ function updatePage(dataTable){
 					$('.top-bar').css('height', '0mm');
 					$('.top-bar').css('border-bottom', '0mm');
 				}
-				
+
 				var ordernotesTitle = $(this).find('ordernotes-title').text();
 				var ordernotes = $(this).find('ordernotes').text();
 				if(ordernotes){
@@ -680,7 +697,7 @@ function updatePage(dataTable){
 					$('#pdf-terms-title').hide();
 					$('#pdf-terms').hide();
 				}
-				
+
 				$('#pdf-business-name').text(userFactory.entity[0].get('company'));
 				$('#pdf-invoice-title').text($(this).find('invoice-title').text());
 				$('#pdf-invoice-number').text($(this).find('refid').text());
@@ -697,13 +714,13 @@ function updatePage(dataTable){
 				$('#pdf-total-text').text($(this).find('refundedText').text());
 				$('#pdf-payment-text').text($(this).find('paymentMadeText').text());
 				$('#pdf-credit-text').text($(this).find('creditsAppliedText').text());
-				
+
 				var ad = $(this).find('addres1').text();
-				
+
 				$('#pdf-address').html(ad);
-				
+
 				//$('#pdf-address').html(ad.replace(/(.{35})/g, "$1<br>"));
-				
+
 				var longmsg = $(this).find('longmsg').text();
 				if (longmsg.length != 0){
 					var longmsgTitle = $(this).find('longmsg-title').text();
@@ -716,25 +733,25 @@ function updatePage(dataTable){
 					$('#pdf-notes-title').hide();
 					$('#pdf-notes').hide();
 				}
-				
+
 				var mailto = $(this).find('mailto').text();
 				$('#user-mail').attr('href', mailto);
 				var mailtotxt = $(this).find('mailtotxt').text();
 				$('#user-mail').text(mailtotxt);
-				
+
 				var clientmailto = $(this).find('clientmailto').text();
 				$('#client-mail').attr('href', clientmailto);
 				var clientmail = $(this).find('clientmail').text();
 				$('#client-mail').text(clientmail);
-				
+
 				var clientname = $(this).find('clientname').text();
 				$('#client-name').text(clientname);
-				
+
 				var nr = $(this).find('nr').text();
 				$('#user-phone').attr('href', "tel:" + nr);
 				$('#user-phone').text(nr);
-				
-				
+
+
 				var card_number = $(this).find('refid').text();
 				$('.visa-card').append(card_number);
 				var purchase_order = $(this).find('purchaseOrderNumber').text();
@@ -869,29 +886,29 @@ function updatePage(dataTable){
 				var tipNr = $(this).find('tip-price');
 				$('.tip-price').append(tipNr);
 			});
-	
-	$.ajax({
-        method:"POST",
-        type : "POST",
-        url: "generatePDF.php",
-        data: { 
-            'html' : $('.pdf-page').html(),
-        }
-    }).then(function(pdfData){
-        var dlnk = document.getElementById('pdfLink');
 
-        var pdf = 'data:application/octet-stream;base64,' + pdfData;
+			$.ajax({
+				method:"POST",
+				type : "POST",
+				url: "generatePDF.php",
+				data: { 
+					'html' : $('.pdf-page').html(),
+				}
+			}).then(function(pdfData){
+				var dlnk = document.getElementById('pdfLink');
 
-        //dlnk.attr("href", pdf);
-        dlnk.href = pdf;
+				var pdf = 'data:application/octet-stream;base64,' + pdfData;
 
-        dlnk.click();
-        debugger;
-    }, function(error){
-        console.error(error);
-        debugger;
-    });
-	
-}
+				//dlnk.attr("href", pdf);
+				dlnk.href = pdf;
 
-}]);
+				dlnk.click();
+				debugger;
+			}, function(error){
+				console.error(error);
+				debugger;
+			});
+
+		}
+
+	}]);

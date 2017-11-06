@@ -1393,7 +1393,8 @@ invoicesUnlimited.controller('CustomersController',
 			.destroy($scope.selectedCustomer)
 			.then(function(res){
 			$scope.selectedCustomer.contactPersons.splice(index,1);
-			$scope.$apply();
+			if(!$scope.$$phase)
+				$scope.$apply();
 			hideLoader();
 		},function(err){
 			console.log(err.message);

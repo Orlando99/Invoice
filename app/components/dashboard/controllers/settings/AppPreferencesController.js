@@ -26,7 +26,8 @@ invoicesUnlimited.controller('AppPreferencesController',
                   else{
                       $scope.userLogo = './assets/images/user-icon.png';
                   }
-                  $scope.$apply();
+                  if(!$scope.$$phase)
+					$scope.$apply();
 
               },
               error: function(obj, error) {

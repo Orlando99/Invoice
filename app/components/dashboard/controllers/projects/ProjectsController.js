@@ -497,7 +497,8 @@ $('#addTimesheetForm').validate({
 			$scope.tasks.splice(index, 1);
 			$scope.timesheetTasks.splice(index, 1);
 			$scope.timesheetTask = "";
-			$scope.$apply();
+			if(!$scope.$$phase)
+				$scope.$apply();
 		}
 
 		$scope.addTask = function(){
@@ -548,7 +549,8 @@ $('#addTimesheetForm').validate({
 				$scope.newTaskName = "";
 				$scope.newTaskDescription = "";
 				$scope.newTaskCost = "";
-				$scope.$apply();
+				if(!$scope.$$phase)
+					$scope.$apply();
 				hideLoader();
 			});
 		}

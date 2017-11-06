@@ -115,7 +115,8 @@ invoicesUnlimited.controller('CompanyProfileController',
                       $scope.userLogo = './assets/images/user-icon.png';
                       $scope.tempLogo = undefined;
                   }
-                  $scope.$apply();
+                  if(!$scope.$$phase)
+					$scope.$apply();
 
               },
               error: function(obj, error) {

@@ -6,7 +6,7 @@ function(userFactory, taskFactory, staffFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
-	return undefined;
+	return "undefined";
 }
 
 function Project (parseObject, params) {
