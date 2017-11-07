@@ -13,7 +13,7 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         return;
     }
     
-	var version = "123";
+	var version = "127";
 	
 	var Version = Parse.Object.extend("Extras");
 	
@@ -38,11 +38,11 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 				theme: 'supervan',
 				icon: 'fa fa-refresh fa-spin',
 				title: 'Reload!',
-				content: 'A new version of Invoices Unlimited is available. Please reload the page to strat using it.',
+				content: 'A new version of Invoices Unlimited is available. Please reload the page by clicking on the reload button below .',
 				scope: $scope,
 				buttons: {
 					relaod: {
-						text: 'Reload Page',
+						text: 'Click Here',
 						btnClass: 'btn-blue',
 						action: function(scope, button){
 							window.location.reload(true);
