@@ -3,10 +3,10 @@
 invoicesUnlimited.controller('CreateInvoiceController',[
 	'$scope', '$state', '$controller', '$q', 'userFactory',
 	'invoiceService', 'coreFactory', 'commentFactory', 'taxService', 'expenseService',
-	'lateFeeService', 'currencyFilter', 'itemService', 'salesCommon','estimateService',
+	'lateFeeService', 'currencyFilter', 'itemService', 'salesCommon','estimateService','$rootScope',
 	function($scope, $state, $controller, $q, userFactory,
 			  invoiceService,coreFactory,commentFactory,taxService,expenseService,
-			  lateFeeService,currencyFilter, itemService, salesCommon, estimateService) {
+			  lateFeeService,currencyFilter, itemService, salesCommon, estimateService,$rootScope) {
 
 		if(! userFactory.entity.length) {
 			console.log('User not logged in');
@@ -1002,6 +1002,10 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 		}
 
 		function sendToContacts(invoiceObj){
+			$scope.sendEmail($scope.contacts, invoiceObj);
+			$scope.sendText($scope.mobileContacts, invoiceObj);
+			
+			/*
 			$scope.contacts.forEach(function(obj){
 				if(obj.selected){
 					invoiceService.sendInvoiceReceiptToEmail(invoiceObj, obj.contact)
@@ -1018,6 +1022,7 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 					});
 				}
 			});
+			*/
 		}
 
 		/*

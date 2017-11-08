@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.controller('NewUserController',
+invoicesUnlimited.controller('NewUserController',["$scope","$state","userFactory","roleFactory","$controller",
+		"$q","$uibModalInstance","user","method","title","appFields","queryService",
 	function($scope,$state,userFactory,roleFactory,$controller,
 		$q,$uibModalInstance,user,method,title,appFields,queryService){
 
@@ -240,4 +241,4 @@ invoicesUnlimited.controller('NewUserController',
 		$uibModalInstance.dismiss('Close');
 	}
 
-});
+}]);

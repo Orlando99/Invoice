@@ -17,7 +17,9 @@ $(document).ready(function(){
 
 	})
 });
-invoicesUnlimited.controller('CustomersController',
+invoicesUnlimited.controller('CustomersController', ["$scope","$rootScope","$state","$uibModal","userFactory",
+									   "contactPersonFactory", "customerFactory", "coreFactory", "expenseService", 
+									   "invoicesFactory" ,"$controller","$q", "appFields", 'currencyFilter', "currencyFactory",
 							 function($scope,$rootScope,$state,$uibModal,userFactory,
 									   contactPersonFactory, customerFactory, coreFactory, expenseService, 
 									   invoicesFactory ,$controller,$q, appFields, currencyFilter, currencyFactory){
@@ -1874,4 +1876,4 @@ invoicesUnlimited.controller('CustomersController',
 								  'ZAL - South African Rand (financial)',
 								  'ZAR - South African Rand',
 								  'ZMW - Zambian Kwacha'];
-});
+}]);

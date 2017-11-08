@@ -1,9 +1,9 @@
 'use strict';
 
 invoicesUnlimited.controller('DashboardController',['$scope','$state','userFactory','businessFactory','$q',
-	'invoiceService', 'expenseService', 'coreFactory', 'currencyFilter', 'cleanDataService','$ngConfirm',
+	'invoiceService', 'expenseService', 'coreFactory', 'currencyFilter', 'cleanDataService','$ngConfirm','$rootScope','$compile','commentFactory',
 function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseService,
-	coreFactory,currencyFilter,cleanDataService,$ngConfirm){
+	coreFactory,currencyFilter,cleanDataService,$ngConfirm,$rootScope, $compile,commentFactory){
 	showLoader();
 	var user = userFactory;
 	var business = businessFactory;
@@ -13,7 +13,9 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
         return;
     }
     
-	var version = "127";
+	var organization = user.entity[0].get("selectedOrganization")
+	
+	var version = "129";
 	
 	var Version = Parse.Object.extend("Extras");
 	
@@ -52,6 +54,95 @@ function($scope,$state,userFactory,businessFactory,$q,invoiceService,expenseServ
 			});
 		}
 	});
+	
+	$rootScope.sendEmail = function(contacts, invoice){
+		var html = '<md-progress-linear md-mode="indeterminate" style="margin-top: 10px;"></md-progress-linear>';
+		var compileContent = $compile(html)($scope);
+		$.ambiance({message: compileContent,
+					title : "Sending Invoice",
+            permanent: true,
+            fade: true,
+            timeout: 1});
+		
+		for(var i = 0; i < contacts.length; i++){
+			var obj = contacts[i];
+			if(obj.selected){
+				invoiceService.sendInvoiceReceiptToEmail(invoice, obj.contact)
+					.then(function(result){
+					addNewComment(invoice, 'Invoice emailed to ' + obj.contact, true);
+					//$('.email-popup').removeClass('show');
+					if(i == contacts.length - 1){
+						$('.ambiance-default').hide();
+						$.ambiance({message: "Invoice sent successfully!",
+							title: "Success!",
+							type: "success"});
+					}
+				});
+			} else if(i == contacts.length - 1){
+				$('.ambiance-default').hide();
+				$.ambiance({message: "Invoice sent successfully!",
+					title: "Success!",
+					type: "success"});
+			}
+		}
+		contacts.forEach(function(obj){
+			if(obj.selected){
+				invoiceService.sendInvoiceReceiptToEmail(invoice, obj.contact)
+					.then(function(result){
+					addNewComment(invoice, 'Invoice emailed to ' + obj.contact, true);
+					//$('.email-popup').removeClass('show');
+					$('.ambiance-default').hide();
+					$.ambiance({message: "Invoice sent successfully!",
+						title: "Success!",
+						type: "success"});
+				});
+			}
+		});
+	};
+	
+	$rootScope.sendText = function(contacts, invoice){
+		contacts.forEach(function(obj){
+			if(obj.selected){
+				invoiceService.sendInvoiceTextToNumber(invoice, obj.contact)
+					.then(function(result){
+					addNewComment(invoice, 'Invoice texted to ' + obj.contact, true)
+				});
+			}
+		});
+	};
+	
+	function addNewComment(invoice, commentbody, isAuto){
+			var obj = {
+				userID : user.entity[0],
+				organization : organization,
+				name : user.entity[0].get('username'),
+				date : new Date(),
+				isAutomaticallyGenerated : isAuto,
+				comment : commentbody
+			}
+
+			if(!user.entity[0].get('isTrackUsage') && isAuto) {
+				return Promise.resolve("");
+			}
+
+			var data = {};
+			return $q.when(coreFactory.getUserRole(user.entity[0]))
+				.then(function(role) {
+				return commentFactory.createNewComment(obj, role);
+			})
+				.then(function(obj) {
+				data.commentObj = obj;
+				
+				var prevComments = invoice.get('comments');
+				if(prevComments)
+					prevComments.push(obj);
+				else
+					prevComments = [obj];
+
+				invoice.set('comments', prevComments);
+				return invoice.save();
+			});
+		}
 	
 	$scope.role = user.entity[0].get('role');
 	

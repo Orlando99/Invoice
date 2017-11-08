@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.controller('ModalContactController',function(
+invoicesUnlimited.controller('ModalContactController',["$scope","$uibModalInstance","contact","customer","title",
+													   function(
 							 $scope,$uibModalInstance,contact,customer,title){
 
 	$scope.contact = contact;
@@ -75,4 +76,4 @@ invoicesUnlimited.controller('ModalContactController',function(
 		$('.mobilePhone').mask('9 (999) 999-9999',mobileOptions);
 	}
 
-})
+}]);

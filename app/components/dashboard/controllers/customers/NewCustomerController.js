@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.controller('NewCustomerController',
+invoicesUnlimited.controller('NewCustomerController',["$scope","$rootScope","$state","userFactory",
+			 "contactPersonFactory","customerFactory","$controller","$q","coreFactory","currencyFactory",
 	function($scope,$rootScope,$state,userFactory,
 			 contactPersonFactory,customerFactory,$controller,$q,coreFactory,currencyFactory){
 
@@ -589,4 +590,4 @@ invoicesUnlimited.controller('NewCustomerController',
 'ZAR - South African Rand',
 'ZMW - Zambian Kwacha'];
 
-});
+}]);

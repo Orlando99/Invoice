@@ -3,10 +3,10 @@
 invoicesUnlimited.controller('InvoiceDetailController',[
 	'$q', '$scope', '$state', '$sce', '$controller', 'userFactory',
 	'invoiceService', 'creditNoteService', 'coreFactory',
-	'commentFactory', 'currencyFilter',
+	'commentFactory', 'currencyFilter','$rootScope',
 
 	function($q, $scope, $state, $sce, $controller, userFactory,
-			  invoiceService, creditNoteService, coreFactory, commentFactory, currencyFilter) {
+			  invoiceService, creditNoteService, coreFactory, commentFactory, currencyFilter,$rootScope) {
 
 		if(! userFactory.entity.length) {
 			console.log('User not logged in');
@@ -1053,6 +1053,10 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 				$scope.invoice.entity.save();   
 			}
 
+			$rootScope.sendEmail($scope.contacts, $scope.invoice.entity);
+			hideLoader();
+			$state.reload();
+			/*
 			$scope.contacts.forEach(function(obj){
 				if(obj.selected){
 					invoiceService.sendInvoiceReceiptToEmail($scope.invoice.entity, obj.contact)
@@ -1063,7 +1067,7 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 					});
 				}
 			});
-
+			*/
 
 			//showSnackbar('Email sent...');
 

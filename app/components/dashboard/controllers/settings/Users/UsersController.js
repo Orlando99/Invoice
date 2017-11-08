@@ -1,6 +1,8 @@
 'use strict';
 
-invoicesUnlimited.controller('UsersController',
+invoicesUnlimited.controller('UsersController',["$scope","$state","$uibModal",
+			 "$controller","$document","userFactory",
+			 "projectUserFactory","queryService","appFields","$q",
 	function($scope,$state,$uibModal,
 			 $controller,$document,userFactory,
 			 projectUserFactory,queryService,appFields,$q){
@@ -499,4 +501,4 @@ invoicesUnlimited.controller('UsersController',
         }
     }
 
-});
+}]);
