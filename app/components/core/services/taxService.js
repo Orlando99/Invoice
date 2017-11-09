@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('taxService', function($q){
+invoicesUnlimited.factory('taxService', ["$q",
+						  function($q){
 	return {
 		getTaxes : function(user, callback){
 			showLoader();
@@ -163,4 +164,4 @@ invoicesUnlimited.factory('taxService', function($q){
 
 	}
 
-});
+}]);

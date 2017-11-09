@@ -1,6 +1,12 @@
 'use strict';
 
-invoicesUnlimited.factory('coreFactory',
+invoicesUnlimited.factory('coreFactory', ["userFactory",
+		"customerFactory",
+		 "creditNoteFactory",
+		"invoicesFactory",
+		"itemFactory",
+		"expenseCategoryFactory",
+		"queryService",
 	function(
 		userFactory,
 		customerFactory,
@@ -213,4 +219,4 @@ invoicesUnlimited.factory('coreFactory',
 
 	return core;
 
-});
+}]);

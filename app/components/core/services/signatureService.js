@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('signatureFactory',
+invoicesUnlimited.factory('signatureFactory',["userFactory","roleFactory",
 	function(userFactory,roleFactory){
 	
 	var user = userFactory;
@@ -68,4 +68,4 @@ invoicesUnlimited.factory('signatureFactory',
 
 	return signature;
 
-});
+}]);

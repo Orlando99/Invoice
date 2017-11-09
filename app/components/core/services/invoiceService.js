@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceService', function($q, invoiceFactory, itemService, currencyFilter, userFactory, currencyFactory){
+invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemService", "currencyFilter", "userFactory", "currencyFactory",
+						  function($q, invoiceFactory, itemService, currencyFilter, userFactory, currencyFactory){
 	return {
 		test : function() {
 			console.log("working");
@@ -1719,4 +1720,4 @@ function calculateTax(item, tax) {
 		else return organizationArray[0];
 	}
 
-});
+}]);

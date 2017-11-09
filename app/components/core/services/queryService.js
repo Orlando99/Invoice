@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.service('queryService',
+invoicesUnlimited.service('queryService',["userFactory",
 	function(userFactory){
 	
 	var user = userFactory;
@@ -57,4 +57,4 @@ invoicesUnlimited.service('queryService',
 		return query.first();
 	}
 
-});
+}]);

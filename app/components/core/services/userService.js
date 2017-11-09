@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('userFactory',function(appFields){
+invoicesUnlimited.factory('userFactory',["appFields",
+						  function(appFields){
 	
 	var currentUser = Parse.User.current() || {
 		justLoggedIn : false,
@@ -125,4 +126,4 @@ invoicesUnlimited.factory('userFactory',function(appFields){
 	setUserFields();
 	
 	return User;
-});
+}]);

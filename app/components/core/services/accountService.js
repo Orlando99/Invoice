@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('accountFactory',
+invoicesUnlimited.factory('accountFactory',["userFactory","roleFactory",
 	function(userFactory,roleFactory){
 	
 	var user = userFactory;
@@ -67,4 +67,4 @@ invoicesUnlimited.factory('accountFactory',
 
 	return accountInfo;
 
-});
+}]);

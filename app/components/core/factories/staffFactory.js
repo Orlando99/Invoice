@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('staffFactory', function(userFactory, projectUserFactory, appFields) {
+invoicesUnlimited.factory('staffFactory', ["userFactory", "projectUserFactory", "appFields",
+						  function(userFactory, projectUserFactory, appFields) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -30,4 +31,4 @@ var staffFields = [
 
 return staff;
 
-});
+}]);

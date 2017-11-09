@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceItemFactory', function(userFactory) {
+invoicesUnlimited.factory('invoiceItemFactory', ["userFactory",
+						  function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -25,4 +26,4 @@ function InvoiceItem (parseObject) {
 };
 
 return InvoiceItem;
-});
+}]);

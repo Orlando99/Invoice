@@ -1,7 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('invoiceFactory',function(userFactory, invoiceItemFactory, commentFactory,
-	paymentFactory) {
+invoicesUnlimited.factory('invoiceFactory',["userFactory", "invoiceItemFactory", "commentFactory","paymentFactory",
+						  function(userFactory, invoiceItemFactory, commentFactory,paymentFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -189,4 +189,4 @@ function Invoice(parseObject, params) {
 };
 
 return Invoice;
-});
+}]);

@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('creditNoteItemFactory', function(userFactory) {
+invoicesUnlimited.factory('creditNoteItemFactory', ["userFactory",
+						  function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -24,4 +25,4 @@ function CreditNoteItem (parseObject) {
 };
 
 return CreditNoteItem;
-});
+}]);

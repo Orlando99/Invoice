@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('currencyFactoryService', function(userFactory) {
+invoicesUnlimited.factory('currencyFactoryService', ["userFactory",
+						  function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -25,4 +26,4 @@ var fields = [
 
 return Currency;
 
-});
+}]);

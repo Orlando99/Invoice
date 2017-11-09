@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.controller('AccountInfoController',
+invoicesUnlimited.controller('AccountInfoController',["$q","$rootScope","$scope","$state","signUpFactory","userFactory",
 	function($q,$rootScope,$scope,$state,signUpFactory,userFactory){
 
 	if (!signUpFactory.getFactory('User').entity.length) {
@@ -320,4 +320,4 @@ invoicesUnlimited.controller('AccountInfoController',
   		return true;
   	}
 
-});
+}]);

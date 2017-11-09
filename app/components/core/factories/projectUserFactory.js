@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('projectUserFactory',
+invoicesUnlimited.factory('projectUserFactory',["userFactory","appFields",
 	function(userFactory,appFields){
 
 	var user = userFactory;
@@ -84,4 +84,4 @@ invoicesUnlimited.factory('projectUserFactory',
 
 	return projectUser;
 
-});
+}]);

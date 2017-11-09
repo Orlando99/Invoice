@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('contactPersonFactory',function(userFactory){
+invoicesUnlimited.factory('contactPersonFactory', ["userFactory",
+						  function(userFactory){
 	var user = userFactory;
 	if (!user.entity.length) return {};
 
@@ -41,4 +42,4 @@ invoicesUnlimited.factory('contactPersonFactory',function(userFactory){
 	];
 
 	return contactPerson;
-});
+}]);

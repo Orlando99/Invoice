@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('taskFactory', function(userFactory) {
+invoicesUnlimited.factory('taskFactory', ["userFactory",
+						  function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -27,4 +28,4 @@ var taskFields = [
 
 return task;
 
-});
+}]);

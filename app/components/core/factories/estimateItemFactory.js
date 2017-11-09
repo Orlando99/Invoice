@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('estimateItemFactory', function(userFactory) {
+invoicesUnlimited.factory('estimateItemFactory', ["userFactory",
+						  function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -25,4 +26,4 @@ function EstimateItem (parseObject) {
 };
 
 return EstimateItem;
-});
+}]);

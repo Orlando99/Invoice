@@ -1,6 +1,7 @@
 'use strict';
 
-invoicesUnlimited.factory('itemFactory', function(userFactory) {
+invoicesUnlimited.factory('itemFactory', ["userFactory",
+						  function(userFactory) {
 
 if(! userFactory.entity.length) {
 	console.log('User not logged in');
@@ -44,4 +45,4 @@ var taxFields = [
 
 return item;
 
-});
+}]);

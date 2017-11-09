@@ -1,6 +1,6 @@
 'use strict';
 
-invoicesUnlimited.factory('currencyFactory',
+invoicesUnlimited.factory('currencyFactory',["userFactory","roleFactory", "currencyFactoryService",
 	function(userFactory,roleFactory, currencyFactoryService){
 	
 	var user = userFactory;
@@ -137,4 +137,4 @@ invoicesUnlimited.factory('currencyFactory',
 
 	return currency;
 
-});
+}]);
