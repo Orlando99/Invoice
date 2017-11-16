@@ -1058,22 +1058,22 @@
 							$('#alreadyPaid').show();
 							$('.full-screen-loader,.full-screen-white-overlay').hide();
 						}
-						
+
 						result.lateFee = res.lateFee;
 					}).then(function(){
-						
+
 						var isOverdue = false;
-						
+
 						var dueDate = Date.parse(result.dueDate);
-	  
-						  dueDate.setHours(23);
-						  dueDate.setMinutes(59);
-						  dueDate.setSeconds(59);
-						
+
+						dueDate.setHours(23);
+						dueDate.setMinutes(59);
+						dueDate.setSeconds(59);
+
 						var now = new Date();
-						
+
 						isOverdue = now > dueDate;
-						
+
 						if (result.img) $('#logo-img').attr('src',result.img.url());
 						else $('#logo-img').attr('src',"./cardimages/01_IU-Web-Admin.png");
 						$('.b-name').text(result.businessName);
@@ -1248,16 +1248,10 @@
 										data = data.match(/(AUTH CODE.*)|(TRANS ID.*)/g).join(", ");
 									var query = new Parse.Query("InvoiceInfo");
 									query.equalTo("objectId",invoiceInfoId);
-									query.first({
-										success: function(invoiceInfo) {
-											invoiceInfo.set('paymentStatus',data);
-											invoiceInfo.save();
-										},
-										error : function(obj,error) {
-											console.log(error.message);
-										}
+									query.first().then(function(invoiceInfo){
+										invoiceInfo.set('paymentStatus',data);
+											return invoiceInfo.save();
 									}).then(function(){
-
 										var invoiceId = "";
 										var status = "";
 										var paymentId = "";

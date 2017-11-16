@@ -16,7 +16,7 @@ invoicesUnlimited.controller('DashboardController',[
 
 		var organization = user.entity[0].get("selectedOrganization")
 
-		var version = "130";
+		var version = "131";
 
 		var Version = Parse.Object.extend("Extras");
 

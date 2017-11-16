@@ -29,7 +29,7 @@ invoicesUnlimited.controller('ExpenseController',[
 			}
 		};
 
-		CheckUseCase();
+		//CheckUseCase();
 
 		$('#addExpenseForm').validate({
 			rules: {
