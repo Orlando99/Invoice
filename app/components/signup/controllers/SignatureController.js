@@ -128,7 +128,7 @@ invoicesUnlimited.controller('SignatureController',
                 'Business_Volume'	: accountInfo.get('monthlySales'),
                 'Signature_Url'     : currentUser.get('signatureImage').get('imageFile')._url
             }
-            
+            /*
             $.ajax({
                 method:"POST",
                 type:"POST",
@@ -146,7 +146,7 @@ invoicesUnlimited.controller('SignatureController',
                 hideLoader();
                 //$state.go('signup.invoiceTemplateInfo');
             });
-            
+            */
             /*
             $.ajax({
                 method:"POST",

@@ -222,7 +222,7 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
                     'ContactName'	    : $scope.fullName,
                 }
             }
-            
+            /*
             $.ajax({
                 method:"POST",
                 type:"POST",
@@ -240,6 +240,7 @@ invoicesUnlimited.controller('InvoiceTemplateInfoController',
                 //hideLoader();
                 //$state.go('signup.invoiceTemplateInfo');
             });
+			*/
         }
         
         function sendEmail(){
