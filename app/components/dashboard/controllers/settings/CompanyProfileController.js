@@ -140,6 +140,7 @@ invoicesUnlimited.controller('CompanyProfileController',
         
     if(!user.get('EPNusername') || !user.get('EPNrestrictKey') || !user.get('merchantID')){
         $scope.enableBusinessInfo = true;
+		$scope.country = user.get("country");
     }
     else{
         $scope.enableBusinessInfo = false;
@@ -200,6 +201,12 @@ invoicesUnlimited.controller('CompanyProfileController',
          var promises = [];
          
          //if($scope.enableBusinessInfo)
+		 
+		 if($scope.country){
+			 user.set("country", $scope.country);
+			 promises.push(user.save());
+		 }
+		 
             promises.push($scope.businessInfo.save());
          
          if($scope.newLogo){

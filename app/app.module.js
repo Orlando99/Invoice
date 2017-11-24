@@ -77,7 +77,7 @@ function numberValidationOnText(textValue)
     }   
 }
  
-var invoicesUnlimited = angular.module('invoicesUnlimited', ['angularTrix','ui.router','oc.lazyLoad','ui.bootstrap','ngSanitize', 'cp.ngConfirm', 'ngMaterial'])
+var invoicesUnlimited = angular.module('invoicesUnlimited', ['angularTrix','ui.router','oc.lazyLoad','ui.bootstrap','ngSanitize', 'cp.ngConfirm', 'ngMaterial','alexjoffroy.angular-loaders'])
 .config(function($locationProvider){
 	//$locationProvider.html5Mode(true).hashPrefix('');
 })

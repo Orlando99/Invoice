@@ -276,11 +276,12 @@ invoicesUnlimited.controller('NewCustomerController',["$scope","$rootScope","$st
 				$scope.newCustomer.billingAddress = Object.create(address);
 				$scope.newCustomer.shippingAddress = Object.create(address);
 				hideLoader();
+				coreFactory.clearAllOnLogOut();
 				if($state.params.backLink) {
 					// clear customer in core factory,
 					// or send loadAgain = true from all the
 					// places where coreFactory.loadAllCustomers in used.
-					coreFactory.clearAllOnLogOut();
+					//coreFactory.clearAllOnLogOut();
                     
                     if($state.params.invoiceId){
                         $state.go($state.params.backLink, {'customerId':custObj.id, 'invoiceId' : $state.params.invoiceId});
@@ -304,7 +305,8 @@ invoicesUnlimited.controller('NewCustomerController',["$scope","$rootScope","$st
                         $state.go('dashboard');
                     }
                     else{
-					   $state.go('dashboard.customers.all');
+					//$state.reload();
+					   $state.go('dashboard.customers.all', {}, {reload: "dashboard.customers"});
                     }
 				}
 			});

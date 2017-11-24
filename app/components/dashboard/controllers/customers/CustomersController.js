@@ -728,6 +728,7 @@ invoicesUnlimited.controller('CustomersController', ["$scope","$rootScope","$sta
     */
 	function LoadCustomers(loadAgain) {
 		//showLoader();
+		//$q.when(coreFactory.getAllCustomers(loadAgain)).then(function(res){
 		$q.when(coreFactory.getAllCustomers(loadAgain)).then(function(res){
 			$scope.customers = res.sort(function(a,b){
 				return alphabeticalSort(a.entity.displayName,b.entity.displayName);
@@ -828,6 +829,7 @@ invoicesUnlimited.controller('CustomersController', ["$scope","$rootScope","$sta
 	//nameD,custNameD,emailD,workphoneD,receivableD,creditsD,
 	$scope.sortByCustomerName= function()
 	{
+		debugger;
 		if($("#nameD").css('display') === "none"){
 			$scope.customers.sort(function(a,b)
 								  {
@@ -1559,6 +1561,7 @@ invoicesUnlimited.controller('CustomersController', ["$scope","$rootScope","$sta
 		} else if (fromState.name.endsWith('new')) {
 			LoadCustomers(true);
 		} 
+		 
 		/*
 		else if (!toState.name.includes('customers')) {
 		//	console.log('destroy else');
