@@ -1,6 +1,6 @@
-<div style="height: 20px ; background-color: #B8B8B8; text-align: center ; margin-bottom: 10px; margin-top: -12px;">
-	<label style="font-size: 12px; color: #000">InvoicesUnlimited: Version 14.00</label>
-</div>
+<!--<div style="height: 20px ; background-color: #B8B8B8; text-align: center ; margin-bottom: 10px; margin-top: -12px;">
+<label style="font-size: 12px; color: #000">InvoicesUnlimited: Version 14.00</label>
+</div>-->
 <div class="container">
 	<a href="index.html" class="logo"><img src="./assets/images/01_IU-Web-Admin.png" alt="InvoicesUnlimited"></a>
 	<div  id="div_wrapp" onmouseout="mouse_out(this)" onmouseover="div_add_class(this)" class="organization">
@@ -21,10 +21,9 @@
 	<li id="sales" class="nav-item">
 		<a href="javascript:" id="link-sales">Sales</a>
 		<div class="container-fluid link-sales-div">
-			<ul Style="" class="submenu">
-
+			<ul style="" class="submenu">
 				<li><a id="invoices-link" Style="margin-left: 260px !important" ui-sref="dashboard.sales.invoices.all" ui-sref-opts="{reload:true}">Invoices</a></li>
-				<li><a Style="margin-left: 70px !important" ui-sref="dashboard.sales.estimates.all" ui-sref-opts="{reload:true}">Estimates</a></li>
+				<li><a style="margin-left: 70px !important" ui-sref="dashboard.sales.estimates.all" ui-sref-opts="{reload:true}">Estimates</a></li>
 				<li><a ui-sref="dashboard.sales.creditnotes.all" ui-sref-opts="{reload:true}">Credit Notes</a></li>
 			</ul>
 		</div>
@@ -34,7 +33,7 @@
 		<a href="javascript:" id="link-expense">Expenses</a>
 		<div class="container-fluid link-expense-div">
 			<ul class="submenu">
-				<li><a Style="margin-left: 365px !important" ui-sref="dashboard.expenses.all" ui-sref-opts="{reload:true}">Expenses</a></li>
+				<li><a style="margin-left: 365px !important" ui-sref="dashboard.expenses.all" ui-sref-opts="{reload:true}">Expenses</a></li>
 				<!-- <li><a href="#">Recurring Expenses</a></li> -->
 				<li><a ui-sref="dashboard.expenses.category" ui-sref-opts="{reload:true}">Expense Category</a></li>
 			</ul>
@@ -47,7 +46,7 @@
 -->
 
 	<li id="reports" class="nav-item" ng-hide="role == 'General Employee' || role == 'Sales'">
-		<a  href="javascript:" id="link-reports">Reports</a>
+		<a href="javascript:" id="link-reports">Reports</a>
 		<div class="container-fluid link-reports-div">
 			<ul class="submenu">
 				<li>
@@ -101,18 +100,18 @@
 <div id="snackbar"></div>
 
 <div class="popup-modal progress-popup hidesm">
-    <div class="modal container">
-      <h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Email to</h3>
-      <button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
-      </button>
-      <div class="clearfix"></div>
-      <hr class="layout-margin-tb">
+	<div class="modal container">
+		<h3 class="section-title layout-no-margin text-uppercase text-color-normalise text-weight-normalize float-left">Email to</h3>
+		<button class="button button-icon float-right modal-close"><img src="./assets/images/icon-times.png" alt="">
+		</button>
+		<div class="clearfix"></div>
+		<hr class="layout-margin-tb">
 
-      <div class="col-80 text-left layout-center">
-        
-      </div>
-      <div class="clearfix"></div>
-      <button class="button button-info text-uppercase" ng-click="sendEmail()">Send</button>
-    </div>
-  </div>
+		<div class="col-80 text-left layout-center">
+
+		</div>
+		<div class="clearfix"></div>
+		<button class="button button-info text-uppercase" ng-click="sendEmail()">Send</button>
+	</div>
+</div>
 

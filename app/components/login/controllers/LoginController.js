@@ -119,7 +119,6 @@ invoicesUnlimited.controller
 					  {
 						  if(obj.get("status") == "Deactivated")
 						  {
-
 							  user.logout()
 								  .then(function(){
 								  hideLoader();
@@ -136,15 +135,15 @@ invoicesUnlimited.controller
 									  $state.go('dashboard.sales.invoices.all');
 								  else {
 									  switch(firstScreen) {
-										  case 'Dashboard': 		  $state.go('dashboard'); break;
-										  case 'Customer List': 	  $state.go('dashboard.customers.all'); break;
-										  case 'Invoices List': 	  $state.go('dashboard.sales.invoices.all'); break;
-										  case 'Expense List': 	  $state.go('dashboard.expenses.all'); break;
-										  case 'Estimate List': 	  $state.go('dashboard.sales.estimates.all'); break;
+										  case 'Dashboard': 		$state.go('dashboard'); break;
+										  case 'Customer List': 	$state.go('dashboard.customers.all'); break;
+										  case 'Invoices List': 	$state.go('dashboard.sales.invoices.all'); break;
+										  case 'Expense List':		$state.go('dashboard.expenses.all'); break;
+										  case 'Estimate List': 	$state.go('dashboard.sales.estimates.all'); break;
 										  case 'Credit Notes List': $state.go('dashboard.sales.creditnotes.all'); break;
-										  case 'Reports': 		  $state.go('dashboard.reports'); break;
-										  case 'Settings': 		  $state.go('dashboard.settings.company-profile'); break;
-										  default: 				  $state.go('dashboard'); break;
+										  case 'Reports': 		  	$state.go('dashboard.reports'); break;
+										  case 'Settings': 		  	$state.go('dashboard.settings.company-profile'); break;
+										  default: 				  	$state.go('dashboard'); break;
 														}
 								  }
 							  }//end of else
@@ -160,16 +159,16 @@ invoicesUnlimited.controller
 			  },function(error){
 				  hideLoader();
 				  if(error.message.indexOf('password') >= 0)
-				  	$('.errorMessage').html("Invalid password.").show();
+					  $('.errorMessage').html("Invalid password.").show();
 				  else
-				  	$('.errorMessage').html(error.message.capitilize()).show();
+					  $('.errorMessage').html(error.message.capitilize()).show();
 				  $('.input-container').css({'border':'1px solid red'});
 			  });
 
 		  }, function(error){
 			  hideLoader();
 			  if(error.message.indexOf('password') >= 0)
-			  $('.errorMessage').html("Something went wrong. Please try again").show();
+				  $('.errorMessage').html("Something went wrong. Please try again").show();
 			  console.error(error.message);
 		  });
 
@@ -246,7 +245,7 @@ invoicesUnlimited.controller
 	  }, function(error){
 		  console.error(error);
 	  });
-	  
+
 	  /*
         Parse.Cloud.run("sendMailgunSample", {
 			toEmail: 'mianazhar2005@gmail.com',

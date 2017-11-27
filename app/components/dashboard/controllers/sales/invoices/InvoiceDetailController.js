@@ -1034,8 +1034,8 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 				return;
 			}
 
-			showLoader();
-
+			//showLoader();
+			$('.email-popup').removeClass('show');
 			if($scope.invoice.entity.get('status') == 'Draft' || $scope.invoice.entity.get('status') == 'Sent')
 			{  
 				var dueDate = $scope.invoice.entity.get('dueDate');
@@ -1054,8 +1054,8 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 			}
 
 			$rootScope.sendEmail($scope.contacts, $scope.invoice.entity);
-			hideLoader();
-			$state.reload();
+			//hideLoader();
+			//$state.reload();
 			/*
 			$scope.contacts.forEach(function(obj){
 				if(obj.selected){

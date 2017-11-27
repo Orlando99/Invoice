@@ -14,9 +14,14 @@ invoicesUnlimited.controller('DashboardController',[
 			return;
 		}
 
-		var organization = user.entity[0].get("selectedOrganization")
+		var tutorial = user.entity[0].get('tutorial');
+		
+		if(!tutorial)
+			$state.go('signup.invoiceTemplateInfo');
+		
+		var organization = user.entity[0].get("selectedOrganization");
 
-		var version = "133";
+		var version = "134";
 
 		var Version = Parse.Object.extend("Extras");
 
@@ -70,22 +75,30 @@ invoicesUnlimited.controller('DashboardController',[
 				if(obj.selected){
 					invoiceService.sendInvoiceReceiptToEmail(invoice, obj.contact)
 						.then(function(result){
-						addNewComment(invoice, 'Invoice emailed to ' + obj.contact, true);
-						//$('.email-popup').removeClass('show');
-						if(i == contacts.length - 1){
-							$('.ambiance-default').hide();
-							$.ambiance({message: "Invoice sent successfully!",
-										title: "Success!",
-										type: "success"});
-						}
+						addNewComment(invoice, 'Invoice emailed to ' + obj.contact, true)
+							.then(function(invObj){
+							if(i == contacts.length){
+								$('.ambiance-default').hide();
+								$.ambiance({message: "Invoice sent successfully!",
+											title: "Success!",
+											type: "success"});
+								
+								if($state.current.name.endsWith("details"))
+									$state.go('dashboard.sales.invoices.details', {invoiceId:invoice.id}, {reload: true});
+							}
+						}, function(error){
+							console.log(error);
+						});
 					});
 				} else if(i == contacts.length - 1){
 					$('.ambiance-default').hide();
 					$.ambiance({message: "Invoice sent successfully!",
 								title: "Success!",
 								type: "success"});
+					$state.go('dashboard.sales.invoices.details', {invoiceId:invoice.id}, {reload: true});
 				}
 			}
+			/*
 			contacts.forEach(function(obj){
 				if(obj.selected){
 					invoiceService.sendInvoiceReceiptToEmail(invoice, obj.contact)
@@ -99,6 +112,7 @@ invoicesUnlimited.controller('DashboardController',[
 					});
 				}
 			});
+			*/
 		};
 
 		$rootScope.sendText = function(contacts, invoice){

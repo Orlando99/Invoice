@@ -1289,8 +1289,8 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 		}
 
 		function saveAndSend1() {
-
-			if (! validateForms())	return;
+			if (! validateForms())
+				return;
 
 			showLoader();
 			$q.when(invoiceService.checkInvoiceNumAvailable({
@@ -1311,30 +1311,12 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 				.then(function(invoice) {
 				addNewComment('Invoice created for ' + currencyFilter(invoice.attributes.balanceDue, '$', 2) +' amount', true, invoice)
 					.then(function(invObj){
-					hideLoader();
-					$state.go('dashboard.sales.invoices.details', {invoiceId:invObj.id});
-
-					/*
-                if($scope.selectedCustomer.entity.email){
-                    addNewComment('Invoice emailed to ' + $scope.selectedCustomer.entity.email, true, invoice)
-                    .then(function(obj){
-                        hideLoader();
-                        $state.go('dashboard.sales.invoices.details', {invoiceId:obj.id});
-                    });
-                }
-                else{
-                    hideLoader();
-                    $state.go('dashboard.sales.invoices.details', {invoiceId:invObj.id});
-                }
-                */
+					//hideLoader();
+					//$state.go('dashboard.sales.invoices.details', {invoiceId:invObj.id});
 				});
-				/*
-            if($scope.selectedCustomer.entity.email)
-                addNewComment('Invoice emailed to ' + $scope.selectedCustomer.entity.email, true, invoice);
-			hideLoader();
-			//$state.go('dashboard.sales.invoices.all');
-            $state.go('dashboard.sales.invoices.details', {invoiceId:invoice.id});
-            */
+				
+				hideLoader();
+				$state.go('dashboard.sales.invoices.details', {invoiceId:invoice.id});
 			}, function (error) {
 				hideLoader();
 				console.log(error);
@@ -1363,7 +1345,7 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 			{
 				n =  n.replace("^", "");
 			}
-			if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') ||          n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg')))
+			if(!(n.toLowerCase().endsWith('.pdf') || n.toLowerCase().endsWith('.png') || n.toLowerCase().endsWith('.jpg') || n.toLowerCase().endsWith('.jpeg')))
 			{
 				$('#file-error').show();
 				return;
@@ -1812,6 +1794,7 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 
 		$scope.saveNewTax = function() {
 			if(! $('#addTaxForm').valid()) return;
+			
 			salesCommon.createNewTax({
 				_scope : $scope,
 				user : user
@@ -1819,17 +1802,14 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 				reCalculateSubTotal();
 				if(!$scope.$$phase)
 					$scope.$apply();
-
-
 			});
 		}
 
 		function commaSeparateNumber(val){
-
 			val = val.split(',').join('');
+			
 			if(val.indexOf('.') !== -1)
 			{
-
 				while (/(\d+)(\d{3})/.test(val.toString())){
 					val = val.toString().replace(/(\d+)(\d{3})/, '$1'+','+'$2');
 				}
@@ -1854,6 +1834,4 @@ invoicesUnlimited.controller('CreateInvoiceController',[
 
 			$(this).val(commaSeparateNumber($(this).val()));
 		});
-
-
 	}]);
