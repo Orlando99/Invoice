@@ -1237,10 +1237,32 @@
 
 								if (($('#gateway').val() == 1 && /^[N|U].*/g.test(auth)) || 
 									($('#gateway').val() == 2 && /Failed/g.test(data))) {
-									var error = $('#gateway').val() == 1 ? 
-										auth.slice(0,auth.length) :
-									data.match(/Error message.*/g)[0];
+									
+									if($('#gateway').val() == 1){
+										if(data.includes("Auth") || data.includes("account") || data.includes("Block")){
+											$('#account-error-message').show();
+											$('#card-error-message').hide();
+										} else {
+											$('#account-error-message').hide();
+											$('#card-error-message').show();
+										}
+									} else {
+										if(data.includes("error") || data.includes("auth")){
+											$('#account-error-message').show();
+											$('#card-error-message').hide();
+										} else {
+											$('#account-error-message').hide();
+											$('#card-error-message').show();
+										}
+									}
+									
+									//var error = $('#gateway').val() == 1 ? auth.slice(0,auth.length) : data.match(/Error message.*/g)[0];
 									//$('#invoice-error-message').text(error);
+									$('#invoice-process').hide();
+									$('#invoice-error').show();
+								} else if(data.includes("error")){
+									$('#account-error-message').show();
+											$('#card-error-message').hide();
 									$('#invoice-process').hide();
 									$('#invoice-error').show();
 								} else if (/^Y.*/g.test(auth) || /AUTH CODE/g.test(data)) {
@@ -1631,7 +1653,8 @@
 
 				<div class="pay-error cl">
 					<div class="pay-info-1-full">
-						<p>This card was unable to be processed. Please try again. If you continue to have issues, please call your issuing bank.</p>
+						<p id="card-error-message">This card was unable to be processed. Please try again. If you continue to have issues, please call your issuing bank.</p>
+						<p id="account-error-message">Account Error: Please call 866-925-5007 for a quick fix</p>
 					</div>
 					<a class="btn-try-again">Try Again</a>
 				</div>
