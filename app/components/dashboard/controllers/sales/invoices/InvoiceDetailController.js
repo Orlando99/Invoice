@@ -120,7 +120,7 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 						return invoiceService.copyInInvoiceInfo(invoice.entity)
 							.then(function(infoObj){
 							info = infoObj.id;
-							$scope.payLink = "https://invoicesunlimited.net/pay/?InvoiceInfoID=" + info;
+							$scope.payLink = "https://app.invoicesunlimited.com/pay/?InvoiceInfoID=" + info;
 							return invoiceService.createInvoiceReceipt(invoiceId,info)
 								.then(function(obj) {
 								return obj.get('invoiceReceipt');
@@ -128,14 +128,14 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 						});
 					}
 					else {
-						$scope.payLink = "https://invoicesunlimited.net/pay/?InvoiceInfoID=" + info;
+						$scope.payLink = "https://app.invoicesunlimited.com/pay/?InvoiceInfoID=" + info;
 						return invoiceService.createInvoiceReceipt(invoiceId,info)
 							.then(function(obj) {
 							return obj.get('invoiceReceipt');
 						});
 					}
 				} else {
-					$scope.payLink = "https://invoicesunlimited.net/pay/?InvoiceInfoID=" + info;
+					$scope.payLink = "https://app.invoicesunlimited.com/pay/?InvoiceInfoID=" + info;
 					return Promise.resolve(receipt);
 				}
 
@@ -1435,8 +1435,8 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 
 
 			var invoiceId = $(dataTable).find('invoiceId').text();
-			$('#pay-link').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
-			$('#pay-link-2').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+			$('#pay-link').attr('href',"https://app.invoicesunlimited.com/pay/?InvoiceInfoID="+invoiceId);
+			$('#pay-link-2').attr('href',"https://app.invoicesunlimited.com/pay/?InvoiceInfoID="+invoiceId);
 
 			var labels = $(dataTable).find('items');
 			console.log(labels);

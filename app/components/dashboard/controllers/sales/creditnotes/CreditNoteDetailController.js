@@ -648,8 +648,8 @@ invoicesUnlimited.controller('CreditNoteDetailController',[
 
 
 			var invoiceId = $(dataTable).find('invoiceId').text();
-			$('#pay-link').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
-			$('#pay-link-2').attr('href',"https://invoicesunlimited.net/pay/?InvoiceInfoID="+invoiceId);
+			$('#pay-link').attr('href',"https://app.invoicesunlimited.com/pay/?InvoiceInfoID="+invoiceId);
+			$('#pay-link-2').attr('href',"https://app.invoicesunlimited.com/pay/?InvoiceInfoID="+invoiceId);
 
 			var labels = $(dataTable).find('items');
 			console.log(labels);

@@ -172,7 +172,7 @@ invoicesUnlimited.controller('NewUserController',["$scope","$state","userFactory
 		var htmlBody = "Hello " + $scope.user.fullName + ",<br/><br/>"
 					 + "You have been invited by " + $scope.user.company + " to use "
 					 + "Invoice Unlimited as " + $scope.user.role + ".<br/>"
-					 + "Please visit the <a href='http://invoicesunlimited.net/app/'>Link</a> and log in "
+					 + "Please visit the <a href='http://app.invoicesunlimited.com/'>Link</a> and log in "
 					 + "with your username and password listed below.<br/><br/>"
 					 + "Username: " + $scope.user.username + "<br/>"
 					 + "Password: " + $scope.user.password + "<br/><br/>"
