@@ -1,0 +1,113 @@
+
+<link rel="stylesheet" href="css/bootstrap_dropdown.css"/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/DynamicView.css"/>
+<link rel="stylesheet" href="" id="appStyle"/>
+<link rel="stylesheet" href="" id="appStyle1"/>
+<link rel="stylesheet" href="css/custom.css"/>
+
+<header class="sticky-nav logo-only">
+    <a href="#"><img src="./images/logo.png" alt="Invoices Unlimited"></a>
+</header>
+
+<section  class="sign-up text-center">
+
+    <h2 class="text-uppercase">LOREM IPSUM DOLOR</h2>
+
+    <form name="signUp" id="signUpForm" class="ng-pristine ng-invalid ng-invalid-required" novalidate="novalidate">
+        
+        <input type="text" value="John Reseller" placeholder="Business Name" name="company" id="company" 1="bsnsInfo.businessName" required="" class="ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" aria-required="true" aria-invalid="true" style="">
+
+        <input type="text" value="Thousand Oaks CA" placeholder="Business Address" name="streetName" id="streetName" 1="bsnsInfo.streetName" required="" class="ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" aria-required="true" aria-invalid="true" style="">
+        <input type="text" value="Thousand Oaks" placeholder="City" name="city" id="city" 1="bsnsInfo.city" required="" class="ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" aria-required="true" aria-invalid="true" style="">
+
+        <div style="width: 100%" class="row">
+                 <input value="CA" type="text" style="width: 48%" placeholder="State" name="state" id="state_reseller" 1="bsnsInfo.state" required="" class="input-50 input-50-spacing-swap ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" aria-required="true" aria-invalid="true">
+              
+                <input value="12345" type="text" style="width: 47.5%" placeholder="Zip Code" name="zipCode" id="zipCode_reseller" 1="bsnsInfo.zipCode" required="" class="input-50 input-50-spacing-swap ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" aria-required="true" aria-invalid="true">
+          </div>
+
+
+        <input type="text" value="john@resseler.com" placeholder="Email" name="fullName" id="fullName" 1="fullName" required="" class="ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" aria-required="true" aria-invalid="true" style="">
+
+        <input value="(252) 432-8825" type="text" placeholder="Phone Number" class="mobilePhone ng-pristine ng-untouched ng-valid ng-empty" name="phoneNumber" id="phoneNumber" 1="bsnsInfo.phoneNumber" aria-invalid="false">
+        
+        <input type="text" value="johnreseller"  placeholder="Username" name="fullName" id="fullName" 1="fullName" required="" class="ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" aria-required="true" aria-invalid="true" style="">
+        
+        <input value="********" type="password" placeholder="Password (6 Characters)" name="fullName" id="fullName" 1="fullName" required="" class="ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" aria-required="true" aria-invalid="true" style="">
+
+        <div style="border-bottom:1px solid blue; margin-bottom: 20px" class="row">
+        </div>
+        
+        <input type="text" value="John Kennedy" placeholder="Account Holder Name" name="fullName" id="fullName" 1="fullName" required="" class="ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" aria-required="true" aria-invalid="true" style="">
+        
+        <input type="text" value="**************1234" placeholder="Credit Card Number" name="fullName" id="fullName" 1="fullName" required="" class="ng-pristine ng-empty ng-invalid ng-invalid-required ng-touched" aria-required="true" aria-invalid="true" style="">
+        
+         <div style="width: 100%" class="row">
+
+            
+                <input type="text" value="12/19" style="width: 48%" placeholder="Expiration Date" name="state" id="exp_reseller" 1="bsnsInfo.state" required="" class="input-50 input-50-spacing-swap ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" aria-required="true" aria-invalid="true">
+              
+                <input type="text" value="533" style="width: 47.5%" placeholder="CVV" name="zipCode" id="zipCode_reseller" 1="bsnsInfo.zipCode" required="" class="input-50 input-50-spacing-swap ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" aria-required="true" aria-invalid="true">
+             
+
+        </div>
+        
+        <div style="width: 100%" class="row">
+                  <input value="12345" type="text" style="width: 48%;float:left" placeholder="Zip Code" name="state" id="zip_reseller" 1="bsnsInfo.state" required="" class="input-50 input-50-spacing-swap ng-pristine ng-untouched ng-empty ng-invalid ng-invalid-required" aria-required="true" aria-invalid="true">
+         </div>
+        
+    </form>
+
+    <a ui-sref="resellers" class="button button-primary button-next">Next</a>
+    
+    <p>By clicking "NEXT", you are agreeing to the
+        <a id="myBtn" target="_blank" href="http://app.invoicesunlimited.com/terms.html">Terms &amp; Conditions</a> and 
+        <a target="_blank" href="http://app.invoicesunlimited.com/privacy.html">Privacy Policy</a>
+    </p>
+
+</section>
+
+<!--
+<header class="sticky-nav logo-only">
+<a href="#"><img src="./assets/images/01_IU-Web-Admin.png" alt="Invoices Unlimited"></a>
+</header>
+
+<section class="sign-up text-center">
+
+<h2 class="text-uppercase">Business Info</h2>
+
+<form name="signUp" id="signUpForm">
+<input type="text" placeholder="Business Name" name="company" 1="bsnsInfo.businessName" required>
+<input type="text" placeholder="Business Address" name="streetName" 1="bsnsInfo.streetName" required>
+<input type="text" placeholder="City" name="city" 1="bsnsInfo.city" required>
+<input type="text" placeholder="State" name="state" 1="bsnsInfo.state" required class="input-50">
+<input type="text" placeholder="Zip Code" name="zipCode" 1="bsnsInfo.zipCode" required class="input-50">
+<!-- <input type="text" placeholder="Phone Number" name="phoneNumber" id="phone" 1="bsnsInfo.phoneNumber">
+<textarea placeholder="Products &amp; Services Sold (ie. Boutique Clothing, Stationary, etc.)" 1="bsnsInfo.businessDescription" name="businessDescription"></textarea>
+<label class="input-container input-checkbox-container">
+<p>Do You Have a Federal Tax ID?</p>
+<input type="checkbox" class="federal-tax-id" ng-change="federalTaxIdClick();" 1="x2">
+<span class="checkbox"></span>
+</label>
+<input class="layout-margin-tb federal-tax federal-tax-id-input" type="text" placeholder="Federaly Tax ID" 1="bsnsInfo.federalTaxID" name="federalTaxID"> <!--pattern=".{9,}"
+
+<select class="custom-dd" name="ownershipType"
+ng-init="bsnsInfo.ownershipType = 'ownershipTitle'"
+1="bsnsInfo.ownershipType">
+<option value="ownershipTitle" disabled>Ownership Type</option>
+<option value="Sole Proprietor">Sole Proprietor</option>
+<option value="LLC">LLC</option>
+<option value="Corporation and Non Profit">Corporation and Non Profit</option>
+</select>
+
+</form>
+
+<a href="" ng-click="saveBusinessInfo();" class="button button-primary button-next">Next</a>
+
+</section>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script src="./dist/js/main.js"></script>
+
+-->

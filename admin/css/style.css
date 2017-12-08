@@ -17,69 +17,69 @@
 }
 
 body {
-	color: #000;
-	font: normal 14px/18px 'Avenir Next LT Pro Regular', sans-serif;
-	overflow-x:hidden;
-	overflow-y:scroll;
-	background-color: #f2f2f2;
+    color: #000;
+    font: normal 14px/18px 'Avenir Next LT Pro Regular', sans-serif;
+    overflow-x:hidden;
+    overflow-y:scroll;
+    background-color: #f2f2f2;
 }
 
 body, html {
-  height: 100%;
-  width: 100%;
+    height: 100%;
+    width: 100%;
 }
 
 p {
-	line-height: 20px;
-	margin-bottom: 10px;
+    line-height: 20px;
+    margin-bottom: 10px;
 }
 
 h1 {
-	font-weight: normal;
-	font-size: 22px;
-	line-height: 24px;
+    font-weight: normal;
+    font-size: 22px;
+    line-height: 24px;
 }
 
 h2 {
-	font-weight: 300;
-	font-size: 20px;
-	line-height: 22px;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 22px;
 }
 
 h3 {
-	font-size: 18px;
-	line-height: 20px;
-	font-weight: normal;
+    font-size: 18px;
+    line-height: 20px;
+    font-weight: normal;
 }
 
 h4 {
-	font-size: 16px;
-	line-height: 18px;
-	font-weight: normal;
+    font-size: 16px;
+    line-height: 18px;
+    font-weight: normal;
 }
 
 h5 {
-	font-size: 14px;
-	line-height: 16px;
-	font-weight: normal;
+    font-size: 14px;
+    line-height: 16px;
+    font-weight: normal;
 }
 
 a {
-	text-decoration: none;
-  cursor: pointer;
+    text-decoration: none;
+    cursor: pointer;
     color: #0088dd;
 }
 
 a:hover {
-	color: #0088dd;
+    color: #0088dd;
 }
 
 strong {
-	font-weight: 700;
+    font-weight: 700;
 }
 
 .hide{
-	display: none !important;
+    display: none !important;
 }
 
 .cl:before, .cl:after {
@@ -92,15 +92,15 @@ strong {
 }
 
 .cl {
-	clear: both;
+    clear: both;
 }
 
 .left{
-  float:left;
+    float:left;
 }
 
 .right{
-  float:right;
+    float:right;
 }
 
 .window-shadow {
@@ -115,107 +115,107 @@ strong {
 
 /***************  WRAPPER STRUCTURE  ***************/
 .wrapper {
-width: 960px;
-margin: 20px auto;
+    width: 960px;
+    margin: 20px auto;
 }
 
 
 /***************  UI STYLES ***************/
 input[type=text],  input[type=password], input[type='number'] {
-	display: block;
-	outline:0;
-	box-sizing:border-box;
-	width: 100%;
-	border:1px solid #ccc;
-	padding:4px 8px;
-	font: normal 14px/18px 'Avenir Next LT Pro Regular', sans-serif;
+    display: block;
+    outline:0;
+    box-sizing:border-box;
+    width: 100%;
+    border:1px solid #ccc;
+    padding:4px 8px;
+    font: normal 14px/18px 'Avenir Next LT Pro Regular', sans-serif;
 }
 
 input[type='number'] {
-  -moz-appearance:textfield;
+    -moz-appearance:textfield;
 }
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
+    -webkit-appearance: none;
 }
 
 .button{
-     background-color: #0089da;
+    background-color: #0089da;
     outline: 0;
     box-sizing: border-box;
     border: 1px solid #0089da;
     -moz-border-radius: 5px;
-        -webkit-border-radius: 5px;
-        -khtml-border-radius: 5px;
-        border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
     font: normal 18px/22px 'Avenir Next LT Pro Regular', sans-serif;;
     text-transform: uppercase;
     color: #fff;
     padding: 6px 60px;
     cursor: pointer;
     border-bottom: 3px solid #006cad;
-      -webkit-transition: all 0.5s ease 0s;
+    -webkit-transition: all 0.5s ease 0s;
     -moz-transition: all 0.5s ease 0s;
     -ms-transition: all 0.5s ease 0s;
     -o-transition: all 0.5s ease 0s; 
- } 
+} 
 
 .button:hover,
 .button:focus{
-  	    background-color: #006cad;
-  	    border: 1px solid #006cad;
-  	     border-bottom: 3px solid #006cad;
-  	     color:#fff;
-  }
+    background-color: #006cad;
+    border: 1px solid #006cad;
+    border-bottom: 3px solid #006cad;
+    color:#fff;
+}
 
 .button-cancel{
-float:left;
-color:#000;
-margin: 10px 20px;
+    float:left;
+    color:#000;
+    margin: 10px 20px;
 }
 
 .alert-danger{
-color:#fc482d;
-display: block;
+    color:#fc482d;
+    display: block;
 }
 
 /***************  HEADER STYLES ***************/
 
 .header {
-margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .header a.logo{
-background: url(../images/logo.png) no-repeat center;
-width:345px;
-height: 42px;
-display:block;
-float:left;
+    background: url(../images/logo.png) no-repeat center;
+    width:345px;
+    height: 42px;
+    display:block;
+    float:left;
 }
 
 .header .user-actions{
-	float:right;
+    float:right;
 
-	position: relative;
-   
+    position: relative;
+
 }
 
 .header .user-actions span{
-color:#0088dd;
-font-size:22px;
-line-height: 24px;
-padding-right: 24px;
-text-transform: uppercase;
- background: url(../images/icons-sprite.png) no-repeat;
+    color:#0088dd;
+    font-size:22px;
+    line-height: 24px;
+    padding-right: 24px;
+    text-transform: uppercase;
+    background: url(../images/icons-sprite.png) no-repeat;
     background-position: right -312px;
     cursor: pointer;
 
 }
 
 .header .user-actions span a{
-font-size:22px;
-line-height: 24px;
+    font-size:22px;
+    line-height: 24px;
 }
 
 .header .user-actions  .user-options{
@@ -227,14 +227,14 @@ line-height: 24px;
     margin-top: 10px;
     right: 0;
     z-index: 11;
-     -moz-border-radius: 35px;
-        -webkit-border-radius: 3px;
-        -khtml-border-radius: 3px;
-        border-radius: 3px;
+    -moz-border-radius: 35px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+    border-radius: 3px;
 
     -webkit-box-shadow: 0 8px 6px -6px #333;
-	   -moz-box-shadow: 0 8px 6px -6px #333;;
-	        box-shadow: 0 8px 6px -6px #333;;
+    -moz-box-shadow: 0 8px 6px -6px #333;;
+    box-shadow: 0 8px 6px -6px #333;;
 }
 
 .header .user-actions  .user-options .arrow-top{
@@ -255,35 +255,35 @@ line-height: 24px;
 
 .header .user-actions  ul li{
 
-	}
+}
 
-	.header .user-actions  ul li a{
+.header .user-actions  ul li a{
 
-	}
+}
 
 
 /***************  TABLE  STYLES ***************/
 
 /*table header */
 .table-header{
-	background-color: #d9d9d9;
-	position: relative;
-		text-align: center;
-		height: 42px;
+    background-color: #d9d9d9;
+    position: relative;
+    text-align: center;
+    height: 42px;
 }
 .table-header h2{
-	text-transform: uppercase;
-	line-height: 42px;
+    text-transform: uppercase;
+    line-height: 42px;
 }
 .table-header .search-control{
-position: absolute;
-left:16px;
-top:8px;
+    position: absolute;
+    left:16px;
+    top:8px;
 
 }
 .table-header .search-form{
-	position: relative;
-	width: 184px;
+    position: relative;
+    width: 184px;
 
 }
 .table-header .search-control input[type=text]{
@@ -310,14 +310,14 @@ top:8px;
 
 
 .table-header .add-button{
-position: absolute;
-right:16px;
-top:4px;
-width:22px;
-height: 22px;
-margin: 6px 0px;
+    position: absolute;
+    right:16px;
+    top:4px;
+    width:22px;
+    height: 22px;
+    margin: 6px 0px;
     background: transparent url(../images/icons-sprite.png) no-repeat center;
-background-position: 0px -14px;
+    background-position: 0px -14px;
 }
 
 
@@ -326,19 +326,19 @@ background-position: 0px -14px;
 
 }
 .table-content table{
-	width: 100%;
-	max-width: 100%;
-	border:1px solid #d9d9d9;
+    width: 100%;
+    max-width: 100%;
+    border:1px solid #d9d9d9;
 
 }
 
 .table-content thead tr {
-background-color: #fff;
+    background-color: #fff;
 }
 
 .table-content thead tr th{
-font-size: 16px;
-text-align: left;
+    font-size: 16px;
+    text-align: left;
     padding: 12px 14px;
 }
 
@@ -373,39 +373,182 @@ text-align: left;
         top: 0;
     }
 
-    /*.table-content table:nth-child(2) tbody tr td a .open-sub-menu {
-        top:-162px !important;
-        background-color: red;
-    }    
-    */
-}
+    .hide-mobile{
+        display: none !important
+    }
+
+    .form-left-full-width{
+        widows: 100% !important;
+    }
+
+    .save-btn{
+        margin-left: 0px !important;
+    }
+
+    .tr-total{
+        display: table-cell !important;
+    }
+
+    .submit-btn{
+        margin-left: 15% !important;
+        width: 200px !important;
+        height: 40px !important;
+    }
+
+    .button-cancel{
+        margin-left: 15% !important;
+    }
+
+    .full-name-div{
+        width: 100% !important;
+    }
+
+    .popup-contain{
+        height: auto !important;
+    }
+
+    .arrow-top-reseller{
+        margin-right: 0px !important;
+    }
+
+    .logo-mobile{
+        width: 320px !important;
+        height: 50px !important;
+    }
+
+    #user-actions-reseller{
+        margin-left: 20px !important;
+    }
+
+    .gway-options{
+        margin-left: -22px !important;
+    }
+
+    .reseller-maintable tbody tr td:nth-child(8):before{
+        content: "Cost"
+    }
+
+    .tr-total:before{
+        content: "" !important;
+    }
+
+    .user-options-reseller{
+        margin-left: 42% !important;
+    }
+
+    #state_reseller{
+        width: 100% !important;
+    }
+
+    #zipCode_reseller{
+        width: 100% !important;
+        margin-left: 0px !important;
+    }
+    
+    #exp_reseller{
+         width: 100% !important;
+    }
+    
+    #zipCode_reseller{
+        width: 100% !important;
+    }
+    
+    #zip_reseller{
+        width: 100% !important;
+    }
+    
+    .user-actions-addusr{
+        float: inherit !important;
+     }
+    
+    #logo_div{
+        margin-left: 25% !important;
+    }
+    
+    .header-addusr{
+        height: 100px !important;
+    }
+  }
 
 /*
 .table-content tbody tr td:nth-child(1){
-    width: 14%;
+width: 14%;
 }
 .table-content tbody tr td:nth-child(2){
-    width: 14%;
+width: 14%;
 }
 .table-content tbody tr td:nth-child(3){
-    width: 14%;
+width: 14%;
 }
 .table-content tbody tr td:nth-child(4){
-    width: 14%
+width: 14%
 }
 .table-content tbody tr td:nth-child(5){
-  width: 14%
+width: 14%
 }
 .table-content tbody tr td:nth-child(6){
-   width: 14%
+width: 14%
 }
 .table-content tbody tr td:nth-child(7){
-	width: 14%
+width: 14%
 }
 */
 
 .table-actions {
     overflow: visible !important;
+}
+
+
+
+.table-content tbody tr td:nth-child(9) a.table-save{
+    width: 22px;
+    height: 42px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 38px;
+    opacity: 0.0;
+    background: transparent url(../images/icons-sprite.png) no-repeat right;
+    background-position: 0px -152px;
+    -webkit-transition: all 0.5s ease 0s;
+    -moz-transition: all 0.5s ease 0s;
+    -ms-transition: all 0.5s ease 0s;
+    -o-transition: all 0.5s ease 0s; 
+}
+
+.table-content tbody:hover tr td:nth-child(9) a.table-save{
+    opacity: 1.0;
+}
+
+.table-content tbody tr td:nth-child(9) a.table-remove{
+    width: 22px;
+    opacity: 0.0;
+    height: 42px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 8px;
+    background: transparent url(../images/icons-sprite.png) no-repeat right;
+    background-position: 0px -203px;
+    -webkit-transition: all 0.5s ease 0s;
+    -moz-transition: all 0.5s ease 0s;
+    -ms-transition: all 0.5s ease 0s;
+    -o-transition: all 0.5s ease 0s; 
+}
+
+.table-content tbody:hover tr td:nth-child(9) a.table-remove{
+    opacity: 1.0;
+}
+
+#user-actions-reseller{
+    color: #0088dd !important;
+    font-size: 22px !important;
+    line-height: 24px !important;
+    padding-right: 24px !important;
+    text-transform: uppercase !important;
+    background:none !important;
+    background-position: right -312px !important;
+    cursor: pointer !important;
 }
 
 .table-content tbody tr td:nth-child(6) a.table-save{
@@ -418,7 +561,7 @@ text-align: left;
     opacity: 0.0;
     background: transparent url(../images/icons-sprite.png) no-repeat right;
     background-position: 0px -152px;
-     -webkit-transition: all 0.5s ease 0s;
+    -webkit-transition: all 0.5s ease 0s;
     -moz-transition: all 0.5s ease 0s;
     -ms-transition: all 0.5s ease 0s;
     -o-transition: all 0.5s ease 0s; 
@@ -429,28 +572,28 @@ text-align: left;
 }
 
 .table-content tbody tr td:nth-child(6) a.table-remove{
-width: 22px;
+    width: 22px;
     opacity: 0.0;
     height: 42px;
     position: absolute;
     top: 0;
     bottom: 0;
     right: 8px;
-  background: transparent url(../images/icons-sprite.png) no-repeat right;
+    background: transparent url(../images/icons-sprite.png) no-repeat right;
     background-position: 0px -203px;
-     -webkit-transition: all 0.5s ease 0s;
+    -webkit-transition: all 0.5s ease 0s;
     -moz-transition: all 0.5s ease 0s;
     -ms-transition: all 0.5s ease 0s;
     -o-transition: all 0.5s ease 0s; 
 }
 
 .table-content tbody:hover tr td:nth-child(6) a.table-remove{
-  opacity: 1.0;
+    opacity: 1.0;
 }
 
 .table-content tbody tr td a.open-sub-menu{
     background: transparent url(../images/icons-sprite.png) no-repeat center;
-   background-position: 10px -52px;
+    background-position: 10px -52px;
     width: 42px;
     height: 42px;
     display: block;
@@ -461,50 +604,50 @@ width: 22px;
 }
 
 .table-content tbody tr td a.close-sub-menu{
- background-position: 10px -102px !important;
+    background-position: 10px -102px !important;
 }
 
 
 .table-content tbody tr:nth-child(4n+3){
-		background-color: #fff;
+    background-color: #fff;
 }
 .table-content tbody tr {
-border-bottom:1px solid #d9d9d9;
+    border-bottom:1px solid #d9d9d9;
 }
 .table-content tbody tr td{
-	   padding: 12px 14px;
-       position: relative;
+    padding: 12px 14px;
+    position: relative;
 
 }
 
 
 .sub-column{
-	background: #fff;
+    background: #fff;
     overflow: visible !important;
-	padding: 0px !important;
+    padding: 0px !important;
     border:1px solid #d9d9d9;
 }
 
 .sub-column h4{
-	background-color: #f2f2f2;
-	display: block;
-	padding: 6px 28px;
-	font-weight:600;
+    background-color: #f2f2f2;
+    display: block;
+    padding: 6px 28px;
+    font-weight:600;
 }
 
 .sub-column form{
-	padding: 18px 28px 0px 28px;
+    padding: 18px 28px 0px 28px;
 }
 
 .sub-column form .form-left{
-	float:left;
-	width: 430px;
+    float:left;
+    width: 430px;
 
 }
 
 .sub-column form .form-right{
-	float:right;
-	width: 430px;
+    float:right;
+    width: 430px;
 }
 
 .sub-column form .form-group{
@@ -512,10 +655,10 @@ border-bottom:1px solid #d9d9d9;
 }
 
 .sub-column form .form-group label{
-	float:left;
-	width: 146px;
-	margin: 4px 0px 4px 0px;
-	display: block;
+    float:left;
+    width: 146px;
+    margin: 4px 0px 4px 0px;
+    display: block;
     text-align: left;
 }
 .sub-column form .form-group .form-control{
@@ -528,29 +671,29 @@ border-bottom:1px solid #d9d9d9;
 
 /* First child */
 .sub-column form .form-group ul.form-dropdown{
-position: relative;
+    position: relative;
     float: left;
     display: block;
-        margin-top: 4px;
+    margin-top: 4px;
 }
 
 
 .sub-column form .form-group ul.form-dropdown li:first-child{
-	
+
 }
 
 .sub-column form .form-group ul.form-dropdown li:first-child a{
-	    color: #000;
-	    position: relative;
+    color: #000;
+    position: relative;
     border-bottom: 1px solid #000;
 }
 .sub-column form .form-group ul.form-dropdown li:first-child a span:first-child{
-    	 	    float: left;
-    	 	    border-bottom: 1px solid #000;
+    float: left;
+    border-bottom: 1px solid #000;
 }
 
 .sub-column form .form-group ul.form-dropdown li:first-child a span:last-child{
-        background: transparent url(../images/icons-sprite.png) no-repeat right;
+    background: transparent url(../images/icons-sprite.png) no-repeat right;
     background-position: 0px -74px;
     float: left;
     display: block;
@@ -563,26 +706,26 @@ position: relative;
 
 /* Second child */
 .sub-column form .form-group ul.form-dropdown ul {
-	    width: 200px;
+    width: 200px;
     position: absolute;
     top: 24px;
     background-color: #fff;
-        -webkit-box-shadow: 0 0 10px #333;
--moz-box-shadow: 0 0 10px #333;;
-box-shadow: 0 0 10px #333;
-z-index: 11;
+    -webkit-box-shadow: 0 0 10px #333;
+    -moz-box-shadow: 0 0 10px #333;;
+    box-shadow: 0 0 10px #333;
+    z-index: 11;
 
 }
 .sub-column form .form-group ul.form-dropdown ul li{
-	    display: block;
+    display: block;
     box-sizing: border-box;
-	
+
 }
 
 .sub-column form .form-group ul.form-dropdown ul li a{
-     border:0 !important;
+    border:0 !important;
     display: block;
-        padding: 6px 12px;
+    padding: 6px 12px;
 }
 .sub-column form .form-group ul.form-dropdown ul li a:hover{
     background: #0088dd url(../images/icons-sprite.png) no-repeat right;
@@ -591,14 +734,14 @@ z-index: 11;
     color:#fff;
 }
 .sub-column form .form-group ul.form-dropdown ul li:first-child a:hover{
- background: inherit; 
+    background: inherit; 
     background-position: inherit; 
     background-size: inherit; 
     color:inherit; 
 }
 
 .sub-column .merchant-portal{
-	text-align: center;
+    text-align: center;
 }
 
 .sub-column .merchant-portal a{
@@ -628,10 +771,68 @@ z-index: 11;
 
 .popup-wrapper{
     display: inline-block;
-        width: 600px;
+    width: 600px;
 
 }
 
 .popup .button{
     float:left;
 }
+
+.total-row{
+    border-left: 1px solid #f2f2f2 !important; 
+    border-right: 1px solid #f2f2f2 !important; 
+    border-bottom: 1px solid #f2f2f2 !important; 
+}
+
+.total-before{
+    border-left: 1px solid #f2f2f2 !important; 
+    border-bottom: 1px solid #f2f2f2 !important; 
+}
+
+
+
+
+ 
+/* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    padding-top: 100px; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    background-color: #fefefe;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+}
+
+/* The Close Button */
+.close {
+    color: #aaaaaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+}
+ 
+
+
+

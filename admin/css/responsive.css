@@ -152,6 +152,12 @@ table tbody tr td:nth-child(5):before{
 table tbody tr td:nth-child(6):before{
     content: "Username"
 }
+table tbody tr td:nth-child(6):before{
+    content: "Username"
+}    
+    
+   
+    
 table tbody tr td:before{
     display: block;    
     margin-bottom: 0px;

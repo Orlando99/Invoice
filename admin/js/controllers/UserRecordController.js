@@ -565,8 +565,6 @@ clientAdminPortalApp.controller('UserRecordController',
       });
       */
       
-      
-    
   }
 
   $scope.openModalCreate = function() {

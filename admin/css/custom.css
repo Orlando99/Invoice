@@ -1,0 +1,565 @@
+html, body{
+	background-color: #FFFFFF !important;
+}
+
+body {
+	    -webkit-font-smoothing: auto !important;
+}
+
+.input-container .file_div label:first-of-type:not(.input-checkbox-container) {
+	max-width: 100%;
+	word-wrap: break-word;
+}
+
+.ellipsis{
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+input, textarea{
+    color: black !important;
+}
+select{
+    color: black !important;
+    padding-right: 30px !important;
+}
+
+.button-next{
+    margin: 20px 0 !important;
+}
+
+.datepicker-noclear .uib-datepicker-popup .btn-group .btn-danger.btn{
+	display: none;
+}
+
+.container-fluid.link-settings-div {
+  width: 99vw;
+}
+
+.show_table_hover tr.trow td{
+	cursor: pointer;
+}
+
+.show_hover {
+	cursor: pointer;
+}
+
+.organization .submenu {
+	position: absolute;
+	left: 0px;
+}
+
+.organization .submenu.show {
+	min-width: 190px;
+}
+.navigation > li .link-sales-div{
+  position: absolute;
+  top: 38px !important;
+  /*left: -278px !important;*/
+}
+
+.navigation > li .link-expense-div{
+  position: absolute;
+  top: 38px !important;
+  /*left: -383px !important;*/
+}
+
+.navigation > li .link-settings-div{
+   position: absolute;
+   top: 38px !important;
+   /*left: -648px !important;*/
+   /*left: -793px !important;*/
+}
+
+.navigation > li .link-reports-div{
+   position: absolute;
+   top: 38px !important;
+    /*left: -519px !important;*/
+}
+
+.optionDropDown > ul {
+	left : -80px;
+}
+
+div.paymentInfo > p {
+	margin: 0;
+	padding: 0;
+	color: #000;
+}
+
+div.paymentInfo > label {
+	color: #8c8c8c;
+}
+
+div.paymentInfo > a {
+	top: 30px;
+}
+
+select.can-create-item option:last-child{
+    background-color: transparent;
+    color: #0ea81c;
+}
+
+select.can-create-customer option:last-child{
+    background-color: transparent;
+    color: #0ea81c;
+}
+
+.datepicker-reports-fix {
+  position: relative;
+}
+.datepicker-reports-fix .dropdown-menu {
+   right: auto !important;
+   left: 0px;
+ }
+ .datepicker-reports-fix table tr td {
+    padding-right: 5px !important;
+	word-break: normal;
+}
+
+.tutorial {
+    color: #ffffff !important;
+    opacity: 1 !important;
+    
+}
+
+.tutorial label{
+    font-size: 23px !important;
+}
+
+.tutorial .button-next{
+    background: transparent !important;
+    border: solid !important;
+    margin-top: 90px !important;
+}
+
+.tutorial h1{
+    color: #ffffff !important;
+    margin-bottom: 70px !important;
+}
+
+.tutorial section{
+    top: 25%;
+}
+
+.tutorial .skip-tutorial{
+    font-size: 25px;
+    color: #fff;
+    border-bottom: 1px #fff solid !important;
+}
+
+.icons{
+    top: 0 !important;
+}
+
+.myoverlay {
+position: fixed;
+top: 0;
+left: 0;
+background: rgba(100, 100, 100, 0.8);
+width: 100%;
+height: 100%;
+z-index: 10;
+}
+
+#chk_box_para
+{
+    margin-left: -200px !important;
+}
+
+@media(max-width : 1142px)
+{
+    #img_div
+    {
+        display: none !important;
+    }
+    
+    .confirm
+    {
+        width: 90% !important;
+    }
+}
+
+
+@media(max-width : 800px)
+{ 
+    .sign-up
+    {
+        width: 90% !important;
+    }
+    .confirm
+    {
+        width: 90% !important;
+    }
+    .sign-up
+    {
+       width: 90% !important; 
+    }
+    
+    .confirm
+    {
+        width: 90% !important; 
+        margin-left: 3% !important;
+    }
+    .sticky-nav
+    {
+        width: 100% !important; 
+    }
+    .accepting
+    {
+         width: 90% !important; 
+    }
+    
+    .signature
+    {
+         width: 90% !important; 
+    }
+    #chk_box_para
+    {
+        font-size: 13px !important;
+        margin-bottom: 2% !important;
+        margin-left: -165px !important;
+    }
+    #img_div
+    {
+        display: none !important;
+    }
+    
+    .input-container label {
+	   min-width: 25%;
+	   display: inline-block;
+	   float: left;
+        margin-top: 13.5%;
+        margin-right : 80%;
+        font-size: 11px;
+    }
+    
+    .input-container {
+	 float: left;
+     margin-bottom: 7%;
+    }
+    
+    .layout-no-margin {
+    margin: 0!important;
+    height: 14% !important;
+    margin-bottom: 7% !important;
+    }
+    
+    label.error {
+    position: absolute;
+    padding: 4px 6px;
+    z-index: 5;
+    right: -5px;
+    -webkit-transform: translateX(100%);
+    transform: translateX(100%);
+    max-width: 300px!important;
+    background-color: #a04444;
+    color: #fff;
+    line-height: 12px;
+    font-size: 14px;
+    text-align: left;
+    display: none;
+    margin-top: 13.5%;
+    margin-right : 80%;
+    font-size: 11px;
+    width: 270px !important;
+    
+    }
+    .input_fields_Pinfo
+    {
+        margin-bottom: 9.5% !important;
+    }
+}
+
+
+/*For FireFox*/
+    @-moz-document url-prefix() { 
+        
+   #label_show_invoices{
+        margin-top: 15px !important; 
+    }
+        
+    #next_show_invoices{
+        margin-top: 11px !important; 
+    }
+
+        #label_show_invoices{
+         margin-top: 12px !important;
+            
+    }
+        
+    #keep_me_sign_in_label{
+    margin-top: 12px; 
+        margin-left: 3px;
+    }
+        
+    #keep_me_sign_in_ancor{
+    margin-top: 12px; 
+    }
+        
+}
+
+td{
+    word-break: break-word !important;
+}
+
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    margin: 0;
+}
+    
+
+btn btn-sm btn-success pull-right uib-close ng-binding
+    {
+      background-color: white !important;
+        border:none;
+    }
+.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+ background-color: white;
+    border:none;
+}
+.uib-datepicker-popup.dropdown-menu
+{
+ background-color: white;
+    border:none;
+    -webkit-transition: none;
+	transition: none;
+}
+.uib-day button, .uib-month button, .uib-year button {
+   background-color: white;
+    /*border: 0.1px solid #e6e6e6;*/
+    border: none !important;
+    margin-bottom: 5px;
+}
+
+ .ui-datepicker-Done button {
+     background-color: white;
+    border: none;
+}
+
+.uib-button-bar {
+    display: none !important;
+}
+.uib-daypicker
+{
+   margin-left: 5px;
+}
+#state-error
+{
+    margin-right: 750px;
+    width: 300px;
+}
+#state-error:before{
+    content: "";
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border-left: 5px #a04444 solid;
+    border-top: 5px transparent solid;
+    border-bottom: 5px transparent solid;
+    margin-left: 293px;
+}
+
+#state-error:after{
+    content: "";
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    border-left: 5px #a04444 solid;
+    margin-left: 290px;
+}
+
+.text-partialpaid{
+    
+    color :rgb(154, 54, 159);
+
+}
+
+.text-sent{
+
+    color :rgb(85, 140, 244);    
+}
+
+.text-paid{
+    color :rgb(97, 192, 69);
+}
+
+.text-overdue{
+    
+    color :rgb(150, 6, 10);
+}
+
+.vertical-separator-right {
+    border: none;
+    border-RIGHT: 0.5px #8c8c8c solid;
+}
+
+body hr {
+    display: inline-block;
+    width: 100%;
+    height: 1px;
+    background-color: #c8c8c8 !important;
+    margin: 15px 0;
+}
+
+.sales-list li .dotted-separator {
+    display: inline-block;
+    height: 1px;
+    width: 100%;
+    position: relative;
+    border-bottom: 1px #8c8c8c dotted;
+}
+
+.same_height
+{
+    height: 42px !important;
+}
+
+.balance-row
+{
+    min-width: 133px;
+    max-width: 140px;
+}
+
+.darktooltip:before{
+    top: 45%;
+    width: 0;
+    height: 0 !important;
+    left: -30px !important;
+    background: 0 0;
+    background: 0 0;
+    border-right: 10px #666 solid;
+    border-top: 10px transparent solid;
+    border-bottom: 10px transparent solid;
+    background-image: none !important;
+    z-index: 10000px !important;
+    font-size: 11px !important;
+
+}
+
+#discount-error{
+    margin-right: 51px;
+    margin-top: 8px;
+}
+
+.filtermenu{
+    list-style: none;
+    background-color: #fff;
+    position: absolute;
+    top: 20px;
+    padding: 0;
+    width: 100%;
+    z-index: 3;
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,.15);
+    display: none;
+    left: 0px;
+    width: inherit;
+    margin-top: 20px;
+}
+
+.filtermenu li a {
+    display: block;
+    border: 0;
+    padding: 10px 10px 5px;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.filtermenu.show{
+    display: inline-block;
+}
+
+.filtermenu li a:hover {
+    color: #fff;
+    background-color: #3183f5
+}
+
+#snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #333; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 1; /* Add a z-index if needed */
+    left: 50%; /* Center the snackbar */
+    top: 50px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+    visibility: visible; /* Show the snackbar */
+
+/* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {top: 0; opacity: 0;} 
+    to {top: 50px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {top: 0; opacity: 0;}
+    to {top: 50px; opacity: 1;}
+}
+/*
+@-webkit-keyframes fadeout {
+    from {top: 50px; opacity: 1;} 
+    to {top: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {top: 50px; opacity: 1;}
+    to {top: 0; opacity: 0;}
+}
+*/
+.creditnotes-data td {
+    min-width: 158px;
+    max-width: 158px;
+}
+.tasks-detail{
+    width: 25% !important;
+    max-width: 25% !important;  
+}
+
+#firstname-error{
+    margin-top: 23px !important;
+}
+
+.error-align >label.error{
+margin-top: -23px !important;
+}
+
+.custom-field >label.error{
+    min-height: 45px !important;
+    display: block !important;
+    width: 100% !important;
+    position: absolute !important;
+}
+
+.navigation>li a {
+    height: auto !important;
+}
+
+#jr_inner{
+	    min-width: 800px !important;
+}
+
+.navigation>li a {
+	padding-left: 24px;
+	padding-right: 24px;
+}
