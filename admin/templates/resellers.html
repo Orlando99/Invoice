@@ -7,7 +7,7 @@
     <div class="header cl">
         <a class="logo logo-mobile"></a>
         <div class="user-actions">
-            <span style="color:black !important" ng-click="openUserOptions = true;" id="user-actions-reseller" ng-bind="'Welcome John">Welcome,John<i class="fa fa-bars" style="color: #0088dd !important;margin-left:5px" aria-hidden="true"></i></span>
+            <span style="color:black !important" ng-click="openUserOptions = true;" id="user-actions-reseller">{{'Welcome, ' + sessionUsername}}<i class="fa fa-bars" style="color: #0088dd !important;margin-left:5px" aria-hidden="true"></i></span>
             <div ng-show="openUserOptions" id="user-options-wrapper">
                 <div ng-click="openUserOptions = false;" class="window-shadow"></div>
                 <div style="width:105px" class="user-options user-options-reseller">
