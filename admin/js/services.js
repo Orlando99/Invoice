@@ -17,6 +17,9 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
 		'AuthKey',
 		'EPNusername',
 		'EPNrestrictKey',
+		'isReseller',
+		'resellerInfo',
+		'reseller'
 		//'tutorial',
 		//'firstScreen',
 		//'country',
@@ -161,6 +164,76 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
 		set: function(aValue) {
 			if (!this.get('businessInfo')) return;
 			return this.get("businessInfo").set('state',aValue);
+		}
+	});
+	
+	//Reseller Properties
+	Object.defineProperty(UserRecord.prototype, "accountHolderName", {
+		get: function() {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").get('accountHolderName');
+		},
+		set: function(aValue) {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").set('accountHolderName',aValue);
+		}
+	});
+	Object.defineProperty(UserRecord.prototype, "ccNumberCurrent", {
+		get: function() {
+			if (!this.get('resellerInfo')) return;
+			var number = this.get("resellerInfo").get('ccNumber');
+			number = number.split(' ').join("");
+			number = number.split('-').join("");
+			number = "************" + number.substring(number.length-4, number.length);
+			return number;
+		},
+		set: function(aValue) {
+			return;
+		}
+	});
+	/*
+	Object.defineProperty(UserRecord.prototype, "ccNumber", {
+		get: function() {
+			return;
+		},
+		set: function(aValue) {
+			if (!this.get('resellerInfo')) return;
+			if(!aValue || !aValue.length)
+				return;
+			return this.get("resellerInfo").set('ccNumber',aValue);
+		}
+	});
+	*/
+	
+	Object.defineProperty(UserRecord.prototype, "costPerMerchant", {
+		get: function() {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").get('costPerMerchant');
+		},
+		set: function(aValue) {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").set('costPerMerchant',aValue);
+		}
+	});
+	
+	Object.defineProperty(UserRecord.prototype, "expDate", {
+		get: function() {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").get('expDate');
+		},
+		set: function(aValue) {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").set('expDate',aValue);
+		}
+	});
+	Object.defineProperty(UserRecord.prototype, "cvv", {
+		get: function() {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").get('cvv');
+		},
+		set: function(aValue) {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").set('cvv',aValue);
 		}
 	});
 

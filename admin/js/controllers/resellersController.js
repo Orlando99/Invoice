@@ -5,13 +5,20 @@ clientAdminPortalApp.controller('resellersController',[
 	function($q,$scope, $state, $modal, userRecordFactory, accountInfoFactory, businessInfoFactory, signatureFactory,principalInfoFactory,organizationFactory,currencyFactory,projectUserFactory,preferencesFactory) {
 
 		if (Parse.User.current()) {
-			if(!Parse.User.current().get("isReseller"))
+			if(!(Parse.User.current().get("isReseller") || Parse.User.current().authenticated()))
 				$state.go("home");
 		} else {
 			$state.go("login");
 		}
-		
+
 		$scope.sessionUsername = Parse.User.current().get("fullName");
+
+		$scope.logOut = function() {
+			Parse.User.logOut();
+			$scope.authenticated = false;
+			$scope.sessionUsername = '';
+			$state.go('login');
+		};
 
 		$scope.records = [];
 		var obj = {

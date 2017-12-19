@@ -13,6 +13,13 @@ clientAdminPortalApp.controller('UserRecordController',[
 			$state.go("login");
 		}
 
+		$scope.authenticated = Parse.User.current() && Parse.User.current().authenticated();
+
+		$scope.sessionUsername = Parse.User.current().getUsername();
+
+		$scope.openUserOptions = false;
+		$scope.otherUsers = "Resellers";
+
 		$('.phonenumber').mask("(Z00) 000-0000",{
 			translation : {
 				'Z': { pattern : /[2-9]/g }
@@ -30,6 +37,8 @@ clientAdminPortalApp.controller('UserRecordController',[
 		$scope.queryChunkSize = 20;
 		$scope.lastUsedQueryGotAll = false;
 
+		$scope.allResellers = [];
+		
 		$scope.gatewayTypeNames = {
 			'': 'Select Gateway',
 			'1': 'Epn',
@@ -51,6 +60,36 @@ clientAdminPortalApp.controller('UserRecordController',[
 			'poland': 'Poland'
 		};
 
+		$scope.switchUsers = function(){
+			$scope.otherUsers = $scope.otherUsers == "Resellers" ? "All Users" : "Resellers";
+			$scope.openUserOptions = false;
+			$scope.updateQueryResults();
+		}
+
+		getAllResellers();
+		
+		function getAllResellers(){
+			var resellerQuery = new Parse.Query(userRecordFactory);
+			resellerQuery.equalTo("isReseller", true);
+			
+			resellerQuery.limit(1000);
+			
+			resellerQuery.find()
+			.then(function(objs){
+				$scope.allResellers = [{
+				username : "None"
+				}];
+				
+				objs.forEach(function(obj){
+					$scope.allResellers.push(obj);
+				});
+				
+				//$scope.allResellers = objs;
+			}, function(error){
+				console.error(error.message);
+			})
+		}
+		
 		var loadQuery = function(){
 			$scope.paginating = true;
 			$scope.lastUsedQuery.skip($scope.lastUsedQuerySkip);
@@ -60,68 +99,103 @@ clientAdminPortalApp.controller('UserRecordController',[
 					$scope.$apply(function() {
 						for (var i = 0; i < list.length; i++) {
 
-							(function(record) {
-								var paymentsQuery = new Parse.Query("Payment");
-								paymentsQuery.equalTo("userID", list[i]);
-								paymentsQuery.equalTo("mode", "Credit Card");
-								paymentsQuery.find()
-									.then(function(objs){
+							if($scope.otherUsers == "All Users"){
+								(function(record) {
+									var userQuery = new Parse.Query(Parse.User);
+									userQuery.equalTo("reseller", list[i]);
+									userQuery.count()
+										.then(function(count){
 
-									var visa = 0;
-									var masterCard = 0;
-									var amex = 0;
-									var discover = 0;
-									var other = 0;
-
-									var month = (new Date()).getMonth() + 1;
-									var year = (new Date()).getFullYear();
-
-									var startDate = new Date(year, 0, 1, 0, 0, 1, 1);
-									var endDate = new Date(year, month, 1, 0, 0, 0, 0);
-									var payments = objs.filter(function(obj){
-										return obj.get('date') >= startDate && obj.get('date') < endDate;
+										$scope.$apply(function() {
+											record.noOfMerchants = count;
+											//record.costPerMerchant = "$10.00";
+											record.totalMerchantCost = "$" + (count * 10).toFixed(2);
+										});
+									}, function(error){
+										console.error(error.message);
 									});
+								})(list[i]);
+							} else {
+								(function(record) {
+									var paymentsQuery = new Parse.Query("Payment");
+									paymentsQuery.equalTo("userID", list[i]);
+									paymentsQuery.equalTo("mode", "Credit Card");
+									paymentsQuery.find()
+										.then(function(objs){
 
-									payments.forEach(function(payment){
-										var fourdigits = payment.get('firstFourDigits');
-										if(fourdigits.startsWith('4')){
-											visa += payment.get('amount');
-										} 
-										else if(fourdigits.startsWith('5')){
-											masterCard += payment.get('amount');
-										}
-										else if(fourdigits.startsWith('6')){
-											discover += payment.get('amount');
-										}
-										else if(fourdigits.startsWith('30') || fourdigits.startsWith('34') || fourdigits.startsWith('36') || fourdigits.startsWith('37') || fourdigits.startsWith('38') || fourdigits.startsWith('39')){
-											amex += payment.get('amount');
-										}
-										else{
-											other += payment.get('amount');
+										var visa = 0;
+										var masterCard = 0;
+										var amex = 0;
+										var discover = 0;
+										var other = 0;
+
+										var month = (new Date()).getMonth() + 1;
+										var year = (new Date()).getFullYear();
+
+										var startDate = new Date(year, 0, 1, 0, 0, 1, 1);
+										var endDate = new Date(year, month, 1, 0, 0, 0, 0);
+										var payments = objs.filter(function(obj){
+											return obj.get('date') >= startDate && obj.get('date') < endDate;
+										});
+
+										payments.forEach(function(payment){
+											var fourdigits = payment.get('firstFourDigits');
+											if(fourdigits.startsWith('4')){
+												visa += payment.get('amount');
+											} 
+											else if(fourdigits.startsWith('5')){
+												masterCard += payment.get('amount');
+											}
+											else if(fourdigits.startsWith('6')){
+												discover += payment.get('amount');
+											}
+											else if(fourdigits.startsWith('30') || fourdigits.startsWith('34') || fourdigits.startsWith('36') || fourdigits.startsWith('37') || fourdigits.startsWith('38') || fourdigits.startsWith('39')){
+												amex += payment.get('amount');
+											}
+											else{
+												other += payment.get('amount');
+											}
+										});
+
+										$scope.$apply(function() {
+											record.oldUsername = record.username;
+											record.allPayments = objs;
+											record.month = month;
+											record.year = year;
+											var total = visa + masterCard + amex + discover + other;
+
+											record.visa = "$" + visa.toFixed(2);
+											record.masterCard = "$" + masterCard.toFixed(2);
+											record.amex = "$" + amex.toFixed(2);
+											record.discover = "$" + discover.toFixed(2);
+											record.other = "$" + other.toFixed(2);
+											record.total = "$" + total.toFixed(2);
+
+										});
+									}, function(error){
+										if(record.username == "mazhar"){
+											debugger;
 										}
 									});
-
-									$scope.$apply(function() {
-										record.oldUsername = record.username;
-										record.allPayments = objs;
-										record.month = month;
-										record.year = year;
-										var total = visa + masterCard + amex + discover + other;
-
-										record.visa = "$" + visa.toFixed(2);
-										record.masterCard = "$" + masterCard.toFixed(2);
-										record.amex = "$" + amex.toFixed(2);
-										record.discover = "$" + discover.toFixed(2);
-										record.other = "$" + other.toFixed(2);
-										record.total = "$" + total.toFixed(2);
-
-									});
-								}, function(error){
-									if(record.username == "mazhar"){
+								})(list[i]);
+								
+								(function(record) {
+									
+									if(record.reseller){
 										debugger;
+										var temp = $scope.allResellers.filter(function(obj){
+											return record.reseller.id == obj.id;
+										})[0];
+										
+										if(temp)
+											record.reseller = temp;
+										else 
+											record.reseller = $scope.allResellers[0];
+									} else {
+										record.reseller = $scope.allResellers[0];
 									}
-								});
-							})(list[i]);
+								})(list[i]);
+							}
 
 							if (list[i].businessInfo && list[i].businessInfo.id) {
 								(function(record) {
@@ -136,19 +210,6 @@ clientAdminPortalApp.controller('UserRecordController',[
 											record.businessInfo  = bus;
 											record.businessAssigned = true;
 
-											if (record.state) {
-												//console.log("STATE: " + record.state);
-											}
-											/*
-                      if (record.get('businessInfo') && 
-                          record.get('principalInfo') && 
-                          record.get('accountInfo') &&
-                          record.get('signatureImage')) {
-                        record.skipAppDisabled = true;
-                      } 
-                      else
-                        record.skipAppDisabled = false;
-                        */
 										});
 									},function(e){
 										console.log("Failed to fetch accout for " + record.fullName + ": " + 
@@ -200,6 +261,12 @@ clientAdminPortalApp.controller('UserRecordController',[
 				query = query ? Parse.Query.or(query, subQuery) : subQuery;
 			});
 
+			if($scope.otherUsers == "All Users"){
+				query.equalTo("isReseller", true);
+			}
+
+			query.include("resellerInfo");
+
 			$scope.lastUsedQueryGotAll = false;
 			$scope.lastUsedQuerySkip = 0;
 			query.limit($scope.queryChunkSize);
@@ -212,6 +279,13 @@ clientAdminPortalApp.controller('UserRecordController',[
 		};
 
 		$scope.updateQueryResults();
+
+		$scope.logOut = function() {
+			Parse.User.logOut();
+			$scope.authenticated = false;
+			$scope.sessionUsername = '';
+			$state.go('login');
+		};
 
 		$scope.newUserRecord = new userRecordFactory();
 		$scope.newUserRecord.set("accountInfo", new accountInfoFactory);
@@ -267,6 +341,17 @@ clientAdminPortalApp.controller('UserRecordController',[
 
 			}
 
+			if($scope.otherUsers == "All Users"){
+				if(user.resellerInfo){
+					if(user.ccNumber && user.ccNumber.length){
+						user.resellerInfo.set('ccNumber', user.ccNumber);
+					}
+					user.resellerInfo.save();
+				}
+			}
+			
+			
+			debugger;
 			user.businessInfo.save(null, {
 				success: function(business){
 					Parse.Cloud.run('UpdateUser',{
@@ -283,7 +368,8 @@ clientAdminPortalApp.controller('UserRecordController',[
 								EPNusername     : user.EPNusername,
 								AuthNet         : user.AuthNet,
 								AuthKey         : user.AuthKey,
-								paymentGateway  : user.paymentGateway.toString()
+								paymentGateway  : user.paymentGateway.toString(),
+								reseller 		: user.reseller.id ? user.reseller.id : "None"
 							}
 						}
 					}).then(function(res){
@@ -307,7 +393,8 @@ clientAdminPortalApp.controller('UserRecordController',[
 								EPNusername     : user.EPNusername,
 								AuthNet         : user.AuthNet,
 								AuthKey         : user.AuthKey,
-								paymentGateway  : user.paymentGateway.toString()
+								paymentGateway  : user.paymentGateway.toString(),
+								reseller 		: user.reseller.id ? user.reseller.id : "None"
 							}
 						}
 					}).then(function(res){

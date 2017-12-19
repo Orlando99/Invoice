@@ -221,7 +221,8 @@ input::-webkit-inner-spin-button {
 .header .user-actions  .user-options{
     position: absolute;
     background-color: #d9d9d9;
-    width: 253px;
+    /*width: 253px;*/
+	width: 220px;
     text-align: center;
     padding: 18px 12px;
     margin-top: 10px;
@@ -258,7 +259,8 @@ input::-webkit-inner-spin-button {
 }
 
 .header .user-actions  ul li a{
-
+	margin-top: 5px;
+    display: block;
 }
 
 
