@@ -21,10 +21,10 @@ angular.module('clientAdminPortalApp').config(function($stateProvider, $urlRoute
 		controller: "resellerstutorialController",
 		templateUrl: "templates/resellerstutorial.html"
 	})
-
-		.state('reselleradduser', {
-		url: "/reselleradduser",
-		templateUrl: "templates/reselleradduser.html"
+		.state('resellerprofile', {
+		url: "/resellerprofile",
+		controller: "resellerProfileController",
+		templateUrl: "templates/resellerprofile.html"
 	})
 
 		.state('resellerSignup', {

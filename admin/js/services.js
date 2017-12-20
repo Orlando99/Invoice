@@ -236,6 +236,17 @@ clientAdminPortalApp.factory('userRecordFactory', function() {
 			return this.get("resellerInfo").set('cvv',aValue);
 		}
 	});
+	
+	Object.defineProperty(UserRecord.prototype, "accountZip", {
+		get: function() {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").get('zipCode');
+		},
+		set: function(aValue) {
+			if (!this.get('resellerInfo')) return;
+			return this.get("resellerInfo").set('zipCode',aValue);
+		}
+	});
 
 	return UserRecord;
 });

@@ -20,71 +20,24 @@ clientAdminPortalApp.controller('resellersController',[
 			$state.go('login');
 		};
 
+
+
+		/*****************************************************************************/
+
+
+		$('.phonenumber').mask("(Z00) 000-0000",{
+			translation : {
+				'Z': { pattern : /[2-9]/g }
+			}
+		});
+		
+		$scope.costPerMerchant = Parse.User.current().get("resellerInfo").get("costPerMerchant");
+		
 		$scope.records = [];
-		var obj = {
-			id : "2121313131",
-			bname : "lorem Ipusm",
-			name : "Lonnie Spencier",
-			email : "lorem@hotmail.com",
-			phone : "(703) 117167617",
-			uname : "lorem",
-			amount : "$100"
-		};
-
-		$scope.records.push(obj);   
-		obj = {
-			id : "17891817911",
-			bname : "Sam",
-			name : "Sam Wilson",
-			email : "Sam@gmail.com",
-			phone : "(703) 117167617",
-			uname : "Sam",
-			amount : "$200"
-		};
-
-		$scope.records.push(obj);
-
-		obj = {
-			id : "98287878927",
-			bname : "Jared",
-			name : "Jared Smith",
-			email : "Jared@gmail.com",
-			phone : "(703) 117167617",
-			uname : "Jared",
-			amount : "$300"  
-
-		};
-
-		$scope.records.push(obj);
-
-		obj = {
-			id : "893871837",
-			bname : "George",
-			name : "George Mike",
-			email : "George@gmail.com",
-			phone : "(703) 117167617",
-			uname : "George",
-			amount : "$400"         
-		};  
-
-
-		$scope.records.push(obj);
-
-		obj = {
-			id : "1391837137",
-			bname : " Will",
-			name : "Will Smith",
-			email : "will@gmail.com",
-			phone : "(703) 117167617",
-			uname : "Will",
-			amount : "$200" 
-
-		};         
-		$scope.records.push(obj);
-
-
 		$scope.adminUsers = [];
 		$scope.adminIds = [];
+		
+		$scope.currentRecord = undefined;
 
 		$scope.query = "";
 		$scope.lastUsedQuery = null;
@@ -93,35 +46,422 @@ clientAdminPortalApp.controller('resellersController',[
 		$scope.queryChunkSize = 20;
 		$scope.lastUsedQueryGotAll = false;
 
+		$scope.allResellers = [];
 
 		$scope.gatewayTypeNames = {
-			'': 'Select Gateway',
+			'': 'None',
 			'1': 'Epn',
 			'2': 'Auth. Net',
 			'3': 'Pivotal'
-		}        
+		};
 
-		$scope.openDeleteModal = function(){
-			$("#myModal").css("display" ,"block");
-		}   
+		$scope.statesAbbr = [
+			"AL", "AK", "AZ","AR","CA","CO","CT","DE","DC","FL","GA","HI","ID",
+			"IL", "IN", "IA","KS","KY","LA","ME","MD","MA","MI","MN","MS","MO",
+			"MT", "NE", "NV","NH","NJ","NM","NY","NC","ND","OH","OK","OR","PA",
+			"RI", "SC", "SD","TN","TX","UT","VT","VA","WA","WV","WI","WY"
+		];
 
-		$scope.closeDeleteModal = function(){
-			$("#myModal").css("display" ,"none");
+		$scope.countryNames = {
+			'': 'Select country',
+			'usa': 'USA',
+			'ukraine': 'Ukraine',
+			'poland': 'Poland'
+		};
+
+		var loadQuery = function(){
+			$scope.paginating = true;
+			$scope.lastUsedQuery.skip($scope.lastUsedQuerySkip);
+			$scope.lastUsedQuery.find({
+				success: function(list) {
+					console.log("successfull load of " + list.length + " elements with skip " + $scope.lastUsedQuerySkip);
+					$scope.$apply(function() {
+						for (var i = 0; i < list.length; i++) {
+
+							(function(record) {
+								var paymentsQuery = new Parse.Query("Payment");
+								paymentsQuery.equalTo("userID", list[i]);
+								paymentsQuery.equalTo("mode", "Credit Card");
+								paymentsQuery.find()
+									.then(function(objs){
+
+									var visa = 0;
+									var masterCard = 0;
+									var amex = 0;
+									var discover = 0;
+									var other = 0;
+
+									var month = (new Date()).getMonth() + 1;
+									var year = (new Date()).getFullYear();
+
+									var startDate = new Date(year, 0, 1, 0, 0, 1, 1);
+									var endDate = new Date(year, month, 1, 0, 0, 0, 0);
+									var payments = objs.filter(function(obj){
+										return obj.get('date') >= startDate && obj.get('date') < endDate;
+									});
+
+									payments.forEach(function(payment){
+										var fourdigits = payment.get('firstFourDigits');
+										if(fourdigits.startsWith('4')){
+											visa += payment.get('amount');
+										} 
+										else if(fourdigits.startsWith('5')){
+											masterCard += payment.get('amount');
+										}
+										else if(fourdigits.startsWith('6')){
+											discover += payment.get('amount');
+										}
+										else if(fourdigits.startsWith('30') || fourdigits.startsWith('34') || fourdigits.startsWith('36') || fourdigits.startsWith('37') || fourdigits.startsWith('38') || fourdigits.startsWith('39')){
+											amex += payment.get('amount');
+										}
+										else{
+											other += payment.get('amount');
+										}
+									});
+
+									$scope.$apply(function() {
+										record.oldUsername = record.username;
+										record.allPayments = objs;
+										record.month = month;
+										record.year = year;
+										var total = visa + masterCard + amex + discover + other;
+
+										record.visa = "$" + visa.toFixed(2);
+										record.masterCard = "$" + masterCard.toFixed(2);
+										record.amex = "$" + amex.toFixed(2);
+										record.discover = "$" + discover.toFixed(2);
+										record.other = "$" + other.toFixed(2);
+										record.total = "$" + total.toFixed(2);
+
+									});
+								}, function(error){
+									if(record.username == "mazhar"){
+										debugger;
+									}
+								});
+							})(list[i]);
+
+							if (list[i].businessInfo && list[i].businessInfo.id) {
+								(function(record) {
+									var busQuery = new Parse.Query('BusinessInfo');
+									busQuery.equalTo('objectId', record.businessInfo ? record.businessInfo.id : null);
+									busQuery.first()
+										.then(function(bus){
+										$scope.$apply(function() {
+											record.businessInfo  = bus;
+											record.businessAssigned = true;
+
+										});
+									},function(e){
+										console.log("Failed to fetch accout for " + record.fullName + ": " + 
+													e.map(function(el){return el.message}).join('\n\r'));
+									});
+								})(list[i]);
+							} else {
+
+							}
+							//list[i].paymentGateway = '';
+							$scope.records.push(list[i]);
+						}
+						$scope.lastUsedQuerySkip += list.length;
+						$scope.lastUsedQueryGotAll = (list.length < $scope.queryChunkSize);
+						$scope.paginating = false;
+					});
+				}, error: function(error) {
+					$scope.$apply(function() {
+						$scope.paginating = false;
+					});
+					console.log(error.message);
+				}
+			});
 		}
 
-		window.onclick = function(event){
-			var modal = document.getElementById('myModal');
-			if (event.target == modal){
-				$("#myModal").css("display" ,"none");
+		$scope.loadMoreQueryResults = function() {
+
+			if ($scope.paginating == true) return;
+			if ($scope.lastUsedQueryGotAll) return;
+
+			loadQuery();
+		};
+
+		$scope.updateQueryResults = function() {
+
+			var query;
+
+			userRecordFactory.searchedFields.forEach(function(elem){
+				var subQuery = new Parse.Query(userRecordFactory);
+				subQuery.contains(elem, $scope.query);
+				query = query ? Parse.Query.or(query, subQuery) : subQuery;
+			});
+
+			query.equalTo("reseller", Parse.User.current());
+
+			$scope.lastUsedQueryGotAll = false;
+			$scope.lastUsedQuerySkip = 0;
+			query.limit($scope.queryChunkSize);
+			query.include("businessInfo");
+			$scope.records = [];
+			query.descending("updatedAt");
+			$scope.lastUsedQuery = query;
+			$scope.loadMoreQueryResults();
+
+		};
+
+		$scope.updateQueryResults();
+
+		$scope.logOut = function() {
+			Parse.User.logOut();
+			$scope.authenticated = false;
+			$scope.sessionUsername = '';
+			$state.go('login');
+		};
+
+		$scope.newUserRecord = new userRecordFactory();
+		$scope.newUserRecord.set("accountInfo", new accountInfoFactory);
+		$scope.newUserRecord.set("businessInfo", new businessInfoFactory);
+		$scope.newUserRecord.accountAssigned = true;
+		$scope.newUserRecord.paymentGateway = '';
+		$scope.newUserRecord.skipApplication = true;
+
+		$scope.userFormValidated = true;
+		$scope.userForm = {
+			fullName  : true
+		}
+
+		$scope.saveAndNotify = function(user,form) {
+
+			$scope.userForm.fullName = true;
+
+			if (!form.fullName.$valid) $scope.userForm.fullName = false;
+
+			if (!form.$valid) return;
+
+			if(user.paymentGateway){
+				if(user.paymentGateway.length < 1){
+					user.EPNrestrictKey = "";
+					user.EPNusername = "";
+					user.AuthKey = "";
+					user.AuthNet = "";
+				}
 			}
+			else {
+				user.EPNrestrictKey = "";
+				user.EPNusername = "";
+				user.AuthKey = "";
+				user.AuthNet = "";
+				user.paymentGateway = "";
+			}
+
+
+			if(user.oldUsername != user.username){
+				var projectUser = new Parse.Query("ProjectUser");
+				projectUser.equalTo("userName", user.oldUsername);
+				projectUser.first()
+					.then(function(pUser){
+					pUser.set("userName", user.username);
+					pUser.save(null, {
+						success : function(o){
+							debugger;
+						}, error : function(response, error){
+							debugger;
+						}
+					});
+				});
+
+			}
+
+			user.businessInfo.save(null, {
+				success: function(business){
+					Parse.Cloud.run('UpdateUser',{
+						user : {
+							id     : user.id,
+							params : {
+								merchantID      : user.merchantID,
+								company         : user.company,
+								fullName        : user.fullName,
+								email           : user.email,
+								username        : user.username,
+								password        : user.get('password'),
+								EPNrestrictKey  : user.EPNrestrictKey,
+								EPNusername     : user.EPNusername,
+								AuthNet         : user.AuthNet,
+								AuthKey         : user.AuthKey,
+								paymentGateway  : user.paymentGateway.toString(),
+								reseller 		: user.reseller.id ? user.reseller.id : "None"
+							}
+						}
+					}).then(function(res){
+						alert("User was successfuly saved!");
+						$scope.updateQueryResults();
+					},function(err){
+						console.log("User account update failed:" + err.message);
+					});
+				}, error: function(response, error) {
+					Parse.Cloud.run('UpdateUser',{
+						user : {
+							id     : user.id,
+							params : {
+								merchantID      : user.merchantID,
+								company         : user.company,
+								fullName        : user.fullName,
+								email           : user.email,
+								username        : user.username,
+								password        : user.get('password'),
+								EPNrestrictKey  : user.EPNrestrictKey,
+								EPNusername     : user.EPNusername,
+								AuthNet         : user.AuthNet,
+								AuthKey         : user.AuthKey,
+								paymentGateway  : user.paymentGateway.toString(),
+								reseller 		: user.reseller.id ? user.reseller.id : "None"
+							}
+						}
+					}).then(function(res){
+						alert("User was successfuly saved!");
+						$scope.updateQueryResults();
+					},function(err){
+						console.log("User account update failed:" + err.message);
+					});
+				}
+			});
 		}
 
+		$scope.deleteAndNotify = function(record) {
+			//if (!confirm("Are you sure want to remove?")) return;
+			
+			$("#myModal").css("display" ,"none");
+
+			//var deleting = {id: record.id};
+			var org = record.get('selectedOrganization');
+			var bus = record.get('businessInfo');
+			var acc = record.get('accountInfo');
+			var curr = record.get('currency');
+			var prin = record.get('principalInfo');
+			debugger;
+
+			var projUser = new Parse.Query("ProjectUser");
+			projUser.equalTo("userName", record.get('username'));
+			projUser.first()
+				.then(function(obj){
+				var userRole = undefined;
+				if(obj){
+					userRole = obj.get("role");
+					obj.destroy();
+				}
+
+				var query = new Parse.Query(Parse.Role);
+				query.equalTo("name", record.get('username'));
+
+				query.first()
+					.then(function(roleObj){
+					var promises = [];
+					if(roleObj)
+						promises.push(roleObj.destroy());
+					if(userRole == "Main"){
+						if(org)
+							promises.push(org.destroy());
+						if(bus)
+							promises.push(bus.destroy());
+						if(acc)
+							promises.push(acc.destroy());
+						if(curr)
+							promises.push(curr.destroy());
+						if(prin)
+							promises.push(prin.destroy());
+					}
+
+					$q.all(promises)
+						.then(function(){
+						var deleting = record.id;
+						var beforeDelete = $scope.records.length;
+						Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+							success: function() {
+								console.log("Cloud delete successfull");
+							},
+							error: function(error) {
+								console.log("Cloud delete failed: " + error.message);
+							}
+						}).then(function() {
+							$scope.updateQueryResults();
+							$scope.$apply(function() {
+								$scope.updateQueryResults();
+							});
+						});
+					}, function(error){
+						var deleting = record.id;
+						var beforeDelete = $scope.records.length;
+						Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+							success: function() {
+								console.log("Cloud delete successfull");
+							},
+							error: function(error) {
+								console.log("Cloud delete failed: " + error.message);
+							}
+						}).then(function() {
+							$scope.updateQueryResults();
+							$scope.$apply(function() {
+								$scope.updateQueryResults();
+							});
+						});
+						console.error(error);
+					});
+				});
+			}, function(error){
+				var query = new Parse.Query(Parse.Role);
+				query.equalTo("name", record.get('username'));
+
+				query.first()
+					.then(function(roleObj){
+					var promises = [];
+					if(roleObj)
+						promises.push(roleObj.destroy());
+
+					if(org)
+						promises.push(org.destroy());
+
+					$q.all(promises)
+						.then(function(){
+						var deleting = record.id;
+						var beforeDelete = $scope.records.length;
+						Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+							success: function() {
+								console.log("Cloud delete successfull");
+							},
+							error: function(error) {
+								console.log("Cloud delete failed: " + error.message);
+							}
+						}).then(function() {
+							$scope.updateQueryResults();
+							$scope.$apply(function() {
+								$scope.updateQueryResults();
+							});
+						});
+					}, function(error){
+						var deleting = record.id;
+						var beforeDelete = $scope.records.length;
+						Parse.Cloud.run("deleteUser", {identificator: deleting}, {
+							success: function() {
+								console.log("Cloud delete successfull");
+							},
+							error: function(error) {
+								console.log("Cloud delete failed: " + error.message);
+							}
+						}).then(function() {
+							$scope.updateQueryResults();
+							$scope.$apply(function() {
+								$scope.updateQueryResults();
+							});
+						});
+						console.error(error);
+					});
+				});
+			});
+		}
 
 		$scope.openModalCreate = function() {
 			var modalInstance = $modal.open({
 				animation: false,
 				templateUrl: 'add-basic-info',
-				controller: 'ModalCreateControllerResellers',
+				controller: 'ModalCreateController',
 				windowClass: 'window-shadow',
 				backdrop: true,
 				resolve: {
@@ -161,6 +501,8 @@ clientAdminPortalApp.controller('resellersController',[
 
 				};
 
+				$scope.newUserRecord.reseller = Parse.User.current();
+				
 				$scope.newUserRecord.save(null, {
 					success: function(record) {
 						$scope.$apply(function() {
@@ -178,21 +520,6 @@ clientAdminPortalApp.controller('resellersController',[
 						alert("Failed to create object:" + error.message);
 					}
 				}).then(function(user){
-					if (!skipApp) {
-						result.account.save().then(function(account){
-							var saving = {
-								id        : user.id,
-								accountId : account.id
-							};
-							Parse.Cloud.run("updateUser", {saving: saving})
-								.then(function(){
-								alert("User " + user.username + " was successfuly created!");
-								$scope.updateQueryResults();
-								window.location.reload();
-							});
-						});
-						return;
-					}
 
 					var userTables = {
 						//business : new businessInfoFactory(),
@@ -302,100 +629,32 @@ clientAdminPortalApp.controller('resellersController',[
 						}, function(err){
 							debugger;
 						});
-
-
-						/*
-          if (busObj && accObj && prObj && signObj){
-            var saving = {};
-            saving.id = user.id;
-            saving.busId = busObj.id;
-            saving.accId = accObj.id;
-            saving.prId = prObj.id;
-            saving.signId = signObj.id;
-
-            Parse.Cloud.run("updateUserTables", {saving: saving}, {
-              success: function() {
-                console.log("Cloud update successfull");
-                $scope.updateQueryResults();
-                window.location.reload();
-              },
-              error: function(error) {
-                console.log("Cloud update failed:" + error.message);
-              }
-            });
-          }
-            */
 					});
-
-					/*
-        Parse.Promise.when(promises).then(function(busObj,accObj,prObj,signObj,orgObj,currObj,projObj,prefObj){
-            currObj.set('organization', orgObj);
-            prefObj.set('organization', orgObj);
-            var p = [];
-            prefObj.save();
-            //p.push(currObj.save());
-            //p.push(prefObj.save());
-            currObj.save()
-            //$q.all(p)
-            .then(function(currencyObj){
-                Parse.Cloud.run("UpdateUser",{user : {
-                  id : user.id,
-                  params : {},
-                  pointers : [
-                    {
-                      id : busObj.id,
-                      className : 'BusinessInfo',
-                      field : 'businessInfo'
-                    },
-                    {
-                      id : accObj.id,
-                      className : 'AccountInfo',
-                      field : 'accountInfo'
-                    },
-                    {
-                      id : prObj.id,
-                      className : 'PrincipalInfo',
-                      field : 'principalInfo'
-                    },
-                    {
-                      id : signObj.id,
-                      className : 'Signature',
-                      field : 'signatureImage'
-                    },
-                    {
-                      id : orgObj.id,
-                      className : 'Organization',
-                      field : 'selectedOrganization'
-                    },
-                    {
-                      id : orgObj.id,
-                      className : 'Organization',
-                      field : 'organizations'
-                    },
-                    {
-                      id : currencyObj.id,
-                      className : 'Currency',
-                      field : 'currency'
-                    }
-                  ]
-                }})
-                .then(function(msg){
-                    console.log("Cloud update successfull");
-                    //$scope.updateQueryResults();
-                    window.location.reload();
-                }, function(error){
-                    console.log(error);
-                });
-            }, function(err){
-                debugger;
-            });
-
-        });
-          */
 				});
 
 			}, function() {
 				console.log('modal create cancelled');
 			});
 		};
+
+
+		/*****************************************************************************/
+
+		$scope.openDeleteModal = function(record){
+			$scope.currentRecord = record;
+			$("#myModal").css("display" ,"block");
+		}   
+
+		$scope.closeDeleteModal = function(){
+			$scope.currentRecord = undefined;
+			$("#myModal").css("display" ,"none");
+		}
+
+		window.onclick = function(event){
+			var modal = document.getElementById('myModal');
+			if (event.target == modal){
+				$scope.currentRecord = undefined;
+				$("#myModal").css("display" ,"none");
+			}
+		}
 	}]);

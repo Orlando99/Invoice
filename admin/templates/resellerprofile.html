@@ -1,0 +1,109 @@
+
+<link rel="stylesheet" href="css/bootstrap_dropdown.css"/>
+<link rel="stylesheet" href="css/main.css"/>
+<link rel="stylesheet" href="css/DynamicView.css"/>
+<link rel="stylesheet" href="" id="appStyle"/>
+<link rel="stylesheet" href="" id="appStyle1"/>
+<link rel="stylesheet" href="css/custom.css"/>
+
+<style>
+	.user-options {
+		position: absolute;
+		background-color: #d9d9d9;
+		width: 253px;
+		text-align: center;
+		padding: 18px 12px;
+		margin-top: 10px;
+		right: 0;
+		z-index: 11;
+		-moz-border-radius: 35px;
+		-webkit-border-radius: 3px;
+		-khtml-border-radius: 3px;
+		border-radius: 3px;
+		-webkit-box-shadow: 0 8px 6px -6px #333;
+		-moz-box-shadow: 0 8px 6px -6px #333;
+		box-shadow: 0 8px 6px -6px #333;
+	}
+
+	.arrow-top {
+		width: 0;
+		height: 0;
+		border-left: 10px solid transparent;
+		border-right: 10px solid transparent;
+		border-bottom: 12px solid #d9d9d9;
+		position: absolute;
+		top: -10px;
+		right: 100px;
+		margin: 0 auto;
+	}
+
+</style>
+
+<header ng-controller="resellersController" style="height: 70px" class="sticky-nav logo-only header-addusr">
+	<a id="logo_div" style="float:left; margin-left:40px" href="#"><img src="./images/logo.png" alt="Invoices Unlimited"></a>
+
+	<div style="float:right" class="user-actions user-actions-addusr">
+		<span style="color:black !important" ng-click="openUserOptions = true;" id="user-actions-reseller">
+			{{'Welcome, ' + sessionUsername}}
+			<i class="fa fa-bars" style="color: #0088dd !important;margin-left:5px" aria-hidden="true"></i>
+		</span>
+		<div ng-show="openUserOptions" id="user-options-wrapper">
+			<div ng-click="openUserOptions = false;" class="window-shadow"></div>
+			<div style="width:145px; margin-right: 10px" class="user-options user-options-reseller">
+				<div style="margin-right:-60%" class="arrow-top arrow-top-reseller"></div>
+				<ul style="margin-bottom: 10px">
+					<li><a ui-sref="resellers" style="color: black;padding-top:5px;padding-bottom:5px" class="">DASHBOARD</a></li>
+				</ul>
+				<ul>
+					<li><a ng-click="logOut()" id="sign-out" style="color: black;padding-top:5px;padding-bottom:5px" class="">SIGN OUT</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</header>
+
+<section  class="sign-up text-center">
+	<h2 class="text-uppercase">ACCOUNT INFO</h2>
+
+	<form name="signUp" id="signUpForm" novalidate="novalidate">
+
+		<input type="text" placeholder="Business Name" name="businessName" id="businessName" ng-model="record.businessName">
+
+		<input type="text" placeholder="Business Address" name="businessAddress" id="businessAddress" ng-model="record.address">
+		
+		<input type="text" placeholder="City" name="city" id="city" ng-model="record.city">
+
+		<div style="width: 100%" class="row">
+			<input type="text" style="width: 48%" placeholder="State" name="state" id="state_reseller" ng-model="record.state" class="input-50 input-50-spacing-swap">
+
+			<input type="text" style="width: 47.5%" placeholder="Zip Code" name="zipCode" id="zipCode_reseller" ng-model="record.zipCode" class="input-50 input-50-spacing-swap">
+		</div>
+
+		<input type="text" placeholder="Email" name="email" id="email" ng-model="record.email">
+
+		<input type="text" placeholder="Phone Number" class="mobilePhone phonenumber" name="phoneNumber" id="phoneNumber" ng-model="record.phoneNumber">
+
+		<input type="text" placeholder="Username" name="username" id="username" ng-model="record.username">
+
+		<input type="password" autocomplete="new-password" placeholder="********" name="password" id="password" ng-model="record.password">
+
+		<div style="border-bottom:1px solid blue; margin-bottom: 20px" class="row">
+		</div>
+
+		<input type="text" placeholder="Account Holder Name" name="fullName" id="fullName" ng-model="record.accountHolderName">
+
+		<input type="text" placeholder="{{record.ccNumberCurrent}}" name="creditCardNumber" id="creditCardNumber" ng-model="record.ccNumber">
+
+		<div style="width: 100%" class="row">
+			<input type="text" style="width: 48%" placeholder="Expiration Date" name="expDate" id="expDate" ng-model="record.expDate" class="input-50 input-50-spacing-swap">
+
+			<input type="text" style="width: 47.5%" placeholder="CVV" name="cvv" id="cvv" ng-model="record.cvv" class="input-50 input-50-spacing-swap">
+		</div>
+
+		<div style="width: 100%" class="row">
+			<input type="text" style="width: 48%;float:left" placeholder="Zip Code" name="zipCodeAccount" id="zipCodeAccount" ng-model="record.accountZip" class="input-50 input-50-spacing-swap">
+		</div>
+	</form>
+	<a href="" ng-click="updateInfo();" class="button button-primary button-next">SAVE</a>
+
+</section>
