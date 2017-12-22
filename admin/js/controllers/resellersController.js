@@ -512,6 +512,9 @@ clientAdminPortalApp.controller('resellersController',[
 
 				};
 
+				if(currentUser.get("reseller").username == "None")
+					currentUser.unset("reseller");
+				
 				$scope.newUserRecord.reseller = currentUser;
 
 				$scope.newUserRecord.save(null, {
