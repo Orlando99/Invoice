@@ -35,7 +35,7 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 					required: true
 				},
 				phoneNumber : {
-					minlength : 10,
+					minlength : 14,
 					required: true
 				}
 			},
@@ -85,10 +85,12 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 
 		$scope.account = new accountInfoFactory();
 		$scope.business = new businessInfoFactory();
+		$scope.resellerInfo = new resellerInfoFactory();
 		$scope.newUserRecord.SetDummyInfo();
 		$scope.account.SetDummyInfo();
 		$scope.newUserRecord.set("accountInfo", $scope.account);
 		$scope.newUserRecord.set("businessInfo", $scope.business);
+		$scope.newUserRecord.set("resellerInfo", $scope.resellerInfo);
 		$scope.newUserRecord.accountAssigned = true;
 		$scope.newUserRecord.businessAssigned = true;
 
@@ -106,10 +108,7 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 				username      : $scope.newUserRecord.username,
 				paymentGateway: $scope.newUserRecord.paymentGateway,
 				ccNumber 	  : $scope.newUserRecord.ccNumber,
-				expDate 	  : $scope.newUserRecord.expDate,
-				cvv 		  : $scope.newUserRecord.cvv,
 				cardZipCode   : $scope.newUserRecord.cardZipCode
-
 			};
 
 			$scope.newUserRecord.set("isReseller", true);
@@ -131,7 +130,7 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 					currency : new currencyFactory(),
 					projectUser : new projectUserFactory(),
 					preferences : new preferencesFactory(),
-					reseller : new resellerInfoFactory()
+					reseller : null
 				}
 
 				for (var table in userTables){
@@ -143,11 +142,13 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 				}
 
 				$scope.business.SetData(formInfo);
+				$scope.resellerInfo.SetData(formInfo);
 
 				userTables.signatureImage.set("imageName","Signature_" + user.id);
 				userTables.signatureImage.set("user",user);
 				userTables.account = $scope.account;
 				userTables.business = $scope.business;
+				userTables.reseller = $scope.resellerInfo;
 				userTables.selectedOrganization.set("userID", user);
 				userTables.currency.set('userId', user);
 				userTables.projectUser.set('userID', user);

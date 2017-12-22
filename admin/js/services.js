@@ -313,11 +313,16 @@ clientAdminPortalApp.factory('resellerInfoFactory', function() {
 
 	Reseller.prototype.SetData = function(data){
 		if (data) {
-			this.set("accountHolderName",data.fullname);
-			this.set("ccNumber",data.ccNumber);
-			this.set("expDate",data.expDate);
-			this.set("cvv",data.cvv);
-			this.set("zipCode",data.cardZipCode);
+			if(data.fullname)
+				this.set("accountHolderName",data.fullname);
+			if(data.ccNumber)
+				this.set("ccNumber",data.ccNumber);
+			if(data.expDate)
+				this.set("expDate",data.expDate);
+			if(data.cvv)
+				this.set("cvv",data.cvv);
+			if(data.cardZipCode)
+				this.set("zipCode",data.cardZipCode);
 		}
 	}
 
