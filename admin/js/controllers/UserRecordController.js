@@ -38,7 +38,7 @@ clientAdminPortalApp.controller('UserRecordController',[
 		$scope.lastUsedQueryGotAll = false;
 
 		$scope.allResellers = [];
-		
+
 		$scope.gatewayTypeNames = {
 			'': 'Select Gateway',
 			'1': 'Epn',
@@ -67,29 +67,29 @@ clientAdminPortalApp.controller('UserRecordController',[
 		}
 
 		getAllResellers();
-		
+
 		function getAllResellers(){
 			var resellerQuery = new Parse.Query(userRecordFactory);
 			resellerQuery.equalTo("isReseller", true);
-			
+
 			resellerQuery.limit(1000);
-			
+
 			resellerQuery.find()
-			.then(function(objs){
+				.then(function(objs){
 				$scope.allResellers = [{
-				username : "None"
+					username : "None"
 				}];
-				
+
 				objs.forEach(function(obj){
 					$scope.allResellers.push(obj);
 				});
-				
+
 				//$scope.allResellers = objs;
 			}, function(error){
 				console.error(error.message);
 			})
 		}
-		
+
 		var loadQuery = function(){
 			$scope.paginating = true;
 			$scope.lastUsedQuery.skip($scope.lastUsedQuerySkip);
@@ -178,15 +178,14 @@ clientAdminPortalApp.controller('UserRecordController',[
 										}
 									});
 								})(list[i]);
-								
+
 								(function(record) {
-									
+
 									if(record.reseller){
-										debugger;
 										var temp = $scope.allResellers.filter(function(obj){
 											return record.reseller.id == obj.id;
 										})[0];
-										
+
 										if(temp)
 											record.reseller = temp;
 										else 
@@ -307,6 +306,8 @@ clientAdminPortalApp.controller('UserRecordController',[
 
 			if (!form.$valid) return;
 
+			$('.loader-screen').show();
+
 			if(user.paymentGateway){
 				if(user.paymentGateway.length < 1){
 					user.EPNrestrictKey = "";
@@ -332,26 +333,30 @@ clientAdminPortalApp.controller('UserRecordController',[
 					pUser.set("userName", user.username);
 					pUser.save(null, {
 						success : function(o){
-							debugger;
+							//debugger;
 						}, error : function(response, error){
 							debugger;
 						}
 					});
 				});
-
 			}
-
+			/*
 			if($scope.otherUsers == "All Users"){
 				if(user.resellerInfo){
 					if(user.ccNumber && user.ccNumber.length){
 						user.resellerInfo.set('ccNumber', user.ccNumber);
 					}
-					user.resellerInfo.save();
+
+					user.resellerInfo.save()
+						.then(function(objReseller){
+						debugger;
+					}, function(error){
+						console.error(error.message);
+						debugger;
+					});
 				}
 			}
-			
-			
-			debugger;
+			*/
 			user.businessInfo.save(null, {
 				success: function(business){
 					Parse.Cloud.run('UpdateUser',{
@@ -373,9 +378,33 @@ clientAdminPortalApp.controller('UserRecordController',[
 							}
 						}
 					}).then(function(res){
-						alert("User was successfuly saved!");
-						$scope.updateQueryResults();
+						if($scope.otherUsers == "All Users"){
+							if(user.resellerInfo){
+								if(user.ccNumber && user.ccNumber.length){
+									user.resellerInfo.set('ccNumber', user.ccNumber);
+								}
+
+								user.fetch().then(function(obj){
+									user.resellerInfo.save()
+										.then(function(objReseller){
+										$('.loader-screen').hide();
+										alert("User was successfuly saved!");
+										$scope.updateQueryResults();
+									}, function(error){
+										console.error(error.message);
+										debugger;
+									});
+								}, function(error){
+									debugger;
+								});
+							}
+						} else {
+							$('.loader-screen').hide();
+							alert("User was successfuly saved!");
+							$scope.updateQueryResults();
+						}
 					},function(err){
+						debugger;
 						console.log("User account update failed:" + err.message);
 					});
 				}, error: function(response, error) {
@@ -398,8 +427,31 @@ clientAdminPortalApp.controller('UserRecordController',[
 							}
 						}
 					}).then(function(res){
-						alert("User was successfuly saved!");
-						$scope.updateQueryResults();
+						if($scope.otherUsers == "All Users"){
+							if(user.resellerInfo){
+								if(user.ccNumber && user.ccNumber.length){
+									user.resellerInfo.set('ccNumber', user.ccNumber);
+								}
+
+								user.fetch().then(function(obj){
+									user.resellerInfo.save()
+										.then(function(objReseller){
+										$('.loader-screen').hide();
+										alert("User was successfuly saved!");
+										$scope.updateQueryResults();
+									}, function(error){
+										console.error(error.message);
+										debugger;
+									});
+								}, function(error){
+									debugger;
+								});
+							}
+						} else {
+							$('.loader-screen').hide();
+							alert("User was successfuly saved!");
+							$scope.updateQueryResults();
+						}
 					},function(err){
 						console.log("User account update failed:" + err.message);
 					});
