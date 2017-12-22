@@ -14,7 +14,37 @@
 		display: inline-block !important;
 	}
 	label.error{
-		    margin-top: 10px !important;
+		margin-top: 10px !important;
+	}
+	#state_reseller-error:after, #ExpirationDate-error:after {
+		content: "";
+		position: absolute;
+		top: 50%;
+		-webkit-transform: translateY(-50%);
+		transform: translateY(-50%);
+		border-left: 5px #a04444 solid;
+		/*margin-left: 290px;*/
+		margin-left: 183px;
+	}
+	#state_reseller-error:before, #ExpirationDate-error:before {
+		content: "";
+		position: absolute;
+		top: 50%;
+		-webkit-transform: translateY(-50%);
+		transform: translateY(-50%);
+		border-left: 5px #a04444 solid;
+		border-top: 5px transparent solid;
+		border-bottom: 5px transparent solid;
+		/*margin-left: 293px;*/
+		margin-left: 183px;
+		
+	}
+	#state_reseller-error, #ExpirationDate-error {
+		margin-right: 645px;
+		width: 190px;
+		/*
+		margin-right: 750px;
+		width: 300px;*/
 	}
 </style>
 
@@ -24,25 +54,25 @@
 
 <section  class="sign-up text-center">
 
-	<h2 class="text-uppercase">LOREM IPSUM DOLOR</h2>
+	<h2 class="text-uppercase">Reseller Signup</h2>
 
 	<form name="signUp" id="resellerSignupForm" novalidate="novalidate">
 		<input type="text" placeholder="Business Name" ng-model="newUserRecord.businessName" name="businessName" id="businessName">
 
 		<input type="text" placeholder="Business Address" ng-model="newUserRecord.address" name="businessAddress" id="businessAddress">
-		
+
 		<input type="text" placeholder="City" ng-model="newUserRecord.city" name="city" id="city">
 
 		<div style="width: 100%" class="row">
 			<input type="text" style="width: 48%" placeholder="State" ng-model="newUserRecord.state" name="state" id="state_reseller" class="input-50 input-50-spacing-swap">
 
-			<input type="text" style="width: 47.5%" placeholder="Zip Code" ng-model="newUserRecord.zip" name="zipCode" id="zipCode_reseller" class="input-50 input-50-spacing-swap">
+			<input type="text" style="width: 47.5%; margin-left: 15px !important;" placeholder="Zip Code" ng-model="newUserRecord.zip" name="zipCode" id="zipCode_reseller" class="input-50 input-50-spacing-swap">
 		</div>
 
 		<input type="text" placeholder="Email" ng-model="newUserRecord.email" name="email" id="email">
-
-		<input type="text" placeholder="Phone Number" class="mobilePhone phonenumber" ng-model="newUserRecord.phone" name="phoneNumber" id="phoneNumber">
-
+		<div>
+			<input type="text" placeholder="Phone Number" class="mobilePhone phonenumber" ng-model="newUserRecord.phone" name="phoneNumber" id="phoneNumber">
+		</div>
 		<input type="text" placeholder="Username" ng-model="newUserRecord.username" name="username" id="username">
 
 		<input type="password" placeholder="Password (6 Characters)" ng-model="newUserRecord.password" name="password" id="password">
@@ -52,12 +82,14 @@
 
 		<input type="text" placeholder="Account Holder Name" ng-model="newUserRecord.fullName" name="fullName" id="fullName">
 
-		<input type="text" placeholder="Credit Card Number" ng-model="newUserRecord.ccNumber" name="creditCardNumber" id="creditCardNumber">
+		<input type="text" placeholder="Credit Card Number" ng-model="newUserRecord.ccNumber" name="creditCardNumber" id="CardNo">
 
 		<div style="width: 100%" class="row">
-			<input type="text" style="width: 48%" placeholder="Expiration Date" ng-model="newUserRecord.expDate" name="expDate" id="expDate" class="input-50 input-50-spacing-swap">
 
-			<input type="text" style="width: 47.5%" placeholder="CVV" ng-model="newUserRecord.cvv" name="cvv" id="cvv" class="input-50 input-50-spacing-swap">
+			<input type="text" style="width: 48%" placeholder="Expiration Date" ng-model="newUserRecord.expDate" name="expDate" id="ExpirationDate" class="input-50 input-50-spacing-swap">
+
+			<input type="text" style="width: 47.5%; margin-left: 15px !important;" placeholder="CVV" ng-model="newUserRecord.cvv" name="cvv" id="CVV2" class="input-50 input-50-spacing-swap">
+
 		</div>
 
 		<div style="width: 100%" class="row">
@@ -66,7 +98,7 @@
 	</form>
 
 	<a ng-click="signUpUser();" class="button button-primary button-next">Next</a>
-	
+
 	<!--<a ui-sref="resellers" class="button button-primary button-next">Next</a>-->
 
 	<p>By clicking "NEXT", you are agreeing to the

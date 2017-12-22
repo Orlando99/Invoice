@@ -12,7 +12,7 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 		}
 
 		$("#resellerSignupForm").validate({
-			onkeyup : function(element) {$(element).valid()},
+			//onkeyup : function(element) {$(element).valid()},
 			onfocusout : false,
 			rules: {
 				businessName	: 'required',
@@ -72,6 +72,92 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 			}
 		});
 
+		/********************************************************************************************/
+
+		var Validate = {
+			CardName : '',
+			ExpDateMask : function(e) {
+				var numberToAdd = e.which - 48;
+				if (numberToAdd < 0 || numberToAdd > 9) return false;
+
+				var expDate = $('#ExpirationDate');
+
+				var potentialResult = expDate.val();
+
+				potentialResult += /\d\d$/.test(expDate.val()) ? "/"+numberToAdd:numberToAdd;
+
+				var year = (new Date()).getFullYear().toString().slice(2);
+
+				var lengthChecks = {
+					l1 : /[01]/,
+					l2 : /(0(?=[1-9])\d)|(1(?=[0-2]))/,
+					l4 : new RegExp('[0-9]{2}/[' + year[0] + '-9]'),
+					l5 : new RegExp('[0-9]{2}/((' + year[0] + '(?=[' + year[1] + '-9]))|[' + (parseInt(year[0])+1) +'-9])[0-9]')
+				}
+
+				if (lengthChecks['l'+potentialResult.length] == undefined) return false;
+				if (lengthChecks['l'+potentialResult.length].test(potentialResult)) return true;
+				else return false;
+			},
+			CardNoMask : function(e){
+				var cardInput = $('#CardNo');
+				var cvv2Input = $('#CVV2');
+
+				var currentCard = {card:'',cvv2:''};
+
+				var regexCards = {
+					visa : /^4/,
+					mastercard : /^5/,
+					amex : /^3[467]/,
+					jcb : /^35/,
+					discover : /^6(?:011|5)/
+					//discover : /^65/
+				}
+
+				for(var cardCheck in regexCards) {
+					if (regexCards[cardCheck].test(cardInput.val())) {
+						currentCard.card = cardCheck;
+						currentCard.cvv2 = cardCheck == 'amex'?'cvv-amex':'cvv-card';
+						break;
+					}
+				}
+
+				if (!cardInput.hasClass(currentCard.card))
+					cardInput.attr('class',currentCard.card);
+				if (!cvv2Input.hasClass(currentCard.cvv2)) 
+					cvv2Input.attr('class',currentCard.cvv2);
+
+				Validate.CardName = currentCard.card;
+
+				return true;
+			}
+		};
+
+		$('#CardNo').on('change keyup', function(ev) {
+			Validate.CardNoMask(ev);
+		});
+
+		var cardMaskOptions =  {onKeyPress: function(cep, e, field, options){
+			var masks = ['0000 0000 0000 0000', '0000 000000 00000'];
+			var mask = (Validate.CardName == 'amex') ? masks[1] : masks[0];
+			$('#CardNo').mask(mask, options);
+		}, placeholder : ''};   
+
+		var cvvMaskOptions =  {onKeyPress: function(cep, e, field, options){
+			var masks = ['000', '0000'];
+
+			var mask = Validate.CardName == 'amex' ? masks[1] : masks[0];
+
+			$('#CVV2').mask(mask, options);
+		}, placeholder : ''};       
+
+		$('#CVV2').mask('000', cvvMaskOptions);
+		$('#CardNo').mask('0000 0000 0000 0000', cardMaskOptions);
+		$('#ExpirationDate').mask('00/00',{placeholder: 'MM/YY'});
+
+		/********************************************************************************************/
+
+
 		$scope.signUpUser = function(){
 			if(!$("#resellerSignupForm").valid())
 				return;
@@ -112,7 +198,7 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 			};
 
 			$scope.newUserRecord.set("isReseller", true);
-			
+
 			$scope.newUserRecord.signUp(null, {
 				success: function(record) {
 					console.log("successfully created:", record);
@@ -143,6 +229,7 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 
 				$scope.business.SetData(formInfo);
 				$scope.resellerInfo.SetData(formInfo);
+				$scope.resellerInfo.set("costPerMerchant", 10);
 
 				userTables.signatureImage.set("imageName","Signature_" + user.id);
 				userTables.signatureImage.set("user",user);
