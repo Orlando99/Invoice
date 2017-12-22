@@ -5,11 +5,15 @@ clientAdminPortalApp.controller('resellersController',[
 	function($q,$scope, $state, $modal, userRecordFactory, accountInfoFactory, businessInfoFactory, signatureFactory,principalInfoFactory,organizationFactory,currencyFactory,projectUserFactory,preferencesFactory) {
 
 		if (Parse.User.current()) {
-			if(!(Parse.User.current().get("isReseller") || Parse.User.current().authenticated()))
+			if(!(Parse.User.current().get("isReseller") || (Parse.User.current().authenticated() && $state.params.resellerId)))
 				$state.go("home");
 		} else {
 			$state.go("login");
 		}
+
+		var currentUser;
+
+
 
 		$scope.sessionUsername = Parse.User.current().get("fullName");
 
@@ -30,25 +34,11 @@ clientAdminPortalApp.controller('resellersController',[
 				'Z': { pattern : /[2-9]/g }
 			}
 		});
-		
-		Parse.User.current().get("resellerInfo").fetch()
-		.then(function(obj){
-			$scope.costPerMerchant = obj.get("costPerMerchant");
-			
-			if(!$scope.$$phase)
-				$scope.$apply();
-		}, function(error){
-			console.error(error.message);
-			debugger;
-		});
-		
-		
-		$scope.costPerMerchant = Parse.User.current().get("resellerInfo").get("costPerMerchant");
-		
+
 		$scope.records = [];
 		$scope.adminUsers = [];
 		$scope.adminIds = [];
-		
+
 		$scope.currentRecord = undefined;
 
 		$scope.query = "";
@@ -81,7 +71,7 @@ clientAdminPortalApp.controller('resellersController',[
 			'poland': 'Poland'
 		};
 
-		var loadQuery = function(){
+		function loadQuery(){
 			$scope.paginating = true;
 			$scope.lastUsedQuery.skip($scope.lastUsedQuerySkip);
 			$scope.lastUsedQuery.find({
@@ -189,7 +179,9 @@ clientAdminPortalApp.controller('resellersController',[
 		}
 
 		$scope.loadMoreQueryResults = function() {
-
+			
+			if(!$scope.lastUsedQuery) return;
+			
 			if ($scope.paginating == true) return;
 			if ($scope.lastUsedQueryGotAll) return;
 
@@ -206,7 +198,7 @@ clientAdminPortalApp.controller('resellersController',[
 				query = query ? Parse.Query.or(query, subQuery) : subQuery;
 			});
 
-			query.equalTo("reseller", Parse.User.current());
+			query.equalTo("reseller", currentUser);
 
 			$scope.lastUsedQueryGotAll = false;
 			$scope.lastUsedQuerySkip = 0;
@@ -219,7 +211,7 @@ clientAdminPortalApp.controller('resellersController',[
 
 		};
 
-		$scope.updateQueryResults();
+		//$scope.updateQueryResults();
 
 		$scope.logOut = function() {
 			Parse.User.logOut();
@@ -247,6 +239,8 @@ clientAdminPortalApp.controller('resellersController',[
 			if (!form.fullName.$valid) $scope.userForm.fullName = false;
 
 			if (!form.$valid) return;
+
+			$('.loader-screen').show();
 
 			if(user.paymentGateway){
 				if(user.paymentGateway.length < 1){
@@ -303,6 +297,7 @@ clientAdminPortalApp.controller('resellersController',[
 							}
 						}
 					}).then(function(res){
+						$('.loader-screen').hide();
 						alert("User was successfuly saved!");
 						$scope.updateQueryResults();
 					},function(err){
@@ -328,6 +323,7 @@ clientAdminPortalApp.controller('resellersController',[
 							}
 						}
 					}).then(function(res){
+						$('.loader-screen').hide();
 						alert("User was successfuly saved!");
 						$scope.updateQueryResults();
 					},function(err){
@@ -339,7 +335,7 @@ clientAdminPortalApp.controller('resellersController',[
 
 		$scope.deleteAndNotify = function(record) {
 			//if (!confirm("Are you sure want to remove?")) return;
-			
+
 			$("#myModal").css("display" ,"none");
 
 			//var deleting = {id: record.id};
@@ -349,7 +345,7 @@ clientAdminPortalApp.controller('resellersController',[
 			var curr = record.get('currency');
 			var prin = record.get('principalInfo');
 			debugger;
-
+			$('.loader-screen').show();
 			var projUser = new Parse.Query("ProjectUser");
 			projUser.equalTo("userName", record.get('username'));
 			projUser.first()
@@ -409,6 +405,7 @@ clientAdminPortalApp.controller('resellersController',[
 								console.log("Cloud delete failed: " + error.message);
 							}
 						}).then(function() {
+							$('.loader-screen').hide();
 							$scope.updateQueryResults();
 							$scope.$apply(function() {
 								$scope.updateQueryResults();
@@ -442,6 +439,7 @@ clientAdminPortalApp.controller('resellersController',[
 								console.log("Cloud delete failed: " + error.message);
 							}
 						}).then(function() {
+							$('.loader-screen').hide();
 							$scope.updateQueryResults();
 							$scope.$apply(function() {
 								$scope.updateQueryResults();
@@ -458,6 +456,7 @@ clientAdminPortalApp.controller('resellersController',[
 								console.log("Cloud delete failed: " + error.message);
 							}
 						}).then(function() {
+							$('.loader-screen').hide();
 							$scope.updateQueryResults();
 							$scope.$apply(function() {
 								$scope.updateQueryResults();
@@ -494,7 +493,7 @@ clientAdminPortalApp.controller('resellersController',[
 			});
 
 			modalInstance.result.then(function(result) {
-
+				$('.loader-screen').show();
 				console.log('modal create submitted');
 
 				var skipApp = $scope.newUserRecord.skipApplication;
@@ -513,8 +512,8 @@ clientAdminPortalApp.controller('resellersController',[
 
 				};
 
-				$scope.newUserRecord.reseller = Parse.User.current();
-				
+				$scope.newUserRecord.reseller = currentUser;
+
 				$scope.newUserRecord.save(null, {
 					success: function(record) {
 						$scope.$apply(function() {
@@ -632,6 +631,7 @@ clientAdminPortalApp.controller('resellersController',[
 								]
 							}})
 								.then(function(msg){
+								$('.loader-screen').hide();
 								console.log("Cloud update successfull");
 								//$scope.updateQueryResults();
 								window.location.reload();
@@ -668,5 +668,47 @@ clientAdminPortalApp.controller('resellersController',[
 				$scope.currentRecord = undefined;
 				$("#myModal").css("display" ,"none");
 			}
+		}
+
+		if($state.params.resellerId){
+			$scope.isReseller = false;
+			$('.loader-screen').show();
+
+			var query = new Parse.Query(Parse.User);
+
+			query.get($state.params.resellerId)
+				.then(function(obj){
+				$('.loader-screen').hide();
+				currentUser = obj;
+				$scope.updateQueryResults();
+				currentUser.get("resellerInfo").fetch()
+					.then(function(obj){
+					$scope.costPerMerchant = obj.get("costPerMerchant");
+
+					if(!$scope.$$phase)
+						$scope.$apply();
+				}, function(error){
+					console.error(error.message);
+					debugger;
+				});
+			}, function(error){
+				console.error(error.message);
+				debugger;
+			});
+		} else {
+			$scope.isReseller = true;
+			currentUser = Parse.User.current();
+			$scope.updateQueryResults();
+
+			Parse.User.current().get("resellerInfo").fetch()
+				.then(function(obj){
+				$scope.costPerMerchant = obj.get("costPerMerchant");
+
+				if(!$scope.$$phase)
+					$scope.$apply();
+			}, function(error){
+				console.error(error.message);
+				debugger;
+			});
 		}
 	}]);

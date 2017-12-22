@@ -351,7 +351,7 @@
 							</form>
 							<div class="merchant-portal">
 								<a ng-hide="otherUsers == 'All Users'" href="#">Merchant Portal</a>
-								<a ng-show="otherUsers == 'All Users'" ui-sref="resellers">Reseller Portal</a>
+								<a ng-show="otherUsers == 'All Users'" ui-sref="resellers({resellerId:record.id})">Reseller Portal</a>
 							</div>
 
 						</td>

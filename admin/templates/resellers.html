@@ -13,7 +13,10 @@
 				<div style="width:105px" class="user-options user-options-reseller">
 					<div style="margin-right:-60%" class="arrow-top arrow-top-reseller"></div>
 					<ul style="margin-bottom: 10px">
-						<li><a ui-sref="resellerprofile" id="sign-out" style="color: black;padding-top:5px;padding-bottom:5px" class="">ACCOUNT</a></li>
+						<li>
+							<a ng-show="isReseller" ui-sref="resellerprofile" id="sign-out" style="color: black;padding-top:5px;padding-bottom:5px" class="">ACCOUNT</a> 
+							<a ng-hide="isReseller" ui-sref="home" id="sign-out" style="color: black;padding-top:5px;padding-bottom:5px" class="">HOME</a> 
+						</li>
 					</ul>
 					<ul>
 						<li><a ng-click="logOut()" id="sign-out" style="color: black;padding-top:5px;padding-bottom:5px" class="">SIGN OUT</a></li>

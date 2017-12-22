@@ -11,7 +11,7 @@ angular.module('clientAdminPortalApp').config(function($stateProvider, $urlRoute
 	})
 
 		.state('resellers', {
-		url: "/resellers",
+		url: "/resellers/:resellerId",
 		controller: "resellersController",
 		templateUrl: "templates/resellers.html"
 	})
