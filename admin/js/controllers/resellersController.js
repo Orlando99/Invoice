@@ -31,6 +31,18 @@ clientAdminPortalApp.controller('resellersController',[
 			}
 		});
 		
+		Parse.User.current().get("resellerInfo").fetch()
+		.then(function(obj){
+			$scope.costPerMerchant = obj.get("costPerMerchant");
+			
+			if(!$scope.$$phase)
+				$scope.$apply();
+		}, function(error){
+			console.error(error.message);
+			debugger;
+		});
+		
+		
 		$scope.costPerMerchant = Parse.User.current().get("resellerInfo").get("costPerMerchant");
 		
 		$scope.records = [];
