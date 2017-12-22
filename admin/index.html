@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="css/fonts.css" />
         <link rel="stylesheet" href="css/responsive.css" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/loaders.css/0.1.2/loaders.min.css">
          
         <!-- New Css -->
          
@@ -24,6 +25,10 @@
 <![endif]-->
     </head>
     <body style="background-color: #f2f2f2;">
+		<div class="overlay loader-screen" style="display:none">
+			<div style="position: fixed;margin-top: 5%;margin-left: 50%;width: 100px;" loader-css="line-scale-pulse-out"></div>
+			<!--<img class="loader" src="./assets/images/loader-new.gif"/>-->
+		</div>
         <div ui-view></div>
 
         <script src="./bower_components/parse/parse.min.js"></script>
@@ -53,6 +58,8 @@
 		<script src="js/controllers/ResellerSignupController.js"></script>
         <script src="js/services.js"></script>
 		<script src="js/controllers/resellerProfileController.js"></script>
+		
+		<script src="js/angular-loaders.min.js"></script>
         
     </body>
  

@@ -5,7 +5,7 @@
 // Initialize Parse with your Parse application javascript keys
 // test app.
 //Parse.initialize("R7ar2YrJEpUb7BbeZfVt9hMNrXWXTm5q4JGJgPkX",
-                 //"XoVDCs3Zx0DUZAq1Pk2WGYOLgJfbzXp83g2QoZ10");
+//"XoVDCs3Zx0DUZAq1Pk2WGYOLgJfbzXp83g2QoZ10");
 
 // actual app. Danger Zone!
 
@@ -15,12 +15,12 @@
 //Parse.initialize(SVV3keys.appID,SVV3keys.jsKey);
 
 Parse.initialize(
-				"2yAPqtvKgpLjfE6VmiYkqwgHgqFxmRi99KucPzPW",
-				"6oxjUk90IAHMjVlv8n1838KhGurFHN9rjPijdjXT"
-			);
-			Parse.serverURL = 'https://parseapi.back4app.com/';
+	"2yAPqtvKgpLjfE6VmiYkqwgHgqFxmRi99KucPzPW",
+	"6oxjUk90IAHMjVlv8n1838KhGurFHN9rjPijdjXT"
+);
+Parse.serverURL = 'https://parseapi.back4app.com/';
 
-var clientAdminPortalApp = angular.module('clientAdminPortalApp', ['tagged.directives.infiniteScroll', 'ui.router', 'ui.bootstrap']);
+var clientAdminPortalApp = angular.module('clientAdminPortalApp', ['tagged.directives.infiniteScroll', 'ui.router', 'ui.bootstrap', 'alexjoffroy.angular-loaders']);
 
 var toArray = function(obj){
 	var result = [];

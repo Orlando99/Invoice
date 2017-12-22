@@ -165,6 +165,9 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 			createUser();
 		}
 
+		$scope.emailError = false;
+		$scope.usernameError = false;
+
 		$scope.newUserRecord = new userRecordFactory();
 		$scope.newUserRecord.accountAssigned = true;
 		$scope.newUserRecord.paymentGateway = '';
@@ -181,6 +184,9 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 		$scope.newUserRecord.businessAssigned = true;
 
 		function createUser() {
+			$scope.emailError = false;
+			$scope.usernameError = false;
+
 			var formInfo = {
 				fullname      : $scope.newUserRecord.fullName,
 				address       : $scope.newUserRecord.address,
@@ -199,12 +205,23 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 
 			$scope.newUserRecord.set("isReseller", true);
 
+			$('.loader-screen').show();
+			
 			$scope.newUserRecord.signUp(null, {
 				success: function(record) {
 					console.log("successfully created:", record);
 				},
 				error: function(record, error) {
-					alert("Failed to create object:" + error.message);
+					$('.loader-screen').hide();
+					if(error.message.includes("username"))
+						$scope.usernameError = true;
+					else
+						$scope.emailError = true;
+					
+					if(!$scope.$$phase)
+						$scope.$apply();
+					
+					//alert("Failed to create object:" + error.message);
 				}
 			}).then(function(user){
 				var userTables = {
@@ -318,6 +335,7 @@ clientAdminPortalApp.controller('ResellerSignupController',[
 							console.log("Cloud update successfull");
 							//$scope.updateQueryResults();
 							//window.location.reload();
+							$('.loader-screen').hide();
 							$state.go('resellers');
 						}, function(error){
 							console.log(error);

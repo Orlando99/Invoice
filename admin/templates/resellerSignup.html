@@ -70,10 +70,12 @@
 		</div>
 
 		<input type="text" placeholder="Email" ng-model="newUserRecord.email" name="email" id="email">
+		<label ng-show="emailError" style="color: red; margin-top: -20px; display: block; margin-bottom: 10px; float: left;">Account already exist with this username.</label>
 		<div>
 			<input type="text" placeholder="Phone Number" class="mobilePhone phonenumber" ng-model="newUserRecord.phone" name="phoneNumber" id="phoneNumber">
 		</div>
 		<input type="text" placeholder="Username" ng-model="newUserRecord.username" name="username" id="username">
+		<label ng-show="usernameError" style="color: red; margin-top: -20px; display: block; margin-bottom: 10px; float: left;">Account already exist with this username.</label>
 
 		<input type="password" placeholder="Password (6 Characters)" ng-model="newUserRecord.password" name="password" id="password">
 
