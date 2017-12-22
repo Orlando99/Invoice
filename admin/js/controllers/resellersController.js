@@ -389,6 +389,7 @@ clientAdminPortalApp.controller('resellersController',[
 								console.log("Cloud delete failed: " + error.message);
 							}
 						}).then(function() {
+							$('.loader-screen').hide();
 							$scope.updateQueryResults();
 							$scope.$apply(function() {
 								$scope.updateQueryResults();
