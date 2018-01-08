@@ -52,7 +52,7 @@ clientAdminPortalApp.controller('resellersController',[
 
 		$scope.gatewayTypeNames = {
 			'': 'None',
-			'1': 'eProcessing Network (EPN)',
+			'1': 'EPN (eProcessing Network)',
 			'2': 'Auth. Net',
 			'3': 'Pivotal'
 		};
