@@ -52,7 +52,7 @@ clientAdminPortalApp.controller('resellersController',[
 
 		$scope.gatewayTypeNames = {
 			'': 'None',
-			'1': 'Epn',
+			'1': 'eProcessing Network (EPN)',
 			'2': 'Auth. Net',
 			'3': 'Pivotal'
 		};
@@ -512,9 +512,10 @@ clientAdminPortalApp.controller('resellersController',[
 					paymentGateway   : $scope.newUserRecord.paymentGateway,
 
 				};
-
-				if(currentUser.get("reseller").username == "None")
-					currentUser.unset("reseller");
+				
+				if(currentUser.get("reseller"))
+					if(currentUser.get("reseller").username == "None")
+						currentUser.unset("reseller");
 				
 				$scope.newUserRecord.reseller = currentUser;
 

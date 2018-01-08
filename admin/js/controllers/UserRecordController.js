@@ -41,7 +41,7 @@ clientAdminPortalApp.controller('UserRecordController',[
 
 		$scope.gatewayTypeNames = {
 			'': 'Select Gateway',
-			'1': 'Epn',
+			'1': 'eProcessing Network (EPN)',
 			'2': 'Auth. Net',
 			'3': 'Pivotal'
 		};
