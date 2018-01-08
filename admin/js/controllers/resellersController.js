@@ -71,6 +71,20 @@ clientAdminPortalApp.controller('resellersController',[
 			'poland': 'Poland'
 		};
 
+		getExtras();
+		
+		function getExtras(){
+			var extrasQuery = new Parse.Query("Extras");
+
+			extrasQuery.first()
+				.then(function(objs){
+				$scope.extras = objs;
+
+			}, function(error){
+				console.error(error.message);
+			});
+		}
+		
 		function loadQuery(){
 			$scope.paginating = true;
 			$scope.lastUsedQuery.skip($scope.lastUsedQuerySkip);
@@ -179,9 +193,9 @@ clientAdminPortalApp.controller('resellersController',[
 		}
 
 		$scope.loadMoreQueryResults = function() {
-			
+
 			if(!$scope.lastUsedQuery) return;
-			
+
 			if ($scope.paginating == true) return;
 			if ($scope.lastUsedQueryGotAll) return;
 
@@ -498,162 +512,274 @@ clientAdminPortalApp.controller('resellersController',[
 				console.log('modal create submitted');
 
 				var skipApp = $scope.newUserRecord.skipApplication;
-				var formInfo = {
-					fullname      : $scope.newUserRecord.fullName,
-					address       : $scope.newUserRecord.address,
-					city          : $scope.newUserRecord.city,
-					state         : $scope.newUserRecord.state,
-					zipCode       : $scope.newUserRecord.zip,
-					phone         : $scope.newUserRecord.phone,
-					email         : $scope.newUserRecord.email,
-					merchantId    : $scope.newUserRecord.merchantReferenceId,
-					businessName  : $scope.newUserRecord.businessName,
-					username      : $scope.newUserRecord.username,
-					paymentGateway   : $scope.newUserRecord.paymentGateway,
-
-				};
-				
-				if(currentUser.get("reseller"))
-					if(currentUser.get("reseller").username == "None")
-						currentUser.unset("reseller");
-				
-				$scope.newUserRecord.reseller = currentUser;
-
-				$scope.newUserRecord.save(null, {
-					success: function(record) {
-						$scope.$apply(function() {
-							$scope.records.push($scope.newUserRecord);
-							$scope.newUserRecord = new userRecordFactory();
-							$scope.newUserRecord.set("accountInfo", new accountInfoFactory);
-							$scope.newUserRecord.set("businessInfo", new businessInfoFactory);
-							$scope.newUserRecord.accountAssigned = true;
-							$scope.newUserRecord.businessAssigned = true;
-							$scope.newUserRecord.paymentGateway = '';
-						});
-						console.log("successfully created:", record);
-					},
-					error: function(record, error) {
-						alert("Failed to create object:" + error.message);
-					}
-				}).then(function(user){
-
-					var userTables = {
-						//business : new businessInfoFactory(),
-						business : null,
-						account : null,
-						principal : new principalInfoFactory(),
-						signatureImage : new signatureFactory(),
-						selectedOrganization : new organizationFactory(),
-						currency : new currencyFactory(),
-						projectUser : new projectUserFactory(),
-						preferences : new preferencesFactory()
-					}
-
-					for (var table in userTables){
-						if (!userTables[table]) continue;
-						userTables[table].SetDummyInfo();
-						if (userTables[table].SetData)
-							userTables[table].SetData(formInfo);
-					}
-
-					result.business.SetData(formInfo);
-
-					userTables.signatureImage.set("imageName","Signature_" + user.id);
-					userTables.signatureImage.set("user",user);
-					userTables.account = result.account;
-					userTables.business = result.business;
-					userTables.selectedOrganization.set("userID", user);
-					userTables.currency.set('userId', user);
-					userTables.projectUser.set('userID', user);
-					userTables.preferences.set('userID', user);
-
-					var promises = toArray(userTables).map(function(table){
-						return table.save();
-					});
-
-					//Parse.Promise.when(promises).then(function(busObj,accObj,prObj,signObj,orgObj,currObj,projObj,prefObj){
-					Parse.Promise.when(promises).then(function(result){
-
-						var busObj = result[0];
-						var accObj = result[1];
-						var prObj = result[2];
-						var signObj = result[3];
-						var orgObj = result[4];
-						var currObj = result[5];
-						var projObj = result[6];
-						var prefObj = result[7];
-
-						currObj.set('organization', orgObj);
-						prefObj.set('organization', orgObj);
-						projObj.set('organization', orgObj);
-						var p = [];
-						prefObj.save();
-						projObj.save();
-						//p.push(currObj.save());
-						//p.push(prefObj.save());
-						currObj.save()
-						//$q.all(p)
-							.then(function(currencyObj){
-							Parse.Cloud.run("UpdateUser",{user : {
-								id : user.id,
-								params : {},
-								pointers : [
-									{
-										id : busObj.id,
-										className : 'BusinessInfo',
-										field : 'businessInfo'
-									},
-									{
-										id : accObj.id,
-										className : 'AccountInfo',
-										field : 'accountInfo'
-									},
-									{
-										id : prObj.id,
-										className : 'PrincipalInfo',
-										field : 'principalInfo'
-									},
-									{
-										id : signObj.id,
-										className : 'Signature',
-										field : 'signatureImage'
-									},
-									{
-										id : orgObj.id,
-										className : 'Organization',
-										field : 'selectedOrganization'
-									},
-									{
-										id : orgObj.id,
-										className : 'Organization',
-										field : 'organizations'
-									},
-									{
-										id : currencyObj.id,
-										className : 'Currency',
-										field : 'currency'
-									}
-								]
-							}})
-								.then(function(msg){
-								$('.loader-screen').hide();
-								console.log("Cloud update successfull");
-								//$scope.updateQueryResults();
-								window.location.reload();
-							}, function(error){
-								console.log(error);
-							});
-						}, function(err){
-							debugger;
-						});
-					});
-				});
+				doPayment(result);
 
 			}, function() {
 				console.log('modal create cancelled');
 			});
 		};
 
+		function doPayment(result){
+			var resellerInfo = currentUser.get("resellerInfo");
+
+			var cardDate = resellerInfo.get("expDate").match(/[^\/]+/g);
+
+			var tot = $scope.costPerMerchant;
+			tot = tot.toFixed(2);
+
+			var url,data = {
+				'Zip'           : resellerInfo.get("zipCode"),
+				'CardNo'        : resellerInfo.get("ccNumber"),
+				'ExpirationDate': resellerInfo.get("expDate"),
+				'CVV2'          : resellerInfo.get("cvv"),
+				'Total'         : tot,
+				'CVV2Type'      : "1",
+				'ExpMonth'      : cardDate[0],
+				'ExpYear'       : cardDate[1]
+			};
+			var paymentGateway = parseInt($scope.extras.get("paymentGateway"));
+			var paymentGatewayStr = $scope.extras.get("paymentGateway");
+			
+			switch(paymentGatewayStr){
+				case "1":
+					url = "./request.php";
+					data = Object.assign({},data,{
+						'NameOnCard'  : resellerInfo.get("accountHolderName"),
+						'HTML'        : 'No',
+						'ePNAccount'  : $scope.extras.get("EPNusername"),
+						'Address'     : "Address: 123 Fake St.",
+						'RestrictKey' : $scope.extras.get("EPNrestrictKey"),
+						'TranType' 	  : 'Sale'
+					});
+					break;
+				case "2":
+					url = "./request-auth.php";
+					data = Object.assign({},data,{
+						'CardNo'  : parseInt(resellerInfo.get("ccNumber").replace(/\s/g,"")),
+						//'CVV2'    : parseInt($('#CVV2').val()),
+						'CVV2'    : resellerInfo.get("cvv"),
+						'AuthNet' : $scope.extras.get("AuthNet"),
+						'Total'   : parseFloat(tot),
+						'AuthKey' : $scope.extras.get("AuthKey"),
+					});
+					break;
+				default:
+					alert('Wrong paymentGateway! Contact the business owner!');
+					return;
+								 }
+
+			$.ajax({
+				method:"POST",
+				type:"POST",
+				url: url,
+				data: data,
+				complete:function(data){
+					console.log("Reguest is done: " + data);
+				},
+				error: function(data){
+					alert("ERROR: " + data);
+				},
+				success:function(data){
+					debugger;
+					var response = data.match(/[^,]+/g);
+					if (response.length) {
+						var cleanResponse = [];
+						for(var i in response) {
+							cleanResponse.push(response[i].match(/[^"]+/g));
+						}
+
+						var auth = cleanResponse.length > 1 ? cleanResponse[0] : cleanResponse;
+
+						if ((paymentGateway == 1 && /^[N|U].*/g.test(auth)) || 
+							(paymentGateway == 2 && /Failed/g.test(data))) {
+
+							$('.loader-screen').hide();
+							
+							if(paymentGateway == 1){
+								if(data.includes("Auth") || data.includes("account") || data.includes("Block")){
+									alert("Account Error: Please call 866-925-5007 for a quick fix");
+								} else {
+									alert("This card was unable to be processed. Please try again. If you continue to have issues, please call your issuing bank.");
+								}
+							} else {
+								if(data.includes("error") || data.includes("auth")){
+									alert("Account Error: Please call 866-925-5007 for a quick fix");
+								} else {
+									alert("This card was unable to be processed. Please try again. If you continue to have issues, please call your issuing bank.");
+								}
+							}
+						} else if(data.includes("error")){
+							$('.loader-screen').hide();
+							alert("Account Error: Please call 866-925-5007 for a quick fix");
+						} else if (/^Y.*/g.test(auth) || /AUTH CODE/g.test(data)) {
+							/*
+							if (/AUTH CODE/g.test(data))
+								data = data.match(/(AUTH CODE.*)|(TRANS ID.*)/g).join(", ");
+								*/
+							saveNewRecord(result);
+						}
+
+					} else {
+						$('.loader-screen').hide();
+						alert("Account Error: Please call 866-925-5007 for a quick fix");
+					}
+				}
+			});
+		}
+
+
+		function saveNewRecord(result){
+			var formInfo = {
+				fullname      : $scope.newUserRecord.fullName,
+				address       : $scope.newUserRecord.address,
+				city          : $scope.newUserRecord.city,
+				state         : $scope.newUserRecord.state,
+				zipCode       : $scope.newUserRecord.zip,
+				phone         : $scope.newUserRecord.phone,
+				email         : $scope.newUserRecord.email,
+				merchantId    : $scope.newUserRecord.merchantReferenceId,
+				businessName  : $scope.newUserRecord.businessName,
+				username      : $scope.newUserRecord.username,
+				paymentGateway   : $scope.newUserRecord.paymentGateway,
+
+			};
+
+			if(currentUser.get("reseller"))
+				if(currentUser.get("reseller").username == "None")
+					currentUser.unset("reseller");
+
+			$scope.newUserRecord.reseller = currentUser;
+
+			$scope.newUserRecord.save(null, {
+				success: function(record) {
+					$scope.$apply(function() {
+						$scope.records.push($scope.newUserRecord);
+						$scope.newUserRecord = new userRecordFactory();
+						$scope.newUserRecord.set("accountInfo", new accountInfoFactory);
+						$scope.newUserRecord.set("businessInfo", new businessInfoFactory);
+						$scope.newUserRecord.accountAssigned = true;
+						$scope.newUserRecord.businessAssigned = true;
+						$scope.newUserRecord.paymentGateway = '';
+					});
+					console.log("successfully created:", record);
+				},
+				error: function(record, error) {
+					alert("Failed to create object:" + error.message);
+				}
+			}).then(function(user){
+
+				var userTables = {
+					//business : new businessInfoFactory(),
+					business : null,
+					account : null,
+					principal : new principalInfoFactory(),
+					signatureImage : new signatureFactory(),
+					selectedOrganization : new organizationFactory(),
+					currency : new currencyFactory(),
+					projectUser : new projectUserFactory(),
+					preferences : new preferencesFactory()
+				}
+
+				for (var table in userTables){
+					if (!userTables[table]) continue;
+					userTables[table].SetDummyInfo();
+					if (userTables[table].SetData)
+						userTables[table].SetData(formInfo);
+				}
+
+				result.business.SetData(formInfo);
+
+				userTables.signatureImage.set("imageName","Signature_" + user.id);
+				userTables.signatureImage.set("user",user);
+				userTables.account = result.account;
+				userTables.business = result.business;
+				userTables.selectedOrganization.set("userID", user);
+				userTables.currency.set('userId', user);
+				userTables.projectUser.set('userID', user);
+				userTables.preferences.set('userID', user);
+
+				var promises = toArray(userTables).map(function(table){
+					return table.save();
+				});
+
+				//Parse.Promise.when(promises).then(function(busObj,accObj,prObj,signObj,orgObj,currObj,projObj,prefObj){
+				Parse.Promise.when(promises).then(function(result){
+
+					var busObj = result[0];
+					var accObj = result[1];
+					var prObj = result[2];
+					var signObj = result[3];
+					var orgObj = result[4];
+					var currObj = result[5];
+					var projObj = result[6];
+					var prefObj = result[7];
+
+					currObj.set('organization', orgObj);
+					prefObj.set('organization', orgObj);
+					projObj.set('organization', orgObj);
+					var p = [];
+					prefObj.save();
+					projObj.save();
+					//p.push(currObj.save());
+					//p.push(prefObj.save());
+					currObj.save()
+					//$q.all(p)
+						.then(function(currencyObj){
+						Parse.Cloud.run("UpdateUser",{user : {
+							id : user.id,
+							params : {},
+							pointers : [
+								{
+									id : busObj.id,
+									className : 'BusinessInfo',
+									field : 'businessInfo'
+								},
+								{
+									id : accObj.id,
+									className : 'AccountInfo',
+									field : 'accountInfo'
+								},
+								{
+									id : prObj.id,
+									className : 'PrincipalInfo',
+									field : 'principalInfo'
+								},
+								{
+									id : signObj.id,
+									className : 'Signature',
+									field : 'signatureImage'
+								},
+								{
+									id : orgObj.id,
+									className : 'Organization',
+									field : 'selectedOrganization'
+								},
+								{
+									id : orgObj.id,
+									className : 'Organization',
+									field : 'organizations'
+								},
+								{
+									id : currencyObj.id,
+									className : 'Currency',
+									field : 'currency'
+								}
+							]
+						}})
+							.then(function(msg){
+							$('.loader-screen').hide();
+							console.log("Cloud update successfull");
+							//$scope.updateQueryResults();
+							window.location.reload();
+						}, function(error){
+							console.log(error);
+						});
+					}, function(err){
+						debugger;
+					});
+				});
+			});
+		}
 
 		/*****************************************************************************/
 

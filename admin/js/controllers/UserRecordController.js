@@ -67,6 +67,19 @@ clientAdminPortalApp.controller('UserRecordController',[
 		}
 
 		getAllResellers();
+		getExtras();
+		
+		function getExtras(){
+			var extrasQuery = new Parse.Query("Extras");
+
+			extrasQuery.first()
+				.then(function(objs){
+				$scope.extras = objs;
+
+			}, function(error){
+				console.error(error.message);
+			});
+		}
 
 		function getAllResellers(){
 			var resellerQuery = new Parse.Query(userRecordFactory);
@@ -87,7 +100,7 @@ clientAdminPortalApp.controller('UserRecordController',[
 				//$scope.allResellers = objs;
 			}, function(error){
 				console.error(error.message);
-			})
+			});
 		}
 
 		var loadQuery = function(){
@@ -990,6 +1003,33 @@ clientAdminPortalApp.controller('UserRecordController',[
 
 			}, function() {
 				console.log('modal create cancelled');
+			});
+		};
+		
+		$scope.openModalPayout = function() {
+			$scope.openUserOptions = false;
+			var modalInstance = $modal.open({
+				animation: false,
+				templateUrl: 'reseller-payout',
+				controller: 'ModalPayoutController',
+				windowClass: 'window-shadow',
+				backdrop: true,
+				resolve: {
+					extrasObject: function() {
+						console.log('resolve');
+						return $scope.extras;
+					},
+					gatewayTypeNames: function() {
+						return $scope.gatewayTypeNames;
+					}
+				}
+			});
+
+			modalInstance.result.then(function(result) {
+
+				console.log('modal create submitted');
+
+				window.location.reload();
 			});
 		};
 	}]);
