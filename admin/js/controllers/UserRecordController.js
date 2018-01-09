@@ -370,6 +370,15 @@ clientAdminPortalApp.controller('UserRecordController',[
 				}
 			}
 			*/
+			
+			var resellerId = "";
+			
+			if(user.reseller){
+				resellerId = user.reseller.id ? user.reseller.id : "None";
+			} else {
+				resellerId = "None";
+			}
+			
 			user.businessInfo.save(null, {
 				success: function(business){
 					Parse.Cloud.run('UpdateUser',{
@@ -387,7 +396,7 @@ clientAdminPortalApp.controller('UserRecordController',[
 								AuthNet         : user.AuthNet,
 								AuthKey         : user.AuthKey,
 								paymentGateway  : user.paymentGateway.toString(),
-								reseller 		: user.reseller.id ? user.reseller.id : "None"
+								reseller 		: resellerId
 							}
 						}
 					}).then(function(res){
@@ -436,7 +445,7 @@ clientAdminPortalApp.controller('UserRecordController',[
 								AuthNet         : user.AuthNet,
 								AuthKey         : user.AuthKey,
 								paymentGateway  : user.paymentGateway.toString(),
-								reseller 		: user.reseller.id ? user.reseller.id : "None"
+								reseller 		: resellerId
 							}
 						}
 					}).then(function(res){

@@ -512,7 +512,8 @@ clientAdminPortalApp.controller('resellersController',[
 				console.log('modal create submitted');
 
 				var skipApp = $scope.newUserRecord.skipApplication;
-				doPayment(result);
+				//doPayment(result);
+				saveNewRecord(result);
 
 			}, function() {
 				console.log('modal create cancelled');

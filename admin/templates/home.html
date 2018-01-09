@@ -521,7 +521,7 @@
 <!-- Start Reseller Payout -->
 
 <script type="text/ng-template" id="reseller-payout">
-<div class="popup" style="height: 275px !important;">
+<div class="popup" style="height: 450px !important;">
 	<div class="popup-wrapper" >
 		<div class="sub-column" style="border: none !important;">
 			<h4>Reseller Payout Info</h4>
@@ -533,44 +533,57 @@
 							<a ng-click="extrasObject.showDropdownSelect = true;" class="selectType">
 								<span ng-bind="gatewayTypeNames[extrasObject.paymentGateway] || gatewayTypeNames['']"></span>
 								<span></span>
-							</a>
+	</a>
 							<div ng-click = "extrasObject.showDropdownSelect = false;" ng-show="extrasObject.showDropdownSelect">
 								<div class="window-shadow"></div>
 								<ul style="display: initial; margin-bottom: 20px;">
 									<!--<li ng-click="extrasObject.paymentGateway = '';" class="select-empty"><a>None</a></li>-->
 									<li ng-click="extrasObject.paymentGateway = '1';" class="select-epn"><a>EPN (eProcessing Network)</a></li>
 									<li ng-click="extrasObject.paymentGateway = '2';" class="select-authnet"><a>Auth. Net</a></li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</div>
+	</ul>
+	</div>
+	</li>
+	</ul>
+	</div>
 
 				<div ng-show="extrasObject.paymentGateway == '1'" class="gatewayType_EPN">
 					<div class="form-group cl">
 						<label>EPN Username</label>
 						<input ng-model="extrasObject.EPNusername" type="text" class="form-control" />
-					</div>
+	</div>
 					<div class="form-group cl">
 						<label>EPN Restrict Key</label>
 						<input ng-model="extrasObject.EPNrestrictKey" type="text" class="form-control" />
-					</div>
-				</div>
+	</div>
+	</div>
 
 				<div ng-show="extrasObject.paymentGateway == '2'" class="gatewayType_AUTH_NET">
 					<div class="form-group cl">
 						<label>API Login ID</label>
 						<input ng-model="extrasObject.AuthNet" type="text" class="form-control" />
-					</div>
+	</div>
 					<div class="form-group cl">
 						<label>Transaction Key</label>
 						<input ng-model="extrasObject.AuthKey" type="text" class="form-control" />
-					</div>
-				</div>
+	</div>
+	</div>
 
 				<div  class="form-group cl" style="margin-top: 35px;">
 					<input style="margin-left: 20%" type="submit" class="button" value="Save" ng-click="ok(addForm);"/>
 					<a class="button-cancel" ng-click="cancel();">Cancel</a>
+	</div>
+
+				<div class="form-group cl">
+					<label>Next Payout: </label>
+					<label class="form-control" ng-bind="nextPayoutDate"></label>
+	</div>
+				<div  class="form-group cl" style="margin-top: 35px;">
+					<input style="margin-left: 20%" id="chargeResellerBtn" type="submit" class="button disabled" value="Charge Resellers" ng-click="chargeResellers();" disabled/>
+	</div>
+				
+				<div class="form-group cl">
+					<label>Active in: </label>
+					<label class="form-control" ng-bind="timer"></label>
 	</div>
 
 	</form>
