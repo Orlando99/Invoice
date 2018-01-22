@@ -668,6 +668,11 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 								$state.reload();
 							}, 2000);
 						});
+					} else {
+						$('.confirm-refund').removeClass('show');
+						$('.refund-payment').removeClass('show');
+						showSnackbar("Unable to refund payment. Contact Customer Support.");
+						hideLoader();
 					}
 
 				}
@@ -768,6 +773,11 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 								$state.reload();
 							}, 2000);
 						});
+					}  else {
+						$('.confirm-refund').removeClass('show');
+						$('.refund-payment').removeClass('show');
+						showSnackbar("Unable to refund payment. Contact Customer Support.");
+						hideLoader();
 					}
 
 				}

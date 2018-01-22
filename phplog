@@ -1919,3 +1919,555 @@
  Thu, 30 Nov 2017 11:04:28 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><createTransactionResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1512036265</refId><messages><resultCode>Ok</resultCode><message><code>I00001</code><text>Successful.</text></message></messages><transactionResponse><responseCode>1</responseCode><authCode>427337</authCode><avsResultCode>P</avsResultCode><cvvResultCode /><cavvResultCode /><transId>40435544352</transId><refTransID>40435544352</refTransID><transHash>52B93AB5C61A6D52BAC13BED51EBF576</transHash><testRequest>0</testRequest><accountNumber>XXXX7468</accountNumber><accountType>AmericanExpress</accountType><messages><message><code>1</code><description>This transaction has been approved.</description></message></messages><transHashSha2 /></transactionResponse></createTransactionResponse>
  Thu, 30 Nov 2017 11:04:28 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
  Thu, 30 Nov 2017 11:04:28 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 22 Jan 2018 07:52:17 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 22 Jan 2018 07:52:17 +0100 DEBUG : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\CreateTransactionRequest Object
+(
+    [transactionRequest:net\authorize\api\contract\v1\CreateTransactionRequest:private] => net\authorize\api\contract\v1\TransactionRequestType Object
+        (
+            [transactionType:net\authorize\api\contract\v1\TransactionRequestType:private] => refundTransaction
+            [amount:net\authorize\api\contract\v1\TransactionRequestType:private] => 1426
+            [currencyCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [payment:net\authorize\api\contract\v1\TransactionRequestType:private] => net\authorize\api\contract\v1\PaymentType Object
+                (
+                    [creditCard:net\authorize\api\contract\v1\PaymentType:private] => net\authorize\api\contract\v1\CreditCardType Object
+                        (
+                            [cardCode:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [isPaymentToken:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cryptogram:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cardNumber:net\authorize\api\contract\v1\CreditCardSimpleType:private] => 4198
+                            [expirationDate:net\authorize\api\contract\v1\CreditCardSimpleType:private] => xxxx
+                        )
+
+                    [bankAccount:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [trackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [encryptedTrackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [payPal:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [opaqueData:net\authorize\api\contract\v1\PaymentType:private] => 
+                )
+
+            [profile:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [solution:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [callId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [authCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [refTransId:net\authorize\api\contract\v1\TransactionRequestType:private] => 40120164630
+            [splitTenderId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [order:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [lineItems:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [tax:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [duty:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipping:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [taxExempt:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [poNumber:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customer:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [billTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customerIP:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [cardholderAuthentication:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [retail:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [employeeId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [transactionSettings:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [userFields:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+        )
+
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 953g5TS7g64L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1516603937
+)
+
+ Mon, 22 Jan 2018 07:52:17 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 22 Jan 2018 07:52:17 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://api2.authorize.net/xml/v1/request.api
+ Mon, 22 Jan 2018 07:52:17 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<createTransactionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[953g5TS7g64L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1516603937]]></refId>
+  <transactionRequest>
+    <transactionType><![CDATA[refundTransaction]]></transactionType>
+    <amount>1426</amount>
+    <payment>
+      <creditCard>
+        <cardNumber><![CDATA[4198]]></cardNumber>
+        <expirationDate>xxxx</expirationDate>
+      </creditCard>
+    </payment>
+    <refTransId><![CDATA[40120164630]]></refTransId>
+  </transactionRequest>
+</createTransactionRequest>
+
+ Mon, 22 Jan 2018 07:52:17 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 22 Jan 2018 07:52:17 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 22 Jan 2018 07:52:19 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><createTransactionResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1516603937</refId><messages><resultCode>Error</resultCode><message><code>E00027</code><text>The transaction was unsuccessful.</text></message></messages><transactionResponse><responseCode>3</responseCode><authCode /><avsResultCode>P</avsResultCode><cvvResultCode /><cavvResultCode /><transId>0</transId><refTransID>40120164630</refTransID><transHash>9D5E437B997EE9D89D090F4019FBA8AA</transHash><testRequest>0</testRequest><accountNumber>XXXX4198</accountNumber><accountType>Visa</accountType><errors><error><errorCode>54</errorCode><errorText>The referenced transaction does not meet the criteria for issuing a credit.</errorText></error></errors><transHashSha2 /></transactionResponse></createTransactionResponse>
+ Mon, 22 Jan 2018 07:52:19 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 22 Jan 2018 07:52:19 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 22 Jan 2018 16:33:22 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 22 Jan 2018 16:33:22 +0100 DEBUG : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\CreateTransactionRequest Object
+(
+    [transactionRequest:net\authorize\api\contract\v1\CreateTransactionRequest:private] => net\authorize\api\contract\v1\TransactionRequestType Object
+        (
+            [transactionType:net\authorize\api\contract\v1\TransactionRequestType:private] => refundTransaction
+            [amount:net\authorize\api\contract\v1\TransactionRequestType:private] => 1426
+            [currencyCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [payment:net\authorize\api\contract\v1\TransactionRequestType:private] => net\authorize\api\contract\v1\PaymentType Object
+                (
+                    [creditCard:net\authorize\api\contract\v1\PaymentType:private] => net\authorize\api\contract\v1\CreditCardType Object
+                        (
+                            [cardCode:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [isPaymentToken:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cryptogram:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cardNumber:net\authorize\api\contract\v1\CreditCardSimpleType:private] => 4198
+                            [expirationDate:net\authorize\api\contract\v1\CreditCardSimpleType:private] => xxxx
+                        )
+
+                    [bankAccount:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [trackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [encryptedTrackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [payPal:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [opaqueData:net\authorize\api\contract\v1\PaymentType:private] => 
+                )
+
+            [profile:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [solution:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [callId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [authCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [refTransId:net\authorize\api\contract\v1\TransactionRequestType:private] => 40120164630
+            [splitTenderId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [order:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [lineItems:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [tax:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [duty:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipping:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [taxExempt:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [poNumber:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customer:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [billTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customerIP:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [cardholderAuthentication:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [retail:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [employeeId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [transactionSettings:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [userFields:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+        )
+
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 953g5TS7g64L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1516635202
+)
+
+ Mon, 22 Jan 2018 16:33:23 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 22 Jan 2018 16:33:23 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://api2.authorize.net/xml/v1/request.api
+ Mon, 22 Jan 2018 16:33:23 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<createTransactionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[953g5TS7g64L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1516635202]]></refId>
+  <transactionRequest>
+    <transactionType><![CDATA[refundTransaction]]></transactionType>
+    <amount>1426</amount>
+    <payment>
+      <creditCard>
+        <cardNumber><![CDATA[4198]]></cardNumber>
+        <expirationDate>xxxx</expirationDate>
+      </creditCard>
+    </payment>
+    <refTransId><![CDATA[40120164630]]></refTransId>
+  </transactionRequest>
+</createTransactionRequest>
+
+ Mon, 22 Jan 2018 16:33:23 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 22 Jan 2018 16:33:23 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 22 Jan 2018 16:33:25 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><createTransactionResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1516635202</refId><messages><resultCode>Error</resultCode><message><code>E00027</code><text>The transaction was unsuccessful.</text></message></messages><transactionResponse><responseCode>3</responseCode><authCode /><avsResultCode>P</avsResultCode><cvvResultCode /><cavvResultCode /><transId>0</transId><refTransID>40120164630</refTransID><transHash>9D5E437B997EE9D89D090F4019FBA8AA</transHash><testRequest>0</testRequest><accountNumber>XXXX4198</accountNumber><accountType>Visa</accountType><errors><error><errorCode>54</errorCode><errorText>The referenced transaction does not meet the criteria for issuing a credit.</errorText></error></errors><transHashSha2 /></transactionResponse></createTransactionResponse>
+ Mon, 22 Jan 2018 16:33:25 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 22 Jan 2018 16:33:25 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 22 Jan 2018 16:33:51 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 22 Jan 2018 16:33:51 +0100 DEBUG : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\CreateTransactionRequest Object
+(
+    [transactionRequest:net\authorize\api\contract\v1\CreateTransactionRequest:private] => net\authorize\api\contract\v1\TransactionRequestType Object
+        (
+            [transactionType:net\authorize\api\contract\v1\TransactionRequestType:private] => refundTransaction
+            [amount:net\authorize\api\contract\v1\TransactionRequestType:private] => 1426
+            [currencyCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [payment:net\authorize\api\contract\v1\TransactionRequestType:private] => net\authorize\api\contract\v1\PaymentType Object
+                (
+                    [creditCard:net\authorize\api\contract\v1\PaymentType:private] => net\authorize\api\contract\v1\CreditCardType Object
+                        (
+                            [cardCode:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [isPaymentToken:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cryptogram:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cardNumber:net\authorize\api\contract\v1\CreditCardSimpleType:private] => 4198
+                            [expirationDate:net\authorize\api\contract\v1\CreditCardSimpleType:private] => xxxx
+                        )
+
+                    [bankAccount:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [trackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [encryptedTrackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [payPal:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [opaqueData:net\authorize\api\contract\v1\PaymentType:private] => 
+                )
+
+            [profile:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [solution:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [callId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [authCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [refTransId:net\authorize\api\contract\v1\TransactionRequestType:private] => 40120164630
+            [splitTenderId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [order:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [lineItems:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [tax:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [duty:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipping:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [taxExempt:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [poNumber:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customer:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [billTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customerIP:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [cardholderAuthentication:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [retail:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [employeeId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [transactionSettings:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [userFields:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+        )
+
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 953g5TS7g64L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1516635231
+)
+
+ Mon, 22 Jan 2018 16:33:51 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 22 Jan 2018 16:33:51 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://api2.authorize.net/xml/v1/request.api
+ Mon, 22 Jan 2018 16:33:51 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<createTransactionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[953g5TS7g64L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1516635231]]></refId>
+  <transactionRequest>
+    <transactionType><![CDATA[refundTransaction]]></transactionType>
+    <amount>1426</amount>
+    <payment>
+      <creditCard>
+        <cardNumber><![CDATA[4198]]></cardNumber>
+        <expirationDate>xxxx</expirationDate>
+      </creditCard>
+    </payment>
+    <refTransId><![CDATA[40120164630]]></refTransId>
+  </transactionRequest>
+</createTransactionRequest>
+
+ Mon, 22 Jan 2018 16:33:51 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 22 Jan 2018 16:33:51 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 22 Jan 2018 16:33:53 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><createTransactionResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1516635231</refId><messages><resultCode>Error</resultCode><message><code>E00027</code><text>The transaction was unsuccessful.</text></message></messages><transactionResponse><responseCode>3</responseCode><authCode /><avsResultCode>P</avsResultCode><cvvResultCode /><cavvResultCode /><transId>0</transId><refTransID>40120164630</refTransID><transHash>9D5E437B997EE9D89D090F4019FBA8AA</transHash><testRequest>0</testRequest><accountNumber>XXXX4198</accountNumber><accountType>Visa</accountType><errors><error><errorCode>54</errorCode><errorText>The referenced transaction does not meet the criteria for issuing a credit.</errorText></error></errors><transHashSha2 /></transactionResponse></createTransactionResponse>
+ Mon, 22 Jan 2018 16:33:53 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 22 Jan 2018 16:33:53 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 22 Jan 2018 16:34:19 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 22 Jan 2018 16:34:19 +0100 DEBUG : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\CreateTransactionRequest Object
+(
+    [transactionRequest:net\authorize\api\contract\v1\CreateTransactionRequest:private] => net\authorize\api\contract\v1\TransactionRequestType Object
+        (
+            [transactionType:net\authorize\api\contract\v1\TransactionRequestType:private] => refundTransaction
+            [amount:net\authorize\api\contract\v1\TransactionRequestType:private] => 1426
+            [currencyCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [payment:net\authorize\api\contract\v1\TransactionRequestType:private] => net\authorize\api\contract\v1\PaymentType Object
+                (
+                    [creditCard:net\authorize\api\contract\v1\PaymentType:private] => net\authorize\api\contract\v1\CreditCardType Object
+                        (
+                            [cardCode:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [isPaymentToken:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cryptogram:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cardNumber:net\authorize\api\contract\v1\CreditCardSimpleType:private] => 4198
+                            [expirationDate:net\authorize\api\contract\v1\CreditCardSimpleType:private] => xxxx
+                        )
+
+                    [bankAccount:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [trackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [encryptedTrackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [payPal:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [opaqueData:net\authorize\api\contract\v1\PaymentType:private] => 
+                )
+
+            [profile:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [solution:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [callId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [authCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [refTransId:net\authorize\api\contract\v1\TransactionRequestType:private] => 40120164630
+            [splitTenderId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [order:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [lineItems:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [tax:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [duty:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipping:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [taxExempt:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [poNumber:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customer:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [billTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customerIP:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [cardholderAuthentication:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [retail:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [employeeId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [transactionSettings:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [userFields:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+        )
+
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 953g5TS7g64L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1516635259
+)
+
+ Mon, 22 Jan 2018 16:34:19 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 22 Jan 2018 16:34:19 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://api2.authorize.net/xml/v1/request.api
+ Mon, 22 Jan 2018 16:34:19 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<createTransactionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[953g5TS7g64L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1516635259]]></refId>
+  <transactionRequest>
+    <transactionType><![CDATA[refundTransaction]]></transactionType>
+    <amount>1426</amount>
+    <payment>
+      <creditCard>
+        <cardNumber><![CDATA[4198]]></cardNumber>
+        <expirationDate>xxxx</expirationDate>
+      </creditCard>
+    </payment>
+    <refTransId><![CDATA[40120164630]]></refTransId>
+  </transactionRequest>
+</createTransactionRequest>
+
+ Mon, 22 Jan 2018 16:34:19 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 22 Jan 2018 16:34:19 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 22 Jan 2018 16:34:21 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><createTransactionResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1516635259</refId><messages><resultCode>Error</resultCode><message><code>E00027</code><text>The transaction was unsuccessful.</text></message></messages><transactionResponse><responseCode>3</responseCode><authCode /><avsResultCode>P</avsResultCode><cvvResultCode /><cavvResultCode /><transId>0</transId><refTransID>40120164630</refTransID><transHash>9D5E437B997EE9D89D090F4019FBA8AA</transHash><testRequest>0</testRequest><accountNumber>XXXX4198</accountNumber><accountType>Visa</accountType><errors><error><errorCode>54</errorCode><errorText>The referenced transaction does not meet the criteria for issuing a credit.</errorText></error></errors><transHashSha2 /></transactionResponse></createTransactionResponse>
+ Mon, 22 Jan 2018 16:34:21 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 22 Jan 2018 16:34:21 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 22 Jan 2018 16:46:38 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 22 Jan 2018 16:46:38 +0100 DEBUG : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\CreateTransactionRequest Object
+(
+    [transactionRequest:net\authorize\api\contract\v1\CreateTransactionRequest:private] => net\authorize\api\contract\v1\TransactionRequestType Object
+        (
+            [transactionType:net\authorize\api\contract\v1\TransactionRequestType:private] => refundTransaction
+            [amount:net\authorize\api\contract\v1\TransactionRequestType:private] => 1426
+            [currencyCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [payment:net\authorize\api\contract\v1\TransactionRequestType:private] => net\authorize\api\contract\v1\PaymentType Object
+                (
+                    [creditCard:net\authorize\api\contract\v1\PaymentType:private] => net\authorize\api\contract\v1\CreditCardType Object
+                        (
+                            [cardCode:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [isPaymentToken:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cryptogram:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cardNumber:net\authorize\api\contract\v1\CreditCardSimpleType:private] => 4198
+                            [expirationDate:net\authorize\api\contract\v1\CreditCardSimpleType:private] => xxxx
+                        )
+
+                    [bankAccount:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [trackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [encryptedTrackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [payPal:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [opaqueData:net\authorize\api\contract\v1\PaymentType:private] => 
+                )
+
+            [profile:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [solution:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [callId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [authCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [refTransId:net\authorize\api\contract\v1\TransactionRequestType:private] => 40120164630
+            [splitTenderId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [order:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [lineItems:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [tax:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [duty:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipping:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [taxExempt:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [poNumber:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customer:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [billTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customerIP:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [cardholderAuthentication:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [retail:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [employeeId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [transactionSettings:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [userFields:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+        )
+
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 953g5TS7g64L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1516635998
+)
+
+ Mon, 22 Jan 2018 16:46:38 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 22 Jan 2018 16:46:38 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://api2.authorize.net/xml/v1/request.api
+ Mon, 22 Jan 2018 16:46:38 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<createTransactionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[953g5TS7g64L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1516635998]]></refId>
+  <transactionRequest>
+    <transactionType><![CDATA[refundTransaction]]></transactionType>
+    <amount>1426</amount>
+    <payment>
+      <creditCard>
+        <cardNumber><![CDATA[4198]]></cardNumber>
+        <expirationDate>xxxx</expirationDate>
+      </creditCard>
+    </payment>
+    <refTransId><![CDATA[40120164630]]></refTransId>
+  </transactionRequest>
+</createTransactionRequest>
+
+ Mon, 22 Jan 2018 16:46:38 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 22 Jan 2018 16:46:38 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 22 Jan 2018 16:46:41 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><createTransactionResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1516635998</refId><messages><resultCode>Error</resultCode><message><code>E00027</code><text>The transaction was unsuccessful.</text></message></messages><transactionResponse><responseCode>3</responseCode><authCode /><avsResultCode>P</avsResultCode><cvvResultCode /><cavvResultCode /><transId>0</transId><refTransID>40120164630</refTransID><transHash>9D5E437B997EE9D89D090F4019FBA8AA</transHash><testRequest>0</testRequest><accountNumber>XXXX4198</accountNumber><accountType>Visa</accountType><errors><error><errorCode>54</errorCode><errorText>The referenced transaction does not meet the criteria for issuing a credit.</errorText></error></errors><transHashSha2 /></transactionResponse></createTransactionResponse>
+ Mon, 22 Jan 2018 16:46:41 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 22 Jan 2018 16:46:41 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
+ Mon, 22 Jan 2018 17:16:29 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 112) - Request Serialization Begin
+ Mon, 22 Jan 2018 17:16:29 +0100 DEBUG : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 113) - net\authorize\api\contract\v1\CreateTransactionRequest Object
+(
+    [transactionRequest:net\authorize\api\contract\v1\CreateTransactionRequest:private] => net\authorize\api\contract\v1\TransactionRequestType Object
+        (
+            [transactionType:net\authorize\api\contract\v1\TransactionRequestType:private] => refundTransaction
+            [amount:net\authorize\api\contract\v1\TransactionRequestType:private] => 1426
+            [currencyCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [payment:net\authorize\api\contract\v1\TransactionRequestType:private] => net\authorize\api\contract\v1\PaymentType Object
+                (
+                    [creditCard:net\authorize\api\contract\v1\PaymentType:private] => net\authorize\api\contract\v1\CreditCardType Object
+                        (
+                            [cardCode:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [isPaymentToken:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cryptogram:net\authorize\api\contract\v1\CreditCardType:private] => 
+                            [cardNumber:net\authorize\api\contract\v1\CreditCardSimpleType:private] => 4198
+                            [expirationDate:net\authorize\api\contract\v1\CreditCardSimpleType:private] => xxxx
+                        )
+
+                    [bankAccount:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [trackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [encryptedTrackData:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [payPal:net\authorize\api\contract\v1\PaymentType:private] => 
+                    [opaqueData:net\authorize\api\contract\v1\PaymentType:private] => 
+                )
+
+            [profile:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [solution:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [callId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [authCode:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [refTransId:net\authorize\api\contract\v1\TransactionRequestType:private] => 40120164630
+            [splitTenderId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [order:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [lineItems:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [tax:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [duty:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipping:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [taxExempt:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [poNumber:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customer:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [billTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [shipTo:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [customerIP:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [cardholderAuthentication:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [retail:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [employeeId:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [transactionSettings:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+            [userFields:net\authorize\api\contract\v1\TransactionRequestType:private] => 
+        )
+
+    [merchantAuthentication:net\authorize\api\contract\v1\ANetApiRequestType:private] => net\authorize\api\contract\v1\MerchantAuthenticationType Object
+        (
+            [name:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 953g5TS7g64L
+            [transactionKey:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => xxxx
+            [sessionToken:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [password:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [impersonationAuthentication:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [fingerPrint:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+            [mobileDeviceId:net\authorize\api\contract\v1\MerchantAuthenticationType:private] => 
+        )
+
+    [refId:net\authorize\api\contract\v1\ANetApiRequestType:private] => ref1516637789
+)
+
+ Mon, 22 Jan 2018 17:16:29 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 115) - Request  Serialization End
+ Mon, 22 Jan 2018 17:16:29 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 75) -  Url: https://api2.authorize.net/xml/v1/request.api
+ Mon, 22 Jan 2018 17:16:29 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 77) - Request to AnetApi: 
+<?xml version="1.0" encoding="UTF-8"?>
+<createTransactionRequest xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd">
+  <merchantAuthentication>
+    <name><![CDATA[953g5TS7g64L]]></name>
+    <transactionKey>xxxx</transactionKey>
+  </merchantAuthentication>
+  <refId><![CDATA[ref1516637789]]></refId>
+  <transactionRequest>
+    <transactionType><![CDATA[refundTransaction]]></transactionType>
+    <amount>1426</amount>
+    <payment>
+      <creditCard>
+        <cardNumber><![CDATA[4198]]></cardNumber>
+        <expirationDate>xxxx</expirationDate>
+      </creditCard>
+    </payment>
+    <refTransId><![CDATA[40120164630]]></refTransId>
+  </transactionRequest>
+</createTransactionRequest>
+
+ Mon, 22 Jan 2018 17:16:29 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 89) - Sending 'XML' Request type
+ Mon, 22 Jan 2018 17:16:29 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 94) - Sending http request via Curl
+ Mon, 22 Jan 2018 17:16:31 +0100 INFO : [_sendRequest] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/util/HttpClient.php : 96) - Response from AnetApi: ﻿<?xml version="1.0" encoding="utf-8"?><createTransactionResponse xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="AnetApi/xml/v1/schema/AnetApiSchema.xsd"><refId>ref1516637789</refId><messages><resultCode>Error</resultCode><message><code>E00027</code><text>The transaction was unsuccessful.</text></message></messages><transactionResponse><responseCode>3</responseCode><authCode /><avsResultCode>P</avsResultCode><cvvResultCode /><cavvResultCode /><transId>0</transId><refTransID>40120164630</refTransID><transHash>9D5E437B997EE9D89D090F4019FBA8AA</transHash><testRequest>0</testRequest><accountNumber>XXXX4198</accountNumber><accountType>Visa</accountType><errors><error><errorCode>54</errorCode><errorText>The referenced transaction does not meet the criteria for issuing a credit.</errorText></error></errors><transHashSha2 /></transactionResponse></createTransactionResponse>
+ Mon, 22 Jan 2018 17:16:31 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 125) - Response De-Serialization Begin
+ Mon, 22 Jan 2018 17:16:31 +0100 INFO : [execute] (/Applications/XAMPP/xamppfiles/htdocs/invoices-web/vendor/authorizenet/authorizenet/lib/net/authorize/api/controller/base/ApiOperationBase.php : 127) - Response De-Serialization End
