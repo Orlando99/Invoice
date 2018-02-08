@@ -398,8 +398,22 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 		}
 
 		$scope.prepareAddPayment = function() {
+			
+			var lateFee = $scope.invoice.entity.get('lateFee');
+			var lateFeeValue = 0;
+			if (lateFee) {
+				var price = lateFee.get("price");
+				var type = lateFee.get("type");
+
+				if (type == "$") {
+					lateFeeValue = price;
+				} else if (type == "%") {
+					lateFeeValue = subTotal * price * 0.01;
+				}
+			}
+			debugger;
 			$scope.paymentDate = new Date();
-			$scope.paymentAmount = $scope.invoice.entity.balanceDue.toFixed(2);
+			$scope.paymentAmount = ($scope.invoice.entity.balanceDue + lateFeeValue).toFixed(2);
 			$scope.paymentRef = '' + Math.random().toString(10).substr(2,6);
 			$scope.paymentModes = ['Check', 'Cash', 'Bank Transfer', 'Bank Remittance'];
 			$scope.selectedPaymentMode = 'Cash';
@@ -411,7 +425,7 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 						required : true,
 						number : true,
 						min : 0.01,
-						max : $scope.paymentAmount
+						max : $scope.invoice.entity.balanceDue + lateFeeValue
 					},
 					paymentRef : 'required',
 					paymentMode : 'required'
@@ -449,7 +463,13 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 			invoiceObj.unset('invoiceReceipt');
 			invoiceObj.increment('paymentMade', payment.amount);
 			invoiceObj.increment('balanceDue', -payment.amount);
-
+			
+			var invoiceInfo = invoiceObj.get("invoiceInfo");
+			invoiceInfo.set("totalAmount", String(invoiceObj.get('balanceDue')));
+			
+			invoiceInfo.save();
+			
+			//debugger;
 			if(invoiceObj.balanceDue <= 0)
 				invoiceObj.set('status', 'Paid');
 			else{

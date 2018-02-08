@@ -64,7 +64,7 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 		getInvoiceDetails : function(invoiceId) {
 			var Invoice = Parse.Object.extend('Invoices');
 			var query = new Parse.Query(Invoice);
-			query.include('comments', 'payment', 'invoiceInfo', 'customer', 'customer.contactPersons');
+			query.include('comments', 'payment', 'invoiceInfo', 'customer', 'customer.contactPersons', 'lateFee');
 
 			return query.get(invoiceId)
 				.then(function(invObj) {
@@ -99,7 +99,7 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 			invInfo.set('invoiceDate', invoice.get('invoiceDate'));
 			invInfo.set('dueDate', invoice.get('dueDate'));
 			invInfo.set('referenceNumber', invoice.get('invoiceNumber'));
-			invInfo.set('totalAmount', String(invoice.get('total')));
+			invInfo.set('totalAmount', String(invoice.get('balanceDue')));
 
 			var user, p;
 			var promises = [];
