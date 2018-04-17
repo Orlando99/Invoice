@@ -1449,7 +1449,7 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 
 		itemRows.each(function(funcOne){
 
-			var sp = "<span class='fc0'>" + $(this).children('name').text() + "</span><br>" + $(this).children('desc').text() + "";
+			var sp = "<span class='fc0'>" + $(this).children('name').text() + "</span><br><span>"+$(this).children('item_notes').text()+"</span><br>" + $(this).children('desc').text() + "";
 
 			if (!/^[\s]*$/.test(itemRows.first().find('discount').text())) {
 				var item = $("<tr class='invoice-items'></tr>");
