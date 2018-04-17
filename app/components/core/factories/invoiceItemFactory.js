@@ -12,7 +12,7 @@ function InvoiceItem (parseObject) {
 	if (!parseObject) return undefined;
 	
 	var invoiceItemFields = [
-		'item', 'tax', 'quantity', 'amount',
+		'item', 'tax', 'quantity', 'amount', 'item_notes',
 		'discount', 'ACL'
 	];
 

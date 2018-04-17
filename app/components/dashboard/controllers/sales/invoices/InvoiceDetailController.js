@@ -142,7 +142,7 @@ invoicesUnlimited.controller('InvoiceDetailController',[
 			})
 				.then(function(receipt) {
 				$scope.templateUrl = $sce.trustAsResourceUrl(receipt.url());
-
+				
 				return $.ajax({
 					type: "GET",
 					url: 'proxy.php',

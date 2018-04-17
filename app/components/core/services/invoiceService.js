@@ -78,7 +78,6 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 			var invoiceTable = Parse.Object.extend('Invoices');
 			var query = new Parse.Query(invoiceTable);
 			query.include('invoiceItems');
-
 			return query.get(invoiceId)
 				.then(function(invObj) {
 				var invoice = new invoiceFactory(invObj, {
@@ -253,6 +252,7 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 						oldItems[i].entity.set('item', itemData.selectedItem.entity);
 						oldItems[i].entity.set('quantity', Number(itemData.quantity));
 						oldItems[i].entity.set('amount', Number(itemData.amount));
+						oldItems[i].entity.set('item_notes', itemData.item_notes);
 
 						var discount = Number(itemData.discount);
 						if (discount == 0)
@@ -358,6 +358,7 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 					obj.set("item", item.selectedItem.entity);
 					obj.set("quantity", Number(item.quantity));
 					obj.set("amount", Number(item.amount));
+					obj.set('item_notes', item.item_notes);
 
 					var discount = Number(item.discount);
 					if (discount != 0)
@@ -507,7 +508,7 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 			var invoiceTable = Parse.Object.extend("Invoices");
 			var query = new Parse.Query(invoiceTable);
 			query.include("invoiceItems", "customer", "lateFee",
-						  "invoiceItems.item", "invoiceItems.tax", "organization",
+						  "invoiceItems.item", "invoiceItems.tax","invoiceItems.item_notes", "organization",
 						  "userID", "userID.defaultTemplate", "userID.businessInfo");
 
 			var data = {};
@@ -954,6 +955,7 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 				address: htmlUrl
 			}
 		}).then(function (htmlDoc) {
+			console.log(htmlDoc);
 			var s1 = 'Connect.open("GET", "uppage.xml"';
 			var s2 = 'Connect.open("GET", ' + '"' + xmlUrl + '"';
 			s2 = s2.replace('http:', 'https:');
@@ -1201,6 +1203,7 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 				for (var i = 0; i < itemList.length; ++i) {
 					var name = itemList[i].get("item").get("title");
 					var qty = itemList[i].get("quantity");
+					var item_notes = itemList[i].get('item_notes');
 					var amount = itemList[i].get("amount");
 					var discount = itemList[i].get("discount") || 0;
 					var desc = itemList[i].get("item").get("itemDescription");
@@ -1210,6 +1213,7 @@ invoicesUnlimited.factory('invoiceService', ["$q", "invoiceFactory", "itemServic
 					var itmObj = {
 						'name': name,
 						'qty': qty,
+						'item_notes':item_notes,
 						'price': currencyFilter(amount * exchangeRate, currencySymbol, 2)
 					};
 
