@@ -144,6 +144,9 @@
               ng-options="item.entity.title for item in items" ng-change="itemChanged($index)">
                   <option value="" disabled>Select or Type to add</option>
             </select>
+              <div ng-if = "invItem.selectedItem" class = "check-notes" ng-style="myStyle={'margin-top':'10px'}">
+                <input type = 'text' name="item_notes{{$index}}" type = 'text' ng-model="invItem.item_notes" placeholder="Add Notes" />
+              </div>
             </div>
           <div class="col-12 layout-padding layout-padding-l text-right error-align">
             <input maxlength="60" tri:fix-input-name name="qty{{$index}}" class="check-qty" type="number" onkeypress="numberValidation(event)"

@@ -377,6 +377,7 @@ invoicesUnlimited.controller('InvoiceController',[
 				obj.selectedItem = $scope.items.filter(function(item) {
 					if (item.entity.id === actualItem.id) {
 						obj.id = invItem.id;
+						obj.item_notes = invItem.item_notes;
 						obj.rate = (invItem.amount / invItem.quantity); //Number(item.entity.rate);
 						obj.quantity = invItem.quantity;
 						obj.discount = invItem.discount || 0;
@@ -459,6 +460,7 @@ invoicesUnlimited.controller('InvoiceController',[
 			item.discount = 0;
 			item.taxValue = 0;
 			item.amount = 0;
+			item.item_notes = "";
 
 			$scope.invoiceItems.push(item);
 
@@ -670,6 +672,7 @@ invoicesUnlimited.controller('InvoiceController',[
 
 			showLoader();
 			useAllIds();
+
 			saveEditedInvoice({generateReceipt:true})
 				.then(function(invoice) {
 				hideLoader();
@@ -689,6 +692,7 @@ invoicesUnlimited.controller('InvoiceController',[
 
 			showLoader();
 			useAllIds();
+
 			saveAndSendEditedInvoice()
 				.then(function(invoice) {
 				hideLoader();
